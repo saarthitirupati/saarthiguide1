@@ -10,12 +10,6 @@ import {
   type NotificationPayload,
 } from '@/lib/notifications';
 
-webpush.setVapidDetails(
-  'mailto:admin@saarthiguide.in',
-  process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!,
-  process.env.VAPID_PRIVATE_KEY!,
-);
-
 function buildPayload(type: string, daysSince?: number): NotificationPayload | null {
   switch (type) {
     case 'daily_spot':   return buildDailySpotNotification();
@@ -32,6 +26,13 @@ export async function POST(req: Request) {
   if (req.headers.get('x-cron-secret') !== process.env.CRON_SECRET) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
+
+  // Init VAPID at request time (env vars not available at build time)
+  webpush.setVapidDetails(
+    'mailto:admin@saarthiguide.in',
+    process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!,
+    process.env.VAPID_PRIVATE_KEY!,
+  );
 
   const { type, endpoint, daysSince } = await req.json();
   const payload = buildPayload(type, daysSince);
