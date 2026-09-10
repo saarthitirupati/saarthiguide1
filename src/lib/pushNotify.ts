@@ -1,4 +1,3 @@
-// @ts-expect-error web-push does not have TypeScript declaration files
 import webpush from 'web-push';
 import { supabase } from '@/lib/supabase';
 
