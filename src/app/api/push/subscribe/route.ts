@@ -8,14 +8,38 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'Invalid subscription' }, { status: 400 });
     }
 
+    const now = new Date().toISOString();
+
+    // Check if this is a new subscriber before upsert
+    const { data: existing } = await supabase
+      .from('push_subscriptions')
+      .select('endpoint')
+      .eq('endpoint', sub.endpoint)
+      .maybeSingle();
+
     await supabase.from('push_subscriptions').upsert(
       {
         endpoint: sub.endpoint,
         keys_p256dh: sub.keys.p256dh,
         keys_auth: sub.keys.auth,
+        last_seen_at: now,
+        // Only set subscribed_at on first insert — ignored on conflict update
+        ...(existing ? {} : { subscribed_at: now }),
       },
       { onConflict: 'endpoint' }
     );
+
+    // Fire welcome notification for brand-new subscribers only
+    if (!existing && process.env.CRON_SECRET) {
+      fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/push/send`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-cron-secret': process.env.CRON_SECRET,
+        },
+        body: JSON.stringify({ type: 'welcome', endpoint: sub.endpoint }),
+      }).catch(() => {});
+    }
 
     return NextResponse.json({ ok: true });
   } catch {

@@ -1,0 +1,83 @@
+name: Saarthi Push Notifications
+
+on:
+  schedule:
+    # 7:00 AM IST daily (UTC 01:30) — Daily Spot + Festival Reminder
+    - cron: '30 1 * * *'
+    # Friday 6:00 PM IST (UTC 12:30) — Weekend Suggestion
+    - cron: '30 12 * * 5'
+    # 8:30 AM IST daily (UTC 03:00) — Re-engagement (separate from morning content)
+    - cron: '0 3 * * *'
+  workflow_dispatch:
+    inputs:
+      type:
+        description: 'Notification type to send manually'
+        required: false
+        default: 'daily_spot'
+        type: choice
+        options: [daily_spot, festival, weekend, reengagement, welcome]
+
+jobs:
+  morning:
+    name: Morning Notifications (Daily Spot + Festival)
+    if: github.event.schedule == '30 1 * * *' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send Daily Spot of the Day
+        run: |
+          curl -s -f -X POST https://saarthiguide.in/api/push/send \
+            -H "Content-Type: application/json" \
+            -H "x-cron-secret: ${{ secrets.CRON_SECRET }}" \
+            -d '{"type":"daily_spot"}'
+
+      - name: Send Festival Reminder (if any in 7/3/1/0 days)
+        run: |
+          curl -s -X POST https://saarthiguide.in/api/push/send \
+            -H "Content-Type: application/json" \
+            -H "x-cron-secret: ${{ secrets.CRON_SECRET }}" \
+            -d '{"type":"festival"}'
+
+  weekend:
+    name: Weekend Suggestion (Friday evening)
+    if: github.event.schedule == '30 12 * * 5'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send Weekend Yatra Suggestion
+        run: |
+          curl -s -f -X POST https://saarthiguide.in/api/push/send \
+            -H "Content-Type: application/json" \
+            -H "x-cron-secret: ${{ secrets.CRON_SECRET }}" \
+            -d '{"type":"weekend"}'
+
+  reengagement:
+    name: Re-engagement (inactive users)
+    if: github.event.schedule == '0 3 * * *'
+    runs-on: ubuntu-latest
+    steps:
+      - name: 3-day inactive users
+        run: |
+          curl -s -X POST https://saarthiguide.in/api/push/send \
+            -H "Content-Type: application/json" \
+            -H "x-cron-secret: ${{ secrets.CRON_SECRET }}" \
+            -d '{"type":"reengagement","daysSince":3}'
+
+      - name: 7-day inactive users
+        run: |
+          curl -s -X POST https://saarthiguide.in/api/push/send \
+            -H "Content-Type: application/json" \
+            -H "x-cron-secret: ${{ secrets.CRON_SECRET }}" \
+            -d '{"type":"reengagement","daysSince":7}'
+
+      - name: 15-day inactive users
+        run: |
+          curl -s -X POST https://saarthiguide.in/api/push/send \
+            -H "Content-Type: application/json" \
+            -H "x-cron-secret: ${{ secrets.CRON_SECRET }}" \
+            -d '{"type":"reengagement","daysSince":15}'
+
+      - name: 30-day inactive users
+        run: |
+          curl -s -X POST https://saarthiguide.in/api/push/send \
+            -H "Content-Type: application/json" \
+            -H "x-cron-secret: ${{ secrets.CRON_SECRET }}" \
+            -d '{"type":"reengagement","daysSince":30}'
