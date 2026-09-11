@@ -176,35 +176,36 @@ export default function OfflineTempleMap({
     <div className={styles.container}>
       {/* Header */}
       <div className={styles.header}>
-        <div className={styles.titleGroup}>
+        <div className={styles.headerTop}>
           <span className={styles.badge}>
             <Compass size={13} />
             {isCached 
-              ? (lang === 'te' ? 'ఆఫ్‌లైన్ సిద్ధంగా ఉంది (సిగ్నల్ లేకున్నా పనిచేస్తుంది)' : 'Offline Ready (Saved in Device)')
-              : (lang === 'te' ? 'ఆఫ్‌లైన్ ప్రాంగణ వెక్టర్ మ్యాప్' : 'Offline Precinct Vector Map')}
+              ? (lang === 'te' ? 'ఆఫ్‌లైన్ సిద్ధం' : 'Offline Ready')
+              : (lang === 'te' ? 'ఆఫ్‌లైన్ మ్యాప్' : 'Offline Precinct Map')}
           </span>
-          <h2 className={styles.title}>
-            {lang === 'te' ? layout.titleTe : layout.titleEn}
-          </h2>
+
+          <button 
+            onClick={handleSaveOffline}
+            className={`${styles.saveBtn} ${isCached ? styles.saveBtnSaved : styles.saveBtnUnsaved}`}
+            title="Save vector layout for offline use"
+          >
+            {isCached ? (
+              <>
+                <Check size={13} />
+                <span>{lang === 'te' ? 'సేవ్ చేయబడింది' : 'Saved Offline'}</span>
+              </>
+            ) : (
+              <>
+                <Download size={13} />
+                <span>{isSaving ? (lang === 'te' ? 'సేవ్...' : 'Saving...') : (lang === 'te' ? 'ఆఫ్‌లైన్ సేవ్' : 'Save Offline')}</span>
+              </>
+            )}
+          </button>
         </div>
 
-        <button 
-          onClick={handleSaveOffline}
-          className={`${styles.saveBtn} ${isCached ? styles.saveBtnSaved : styles.saveBtnUnsaved}`}
-          title="Save vector layout for offline use"
-        >
-          {isCached ? (
-            <>
-              <Check size={14} />
-              <span>{lang === 'te' ? 'సేవ్ చేయబడింది' : 'Saved Offline'}</span>
-            </>
-          ) : (
-            <>
-              <Download size={14} />
-              <span>{isSaving ? (lang === 'te' ? 'సేవ్ చేస్తోంది...' : 'Saving...') : (lang === 'te' ? 'ఆఫ్‌లైన్ కోసం సేవ్' : 'Save for Offline')}</span>
-            </>
-          )}
-        </button>
+        <h2 className={styles.title}>
+          {lang === 'te' ? layout.titleTe : layout.titleEn}
+        </h2>
       </div>
 
       {/* Illustrated Architectural Vector Canvas */}
