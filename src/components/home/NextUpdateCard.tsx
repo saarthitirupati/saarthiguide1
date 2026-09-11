@@ -1,8 +1,31 @@
-import React, { useState } from 'react';
-import { Bell, Check, Clock, Heart } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Bell, Check, Clock, Heart, Loader2 } from 'lucide-react';
+import { getNotificationPermission, subscribeToPushNotifications } from '@/lib/pushClient';
 
 export function NextUpdateCard() {
   const [notified, setNotified] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const perm = getNotificationPermission();
+      if (perm === 'granted') {
+        setNotified(true);
+      }
+    }
+  }, []);
+
+  const handleNotifyToggle = async () => {
+    if (notified) return;
+
+    setLoading(true);
+    const res = await subscribeToPushNotifications();
+    setLoading(false);
+
+    if (res.success && res.permission === 'granted') {
+      setNotified(true);
+    }
+  };
 
   return (
     <div style={{ padding: '0 16px 20px 16px' }}>
@@ -20,7 +43,7 @@ export function NextUpdateCard() {
       }}>
         <Heart size={20} color="#059669" style={{ flexShrink: 0 }} />
         <div style={{ fontSize: '13px', fontWeight: 700, color: '#065F46', lineHeight: '1.4' }}>
-          Don't worry. Saarthi is watching live queue traffic and will remind you when it's the best time for Darshan.
+          Don&apos;t worry. Saarthi is watching live queue traffic and will remind you when it&apos;s the best time for Darshan.
         </div>
       </div>
 
@@ -44,12 +67,13 @@ export function NextUpdateCard() {
             Queue expected to improve in <span style={{ color: '#34D399' }}>2h 15m</span>
           </div>
           <div style={{ fontSize: '12px', color: '#94A3B8', marginTop: '2px', fontWeight: 500 }}>
-            We'll send an alert directly to your phone.
+            We&apos;ll send an alert directly to your phone.
           </div>
         </div>
 
         <button
-          onClick={() => setNotified(!notified)}
+          onClick={handleNotifyToggle}
+          disabled={loading}
           style={{
             backgroundColor: notified ? '#059669' : '#2563EB',
             color: '#FFFFFF',
@@ -58,19 +82,26 @@ export function NextUpdateCard() {
             borderRadius: '14px',
             fontSize: '13px',
             fontWeight: 800,
-            cursor: 'pointer',
+            cursor: loading ? 'not-allowed' : 'pointer',
             display: 'flex',
             alignItems: 'center',
             gap: '6px',
             whiteSpace: 'nowrap',
             boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
-            flexShrink: 0
+            flexShrink: 0,
+            transition: 'all 0.15s ease'
           }}
+          aria-label={notified ? "Alerts Active" : "Notify Me"}
         >
-          {notified ? (
+          {loading ? (
+            <>
+              <Loader2 size={16} className="animate-spin" />
+              <span>Enabling...</span>
+            </>
+          ) : notified ? (
             <>
               <Check size={16} />
-              <span>Subscribed</span>
+              <span>Alerts Active</span>
             </>
           ) : (
             <>

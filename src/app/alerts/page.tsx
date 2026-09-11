@@ -1,18 +1,63 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { ChevronLeft, AlertTriangle, ShieldCheck, MapPin, Clock, ArrowRight, Bell } from 'lucide-react';
+import {
+  ChevronLeft,
+  AlertTriangle,
+  ShieldCheck,
+  MapPin,
+  Clock,
+  ArrowRight,
+  Bell,
+  BellRing,
+  BellOff,
+  Check,
+  Loader2,
+  Sparkles
+} from 'lucide-react';
 import { useRealtimeStatus } from '@/lib/useRealtimeStatus';
 import { useRealtimeAlerts, LiveAlert } from '@/lib/useRealtimeAlerts';
+import {
+  getNotificationPermission,
+  subscribeToPushNotifications,
+  sendTestNotification,
+  PushPermissionState
+} from '@/lib/pushClient';
 
 export default function AlertsPage() {
   const router = useRouter();
   const { status, loading: statusLoading } = useRealtimeStatus();
   const { alerts, loading: alertsLoading } = useRealtimeAlerts();
 
-  const isLoading = statusLoading && alertsLoading;
+  const [permission, setPermission] = useState<PushPermissionState>('default');
+  const [isSubscribing, setIsSubscribing] = useState(false);
+  const [testStatus, setTestStatus] = useState<'idle' | 'sending' | 'sent' | 'failed'>('idle');
 
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      setPermission(getNotificationPermission());
+    }
+  }, []);
+
+  const handleSubscribe = async () => {
+    setIsSubscribing(true);
+    const res = await subscribeToPushNotifications();
+    setIsSubscribing(false);
+    setPermission(res.permission);
+  };
+
+  const handleTestAlert = async () => {
+    setTestStatus('sending');
+    const success = await sendTestNotification();
+    setTestStatus(success ? 'sent' : 'failed');
+    setTimeout(() => {
+      setTestStatus('idle');
+    }, 4000);
+  };
+
+  const isLoading = statusLoading && alertsLoading;
   const hasStatusNotice = !!(status?.notice && status.notice.trim().length > 0);
   const activeAlerts = alerts || [];
   const hasAnyAlerts = hasStatusNotice || activeAlerts.length > 0;
@@ -44,15 +89,208 @@ export default function AlertsPage() {
         <button 
           onClick={() => router.back()} 
           style={{ border: 'none', background: 'none', cursor: 'pointer', padding: '4px', display: 'flex', alignItems: 'center' }}
+          aria-label="Go Back"
         >
           <ChevronLeft size={24} color="#0F172A" />
         </button>
         <h1 style={{ fontSize: 18, fontWeight: 800, margin: 0, color: '#0F172A', display: 'flex', alignItems: 'center', gap: 8 }}>
-          <Bell size={20} color="#2563EB" /> Temple Alerts & Advisories
+          <Bell size={20} color="#2563EB" /> Temple Alerts & Notifications
         </h1>
       </div>
 
-      <div style={{ padding: '20px 16px', maxWidth: '500px', margin: '0 auto' }}>
+      <div style={{ padding: '16px', maxWidth: '500px', margin: '0 auto' }}>
+        
+        {/* 🔔 PUSH NOTIFICATION PREFERENCE & TEST CARD */}
+        <div style={{
+          background: permission === 'granted'
+            ? 'linear-gradient(135deg, #F0FDF4 0%, #DCFCE7 100%)'
+            : permission === 'denied'
+            ? '#FEF2F2'
+            : 'linear-gradient(135deg, #EFF6FF 0%, #DBEAFE 100%)',
+          border: `1px solid ${
+            permission === 'granted'
+              ? '#86EFAC'
+              : permission === 'denied'
+              ? '#FECACA'
+              : '#93C5FD'
+          }`,
+          borderRadius: 16,
+          padding: '16px',
+          marginBottom: '18px',
+          boxShadow: '0 2px 10px rgba(0,0,0,0.04)'
+        }}>
+          {permission === 'granted' ? (
+            <div>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '6px' }}>
+                <span style={{
+                  fontSize: '11px',
+                  fontWeight: 800,
+                  color: '#15803D',
+                  background: '#DCFCE7',
+                  padding: '3px 8px',
+                  borderRadius: 6,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.5px',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 4
+                }}>
+                  <Check size={12} strokeWidth={3} /> Live Alerts Active
+                </span>
+                <span style={{ fontSize: '11px', color: '#166534', fontWeight: 600 }}>
+                  Phone Subscribed
+                </span>
+              </div>
+              <h3 style={{ fontSize: 15, fontWeight: 800, color: '#14532D', margin: '0 0 4px 0' }}>
+                Srivari Darshan Alerts are Running
+              </h3>
+              <p style={{ fontSize: 13, color: '#166534', lineHeight: 1.45, margin: '0 0 12px 0' }}>
+                You will receive instant alerts for SSD token quota releases, queue drops, and Tirumala hill advisories.
+              </p>
+
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexWrap: 'wrap' }}>
+                <button
+                  onClick={handleTestAlert}
+                  disabled={testStatus === 'sending'}
+                  style={{
+                    backgroundColor: '#15803D',
+                    color: '#FFFFFF',
+                    border: 'none',
+                    borderRadius: 10,
+                    padding: '8px 14px',
+                    fontSize: '12.5px',
+                    fontWeight: 700,
+                    cursor: testStatus === 'sending' ? 'not-allowed' : 'pointer',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: 6,
+                    boxShadow: '0 2px 6px rgba(21, 128, 61, 0.25)',
+                    transition: 'all 0.15s ease'
+                  }}
+                >
+                  {testStatus === 'sending' ? (
+                    <>
+                      <Loader2 size={14} className="animate-spin" />
+                      <span>Sending Test...</span>
+                    </>
+                  ) : testStatus === 'sent' ? (
+                    <>
+                      <Check size={14} />
+                      <span>Alert Sent! Check Top Bar</span>
+                    </>
+                  ) : (
+                    <>
+                      <BellRing size={14} />
+                      <span>Send Test Alert</span>
+                    </>
+                  )}
+                </button>
+
+                {testStatus === 'sent' && (
+                  <span style={{ fontSize: '11.5px', color: '#15803D', fontWeight: 700 }}>
+                    🔔 Notification delivered to your device!
+                  </span>
+                )}
+                {testStatus === 'failed' && (
+                  <span style={{ fontSize: '11.5px', color: '#DC2626', fontWeight: 600 }}>
+                    Could not display notification. Check phone DND/alert permissions.
+                  </span>
+                )}
+              </div>
+            </div>
+          ) : permission === 'denied' ? (
+            <div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 6 }}>
+                <BellOff size={16} color="#DC2626" />
+                <span style={{ fontSize: '11px', fontWeight: 800, color: '#DC2626', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                  Notifications Blocked
+                </span>
+              </div>
+              <h3 style={{ fontSize: 14.5, fontWeight: 800, color: '#991B1B', margin: '0 0 4px 0' }}>
+                Allow Notifications in Browser Settings
+              </h3>
+              <p style={{ fontSize: 12.5, color: '#7F1D1D', lineHeight: 1.45, margin: '0 0 8px 0' }}>
+                Your browser has notifications disabled for Saarthi. To receive SSD token releases and queue drops:
+              </p>
+              <div style={{ fontSize: '12px', color: '#991B1B', background: '#FEE2E2', padding: '8px 12px', borderRadius: 8, lineHeight: 1.5, fontWeight: 600 }}>
+                1. Tap the tune / lock icon next to the URL address.<br />
+                2. Switch <strong>Notifications</strong> to <strong>Allow</strong>.<br />
+                3. Reload this page.
+              </div>
+            </div>
+          ) : permission === 'unsupported' ? (
+            <div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 4 }}>
+                <Bell size={16} color="#475569" />
+                <span style={{ fontSize: '11px', fontWeight: 800, color: '#475569', textTransform: 'uppercase' }}>
+                  In-App Alerts
+                </span>
+              </div>
+              <p style={{ fontSize: 12.5, color: '#334155', lineHeight: 1.45, margin: 0 }}>
+                Web push is not supported in this browser mode. Add Saarthi to your Home Screen (PWA) or open in Chrome to receive lock-screen alerts.
+              </p>
+            </div>
+          ) : (
+            <div>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '6px' }}>
+                <span style={{
+                  fontSize: '11px',
+                  fontWeight: 800,
+                  color: '#1D4ED8',
+                  background: '#DBEAFE',
+                  padding: '3px 8px',
+                  borderRadius: 6,
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.5px',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 4
+                }}>
+                  <Sparkles size={12} /> Instant Pilgrim Alerts
+                </span>
+              </div>
+              <h3 style={{ fontSize: 15, fontWeight: 800, color: '#1E3A8A', margin: '0 0 4px 0' }}>
+                Enable Live Darshan & Token Alerts
+              </h3>
+              <p style={{ fontSize: 13, color: '#1E40AF', lineHeight: 1.45, margin: '0 0 12px 0' }}>
+                Never miss an SSD slot opening or sudden queue drop. Saarthi alerts your phone the moment wait times decrease.
+              </p>
+
+              <button
+                onClick={handleSubscribe}
+                disabled={isSubscribing}
+                style={{
+                  backgroundColor: '#2563EB',
+                  color: '#FFFFFF',
+                  border: 'none',
+                  borderRadius: 10,
+                  padding: '10px 16px',
+                  fontSize: '13px',
+                  fontWeight: 800,
+                  cursor: isSubscribing ? 'not-allowed' : 'pointer',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: 8,
+                  boxShadow: '0 4px 12px rgba(37, 99, 235, 0.28)',
+                  transition: 'all 0.15s ease'
+                }}
+              >
+                {isSubscribing ? (
+                  <>
+                    <Loader2 size={16} className="animate-spin" />
+                    <span>Enabling Alerts...</span>
+                  </>
+                ) : (
+                  <>
+                    <Bell size={16} />
+                    <span>Turn On Darshan Alerts</span>
+                  </>
+                )}
+              </button>
+            </div>
+          )}
+        </div>
+
         {isLoading ? (
           <div style={{ textAlign: 'center', padding: '40px 0', color: '#64748B', fontWeight: 600, fontSize: '14px' }}>
             Syncing live temple alerts...
@@ -204,7 +442,7 @@ export default function AlertsPage() {
               <ShieldCheck size={24} color="#16A34A" />
             </div>
             <div>
-              <h2 style={{ fontSize: 16, fontWeight: 800, color: '#166534', margin: '0 0 4px 0' }}>No Active Alerts</h2>
+              <h2 style={{ fontSize: 16, fontWeight: 800, color: '#166534', margin: '0 0 4px 0' }}>No Active Advisories</h2>
               <p style={{ fontSize: 13.5, color: '#15803D', lineHeight: 1.5, margin: 0 }}>
                 Conditions are normal across Tirumala and Tirupati. There are no travel restrictions or emergency advisories at this time.
               </p>
@@ -222,4 +460,3 @@ export default function AlertsPage() {
     </div>
   );
 }
-
