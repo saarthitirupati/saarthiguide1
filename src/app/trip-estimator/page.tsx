@@ -8,7 +8,9 @@ import {
   CheckCircle2, AlertTriangle, Mountain, MapPin, Fuel, 
   RefreshCw, Users, Shield, Sliders, ChevronRight, Info,
   Navigation, Locate, Compass, Clock, IndianRupee, Sparkles,
-  ShieldCheck, CircleParking, Milestone, ShieldAlert, ExternalLink
+  ShieldCheck, CircleParking, Milestone, ShieldAlert, ExternalLink,
+  SlidersHorizontal, ChevronDown, ChevronUp, Leaf, Minus, Plus,
+  Gauge, AlertCircle
 } from 'lucide-react';
 import styles from './TripEstimator.module.css';
 import { PLACES, Place } from '@/data/places';
@@ -18,7 +20,8 @@ import {
   TripEstimateResult, 
   TransportEstimate, 
   FuelRates, 
-  DEFAULT_FUEL_RATES 
+  DEFAULT_FUEL_RATES,
+  PILGRIM_FUEL_BUNKS
 } from '@/services/decision/trip.estimator';
 import { useLanguage } from '@/lib/useLanguage';
 
@@ -54,14 +57,20 @@ function TripEstimatorContent() {
   const [isRoundTrip, setIsRoundTrip] = useState<boolean>(false);
   const [activeTab, setActiveTab] = useState<'all' | 'bike' | 'car' | 'ev' | 'bus' | 'walk'>('all');
 
-  // Custom mileage overrides
+  // Custom mileage overrides (First Principles)
   const [bikeMileage, setBikeMileage] = useState<number>(52);
   const [carMileage, setCarMileage] = useState<number>(16);
+  const [carDieselMileage, setCarDieselMileage] = useState<number>(20);
+  const [suvMileage, setSuvMileage] = useState<number>(12);
+  const [evMileage, setEvMileage] = useState<number>(7.14);
+
+  // Settings & Fuel Modals
+  const [showSettings, setShowSettings] = useState<boolean>(false);
+  const [showFuelPumps, setShowFuelPumps] = useState<boolean>(false);
 
   // Live Fuel Rates
   const [fuelRates, setFuelRates] = useState<FuelRates>(DEFAULT_FUEL_RATES);
   const [fuelSource, setFuelSource] = useState<string>('IndianAPI (Live)');
-  const [isCustomFuelOpen, setIsCustomFuelOpen] = useState<boolean>(false);
 
   const [estimateResult, setEstimateResult] = useState<TripEstimateResult | null>(null);
 
@@ -162,13 +171,23 @@ function TripEstimatorContent() {
       destName: dName,
       passengers,
       isRoundTrip,
-      customMileage: { bike: bikeMileage, car: carMileage },
+      customMileage: {
+        bike: bikeMileage,
+        car: carMileage,
+        carDiesel: carDieselMileage,
+        suv: suvMileage,
+        ev: evMileage
+      },
       fuelRates
     }).then(res => {
       setEstimateResult(res);
     }).catch(() => {});
 
-  }, [originId, destId, passengers, isRoundTrip, bikeMileage, carMileage, fuelRates, useLiveGps, userGpsCoords, placesList]);
+  }, [
+    originId, destId, passengers, isRoundTrip, 
+    bikeMileage, carMileage, carDieselMileage, suvMileage, evMileage,
+    fuelRates, useLiveGps, userGpsCoords, placesList
+  ]);
 
   const filteredEstimates = useMemo(() => {
     if (!estimateResult) return [];
@@ -202,7 +221,7 @@ function TripEstimatorContent() {
 
       <main className={styles.content}>
         
-        {/* ROUTE SELECTOR CARD */}
+        {/* 1. ROUTE & TRIP CONFIGURATION CARD */}
         <div className={styles.card}>
           <div className={styles.routeSelector}>
             
@@ -251,7 +270,7 @@ function TripEstimatorContent() {
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                     <div style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#10B981' }} />
                     <span style={{ fontSize: '13.5px', fontWeight: 700, color: '#065F46' }}>
-                      Your Live Location (GPS Coordinates Detected)
+                      Your Live Location (GPS Detected)
                     </span>
                   </div>
                   <button
@@ -307,19 +326,218 @@ function TripEstimatorContent() {
               </select>
             </div>
 
+            {/* TRIP CONFIGURATION ROW: ONE-WAY/ROUND-TRIP & PASSENGER COUNTER */}
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: '1fr 1fr',
+              gap: '12px',
+              paddingTop: '6px',
+              borderTop: '1px solid #F1F5F9'
+            }}>
+              
+              {/* Trip Type Toggle */}
+              <div className={styles.fieldGroup}>
+                <label className={styles.label}>Trip Direction</label>
+                <div className={styles.toggleGroup}>
+                  <button
+                    type="button"
+                    onClick={() => setIsRoundTrip(false)}
+                    className={`${styles.toggleBtn} ${!isRoundTrip ? styles.toggleBtnActive : ''}`}
+                  >
+                    One-Way
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setIsRoundTrip(true)}
+                    className={`${styles.toggleBtn} ${isRoundTrip ? styles.toggleBtnActive : ''}`}
+                  >
+                    Round-Trip
+                  </button>
+                </div>
+              </div>
+
+              {/* Passenger Counter */}
+              <div className={styles.fieldGroup}>
+                <label className={styles.label}>Pilgrims / Passengers</label>
+                <div className={styles.passengerCounter}>
+                  <button
+                    type="button"
+                    onClick={() => setPassengers(Math.max(1, passengers - 1))}
+                    disabled={passengers <= 1}
+                    className={styles.counterBtn}
+                    aria-label="Decrease passengers"
+                  >
+                    <Minus size={14} />
+                  </button>
+                  <div className={styles.counterValue}>
+                    {passengers} {passengers === 1 ? 'Person' : 'People'}
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setPassengers(Math.min(10, passengers + 1))}
+                    disabled={passengers >= 10}
+                    className={styles.counterBtn}
+                    aria-label="Increase passengers"
+                  >
+                    <Plus size={14} />
+                  </button>
+                </div>
+              </div>
+
+            </div>
+
           </div>
         </div>
 
-        {/* DISTANCE & ROUTE HEADER */}
+        {/* 2. LIVE REGIONAL FUEL RATES & CUSTOM MILEAGE TOOLBAR */}
+        <div style={{
+          backgroundColor: '#FFFFFF',
+          borderRadius: '16px',
+          border: '1px solid #E2E8F0',
+          padding: '12px 16px',
+          marginBottom: '16px',
+          boxShadow: '0 2px 8px rgba(0,0,0,0.03)'
+        }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '8px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <div style={{ width: '28px', height: '28px', borderRadius: '8px', backgroundColor: '#ECFDF5', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <Fuel size={15} color="#059669" />
+              </div>
+              <div>
+                <div style={{ fontSize: '11px', fontWeight: 800, color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.4px' }}>
+                  Live AP Fuel Prices ({fuelSource})
+                </div>
+                <div style={{ fontSize: '12.5px', fontWeight: 700, color: '#0F172A', display: 'flex', gap: '10px', flexWrap: 'wrap', marginTop: '1px' }}>
+                  <span>Petrol: <strong style={{ color: '#059669' }}>₹{fuelRates.petrol}</strong>/L</span>
+                  <span>Diesel: <strong style={{ color: '#0284C7' }}>₹{fuelRates.diesel}</strong>/L</span>
+                  <span>CNG: <strong>₹{fuelRates.cng}</strong>/kg</span>
+                </div>
+              </div>
+            </div>
+
+            <button
+              onClick={() => setShowSettings(!showSettings)}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '5px',
+                padding: '6px 12px',
+                borderRadius: '8px',
+                border: '1px solid #CBD5E1',
+                backgroundColor: showSettings ? '#F1F5F9' : '#FFFFFF',
+                color: '#334155',
+                fontSize: '11.5px',
+                fontWeight: 700,
+                cursor: 'pointer',
+                transition: 'all 0.15s ease'
+              }}
+            >
+              <SlidersHorizontal size={12} />
+              <span>{showSettings ? 'Close Mileage' : 'Custom Mileage'}</span>
+              {showSettings ? <ChevronUp size={12} /> : <ChevronDown size={12} />}
+            </button>
+          </div>
+
+          {/* COLLAPSIBLE VEHICLE MILEAGE SLIDERS */}
+          {showSettings && (
+            <div className={styles.settingsSection}>
+              <div style={{ fontSize: '12.5px', fontWeight: 800, color: '#0F172A', marginBottom: '10px' }}>
+                Customize Your Vehicle Mileage (First Principles Calculation)
+              </div>
+              
+              <div className={styles.sliderRow}>
+                <div className={styles.sliderHeader}>
+                  <span>🏍️ Two-Wheeler / Bike</span>
+                  <strong>{bikeMileage} km/L</strong>
+                </div>
+                <input
+                  type="range"
+                  min="25"
+                  max="75"
+                  step="1"
+                  value={bikeMileage}
+                  onChange={e => setBikeMileage(Number(e.target.value))}
+                  className={styles.sliderInput}
+                />
+              </div>
+
+              <div className={styles.sliderRow}>
+                <div className={styles.sliderHeader}>
+                  <span>🚗 Petrol Car (Hatchback / Sedan)</span>
+                  <strong>{carMileage} km/L</strong>
+                </div>
+                <input
+                  type="range"
+                  min="8"
+                  max="25"
+                  step="0.5"
+                  value={carMileage}
+                  onChange={e => setCarMileage(Number(e.target.value))}
+                  className={styles.sliderInput}
+                />
+              </div>
+
+              <div className={styles.sliderRow}>
+                <div className={styles.sliderHeader}>
+                  <span>⛽ Diesel Car (Hatchback / Sedan)</span>
+                  <strong>{carDieselMileage} km/L</strong>
+                </div>
+                <input
+                  type="range"
+                  min="10"
+                  max="30"
+                  step="0.5"
+                  value={carDieselMileage}
+                  onChange={e => setCarDieselMileage(Number(e.target.value))}
+                  className={styles.sliderInput}
+                />
+              </div>
+
+              <div className={styles.sliderRow}>
+                <div className={styles.sliderHeader}>
+                  <span>🚙 SUV / 7-Seater (Diesel)</span>
+                  <strong>{suvMileage} km/L</strong>
+                </div>
+                <input
+                  type="range"
+                  min="7"
+                  max="18"
+                  step="0.5"
+                  value={suvMileage}
+                  onChange={e => setSuvMileage(Number(e.target.value))}
+                  className={styles.sliderInput}
+                />
+              </div>
+
+              <div className={styles.sliderRow} style={{ marginBottom: 0 }}>
+                <div className={styles.sliderHeader}>
+                  <span>⚡ Electric Car (EV)</span>
+                  <strong>{evMileage} km/kWh</strong>
+                </div>
+                <input
+                  type="range"
+                  min="4.0"
+                  max="10.0"
+                  step="0.1"
+                  value={evMileage}
+                  onChange={e => setEvMileage(Number(e.target.value))}
+                  className={styles.sliderInput}
+                />
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* 3. DISTANCE & ROUTE HEADER WITH ELEVATION PHYSICS */}
         {estimateResult && (
-          <div style={{ background: 'linear-gradient(135deg, #1E1B18 0%, #2A2521 100%)', color: '#FFFFFF', borderRadius: '20px', padding: '20px', marginBottom: '20px', boxShadow: '0 10px 25px rgba(0,0,0,0.1)' }}>
+          <div style={{ background: 'linear-gradient(135deg, #1E1B18 0%, #2A2521 100%)', color: '#FFFFFF', borderRadius: '20px', padding: '20px', marginBottom: '18px', boxShadow: '0 10px 25px rgba(0,0,0,0.1)' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
               <div>
                 <span style={{ fontSize: '11px', color: '#C89B3C', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.5px', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
                   {estimateResult.isTirumalaRoute ? (
                     <>
                       <Mountain size={13} color="#C89B3C" />
-                      Tirumala Hill Ghat Route (+820m Elevation Climb)
+                      Tirumala Hill Ghat Route (+820m Elevation Incline)
                     </>
                   ) : (
                     <>
@@ -331,18 +549,40 @@ function TripEstimatorContent() {
                 <h2 style={{ fontSize: '18px', fontWeight: 800, margin: '4px 0 0 0', color: '#FFFFFF' }}>
                   {estimateResult.originName} → {estimateResult.destinationName}
                 </h2>
+                {estimateResult.isTirumalaRoute && (
+                  <p style={{ fontSize: '11.5px', color: '#FCD34D', margin: '4px 0 0 0', fontWeight: 500 }}>
+                    ⚡ Physics Factor Applied: +20% to +25% fuel burn calculated for steep uphill mountain grade.
+                  </p>
+                )}
               </div>
               <div style={{ textAlign: 'right' }}>
                 <span style={{ fontSize: '26px', fontWeight: 900, color: '#E9801D', letterSpacing: '-0.5px' }}>{estimateResult.distanceKm} km</span>
-                <span style={{ fontSize: '11px', color: 'rgba(255,255,255,0.6)', display: 'block' }}>{isRoundTrip ? 'Total Round-trip' : 'One-way Drive'}</span>
+                <span style={{ fontSize: '11px', color: 'rgba(255,255,255,0.6)', display: 'block' }}>{isRoundTrip ? 'Total Round-trip' : 'One-way Route'}</span>
               </div>
             </div>
 
-            {/* Google Maps External Action */}
+            {/* Google Maps External Action & Nearest Fuel Bunk Trigger */}
             <div style={{ marginTop: '14px', paddingTop: '12px', borderTop: '1px solid rgba(255,255,255,0.1)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px' }}>
-              <span style={{ fontSize: '11.5px', color: 'rgba(255,255,255,0.7)' }}>
-                Need live turn-by-turn road navigation?
-              </span>
+              <button
+                onClick={() => setShowFuelPumps(!showFuelPumps)}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  backgroundColor: 'rgba(234, 179, 8, 0.2)',
+                  color: '#FEF08A',
+                  padding: '6px 12px',
+                  borderRadius: '10px',
+                  fontSize: '12px',
+                  fontWeight: 700,
+                  border: '1px solid rgba(234, 179, 8, 0.4)',
+                  cursor: 'pointer'
+                }}
+              >
+                <Fuel size={13} />
+                <span>{showFuelPumps ? 'Hide Fuel Stations' : 'View Pumps On Route (Alipiri & Hill)'}</span>
+              </button>
+
               <a
                 href={`https://www.google.com/maps/dir/?api=1&destination=${destinationCoords.lat},${destinationCoords.lng}`}
                 target="_blank"
@@ -369,7 +609,80 @@ function TripEstimatorContent() {
           </div>
         )}
 
-        {/* VEHICLE CATEGORY FILTER TABS */}
+        {/* 4. PILGRIM REFUELING & GHAT ROAD SAFETY ADVISORY */}
+        {showFuelPumps && (
+          <div style={{
+            backgroundColor: '#FFFBEB',
+            border: '1px solid #FDE68A',
+            borderRadius: '16px',
+            padding: '16px',
+            marginBottom: '18px',
+            boxShadow: '0 4px 12px rgba(217, 119, 6, 0.08)'
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+              <AlertCircle size={18} color="#D97706" />
+              <h3 style={{ fontSize: '15px', fontWeight: 800, color: '#92400E', margin: 0 }}>
+                Tirumala Hill Refueling & Ghat Road Guidance
+              </h3>
+            </div>
+            
+            <p style={{ fontSize: '12.5px', color: '#78350F', lineHeight: 1.5, margin: '0 0 12px 0' }}>
+              <strong>Important:</strong> There is only <strong>ONE</strong> fuel pump on Tirumala hill (near GNC Toll, open 6 AM–8 PM only). Maintain at least <strong>5 Liters</strong> before crossing Alipiri Toll Gate to prevent steep-grade stalling.
+            </p>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+              {PILGRIM_FUEL_BUNKS.map(bunk => (
+                <div key={bunk.id} style={{
+                  backgroundColor: '#FFFFFF',
+                  borderRadius: '12px',
+                  padding: '12px',
+                  border: '1px solid #FDE68A',
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
+                  gap: '10px'
+                }}>
+                  <div>
+                    <div style={{ fontSize: '13px', fontWeight: 800, color: '#0F172A' }}>
+                      {bunk.name}
+                    </div>
+                    <div style={{ fontSize: '11.5px', color: '#64748B', marginTop: '2px' }}>
+                      {bunk.location} • <strong style={{ color: bunk.isHillStation ? '#DC2626' : '#16A34A' }}>{bunk.timings}</strong>
+                    </div>
+                    <div style={{ fontSize: '11px', color: '#92400E', marginTop: '3px' }}>
+                      {bunk.notes}
+                    </div>
+                  </div>
+
+                  <a
+                    href={`https://www.google.com/maps/dir/?api=1&destination=${bunk.lat},${bunk.lng}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      backgroundColor: '#FEF3C7',
+                      color: '#92400E',
+                      border: '1px solid #FDE68A',
+                      padding: '6px 10px',
+                      borderRadius: '8px',
+                      fontSize: '11.5px',
+                      fontWeight: 700,
+                      textDecoration: 'none',
+                      whiteSpace: 'nowrap',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '4px'
+                    }}
+                  >
+                    <span>Route</span>
+                    <ExternalLink size={10} />
+                  </a>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* 5. VEHICLE CATEGORY FILTER TABS */}
         <div style={{ display: 'flex', gap: '8px', overflowX: 'auto', paddingBottom: '12px', marginBottom: '8px' }}>
           {[
             { id: 'all', label: 'All Modes', Icon: Compass },
@@ -408,7 +721,7 @@ function TripEstimatorContent() {
           })}
         </div>
 
-        {/* MODE COMPARISON CARDS */}
+        {/* 6. MODE COMPARISON CARDS */}
         {estimateResult && (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
             {filteredEstimates.map(([key, est]) => {
@@ -451,7 +764,7 @@ function TripEstimatorContent() {
                       <div>
                         <h3 style={{ fontSize: '15.5px', fontWeight: 800, color: '#0F172A', margin: 0 }}>{est.title}</h3>
                         <span style={{ fontSize: '11.5px', color: '#64748B', display: 'flex', alignItems: 'center', gap: '4px', marginTop: '2px' }}>
-                          <Clock size={11} /> ~{est.travelTimeMins} mins • {est.distanceKm} km {est.fuelType ? `• ${est.fuelType}` : ''}
+                          <Clock size={11} /> ~{est.travelTimeMins} mins • {est.distanceKm} km {est.vehicleType ? `• ${est.vehicleType}` : ''}
                         </span>
                       </div>
                     </div>
@@ -471,11 +784,13 @@ function TripEstimatorContent() {
                           )}
                         </div>
                       )}
-                      <span style={{ fontSize: '9.5px', color: '#64748B', display: 'block' }}>Estimated Total</span>
+                      <span style={{ fontSize: '9.5px', color: '#64748B', display: 'block' }}>
+                        {isRoundTrip ? 'Estimated Round-Trip' : 'Estimated Total'}
+                      </span>
                     </div>
                   </div>
 
-                  <div style={{ margin: '10px 0' }}>
+                  <div style={{ margin: '10px 0', display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
                     <span 
                       className={`${styles.tagBadge} ${isBest ? styles.tagBest : isWarn ? styles.tagWarning : styles.tagRec}`}
                       style={{ display: 'inline-flex', alignItems: 'center', gap: '5px' }}
@@ -485,18 +800,26 @@ function TripEstimatorContent() {
                       {!isBest && !isWarn && <Sparkles size={13} color="#B45309" />}
                       <span>{est.recommendationTag}</span>
                     </span>
+
+                    {est.co2Kg !== undefined && est.co2Kg > 0 && (
+                      <span style={{
+                        fontSize: '11px',
+                        fontWeight: 700,
+                        color: '#059669',
+                        backgroundColor: '#ECFDF5',
+                        padding: '3px 8px',
+                        borderRadius: '12px',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '4px'
+                      }}>
+                        <Leaf size={11} />
+                        <span>~{est.co2Kg} kg CO₂</span>
+                      </span>
+                    )}
                   </div>
 
-                  <ul className={styles.reasonList}>
-                    {est.reasons.map((r, i) => (
-                      <li key={i} className={styles.reasonItem}>
-                        <CheckCircle2 size={13} color={isBest ? '#16A34A' : '#64748B'} />
-                        <span>{r}</span>
-                      </li>
-                    ))}
-                  </ul>
-
-                  {/* COST BREAKDOWN PILL */}
+                  {/* COST & FUEL BREAKDOWN PILL */}
                   {(est.fuelCost > 0 || est.parkingCost > 0 || est.tollCost > 0) && (
                     <div style={{
                       marginTop: '10px',
@@ -512,7 +835,7 @@ function TripEstimatorContent() {
                       {est.fuelCost > 0 && (
                         <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
                           <Fuel size={12} color="#059669" />
-                          Fuel: <strong>₹{est.fuelCost}</strong>
+                          Fuel: <strong>{est.fuelUsedLiters} {est.fuelUsedUnit}</strong> (₹{est.fuelCost})
                         </span>
                       )}
                       {est.tollCost > 0 && (
@@ -529,6 +852,15 @@ function TripEstimatorContent() {
                       )}
                     </div>
                   )}
+
+                  <ul className={styles.reasonList}>
+                    {est.reasons.map((r, i) => (
+                      <li key={i} className={styles.reasonItem}>
+                        <CheckCircle2 size={13} color={isBest ? '#16A34A' : '#64748B'} />
+                        <span>{r}</span>
+                      </li>
+                    ))}
+                  </ul>
 
                   {est.busDetails && (
                     <div style={{ marginTop: '10px', background: '#DCFCE7', padding: '8px 12px', borderRadius: '10px', fontSize: '12px', color: '#15803D', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '6px' }}>

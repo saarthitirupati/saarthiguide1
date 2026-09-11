@@ -4,7 +4,7 @@
  * metered auto fare ranges, RTC bus routes, calorie burn, and contextual recommendations.
  */
 
-import { calculateDrivingDistance, calculateDistance, TIRUPATI_CENTER } from '@/utils/location';
+import { calculateDrivingDistance, calculateDistance, TIRUPATI_CENTER, isCoordinateOnTirumalaHill } from '@/utils/location';
 
 export interface FuelRates {
   petrol: number;
@@ -12,6 +12,65 @@ export interface FuelRates {
   cng: number;
   evKwh: number;
 }
+
+export interface FuelBunkLocation {
+  id: string;
+  name: string;
+  brand: 'IndianOil' | 'HPCL' | 'BPCL';
+  location: string;
+  lat: number;
+  lng: number;
+  isHillStation: boolean;
+  timings: string;
+  notes: string;
+}
+
+export const PILGRIM_FUEL_BUNKS: FuelBunkLocation[] = [
+  {
+    id: 'alipiri-ioc',
+    name: 'Indian Oil Petrol Pump - Alipiri Circle',
+    brand: 'IndianOil',
+    location: 'At Alipiri Toll Gate Entry, Foothills',
+    lat: 13.6468,
+    lng: 79.4062,
+    isHillStation: false,
+    timings: '24 Hours Open',
+    notes: 'Last 24/7 pump before ascending Tirumala Ghat Road. Mandatory to maintain at least 5L fuel here.'
+  },
+  {
+    id: 'alipiri-hpcl',
+    name: 'HP Petrol Pump - Alipiri Link Road',
+    brand: 'HPCL',
+    location: 'Near SV Zoo Park Road, Alipiri',
+    lat: 13.6455,
+    lng: 79.4080,
+    isHillStation: false,
+    timings: '24 Hours Open',
+    notes: 'Spacious forecourt, tire pressure check & windshield washing available.'
+  },
+  {
+    id: 'tirumala-ioc',
+    name: 'Indian Oil Petrol Bunk - Tirumala Hill',
+    brand: 'IndianOil',
+    location: 'Near GNC Toll Gate & Ring Road, Tirumala',
+    lat: 13.6815,
+    lng: 79.3520,
+    isHillStation: true,
+    timings: '6:00 AM – 8:00 PM Only',
+    notes: 'Only fuel station on Tirumala hill. Closes at 8:00 PM. No late-night fuel on hill!'
+  },
+  {
+    id: 'cbs-ioc',
+    name: 'Indian Oil - Central Bus Station',
+    brand: 'IndianOil',
+    location: 'Near APSRTC Central Bus Stand, Tirupati',
+    lat: 13.6330,
+    lng: 79.4210,
+    isHillStation: false,
+    timings: '24 Hours Open',
+    notes: 'Convenient for town travelers arriving via train or bus.'
+  }
+];
 
 export interface TransportEstimate {
   mode: 'walk' | 'bike' | 'car' | 'suv' | 'ev' | 'auto' | 'bus';
@@ -30,6 +89,7 @@ export interface TransportEstimate {
   totalCostMin: number;
   totalCostMax: number;
   costPerPerson: number;
+  co2Kg?: number;
   caloriesBurned?: number;
   stepCount?: number;
   busDetails?: {
@@ -114,7 +174,9 @@ export async function calculateTripEstimates(params: {
     destName.toLowerCase().includes('tirumala') || 
     originName.toLowerCase().includes('tirumala') ||
     destName.toLowerCase().includes('svt') ||
-    destName.toLowerCase().includes('srivari');
+    destName.toLowerCase().includes('srivari') ||
+    isCoordinateOnTirumalaHill(destLat, destLng) ||
+    isCoordinateOnTirumalaHill(originLat, originLng);
 
   const rawDist = calculateDrivingDistance(originLat, originLng, destLat, destLng, isTirumalaRoute);
   const totalDist = Number((rawDist * (isRoundTrip ? 2 : 1)).toFixed(1));
@@ -148,14 +210,15 @@ export async function calculateTripEstimates(params: {
     totalCostMin: 0,
     totalCostMax: 0,
     costPerPerson: 0,
+    co2Kg: 0,
     caloriesBurned: calories,
     stepCount: steps,
     recommendationStatus: walkRec,
     recommendationTag: walkDist <= 1.5 ? 'Saarthi Suggests (Zero Cost)' : walkDist > 4.0 ? 'Not Recommended for Long Distance' : 'Healthy Walking Route',
     reasons: [
       `Burns ~${calories} kcal & ${steps.toLocaleString()} steps`,
-      'Zero fuel or ticket cost',
-      walkDist > 3.0 ? 'Consider vehicle transport for comfortable travel' : 'Ideal for nearby pilgrimage spots'
+      'Zero fuel, zero emissions (100% green)',
+      walkDist > 3.0 ? 'Consider vehicle transport for comfortable pilgrimage' : 'Ideal for nearby sacred spots'
     ]
   };
 
@@ -173,7 +236,7 @@ export async function calculateTripEstimates(params: {
   const bikeEstimate: TransportEstimate = {
     mode: 'bike',
     title: 'Motorcycle / Scooter',
-    vehicleType: 'Commuter (100–125cc)',
+    vehicleType: `Two-Wheeler (${bikeMileage} km/L)`,
     fuelType: 'Petrol',
     distanceKm: bikeDist,
     travelTimeMins: bikeTimeMins,
@@ -187,12 +250,13 @@ export async function calculateTripEstimates(params: {
     totalCostMin: bikeTotal,
     totalCostMax: bikeTotal,
     costPerPerson: Math.round(bikeTotal / Math.min(2, safePassengers)),
+    co2Kg: Number((bikeLiters * 2.31).toFixed(1)),
     recommendationStatus: liveParkingStatus === 'full' ? 'best' : 'recommended',
     recommendationTag: liveParkingStatus === 'full' ? 'Saarthi Suggests (Easy Parking)' : 'Fast & Economical',
     reasons: [
-      `Uses ~${bikeLiters} L petrol @ ₹${currentFuelRates.petrol}/L`,
+      `Fuel: ~${bikeLiters} L Petrol @ ₹${currentFuelRates.petrol}/L (₹${bikeFuelCost})`,
       'Two-wheelers are exempt from toll charges',
-      isTirumalaRoute ? 'Helmets mandatory; Ghat road open 3:00 AM – 12:00 Midnight' : 'Fastest navigation through busy town lanes'
+      isTirumalaRoute ? 'Helmets mandatory for rider & pillion; Ghat open 3:00 AM – 12:00 Midnight' : 'Fast navigation through temple town traffic'
     ]
   };
 
@@ -211,7 +275,7 @@ export async function calculateTripEstimates(params: {
   const carEstimate: TransportEstimate = {
     mode: 'car',
     title: 'Personal Car (Petrol)',
-    vehicleType: 'Hatchback / Sedan (Petrol 16 km/L)',
+    vehicleType: `Hatchback / Sedan (Petrol ${carMileage} km/L)`,
     fuelType: 'Petrol',
     distanceKm: carDist,
     travelTimeMins: carTimeMins,
@@ -225,12 +289,13 @@ export async function calculateTripEstimates(params: {
     totalCostMin: carTotal,
     totalCostMax: carTotal,
     costPerPerson: Math.round(carTotal / safePassengers),
+    co2Kg: Number((carLiters * 2.31).toFixed(1)),
     recommendationStatus: liveParkingStatus === 'full' ? 'not_recommended' : liveTrafficStatus === 'heavy' ? 'warning' : 'recommended',
     recommendationTag: liveParkingStatus === 'full' ? 'Parking Constrained on Hill' : 'Comfortable Family Drive',
     reasons: [
       `Fuel: ~${carLiters} L Petrol @ ₹${currentFuelRates.petrol}/L (₹${carFuelCost})`,
       `Cost per person: ₹${Math.round(carTotal / safePassengers)} (${safePassengers} pilgrim${safePassengers > 1 ? 's' : ''})`,
-      isTirumalaRoute ? 'Tirumala Hill descent minimum time is 28 mins for safety' : 'Ideal for family & luggage'
+      isTirumalaRoute ? 'Tirumala Hill descent minimum time is 28 mins for brake safety' : 'Ideal for family luggage & prasadam'
     ]
   };
 
@@ -243,7 +308,7 @@ export async function calculateTripEstimates(params: {
   const carDieselEstimate: TransportEstimate = {
     mode: 'car',
     title: 'Personal Car (Diesel)',
-    vehicleType: 'Hatchback / Sedan (Diesel 20 km/L)',
+    vehicleType: `Hatchback / Sedan (Diesel ${carDieselMileage} km/L)`,
     fuelType: 'Diesel',
     distanceKm: carDist,
     travelTimeMins: carTimeMins,
@@ -257,12 +322,13 @@ export async function calculateTripEstimates(params: {
     totalCostMin: carDieselTotal,
     totalCostMax: carDieselTotal,
     costPerPerson: Math.round(carDieselTotal / safePassengers),
+    co2Kg: Number((carDieselLiters * 2.68).toFixed(1)),
     recommendationStatus: liveParkingStatus === 'full' ? 'not_recommended' : 'recommended',
-    recommendationTag: 'High Fuel Efficiency (20 km/L)',
+    recommendationTag: `High Fuel Efficiency (${carDieselMileage} km/L)`,
     reasons: [
       `Fuel: ~${carDieselLiters} L Diesel @ ₹${currentFuelRates.diesel}/L (₹${carDieselFuelCost})`,
-      `High efficiency: Save ~25% on fuel compared to petrol`,
-      isTirumalaRoute ? 'High torque diesel engine handles ghat road curves effortlessly' : 'Economical for long-distance highway travel'
+      `Save ~20% fuel cost over petrol on steep climbs`,
+      isTirumalaRoute ? 'High low-end diesel torque climbs Tirumala ghat with minimal strain' : 'Economical for long-distance highway travel'
     ]
   };
 
@@ -280,7 +346,7 @@ export async function calculateTripEstimates(params: {
   const suvEstimate: TransportEstimate = {
     mode: 'suv',
     title: 'SUV / 7-Seater (Diesel)',
-    vehicleType: 'Innova / Scorpio (Diesel)',
+    vehicleType: `Innova / Scorpio (${suvMileage} km/L)`,
     fuelType: 'Diesel',
     distanceKm: suvDist,
     travelTimeMins: suvTimeMins,
@@ -294,18 +360,20 @@ export async function calculateTripEstimates(params: {
     totalCostMin: suvTotal,
     totalCostMax: suvTotal,
     costPerPerson: Math.round(suvTotal / safePassengers),
+    co2Kg: Number((suvLiters * 2.68).toFixed(1)),
     recommendationStatus: safePassengers >= 5 ? 'best' : 'recommended',
     recommendationTag: safePassengers >= 5 ? 'Saarthi Suggests (Best for Groups)' : 'Spacious Group Travel',
     reasons: [
       `Uses ~${suvLiters} L Diesel @ ₹${currentFuelRates.diesel}/L (₹${suvFuelCost})`,
-      `Economical for groups: only ₹${Math.round(suvTotal / safePassengers)}/person`,
-      'Spacious luggage capacity for prasadams & baggage'
+      `Economical for groups: only ₹${Math.round(suvTotal / safePassengers)}/person (${safePassengers} passengers)`,
+      'Spacious luggage boot for prasadams & family baggage'
     ]
   };
 
   // 5. ELECTRIC VEHICLE (EV Car)
   const evDist = totalDist;
-  const evEnergyKwh = Number(((evDist / VEHICLE_PRESETS.car_ev.mileage) * (isTirumalaRoute ? 1.25 : 1.0)).toFixed(2));
+  const evMileage = customMileage.ev || VEHICLE_PRESETS.car_ev.mileage;
+  const evEnergyKwh = Number(((evDist / evMileage) * (isTirumalaRoute ? 1.25 : 1.0)).toFixed(2));
   const evCost = Math.round(evDist * VEHICLE_PRESETS.car_ev.unitRate);
   const evParking = carParking;
   const evTotal = evCost + carToll + evParking;
@@ -313,7 +381,7 @@ export async function calculateTripEstimates(params: {
   const evEstimate: TransportEstimate = {
     mode: 'ev',
     title: 'Electric Vehicle (EV Car)',
-    vehicleType: 'EV Car (Nexon / ZS EV)',
+    vehicleType: 'EV Car (Nexon / ZS EV / Tiago)',
     fuelType: 'Electric',
     distanceKm: evDist,
     travelTimeMins: carTimeMins,
@@ -327,12 +395,13 @@ export async function calculateTripEstimates(params: {
     totalCostMin: evTotal,
     totalCostMax: evTotal,
     costPerPerson: Math.round(evTotal / safePassengers),
+    co2Kg: Number((evEnergyKwh * 0.71).toFixed(1)),
     recommendationStatus: 'best',
-    recommendationTag: 'Eco-Friendly & Lowest Cost',
+    recommendationTag: 'Eco-Friendly & Lowest Running Cost',
     reasons: [
-      `Power consumption: ~${evEnergyKwh} kWh (~₹${evCost} @ ₹1.20/km)`,
-      'Zero emissions on sacred hill routes',
-      'Regenerative braking recharges battery on Tirumala down-ghat'
+      `Power: ~${evEnergyKwh} kWh (~₹${evCost} @ ₹1.20/km running cost)`,
+      'Zero tailpipe emissions in the sacred Seshachalam biosphere',
+      'Regenerative braking recharges 10-15% battery during down-ghat descent'
     ]
   };
 
@@ -363,12 +432,13 @@ export async function calculateTripEstimates(params: {
     totalCostMin: autoMin,
     totalCostMax: autoMax,
     costPerPerson: Math.round(autoMin / Math.min(3, safePassengers)),
+    co2Kg: Number((autoDist * 0.08).toFixed(1)),
     recommendationStatus: isTirumalaRoute ? 'not_recommended' : 'recommended',
     recommendationTag: isTirumalaRoute ? 'Autos Prohibited on Tirumala Ghat Road' : `Estimated Fare: ₹${autoMin}–₹${autoMax}`,
     reasons: [
       isTirumalaRoute ? 'Auto rickshaws are strictly not permitted on Tirumala Ghat Road' : 'Base fare ₹30 (first 2km) + ₹15/km thereafter',
-      'No parking hassle — drops right at temple gate',
-      'Available across all railway & bus station pickup points'
+      'No parking hassle — drops right at temple entrance',
+      'Readily available across all railway & bus station pickup points'
     ]
   };
 
@@ -394,6 +464,7 @@ export async function calculateTripEstimates(params: {
     totalCostMin: busTotalMin,
     totalCostMax: busTotalMin,
     costPerPerson: busTicketPrice * (isRoundTrip ? 2 : 1),
+    co2Kg: Number(((busDist * 0.04) * safePassengers).toFixed(1)),
     busDetails: {
       busNumber: isTirumalaRoute ? 'Tirumala Direct Express (Every 5 mins)' : 'Route 201 / Local City Shuttle',
       frequency: isTirumalaRoute ? 'Every 5–10 mins (24x7)' : 'Every 15 mins',
