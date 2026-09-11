@@ -638,19 +638,19 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
         }}>
           <div style={{
             maxWidth: '100%',
-            padding: '0 14px 0 10px',
-            height: '68px',
+            padding: '0 12px 0 10px',
+            height: '58px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            gap: '8px',
+            gap: '6px',
           }}>
 
             {/* Left — Official Saarthi Brand Lockup */}
-            <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none', flexShrink: 0 }}>
-              <Logo size={34} />
+            <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '6px', textDecoration: 'none', flexShrink: 0 }}>
+              <Logo size={28} />
               <span className="notranslate" style={{
-                fontSize: 'clamp(19px, 5.5vw, 22px)',
+                fontSize: 'clamp(17px, 4.8vw, 20px)',
                 fontWeight: 900,
                 color: '#0F5132',
                 letterSpacing: '-0.02em',
@@ -663,11 +663,11 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
             </Link>
 
             {/* Right — Location Badge, Language Toggle & Notification Bell */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', minWidth: 0, flexShrink: 1 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '4px', minWidth: 0, flexShrink: 1 }}>
               <LocationPill 
                 locationName={selectedLocation} 
                 onClick={() => setIsLocationModalOpen(true)} 
-                style={{ padding: '5px 10px', fontSize: '12.5px', gap: '4px' }}
+                style={{ padding: '4px 8px', fontSize: '11.5px', gap: '3px', maxWidth: '140px' }}
               />
 
               {/* Language Switcher */}
@@ -679,13 +679,13 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',
-                  gap: '4px',
-                  padding: '5px 9px',
+                  gap: '3px',
+                  padding: '4px 7px',
                   borderRadius: '9999px',
                   border: '1px solid #E2E8F0',
                   background: '#F8FAFC',
                   color: '#0F5132',
-                  fontSize: '12px',
+                  fontSize: '11px',
                   fontWeight: 700,
                   cursor: 'pointer',
                   userSelect: 'none',
@@ -696,26 +696,26 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
                   flexShrink: 0,
                 }}
               >
-                <Languages size={14} color="#0F5132" strokeWidth={2.2} />
+                <Languages size={13} color="#0F5132" strokeWidth={2.2} />
                 <span>{lang === 'en' ? 'తెలుగు' : 'English'}</span>
               </button>
 
               <Link href="/alerts" aria-label="Notifications" style={{
-                width: '38px', height: '38px', flexShrink: 0,
+                width: '34px', height: '34px', flexShrink: 0,
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 textDecoration: 'none', position: 'relative'
               }}>
-                <Bell size={22} color="#0F5132" strokeWidth={1.8} />
+                <Bell size={20} color="#0F5132" strokeWidth={1.8} />
                 {(activeAlertsCount ?? 0) > 0 && (
                   <span style={{
                     position: 'absolute',
-                    top: '2px', right: '2px',
-                    minWidth: '16px', height: '16px',
+                    top: '1px', right: '1px',
+                    minWidth: '15px', height: '15px',
                     borderRadius: '8px',
                     background: '#DC2626',
                     border: '1.5px solid #FFFFFF',
                     color: '#FFFFFF',
-                    fontSize: '9px', fontWeight: 800,
+                    fontSize: '8.5px', fontWeight: 800,
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                     letterSpacing: '-0.02em',
                   }}>
@@ -744,7 +744,7 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
       )}
 
       {/* ══════════ SCROLLABLE CONTENT ══════════ */}
-      <div style={{ padding: hideHeader ? '0' : '12px 14px 16px 14px', background: hideHeader ? 'transparent' : 'var(--bg-canvas, #FAF8F5)' }}>
+      <div style={{ padding: hideHeader ? '0' : '10px 12px 16px 12px', background: hideHeader ? 'transparent' : 'var(--bg-canvas, #FAF8F5)' }}>
 
         {!hideHeader && (
           <>
@@ -841,7 +841,8 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
                 margin: '3px 0 0 0', 
                 fontWeight: lang === 'te' ? 600 : 700, 
                 lineHeight: lang === 'te' ? 1.5 : 1.3,
-                letterSpacing: 'normal'
+                letterSpacing: 'normal',
+                textWrap: 'balance' as any
               }}>
                 {t.tagline}
               </p>
@@ -852,8 +853,8 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
       {/* 🛕 SIGNATURE LIVE TEMPLE PULSE (BLACK OUTLINE INSIDE WHITE GLASS) */}
       <div style={{
         background: 'linear-gradient(165deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 252, 0.88) 100%)',
-        borderRadius: '24px',
-        padding: '18px 16px',
+        borderRadius: '20px',
+        padding: '14px 12px',
         color: '#0F172A',
         boxShadow: '0 16px 40px rgba(15, 23, 42, 0.08), 0 1px 3px rgba(0, 0, 0, 0.05)',
         border: '1.5px solid #0F172A',
@@ -1059,11 +1060,11 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
                   background: card.bg,
                   border: `1.5px solid ${card.border}`,
                   borderRadius: '14px',
-                  padding: '12px 14px 12px 18px',
+                  padding: '10px 10px 10px 14px',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'space-between',
-                  minHeight: '54px',
+                  minHeight: '52px',
                   boxShadow: card.shadow,
                   position: 'relative',
                   overflow: 'hidden',
@@ -1085,11 +1086,11 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
                 }} />
 
                 {/* Left Info with Icon Accent */}
-                <div style={{ display: 'flex', alignItems: 'center', gap: '12px', position: 'relative', zIndex: 2 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '9px', position: 'relative', zIndex: 2 }}>
                   <div style={{
-                    width: '34px',
-                    height: '34px',
-                    borderRadius: '10px',
+                    width: '32px',
+                    height: '32px',
+                    borderRadius: '9px',
                     backgroundColor: card.iconBg,
                     border: `1.5px solid ${card.iconBorder}`,
                     display: 'flex',
@@ -1102,20 +1103,20 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
                   </div>
                   <div>
                     <div style={{
-                      fontSize: lang === 'te' ? '15px' : '14.5px',
+                      fontSize: lang === 'te' ? '14px' : '13.5px',
                       fontWeight: lang === 'te' ? 700 : 800,
                       color: '#0F172A',
                       letterSpacing: lang === 'te' ? 'normal' : '-0.01em',
-                      lineHeight: lang === 'te' ? 1.4 : '1.2'
+                      lineHeight: lang === 'te' ? 1.35 : '1.2'
                     }}>
                       {card.title}
                     </div>
                     <div style={{
-                      fontSize: '11px',
+                      fontSize: '10.5px',
                       color: card.isClosed ? '#92400E' : '#475569',
                       fontWeight: 600,
                       marginTop: '2px',
-                      lineHeight: lang === 'te' ? 1.4 : '1.2',
+                      lineHeight: lang === 'te' ? 1.35 : '1.2',
                       letterSpacing: 'normal'
                     }}>
                       {card.subtitle}
@@ -1124,9 +1125,9 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
                 </div>
 
                 {/* Right Wait Time & Status Meter */}
-                <div style={{ textAlign: 'right', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '4px', position: 'relative', zIndex: 2 }}>
+                <div style={{ textAlign: 'right', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '3px', position: 'relative', zIndex: 2 }}>
                   <div style={{
-                    fontSize: '17px',
+                    fontSize: 'clamp(15px, 4.4vw, 17px)',
                     fontWeight: 900,
                     color: card.waitColor,
                     letterSpacing: '-0.02em',
