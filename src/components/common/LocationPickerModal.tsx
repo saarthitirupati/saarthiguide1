@@ -569,13 +569,15 @@ export function LocationPill({
         boxShadow: '0 1px 2px rgba(180, 83, 9, 0.08)',
         userSelect: 'none',
         whiteSpace: 'nowrap',
-        flexShrink: 0,
+        flexShrink: 1,
+        minWidth: '60px',
+        overflow: 'hidden',
         transition: 'all 0.15s ease',
         ...style
       }}
     >
       <MapPin size={12} color="#B45309" strokeWidth={2.2} />
-      <span style={{ color: '#92400E', letterSpacing: '-0.01em' }}>{locationName || 'Tirupati'}</span>
+      <span style={{ color: '#92400E', letterSpacing: '-0.01em', overflow: 'hidden', textOverflow: 'ellipsis' }}>{locationName || 'Tirupati'}</span>
       <span style={{ color: '#B45309', fontSize: '9px', display: 'flex', alignItems: 'center', opacity: 0.85 }}>▼</span>
     </div>
   );

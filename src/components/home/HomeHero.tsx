@@ -650,7 +650,7 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
             <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none', flexShrink: 0 }}>
               <Logo size={34} />
               <span className="notranslate" style={{
-                fontSize: '22px',
+                fontSize: 'clamp(19px, 5.5vw, 22px)',
                 fontWeight: 900,
                 color: '#0F5132',
                 letterSpacing: '-0.02em',
@@ -663,7 +663,7 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
             </Link>
 
             {/* Right — Location Badge, Language Toggle & Notification Bell */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexShrink: 0 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', minWidth: 0, flexShrink: 1 }}>
               <LocationPill 
                 locationName={selectedLocation} 
                 onClick={() => setIsLocationModalOpen(true)} 
@@ -826,7 +826,7 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
             {/* Personalized Greeting */}
             <div style={{ marginBottom: '12px' }}>
               <h1 style={{ 
-                fontSize: lang === 'te' ? '21px' : '20px', 
+                fontSize: lang === 'te' ? 'clamp(18px, 5.4vw, 21px)' : 'clamp(17px, 5.1vw, 20px)', 
                 fontWeight: lang === 'te' ? 700 : 800, 
                 color: '#0F172A', 
                 margin: 0, 
@@ -836,7 +836,7 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
                 <span>{getGreetingPrefix()}</span>, <span className="notranslate">{userName || 'Pilgrim'}</span>
               </h1>
               <p style={{ 
-                fontSize: lang === 'te' ? '12.5px' : '12px', 
+                fontSize: lang === 'te' ? 'clamp(11px, 3.2vw, 12.5px)' : 'clamp(11px, 3vw, 12px)', 
                 color: '#0F5132', 
                 margin: '3px 0 0 0', 
                 fontWeight: lang === 'te' ? 600 : 700, 
