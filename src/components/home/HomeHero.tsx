@@ -749,7 +749,7 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
         {!hideHeader && (
           <>
             {/* Devotional Invocation & Weather Bar */}
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px', position: 'relative' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px', marginBottom: '10px', position: 'relative', width: '100%', boxSizing: 'border-box' }}>
               <button
                 type="button"
                 onClick={handleChantTap}
@@ -757,34 +757,54 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',
-                  gap: '6px',
-                  padding: '4px 10px',
+                  gap: '4px',
+                  padding: '4px 8px',
                   borderRadius: '16px',
                   background: 'linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 50%, #FDE68A 100%)',
                   border: '1px solid rgba(245, 158, 11, 0.45)',
                   boxShadow: '0 2px 8px rgba(245, 158, 11, 0.18)',
-                  fontSize: '11px',
+                  fontSize: 'clamp(10px, 2.8vw, 11px)',
                   fontWeight: 800,
                   color: '#78350F',
                   letterSpacing: '0.1px',
                   cursor: 'pointer',
                   transform: isChanting ? 'scale(0.95)' : 'scale(1)',
                   transition: 'all 0.2s cubic-bezier(0.16, 1, 0.3, 1)',
-                  userSelect: 'none'
+                  userSelect: 'none',
+                  whiteSpace: 'nowrap',
+                  minWidth: 0,
+                  maxWidth: 'calc(100% - 94px)',
+                  flexShrink: 1
                 }}
               >
-                <Sparkles size={12} color="#D97706" style={{ animation: isChanting ? 'spin 0.4s ease' : 'none' }} />
-                <span>{lang === 'te' ? 'ఓం నమో వేంకటేశాయ' : 'Om Namo Venkatesaya'}</span>
-                <span style={{ opacity: 0.35 }}>•</span>
-                <span style={{ fontWeight: 700, color: '#92400E' }}>
+                <Sparkles size={11} color="#D97706" style={{ animation: isChanting ? 'spin 0.4s ease' : 'none', flexShrink: 0 }} />
+                <span style={{ whiteSpace: 'nowrap', flexShrink: 0 }}>{lang === 'te' ? 'ఓం నమో వేంకటేశాయ' : 'Om Namo Venkatesaya'}</span>
+                <span style={{ opacity: 0.35, flexShrink: 0 }}>•</span>
+                <span style={{ 
+                  fontWeight: 700, 
+                  color: '#92400E', 
+                  whiteSpace: 'nowrap', 
+                  overflow: 'hidden', 
+                  textOverflow: 'ellipsis', 
+                  maxWidth: 'clamp(55px, 16vw, 90px)' 
+                }}>
                   {lang === 'te' ? getPanchangamData().tithiTe : getPanchangamData().tithiEn}
                 </span>
               </button>
 
-              <div style={{ display: 'flex', alignItems: 'center', gap: '5px', fontSize: '11.5px', fontWeight: 600, color: '#64748B' }}>
+              <div style={{ 
+                display: 'flex', 
+                alignItems: 'center', 
+                gap: '4px', 
+                fontSize: 'clamp(10px, 2.9vw, 11.5px)', 
+                fontWeight: 600, 
+                color: '#64748B', 
+                whiteSpace: 'nowrap', 
+                flexShrink: 0 
+              }}>
                 <span>{todayDateStr}</span>
                 <span style={{ opacity: 0.3 }}>•</span>
-                <Sun size={12} color="#D97706" />
+                <Sun size={11} color="#D97706" style={{ flexShrink: 0 }} />
                 <span>{weatherTemp || '26°C'}</span>
               </div>
 

@@ -193,6 +193,7 @@ export default function HomePage() {
                       backgroundImage: `url(${srv.image})`,
                       backgroundSize: 'cover',
                       backgroundPosition: 'center',
+                      backgroundColor: '#F1F5F9',
                       position: 'relative'
                     }}>
                       <div style={{
@@ -206,14 +207,14 @@ export default function HomePage() {
                         left: '6px',
                         width: '24px',
                         height: '24px',
-                        borderRadius: '6px',
-                        backgroundColor: 'rgba(15, 23, 42, 0.75)',
-                        backdropFilter: 'blur(4px)',
+                        borderRadius: '7px',
+                        backgroundColor: 'rgba(15, 81, 50, 0.88)',
+                        boxShadow: '0 2px 6px rgba(0, 0, 0, 0.15)',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center'
                       }}>
-                        <IconComp size={13} color="#F8FAFC" />
+                        <IconComp size={13} color="#FFFFFF" />
                       </div>
                     </div>
 
@@ -257,7 +258,7 @@ export default function HomePage() {
                   {t.seeAll}
                 </Link>
               </div>
-              <div style={{ display: 'flex', gap: '10px', overflowX: 'auto', padding: '0 14px 4px', scrollbarWidth: 'none' }}>
+              <div className="noScrollbar" style={{ display: 'flex', gap: '10px', overflowX: 'auto', padding: '0 14px 4px', scrollbarWidth: 'none', msOverflowStyle: 'none' as any, WebkitOverflowScrolling: 'touch' }}>
                 {nearbyPlaces.map(p => (
                   <Link 
                     key={p.id} 
@@ -265,7 +266,7 @@ export default function HomePage() {
                     style={{ 
                       textDecoration: 'none', 
                       flexShrink: 0, 
-                      width: '136px',
+                      width: 'clamp(138px, 40vw, 150px)',
                       backgroundColor: '#FFFFFF',
                       borderRadius: '16px',
                       overflow: 'hidden',
@@ -275,7 +276,7 @@ export default function HomePage() {
                   >
                     {/* PHOTO BANNER */}
                     <div style={{
-                      width: '136px', 
+                      width: '100%', 
                       height: '84px', 
                       backgroundImage: `url(${p.image})`, 
                       backgroundSize: 'cover', 
@@ -310,9 +311,10 @@ export default function HomePage() {
                         color: '#0F172A', 
                         margin: '0 0 2px', 
                         lineHeight: 1.25,
+                        height: '2.5em',
                         overflow: 'hidden', 
                         display: '-webkit-box', 
-                        WebkitLineClamp: 1, 
+                        WebkitLineClamp: 2, 
                         WebkitBoxOrient: 'vertical' as const
                       }}>
                         {p.name}
