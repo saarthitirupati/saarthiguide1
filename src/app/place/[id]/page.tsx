@@ -307,18 +307,18 @@ export default function PlaceDetails() {
 
   // 2. QUICK FACTS
   const quickFactsNode = (
-    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '10px' }}>
+    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '8px' }}>
       {/* Timings */}
-      <div style={{ backgroundColor: '#FFFFFF', border: '1px solid rgba(15, 23, 42, 0.06)', borderRadius: '16px', padding: '12px 14px', boxShadow: '0 4px 12px rgba(15,23,42,0.03)' }}>
+      <div style={{ backgroundColor: '#FFFFFF', border: '1px solid rgba(15, 23, 42, 0.06)', borderRadius: '14px', padding: '11px 12px', boxShadow: '0 3px 10px rgba(15,23,42,0.03)' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' }}>
-          <Clock size={15} color="#0F5132" />
-          <span style={{ fontSize: '11px', fontWeight: 700, color: '#64748B' }}>{lang === 'te' ? 'దర్శన సమయాలు' : 'Timings'}</span>
+          <Clock size={14} color="#0F5132" />
+          <span style={{ fontSize: '10.5px', fontWeight: 700, color: '#64748B' }}>{lang === 'te' ? 'దర్శన సమయాలు' : 'Timings'}</span>
         </div>
-        <div style={{ fontSize: '12.5px', fontWeight: 800, color: '#0F172A', lineHeight: 1.35 }}>
+        <div style={{ fontSize: '12px', fontWeight: 800, color: '#0F172A', lineHeight: 1.35 }}>
           {timingsStr.includes('(') ? (
             <div>
               <span>{timingsStr.split('(')[0].trim()}</span>
-              <div style={{ fontSize: '10.5px', fontWeight: 600, color: '#64748B', marginTop: '2px' }}>
+              <div style={{ fontSize: '10px', fontWeight: 600, color: '#64748B', marginTop: '2px' }}>
                 ({timingsStr.split('(')[1]}
               </div>
             </div>
@@ -329,12 +329,12 @@ export default function PlaceDetails() {
       </div>
 
       {/* Dress Code */}
-      <div style={{ backgroundColor: '#FFFFFF', border: '1px solid rgba(15, 23, 42, 0.06)', borderRadius: '16px', padding: '12px 14px', boxShadow: '0 4px 12px rgba(15,23,42,0.03)' }}>
+      <div style={{ backgroundColor: '#FFFFFF', border: '1px solid rgba(15, 23, 42, 0.06)', borderRadius: '14px', padding: '11px 12px', boxShadow: '0 3px 10px rgba(15,23,42,0.03)' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' }}>
-          <Shirt size={15} color="#0F5132" />
-          <span style={{ fontSize: '11px', fontWeight: 700, color: '#64748B' }}>{lang === 'te' ? 'దుస్తుల నియమావళి' : 'Dress Code'}</span>
+          <Shirt size={14} color="#0F5132" />
+          <span style={{ fontSize: '10.5px', fontWeight: 700, color: '#64748B' }}>{lang === 'te' ? 'దుస్తుల నియమావళి' : 'Dress Code'}</span>
         </div>
-        <div style={{ fontSize: '12.5px', fontWeight: 800, color: '#0F172A' }}>
+        <div style={{ fontSize: '12px', fontWeight: 800, color: '#0F172A', lineHeight: 1.3 }}>
           {lang === 'te' 
             ? 'సాంప్రదాయ దుస్తులు' 
             : (place.practicalInfo?.dressCode?.includes('Strict') ? 'Traditional Mandatory' : 'Traditional / Modest')}
@@ -342,12 +342,12 @@ export default function PlaceDetails() {
       </div>
 
       {/* Entry Fee */}
-      <div style={{ backgroundColor: '#FFFFFF', border: '1px solid rgba(15, 23, 42, 0.06)', borderRadius: '16px', padding: '12px 14px', boxShadow: '0 4px 12px rgba(15,23,42,0.03)' }}>
+      <div style={{ backgroundColor: '#FFFFFF', border: '1px solid rgba(15, 23, 42, 0.06)', borderRadius: '14px', padding: '11px 12px', boxShadow: '0 3px 10px rgba(15,23,42,0.03)' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' }}>
-          <Sparkles size={15} color="#0F5132" />
-          <span style={{ fontSize: '11px', fontWeight: 700, color: '#64748B' }}>{lang === 'te' ? 'ప్రవేశ రుసుము' : 'Entry Fee'}</span>
+          <Sparkles size={14} color="#0F5132" />
+          <span style={{ fontSize: '10.5px', fontWeight: 700, color: '#64748B' }}>{lang === 'te' ? 'ప్రవేశ రుసుము' : 'Entry Fee'}</span>
         </div>
-        <div style={{ fontSize: '12.5px', fontWeight: 800, color: '#0F172A' }}>
+        <div style={{ fontSize: '12px', fontWeight: 800, color: '#0F172A', lineHeight: 1.3 }}>
           {place.entryFeeNum === 0 || !place.entryFeeNum 
             ? (lang === 'te' ? 'ఉచిత దర్శనం' : 'Free Darshan') 
             : (lang === 'te' ? `₹${place.entryFeeNum} ఒక్కొక్కరికి` : `₹${place.entryFeeNum} per person`)}
@@ -355,12 +355,12 @@ export default function PlaceDetails() {
       </div>
 
       {/* Parking */}
-      <div style={{ backgroundColor: '#FFFFFF', border: '1px solid rgba(15, 23, 42, 0.06)', borderRadius: '16px', padding: '12px 14px', boxShadow: '0 4px 12px rgba(15,23,42,0.03)' }}>
+      <div style={{ backgroundColor: '#FFFFFF', border: '1px solid rgba(15, 23, 42, 0.06)', borderRadius: '14px', padding: '11px 12px', boxShadow: '0 3px 10px rgba(15,23,42,0.03)' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' }}>
-          <Car size={15} color="#0F5132" />
-          <span style={{ fontSize: '11px', fontWeight: 700, color: '#64748B' }}>{lang === 'te' ? 'పార్కింగ్' : 'Parking'}</span>
+          <Car size={14} color="#0F5132" />
+          <span style={{ fontSize: '10.5px', fontWeight: 700, color: '#64748B' }}>{lang === 'te' ? 'పార్కింగ్' : 'Parking'}</span>
         </div>
-        <div style={{ fontSize: '12.5px', fontWeight: 800, color: '#0F172A' }}>
+        <div style={{ fontSize: '12px', fontWeight: 800, color: '#0F172A', lineHeight: 1.3 }}>
           {lang === 'te' 
             ? 'పార్కింగ్ అందుబాటులో ఉంది' 
             : (() => {
@@ -375,12 +375,12 @@ export default function PlaceDetails() {
       </div>
 
       {/* Accessibility */}
-      <div style={{ backgroundColor: '#FFFFFF', border: '1px solid rgba(15, 23, 42, 0.06)', borderRadius: '16px', padding: '12px 14px', boxShadow: '0 4px 12px rgba(15,23,42,0.03)' }}>
+      <div style={{ backgroundColor: '#FFFFFF', border: '1px solid rgba(15, 23, 42, 0.06)', borderRadius: '14px', padding: '11px 12px', boxShadow: '0 3px 10px rgba(15,23,42,0.03)' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' }}>
-          <CheckCircle2 size={15} color="#0F5132" />
-          <span style={{ fontSize: '11px', fontWeight: 700, color: '#64748B' }}>{lang === 'te' ? 'దివ్యాంగుల సౌలభ్యం' : 'Accessibility'}</span>
+          <CheckCircle2 size={14} color="#0F5132" />
+          <span style={{ fontSize: '10.5px', fontWeight: 700, color: '#64748B' }}>{lang === 'te' ? 'దివ్యాంగుల సౌలభ్యం' : 'Accessibility'}</span>
         </div>
-        <div style={{ fontSize: '12.5px', fontWeight: 800, color: '#0F172A' }}>
+        <div style={{ fontSize: '12px', fontWeight: 800, color: '#0F172A', lineHeight: 1.3 }}>
           {lang === 'te'
             ? (place.recommendationContext?.wheelchairAccessible ? 'వీల్ చైర్ సౌకర్యం' : 'ర్యాంప్ / సులభ ప్రవేశం')
             : (place.recommendationContext?.wheelchairAccessible ? 'Wheelchair Friendly' : 'Ramp / Ground Access')}
@@ -388,12 +388,12 @@ export default function PlaceDetails() {
       </div>
 
       {/* Photography / Mobile */}
-      <div style={{ backgroundColor: '#FFFFFF', border: '1px solid rgba(15, 23, 42, 0.06)', borderRadius: '16px', padding: '12px 14px', boxShadow: '0 4px 12px rgba(15,23,42,0.03)' }}>
+      <div style={{ backgroundColor: '#FFFFFF', border: '1px solid rgba(15, 23, 42, 0.06)', borderRadius: '16px', padding: '11px 12px', boxShadow: '0 3px 10px rgba(15,23,42,0.03)' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' }}>
-          <Camera size={15} color="#0F5132" />
-          <span style={{ fontSize: '11px', fontWeight: 700, color: '#64748B' }}>{lang === 'te' ? 'ఫోన్లు & కెమెరా' : 'Phones & Camera'}</span>
+          <Camera size={14} color="#0F5132" />
+          <span style={{ fontSize: '10.5px', fontWeight: 700, color: '#64748B' }}>{lang === 'te' ? 'ఫోన్లు & కెమెరా' : 'Phones & Camera'}</span>
         </div>
-        <div style={{ fontSize: '12.5px', fontWeight: 800, color: '#0F172A' }}>
+        <div style={{ fontSize: '12px', fontWeight: 800, color: '#0F172A', lineHeight: 1.3 }}>
           {lang === 'te'
             ? (place.id === 'venkateswara' ? 'ఖచ్చితంగా నిషేధం' : 'గర్భగుడి వెలుపల అనుమతి')
             : (place.id === 'venkateswara' ? 'Strictly Prohibited' : 'Allowed Outside Sanctum')}
@@ -416,27 +416,28 @@ export default function PlaceDetails() {
             ? 'linear-gradient(135deg, #FFFDF7 0%, #FEF3C7 100%)' 
             : 'linear-gradient(135deg, #FFFFFF 0%, #F0F9FF 100%)')
         : 'linear-gradient(135deg, #FFFFFF 0%, #FFFDF7 100%)',
-      borderRadius: '20px',
-      padding: '16px 18px',
+      borderRadius: '18px',
+      padding: '14px 16px',
       boxShadow: festivalCrowd.isFestivalActive 
-        ? '0 8px 24px -4px rgba(245, 158, 11, 0.18)' 
-        : '0 8px 24px -4px rgba(200, 155, 60, 0.1)'
+        ? '0 6px 20px -4px rgba(245, 158, 11, 0.16)' 
+        : '0 6px 20px -4px rgba(200, 155, 60, 0.1)'
     }}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px', flexWrap: 'wrap', gap: '6px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px', gap: '8px', flexWrap: 'wrap' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '7px', flex: 1, minWidth: 0 }}>
           <div style={{
-            width: '26px',
-            height: '26px',
-            borderRadius: '8px',
+            width: '24px',
+            height: '24px',
+            borderRadius: '7px',
             background: festivalCrowd.isFestivalActive ? '#FDE68A' : '#FEF9C3',
             border: festivalCrowd.isFestivalActive ? '1px solid #F59E0B' : '1px solid #FDE047',
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'center'
+            justifyContent: 'center',
+            flexShrink: 0
           }}>
-            {festivalCrowd.isFestivalActive ? <Flame size={14} color="#B45309" /> : <Sparkles size={14} color="#CA8A04" />}
+            {festivalCrowd.isFestivalActive ? <Flame size={13} color="#B45309" /> : <Sparkles size={13} color="#CA8A04" />}
           </div>
-          <span style={{ fontSize: '13px', fontWeight: 800, color: festivalCrowd.isFestivalActive ? '#92400E' : '#854D0E', letterSpacing: '0.2px' }}>
+          <span style={{ fontSize: '13px', fontWeight: 800, color: festivalCrowd.isFestivalActive ? '#92400E' : '#854D0E', letterSpacing: '0.1px', lineHeight: 1.3 }}>
             {festivalCrowd.hasImpact 
               ? (lang === 'te' ? festivalCrowd.alertTitleTe : festivalCrowd.alertTitleEn)
               : (lang === 'te' ? 'సారథి సూచన' : 'Saarthi Suggests')}
@@ -445,20 +446,22 @@ export default function PlaceDetails() {
 
         {festivalCrowd.hasImpact && (
           <span style={{
-            fontSize: '11px',
+            fontSize: '10.5px',
             fontWeight: 800,
             color: festivalCrowd.isFestivalActive ? '#92400E' : '#1D4ED8',
             backgroundColor: festivalCrowd.isFestivalActive ? '#FEF3C7' : '#DBEAFE',
-            padding: '2px 8px',
-            borderRadius: '10px',
-            border: festivalCrowd.isFestivalActive ? '1px solid #FCD34D' : '1px solid #BFDBFE'
+            padding: '2.5px 8px',
+            borderRadius: '8px',
+            border: festivalCrowd.isFestivalActive ? '1px solid #FCD34D' : '1px solid #BFDBFE',
+            whiteSpace: 'nowrap',
+            flexShrink: 0
           }}>
             {lang === 'te' ? festivalCrowd.badgeTextTe : festivalCrowd.badgeTextEn}
           </span>
         )}
       </div>
 
-      <p style={{ fontSize: '13px', color: '#1E293B', fontWeight: 700, lineHeight: 1.45, margin: '0 0 10px' }}>
+      <p style={{ fontSize: '12.5px', color: '#1E293B', fontWeight: 700, lineHeight: 1.45, margin: '0 0 10px' }}>
         {festivalCrowd.hasImpact
           ? (lang === 'te' ? festivalCrowd.alertMessageTe : festivalCrowd.alertMessageEn)
           : (lang === 'te' 
@@ -472,7 +475,7 @@ export default function PlaceDetails() {
                   : saarthiTip))}
       </p>
 
-      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', fontSize: '11.5px', color: '#64748B', borderTop: '1px solid rgba(0,0,0,0.06)', paddingTop: '8px', flexWrap: 'wrap' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', fontSize: '11px', color: '#64748B', borderTop: '1px solid rgba(0,0,0,0.06)', paddingTop: '8px', flexWrap: 'wrap' }}>
         <span style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
           <Clock size={13} color="#64748B" />
           {lang === 'te' ? 'సమయం:' : 'Visit:'} <strong>{lang === 'te' ? (place.durationMins ? `${place.durationMins} నిమి.` : '45 నిమిషాలు') : (place.durationMins ? `${place.durationMins} mins` : (guide.duration || '45 mins'))}</strong>
@@ -496,31 +499,31 @@ export default function PlaceDetails() {
           backgroundColor: '#0F5132',
           color: '#FFFFFF',
           border: 'none',
-          borderRadius: '16px',
-          padding: '16px 20px',
-          fontSize: '15px',
+          borderRadius: '14px',
+          padding: '14px 18px',
+          fontSize: '14.5px',
           fontWeight: 800,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          gap: '10px',
+          gap: '8px',
           cursor: 'pointer',
-          boxShadow: '0 8px 24px -4px rgba(15, 81, 50, 0.4)',
+          boxShadow: '0 6px 20px -3px rgba(15, 81, 50, 0.38)',
           transition: 'transform 0.15s ease',
           letterSpacing: '-0.01em'
         }}
       >
-        <Navigation size={18} color="#FFFFFF" fill="#FFFFFF" />
+        <Navigation size={17} color="#FFFFFF" fill="#FFFFFF" />
         <span style={{ color: '#FFFFFF' }}>
           {lang === 'te' 
             ? (isTemple ? 'దర్శన మార్గం ప్రారంభించండి' : 'మార్గం ప్రారంభించండి') 
             : 'Start Navigation'}
         </span>
         <span style={{
-          backgroundColor: 'rgba(255, 255, 255, 0.18)',
+          backgroundColor: 'rgba(255, 255, 255, 0.2)',
           padding: '2px 8px',
-          borderRadius: '12px',
-          fontSize: '12px',
+          borderRadius: '10px',
+          fontSize: '11.5px',
           fontWeight: 700,
           color: '#FFFFFF'
         }}>
@@ -932,7 +935,7 @@ export default function PlaceDetails() {
   );
 
   return (
-    <main style={{ minHeight: '100vh', backgroundColor: 'var(--bg-canvas, #FAF8F5)', color: '#0F172A', paddingBottom: '90px' }}>
+    <main style={{ minHeight: '100vh', backgroundColor: 'var(--bg-canvas, #FAF8F5)', color: '#0F172A', paddingBottom: 'calc(36px + env(safe-area-inset-bottom, 20px))' }}>
       <style>{`
         .place-hero-box {
           position: relative;
@@ -943,10 +946,10 @@ export default function PlaceDetails() {
         .place-mobile-container {
           max-width: 640px;
           margin: 0 auto;
-          padding: 12px 14px 24px 14px;
+          padding: 12px 12px calc(36px + env(safe-area-inset-bottom, 20px)) 12px;
           display: flex;
           flex-direction: column;
-          gap: 14px;
+          gap: 12px;
         }
         .place-desktop-container {
           display: none;
@@ -1144,13 +1147,15 @@ export default function PlaceDetails() {
                 fontSize: '11px',
                 fontWeight: 800,
                 backgroundColor: festivalCrowd.isFestivalActive 
-                  ? (festivalCrowd.isDirectCenter ? 'rgba(239, 68, 68, 0.45)' : 'rgba(245, 158, 11, 0.45)')
-                  : 'rgba(59, 130, 246, 0.35)',
+                  ? (festivalCrowd.isDirectCenter ? 'rgba(220, 38, 38, 0.75)' : 'rgba(217, 119, 6, 0.75)')
+                  : 'rgba(37, 99, 235, 0.75)',
                 color: '#FFFFFF',
-                padding: '3px 9px',
+                padding: '3px 8px',
                 borderRadius: '6px',
                 border: `1px solid ${festivalCrowd.isFestivalActive ? (festivalCrowd.isDirectCenter ? '#FCA5A5' : '#FDE047') : '#93C5FD'}`,
-                boxShadow: '0 2px 8px rgba(0, 0, 0, 0.25)'
+                boxShadow: '0 2px 8px rgba(0, 0, 0, 0.25)',
+                backdropFilter: 'blur(6px)',
+                whiteSpace: 'nowrap'
               }}>
                 {lang === 'te' ? festivalCrowd.badgeTextTe : festivalCrowd.badgeTextEn}
               </span>
