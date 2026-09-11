@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+Telugu:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@500;600;700;800;900&display=swap');
-
 :root {
   /* =========================================
      SAARTHI DESIGN SYSTEM — PILGRIM COMPANION
@@ -7,8 +5,9 @@
 
   /* --- Font Stacks --- */
   --font-telugu: 'Noto Sans Telugu', 'Tiro Telugu', 'Gautami', 'Vani', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-heading: 'Plus Jakarta Sans', var(--font-telugu), system-ui, sans-serif;
-  --font-body: 'Inter', var(--font-telugu), system-ui, sans-serif;
+  --font-heading: 'Plus Jakarta Sans', var(--font-telugu), system-ui, -apple-system, sans-serif;
+  --font-body: 'Inter', var(--font-telugu), system-ui, -apple-system, sans-serif;
+  --font-sans: var(--font-body);
 
   /* --- Core Palette --- */
   --bg-canvas: #FAF8F5;
@@ -248,11 +247,12 @@
 body {
   background-color: var(--color-background);
   color: var(--color-text-primary);
-  font-family: var(--font-telugu), var(--font-body), system-ui, sans-serif;
+  font-family: var(--font-body);
   margin: 0;
   padding: 0;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 /* ── Utility to cleanly hide native scrollbars on mobile carousels ── */
@@ -267,7 +267,7 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-telugu), var(--font-heading), system-ui, sans-serif;
+  font-family: var(--font-heading);
   margin: 0;
   font-weight: var(--font-weight-bold);
   letter-spacing: var(--letter-spacing-tight);

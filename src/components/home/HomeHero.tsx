@@ -680,7 +680,7 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
     setOverrideScenario(list[nextIdx]);
   };
   return (
-    <div style={{ fontFamily: 'system-ui, -apple-system, sans-serif', background: '#FAF8F4' }}>
+    <div style={{ fontFamily: 'var(--font-body)', background: '#FAF8F4' }}>
 
       {/* ══════════ MODERN CLASSIC HEADER ══════════ */}
       {!hideHeader && (
