@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { Sun, Moon, Clock, Calendar, Sparkles, X, ChevronRight, Compass, ShieldAlert, CheckCircle2 } from 'lucide-react';
+import { Sun, Moon, Clock, Calendar, Sparkles, X, ChevronRight, Compass, ShieldAlert, CheckCircle2, Lightbulb } from 'lucide-react';
 import { getPanchangamData, PanchangamData } from '@/lib/panchangam';
 import { useLanguage } from '@/lib/useLanguage';
 import styles from './PanchangamBar.module.css';
@@ -35,7 +35,7 @@ export function PanchangamBar() {
         <div className={styles.barGlow} />
         <div className={styles.barContent}>
           <div className={styles.badgeSection}>
-            <span className={styles.omSymbol}>🕉️</span>
+            <span className={styles.omSymbol}>ॐ</span>
             <div className={styles.tithiBadge}>
               <span className={styles.tithiTitle}>
                 {isTelugu ? data.tithiTe : data.tithiEn}
@@ -83,7 +83,7 @@ export function PanchangamBar() {
             {/* Modal Header */}
             <div className={styles.modalHeader}>
               <div className={styles.headerTitleGroup}>
-                <div className={styles.headerIconWrap}>🕉️</div>
+                <div className={styles.headerIconWrap}>ॐ</div>
                 <div>
                   <h3 className={styles.modalHeading}>
                     {isTelugu ? 'నేటి శ్రీవారి తిరుమల పంచాంగం' : "Today's Tirumala Vedic Panchangam"}
@@ -203,10 +203,13 @@ export function PanchangamBar() {
 
             {/* Pilgrim Guidance Tip */}
             <div className={styles.modalFooter}>
-              <p className={styles.footerNote}>
-                {isTelugu 
-                  ? '💡 యాత్రికుల సూచన: తిరుమల కొండపైకి నడక లేదా ప్రయాణం ప్రారంభించేందుకు అభిజిత్ ముహూర్తం అత్యంత శుభప్రదమైనది.'
-                  : '💡 Pilgrim Tip: Abhijit Muhurtham (midday) is considered ideal for commencing the uphill footpath trek or darshan line.'}
+              <p className={styles.footerNote} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                <Lightbulb size={14} style={{ color: '#D97706', flexShrink: 0 }} />
+                <span>
+                  {isTelugu 
+                    ? 'యాత్రికుల సూచన: తిరుమల కొండపైకి నడక లేదా ప్రయాణం ప్రారంభించేందుకు అభిజిత్ ముహూర్తం అత్యంత శుభప్రదమైనది.'
+                    : 'Pilgrim Tip: Abhijit Muhurtham (midday) is considered ideal for commencing the uphill footpath trek or darshan line.'}
+                </span>
               </p>
             </div>
           </div>

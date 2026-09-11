@@ -381,7 +381,7 @@ export default function PilgrimEssentialsPage() {
                   id: 'secure-belongings',
                   title: 'Free Lockers & Mobile Deposit',
                   subtitle: 'Secure phones, smart watches & luggage before entering VQC queue',
-                  status: '🟢 6 Locations Open',
+                  status: '6 Locations Open',
                   statusColor: '#16A34A',
                   icon: Lock,
                   image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1786968161/IMG_6992_cq6gls.jpg',
@@ -391,7 +391,7 @@ export default function PilgrimEssentialsPage() {
                   id: 'free-meals',
                   title: 'Free Annaprasadam Meals',
                   subtitle: 'Continuous hot, sacred vegetarian meals at Tarigonda Vengamamba Complex',
-                  status: '🟢 Serving Now',
+                  status: 'Serving Now',
                   statusColor: '#16A34A',
                   icon: Utensils,
                   image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1786968272/Annaprasadam-4-copy_lyo86v.jpg',
@@ -401,7 +401,7 @@ export default function PilgrimEssentialsPage() {
                   id: 'hair-offering',
                   title: 'Kalyana Katta (Hair Offering)',
                   subtitle: 'Sacred head tonsure counters with token-free sanitized service',
-                  status: '🟢 Open 24/7',
+                  status: 'Open 24/7',
                   statusColor: '#16A34A',
                   icon: Scissors,
                   image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1786968353/painted-sign-board-of-kalyanakatta-balaji-temple-tirupati-andhra-pradesh-F5M0J1_p7hkr5.jpg',
@@ -411,7 +411,7 @@ export default function PilgrimEssentialsPage() {
                   id: 'accommodation',
                   title: 'Accommodation & PAC Rest Halls',
                   subtitle: 'Free pilgrim rest halls & TTD CRO room reservation counters',
-                  status: '🟡 Halls Available',
+                  status: 'Halls Available',
                   statusColor: '#D97706',
                   icon: Bed,
                   image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1786968555/maxresdefault_fwmwke.jpg',
@@ -459,6 +459,7 @@ export default function PilgrimEssentialsPage() {
                         fontSize: '11px',
                         fontWeight: 800
                       }}>
+                        <span style={{ width: 6, height: 6, borderRadius: '50%', backgroundColor: service.statusColor, flexShrink: 0 }} />
                         <span>{service.status}</span>
                       </div>
                     </div>

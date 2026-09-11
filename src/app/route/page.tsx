@@ -56,7 +56,7 @@ export default function LiveRoutePage() {
       id: 'alipiri',
       title: lang === 'te' ? 'అలిపిరి టోల్ గేట్ & చెక్‌పోస్ట్' : 'Alipiri Toll Gate & Security Check',
       location: 'Alipiri Base, Tirupati',
-      status: tollStatus === 'Normal' ? '🟢 Clear · 10m drive' : '🟡 Moderate Transit',
+      status: tollStatus === 'Normal' ? 'Clear · 10m drive' : 'Moderate Transit',
       statusColor: '#10B981',
       statusBg: '#ECFDF5',
       timeEstimate: '10 min drive',
@@ -73,7 +73,7 @@ export default function LiveRoutePage() {
       id: 'ssd',
       title: lang === 'te' ? 'SSD ఉచిత టైమ్-స్లాట్ టోకెన్ కేంద్రం' : 'SSD Free Time-Slot Token Counters',
       location: 'Bhudevi Complex / Srinivasam / Vishnu Nivasam',
-      status: `🟡 ${ssdWait} hrs queue · Issuing`,
+      status: `${ssdWait} hrs queue · Issuing`,
       statusColor: '#F59E0B',
       statusBg: '#FEF3C7',
       timeEstimate: '2 hr queue window',
@@ -89,7 +89,7 @@ export default function LiveRoutePage() {
       id: 'ghat',
       title: lang === 'te' ? 'శేషాచలం ఘాట్ రోడ్డు ప్రయాణం' : 'Seshachalam 1st Ghat Road Ascent',
       location: 'Alipiri to Tirumala (Upward Ghat Road)',
-      status: '🟢 Clear · 45 min mountain drive',
+      status: 'Clear · 45 min mountain drive',
       statusColor: '#10B981',
       statusBg: '#ECFDF5',
       timeEstimate: '45 min climb',
@@ -105,7 +105,7 @@ export default function LiveRoutePage() {
       id: 'pac',
       title: lang === 'te' ? 'తిరుమల PAC విశ్రాంతి భవనాలు & లాకర్లు' : 'Tirumala PAC Rest Halls & Free Lockers',
       location: 'PAC 1, 2, 3 & 4, Tirumala Peak',
-      status: '🟢 Free Lockers Available',
+      status: 'Free Lockers Available',
       statusColor: '#10B981',
       statusBg: '#ECFDF5',
       timeEstimate: '15 min deposit',
@@ -121,7 +121,7 @@ export default function LiveRoutePage() {
       id: 'sanctum',
       title: lang === 'te' ? 'శ్రీవారి వైకుంఠం క్యూ కాంప్లెక్స్ & దర్శనం' : 'Sri Venkateswara Sanctum & Vaikuntam Queue',
       location: 'Vaikuntam Queue Complex-2, Tirumala',
-      status: `🔴 ${sarvaWait}+ hrs wait · Heavy Rush`,
+      status: `${sarvaWait}+ hrs wait · Heavy Rush`,
       statusColor: '#EF4444',
       statusBg: '#FEE2E2',
       timeEstimate: `${sarvaWait} hrs wait`,
@@ -137,7 +137,7 @@ export default function LiveRoutePage() {
       id: 'prasadam',
       title: lang === 'te' ? 'లడ్డూ ప్రసాదం & తరిగొండ వెంగమాంబ అన్నప్రసాదం' : 'Sacred Laddu & Free Tarigonda Annaprasadam',
       location: 'Laddu Counters 1-48 & Annaprasadam Complex',
-      status: '🟢 Open · Free Unlimited Meals',
+      status: 'Open · Free Unlimited Meals',
       statusColor: '#10B981',
       statusBg: '#ECFDF5',
       timeEstimate: '20 min collect',
@@ -233,7 +233,7 @@ export default function LiveRoutePage() {
                   {/* Step Connector Line & Badge */}
                   <div className={styles.connectorCol}>
                     <div className={styles.stepNumberBadge}>
-                      {idx === 0 ? '📍' : idx}
+                      {idx === 0 ? <MapPin size={13} color="#FFFFFF" /> : idx}
                     </div>
                     {idx < steps.length - 1 && <div className={styles.connectorLine} />}
                   </div>
@@ -250,8 +250,15 @@ export default function LiveRoutePage() {
                       </div>
                       <span 
                         className={styles.statusPill}
-                        style={{ color: step.statusColor, background: step.statusBg }}
+                        style={{ 
+                          color: step.statusColor, 
+                          background: step.statusBg,
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '5px'
+                        }}
                       >
+                        <span style={{ width: 6, height: 6, borderRadius: '50%', backgroundColor: step.statusColor, flexShrink: 0 }} />
                         {step.status}
                       </span>
                     </div>

@@ -447,7 +447,9 @@ function TripEstimatorContent() {
               
               <div className={styles.sliderRow}>
                 <div className={styles.sliderHeader}>
-                  <span>🏍️ Two-Wheeler / Bike</span>
+                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}>
+                    <Bike size={14} color="#E9801D" /> Two-Wheeler / Bike
+                  </span>
                   <strong>{bikeMileage} km/L</strong>
                 </div>
                 <input
@@ -463,7 +465,9 @@ function TripEstimatorContent() {
 
               <div className={styles.sliderRow}>
                 <div className={styles.sliderHeader}>
-                  <span>🚗 Petrol Car (Hatchback / Sedan)</span>
+                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}>
+                    <Car size={14} color="#2563EB" /> Petrol Car (Hatchback / Sedan)
+                  </span>
                   <strong>{carMileage} km/L</strong>
                 </div>
                 <input
@@ -479,7 +483,9 @@ function TripEstimatorContent() {
 
               <div className={styles.sliderRow}>
                 <div className={styles.sliderHeader}>
-                  <span>⛽ Diesel Car (Hatchback / Sedan)</span>
+                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}>
+                    <Fuel size={14} color="#0284C7" /> Diesel Car (Hatchback / Sedan)
+                  </span>
                   <strong>{carDieselMileage} km/L</strong>
                 </div>
                 <input
@@ -495,7 +501,9 @@ function TripEstimatorContent() {
 
               <div className={styles.sliderRow}>
                 <div className={styles.sliderHeader}>
-                  <span>🚙 SUV / 7-Seater (Diesel)</span>
+                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}>
+                    <Car size={14} color="#7C3AED" /> SUV / 7-Seater (Diesel)
+                  </span>
                   <strong>{suvMileage} km/L</strong>
                 </div>
                 <input
@@ -511,7 +519,9 @@ function TripEstimatorContent() {
 
               <div className={styles.sliderRow} style={{ marginBottom: 0 }}>
                 <div className={styles.sliderHeader}>
-                  <span>⚡ Electric Car (EV)</span>
+                  <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}>
+                    <Zap size={14} color="#059669" /> Electric Car (EV)
+                  </span>
                   <strong>{evMileage} km/kWh</strong>
                 </div>
                 <input
@@ -550,8 +560,9 @@ function TripEstimatorContent() {
                   {estimateResult.originName} → {estimateResult.destinationName}
                 </h2>
                 {estimateResult.isTirumalaRoute && (
-                  <p style={{ fontSize: '11.5px', color: '#FCD34D', margin: '4px 0 0 0', fontWeight: 500 }}>
-                    ⚡ Physics Factor Applied: +20% to +25% fuel burn calculated for steep uphill mountain grade.
+                  <p style={{ fontSize: '11.5px', color: '#FCD34D', margin: '4px 0 0 0', fontWeight: 500, display: 'flex', alignItems: 'center', gap: 4 }}>
+                    <Zap size={12} color="#FCD34D" />
+                    <span>Physics Factor Applied: +20% to +25% fuel burn calculated for steep uphill mountain grade.</span>
                   </p>
                 )}
               </div>

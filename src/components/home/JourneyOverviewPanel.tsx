@@ -80,12 +80,13 @@ export function JourneyOverviewPanel() {
           </defs>
         </svg>
 
-        {/* 📍 STEP 0: YOU ARE HERE */}
+        {/* STEP 0: YOU ARE HERE */}
         <div className={`${styles.stationCard} ${styles.posOrigin}`}>
           <div className={styles.stationHeader}>
             <div className={styles.pulsingUserDot} />
-            <span className={styles.stationName}>
-              {lang === 'te' ? '📍 మీరు ఇక్కడ ఉన్నారు' : '📍 You are here'}
+            <span className={styles.stationName} style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+              <MapPin size={12} color="#60A5FA" />
+              <span>{lang === 'te' ? 'మీరు ఇక్కడ ఉన్నారు' : 'You are here'}</span>
             </span>
           </div>
           <div className={styles.stationDetails}>
@@ -95,14 +96,17 @@ export function JourneyOverviewPanel() {
           </div>
         </div>
 
-        {/* 🟢 STEP 1: ALIPIRI CHECKPOST (RECOMMENDED START) */}
+        {/* STEP 1: ALIPIRI CHECKPOST (RECOMMENDED START) */}
         <div className={`${styles.stationCard} ${styles.posAlipiri} ${styles.recommendedStation}`}>
           <div className={styles.stationHeader}>
             <div className={styles.statusDot} style={{ background: '#10B981', boxShadow: '0 0 8px #10B981' }} />
             <span className={styles.stationName}>Alipiri Base</span>
           </div>
           <div className={styles.stationDetails}>
-            <span style={{ color: '#34D399' }}>🟢 Clear · 10 min drive</span>
+            <span style={{ color: '#34D399', display: 'inline-flex', alignItems: 'center', gap: 5 }}>
+              <span style={{ width: 6, height: 6, borderRadius: '50%', backgroundColor: '#10B981', display: 'inline-block' }} />
+              <span>Clear · 10 min drive</span>
+            </span>
           </div>
           <div className={styles.recBadge}>
             <Star size={10} color="#FBBF24" fill="#FBBF24" style={{ display: 'inline', verticalAlign: 'middle', marginRight: '3px' }} />
@@ -110,18 +114,21 @@ export function JourneyOverviewPanel() {
           </div>
         </div>
 
-        {/* 🟡 STEP 2: SSD TOKEN COUNTERS */}
+        {/* STEP 2: SSD TOKEN COUNTERS */}
         <div className={`${styles.stationCard} ${styles.posSSD}`}>
           <div className={styles.stationHeader}>
             <div className={styles.statusDot} style={{ background: '#F59E0B', boxShadow: '0 0 8px #F59E0B' }} />
             <span className={styles.stationName}>SSD Counters</span>
           </div>
           <div className={styles.stationDetails}>
-            <span style={{ color: '#FCD34D' }}>🟡 2 hr queue · Issuing</span>
+            <span style={{ color: '#FCD34D', display: 'inline-flex', alignItems: 'center', gap: 5 }}>
+              <span style={{ width: 6, height: 6, borderRadius: '50%', backgroundColor: '#F59E0B', display: 'inline-block' }} />
+              <span>2 hr queue · Issuing</span>
+            </span>
           </div>
         </div>
 
-        {/* 🔴 STEP 3: TIRUMALA SANCTUM (HILL TOP) */}
+        {/* STEP 3: TIRUMALA SANCTUM (HILL TOP) */}
         <div className={`${styles.stationCard} ${styles.posSanctum}`}>
           <div className={styles.stationHeader}>
             <div className={styles.statusDot} style={{ background: '#EF4444', boxShadow: '0 0 8px #EF4444' }} />
@@ -131,7 +138,10 @@ export function JourneyOverviewPanel() {
             </span>
           </div>
           <div className={styles.stationDetails}>
-            <span style={{ color: '#FCA5A5' }}>🔴 12+ hr wait · Heavy Rush</span>
+            <span style={{ color: '#FCA5A5', display: 'inline-flex', alignItems: 'center', gap: 5 }}>
+              <span style={{ width: 6, height: 6, borderRadius: '50%', backgroundColor: '#EF4444', display: 'inline-block' }} />
+              <span>12+ hr wait · Heavy Rush</span>
+            </span>
           </div>
         </div>
       </div>

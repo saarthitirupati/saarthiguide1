@@ -893,7 +893,7 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
                         border: '1px solid rgba(253, 224, 71, 0.4)',
                         fontSize: '11px'
                       }}>
-                        🪔
+                        <Flame size={12} color="#F59E0B" />
                       </span>
                       <span style={{ fontSize: '10.5px', fontWeight: 800, color: '#FDE047', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
                         {lang === 'te' ? 'శ్రీవారి దివ్య ఆశీర్వచనం' : 'Srivari Divine Blessing'}
@@ -908,10 +908,18 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
                         background: justCompletedMala ? 'rgba(34, 197, 94, 0.2)' : 'rgba(245, 158, 11, 0.18)',
                         border: justCompletedMala ? '1px solid #4ADE80' : '1px solid rgba(253, 224, 71, 0.3)',
                         padding: '2px 7px',
-                        borderRadius: '10px'
+                        borderRadius: '10px',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '4px'
                       }}>
                         {justCompletedMala 
-                          ? (lang === 'te' ? '🎉 108/108 సంపూర్ణం!' : '🎉 108/108 Done!')
+                          ? (
+                            <>
+                              <Sparkles size={11} color="#4ADE80" />
+                              <span>{lang === 'te' ? '108/108 సంపూర్ణం!' : '108/108 Done!'}</span>
+                            </>
+                          )
                           : (lang === 'te' ? `జపం ${chantCount}/108` : `Chant ${chantCount}/108`)}
                       </span>
                       <button 
@@ -960,7 +968,12 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
                     lineHeight: 1.3
                   }}>
                     {justCompletedMala
-                      ? (lang === 'te' ? '🙏 అష్టోత్తర శత నామ జపం సంపూర్ణం!' : '🙏 108 Chants Completed! Srivari Maha Blessing')
+                      ? (
+                        <span style={{ display: 'inline-flex', alignItems: 'center', gap: 5 }}>
+                          <Sparkles size={13} color="#FDE047" />
+                          <span>{lang === 'te' ? 'అష్టోత్తర శత నామ జపం సంపూర్ణం!' : '108 Chants Completed! Srivari Maha Blessing'}</span>
+                        </span>
+                      )
                       : (lang === 'te' ? getGovindaNamaForBead(chantCount).namaTe : getGovindaNamaForBead(chantCount).namaEn)}
                   </div>
 
@@ -1490,7 +1503,7 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
 
           if (isSsdOpen) {
             guidanceHeadline = lang === 'te' ? 'ఇప్పుడే SSD కౌంటర్‌కు వెళ్లండి. ఉచిత టోకెన్లు జారీ అవుతున్నాయి.' : 'Head to SSD Counter now. Free token slots are issuing.';
-            highlightedBenefit = lang === 'te' ? '⚡ సాధారణ క్యూతో పోలిస్తే 10+ గంటలు ఆదా' : '⚡ SAVE OVER 10 HOURS VS GENERAL QUEUE';
+            highlightedBenefit = lang === 'te' ? 'సాధారణ క్యూతో పోలిస్తే 10+ గంటలు ఆదా' : 'SAVE OVER 10 HOURS VS GENERAL QUEUE';
             customReasons = [
               lang === 'te' ? 'SSD టోకెన్లు 15+ గంటల సాధారణ క్యూను నివారిస్తాయి' : 'SSD tokens bypass the 15+ hour general queue bottleneck',
               lang === 'te' ? 'అలిపిరి, శ్రీనివాసం కేంద్రాలలో కౌంటర్లు తెరిచి ఉన్నాయి' : 'Alipiri & Srinivasam counters are currently active',
@@ -1500,7 +1513,7 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
             // Dynamic Day-of-Week Temple Recommendation
             guidanceHeadline = lang === 'te' ? dayGuide.headlineTe : dayGuide.headlineEn;
             highlightedBenefit = isSsdClosed 
-              ? (lang === 'te' ? '⚡ నేటి SSD కోటా ముగిసింది — సమీప పుణ్యక్షేత్రాలను దర్శించండి' : '⚡ SSD CLOSED TODAY — VISIT SACRED SHRINES FIRST')
+              ? (lang === 'te' ? 'నేటి SSD కోటా ముగిసింది — సమీప పుణ్యక్షేత్రాలను దర్శించండి' : 'SSD CLOSED TODAY — VISIT SACRED SHRINES FIRST')
               : (lang === 'te' ? dayGuide.benefitTe : dayGuide.benefitEn);
             
             const firstReason = isSsdClosed && liveStatus?.ssdTimingsGuide 
@@ -1518,7 +1531,7 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
             ];
           } else if (isTrulyLow) {
             guidanceHeadline = lang === 'te' ? 'దర్శనానికి అనుకూల సమయం! నేరుగా శ్రీవారి క్యూలో ప్రవేశించండి.' : 'Optimal Darshan window! Enter Srivari queue directly now.';
-            highlightedBenefit = lang === 'te' ? '⚡ అత్యంత వేగవంతమైన దర్శనం — నిరీక్షణ స్వల్పం' : '⚡ MINIMAL WAIT TIME — FASTEST ENTRY';
+            highlightedBenefit = lang === 'te' ? 'అత్యంత వేగవంతమైన దర్శనం — నిరీక్షణ స్వల్పం' : 'MINIMAL WAIT TIME — FASTEST ENTRY';
             customReasons = [
               lang === 'te' ? `ప్రస్తుత క్యూ సమయం అనుకూలంగా ఉంది (${sarvaWait})` : `Live queue wait is minimal (${sarvaWait})`,
               lang === 'te' ? 'కంపార్ట్‌మెంట్లు వేగంగా కదులుతున్నాయి' : 'Queue compartments are moving smoothly without delays',

@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
-import { ArrowLeft, Share2, ThumbsUp, ThumbsDown, CheckCircle2, BookOpen, MapPin, Clock, ShieldCheck, Sparkles, ChevronRight } from 'lucide-react';
+import { ArrowLeft, Share2, ThumbsUp, ThumbsDown, CheckCircle2, BookOpen, MapPin, Clock, ShieldCheck, Sparkles, ChevronRight, Lightbulb, Star } from 'lucide-react';
 import { STORIES, Story } from '@/data/stories';
 import { PLACES } from '@/data/places';
 
@@ -262,8 +262,9 @@ export default function StoryDetailPage() {
                     justifyContent: 'space-between'
                   }}
                 >
-                  <p style={{ fontSize: '13px', color: '#1E293B', margin: 0, lineHeight: 1.5, fontWeight: 600 }}>
-                    💡 {fact}
+                  <p style={{ fontSize: '13px', color: '#1E293B', margin: 0, lineHeight: 1.5, fontWeight: 600, display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
+                    <Lightbulb size={16} color="#D97706" style={{ flexShrink: 0, marginTop: '2px' }} />
+                    <span>{fact}</span>
                   </p>
                 </div>
               ))}
@@ -310,8 +311,10 @@ export default function StoryDetailPage() {
                         <h4 style={{ fontSize: '14px', fontWeight: 800, color: '#0F172A', margin: '0 0 2px 0' }}>
                           {place.name}
                         </h4>
-                        <span style={{ fontSize: '11.5px', color: '#64748B', fontWeight: 600 }}>
-                          {place.location || 'Tirupati'} • ★ {place.rating}
+                        <span style={{ fontSize: '11.5px', color: '#64748B', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: '3px' }}>
+                          <span>{place.location || 'Tirupati'} •</span>
+                          <Star size={11} fill="#F59E0B" color="#F59E0B" style={{ flexShrink: 0 }} />
+                          <span>{place.rating}</span>
                         </span>
                       </div>
                     </div>

@@ -208,7 +208,7 @@ export function RecommendationCard({
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
               <Sparkles size={18} color="#10B981" />
               <span style={{ fontSize: '13px', fontWeight: 800, color: '#10B981', letterSpacing: '0.6px', textTransform: 'uppercase' }}>
-                🔥 {t.recommended} RIGHT NOW
+                {t.recommended} RIGHT NOW
               </span>
             </div>
             <span style={{ fontSize: '10.5px', fontWeight: 800, color: '#047857', backgroundColor: '#ECFDF5', border: '1px solid #A7F3D0', padding: '3px 10px', borderRadius: '10px' }}>

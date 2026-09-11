@@ -7,7 +7,8 @@ import {
   ArrowLeft, Heart, Share2, Star, MapPin, Clock, Shirt, 
   Camera, Navigation, Sparkles, CheckCircle2, 
   ChevronDown, ChevronUp, Droplets, Utensils, Lock,
-  Bus, Car, Shield, Check, Zap, BookOpen, Flame, Landmark, Fuel
+  Bus, Car, Shield, Check, Zap, BookOpen, Flame, Landmark, Fuel,
+  AlertTriangle, Info
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { PLACES, Place, getPlaceGuideData } from '@/data/places';
@@ -271,10 +272,9 @@ export default function PlaceDetails() {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          fontSize: '18px',
           flexShrink: 0
         }}>
-          🚧
+          <AlertTriangle size={20} color="#D97706" />
         </div>
         <div style={{ flex: 1, minWidth: 0 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px', flexWrap: 'wrap' }}>
@@ -298,8 +298,9 @@ export default function PlaceDetails() {
               ? (place.closureNotice?.te || 'ఈ ప్రదేశం ప్రస్తుతం పునర్నిర్మాణం పనుల నిమిత్తం తాత్కాలికంగా మూసివేయబడింది.')
               : (place.closureNotice?.en || 'TTD is transforming Srivari Museum into a ₹125+ Cr world-class digital immersive 3D heritage center in partnership with TCS. General visitor entry is temporarily closed during active reconstruction.')}
           </p>
-          <div style={{ fontSize: '11.5px', fontWeight: 700, color: '#B45309', wordBreak: 'break-word' }}>
-            ℹ️ {lang === 'te' ? 'టీటీడీ పనులు పూర్తయిన తర్వాత పునఃప్రారంభ తేదీ ప్రకటించబడుతుంది.' : 'TTD will announce the grand reopening schedule once digital modernization is complete.'}
+          <div style={{ fontSize: '11.5px', fontWeight: 700, color: '#B45309', wordBreak: 'break-word', display: 'flex', alignItems: 'center', gap: '5px' }}>
+            <Info size={13} color="#B45309" style={{ flexShrink: 0 }} />
+            <span>{lang === 'te' ? 'టీటీడీ పనులు పూర్తయిన తర్వాత పునఃప్రారంభ తేదీ ప్రకటించబడుతుంది.' : 'TTD will announce the grand reopening schedule once digital modernization is complete.'}</span>
           </div>
         </div>
       </div>
@@ -1199,9 +1200,13 @@ export default function PlaceDetails() {
                 whiteSpace: 'nowrap',
                 maxWidth: '100%',
                 overflow: 'hidden',
-                textOverflow: 'ellipsis'
+                textOverflow: 'ellipsis',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '4px'
               }}>
-                🚧 {lang === 'te' ? 'పునర్నిర్మాణంలో ఉంది (మూసివేయబడింది)' : 'Under Reconstruction (Closed)'}
+                <AlertTriangle size={12} color="#FDE047" />
+                <span>{lang === 'te' ? 'పునర్నిర్మాణంలో ఉంది (మూసివేయబడింది)' : 'Under Reconstruction (Closed)'}</span>
               </span>
             ) : (
               <span style={{

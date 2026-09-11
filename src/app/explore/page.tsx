@@ -612,7 +612,7 @@ function ExploreContent() {
             filteredPlaces.map((place: Place, index: number) => {
               const festCrowd = getFestivalCrowdIntelligence(place.id);
               const explainableReason = festCrowd.hasImpact && festCrowd.isFestivalActive
-                ? (lang === 'te' ? `🔥 ${festCrowd.alertTitleTe}` : `🔥 ${festCrowd.alertTitleEn}`)
+                ? (lang === 'te' ? festCrowd.alertTitleTe : festCrowd.alertTitleEn)
                 : (place.oneReasonToVisit || place.spiritualInfo?.knownFor || place.whyVisit?.split('.')[0]);
               const crowd = place.saarthiIntelligence?.crowdLevel;
 
