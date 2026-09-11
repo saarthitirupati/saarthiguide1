@@ -77,7 +77,7 @@ function LayoutContent({
         className="appContainer"
         style={{ 
           visibility: hideContent ? 'hidden' : 'visible', 
-          height: '100%', 
+          minHeight: '100%', 
           position: 'relative',
           width: '100%',
           maxWidth: isAdmin ? '100%' : '1440px',
