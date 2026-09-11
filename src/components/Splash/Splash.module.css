@@ -20,7 +20,7 @@
   -webkit-transform: translateZ(0);
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
-  will-change: opacity, transform;
+  will-change: opacity;
 }
 
 /* Ambient Deep Sanctum Atmosphere */
