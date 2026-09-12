@@ -31,6 +31,40 @@ const TEXTS = {
   }
 };
 
+function cleanTime(timeStr?: string): string {
+  if (!timeStr) return '';
+  return timeStr
+    .replace(/[\u{1F300}-\u{1FAFF}\u{2300}-\u{23FF}\u{2600}-\u{27BF}\u{FE00}-\u{FE0F}]/gu, '')
+    .replace(/\s*:\s*/g, ':')
+    .replace(/\s*(AM|PM|am|pm)/i, ' $1')
+    .trim();
+}
+
+function cleanTimingsGuide(raw: string): string[] {
+  if (!raw) return [];
+  const clean = raw.replace(/[\u{1F300}-\u{1FAFF}\u{2300}-\u{23FF}\u{2600}-\u{27BF}\u{FE00}-\u{FE0F}]/gu, '');
+
+  if (clean.includes('*') || clean.includes('\n')) {
+    const rawParts = clean
+      .split(/[*•\n]+/)
+      .map(s => s.trim().replace(/^[-–—:]\s*/, '').replace(/\s+/g, ' '))
+      .filter(s => s.length > 2);
+
+    const grouped: string[] = [];
+    for (let i = 0; i < rawParts.length; i++) {
+      const part = rawParts[i];
+      if (i > 0 && /^Quota/i.test(part) && grouped.length > 0) {
+        grouped[grouped.length - 1] += ` : ${part}`;
+      } else {
+        grouped.push(part);
+      }
+    }
+    return grouped;
+  }
+
+  return [clean.replace(/\s+/g, ' ').trim()];
+}
+
 export function QuickChecklist(props: any) {
   const { liveStatus } = props;
   const router = useRouter();
@@ -38,6 +72,11 @@ export function QuickChecklist(props: any) {
   const t = TEXTS[lang];
 
   if (!liveStatus) return null;
+
+  const formattedNextTime = cleanTime(liveStatus.ssdNextTokenTime);
+  const cleanNotice = liveStatus.ssdNotice
+    ? liveStatus.ssdNotice.replace(/[\u{1F300}-\u{1FAFF}\u{2300}-\u{23FF}\u{2600}-\u{27BF}\u{FE00}-\u{FE0F}]/gu, '').replace(/\*/g, '').trim()
+    : null;
 
   return (
     <>
@@ -103,23 +142,24 @@ export function QuickChecklist(props: any) {
                   {t.nextRelease}
                 </span>
                 <span style={{ fontSize: '14px', fontWeight: 800, color: liveStatus.ssdTokenStatus === 'issuing' ? '#15803D' : liveStatus.ssdTokenStatus === 'paused' ? '#B45309' : '#991B1B', marginTop: '1px', display: 'block' }}>
-                  {liveStatus.ssdNextTokenTime ? liveStatus.ssdNextTokenTime : (liveStatus.ssdTokenStatus === 'issuing' ? t.tokensBeingIssued : '4:00 AM')}
+                  {formattedNextTime ? formattedNextTime : (liveStatus.ssdTokenStatus === 'issuing' ? t.tokensBeingIssued : '4:00 AM')}
                 </span>
               </div>
             </div>
-            {liveStatus.ssdNotice && (
+            {cleanNotice && (
               <span style={{
                 fontSize: '11px',
                 fontWeight: 700,
                 color: '#991B1B',
-                background: '#FEF2F2',
+                background: '#FFFFFF',
                 border: '1px solid #FECACA',
                 padding: '4px 10px',
                 borderRadius: '8px',
                 lineHeight: 1.3,
-                textAlign: 'right'
+                textAlign: 'center',
+                boxShadow: '0 1px 3px rgba(153, 27, 27, 0.06)'
               }}>
-                {liveStatus.ssdNotice}
+                {cleanNotice}
               </span>
             )}
           </div>
@@ -163,25 +203,51 @@ export function QuickChecklist(props: any) {
           )}
 
           {/* Daily timing guide / Custom Admin Info */}
-          {liveStatus.ssdTimingsGuide && (
-            <div style={{
-              borderTop: '1px solid #F1F5F9',
-              paddingTop: '10px',
-              marginTop: '8px',
-              display: 'flex',
-              gap: '8px',
-              alignItems: 'flex-start',
-              background: liveStatus.ssdTokenStatus === 'closed-for-day' ? '#FFFBEB' : '#F8FAFC',
-              padding: '10px 12px',
-              borderRadius: '10px',
-              border: `1px solid ${liveStatus.ssdTokenStatus === 'closed-for-day' ? '#FDE68A' : '#E2E8F0'}`
-            }}>
-              <Clock size={13} color={liveStatus.ssdTokenStatus === 'closed-for-day' ? '#B45309' : '#64748B'} style={{ marginTop: '2px', flexShrink: 0 }} />
-              <span style={{ fontSize: '11.5px', color: liveStatus.ssdTokenStatus === 'closed-for-day' ? '#92400E' : '#475569', lineHeight: 1.45, fontWeight: 500 }}>
-                {liveStatus.ssdTimingsGuide}
-              </span>
-            </div>
-          )}
+          {liveStatus.ssdTimingsGuide && (() => {
+            const points = cleanTimingsGuide(liveStatus.ssdTimingsGuide);
+            if (!points.length) return null;
+
+            return (
+              <div style={{
+                borderTop: '1px solid #F1F5F9',
+                paddingTop: '10px',
+                marginTop: '8px',
+                display: 'flex',
+                gap: '8px',
+                alignItems: 'flex-start',
+                background: liveStatus.ssdTokenStatus === 'closed-for-day' ? '#FFFBEB' : '#F8FAFC',
+                padding: '10px 12px',
+                borderRadius: '10px',
+                border: `1px solid ${liveStatus.ssdTokenStatus === 'closed-for-day' ? '#FDE68A' : '#E2E8F0'}`
+              }}>
+                <Clock size={13} color={liveStatus.ssdTokenStatus === 'closed-for-day' ? '#B45309' : '#64748B'} style={{ marginTop: '2px', flexShrink: 0 }} />
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', flex: 1, minWidth: 0 }}>
+                  {points.map((pt, i) => (
+                    <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '6px' }}>
+                      {points.length > 1 && (
+                        <span style={{
+                          width: '4px',
+                          height: '4px',
+                          borderRadius: '50%',
+                          backgroundColor: liveStatus.ssdTokenStatus === 'closed-for-day' ? '#D97706' : '#64748B',
+                          marginTop: '5px',
+                          flexShrink: 0
+                        }} />
+                      )}
+                      <span style={{
+                        fontSize: '11px',
+                        color: liveStatus.ssdTokenStatus === 'closed-for-day' ? '#78350F' : '#475569',
+                        lineHeight: 1.4,
+                        fontWeight: 500
+                      }}>
+                        {pt}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            );
+          })()}
         </Link>
       </div>
     </>
