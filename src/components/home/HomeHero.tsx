@@ -443,6 +443,8 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
     const ssdWait = getDarshanWait('ssd');
     const dayName = new Date().toLocaleDateString(lang === 'te' ? 'te-IN' : 'en-US', { weekday: 'long' });
 
+    const siteUrl = typeof window !== 'undefined' ? window.location.origin : 'https://www.saarthiguide.in';
+
     const shareText = lang === 'te'
       ? `🛕 *నేటి తిరుమల దర్శనం & రద్దీ సమాచారం (${dayName})*\n\n` +
         `• సర్వదర్శనం (ఉచితం): *${sarvaWait}*\n` +
@@ -450,21 +452,21 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
         `• ఉచిత SSD టోకెన్లు: *${ssdWait}*\n` +
         `• రద్దీ స్థితి: *${whyThatNowText}*\n` +
         `• ఘాట్ రోడ్లు: *ప్రస్తుతం తెరిచి ఉన్నాయి*\n\n` +
-        `సారథి యాప్‌లో లైవ్ అప్‌డేట్స్ చూడండి 👇\nhttps://saarthi.app`
+        `సారథి గైడ్‌లో లైవ్ అప్‌డేట్స్ చూడండి 👇\n${siteUrl}`
       : `🛕 *Live Tirumala Darshan & Crowd Update (${dayName})*\n\n` +
         `• Sarva Darshan (Free): *${sarvaWait}*\n` +
         `• ₹300 Special Entry: *${specialWait}*\n` +
         `• Free SSD Tokens: *${ssdWait}*\n` +
         `• Crowd Status: *${whyThatNowText}*\n` +
         `• Ghat Roads: *Open & Operational*\n\n` +
-        `Check live updates on Saarthi 👇\nhttps://saarthi.app`;
+        `Check live updates on Saarthi Guide 👇\n${siteUrl}`;
 
     if (typeof navigator !== 'undefined' && navigator.share) {
       try {
         await navigator.share({
           title: lang === 'te' ? 'నేటి తిరుమల దర్శనం అప్‌డేట్' : 'Today in Tirumala Live Update',
           text: shareText,
-          url: 'https://saarthi.app'
+          url: siteUrl
         });
         return;
       } catch (err: any) {
