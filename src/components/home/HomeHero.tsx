@@ -379,59 +379,59 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
     if (lang === 'te') {
       if (day === 6) { // Saturday
         return isExtreme || isHigh 
-          ? 'శనివారపు విశేష దినం · వారాంతపు విపరీతమైన రద్దీ' 
-          : 'శనివారపు విశేష దినం · శ్రీవారి దర్శన ప్రవాహం';
+          ? 'శనివారం · వారాంతపు గరిష్ట రద్దీ' 
+          : 'శనివారం · స్థిరమైన భక్తుల ప్రవాహం';
       }
       if (day === 0) { // Sunday
         return isExtreme || isHigh 
-          ? 'ఆదివారపు వారాంతం · కంపార్ట్‌మెంట్లు నిండిపోయాయి' 
-          : 'ఆదివారపు యాత్రికుల ప్రవాహం · స్థిరమైన దర్శనం';
+          ? 'ఆదివారం · కంపార్ట్‌మెంట్లు నిండాయి' 
+          : 'ఆదివారం · సాధారణ దర్శన ప్రవాహం';
       }
       if (day === 5) { // Friday
-        return 'శుక్రవారపు అభిషేక విశేషం · భక్తుల తాకిడి అధికం';
+        return 'శుక్రవారం · అభిషేక భక్తుల రద్దీ';
       }
       if (isSsdIssuing) {
-        return 'ఉచిత SSD టోకెన్లు జారీ అవుతున్నాయి · కౌంటర్ల వద్ద రద్దీ';
+        return 'ఉచిత SSD టోకెన్లు జారీ అవుతున్నాయి';
       }
       if (isExtreme) {
-        return 'భక్తుల తాకిడి గరిష్ట స్థాయి · సుదీర్ఘ నిరీక్షణ సమయం';
+        return 'గరిష్ట రద్దీ · అధిక నిరీక్షణ సమయం';
       }
       if (isHigh) {
-        return 'భక్తుల రద్దీ అధికం · క్యూ లైన్లలో నిరంతర ప్రవాహం';
+        return 'భక్తుల రద్దీ అధికం · నిరంతర ప్రవాహం';
       }
       if (isLow) {
-        return 'ప్రశాంత దర్శన సమయం · క్యూ లైన్లు వేగంగా కదులుతున్నాయి';
+        return 'ప్రశాంత దర్శనం · వేగంగా కదులుతున్న క్యూ';
       }
-      return 'సాధారణ దర్శన ప్రవాహం · నిర్దేశిత సమయాల్లో కదలిక';
+      return 'సాధారణ దర్శనం · స్థిరమైన ప్రవాహం';
     }
 
     // English
     if (day === 6) { // Saturday
       return isExtreme || isHigh 
-        ? 'Saturday Srivari Rush · Weekend Peak Devotee Surge' 
-        : 'Saturday Srivari Day · Steady Devotee Flow';
+        ? 'Saturday Rush · Weekend Devotee Surge' 
+        : 'Saturday Srivari Day · Steady Flow';
     }
     if (day === 0) { // Sunday
       return isExtreme || isHigh 
-        ? 'Sunday Weekend Surge · Holding Compartments Full' 
-        : 'Sunday Devotee Flow · Regular Queue Movement';
+        ? 'Sunday Surge · Compartments Full' 
+        : 'Sunday Flow · Regular Queue Movement';
     }
     if (day === 5) { // Friday
-      return 'Friday Abhishekam Day · High Sanctum Footfall';
+      return 'Friday Abhishekam · High Sanctum Rush';
     }
     if (isSsdIssuing) {
-      return 'Free SSD Tokens Active · Slotted Counter Inflow';
+      return 'Free SSD Tokens Active · Slotted Inflow';
     }
     if (isExtreme) {
-      return 'Peak Devotee Surge · Extended Holding Wait';
+      return 'Peak Rush · Extended Queue Wait';
     }
     if (isHigh) {
-      return 'Heavy Pilgrim Turnout · Continuous Compartment Flow';
+      return 'Heavy Footfall · Continuous Flow';
     }
     if (isLow) {
-      return 'Favorable Darshan Window · Fast Moving Queues';
+      return 'Favorable Window · Fast Queues';
     }
-    return 'Normal Devotee Movement · Steady Sanctum Inflow';
+    return 'Normal Movement · Steady Flow';
   })();
 
   const getSaarthiDecisionScenario = () => {
@@ -1180,11 +1180,11 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
         }} />
 
         {/* 🌟 HEADER: LIVE BEACON & TITLE */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px', position: 'relative', zIndex: 2 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '10px', marginBottom: '14px', position: 'relative', zIndex: 2 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', minWidth: 0, flex: 1 }}>
             <div style={{
-              width: '34px',
-              height: '34px',
+              width: '36px',
+              height: '36px',
               borderRadius: '10px',
               background: 'rgba(217, 119, 6, 0.12)',
               display: 'flex',
@@ -1196,14 +1196,14 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
             }}>
               <Flame size={18} color="#D97706" />
             </div>
-            <div>
+            <div style={{ minWidth: 0, flex: 1 }}>
               <div style={{
-                fontSize: lang === 'te' ? '14px' : '13.5px',
+                fontSize: lang === 'te' ? '14px' : '13px',
                 fontWeight: 900,
-                letterSpacing: lang === 'te' ? 'normal' : '0.6px',
+                letterSpacing: lang === 'te' ? 'normal' : '0.5px',
                 textTransform: 'uppercase',
                 color: '#0F172A',
-                lineHeight: lang === 'te' ? 1.35 : '1.2'
+                lineHeight: lang === 'te' ? 1.3 : '1.2'
               }}>
                 {lang === 'te' ? 'నేడు తిరుమలలో' : 'TODAY IN TIRUMALA'}
               </div>
@@ -1212,31 +1212,42 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
                 color: '#047857', 
                 fontWeight: 700, 
                 display: 'flex', 
-                alignItems: 'center', 
+                alignItems: 'flex-start', 
                 gap: '5px', 
                 marginTop: '2px',
                 lineHeight: 1.3
               }}>
-                <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#10B981', boxShadow: '0 0 6px #10B981', flexShrink: 0 }} />
-                <span style={{ fontWeight: 800 }}>{whyThatNowText}</span>
+                <span style={{ 
+                  width: '6px', 
+                  height: '6px', 
+                  borderRadius: '50%', 
+                  backgroundColor: '#10B981', 
+                  boxShadow: '0 0 6px #10B981', 
+                  flexShrink: 0,
+                  marginTop: '4px'
+                }} />
+                <span style={{ fontWeight: 700 }}>{whyThatNowText}</span>
               </div>
             </div>
           </div>
 
           <div style={{
-            display: 'flex',
+            display: 'inline-flex',
             alignItems: 'center',
             gap: '4px',
             backgroundColor: 'rgba(16, 185, 129, 0.12)',
             border: '1.5px solid #0F172A',
-            padding: '3px 9px',
+            padding: '3px 8px',
             borderRadius: '12px',
             fontSize: '10px',
             fontWeight: 800,
             color: '#065F46',
-            letterSpacing: '0.5px'
+            letterSpacing: '0.5px',
+            flexShrink: 0,
+            whiteSpace: 'nowrap'
           }}>
-            <span>● LIVE</span>
+            <span style={{ width: '5px', height: '5px', borderRadius: '50%', backgroundColor: '#059669', flexShrink: 0 }} />
+            <span>LIVE</span>
           </div>
         </div>
 
