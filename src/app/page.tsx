@@ -1,12 +1,12 @@
 'use client';
 
 import Link from 'next/link';
-import { MapPin, Lock, Utensils, Scissors, Bed, ChevronRight, Sparkles, BookOpen, ShieldCheck, HelpCircle, ChevronDown, ChevronUp } from 'lucide-react';
+import { MapPin, Lock, Utensils, Scissors, Bed, ChevronRight, Sparkles, BookOpen, ShieldCheck, HelpCircle, ChevronDown, ChevronUp, Bus, Ticket, Car } from 'lucide-react';
 import { useState, useMemo } from 'react';
 import { useHomeData } from '@/hooks/useHomeData';
 import { useTrip } from '@/components/TripContext';
 import { LoadingState } from '@/components/common/LoadingState';
-import { calculateDrivingDistance, TIRUPATI_CENTER, isWithinTirupatiRegion } from '@/lib/location';
+import { calculateDrivingDistance, TIRUPATI_CENTER, isWithinTirupatiRegion, isCoordinateOnTirumalaHill } from '@/lib/location';
 import { useLanguage } from '@/lib/useLanguage';
 import {
   HomeHero,
@@ -71,8 +71,16 @@ export default function HomePage() {
   const t = TEXTS[lang];
   const [showLoreDrawer, setShowLoreDrawer] = useState(false);
 
-  const isLocalUser = userLocation && isWithinTirupatiRegion(userLocation.lat, userLocation.lng);
+  const isLocalUser = Boolean(userLocation && isWithinTirupatiRegion(userLocation.lat, userLocation.lng));
+  const isOnHill = Boolean(userLocation && isCoordinateOnTirumalaHill(userLocation.lat, userLocation.lng));
+  const isTransit = isLocalUser && !isOnHill;
   const origin = isLocalUser ? userLocation! : TIRUPATI_CENTER;
+
+  const sectionSub = isOnHill
+    ? (lang === 'te' ? 'తిరుమల కొండపై ప్రస్తుతం అవసరమైన ముఖ్య సదుపాయాలు' : 'Essential facilities right now on Tirumala hill')
+    : isTransit
+    ? (lang === 'te' ? 'రైల్వే/బస్ స్టేషన్ వద్ద బస్సులు, టోకెన్లు & లగేజీ సమాచారం' : 'Buses, token counters & transit in Tirupati')
+    : (lang === 'te' ? 'దర్శనానికి ముందు ముఖ్యమైన సదుపాయాలు & మార్గదర్శకాలు' : 'Essential facilities & guidelines before your darshan');
 
   const nearbyPlaces = useMemo(() => {
     if (!home.places?.allPlaces?.length) return [];
@@ -90,52 +98,147 @@ export default function HomePage() {
       .slice(0, 6);
   }, [home.places?.allPlaces, origin.lat, origin.lng]);
 
+  const PRIMARY_SERVICES = useMemo(() => {
+    // 1. If pilgrim is on Tirumala Hilltop
+    if (isOnHill) {
+      return [
+        {
+          id: 'meals',
+          title: lang === 'te' ? 'ఉచిత భోజనం (అన్నప్రసాదం)' : 'Free Meals (Annaprasadam)',
+          subtitle: lang === 'te' ? 'భక్తులందరికీ నిరంతర ఉచిత భోజనం' : 'Free hot meals for all pilgrims',
+          status: lang === 'te' ? 'అందుబాటులో ఉంది' : 'Serving Continuously',
+          statusColor: '#16A34A',
+          icon: Utensils,
+          image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1786968272/Annaprasadam-4-copy_lyo86v.jpg',
+          link: '/essentials/free-meals'
+        },
+        {
+          id: 'lockers',
+          title: lang === 'te' ? 'లాకర్లు & లగేజీ' : 'Lockers & Luggage',
+          subtitle: lang === 'te' ? 'దర్శనానికి ముందు ఫోన్లు, బ్యాగులు భద్రపరుచుకోండి' : 'Keep phone & bags safe before Darshan',
+          status: lang === 'te' ? '6 కేంద్రాలు ఓపెన్' : '6 Locations Open',
+          statusColor: '#16A34A',
+          icon: Lock,
+          image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1786968161/IMG_6992_cq6gls.jpg',
+          link: '/essentials/secure-belongings'
+        },
+        {
+          id: 'tonsure',
+          title: lang === 'te' ? 'తలనీలాలు (కళ్యాణకట్ట)' : 'Hair Offering (Tonsure)',
+          subtitle: lang === 'te' ? 'భక్తులకు ఉచిత పవిత్ర తలనీలాల సదుపాయం' : 'Free head tonsure facility for pilgrims',
+          status: lang === 'te' ? '24/7 అందుబాటు' : 'Open 24/7',
+          statusColor: '#16A34A',
+          icon: Scissors,
+          image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1786968353/painted-sign-board-of-kalyanakatta-balaji-temple-tirupati-andhra-pradesh-F5M0J1_p7hkr5.jpg',
+          link: '/essentials/hair-offering'
+        },
+        {
+          id: 'stay',
+          title: lang === 'te' ? 'విశ్రాంతి & వసతి' : 'Rest & Stay',
+          subtitle: lang === 'te' ? 'ఉచిత విశ్రాంతి హాళ్ళు + గదుల బుకింగ్' : 'Free rest halls + room booking counters',
+          status: lang === 'te' ? 'హాళ్ళు అందుబాటు' : 'PAC Halls Available',
+          statusColor: '#D97706',
+          icon: Bed,
+          image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1786968555/maxresdefault_fwmwke.jpg',
+          link: '/essentials/accommodation'
+        }
+      ];
+    }
+
+    // 2. If pilgrim is in Tirupati (Transit / Station / Bus Stand)
+    if (isTransit) {
+      return [
+        {
+          id: 'transit-bus',
+          title: lang === 'te' ? 'తిరుమల ప్రయాణం (బస్సులు)' : 'Go to Tirumala (Bus)',
+          subtitle: lang === 'te' ? 'ప్రతి 3 నిమిషాలకు APSRTC ఎలక్ట్రిక్ బస్సులు' : 'Direct electric buses every 3 mins',
+          status: lang === 'te' ? 'బస్సు సర్వీసులు సిద్ధం' : 'Bay 1 Active',
+          statusColor: '#16A34A',
+          icon: Bus,
+          image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1786968161/IMG_6992_cq6gls.jpg',
+          link: '/planner'
+        },
+        {
+          id: 'transit-tokens',
+          title: lang === 'te' ? 'ఉచిత SSD టోకెన్లు' : 'Free SSD Tokens',
+          subtitle: lang === 'te' ? 'స్టేషన్ & బస్ స్టాండ్ ఎదురుగా ఉన్న కౌంటర్లు' : 'Offline token counters at Station & Bus Stand',
+          status: lang === 'te' ? 'కౌంటర్ రాడార్' : 'Counters Radar',
+          statusColor: '#0F5132',
+          icon: Ticket,
+          image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1786968555/maxresdefault_fwmwke.jpg',
+          link: '/darshan/ssd-token'
+        },
+        {
+          id: 'transit-cloak',
+          title: lang === 'te' ? 'స్టేషన్ క్లోక్‌రూమ్' : 'Station Cloakrooms',
+          subtitle: lang === 'te' ? 'కొండపైకి వెళ్ళే ముందు లగేజీ భద్రపరుచుకోండి' : 'Deposit luggage before traveling up the hill',
+          status: lang === 'te' ? 'ఓపెన్' : 'Available 24/7',
+          statusColor: '#16A34A',
+          icon: Lock,
+          image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1786968161/IMG_6992_cq6gls.jpg',
+          link: '/essentials/secure-belongings'
+        },
+        {
+          id: 'transit-auto',
+          title: lang === 'te' ? 'ప్రీపెయిడ్ ఆటో & టాక్సీ' : 'Prepaid Auto & Cabs',
+          subtitle: lang === 'te' ? 'నిర్ణీత అధికారిక ధరలు (అధిక ఛార్జీల నివారణ)' : 'Fixed official rates to avoid overcharging',
+          status: lang === 'te' ? 'గేట్ 2 వద్ద' : 'Prepaid Gate 2',
+          statusColor: '#D97706',
+          icon: Car,
+          image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1786968353/painted-sign-board-of-kalyanakatta-balaji-temple-tirupati-andhra-pradesh-F5M0J1_p7hkr5.jpg',
+          link: '/trip-estimator'
+        }
+      ];
+    }
+
+    // 3. Default: Planning / At Home (Outside Tirupati)
+    return [
+      {
+        id: 'plan-yatra',
+        title: lang === 'te' ? 'యాత్రా ప్రణాళిక' : 'Plan Your Yatra',
+        subtitle: lang === 'te' ? '1 లేదా 2 రోజుల పూర్తి తీర్థయాత్ర కాలపట్టిక' : '1-Day or 2-Day pilgrimage timeline',
+        status: lang === 'te' ? 'స్మార్ట్ ప్లానర్' : 'Smart Planner',
+        statusColor: '#0F5132',
+        icon: Sparkles,
+        image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1786968555/maxresdefault_fwmwke.jpg',
+        link: '/planner'
+      },
+      {
+        id: 'plan-ghat',
+        title: lang === 'te' ? 'ఘాట్ రోడ్డు నియమాలు' : 'Ghat Road Rules',
+        subtitle: lang === 'te' ? 'టోల్ సమయాలు (ఉదయం 3 నుండి రాత్రి 11) & వేగ పరిమితి' : 'Toll timings (3 AM - 11 PM) & speed rules',
+        status: lang === 'te' ? '3 AM - 11 PM' : 'Open 3 AM - 11 PM',
+        statusColor: '#16A34A',
+        icon: Car,
+        image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1786968353/painted-sign-board-of-kalyanakatta-balaji-temple-tirupati-andhra-pradesh-F5M0J1_p7hkr5.jpg',
+        link: '/essentials'
+      },
+      {
+        id: 'plan-meals',
+        title: lang === 'te' ? 'ఉచిత భోజనం (అన్నప్రసాదం)' : 'Free Meals (Annaprasadam)',
+        subtitle: lang === 'te' ? 'భక్తులందరికీ నిరంతర ఉచిత భోజన సదుపాయం' : 'Free hot meals for all pilgrims',
+        status: lang === 'te' ? 'అందుబాటులో ఉంది' : 'Serving Continuously',
+        statusColor: '#16A34A',
+        icon: Utensils,
+        image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1786968272/Annaprasadam-4-copy_lyo86v.jpg',
+        link: '/essentials/free-meals'
+      },
+      {
+        id: 'plan-stay',
+        title: lang === 'te' ? 'విశ్రాంతి & వసతి' : 'Rest & Stay',
+        subtitle: lang === 'te' ? 'ఉచిత విశ్రాంతి హాళ్ళు + గదుల బుకింగ్ మార్గదర్శి' : 'Free rest halls + room booking guide',
+        status: lang === 'te' ? 'హాళ్ళు అందుబాటు' : 'PAC Halls Available',
+        statusColor: '#D97706',
+        icon: Bed,
+        image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1786968555/maxresdefault_fwmwke.jpg',
+        link: '/essentials/accommodation'
+      }
+    ];
+  }, [isOnHill, isTransit, lang]);
+
   if (home.loading) {
     return <LoadingState message={t.loading} />;
   }
-
-  const PRIMARY_SERVICES = [
-    {
-      id: 'lockers',
-      title: t.lockers,
-      subtitle: t.lockersSub,
-      status: t.lockersStatus,
-      statusColor: '#16A34A',
-      icon: Lock,
-      image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1786968161/IMG_6992_cq6gls.jpg',
-      link: '/essentials/secure-belongings'
-    },
-    {
-      id: 'meals',
-      title: t.meals,
-      subtitle: t.mealsSub,
-      status: t.mealsStatus,
-      statusColor: '#16A34A',
-      icon: Utensils,
-      image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1786968272/Annaprasadam-4-copy_lyo86v.jpg',
-      link: '/essentials/free-meals'
-    },
-    {
-      id: 'tonsure',
-      title: t.tonsure,
-      subtitle: t.tonsureSub,
-      status: t.tonsureStatus,
-      statusColor: '#16A34A',
-      icon: Scissors,
-      image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1786968353/painted-sign-board-of-kalyanakatta-balaji-temple-tirupati-andhra-pradesh-F5M0J1_p7hkr5.jpg',
-      link: '/essentials/hair-offering'
-    },
-    {
-      id: 'stay',
-      title: t.stay,
-      subtitle: t.staySub,
-      status: t.stayStatus,
-      statusColor: '#D97706',
-      icon: Bed,
-      image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1786968555/maxresdefault_fwmwke.jpg',
-      link: '/essentials/accommodation'
-    }
-  ];
 
   return (
     <div className={styles.homeWrapper} style={{ backgroundColor: 'var(--bg-canvas, #FAF8F5)', minHeight: '100vh' }}>
@@ -163,7 +266,7 @@ export default function HomePage() {
                   {t.primaryServices}
                 </h2>
                 <p style={{ fontSize: '11px', color: '#64748B', margin: '1px 0 0 0', fontWeight: 500 }}>
-                  {t.servicesSub}
+                  {sectionSub}
                 </p>
               </div>
               <Link href="/essentials" style={{ fontSize: '11.5px', fontWeight: 800, color: '#0F5132', textDecoration: 'none' }}>
@@ -230,12 +333,12 @@ export default function HomePage() {
                         fontSize: '9.5px',
                         fontWeight: 700,
                         color: srv.statusColor,
-                        marginBottom: '2px'
+                        marginBottom: '3px'
                       }}>
-                        <span style={{ width: '4px', height: '4px', borderRadius: '50%', backgroundColor: 'currentColor' }} />
+                        <span style={{ width: '4.5px', height: '4.5px', borderRadius: '50%', backgroundColor: 'currentColor' }} />
                         <span>{srv.status}</span>
                       </span>
-                      <h3 style={{ fontSize: '12.5px', fontWeight: 800, color: '#0F172A', margin: '0 0 2px', lineHeight: 1.25 }}>
+                      <h3 style={{ fontSize: '13.5px', fontWeight: 800, color: '#0F172A', margin: '0 0 2px', lineHeight: 1.25, letterSpacing: '-0.01em' }}>
                         {srv.title}
                       </h3>
                       <p style={{ fontSize: '10.5px', color: '#64748B', margin: '0 0 6px', lineHeight: 1.25, fontWeight: 500 }}>
@@ -416,7 +519,7 @@ export default function HomePage() {
                     {t.primaryServices}
                   </h2>
                   <p style={{ fontSize: '12px', color: '#64748B', margin: '2px 0 0', fontWeight: 500 }}>
-                    {t.servicesSub}
+                    {sectionSub}
                   </p>
                 </div>
                 <Link href="/essentials" style={{ fontSize: '12.5px', fontWeight: 800, color: '#0F5132', textDecoration: 'none' }}>
