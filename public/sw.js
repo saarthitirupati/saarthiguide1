@@ -1,7 +1,7 @@
 // Saarthi Guide Service Worker v1
 // Caches app shell & visited pages for full offline support on Tirumala hill
 
-const CACHE_NAME = 'saarthi-v1';
+const CACHE_NAME = 'saarthi-v2';
 const APP_SHELL = [
   '/',
   '/explore',
@@ -76,7 +76,10 @@ self.addEventListener('fetch', (event) => {
             caches.open(CACHE_NAME).then((cache) => cache.put(request, clone));
           }
           return response;
-        }).catch(() => caches.match('/'));
+        }).catch(() => {
+          // NEVER return HTML for JS or CSS chunk failures!
+          return new Response(null, { status: 404, statusText: 'Chunk Not Found' });
+        });
       })
     );
     return;

@@ -129,6 +129,31 @@ export default function ClientLayout({
     }).catch(() => {});
   }, []);
 
+  // Auto-recover from stale Next.js deployment chunks without crashing
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    const handleChunkError = (event: ErrorEvent) => {
+      const msg = event?.message || '';
+      const isChunkError =
+        msg.includes('Loading chunk') ||
+        msg.includes('Failed to fetch dynamically imported module') ||
+        msg.includes('Refused to execute script');
+
+      if (isChunkError) {
+        const lastReload = sessionStorage.getItem('saarthi_chunk_reload');
+        const now = Date.now();
+        if (!lastReload || now - parseInt(lastReload, 10) > 15000) {
+          sessionStorage.setItem('saarthi_chunk_reload', String(now));
+          window.location.reload();
+        }
+      }
+    };
+
+    window.addEventListener('error', handleChunkError);
+    return () => window.removeEventListener('error', handleChunkError);
+  }, []);
+
 
 
   const handleSplashFinish = () => {
