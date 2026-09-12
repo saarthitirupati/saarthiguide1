@@ -151,8 +151,8 @@ export default function HomePage() {
         {
           id: 'transit-bus',
           title: lang === 'te' ? 'తిరుమల ప్రయాణం (బస్సులు)' : 'Go to Tirumala (Bus)',
-          subtitle: lang === 'te' ? 'ప్రతి 3 నిమిషాలకు APSRTC ఎలక్ట్రిక్ బస్సులు (₹110)' : 'Direct electric buses every 3 mins (₹110)',
-          status: lang === 'te' ? '₹110 ఛార్జీ' : '₹110 Fare',
+          subtitle: lang === 'te' ? 'ప్రతి 3 నిమిషాలకు APSRTC ఎలక్ట్రిక్ బస్సులు' : 'Direct electric buses every 3 mins',
+          status: lang === 'te' ? 'బస్సు సర్వీసులు సిద్ధం' : 'Bay 1 Active',
           statusColor: '#16A34A',
           icon: Bus,
           image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1786968161/IMG_6992_cq6gls.jpg',

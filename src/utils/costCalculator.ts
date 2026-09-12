@@ -9,7 +9,7 @@ export function calculateTravelCosts(distanceKm: number, isGhatRoute: boolean = 
 
   if (isGhatRoute) {
     return {
-      busFare: `₹90 - ₹110 per person (APSRTC Ordinary / Electric bus)`,
+      busFare: `₹60 - ₹100 per person (APSRTC Ghat service)`,
       carCost: `Private Taxi / Cab: ₹1,500 - ₹2,500+ (Ghat Route)`,
       bikeCost: `₹100 for petrol (approx) - Careful on steep curves`
     };
