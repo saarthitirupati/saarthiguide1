@@ -434,6 +434,48 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
     return 'Normal Movement · Steady Flow';
   })();
 
+  const handleShareTodayPulse = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const sarvaWait = getDarshanWait('sarva');
+    const specialWait = getDarshanWait('special');
+    const ssdWait = getDarshanWait('ssd');
+    const dayName = new Date().toLocaleDateString(lang === 'te' ? 'te-IN' : 'en-US', { weekday: 'long' });
+
+    const shareText = lang === 'te'
+      ? `🛕 *నేటి తిరుమల దర్శనం & రద్దీ సమాచారం (${dayName})*\n\n` +
+        `• సర్వదర్శనం (ఉచితం): *${sarvaWait}*\n` +
+        `• ₹300 ప్రత్యేక ప్రవేశం: *${specialWait}*\n` +
+        `• ఉచిత SSD టోకెన్లు: *${ssdWait}*\n` +
+        `• రద్దీ స్థితి: *${whyThatNowText}*\n` +
+        `• ఘాట్ రోడ్లు: *ప్రస్తుతం తెరిచి ఉన్నాయి*\n\n` +
+        `సారథి యాప్‌లో లైవ్ అప్‌డేట్స్ చూడండి 👇\nhttps://saarthi.app`
+      : `🛕 *Live Tirumala Darshan & Crowd Update (${dayName})*\n\n` +
+        `• Sarva Darshan (Free): *${sarvaWait}*\n` +
+        `• ₹300 Special Entry: *${specialWait}*\n` +
+        `• Free SSD Tokens: *${ssdWait}*\n` +
+        `• Crowd Status: *${whyThatNowText}*\n` +
+        `• Ghat Roads: *Open & Operational*\n\n` +
+        `Check live updates on Saarthi 👇\nhttps://saarthi.app`;
+
+    if (typeof navigator !== 'undefined' && navigator.share) {
+      try {
+        await navigator.share({
+          title: lang === 'te' ? 'నేటి తిరుమల దర్శనం అప్‌డేట్' : 'Today in Tirumala Live Update',
+          text: shareText,
+          url: 'https://saarthi.app'
+        });
+        return;
+      } catch (err: any) {
+        if (err.name === 'AbortError') return;
+      }
+    }
+
+    const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(shareText)}`;
+    window.open(whatsappUrl, '_blank');
+  };
+
   const getSaarthiDecisionScenario = () => {
     let key = overrideScenario;
 
@@ -1575,6 +1617,30 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
               </span>
             )}
           </div>
+
+          {/* 1-Tap Share to Family button */}
+          <button
+            onClick={handleShareTodayPulse}
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '5px',
+              backgroundColor: '#F0FDF4',
+              border: '1.5px solid #16A34A',
+              padding: '4px 10px',
+              borderRadius: '10px',
+              fontSize: '11px',
+              fontWeight: 700,
+              color: '#166534',
+              cursor: 'pointer',
+              boxShadow: '0 1px 3px rgba(22, 163, 74, 0.12)',
+              transition: 'all 0.15s ease'
+            }}
+            aria-label="Share live updates on WhatsApp"
+          >
+            <Share2 size={12} color="#166534" />
+            <span>{lang === 'te' ? 'కుటుంబానికి షేర్ చేయండి' : 'Share to Family'}</span>
+          </button>
         </div>
 
         {/* 3️⃣ ⭐ DYNAMIC SAARTHI GUIDANCE (WARM IVORY PREMIUM CARD) */}

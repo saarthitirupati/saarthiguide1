@@ -12,7 +12,8 @@ import {
   HomeHero,
   RecommendationCard,
   DailyContent,
-  QuickChecklist
+  QuickChecklist,
+  YatraChecklist
 } from '@/components/home';
 import styles from './Home.module.css';
 
@@ -150,6 +151,9 @@ export default function HomePage() {
           <div style={{ marginTop: '4px', marginBottom: '8px' }}>
             <QuickChecklist {...home.checklist} liveStatus={home.status.liveStatus} />
           </div>
+
+          {/* LAYER 2.5: YATRA ESSENTIALS COMPLIANCE CHECKLIST */}
+          <YatraChecklist />
 
           {/* LAYER 3: PRIMARY PILGRIM SERVICES (ACT) */}
           <div style={{ padding: '0 14px', marginTop: '2px', marginBottom: '16px' }}>
@@ -398,6 +402,7 @@ export default function HomePage() {
           {/* COLUMN 1: LIVE DECISION ENGINE & DEVOTIONAL WISDOM */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
             <HomeHero {...home.hero} liveStatus={home.status.liveStatus} activeAlertsCount={home.alerts.activeAlertsCount} hideHeader={true} />
+            <YatraChecklist />
             <DailyContent {...home.daily} liveStatus={home.status.liveStatus} variant="desktop" />
           </div>
 
