@@ -362,6 +362,78 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
   // Best time: admin value wins; scenarios provide a sensible fallback
   const adminBestTime = liveStatus?.bestTime?.trim() || '';
 
+  // ── Explainable "Why That Now" reason for Today in Tirumala ────────────────
+  const whyThatNowText: string = (() => {
+    if (liveStatus?.notice && liveStatus.notice.trim()) {
+      return liveStatus.notice.trim();
+    }
+
+    const day = new Date().getDay();
+    const sarvaWait = getDarshanWait('sarva');
+    const maxHours = getMaxWaitHours(sarvaWait);
+    const isExtreme = maxHours >= 12 || crowdLevel === 'very-high' || sarvaWait.includes('24') || sarvaWait.includes('28');
+    const isHigh = maxHours >= 6 || crowdLevel === 'high';
+    const isLow = maxHours > 0 && maxHours < 4 && crowdLevel === 'low';
+    const isSsdIssuing = ssdTokenStatus === 'issuing';
+
+    if (lang === 'te') {
+      if (day === 6) { // Saturday
+        return isExtreme || isHigh 
+          ? 'శనివారపు విశేష దినం · వారాంతపు విపరీతమైన రద్దీ' 
+          : 'శనివారపు విశేష దినం · శ్రీవారి దర్శన ప్రవాహం';
+      }
+      if (day === 0) { // Sunday
+        return isExtreme || isHigh 
+          ? 'ఆదివారపు వారాంతం · కంపార్ట్‌మెంట్లు నిండిపోయాయి' 
+          : 'ఆదివారపు యాత్రికుల ప్రవాహం · స్థిరమైన దర్శనం';
+      }
+      if (day === 5) { // Friday
+        return 'శుక్రవారపు అభిషేక విశేషం · భక్తుల తాకిడి అధికం';
+      }
+      if (isSsdIssuing) {
+        return 'ఉచిత SSD టోకెన్లు జారీ అవుతున్నాయి · కౌంటర్ల వద్ద రద్దీ';
+      }
+      if (isExtreme) {
+        return 'భక్తుల తాకిడి గరిష్ట స్థాయి · సుదీర్ఘ నిరీక్షణ సమయం';
+      }
+      if (isHigh) {
+        return 'భక్తుల రద్దీ అధికం · క్యూ లైన్లలో నిరంతర ప్రవాహం';
+      }
+      if (isLow) {
+        return 'ప్రశాంత దర్శన సమయం · క్యూ లైన్లు వేగంగా కదులుతున్నాయి';
+      }
+      return 'సాధారణ దర్శన ప్రవాహం · నిర్దేశిత సమయాల్లో కదలిక';
+    }
+
+    // English
+    if (day === 6) { // Saturday
+      return isExtreme || isHigh 
+        ? 'Saturday Srivari Rush · Weekend Peak Devotee Surge' 
+        : 'Saturday Srivari Day · Steady Devotee Flow';
+    }
+    if (day === 0) { // Sunday
+      return isExtreme || isHigh 
+        ? 'Sunday Weekend Surge · Holding Compartments Full' 
+        : 'Sunday Devotee Flow · Regular Queue Movement';
+    }
+    if (day === 5) { // Friday
+      return 'Friday Abhishekam Day · High Sanctum Footfall';
+    }
+    if (isSsdIssuing) {
+      return 'Free SSD Tokens Active · Slotted Counter Inflow';
+    }
+    if (isExtreme) {
+      return 'Peak Devotee Surge · Extended Holding Wait';
+    }
+    if (isHigh) {
+      return 'Heavy Pilgrim Turnout · Continuous Compartment Flow';
+    }
+    if (isLow) {
+      return 'Favorable Darshan Window · Fast Moving Queues';
+    }
+    return 'Normal Devotee Movement · Steady Sanctum Inflow';
+  })();
+
   const getSaarthiDecisionScenario = () => {
     let key = overrideScenario;
 
@@ -1111,32 +1183,42 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px', position: 'relative', zIndex: 2 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
             <div style={{
-              width: '32px',
-              height: '32px',
+              width: '34px',
+              height: '34px',
               borderRadius: '10px',
               background: 'rgba(217, 119, 6, 0.12)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               border: '1.5px solid #0F172A',
-              boxShadow: '0 2px 6px rgba(217, 119, 6, 0.15)'
+              boxShadow: '0 2px 6px rgba(217, 119, 6, 0.15)',
+              flexShrink: 0
             }}>
-              <Flame size={16} color="#D97706" />
+              <Flame size={18} color="#D97706" />
             </div>
             <div>
               <div style={{
-                fontSize: lang === 'te' ? '13.5px' : '13px',
-                fontWeight: lang === 'te' ? 700 : 900,
-                letterSpacing: lang === 'te' ? 'normal' : '0.8px',
-                textTransform: lang === 'te' ? 'none' : 'uppercase',
+                fontSize: lang === 'te' ? '14px' : '13.5px',
+                fontWeight: 900,
+                letterSpacing: lang === 'te' ? 'normal' : '0.6px',
+                textTransform: 'uppercase',
                 color: '#0F172A',
-                lineHeight: lang === 'te' ? 1.4 : '1.2'
+                lineHeight: lang === 'te' ? 1.35 : '1.2'
               }}>
-                {lang === 'te' ? 'శ్రీవారి ప్రత్యక్ష దర్శన స్థితి' : 'LIVE TEMPLE PULSE'}
+                {lang === 'te' ? 'నేడు తిరుమలలో' : 'TODAY IN TIRUMALA'}
               </div>
-              <div style={{ fontSize: '10.5px', color: '#059669', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '4px', marginTop: '1px' }}>
-                <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#10B981', boxShadow: '0 0 6px #10B981' }} />
-                <span>TTD Sanctum Feed · {updatedLabel}</span>
+              <div style={{ 
+                fontSize: '11px', 
+                color: '#047857', 
+                fontWeight: 700, 
+                display: 'flex', 
+                alignItems: 'center', 
+                gap: '5px', 
+                marginTop: '2px',
+                lineHeight: 1.3
+              }}>
+                <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#10B981', boxShadow: '0 0 6px #10B981', flexShrink: 0 }} />
+                <span style={{ fontWeight: 800 }}>{whyThatNowText}</span>
               </div>
             </div>
           </div>
