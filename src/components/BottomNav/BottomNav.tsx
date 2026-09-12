@@ -72,9 +72,12 @@ export default function BottomNav() {
                       animate={isActive ? { rotate: [0, 180, 360], scale: [1, 1.15, 1] } : { scale: 1, rotate: 0 }}
                       transition={{ duration: 0.5, ease: 'easeOut' }}
                     >
-                      <item.icon size={24} className={styles.fabIcon} />
+                      <item.icon size={26} className={styles.fabIcon} />
                     </motion.div>
                   </motion.div>
+                  <span className={`${styles.fabLabel} ${isActive ? styles.fabLabelActive : ''}`}>
+                    {item.name}
+                  </span>
                 </Link>
               </div>
             );
@@ -84,7 +87,7 @@ export default function BottomNav() {
             <div key={item.name} className={styles.slot}>
               <Link 
                 href={item.href} 
-                className={`${styles.navLink} ${isActive ? styles.navLinkActive : ''}`}
+                className={`${styles.navLink} ${isActive ? styles.navLinkActive : styles.navLinkInactive}`}
               >
                 <motion.div
                   className={styles.navContent}
@@ -104,11 +107,9 @@ export default function BottomNav() {
                       className={isActive ? styles.activeIcon : styles.inactiveIcon}
                     />
                   </motion.div>
-                  {isActive && (
-                    <span className={styles.activeLabel}>
-                      {item.name}
-                    </span>
-                  )}
+                  <span className={isActive ? styles.activeLabel : styles.inactiveLabel}>
+                    {item.name}
+                  </span>
                 </motion.div>
               </Link>
             </div>
