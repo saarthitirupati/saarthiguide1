@@ -2379,7 +2379,7 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                     icon: <Flame size={13} color="#D97706" />,
                     bg: '#FFFDF0',
                     border: '1px solid #FDE68A',
-                    title: lang === 'te' ? 'నేటి విశేషం' : 'Sacred Shrine',
+                    title: lang === 'te' ? 'నేటి విశేషం' : lang === 'hi' ? 'పవిత్ర క్షేత్రం' : lang === 'ta' ? 'புனித தலம்' : 'Sacred Shrine',
                     value: lang === 'te' ? shortShrine.te : shortShrine.en,
                     color: '#92400E'
                   },
@@ -2387,16 +2387,16 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                     icon: <Navigation size={13} color="#2563EB" />,
                     bg: '#EFF6FF',
                     border: '1px solid #BFDBFE',
-                    title: lang === 'te' ? 'ఉత్తమ మార్గం' : 'Best Route',
-                    value: lang === 'te' ? 'స్థానిక క్షేత్రాలు' : 'Local Shrines',
+                    title: lang === 'te' ? 'ఉత్తమ మార్గం' : lang === 'hi' ? 'उत्तम मार्ग' : lang === 'ta' ? 'சிறந்த வழி' : 'Best Route',
+                    value: lang === 'te' ? 'స్థానిక క్షేత్రాలు' : lang === 'hi' ? 'स्थानीय मंदिर' : lang === 'ta' ? 'உள்ளூர் தலங்கள்' : 'Local Shrines',
                     color: '#1E40AF'
                   },
                   {
                     icon: <Clock size={13} color="#059669" />,
                     bg: '#ECFDF5',
                     border: '1px solid #A7F3D0',
-                    title: lang === 'te' ? 'అనుకూల సమయం' : 'Optimal Time',
-                    value: lang === 'te' ? 'ఉదయం వేళలు' : 'Early Morning',
+                    title: lang === 'te' ? 'అనుకూల సమయం' : lang === 'hi' ? 'अनुकूल समय' : lang === 'ta' ? 'உகந்த நேரம்' : 'Optimal Time',
+                    value: lang === 'te' ? 'ఉదయాన్నే' : lang === 'hi' ? 'प्रातः काल' : lang === 'ta' ? 'அதிகாலை' : 'Early Morning',
                     color: '#065F46'
                   }
                 ] : (isSsdOpen ? [
@@ -2404,24 +2404,24 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                     icon: <Ticket size={13} color="#16A34A" />,
                     bg: '#F0FDF4',
                     border: '1px solid #BBF7D0',
-                    title: lang === 'te' ? 'కౌంటర్లు' : 'SSD Status',
-                    value: lang === 'te' ? 'జారీ అవుతున్నాయి' : 'Issuing Now',
+                    title: lang === 'te' ? 'కౌంటర్లు' : lang === 'hi' ? 'एसएसडी स्थिति' : lang === 'ta' ? 'எஸ்எஸ்டி நிலை' : 'SSD Status',
+                    value: lang === 'te' ? 'జారీ అవుతున్నాయి' : lang === 'hi' ? 'जारी हो रहे हैं' : lang === 'ta' ? 'வழங்கப்படுகிறது' : 'Issuing Now',
                     color: '#166534'
                   },
                   {
                     icon: <Clock size={13} color="#2563EB" />,
                     bg: '#EFF6FF',
                     border: '1px solid #BFDBFE',
-                    title: lang === 'te' ? 'సమయం ఆదా' : 'Time Saved',
-                    value: lang === 'te' ? '10+ గంటలు' : 'Save 10+ Hrs',
+                    title: lang === 'te' ? 'సమయం ఆదా' : lang === 'hi' ? 'समय बचत' : lang === 'ta' ? 'நேர சேமிப்பு' : 'Time Saved',
+                    value: lang === 'te' ? '10+ గంటలు' : lang === 'hi' ? '10+ घंटे बचाएं' : lang === 'ta' ? '10+ மணிநேரம் சேమిப்பு' : 'Save 10+ Hrs',
                     color: '#1E40AF'
                   },
                   {
                     icon: <MapPin size={13} color="#D97706" />,
                     bg: '#FFFDF0',
                     border: '1px solid #FDE68A',
-                    title: lang === 'te' ? 'కేంద్రాలు' : 'Counters',
-                    value: lang === 'te' ? 'అలిపిరి & శ్రీనివాసం' : 'Alipiri & Srinivasam',
+                    title: lang === 'te' ? 'కేంద్రాలు' : lang === 'hi' ? 'काउंटर' : lang === 'ta' ? 'மையங்கள்' : 'Counters',
+                    value: lang === 'te' ? 'అలిపిరి & శ్రీనివాసం' : lang === 'hi' ? 'अलिपिरी और श्रीनिवासम' : lang === 'ta' ? 'அலிபிரி & சீனிவாசம்' : 'Alipiri & Srinivasam',
                     color: '#92400E'
                   }
                 ] : [
@@ -2429,15 +2429,15 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                     icon: <Users size={13} color="#D97706" />,
                     bg: '#FFFDF0',
                     border: '1px solid #FDE68A',
-                    title: lang === 'te' ? 'క్యూ సమయం' : 'Queue Flow',
-                    value: sarvaWait || (lang === 'te' ? 'సాధారణం' : 'Moderate'),
+                    title: lang === 'te' ? 'క్యూ సమయం' : lang === 'hi' ? 'कतार प्रवाह' : lang === 'ta' ? 'வரிசை நேரம்' : 'Queue Flow',
+                    value: sarvaWait || (lang === 'te' ? 'సాధారణం' : lang === 'hi' ? 'सामान्य' : lang === 'ta' ? 'மிதமான' : 'Moderate'),
                     color: '#92400E'
                   },
                   {
                     icon: <Flame size={13} color="#D97706" />,
                     bg: '#FFFDF0',
                     border: '1px solid #FDE68A',
-                    title: lang === 'te' ? 'విశేష క్షేత్రం' : 'Sacred Shrine',
+                    title: lang === 'te' ? 'విశేష క్షేత్రం' : lang === 'hi' ? 'పవిత్ర క్షేత్రం' : lang === 'ta' ? 'புனித தலம்' : 'Sacred Shrine',
                     value: lang === 'te' ? shortShrine.te : shortShrine.en,
                     color: '#92400E'
                   },
@@ -2445,8 +2445,8 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                     icon: <Clock size={13} color="#0F5132" />,
                     bg: '#F0FDF4',
                     border: '1px solid #BBF7D0',
-                    title: lang === 'te' ? 'ఉత్తమ సమయం' : 'Best Time',
-                    value: lang === 'te' ? 'ఉదయం వేళలు' : 'Early Morning',
+                    title: lang === 'te' ? 'ఉత్తమ సమయం' : lang === 'hi' ? 'उत्तम समय' : lang === 'ta' ? 'சிறந்த நேரம்' : 'Best Time',
+                    value: lang === 'te' ? 'ఉదయాన్నే' : lang === 'hi' ? 'प्रातः काल' : lang === 'ta' ? 'அதிகாலை' : 'Early Morning',
                     color: '#166534'
                   }
                 ]);
@@ -2484,7 +2484,7 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                           maxWidth: '100%'
                         }}>
                           {card.icon}
-                          <span style={{
+                          <span className="notranslate" style={{
                             fontSize: '9.5px',
                             fontWeight: 800,
                             color: '#64748B',
@@ -2494,7 +2494,7 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                             {card.title}
                           </span>
                         </div>
-                        <div style={{
+                        <div className="notranslate" style={{
                           fontSize: '11px',
                           fontWeight: 800,
                           color: card.color,
