@@ -21,9 +21,9 @@ const TEXTS = {
     // Meet the Founder
     meetFounder: 'Meet the Founder',
     founderName: 'Sunil Thatra',
-    founderRole: 'Founder & Lead Creator, Saarthi',
-    founderBio1: 'Saarthi was started by Sunil Thatra with the idea of creating a simple and useful digital guide for people visiting Tirupati and Tirumala.',
-    founderBio2: 'Sunil developed the idea of Saarthi and has worked on the product from its initial concept to its current form. His work includes product planning, design, technology, development, data research, and testing.',
+    founderRole: 'Founder & Lead Creator, Saarthi Guide',
+    founderBio1: 'Sunil Thatra is the Founder of Saarthi (Saarthi Guide). He started Saarthi with the vision of creating a reliable, modern, and simple digital guide for millions of visitors traveling to Tirupati and Tirumala.',
+    founderBio2: 'Sunil Thatra conceived, designed, and built Saarthi from scratch — overseeing product architecture, user experience design, real-time data integration, full-stack technology development, and ground verification.',
     
     areasTitle: 'Areas of Work',
     areas: [
