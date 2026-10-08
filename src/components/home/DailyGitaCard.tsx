@@ -15,7 +15,11 @@ interface DailyGitaCardProps {
 export function DailyGitaCard({ date, variant = 'desktop' }: DailyGitaCardProps) {
   const lang = useLanguage();
   const shloka: GitaShloka = getDailyGitaShloka(date);
-  const [script, setScript] = useState<'te' | 'sa' | 'en'>(lang === 'te' ? 'te' : 'en');
+  const [script, setScript] = useState<'te' | 'sa' | 'en'>(lang === 'te' ? 'te' : lang === 'hi' || lang === 'ta' ? 'sa' : 'en');
+
+  React.useEffect(() => {
+    setScript(lang === 'te' ? 'te' : lang === 'hi' || lang === 'ta' ? 'sa' : 'en');
+  }, [lang]);
   const [activeTab, setActiveTab] = useState<'meaning' | 'practice'>('meaning');
   const [copied, setCopied] = useState(false);
   const [streak, setStreak] = useState(1);
@@ -146,7 +150,7 @@ export function DailyGitaCard({ date, variant = 'desktop' }: DailyGitaCardProps)
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
               <div style={{ fontSize: '13px', fontWeight: 900, color: '#92400E', letterSpacing: '-0.01em', lineHeight: '1.2' }}>
-                {lang === 'te' ? 'భగవద్గీత నిత్య శ్లోకం' : 'Daily Gita Shloka'}
+                {lang === 'te' ? 'భగవద్గీత నిత్య శ్లోకం' : lang === 'hi' ? 'भगवद्गीता नित्य श्लोक' : lang === 'ta' ? 'பகவத் கீதை தினசரி ஸ்லோகம்' : 'Daily Gita Shloka'}
               </div>
               <span style={{
                 fontSize: '9.5px',
@@ -158,7 +162,7 @@ export function DailyGitaCard({ date, variant = 'desktop' }: DailyGitaCardProps)
                 borderRadius: '8px',
                 lineHeight: 1.2
               }}>
-                {streak} {lang === 'te' ? 'రోజు సాధన' : (streak === 1 ? 'Day Streak' : 'Days Streak')}
+                {streak} {lang === 'te' ? 'రోజు సాధన' : lang === 'hi' ? 'दिन साधना' : lang === 'ta' ? 'நாள் சாதனை' : (streak === 1 ? 'Day Streak' : 'Days Streak')}
               </span>
             </div>
             <div style={{ fontSize: '11px', fontWeight: 700, color: '#B45309', marginTop: '1px' }}>
