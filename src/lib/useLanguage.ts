@@ -12,11 +12,12 @@ export function setAppLanguage(newLang: AppLang) {
   if (typeof window === 'undefined') return;
   try {
     localStorage.setItem('saarthi_user_language', newLang);
-    if (newLang === 'en') {
-      // Clear google translate cookie when returning to English
-      document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-      document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; domain=${window.location.hostname}; path=/;`;
-    } else {
+    
+    // Always clear existing google translate cookie first to prevent target language mismatch
+    document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+    document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; domain=${window.location.hostname}; path=/;`;
+
+    if (newLang !== 'en') {
       // Set google translate cookie for auto-translation to selected language
       document.cookie = `googtrans=/en/${newLang}; path=/;`;
       document.cookie = `googtrans=/en/${newLang}; domain=${window.location.hostname}; path=/;`;

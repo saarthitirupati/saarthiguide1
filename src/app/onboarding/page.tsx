@@ -151,8 +151,8 @@ export default function OnboardingPage() {
     const savedName = localStorage.getItem('saarthi_user_name');
     if (savedName) setName(savedName);
 
-    const savedLanguage = localStorage.getItem('saarthi_user_language') as 'en' | 'te';
-    if (savedLanguage && (savedLanguage === 'en' || savedLanguage === 'te')) {
+    const savedLanguage = localStorage.getItem('saarthi_user_language') as 'en' | 'te' | 'hi' | 'ta';
+    if (savedLanguage && ['en', 'te', 'hi', 'ta'].includes(savedLanguage)) {
       setSelectedLanguage(savedLanguage);
     }
     router.prefetch('/');
