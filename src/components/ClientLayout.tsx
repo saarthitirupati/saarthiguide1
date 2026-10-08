@@ -15,6 +15,8 @@ import { TopAppDownloadBanner } from '@/components/AppDownloadBanner';
 
 import { syncExistingPushSubscription } from '@/lib/pushClient';
 
+import { AppLang } from '@/lib/useLanguage';
+
 const SplashScreen = dynamic(() => import('@/components/Splash/Splash'), {
   ssr: false,
 });
@@ -36,7 +38,7 @@ function LayoutContent({
   setIsMenuOpen: (val: boolean) => void;
   splashMode: 'new' | 'existing';
   userName?: string;
-  language?: 'en' | 'te';
+  language?: AppLang;
 }) {
   usePageAnalytics();
   const pathname = usePathname();
@@ -142,7 +144,7 @@ export default function ClientLayout({
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isExistingUser, setIsExistingUser] = useState<boolean>(true);
   const [userName, setUserName] = useState<string>('');
-  const [userLanguage, setUserLanguage] = useState<'en' | 'te'>('en');
+  const [userLanguage, setUserLanguage] = useState<AppLang>('en');
 
   const isAdmin = pathname?.startsWith('/saarthiadmin');
 
@@ -163,8 +165,8 @@ export default function ClientLayout({
     const obKey = isApp ? 'hasSeenOnboarding_app' : 'hasSeenOnboarding';
     const hasSeenOnboarding = localStorage.getItem(obKey) || localStorage.getItem('hasSeenOnboarding');
     const name = localStorage.getItem(isApp ? 'saarthi_user_name_app' : 'saarthi_user_name') || localStorage.getItem('saarthi_user_name');
-    const lang = localStorage.getItem('saarthi_user_language') as 'en' | 'te';
-    if (lang === 'te' || lang === 'en') setUserLanguage(lang);
+    const lang = localStorage.getItem('saarthi_user_language') as AppLang | null;
+    if (lang && ['en', 'te', 'hi', 'ta'].includes(lang)) setUserLanguage(lang);
 
     const existing = Boolean(hasSeenOnboarding && name);
     setIsExistingUser(existing);

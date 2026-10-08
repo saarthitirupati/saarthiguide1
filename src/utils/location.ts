@@ -70,12 +70,12 @@ export const PRESET_LOCATIONS: LocationOption[] = [
   // Local Pilgrim Hubs
   {
     id: 'tirupati',
-    nameEn: 'Tirupati (City & Foothills)',
-    nameTe: 'తిరుపతి (నగరం & అలిపిరి దిగువ)',
+    nameEn: 'Tirupati',
+    nameTe: 'తిరుపతి',
     shortName: 'Tirupati',
     category: 'local-hub',
-    subtextEn: 'Alipiri, Railway Station, Central RTC Bus Stand',
-    subtextTe: 'అలిపిరి, రైల్వే స్టేషన్, సెంట్రల్ బస్టాండ్',
+    subtextEn: 'City & Alipiri Foothills',
+    subtextTe: 'నగరం & అలిపిరి దిగువ',
     coords: TIRUPATI_CENTER
   },
   {
@@ -425,20 +425,33 @@ export function calculateDrivingDistance(
  */
 export function formatDistance(distanceKm: number, lang: string = 'en'): string {
   if (distanceKm === undefined || distanceKm === null || isNaN(distanceKm) || distanceKm <= 0) {
-    return lang === 'te' ? 'సమీపంలో' : 'Nearby';
+    if (lang === 'te') return 'సమీపంలో';
+    if (lang === 'hi') return 'पास में';
+    if (lang === 'ta') return 'அருகில்';
+    return 'Nearby';
   }
 
   if (distanceKm < 1) {
     const meters = Math.max(10, Math.round(distanceKm * 1000));
-    return lang === 'te' ? `${meters} మీ.` : `${meters} m`;
+    if (lang === 'te') return `${meters} మీ.`;
+    if (lang === 'hi') return `${meters} मी.`;
+    if (lang === 'ta') return `${meters} மீ.`;
+    return `${meters} m`;
   }
 
   if (distanceKm < 10) {
-    return lang === 'te' ? `${distanceKm.toFixed(1)} కి.మీ` : `${distanceKm.toFixed(1)} km`;
+    const val = distanceKm.toFixed(1);
+    if (lang === 'te') return `${val} కి.మీ`;
+    if (lang === 'hi') return `${val} किमी`;
+    if (lang === 'ta') return `${val} கி.மீ`;
+    return `${val} km`;
   }
 
   const rounded = Math.round(distanceKm);
-  return lang === 'te' ? `${rounded} కి.మీ` : `${rounded} km`;
+  if (lang === 'te') return `${rounded} కి.మీ`;
+  if (lang === 'hi') return `${rounded} किमी`;
+  if (lang === 'ta') return `${rounded} கி.மீ`;
+  return `${rounded} km`;
 }
 
 /**
@@ -501,7 +514,10 @@ export function estimateDriveDuration(distanceKm: number, isTirumalaRoute: boole
  */
 export function formatTravelTime(minutes: number, lang: string = 'en'): string {
   if (!minutes || isNaN(minutes) || minutes <= 0) {
-    return lang === 'te' ? 'సమీపంలో' : 'Nearby';
+    if (lang === 'te') return 'సమీపంలో';
+    if (lang === 'hi') return 'पास में';
+    if (lang === 'ta') return 'அருகில்';
+    return 'Nearby';
   }
 
   let mins = Math.max(1, Math.round(minutes));
@@ -509,19 +525,22 @@ export function formatTravelTime(minutes: number, lang: string = 'en'): string {
     mins = Math.round(mins / 5) * 5;
   }
   if (mins < 60) {
-    return lang === 'te' ? `${mins} ని.` : `${mins} mins`;
+    if (lang === 'te') return `${mins} ని.`;
+    if (lang === 'hi') return `${mins} मिनट`;
+    if (lang === 'ta') return `${mins} நிமிடம்`;
+    return `${mins} mins`;
   }
   const hours = Math.floor(mins / 60);
   const remainingMins = mins % 60;
   if (remainingMins === 0) {
-    if (lang === 'te') {
-      return `${hours} గం.`;
-    }
+    if (lang === 'te') return `${hours} గం.`;
+    if (lang === 'hi') return `${hours} घंटे`;
+    if (lang === 'ta') return `${hours} மணி`;
     return hours === 1 ? '1 hr' : `${hours} hrs`;
   }
-  if (lang === 'te') {
-    return `${hours} గం. ${remainingMins} ని.`;
-  }
+  if (lang === 'te') return `${hours} గం. ${remainingMins} ని.`;
+  if (lang === 'hi') return `${hours} घंटे ${remainingMins} मिनट`;
+  if (lang === 'ta') return `${hours} மணி ${remainingMins} நிமிடம்`;
   return `${hours} hr${hours > 1 ? 's' : ''} ${remainingMins} mins`;
 }
 
@@ -532,6 +551,17 @@ export function formatTravelTime(minutes: number, lang: string = 'en'): string {
 export function getISTDate(date: Date = new Date()): Date {
   const utc = date.getTime() + date.getTimezoneOffset() * 60000;
   return new Date(utc + 3600000 * 5.5);
+}
+
+/**
+ * Returns localized place name based on active language (en, te, hi, ta)
+ */
+export function getPlaceName(place: { name: string; nameTe?: string; teluguName?: string; nameHi?: string; nameTa?: string }, lang: string = 'en'): string {
+  if (!place) return '';
+  if (lang === 'te') return place.nameTe || place.teluguName || place.name;
+  if (lang === 'hi') return place.nameHi || place.name;
+  if (lang === 'ta') return place.nameTa || place.name;
+  return place.name;
 }
 
 

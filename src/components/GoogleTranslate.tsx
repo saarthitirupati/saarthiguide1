@@ -14,22 +14,20 @@ export default function GoogleTranslate() {
   const pathname = usePathname();
 
   useEffect(() => {
-    // Tell Chrome not to offer its own "Translate page?" prompt
-    if (!document.querySelector('meta[name="google"][content="notranslate"]')) {
-      const meta = document.createElement('meta');
-      meta.name = 'google';
-      meta.content = 'notranslate';
-      document.head.appendChild(meta);
+    // Remove any notranslate meta tag that blocks Google Translate from translating page text
+    const existingMeta = document.querySelector('meta[name="google"][content="notranslate"]');
+    if (existingMeta) {
+      existingMeta.remove();
     }
 
     const savedLang = localStorage.getItem('saarthi_user_language');
-    // Only load Google Translate if Telugu is selected
-    if (savedLang !== 'te') return;
+    // Only load Google Translate if a non-English language is selected
+    if (!savedLang || savedLang === 'en') return;
 
     const triggerTranslate = () => {
       const sel = document.querySelector('.goog-te-combo') as HTMLSelectElement | null;
       if (sel) {
-        sel.value = 'te';
+        sel.value = savedLang;
         sel.dispatchEvent(new Event('change'));
       }
     };
@@ -41,7 +39,7 @@ export default function GoogleTranslate() {
           new (window as any).google.translate.TranslateElement(
             {
               pageLanguage: 'en',
-              includedLanguages: 'te',
+              includedLanguages: 'te,hi,ta',
               autoDisplay: false,
             },
             'google_translate_element'
@@ -50,7 +48,7 @@ export default function GoogleTranslate() {
           const poll = setInterval(() => {
             const sel = document.querySelector('.goog-te-combo') as HTMLSelectElement | null;
             if (sel) {
-              sel.value = 'te';
+              sel.value = savedLang;
               sel.dispatchEvent(new Event('change'));
               clearInterval(poll);
             }

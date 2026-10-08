@@ -28,6 +28,30 @@ const TEXTS = {
     peakCrowd: 'గరిష్ట రద్దీ · ఎక్కువ వేచి',
     checkLive: 'లైవ్ స్థితి చూడండి',
     coveredIndoor: 'వాతావరణం అనుకూలంగా ఉంది · ఇండోర్',
+  },
+  hi: {
+    recommended: 'सारथी अनुशंसा',
+    whyRecommended: 'अनुशंसा का कारण:',
+    viewDetails: 'विवरण देखें',
+    quietNight: 'शांत · रात्रि समय',
+    lowCrowd: 'कम भीड़ · त्वरित प्रवेश',
+    modCrowd: 'सामान्य · ~30 मिनट प्रतीक्षा',
+    highCrowd: 'भारी भीड़ · योजना बनाएं',
+    peakCrowd: 'अत्यधिक भीड़ · लंबी प्रतीक्षा',
+    checkLive: 'लाइव स्थिति देखें',
+    coveredIndoor: 'कवर्ड एवं इंडोर',
+  },
+  ta: {
+    recommended: 'சாரதி பரிந்துரை',
+    whyRecommended: 'பரிந்துரைக்கப்பட்ட காரணம்:',
+    viewDetails: 'விவரங்கள் காண்க',
+    quietNight: 'அமைதியானது · இரவு நேரம்',
+    lowCrowd: 'குறைந்த கூட்டம் · வேக நுழைவு',
+    modCrowd: 'மிதமான கூட்டம் · ~30 நிமி காத்திருப்பு',
+    highCrowd: 'அதிக கூட்டம் · திட்டமிடுங்கள்',
+    peakCrowd: 'அதிகபட்ச கூட்டம் · நீண்ட காத்திருப்பு',
+    checkLive: 'நேரலை நிலை காண்க',
+    coveredIndoor: 'உட்புற தங்குமிடம்',
   }
 };
 
@@ -41,7 +65,7 @@ export function RecommendationCard({
   variant?: 'mobile' | 'desktop';
 }) {
   const lang = useLanguage();
-  const t = TEXTS[lang];
+  const t = TEXTS[lang as keyof typeof TEXTS] || TEXTS.en;
 
   const status = liveStatus || {};
 

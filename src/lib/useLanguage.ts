@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 
-export type AppLang = 'en' | 'te';
+export type AppLang = 'en' | 'te' | 'hi' | 'ta';
 
 /**
  * Persists the chosen language and reloads the page to cleanly update
@@ -16,6 +16,10 @@ export function setAppLanguage(newLang: AppLang) {
       // Clear google translate cookie when returning to English
       document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
       document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; domain=${window.location.hostname}; path=/;`;
+    } else {
+      // Set google translate cookie for auto-translation to selected language
+      document.cookie = `googtrans=/en/${newLang}; path=/;`;
+      document.cookie = `googtrans=/en/${newLang}; domain=${window.location.hostname}; path=/;`;
     }
     window.dispatchEvent(new CustomEvent('saarthi_language_change', { detail: newLang }));
     window.location.reload();
@@ -32,18 +36,18 @@ export function useLanguage(): AppLang {
   const [lang, setLang] = useState<AppLang>('en');
 
   useEffect(() => {
-    const saved = localStorage.getItem('saarthi_user_language');
-    if (saved === 'te') {
-      setLang('te');
-      document.documentElement.lang = 'te';
-    } else if (saved === 'en') {
+    const saved = localStorage.getItem('saarthi_user_language') as AppLang | null;
+    if (saved && ['en', 'te', 'hi', 'ta'].includes(saved)) {
+      setLang(saved);
+      document.documentElement.lang = saved;
+    } else {
       setLang('en');
       document.documentElement.lang = 'en';
     }
 
     const handleLanguageChange = (e: Event) => {
       const customEvent = e as CustomEvent<AppLang>;
-      if (customEvent?.detail === 'te' || customEvent?.detail === 'en') {
+      if (customEvent?.detail && ['en', 'te', 'hi', 'ta'].includes(customEvent.detail)) {
         setLang(customEvent.detail);
         document.documentElement.lang = customEvent.detail;
       }

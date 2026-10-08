@@ -12,15 +12,18 @@ import Logo from '@/components/Logo/Logo';
 import styles from './Onboarding.module.css';
 
 interface LanguageOption {
-  code: 'en' | 'te';
-  flag: string;
+  code: 'en' | 'te' | 'hi' | 'ta';
+  badge: string;
   nativeName: string;
+  englishLabel: string;
   subText: string;
 }
 
 const LANGUAGES: LanguageOption[] = [
-  { code: 'en', flag: '🇮🇳', nativeName: 'English', subText: 'Continue in English' },
-  { code: 'te', flag: '🇮🇳', nativeName: 'తెలుగు', subText: 'తెలుగులో కొనసాగండి' }
+  { code: 'en', badge: 'Aa', nativeName: 'English', englishLabel: 'English', subText: 'Default App Language' },
+  { code: 'te', badge: 'అ', nativeName: 'తెలుగు', englishLabel: 'Telugu', subText: 'ఆంధ్రప్రదేశ్ & తెలంగాణ' },
+  { code: 'hi', badge: 'अ', nativeName: 'हिंदी', englishLabel: 'Hindi', subText: 'भारत की राजभाषा' },
+  { code: 'ta', badge: 'அ', nativeName: 'தமிழ்', englishLabel: 'Tamil', subText: 'தமிழ்நாடு & புதுச்சேரி' }
 ];
 
 const TRANSLATIONS = {
@@ -65,6 +68,48 @@ const TRANSLATIONS = {
     loadingTagline: 'మీ యాత్ర మార్గదర్శిని సిద్ధం అవుతోంది...',
     blessing: 'ఓం శ్రీ వెంకటేశాయ నమః',
     skip: 'దాటవేయి'
+  },
+  hi: {
+    selectLanguage: 'अपनी भाषा चुनें',
+    selectLanguageSub: 'Choose Your Language',
+    welcomeTitle: 'सारथी में आपका स्वागत है',
+    welcomeSub: 'तिरुपति और तिरुमाला की आपकी दिव्य यात्रा का विश्वसनीय साथी।',
+    cards: [
+      { title: 'लाइव अपडेट', desc: 'वास्तविक समय दर्शन प्रतीक्षा समय और लाइव सूचनाएं।', color: '#059669', bg: '#E5F3EB', icon: Activity },
+      { title: 'दर्शन स्थल', desc: 'मंदिरों और दर्शनीय स्थलों का विस्तृत विवरण।', color: '#D97706', bg: '#FFF7ED', icon: Compass },
+      { title: 'यात्रा की आवश्यकताएं', desc: 'सरकारी नियम, परिवहन और आवश्यक चेकलिस्ट।', color: '#2563EB', bg: '#EFF6FF', icon: BookOpen }
+    ],
+    nameTitle: 'हम आपको किस नाम से बुलाएं?',
+    nameDesc: 'हम आपकी यात्रा के अनुसार जानकारी प्रदर्शित करेंगे।',
+    namePlaceholder: 'अपना नाम दर्ज करें',
+    nameExamples: 'जैसे: राहुल, प्रिया, सुमित',
+    privacyNote: 'आपकी निजता हमारी प्राथमिकता है। आपकी जानकारी आपके डिवाइस पर सुरक्षित रहती है।',
+    btnContinue: 'जारी रखें',
+    btnLetsGo: 'शुरू करें',
+    loadingTagline: 'आपकी मार्गदर्शिका तैयार की जा रही है...',
+    blessing: 'ॐ श्री वेंकटेशाय नमः',
+    skip: 'छोड़ें'
+  },
+  ta: {
+    selectLanguage: 'உங்கள் மொழியைத் தேர்ந்தெடுக்கவும்',
+    selectLanguageSub: 'Choose Your Language',
+    welcomeTitle: 'சாரதிக்கு நல்வரவு',
+    welcomeSub: 'திருப்பதி திருமலை ஆன்மீகப் பயணத்தின் நம்பிக்கைக்குரிய துணைவன்.',
+    cards: [
+      { title: 'லைவ் தகவல்கள்', desc: 'நேரலை தரிசன காத்திருப்பு நேரம் மற்றும் அறிவிப்புகள்.', color: '#059669', bg: '#E5F3EB', icon: Activity },
+      { title: 'ஆன்மீக இடங்கள்', desc: 'கோயில்கள் மற்றும் புனித இடங்களின் விரிவான வழிகாட்டி.', color: '#D97706', bg: '#FFF7ED', icon: Compass },
+      { title: 'பயண வசதிகள்', desc: 'அதிகாரப்பூர்வ விதிகள் மற்றும் பயண சரிபார்ப்புப் பட்டியல்.', color: '#2563EB', bg: '#EFF6FF', icon: BookOpen }
+    ],
+    nameTitle: 'உங்களை என்னவென்று அழைக்கலாம்?',
+    nameDesc: 'உங்கள் பயணத்திற்கு ஏற்ப தகவல்களை அமைப்போம்.',
+    namePlaceholder: 'உங்கள் பெயரை உள்ளிடவும்',
+    nameExamples: 'எ.கா: கார்த்திக், பிரியா, சுரேஷ்',
+    privacyNote: 'உங்கள் தனியுரிமை பாதுகாப்பானது. தகவல்கள் உங்கள் போனில் மட்டுமே சேமிக்கப்படும்.',
+    btnContinue: 'தொடரவும்',
+    btnLetsGo: 'தொடங்குவோம்',
+    loadingTagline: 'உங்கள் வழிகாட்டி தயாராகிறது...',
+    blessing: 'ஓம் ஸ்ரீ வேங்கடேசாய நமஹ',
+    skip: 'தவிர்க்க'
   }
 };
 
@@ -93,7 +138,7 @@ export default function OnboardingPage() {
   const router = useRouter();
   const [step, setStep] = useState(1);
   const [name, setName] = useState('');
-  const [selectedLanguage, setSelectedLanguage] = useState<'en' | 'te'>('en');
+  const [selectedLanguage, setSelectedLanguage] = useState<'en' | 'te' | 'hi' | 'ta'>('en');
   const [isMounted, setIsMounted] = useState(false);
 
   const [locationPerm] = useState(true);
@@ -252,12 +297,12 @@ export default function OnboardingPage() {
               exit="exit"
             >
               <div className={styles.stepBody}>
-                <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '16px' }}>
-                  <Logo size={56} />
+                <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '8px' }}>
+                  <Logo size={42} />
                 </div>
 
                 <h1 className={styles.stepTitle}>
-                  <Globe size={24} style={{ color: '#0F5132' }} /> {t.selectLanguage}
+                  <Globe size={20} style={{ color: '#0F5132' }} /> {t.selectLanguage}
                 </h1>
                 <p className={styles.stepSubtitle}>
                   {t.selectLanguageSub}
@@ -281,11 +326,23 @@ export default function OnboardingPage() {
                         className={`${styles.languageCard} ${isSelected ? styles.languageCardActive : ''}`}
                       >
                         <div className={styles.languageCardContent}>
-                          <span className={styles.languageFlag}>{lang.flag}</span>
-                          <div>
-                            <div className={styles.languageNativeName}>{lang.nativeName}</div>
+                          <div className={styles.languageAvatar}>
+                            <span>{lang.badge}</span>
+                          </div>
+                          <div className={styles.languageTextContainer}>
+                            <div className={styles.languageTitleRow}>
+                              <span className={styles.languageNativeName}>{lang.nativeName}</span>
+                              {lang.code !== 'en' && (
+                                <span className={styles.languageEnglishLabel}>({lang.englishLabel})</span>
+                              )}
+                            </div>
                             <div className={styles.languageSubText}>
-                              {isSelected ? (lang.code === 'te' ? 'తెలుగులో కొనసాగండి →' : 'Continue in English →') : lang.subText}
+                              {isSelected ? (
+                                lang.code === 'te' ? 'తెలుగులో కొనసాగండి →' :
+                                lang.code === 'hi' ? 'हिंदी में जारी रखें →' :
+                                lang.code === 'ta' ? 'தமிழில் தொடரவும் →' :
+                                'Continue in English →'
+                              ) : lang.subText}
                             </div>
                           </div>
                         </div>

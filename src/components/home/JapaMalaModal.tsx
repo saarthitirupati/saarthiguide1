@@ -30,18 +30,18 @@ import { triggerBeadHaptic } from '../../lib/audioBell';
 import { generateJapaCard, shareOrDownloadCard } from '../../lib/shareCardGenerator';
 import { LotusMandalaVector, SrivariNamamVector } from '../common/DevotionalSvgIcons';
 import { useSpeechSynthesis } from '../../utils/useSpeechSynthesis';
-import { useLanguage } from '../../lib/useLanguage';
+import { useLanguage, AppLang } from '../../lib/useLanguage';
 
 interface JapaMalaModalProps {
   isOpen: boolean;
   onClose: () => void;
-  lang: 'te' | 'en';
+  lang: AppLang;
 }
 
 export function JapaMalaModal({ isOpen, onClose, lang }: JapaMalaModalProps) {
   // Synchronize language with user selection or global app state
   const appLang = useLanguage();
-  const [currentLang, setCurrentLang] = useState<'te' | 'en'>(lang || appLang || 'en');
+  const [currentLang, setCurrentLang] = useState<AppLang>(lang || appLang || 'en');
 
   useEffect(() => {
     if (lang) setCurrentLang(lang);
@@ -111,7 +111,7 @@ export function JapaMalaModal({ isOpen, onClose, lang }: JapaMalaModalProps) {
   const transliteration = parenMatch ? parenMatch[1].trim() : rawEn;
 
   // Localized meaning title & full blessing according to user selected language
-  const localizedMeaningTitle = getNamaShortMeaning(activeBead, currentLang);
+  const localizedMeaningTitle = getNamaShortMeaning(activeBead, currentLang === 'te' ? 'te' : 'en');
   const localizedBlessingBody = currentLang === 'te' ? activeNama.blessingTe : activeNama.blessingEn;
 
   // Audio environment synchronization
@@ -337,7 +337,7 @@ export function JapaMalaModal({ isOpen, onClose, lang }: JapaMalaModalProps) {
         blessingTe: currentNama.blessingTe,
         blessingEn: currentNama.blessingEn,
         completedMalas,
-        lang: currentLang
+        lang: currentLang === 'te' ? 'te' : 'en'
       });
 
       if (blob) {

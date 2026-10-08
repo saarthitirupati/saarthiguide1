@@ -43,10 +43,92 @@ const DARSHAN_FLOW_META = {
 };
 
 import { useRealtimeStatus } from '@/lib/useRealtimeStatus';
+import { useLanguage } from '@/lib/useLanguage';
+
+const TEXTS: Record<string, Record<string, string>> = {
+  en: {
+    title: 'Tirumala Live Status',
+    verified: 'Verified · TTD Official',
+    wait: 'Wait',
+    lessCrowded: 'Less Crowded',
+    moderate: 'Moderate',
+    heavyCrowd: 'Heavy Crowd',
+    veryHeavy: 'Very Heavy',
+    queueCongestion: 'Queue congestion',
+    overall: 'overall',
+    darshanCategory: 'Darshan Category',
+    waitTime: 'Wait Time',
+    peakHours: 'Peak Hours',
+    refresh: 'Refresh',
+    refreshing: 'Refreshing...',
+    updatedAt: 'Updated at',
+    shareToFamily: 'Share to Family',
+    saarthiGuidance: 'SAARTHI GUIDANCE'
+  },
+  te: {
+    title: 'తిరుమల లైవ్ పరిస్థితి',
+    verified: 'ధృవీకరించబడింది · TTD అధికారికం',
+    wait: 'వేచి సమయం',
+    lessCrowded: 'తక్కువ రద్దీ',
+    moderate: 'సాధారణ రద్దీ',
+    heavyCrowd: 'అధిక రద్దీ',
+    veryHeavy: 'అత్యధిక రద్దీ',
+    queueCongestion: 'క్యూ రద్దీ నిష్పత్తి',
+    overall: 'మొత్తం వేచి సమయం',
+    darshanCategory: 'దర్శన వర్గం',
+    waitTime: 'వేచి ఉండు సమయం',
+    peakHours: 'రద్దీ గంటలు',
+    refresh: 'రిఫ్రెష్',
+    refreshing: 'రిఫ్రెష్ అవుతోంది...',
+    updatedAt: 'సమయం',
+    shareToFamily: 'కుటుంబానికి షేర్ చేయండి',
+    saarthiGuidance: 'సారథి మార్గదర్శనం'
+  },
+  hi: {
+    title: 'तिरुपति लाइव स्थिति',
+    verified: 'सत्यापित · टीटीडी आधिकारिक',
+    wait: 'प्रतीक्षा समय',
+    lessCrowded: 'कम भीड़',
+    moderate: 'सामान्य भीड़',
+    heavyCrowd: 'भारी भीड़',
+    veryHeavy: 'अत्यधिक भीड़',
+    queueCongestion: 'कतार की भीड़',
+    overall: 'कुल समय',
+    darshanCategory: 'दर्शन श्रेणी',
+    waitTime: 'प्रतीक्षा समय',
+    peakHours: 'भीड़ के घंटे',
+    refresh: 'ताज़ा करें',
+    refreshing: 'ताज़ा हो रहा है...',
+    updatedAt: 'अद्यतन समय',
+    shareToFamily: 'परिवार को साझा करें',
+    saarthiGuidance: 'सारथी मार्गदर्शन'
+  },
+  ta: {
+    title: 'திருமலை நேரலை நிலை',
+    verified: 'சரிபார்க்கப்பட்டது · TTD அதிகாரப்பூர்வ',
+    wait: 'காத்திருப்பு நேரம்',
+    lessCrowded: 'குறைந்த கூட்டம்',
+    moderate: 'மிதமான கூட்டம்',
+    heavyCrowd: 'அதிக கூட்டம்',
+    veryHeavy: 'மிக அதிக கூட்டம்',
+    queueCongestion: 'வரிசை நெரிசல்',
+    overall: 'மொத்த நேரம்',
+    darshanCategory: 'தரிசன பிரிவு',
+    waitTime: 'காத்திருப்பு நேரம்',
+    peakHours: 'அதிக கூட்ட நேரங்கள்',
+    refresh: 'புதுப்பி',
+    refreshing: 'புதுப்பிக்கப்படுகிறது...',
+    updatedAt: 'புதுப்பிக்கப்பட்ட நேரம்',
+    shareToFamily: 'குடும்பத்தினருடன் பகிரவும்',
+    saarthiGuidance: 'சாரதி வழிகாட்டுதல்'
+  }
+};
 
 export default function LiveStatus() {
   const [expanded, setExpanded] = useState(false);
   const [refreshing, setRefreshing] = useState(false);
+  const lang = useLanguage();
+  const t = TEXTS[lang as keyof typeof TEXTS] || TEXTS.en;
   
   const { status, refresh } = useRealtimeStatus();
 
@@ -58,13 +140,21 @@ export default function LiveStatus() {
 
   if (!status) return null;
 
-  const meta = CROWD_META[status.crowdLevel as keyof typeof CROWD_META] ?? CROWD_META.moderate;
-  const _roomMeta = ACCOMMODATION_META[status.accommodationStatus as keyof typeof ACCOMMODATION_META] ?? ACCOMMODATION_META.available;
-  const _ladduMeta = LADDU_META[status.ladduAvailability as keyof typeof LADDU_META] ?? LADDU_META.available;
-  const _flowMeta = DARSHAN_FLOW_META[status.darshanSpeed as keyof typeof DARSHAN_FLOW_META] ?? DARSHAN_FLOW_META.normal;
+  const metaKey = (status.crowdLevel as keyof typeof CROWD_META) || 'moderate';
+  const meta = CROWD_META[metaKey] ?? CROWD_META.moderate;
+  const localizedCrowdLabel = metaKey === 'low' ? t.lessCrowded : metaKey === 'high' ? t.heavyCrowd : metaKey === 'very-high' ? t.veryHeavy : t.moderate;
 
   const formatHeaderWait = (timeStr: string) => {
     const clean = timeStr.toLowerCase().replace('wait', '').replace('time', '').trim();
+    if (lang === 'te') {
+      return clean.includes('hour') || clean.includes('hrs') || clean.includes('h') ? `${clean.replace(/[^0-9-]/g, '')} గంటలు` : `${clean.replace(/[^0-9-]/g, '')} నిమిషాలు`;
+    }
+    if (lang === 'hi') {
+      return clean.includes('hour') || clean.includes('hrs') || clean.includes('h') ? `${clean.replace(/[^0-9-]/g, '')} घंटे` : `${clean.replace(/[^0-9-]/g, '')} मिनट`;
+    }
+    if (lang === 'ta') {
+      return clean.includes('hour') || clean.includes('hrs') || clean.includes('h') ? `${clean.replace(/[^0-9-]/g, '')} மணி நேரம்` : `${clean.replace(/[^0-9-]/g, '')} நிமிடம்`;
+    }
     if (!clean.endsWith('h') && !clean.endsWith('hrs') && !clean.endsWith('hours') && !clean.endsWith('hour') && !clean.endsWith('m') && !clean.endsWith('mins') && !clean.endsWith('minutes')) {
       return `${clean} hrs`;
     }
@@ -118,7 +208,7 @@ export default function LiveStatus() {
         {/* Live dot + label */}
         <div className={styles.liveChip}>
           <span className={styles.liveDot} style={{ background: meta.pulse }} />
-          <span>Verified · TTD Official</span>
+          <span>{t.verified}</span>
           {status.lastUpdated && (
             <span style={{ fontSize: '10px', color: '#64748B', marginLeft: '4px', fontWeight: 600 }}>
               • {fmtTime(status.lastUpdated)}
@@ -132,13 +222,13 @@ export default function LiveStatus() {
           style={{ background: meta.bg, color: meta.color }}
         >
           <Users size={12} />
-          {meta.label}
+          {localizedCrowdLabel}
         </div>
 
         {/* Wait time */}
         <div className={styles.waitTime}>
           <Clock size={12} />
-          <span>{formatHeaderWait(status.waitTime)} Wait</span>
+          <span>{formatHeaderWait(status.waitTime)}</span>
         </div>
 
         {/* Expand toggle */}
@@ -160,8 +250,8 @@ export default function LiveStatus() {
             {/* Queue Wait Progress Meter */}
             <div className={styles.meterContainer}>
               <div className={styles.meterLabels}>
-                <span className={styles.meterTitle}>Queue congestion</span>
-                <span className={styles.meterVal}>{formatHeaderWait(status.waitTime)} overall</span>
+                <span className={styles.meterTitle}>{t.queueCongestion}</span>
+                <span className={styles.meterVal}>{formatHeaderWait(status.waitTime)} {t.overall}</span>
               </div>
               <div className={styles.meterTrack}>
                 <div 
@@ -175,9 +265,9 @@ export default function LiveStatus() {
             {status.darshans && status.darshans.length > 0 && (
               <div className={styles.darshanList}>
                 <div className={styles.darshanHeader}>
-                  <span>Darshan Category</span>
-                  <span style={{ textAlign: 'center' }}>Wait Time</span>
-                  <span style={{ textAlign: 'right' }}>Peak Hours</span>
+                  <span>{t.darshanCategory}</span>
+                  <span style={{ textAlign: 'center' }}>{t.waitTime}</span>
+                  <span style={{ textAlign: 'right' }}>{t.peakHours}</span>
                 </div>
                 {status.darshans.map((d: any, i: number) => (
                   <div key={i} className={styles.darshanRow}>
@@ -190,7 +280,7 @@ export default function LiveStatus() {
                         className={styles.darshanTimeBadge} 
                         style={getWaitTimeBadgeStyle(d.waitTime)}
                       >
-                        {d.waitTime}
+                        {formatHeaderWait(d.waitTime)}
                       </span>
                     </div>
                     <div className={styles.darshanPeakCol}>
@@ -230,9 +320,9 @@ export default function LiveStatus() {
                 title="Refresh Status"
               >
                 <RefreshCw size={13} />
-                <span>{refreshing ? 'Refreshing...' : 'Refresh'}</span>
+                <span>{refreshing ? t.refreshing : t.refresh}</span>
               </button>
-              <p className={styles.updatedAt}>Updated at {fmtTime(status.lastUpdated)}</p>
+              <p className={styles.updatedAt}>{t.updatedAt} {fmtTime(status.lastUpdated)}</p>
             </div>
           </motion.div>
         )}

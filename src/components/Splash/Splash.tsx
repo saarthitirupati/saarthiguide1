@@ -5,11 +5,13 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Logo from '@/components/Logo/Logo';
 import styles from './Splash.module.css';
 
+import { AppLang } from '@/lib/useLanguage';
+
 interface SplashScreenProps {
   onFinish: () => void;
   mode?: 'new' | 'existing';
   userName?: string;
-  language?: 'en' | 'te';
+  language?: AppLang;
 }
 
 export default function SplashScreen({

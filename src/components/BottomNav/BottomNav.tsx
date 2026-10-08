@@ -18,20 +18,33 @@ const TEXTS = {
     home: 'హోమ్',
     essentials: 'అవసరాలు',
     explore: 'అన్వేషించు'
+  },
+  hi: {
+    home: 'होम',
+    essentials: 'आवश्यकताएं',
+    explore: 'खोजें'
+  },
+  ta: {
+    home: 'முகப்பு',
+    essentials: 'தேவைகள்',
+    explore: 'ஆராய்க'
   }
 };
 
-const getNavItems = (t: any) => [
-  { name: t.home,       icon: Home,     href: '/' },
-  { name: t.essentials, icon: Layers,   href: '/essentials', isFab: true },
-  { name: t.explore,    icon: Compass,  href: '/explore' },
-];
+const getNavItems = (t: Record<string, string> | undefined) => {
+  const safeT = t || TEXTS.en;
+  return [
+    { name: safeT.home || 'Home',             icon: Home,     href: '/' },
+    { name: safeT.essentials || 'Essentials', icon: Layers,   href: '/essentials', isFab: true },
+    { name: safeT.explore || 'Explore',       icon: Compass,  href: '/explore' },
+  ];
+};
 
 export default function BottomNav() {
   const pathname  = usePathname();
   const [mounted, setMounted] = useState(false);
   const lang = useLanguage();
-  const t = TEXTS[lang];
+  const t = (TEXTS as Record<string, Record<string, string>>)[lang] || TEXTS.en;
 
   useEffect(() => { setMounted(true); }, []);
 

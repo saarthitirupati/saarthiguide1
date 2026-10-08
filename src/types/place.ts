@@ -128,6 +128,8 @@ export interface Place {
   significance?: PlaceSignificance;
   name: string;
   nameTe?: string;
+  nameHi?: string;
+  nameTa?: string;
   teluguName?: string;
   teluguTitle?: string;
   category: string;

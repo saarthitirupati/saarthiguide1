@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { Menu, Bell, MapPin, Sun, Sparkles, Ticket, TicketX, ShieldAlert, Car, Gift, CloudRain, Bus, Clock, Route, Users, Zap, Check, ChevronDown, Navigation, Flame, Moon, Languages, RotateCcw, Share2, X, Volume2, VolumeX, ChevronRight, Pause, Play, Building2, Calendar } from 'lucide-react';
 import Link from 'next/link';
 import Logo from '@/components/Logo/Logo';
-import { useLanguage, setAppLanguage } from '@/lib/useLanguage';
+import { useLanguage, setAppLanguage, AppLang } from '@/lib/useLanguage';
 import { useTrip } from '@/components/TripContext';
 import { detectCoordinates, isCoordinateOnTirumalaHill, resolveLocationName } from '@/lib/location';
 import { 
@@ -200,6 +200,176 @@ const TEXTS: Record<string, any> = {
       night: 'రిమైండర్ సెట్ చేయండి →',
       alert: 'ప్రత్యామ్నాయ మార్గం చూడండి →'
     }
+  },
+  hi: {
+    greetings: {
+      morning: 'शुभ प्रभात',
+      afternoon: 'शुभ दोपहर',
+      evening: 'शुभ संध्या',
+      night: 'शुभ रात्रि'
+    },
+    header: {
+      companion: 'आपका तिरुमाला साथी'
+    },
+    tagline: 'आपकी वर्तमान स्थिति के आधार पर, आगे क्या करना सबसे अच्छा है — और क्यों।',
+    labels: {
+      today: 'आज',
+      currentWait: 'वर्तमान प्रतीक्षा',
+      bestTime: 'सर्वश्रेष्ठ समय',
+      updated: 'अद्यतन',
+      justNow: 'अभी',
+      minAgo: 'मिनट पहले',
+      live: 'लाइव',
+      saarthiRecommends: 'सारथी अनुशंसा करता है',
+      recommendedBecause: 'अनुशंसा का कारण',
+      rightNowOnHill: 'पहाड़ पर इस समय',
+      viewAll: 'सभी देखें >'
+    },
+    badges: {
+      lowCrowd: 'कम भीड़',
+      moderateCrowd: 'सामान्य भीड़',
+      heavyCrowd: 'भारी भीड़',
+      weatherAlert: 'मौसम चेतावनी',
+      festivalRush: 'त्योहार की भीड़',
+      ssdOpen: 'SSD चालू',
+      nightUpdate: 'रात्रि अपडेट',
+      importantAdvisory: 'महत्वपूर्ण सलाह'
+    },
+    subtitles: {
+      green: 'तिरुमाला भीड़: सामान्य और स्पष्ट',
+      yellow: 'तिरुमाला भीड़: सामान्य रश',
+      red: 'तिरुमाला भीड़: अधिकतम क्षमता',
+      blue: 'तिरुमाला भीड़: बारिश की चेतावनी',
+      purple: 'तिरुमाला भीड़: त्योहार की भीड़',
+      orange: 'तिरुमाला भीड़: सीमित टोकन',
+      night: 'तिरुमाला भीड़: रात्रि अपडेट',
+      alert: 'तिरुमाला भीड़: मार्ग सलाह'
+    },
+    recommendations: {
+      green: 'शांत दर्शन समय खुला है। अपनी यात्रा अभी शुरू करें।',
+      yellow: 'पहले कपिला तीर्थम दर्शन करें। दोपहर के बाद दर्शन के लिए आएं।',
+      red: 'आज रात विश्राम करें। कल सुबह 6:00 बजे शांत दर्शन प्रतीक्षा कर रहा है।',
+      blue: 'बारिश के कारण अलिपिरी सीढ़ियाँ फिसलन भरी हैं। APSRTC बस लें।',
+      orange: 'अलिपिरी जाएँ। SSD टोकन स्लॉट तेज़ी से भर रहे हैं।',
+      purple: 'आज रात तिरुपति में रहें। कल सुबह 6:00 बजे नए सिरे से शुरू करें।',
+      night: 'आज रात अच्छी नींद लें। सुबह 6:00 बजे दर्शन शुरू करें।',
+      alert: 'आरटीसी बस मार्ग का उपयोग करें। सुरक्षित मार्ग तैयार है।'
+    },
+    why: {
+      green: 'आप आज दोपहर की रश को आसानी से छोड़ देंगे।',
+      yellow: 'दोपहर के समय कतार प्रतीक्षा समय में काफी कमी आती है।',
+      red: 'अभी जाने का मतलब कम्पार्टमेंट में 11 घंटे की भीड़ में रुकना होगा।',
+      blue: 'भारी बारिश के दौरान मार्ग फिसलन भरे होते हैं। बसें सुरक्षित चलती हैं।',
+      purple: 'रात भर की कतारें इस समय लगभग पूरी क्षमता पर हैं।',
+      orange: 'SSD टोकन 10+ घंटे की मुख्य कतार से बचाते हैं।',
+      night: 'सुबह 6:00 बजे प्रवेश 70% तेज और ठंडा होता है।',
+      alert: 'मुख्य प्रवेश मार्ग पर रखरखाव का काम जारी है।'
+    },
+    benefits: {
+      green: 'अभी निकलकर लगभग 3 घंटे का समय बचाएं',
+      yellow: 'दोपहर के स्लॉट में लगभग 2 घंटे बचाएं',
+      red: 'सुबह 6:00 बजे शुरू करके लगभग 4 घंटे बचाएं',
+      blue: 'मौसम की देरी और गीले रास्तों से बचें',
+      purple: 'सुबह शुरू करके 6+ घंटे कतार प्रतीक्षा बचाएं',
+      orange: 'SSD स्लॉट लेकर 8+ घंटे बचाएं',
+      night: 'सुबह 6:00 बजे शुरू करके लगभग 4 घंटे बचाएं',
+      alert: 'यातायात में देरी से आसानी से बचें'
+    },
+    ctas: {
+      green: 'यात्रा शुरू करें →',
+      yellow: 'सुझाई गई योजना देखें →',
+      red: 'मेरी योजना शुरू करें →',
+      blue: 'सुरक्षित मार्ग देखें →',
+      purple: 'कल की योजना →',
+      orange: 'SSD काउंटर जाएं →',
+      night: 'रिमाइंडर सेट करें →',
+      alert: 'वैकल्पिक मार्ग देखें →'
+    }
+  },
+  ta: {
+    greetings: {
+      morning: 'காலை வணக்கம்',
+      afternoon: 'மதிய வணக்கம்',
+      evening: 'மாலை வணக்கம்',
+      night: 'இரவு வணக்கம்'
+    },
+    header: {
+      companion: 'உங்கள் திருமலை வழிகாட்டி'
+    },
+    tagline: 'உங்கள் தற்போதைய சூழ்நிலையின் அடிப்படையில், அடுத்து என்ன செய்வது சிறந்தது — ஏன்.',
+    labels: {
+      today: 'இன்று',
+      currentWait: 'தற்போதைய காத்திருப்பு',
+      bestTime: 'சிறந்த நேரம்',
+      updated: 'புதுப்பிக்கப்பட்டது',
+      justNow: 'இப்போது',
+      minAgo: 'நிமிடங்களுக்கு முன்',
+      live: 'நேரலை',
+      saarthiRecommends: 'சாரதி பரிந்துரைக்கிறது',
+      recommendedBecause: 'பரிந்துரைக்கப்பட்ட காரணம்',
+      rightNowOnHill: 'மலையில் இப்போது',
+      viewAll: 'அனைத்தும் காண்க >'
+    },
+    badges: {
+      lowCrowd: 'குறைந்த கூட்டம்',
+      moderateCrowd: 'மிதமான கூட்டம்',
+      heavyCrowd: 'அதிக கூட்டம்',
+      weatherAlert: 'வானிலை எச்சரிக்கை',
+      festivalRush: 'திருவிழா கூட்டம்',
+      ssdOpen: 'SSD திறக்கப்பட்டது',
+      nightUpdate: 'இரவு புதுப்பிப்பு',
+      importantAdvisory: 'முக்கிய அறிவிப்பு'
+    },
+    subtitles: {
+      green: 'திருமலை கூட்டம்: இயல்பு நிலை',
+      yellow: 'திருமலை கூட்டம்: மிதமான கூட்டம்',
+      red: 'திருமலை கூட்டம்: அதிகபட்ச கொள்ளளவு',
+      blue: 'திருமலை கூட்டம்: மழை பாதிப்பு',
+      purple: 'திருமலை கூட்டம்: திருவிழா கூட்டம்',
+      orange: 'திருமலை கூட்டம்: குறைந்த டோக்கன்கள்',
+      night: 'திருமலை கூட்டம்: இரவு புதுப்பிப்பு',
+      alert: 'திருமலை கூட்டம்: வழி அறிவிப்பு'
+    },
+    recommendations: {
+      green: 'அமைதியான தரிசன நேரம் உள்ளது. உங்கள் பயணத்தை இப்போது தொடங்குங்கள்.',
+      yellow: 'முதலில் கபில தீர்த்தம் செல்லுங்கள். மதிய உணவுக்குப் பின் தரிசனத்திற்கு வாருங்கள்.',
+      red: 'இன்று இரவு ஓய்வெடுக்கவும். நாளை காலை 6:00 மணிக்கு அமைதியான தரிசனம் காத்திருக்கிறது.',
+      blue: 'மழையால் அலிபிரி படிகள் வழுக்குகின்றன. APSRTC பேருந்தை பயன்படுத்தவும்.',
+      orange: 'அலிபிரி செல்லுங்கள். SSD டோக்கன்கள் வேகமாக முடிகின்றன.',
+      purple: 'இன்று இரவு திருப்பதியில் தங்குங்கள். நாளை காலை 6:00 மணிக்கு தொடங்குங்கள்.',
+      night: 'இன்று இரவு ஓய்வெடுக்கவும். காலை 6:00 மணிக்கு தரிசனம் தொடங்குங்கள்.',
+      alert: 'RTC பேருந்து வழியை பயன்படுத்தவும். பாதுகாப்பான வழி தயார்.'
+    },
+    why: {
+      green: 'இன்றைய மதிய கூட்டத்தை எளிதாக தவிர்க்கலாம்.',
+      yellow: 'மதிய நேரத்தில் வரிசை காத்திருப்பு நேரம் குறைகிறது.',
+      red: 'இப்போது சென்றால் 11 மணி நேரம் வரிசையில் நிற்க வேண்டியிருக்கும்.',
+      blue: 'மழையில் படிகள் வழுக்கும். பேருந்துகள் பாதுகாப்பாக இயங்குகின்றன.',
+      purple: 'இரவு நேர வரிசைகள் முழு கொள்ளளவை எட்டியுள்ளன.',
+      orange: 'SSD டோக்கன்கள் 10+ மணிநேர பொது வரிசையை தவிர்க்கின்றன.',
+      night: 'காலை 6:00 மணி நுழைவு 70% வேகமாகவும் குளிர்ச்சியாகவும் இருக்கும்.',
+      alert: 'முதன்மை பாதையில் பராமரிப்பு பணிகள் நடக்கின்றன.'
+    },
+    benefits: {
+      green: 'இப்போது புறப்பட்டு சுமார் 3 மணி நேரம் சேமிக்கவும்',
+      yellow: 'மதிய நேரத்தில் சுமார் 2 மணி நேரம் சேமிக்கவும்',
+      red: 'காலை 6:00 மணிக்கு தொடங்கி சுமார் 4 மணி நேரம் சேமிக்கவும்',
+      blue: 'மழை தாமதத்தை தவிர்க்கவும்',
+      purple: 'காலை தொடங்கி 6+ மணி நேரம் சேமிக்கவும்',
+      orange: 'SSD டோக்கன் மூலம் 8+ மணி நேரம் சேமிக்கவும்',
+      night: 'காலை 6:00 மணிக்கு தொடங்கி சுமார் 4 மணி நேரம் சேமிக்கவும்',
+      alert: 'போக்குவரத்து தாமதத்தை தவிர்க்கவும்'
+    },
+    ctas: {
+      green: 'பயணத்தை தொடங்கு →',
+      yellow: 'பரிந்துரைக்கப்பட்ட திட்டம் →',
+      red: 'எனது திட்டத்தை தொடங்கு →',
+      blue: 'பாதுகாப்பான வழி →',
+      purple: 'நாளை திட்டம் →',
+      orange: 'SSD கவுண்டர் செல் →',
+      night: 'நினைவூட்டல் அமை →',
+      alert: 'மாற்று வழி காண்க →'
+    }
   }
 };
 
@@ -283,7 +453,7 @@ const RAIN_SPLASHES = [
 
 export function HomeHero({ userName, locationName, weatherTemp, liveStatus, activeAlertsCount, hideHeader = false }: any) {
   const lang = useLanguage();
-  const t = TEXTS[lang];
+  const t = TEXTS[lang as keyof typeof TEXTS] || TEXTS.en;
   const { setUserLocation, locationPermission } = useTrip();
   const [overrideScenario, setOverrideScenario] = useState<string>('auto');
   const [selectedLocation, setSelectedLocation] = useState<string>(locationName || 'Tirupati');
@@ -533,6 +703,28 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
       return 'సాధారణ దర్శనం · స్థిరమైన ప్రవాహం';
     }
 
+    if (lang === 'hi') {
+      if (day === 6) return isExtreme || isHigh ? 'शनिवार · सप्ताहांत की भारी भीड़' : 'शनिवार · निरंतर भक्त प्रवाह';
+      if (day === 0) return isExtreme || isHigh ? 'रविवार · भारी भीड़' : 'रविवार · सामान्य दर्शन प्रवाह';
+      if (day === 5) return 'शुक्रवार · अभिषेक के कारण भीड़';
+      if (isSsdIssuing) return 'निःशुल्क SSD टोकन जारी किए जा रहे हैं';
+      if (isExtreme) return 'अत्यधिक भीड़ · लंबी प्रतीक्षा अवधि';
+      if (isHigh) return 'भारी भीड़ · निरंतर प्रवाह';
+      if (isLow) return 'शांत दर्शन · तेज़ गति से चलती कतार';
+      return 'सामान्य दर्शन · निरंतर प्रवाह';
+    }
+
+    if (lang === 'ta') {
+      if (day === 6) return isExtreme || isHigh ? 'சனிக்கிழமை · வார இறுதி அதிக கூட்டம்' : 'சனிக்கிழமை · சீரான பக்தர்கள் கூட்டம்';
+      if (day === 0) return isExtreme || isHigh ? 'ஞாயிற்றுக்கிழமை · அதிக கூட்டம்' : 'ஞாயிற்றுக்கிழமை · சாதாரண தரிசன ஓட்டம்';
+      if (day === 5) return 'வெள்ளிக்கிழமை · அபிஷேக கூட்டம்';
+      if (isSsdIssuing) return 'இலவச SSD டோக்கன்கள் வழங்கப்படுகின்றன';
+      if (isExtreme) return 'அதிகபட்ச கூட்டம் · நீண்ட காத்திருப்பு';
+      if (isHigh) return 'அதிக கூட்டம் · சீரான ஓட்டம்';
+      if (isLow) return 'அமைதியான தரிசனம் · வேகமான வரிசை';
+      return 'சாதாரண தரிசனம் · சீரான ஓட்டம்';
+    }
+
     // English
     if (day === 6) { // Saturday
       return isExtreme || isHigh 
@@ -576,8 +768,8 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
       const sarvaWait = getDarshanWait('sarva');
       const specialWait = getDarshanWait('special');
       const ssdWait = getDarshanWait('ssd');
-      const dayName = new Date().toLocaleDateString(lang === 'te' ? 'te-IN' : 'en-US', { weekday: 'long' });
-      const todayDateStr = new Date().toLocaleDateString(lang === 'te' ? 'te-IN' : 'en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+      const dayName = new Date().toLocaleDateString(lang === 'te' ? 'te-IN' : lang === 'hi' ? 'hi-IN' : lang === 'ta' ? 'ta-IN' : 'en-US', { weekday: 'long' });
+      const todayDateStr = new Date().toLocaleDateString(lang === 'te' ? 'te-IN' : lang === 'hi' ? 'hi-IN' : lang === 'ta' ? 'ta-IN' : 'en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
       const siteUrl = typeof window !== 'undefined' ? window.location.origin : 'https://www.saarthiguide.in';
 
       // Status style helpers matching UI
@@ -658,7 +850,7 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
         queues,
         weatherTemp: weatherTemp || '26°C',
         crowdSummary: whyThatNowText,
-        lang
+        lang: lang === 'te' ? 'te' : 'en'
       });
 
       if (cardBlob) {
@@ -1135,7 +1327,7 @@ _Om Namo Venkatesaya • Peace & Auspicious Blessings to All_`;
         blessingTe: currentNama.blessingTe,
         blessingEn: currentNama.blessingEn,
         completedMalas,
-        lang
+        lang: lang === 'te' ? 'te' : 'en'
       });
 
       if (blob) {
@@ -1210,7 +1402,7 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
         blessingTe: 'స్వామివారి సంపూర్ణ ఆశీస్సులు, సకల పాప నివారణ, కుటుంబంలో నిరంతర ఆనందం వర్ధిల్లుగాక!',
         blessingEn: 'May Lord Venkateswara shower eternal grace, supreme fulfillment, vibrant health, and boundless peace upon your family!',
         completedMalas,
-        lang
+        lang: lang === 'te' ? 'te' : 'en'
       });
 
       if (blob) {
@@ -1297,16 +1489,26 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                   padding: '4px 9px', 
                   fontSize: '12px', 
                   gap: '4px', 
-                  maxWidth: 'clamp(95px, 30vw, 145px)' 
+                  maxWidth: 'clamp(115px, 45vw, 190px)' 
                 }}
               />
 
-              {/* Language Switcher */}
+              {/* Multi-Language Switcher (EN, TE, HI, TA) */}
               <button
                 type="button"
-                onClick={() => setAppLanguage(lang === 'en' ? 'te' : 'en')}
-                aria-label={lang === 'en' ? 'Switch to Telugu (తెలుగు)' : 'Switch to English'}
-                title={lang === 'en' ? 'తెలుగులోకి మార్చండి' : 'Switch to English'}
+                onClick={() => {
+                  const langs: AppLang[] = ['en', 'te', 'hi', 'ta'];
+                  const currentIndex = langs.indexOf(lang);
+                  const nextLang = langs[(currentIndex + 1) % langs.length];
+                  setAppLanguage(nextLang);
+                }}
+                aria-label="Change Language (English, తెలుగు, हिंदी, தமிழ்)"
+                title={
+                  lang === 'en' ? 'Switch to Telugu / Hindi / Tamil' :
+                  lang === 'te' ? 'Switch to Hindi / Tamil / English' :
+                  lang === 'hi' ? 'Switch to Tamil / English / Telugu' :
+                  'Switch to English / Telugu / Hindi'
+                }
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',
@@ -1329,7 +1531,9 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                 }}
               >
                 <Languages size={14} color="#0F5132" strokeWidth={2.2} />
-                <span>{lang === 'en' ? 'తెలుగు' : 'EN'}</span>
+                <span>
+                  {lang === 'en' ? 'EN' : lang === 'te' ? 'తెలుగు' : lang === 'hi' ? 'हिंदी' : 'தமிழ்'}
+                </span>
               </button>
 
               <Link href="/alerts" aria-label="Notifications" style={{

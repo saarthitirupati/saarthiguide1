@@ -26,7 +26,7 @@ const TEXTS = {
 export function ActiveAlerts({ activePopupAlert, dismissAlert }: any) {
   const router = useRouter();
   const lang = useLanguage();
-  const t = TEXTS[lang];
+  const t = TEXTS[lang as keyof typeof TEXTS] || TEXTS.en;
 
   if (!activePopupAlert) return null;
 

@@ -653,5 +653,195 @@
     "date": "2026-09-27",
     "path": "/generating",
     "count": 59
+  },
+  {
+    "date": "2026-10-02",
+    "path": "/",
+    "count": 90
+  },
+  {
+    "date": "2026-10-02",
+    "path": "/explore",
+    "count": 74
+  },
+  {
+    "date": "2026-10-02",
+    "path": "/planner",
+    "count": 49
+  },
+  {
+    "date": "2026-10-02",
+    "path": "/plans",
+    "count": 69
+  },
+  {
+    "date": "2026-10-02",
+    "path": "/generating",
+    "count": 37
+  },
+  {
+    "date": "2026-10-03",
+    "path": "/",
+    "count": 119
+  },
+  {
+    "date": "2026-10-03",
+    "path": "/explore",
+    "count": 87
+  },
+  {
+    "date": "2026-10-03",
+    "path": "/planner",
+    "count": 48
+  },
+  {
+    "date": "2026-10-03",
+    "path": "/plans",
+    "count": 35
+  },
+  {
+    "date": "2026-10-03",
+    "path": "/generating",
+    "count": 50
+  },
+  {
+    "date": "2026-10-04",
+    "path": "/",
+    "count": 89
+  },
+  {
+    "date": "2026-10-04",
+    "path": "/explore",
+    "count": 55
+  },
+  {
+    "date": "2026-10-04",
+    "path": "/planner",
+    "count": 58
+  },
+  {
+    "date": "2026-10-04",
+    "path": "/plans",
+    "count": 38
+  },
+  {
+    "date": "2026-10-04",
+    "path": "/generating",
+    "count": 45
+  },
+  {
+    "date": "2026-10-05",
+    "path": "/",
+    "count": 102
+  },
+  {
+    "date": "2026-10-05",
+    "path": "/explore",
+    "count": 85
+  },
+  {
+    "date": "2026-10-05",
+    "path": "/planner",
+    "count": 36
+  },
+  {
+    "date": "2026-10-05",
+    "path": "/plans",
+    "count": 45
+  },
+  {
+    "date": "2026-10-05",
+    "path": "/generating",
+    "count": 37
+  },
+  {
+    "date": "2026-10-06",
+    "path": "/",
+    "count": 98
+  },
+  {
+    "date": "2026-10-06",
+    "path": "/explore",
+    "count": 61
+  },
+  {
+    "date": "2026-10-06",
+    "path": "/planner",
+    "count": 58
+  },
+  {
+    "date": "2026-10-06",
+    "path": "/plans",
+    "count": 36
+  },
+  {
+    "date": "2026-10-06",
+    "path": "/generating",
+    "count": 53
+  },
+  {
+    "date": "2026-10-07",
+    "path": "/",
+    "count": 111
+  },
+  {
+    "date": "2026-10-07",
+    "path": "/explore",
+    "count": 88
+  },
+  {
+    "date": "2026-10-07",
+    "path": "/planner",
+    "count": 43
+  },
+  {
+    "date": "2026-10-07",
+    "path": "/plans",
+    "count": 65
+  },
+  {
+    "date": "2026-10-07",
+    "path": "/generating",
+    "count": 64
+  },
+  {
+    "date": "2026-10-08",
+    "path": "/",
+    "count": 240
+  },
+  {
+    "date": "2026-10-08",
+    "path": "/explore",
+    "count": 59
+  },
+  {
+    "date": "2026-10-08",
+    "path": "/planner",
+    "count": 54
+  },
+  {
+    "date": "2026-10-08",
+    "path": "/plans",
+    "count": 40
+  },
+  {
+    "date": "2026-10-08",
+    "path": "/generating",
+    "count": 30
+  },
+  {
+    "date": "2026-10-08",
+    "path": "/onboarding",
+    "count": 8
+  },
+  {
+    "date": "2026-10-08",
+    "path": "/essentials",
+    "count": 3
+  },
+  {
+    "date": "2026-10-08",
+    "path": "/darshan/ssd-token",
+    "count": 1
   }
 ]

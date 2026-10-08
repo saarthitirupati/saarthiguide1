@@ -108,7 +108,7 @@ const TEXTS = {
 
 export default function AboutPage() {
   const lang = useLanguage();
-  const t = TEXTS[lang];
+  const t = TEXTS[lang as keyof typeof TEXTS] || TEXTS.en;
 
   return (
     <div style={{ backgroundColor: '#FAF8F5', minHeight: '100vh', paddingBottom: '60px' }}>

@@ -16,6 +16,7 @@ const TEXTS = {
     issuingPaused: 'Issuing temporarily paused — next batch resume time above',
     quotaCompleted: 'Daily quota completed — next token release time indicated above',
     collectionCentres: 'Collection Centres',
+    importantAdvisory: 'IMPORTANT ADVISORY'
   },
   te: {
     ssdStatus: 'SSD టోకెన్ స్థితి',
@@ -28,6 +29,33 @@ const TEXTS = {
     issuingPaused: 'జారీ తాత్కాలికంగా నిలిపివేయబడింది — తదుపరి బ్యాచ్ పునఃప్రారంభ సమయం పైన ఉంది',
     quotaCompleted: 'రోజువారీ కోటా పూర్తయింది — తదుపరి టోకెన్ విడుదల సమయం పైన సూచించబడింది',
     collectionCentres: 'సేకరణ కేంద్రాలు',
+    importantAdvisory: 'ముఖ్యమైన సూచన'
+  },
+  hi: {
+    ssdStatus: 'एसएसडी टोकन स्थिति',
+    issuingNow: 'अभी जारी हो रहे हैं',
+    paused: 'स्थगित',
+    closed: 'आज के लिए बंद',
+    nextRelease: 'अगला समय',
+    tokensBeingIssued: 'टोकन अभी जारी हो रहे हैं',
+    activelyIssuing: 'टोकन सक्रिय रूप से जारी — नीचे दिए गए काउंटरों पर प्राप्त करें',
+    issuingPaused: 'जारी करना अस्थायी रूप से रुका हुआ है — अगला समय ऊपर दिया गया है',
+    quotaCompleted: 'दैनिक कोटा पूरा — अगला टोकन जारी होने का समय ऊपर दर्शाया गया है',
+    collectionCentres: 'संग्रह केंद्र',
+    importantAdvisory: 'महत्वपूर्ण सूचना'
+  },
+  ta: {
+    ssdStatus: 'SSD டோக்கன் நிலை',
+    issuingNow: 'இப்போது வழங்கப்படுகிறது',
+    paused: 'நிறுத்தப்பட்டுள்ளது',
+    closed: 'இன்றைக்கு மூடப்பட்டது',
+    nextRelease: 'அடுத்த நேரம்',
+    tokensBeingIssued: 'டோக்கன்கள் இப்போது வழங்கப்படுகின்றன',
+    activelyIssuing: 'டோக்கன்கள் வழங்கப்படுகின்றன — கீழே உள்ள மையங்களில் பெறவும்',
+    issuingPaused: 'டோக்கன் வழங்குவது தற்காலிகமாக நிறுத்தப்பட்டுள்ளது',
+    quotaCompleted: 'இன்றைய ஒதுக்கீடு முடிந்தது — அடுத்த டோக்கன் வழங்கும் நேரம் மேலே குறிப்பிடப்பட்டுள்ளது',
+    collectionCentres: 'டோக்கன் பெறுமிடம்',
+    importantAdvisory: 'முக்கிய அறிவிப்பு'
   }
 };
 
@@ -69,7 +97,7 @@ export function QuickChecklist(props: any) {
   const { liveStatus } = props;
   const router = useRouter();
   const lang = useLanguage();
-  const t = TEXTS[lang];
+  const t = TEXTS[lang as keyof typeof TEXTS] || TEXTS.en;
 
   if (!liveStatus) return null;
 
@@ -143,7 +171,7 @@ export function QuickChecklist(props: any) {
               <ShieldAlert size={18} color="#DC2626" style={{ flexShrink: 0, marginTop: '2px' }} />
               <div style={{ flex: 1, minWidth: 0 }}>
                 <span style={{ fontSize: '10px', fontWeight: 800, color: '#991B1B', letterSpacing: '0.04em', textTransform: 'uppercase', display: 'block' }}>
-                  {lang === 'te' ? 'ముఖ్యమైన సమాచారం' : 'Important Advisory'}
+                  {t.importantAdvisory}
                 </span>
                 <span style={{ fontSize: '12.5px', fontWeight: 700, color: '#7F1D1D', lineHeight: 1.4, display: 'block', marginTop: '1px' }}>
                   {cleanNotice}
@@ -217,10 +245,10 @@ export function QuickChecklist(props: any) {
                     <Train size={13} />
                   </div>
                   <span style={{ fontSize: '11px', fontWeight: 700, color: '#0F172A', lineHeight: 1.2 }}>
-                    {lang === 'te' ? 'విష్ణు నివాసం' : 'Vishnu Nivasam'}
+                    {lang === 'te' ? 'విష్ణు నివాసం' : lang === 'hi' ? 'विष्णु निवासम' : lang === 'ta' ? 'விஷ்ணு நிவாஸம்' : 'Vishnu Nivasam'}
                   </span>
                   <span style={{ fontSize: '9.5px', color: '#64748B', fontWeight: 500 }}>
-                    {lang === 'te' ? 'రైల్వే స్టేషన్' : 'Opp. Railway'}
+                    {lang === 'te' ? 'రైల్వే స్టేషన్ ఎదురుగా' : lang === 'hi' ? 'रेलवे स्टेशन के सामने' : lang === 'ta' ? 'ரயில் நிலையம் எதிரில்' : 'Opp. Railway'}
                   </span>
                 </div>
               </a>
@@ -248,10 +276,10 @@ export function QuickChecklist(props: any) {
                     <Bus size={13} />
                   </div>
                   <span style={{ fontSize: '11px', fontWeight: 700, color: '#0F172A', lineHeight: 1.2 }}>
-                    {lang === 'te' ? 'శ్రీనివాసం' : 'Srinivasam'}
+                    {lang === 'te' ? 'శ్రీనివాసం' : lang === 'hi' ? 'श्रीनिवासन' : lang === 'ta' ? 'ஸ்ரீநிவாஸம்' : 'Srinivasam'}
                   </span>
                   <span style={{ fontSize: '9.5px', color: '#64748B', fontWeight: 500 }}>
-                    {lang === 'te' ? 'బస్ స్టాండ్' : 'Opp. Bus Stand'}
+                    {lang === 'te' ? 'బస్ స్టాండ్ ఎదురుగా' : lang === 'hi' ? 'बस स्टैंड के सामने' : lang === 'ta' ? 'பேருந்து நிலையம் எதிரில்' : 'Opp. Bus Stand'}
                   </span>
                 </div>
               </a>
@@ -279,10 +307,10 @@ export function QuickChecklist(props: any) {
                     <Mountain size={13} />
                   </div>
                   <span style={{ fontSize: '11px', fontWeight: 700, color: '#0F172A', lineHeight: 1.2 }}>
-                    {lang === 'te' ? 'భూదేవి కాంప్లెక్స్' : 'Bhudevi Complex'}
+                    {lang === 'te' ? 'భూదేవి కాంప్లెక్స్' : lang === 'hi' ? 'भूदेवी कॉम्प्लेक्स' : lang === 'ta' ? 'பூதேவி காம்ப்ளக்ஸ்' : 'Bhudevi Complex'}
                   </span>
                   <span style={{ fontSize: '9.5px', color: '#64748B', fontWeight: 500 }}>
-                    {lang === 'te' ? 'అలిపిరి వద్ద' : 'Near Alipiri'}
+                    {lang === 'te' ? 'అలిపిరి వద్ద' : lang === 'hi' ? 'अलिपिरी के पास' : lang === 'ta' ? 'அலிபிரி அருகில்' : 'Near Alipiri'}
                   </span>
                 </div>
               </a>

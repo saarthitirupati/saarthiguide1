@@ -37,6 +37,36 @@ const TEXTS = {
     adminDashboard: 'అడ్మిన్ డాష్బోర్డ్',
     darshanTip: 'దర్శన సూచన',
     darshanTipDesc: 'ఉదయపు స్లాట్లలో సాధారణంగా తక్కువ రద్దీ ఉంటుంది. సాంప్రదాయ ప్రారంభం కోసం ముందు కపిల తీర్థం సందర్శించండి.'
+  },
+  hi: {
+    menu: 'मेनू',
+    home: 'होम',
+    explore: 'स्थान देखें',
+    offlineMaps: 'ऑफलाइन मानचित्र',
+    tripEstimator: 'यात्रा अनुमान और किराया',
+    smartPlanner: 'स्मार्ट यात्रा योजनाकार',
+    liveUpdates: 'तिरुपति लाइव अपडेट्स',
+    festivals: 'त्यौहार और कार्यक्रम',
+    liveAlerts: 'लाइव अलर्ट और सलाह',
+    aboutUs: 'सारथी के बारे में',
+    adminDashboard: 'एडमिन डैशबोर्ड',
+    darshanTip: 'दर्शन टिप',
+    darshanTipDesc: 'सुबह के स्लॉट में आमतौर पर कम भीड़ होती है। पारंपरिक शुरुआत के लिए पहले कपिला तीर्थम जाएं।'
+  },
+  ta: {
+    menu: 'மெனு',
+    home: 'முகப்பு',
+    explore: 'இடங்களை ஆராய்க',
+    offlineMaps: 'ஆஃப்லைன் வரைபடங்கள்',
+    tripEstimator: 'பயணக் கட்டணக் கணிப்பு',
+    smartPlanner: 'ஸ்மார்ட் பயண திட்டமிடுபவர்',
+    liveUpdates: 'திருமலை நேரலை தகவல்கள்',
+    festivals: 'விழாக்கள் & நிகழ்வுகள்',
+    liveAlerts: 'நேரலை எச்சரிக்கைகள்',
+    aboutUs: 'சாரதி பற்றி',
+    adminDashboard: 'நிர்வாகி டாஷ்போர்டு',
+    darshanTip: 'தரிசன உதவிக்குறிப்பு',
+    darshanTipDesc: 'காலை நேரங்களில் கூட்டம் குறைவாக இருக்கும். பாரம்பரிய தொடக்கத்திற்கு முதலில் கபில தீர்த்தத்தை பார்வையிடவும்.'
   }
 };
 
@@ -47,7 +77,9 @@ interface SideMenuProps {
 
 export default function SideMenu({ isOpen, onClose }: SideMenuProps) {
   const lang = useLanguage();
-  const t = TEXTS[lang];
+  const langKey = (lang && TEXTS[lang as keyof typeof TEXTS]) ? lang as keyof typeof TEXTS : 'en';
+  const currentDict = TEXTS[langKey] || TEXTS.en;
+  const t = (key: keyof typeof TEXTS.en) => currentDict[key] || TEXTS.en[key] || '';
   const [isWebView, setIsWebView] = useState(false);
 
   useEffect(() => {
@@ -59,15 +91,15 @@ export default function SideMenu({ isOpen, onClose }: SideMenuProps) {
   }, []);
 
   const menuItems = [
-    { name: t.home, icon: Home, href: '/' },
-    { name: t.explore, icon: Compass, href: '/explore' },
-    { name: t.offlineMaps, icon: Compass, href: '/offline-maps' },
-    { name: t.tripEstimator, icon: Compass, href: '/trip-estimator' },
-    { name: t.smartPlanner, icon: Compass, href: '/planner' },
-    { name: t.festivals, icon: Calendar, href: '/festivals' },
-    { name: t.liveAlerts, icon: Info, href: '/alerts' },
-    { name: t.aboutUs, icon: Info, href: '/about' },
-    { name: t.adminDashboard, icon: Award, href: '/saarthiadmin' },
+    { name: t('home'), icon: Home, href: '/' },
+    { name: t('explore'), icon: Compass, href: '/explore' },
+    { name: t('offlineMaps'), icon: Compass, href: '/offline-maps' },
+    { name: t('tripEstimator'), icon: Compass, href: '/trip-estimator' },
+    { name: t('smartPlanner'), icon: Compass, href: '/planner' },
+    { name: t('festivals'), icon: Calendar, href: '/festivals' },
+    { name: t('liveAlerts'), icon: Info, href: '/alerts' },
+    { name: t('aboutUs'), icon: Info, href: '/about' },
+    { name: t('adminDashboard'), icon: Award, href: '/saarthiadmin' },
   ];
 
   return (
@@ -92,7 +124,7 @@ export default function SideMenu({ isOpen, onClose }: SideMenuProps) {
             transition={{ type: 'spring', damping: 25, stiffness: 200 }}
           >
             <div className={styles.header}>
-              <h2>{t.menu}</h2>
+              <h2>{t('menu')}</h2>
               <button className={styles.closeButton} onClick={onClose}>
                 <X size={24} />
               </button>
@@ -125,48 +157,40 @@ export default function SideMenu({ isOpen, onClose }: SideMenuProps) {
               borderRadius: '12px',
               border: '1px solid #E2E8F0',
               display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between'
+              flexDirection: 'column',
+              gap: '8px'
             }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#334155', fontSize: '13px', fontWeight: 600 }}>
                 <Languages size={17} color="#0F5132" />
-                <span>{lang === 'te' ? 'భాష' : 'Language'}</span>
+                <span>{lang === 'te' ? 'భాష' : lang === 'hi' ? 'भाषा' : lang === 'ta' ? 'மொழி' : 'Language'}</span>
               </div>
-              <div style={{ display: 'flex', gap: '6px' }}>
-                <button
-                  type="button"
-                  onClick={() => { setAppLanguage('en'); onClose(); }}
-                  style={{
-                    padding: '4px 10px',
-                    borderRadius: '8px',
-                    border: 'none',
-                    fontSize: '12px',
-                    fontWeight: 700,
-                    cursor: 'pointer',
-                    background: lang === 'en' ? '#0F5132' : '#FFFFFF',
-                    color: lang === 'en' ? '#FFFFFF' : '#64748B',
-                    boxShadow: lang === 'en' ? '0 1px 3px rgba(15,81,50,0.25)' : 'none',
-                  }}
-                >
-                  English
-                </button>
-                <button
-                  type="button"
-                  onClick={() => { setAppLanguage('te'); onClose(); }}
-                  style={{
-                    padding: '4px 10px',
-                    borderRadius: '8px',
-                    border: 'none',
-                    fontSize: '12px',
-                    fontWeight: 700,
-                    cursor: 'pointer',
-                    background: lang === 'te' ? '#0F5132' : '#FFFFFF',
-                    color: lang === 'te' ? '#FFFFFF' : '#64748B',
-                    boxShadow: lang === 'te' ? '0 1px 3px rgba(15,81,50,0.25)' : 'none',
-                  }}
-                >
-                  తెలుగు
-                </button>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '4px' }}>
+                {[
+                  { code: 'en', label: 'EN' },
+                  { code: 'te', label: 'తెలుగు' },
+                  { code: 'hi', label: 'हिंदी' },
+                  { code: 'ta', label: 'தமிழ்' }
+                ].map((item) => (
+                  <button
+                    key={item.code}
+                    type="button"
+                    onClick={() => { setAppLanguage(item.code as any); onClose(); }}
+                    style={{
+                      padding: '6px 4px',
+                      borderRadius: '8px',
+                      border: 'none',
+                      fontSize: '11px',
+                      fontWeight: 700,
+                      cursor: 'pointer',
+                      textAlign: 'center',
+                      background: lang === item.code ? '#0F5132' : '#FFFFFF',
+                      color: lang === item.code ? '#FFFFFF' : '#64748B',
+                      boxShadow: lang === item.code ? '0 1px 3px rgba(15,81,50,0.25)' : 'none',
+                    }}
+                  >
+                    {item.label}
+                  </button>
+                ))}
               </div>
             </div>
 
@@ -199,9 +223,9 @@ export default function SideMenu({ isOpen, onClose }: SideMenuProps) {
               <div className={styles.spiritualTip}>
                 <div className={styles.tipHeader}>
                   <Info size={16} />
-                  <span>{t.darshanTip}</span>
+                  <span>{t('darshanTip')}</span>
                 </div>
-                <p>{t.darshanTipDesc}</p>
+                <p>{t('darshanTipDesc')}</p>
               </div>
             </div>
           </motion.div>

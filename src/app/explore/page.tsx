@@ -7,7 +7,7 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { useSearchParams } from 'next/navigation';
 import styles from './Explore.module.css';
-import { calculateDrivingDistance, TIRUPATI_CENTER, isWithinTirupatiRegion, formatTravelTime, formatDistance, estimateDriveDuration } from '@/utils/location';
+import { calculateDrivingDistance, TIRUPATI_CENTER, isWithinTirupatiRegion, formatTravelTime, formatDistance, estimateDriveDuration, getPlaceName } from '@/utils/location';
 import { useTrip } from '@/components/TripContext';
 import { useRealtimePlaces } from '@/lib/useRealtimePlaces';
 import { useLanguage } from '@/lib/useLanguage';
@@ -17,16 +17,99 @@ import { SrivariNamamVector } from '@/components/common/DevotionalSvgIcons';
 import { PageSkeleton } from '@/components/common/PageSkeleton';
 
 const FILTERS_DATA = [
-  { key: 'All', labelEn: 'All', labelTe: 'అన్నీ' },
-  { key: 'Nearby', labelEn: 'Nearby', labelTe: 'సమీపంలో' },
-  { key: 'Saved', labelEn: 'Saved', labelTe: 'దాచినవి' },
-  { key: 'Spiritual', labelEn: 'Spiritual', labelTe: 'ఆధ్యాత్మికం' },
-  { key: 'Nature', labelEn: 'Nature', labelTe: 'ప్రకృతి' },
-  { key: 'Water', labelEn: 'Theerthams', labelTe: 'తీర్థాలు' },
-  { key: 'Historical', labelEn: 'Heritage', labelTe: 'చారిత్రకం' },
-  { key: 'Hidden', labelEn: 'Hidden Gems', labelTe: 'దాగి ఉన్నవి' },
-  { key: 'Culture', labelEn: 'Culture', labelTe: 'సంస్కృతి' }
+  { key: 'All', labelEn: 'All', labelTe: 'అన్నీ', labelHi: 'सभी', labelTa: 'அனைத்தும்' },
+  { key: 'Nearby', labelEn: 'Nearby', labelTe: 'సమీపంలో', labelHi: 'पास में', labelTa: 'அருகில்' },
+  { key: 'Saved', labelEn: 'Saved', labelTe: 'దాచినవి', labelHi: 'सेव किए गए', labelTa: 'சேமிக்கப்பட்டவை' },
+  { key: 'Spiritual', labelEn: 'Spiritual', labelTe: 'ఆధ్యాత్మికం', labelHi: 'आध्यात्मिक', labelTa: 'ஆன்மீகம்' },
+  { key: 'Nature', labelEn: 'Nature', labelTe: 'ప్రకృతి', labelHi: 'प्रकृति', labelTa: 'இயற்கை' },
+  { key: 'Water', labelEn: 'Theerthams', labelTe: 'తీర్థాలు', labelHi: 'तीर्थम', labelTa: 'தீர்த்தங்கள்' },
+  { key: 'Historical', labelEn: 'Heritage', labelTe: 'చారిత్రకం', labelHi: 'ऐतिहासिक', labelTa: 'பாரம்பரியம்' },
+  { key: 'Hidden', labelEn: 'Hidden Gems', labelTe: 'దాగి ఉన్నవి', labelHi: 'छिपे हुए स्थल', labelTa: 'மறைக்கப்பட்ட இடங்கள்' },
+  { key: 'Culture', labelEn: 'Culture', labelTe: 'సంస్కృతి', labelHi: 'संस्कृति', labelTa: 'கலாச்சாரம்' }
 ];
+
+const TEXTS: Record<string, Record<string, string>> = {
+  en: {
+    headerTitle: 'Explore Places',
+    searchPlaceholder: 'Search places, temples, waterfalls, restaurants, history…',
+    filtersHeader: 'Explore Filters',
+    categoriesLabel: 'Categories',
+    resultsFor: 'Results for',
+    placesFound: 'places found',
+    noPlacesFound: 'No places found matching',
+    clearSearch: 'Clear search',
+    nearLocation: 'Near',
+    locateMe: 'Locate me',
+    changeLocation: 'Change location',
+    nearby: 'Nearby Places',
+    mustVisit: 'Must Visit Places',
+    hiddenGems: 'Hidden Gems & Peaceful Places',
+    allExperiences: 'All Experiences',
+    kmsAway: 'km away',
+    minsDrive: 'min drive',
+    viewDetails: 'View Details'
+  },
+  te: {
+    headerTitle: 'దర్శనీయ ప్రదేశాలు',
+    searchPlaceholder: 'ఆలయాలు, జలపాతాలు, ప్రసాదం, చరిత్ర శోధించండి…',
+    filtersHeader: 'వర్గాలు & ఫిల్టర్లు',
+    categoriesLabel: 'వర్గాలు',
+    resultsFor: 'ఫలితాలు:',
+    placesFound: 'ప్రదేశాలు లభించాయి',
+    noPlacesFound: 'తగిన ప్రదేశాలు ఏవీ దొరకలేదు:',
+    clearSearch: 'శోధన తొలగించు',
+    nearLocation: 'సమీప ప్రాంతం:',
+    locateMe: 'నా స్థానం గురించు',
+    changeLocation: 'స్థానం మార్చు',
+    nearby: 'సమీప ప్రదేశాలు',
+    mustVisit: 'తప్పక చూడవలసినవి',
+    hiddenGems: 'ప్రశాంత & ప్రసిద్ధ ప్రదేశాలు',
+    allExperiences: 'అన్ని అనుభవాలు',
+    kmsAway: 'కి.మీ దూరంలో',
+    minsDrive: 'నిమిషాల ప్రయాణం',
+    viewDetails: 'వివరాలు చూడండి'
+  },
+  hi: {
+    headerTitle: 'दर्शनीय स्थल',
+    searchPlaceholder: 'मंदिर, झरने, प्रसाद, इतिहास खोजें…',
+    filtersHeader: 'श्रेणियां और फ़िल्टर',
+    categoriesLabel: 'श्रेणियां',
+    resultsFor: 'परिणाम:',
+    placesFound: 'स्थान मिले',
+    noPlacesFound: 'कोई स्थान नहीं मिला:',
+    clearSearch: 'खोज साफ़ करें',
+    nearLocation: 'निकटतम स्थान:',
+    locateMe: 'मेरा स्थान',
+    changeLocation: 'स्थान बदलें',
+    nearby: 'पास के स्थान',
+    mustVisit: 'मुख्य दर्शनीय स्थल',
+    hiddenGems: 'शांत और सुंदर स्थल',
+    allExperiences: 'सभी अनुभव',
+    kmsAway: 'किमी दूर',
+    minsDrive: 'मिनट की दूरी',
+    viewDetails: 'विवरण देखें'
+  },
+  ta: {
+    headerTitle: 'இடங்களை ஆராய்க',
+    searchPlaceholder: 'கோவில்கள், அருவிகள், உணவு, வரலாறு தேடுக…',
+    filtersHeader: 'பிரிவுகள் & வடிகட்டிகள்',
+    categoriesLabel: 'பிரிவுகள்',
+    resultsFor: 'முடிவுகள்:',
+    placesFound: 'இடங்கள் உள்ளன',
+    noPlacesFound: 'பொருந்தும் இடங்கள் எதுவும் இல்லை:',
+    clearSearch: 'தேடலை நீக்குக',
+    nearLocation: 'அருகிலுள்ள இடம்:',
+    locateMe: 'என் இடம்',
+    changeLocation: 'இடத்தை மாற்றுக',
+    nearby: 'அருகிலுள்ள இடங்கள்',
+    mustVisit: 'முக்கிய இடங்கள்',
+    hiddenGems: 'அமைதியான & சிறந்த இடங்கள்',
+    allExperiences: 'அனைத்து இடங்கள்',
+    kmsAway: 'கி.மீ தொலைவில்',
+    minsDrive: 'நிமிடம் பயணம்',
+    viewDetails: 'விவரங்களை காண்க'
+  }
+};
 
 function ExploreContent() {
   const lang = useLanguage();
@@ -353,6 +436,8 @@ function ExploreContent() {
     return counts;
   }, [places, userLocation]);
 
+  const t = TEXTS[lang as keyof typeof TEXTS] || TEXTS.en;
+
   return (
     <main className={styles.main}>
       <header className={styles.header}>
@@ -362,7 +447,7 @@ function ExploreContent() {
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           <SrivariNamamVector size={26} />
           <h1 style={{ margin: 0, fontFamily: "var(--font-sacred-serif), 'Cinzel', Georgia, serif" }}>
-            {lang === 'te' ? 'దర్శనీయ ప్రదేశాలు & ఆలయాలు' : 'Explore Places'}
+            {t.headerTitle}
           </h1>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
@@ -380,22 +465,26 @@ function ExploreContent() {
           <Search size={20} color="#999" />
           <input 
             type="text" 
-            placeholder={lang === 'te' ? 'ఆలయాలు, జలపాతాలు, ప్రసాదం, చరిత్ర శోధించండి…' : 'Search places, temples, waterfalls, restaurants, history…'} 
+            placeholder={t.searchPlaceholder} 
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
 
         <div className={styles.filterList} id="explore-filter-list">
-          {FILTERS_DATA.map((filter) => (
-            <button
-              key={filter.key}
-              className={`${styles.filterItem} ${activeFilter === filter.key ? styles.activeFilter : ''}`}
-              onClick={() => handleFilterClick(filter.key)}
-            >
-              {lang === 'te' ? filter.labelTe : filter.labelEn}
-            </button>
-          ))}
+          {FILTERS_DATA.map((filter) => {
+            const labelKey = `label${lang.charAt(0).toUpperCase() + lang.slice(1)}` as keyof typeof filter;
+            const filterLabel = (filter[labelKey] as string) || filter.labelEn;
+            return (
+              <button
+                key={filter.key}
+                className={`${styles.filterItem} ${activeFilter === filter.key ? styles.activeFilter : ''}`}
+                onClick={() => handleFilterClick(filter.key)}
+              >
+                {filterLabel}
+              </button>
+            );
+          })}
         </div>
       </div>
 
@@ -406,18 +495,20 @@ function ExploreContent() {
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '20px', paddingBottom: '12px', borderBottom: '1px solid #F1F5F9' }}>
               <Filter size={18} color="#059669" />
               <h3 style={{ fontSize: '16px', fontWeight: 800, color: '#0F172A', margin: 0 }}>
-                {lang === 'te' ? 'వర్గాలు & ఫిల్టర్లు' : 'Explore Filters'}
+                {t.filtersHeader}
               </h3>
             </div>
 
             <div style={{ marginBottom: '20px' }}>
               <label style={{ fontSize: '12px', fontWeight: 800, color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.05em', display: 'block', marginBottom: '10px' }}>
-                {lang === 'te' ? 'వర్గాలు' : 'Categories'}
+                {t.categoriesLabel}
               </label>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
                 {FILTERS_DATA.map((filter) => {
                   const count = categoryCounts[filter.key];
                   const isActive = activeFilter === filter.key;
+                  const labelKey = `label${lang.charAt(0).toUpperCase() + lang.slice(1)}` as keyof typeof filter;
+                  const filterLabel = (filter[labelKey] as string) || filter.labelEn;
                   return (
                     <button
                       key={filter.key}
@@ -438,7 +529,7 @@ function ExploreContent() {
                         transition: 'all 0.15s'
                       }}
                     >
-                      <span>{lang === 'te' ? filter.labelTe : filter.labelEn}</span>
+                      <span>{filterLabel}</span>
                       {count !== undefined && count > 0 && (
                         <span 
                           suppressHydrationWarning
@@ -479,7 +570,7 @@ function ExploreContent() {
           <div className={styles.curatedSection}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
               <h2 className={styles.curatedTitle} style={{ display: 'flex', alignItems: 'center', gap: '6px', margin: 0 }}>
-                {lang === 'te' ? 'సమీపంలోని ప్రదేశాలు' : 'Nearby'} <MapPin size={18} style={{ color: '#2F6144' }} />
+                {t.nearby} <MapPin size={18} style={{ color: '#2F6144' }} />
               </h2>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <LocationPill 
@@ -503,22 +594,26 @@ function ExploreContent() {
                 const timeFormatted = formatTravelTime(driveMins, lang);
 
                 let travelStr = '';
+                const walkWord = lang === 'te' ? 'నడకదారి' : lang === 'hi' ? 'पैदल मार्ग' : lang === 'ta' ? 'நட நடைப்பாதை' : 'Walk';
+                const bikeWord = lang === 'te' ? 'బైక్/ఆటో' : lang === 'hi' ? 'बाइक/ऑटो' : lang === 'ta' ? 'பைக்/ஆட்டோ' : 'Bike';
+                const busWord = lang === 'te' ? 'బస్సు/కారు' : lang === 'hi' ? 'बस/कार' : lang === 'ta' ? 'பேருந்து/கார்' : 'Bus/Car';
+
                 if (dist <= 1.5) {
-                  travelStr = lang === 'te' ? `${Math.max(1, Math.round(dist * 12))} నిమిషాలు • నడకదారి` : `${Math.max(1, Math.round(dist * 12))} mins • Walk`;
+                  travelStr = `${Math.max(1, Math.round(dist * 12))} ${lang === 'te' ? 'నిమిషాలు' : lang === 'hi' ? 'मिनट' : lang === 'ta' ? 'நிமிடம்' : 'mins'} • ${walkWord}`;
                 } else if (dist <= 8.0) {
-                  travelStr = lang === 'te' ? `${timeFormatted} • బైక్/ఆటో` : `${timeFormatted} • Bike`;
+                  travelStr = `${timeFormatted} • ${bikeWord}`;
                 } else {
-                  travelStr = lang === 'te' ? `${timeFormatted} • బస్సు/కారు` : `${timeFormatted} • Bus/Car`;
+                  travelStr = `${timeFormatted} • ${busWord}`;
                 }
 
                 return (
                   <Link href={`/place/${place.id}`} key={place.id} className={styles.curatedCard}>
                     <div className={styles.curatedImage} style={{ backgroundImage: `url(${place.image || 'https://images.unsplash.com/photo-1514222134-b57cbf8ce673?auto=format&fit=crop&q=80&w=800'})` }} />
                     <div className={styles.curatedInfo}>
-                      <h4>{place.name}</h4>
+                      <h4>{getPlaceName(place, lang)}</h4>
                       <div style={{ display: 'flex', flexDirection: 'column', gap: '2px', marginTop: '2px' }}>
                         <span style={{ color: '#2F6144', fontWeight: 800, fontSize: '11px' }}>
-                          {formatDistance(dist, lang)} {lang === 'te' ? 'దూరం' : 'away'} • {travelStr}
+                          {formatDistance(dist, lang)} {t.kmsAway} • {travelStr}
                         </span>
                       </div>
                     </div>
@@ -534,7 +629,7 @@ function ExploreContent() {
               {hiddenGems.length > 0 && (
                 <div className={styles.curatedSection}>
                   <h2 className={styles.curatedTitle} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                    {lang === 'te' ? 'దాగి ఉన్న పవిత్ర క్షేత్రాలు' : 'Hidden Gems'} <Sparkles size={18} style={{ color: '#6C63FF' }} />
+                    {t.hiddenGems} <Sparkles size={18} style={{ color: '#6C63FF' }} />
                   </h2>
                   <div className={styles.horizontalScroll}>
                     {hiddenGems.map((place) => (
@@ -548,7 +643,7 @@ function ExploreContent() {
                           )}
                         </div>
                         <div className={styles.curatedInfo}>
-                          <h4 title={place.name}>{place.name}</h4>
+                          <h4 title={getPlaceName(place, lang)}>{getPlaceName(place, lang)}</h4>
                           <div className={styles.curatedDistance}>
                             <MapPin size={10} strokeWidth={2.5} />
                             {formatDistance(Number((place as any).computedDistance || 0), lang)}
@@ -587,10 +682,10 @@ function ExploreContent() {
             </div>
             <div>
               <h4 style={{ fontSize: '13.5px', fontWeight: 900, color: '#991B1B', margin: '0 0 2px 0' }}>
-                Heavy Crowds at Srivari Temple
+                {lang === 'te' ? 'శ్రీవారి ఆలయంలో అత్యధిక భక్తుల రద్దీ' : lang === 'hi' ? 'श्रीवारी मंदिर में भारी भीड़' : lang === 'ta' ? 'ஸ்ரீவாரி கோவிலில் அதிக கூட்டம்' : 'Heavy Crowds at Srivari Temple'}
               </h4>
               <p style={{ fontSize: '12.5px', color: '#7F1D1D', margin: 0, lineHeight: 1.45 }}>
-                Srivari Venkateswara Swamy Temple is currently experiencing extremely heavy wait times. We highly recommend exploring these alternative temples and scenic destinations in Tirupati and Tirumala first to optimize your journey.
+                {lang === 'te' ? 'తిరుమల శ్రీవారి ఆలయంలో ప్రస్తుతం దర్శన సమయం చాలా ఎక్కువగా ఉంది. మీ ప్రయాణాన్ని ప్రణాళికాబద్ధంగా మార్చుకోవడానికి ముందుగా తిరుపతిలోని ఇతర పవిత్ర ప్రదేశాలను దర్శించండి.' : lang === 'hi' ? 'श्रीवारी मंदिर में दर्शन की प्रतीक्षा अवधि अधिक है। हम आपको पहले तिरुपति के अन्य पवित्र स्थलों का दौरा करने की सलाह देते हैं।' : lang === 'ta' ? 'ஸ்ரீவாரி கோவிலில் தரிசன காத்திருப்பு நேரம் அதிகமாக உள்ளது. முதலில் திருப்பதியின் பிற திருத்தலங்களை ஆராய பரிந்துரைக்கிறோம்.' : 'Srivari Venkateswara Swamy Temple is currently experiencing extremely heavy wait times. We highly recommend exploring these alternative temples and scenic destinations in Tirupati and Tirumala first to optimize your journey.'}
               </p>
             </div>
           </div>
@@ -623,10 +718,10 @@ function ExploreContent() {
             </div>
             <div>
               <h4 style={{ fontSize: '13.5px', fontWeight: 900, color: '#92400E', margin: '0 0 2px 0' }}>
-                Heavy Crowds at Tirumala
+                {lang === 'te' ? 'తిరుమలలో భక్తుల రద్దీ హెచ్చరిక' : lang === 'hi' ? 'तिरुमला में भारी भीड़ की चेतावनी' : lang === 'ta' ? 'திருமலையில் அதிக கூட்ட எச்சரிக்கை' : 'Heavy Crowds at Tirumala'}
               </h4>
               <p style={{ fontSize: '12.5px', color: '#78350F', margin: 0, lineHeight: 1.45 }}>
-                Tirumala temple is currently experiencing heavy wait times. We recommend exploring these foothill attractions in Tirupati city first and heading up to the hills later in the evening when wait times decrease.
+                {lang === 'te' ? 'తిరుమలలో ప్రస్తుతం భక్తుల రద్దీ ఎక్కువగా ఉంది. ముందుగా తిరుపతి కొండ కింద ఉన్న ఆకర్షణలను చూసి, సాయంత్రం రద్దీ తగ్గక కొండపైకి వెళ్లవలసిందిగా సూచిస్తున్నాము.' : lang === 'hi' ? 'तिरुमला में प्रतीक्षा समय अधिक है। पहले तिरुपति शहर के दर्शनीय स्थलों का आनंद लें और शाम को भीड़ कम होने पर पहाड़ी पर जाएं।' : lang === 'ta' ? 'திருமலையில் கூட்டம் அதிகமாக உள்ளது. முதலில் திருப்பதி அடிவார இடங்களை கண்டு மகிழ்ந்து, மாலையில் கூட்டங்குறைந்த பின் திருமலைக்கு செல்லவும்.' : 'Tirumala temple is currently experiencing heavy wait times. We recommend exploring these foothill attractions in Tirupati city first and heading up to the hills later in the evening when wait times decrease.'}
               </p>
             </div>
           </div>
@@ -635,17 +730,22 @@ function ExploreContent() {
         <div className={styles.sectionHeader}>
           <h2 className={styles.sectionTitle}>
             {isAlternativeQuery 
-              ? (lang === 'te' ? 'ప్రత్యామ్నాయ పవిత్ర దర్శనాలు' : 'Recommended Alternatives') 
+              ? (lang === 'te' ? 'ప్రత్యామ్నాయ పవిత్ర దర్శనాలు' : lang === 'hi' ? 'अनुशंसित वैकल्पिक दर्शन' : lang === 'ta' ? 'பரிந்துரைக்கப்பட்ட மாற்று தரிசனங்கள்' : 'Recommended Alternatives') 
               : isTirupatiQuery 
-              ? (lang === 'te' ? 'తిరుపతి నగరంలోని ఆకర్షణలు' : 'Attractions in Tirupati City') 
+              ? (lang === 'te' ? 'తిరుపతి నగరంలోని ఆకర్షణలు' : lang === 'hi' ? 'तिरुपति शहर के आकर्षण' : lang === 'ta' ? 'திருப்பதி நகரத்தின் ஈர்ப்புகள்' : 'Attractions in Tirupati City') 
               : searchQuery 
-              ? (lang === 'te' ? `"${searchQuery}" ఫలితాలు` : `Results for "${searchQuery}"`) 
+              ? `${t.resultsFor} "${searchQuery}"` 
               : activeFilter === 'All' 
-              ? (lang === 'te' ? 'అన్ని దర్శనీయ స్థలాలు' : 'All Experiences') 
-              : (lang === 'te' ? `${FILTERS_DATA.find(f => f.key === activeFilter)?.labelTe || activeFilter} ప్రదేశాలు` : `${activeFilter} Places`)}
+              ? t.allExperiences
+              : (() => {
+                  const filterObj = FILTERS_DATA.find(f => f.key === activeFilter);
+                  const labelKey = `label${lang.charAt(0).toUpperCase() + lang.slice(1)}` as keyof typeof filterObj;
+                  const labelVal = filterObj ? (filterObj[labelKey] as string) || filterObj.labelEn : activeFilter;
+                  return `${labelVal}`;
+                })()}
           </h2>
           <span className={styles.count} suppressHydrationWarning>
-            {filteredPlaces.length} {filteredPlaces.length === 1 ? (lang === 'te' ? 'ప్రదేశం' : 'result') : (lang === 'te' ? 'ప్రదేశాలు' : 'results')}
+            {filteredPlaces.length} {t.placesFound}
           </span>
         </div>
 
@@ -674,7 +774,7 @@ function ExploreContent() {
                     <div className={styles.itemInfo}>
                       <div className={styles.itemHeader}>
                         <h3 style={{ fontSize: '15px', fontWeight: 800, color: '#0F172A', margin: 0 }}>
-                          {place.name}
+                          {getPlaceName(place, lang)}
                         </h3>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                           <button
@@ -736,8 +836,8 @@ function ExploreContent() {
                           <span className={styles.tag} style={{ backgroundColor: '#E5F3EB', color: '#2F6144', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
                             <MapPin size={12} style={{ flexShrink: 0 }} />
                             {Number((place as any).computedDistance) < 1.0
-                              ? `${formatDistance(Number((place as any).computedDistance), lang)} ${lang === 'te' ? 'దూరం' : 'away'}`
-                              : `${Math.max(4, Math.round(Number((place as any).computedDistance) * 3))} min away (${formatDistance(Number((place as any).computedDistance), lang)})`}
+                              ? `${formatDistance(Number((place as any).computedDistance), lang)} ${t.kmsAway}`
+                              : `${formatDistance(Number((place as any).computedDistance), lang)} (${formatTravelTime(estimateDriveDuration(Number((place as any).computedDistance)), lang)})`}
                           </span>
                         ) : (
                           <span className={styles.tag}>{formatDistance(place.distanceKms || 5, lang)}</span>
@@ -776,7 +876,7 @@ function ExploreContent() {
                             alignItems: 'center',
                             gap: '4px'
                           }}>
-                            ● {crowd} {lang === 'te' ? 'రద్దీ' : 'Crowd'}
+                            ● {crowd === 'High' ? (lang === 'te' ? 'అత్యధిక రద్దీ' : lang === 'hi' ? 'भारी भीड़' : lang === 'ta' ? 'அதிக கூட்டம்' : 'High Crowd') : (lang === 'te' ? 'సాధారణ రద్దీ' : lang === 'hi' ? 'सामान्य भीड़' : lang === 'ta' ? 'குறைந்த கூட்டம்' : 'Moderate Crowd')}
                           </span>
                         ) : null}
 
@@ -791,10 +891,10 @@ function ExploreContent() {
             })
           ) : (
             <div className={styles.noResults}>
-              <p>{lang === 'te' ? 'మీ శోధనకు సరిపోలే ప్రదేశాలు ఏవీ కనుగొనబడలేదు.' : 'No places found matching your search.'}</p>
+              <p>{t.noPlacesFound} "{searchQuery}"</p>
               {searchQuery.length >= 2 && crossResults.stories.length === 0 && crossResults.encyclopedia.length === 0 && (
                 <p style={{ fontSize: 13, color: '#999', marginTop: 4 }}>
-                  {lang === 'te' ? 'ఆలయాలు, పండుగలు, పురాణాలు లేదా స్థలాలను శోధించడానికి ప్రయత్నించండి.' : 'Try searching for temples, festivals, stories, or landmarks.'}
+                  {lang === 'te' ? 'ఆలయాలు, పండుగలు, పురాణాలు లేదా స్థలాలను శోధించడానికి ప్రయత్నించండి.' : lang === 'hi' ? 'मंदिर, त्योहार, कहानियां या स्थान खोजने का प्रयास करें।' : lang === 'ta' ? 'கோவில்கள், திருவிழாக்கள், கதைகள் அல்லது இடங்களை தேடவும்.' : 'Try searching for temples, festivals, stories, or landmarks.'}
                 </p>
               )}
             </div>

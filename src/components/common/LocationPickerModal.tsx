@@ -382,13 +382,24 @@ export function LocationPill({
 }: LocationPillProps) {
   const lang = useLanguage();
   
-  // Look up Telugu name if language is set to Telugu
+  // Look up localized name or default to shortName
   const matchedLoc = PRESET_LOCATIONS.find(l => 
     l.shortName.toLowerCase() === (locationName || 'Tirupati').toLowerCase() ||
     l.nameEn.toLowerCase().includes((locationName || 'Tirupati').toLowerCase()) ||
     l.id.toLowerCase() === (locationName || 'Tirupati').toLowerCase()
   );
-  const displayName = lang === 'te' && matchedLoc ? (matchedLoc.nameTe || matchedLoc.shortName) : (locationName || 'Tirupati');
+  
+  let rawName = (locationName || 'Tirupati').split('(')[0].trim();
+  if (lang === 'te' && matchedLoc) {
+    rawName = matchedLoc.shortName === 'Tirupati' ? 'తిరుపతి' : (matchedLoc.nameTe.split('(')[0].trim() || matchedLoc.shortName);
+  } else if (lang === 'hi' && matchedLoc) {
+    rawName = matchedLoc.shortName === 'Tirupati' ? 'तिरुपति' : matchedLoc.shortName;
+  } else if (lang === 'ta' && matchedLoc) {
+    rawName = matchedLoc.shortName === 'Tirupati' ? 'திருப்பதி' : matchedLoc.shortName;
+  } else if (matchedLoc) {
+    rawName = matchedLoc.shortName;
+  }
+  const displayName = rawName;
 
   return (
     <button
@@ -413,9 +424,9 @@ export function LocationPill({
           : '0 1px 3px rgba(180, 83, 9, 0.08)',
         userSelect: 'none',
         whiteSpace: 'nowrap',
-        flexShrink: 1,
-        minWidth: '50px',
-        overflow: 'hidden',
+        flexShrink: 0,
+        minWidth: 'fit-content',
+        overflow: 'visible',
         transition: 'transform 0.16s cubic-bezier(0.23, 1, 0.32, 1), background-color 0.16s, box-shadow 0.16s',
         outline: 'none',
         ...style
@@ -443,7 +454,7 @@ export function LocationPill({
         textOverflow: 'ellipsis',
         whiteSpace: 'nowrap',
         display: 'inline-block',
-        maxWidth: '125px'
+        maxWidth: 'none'
       }}>
         {displayName}
       </span>

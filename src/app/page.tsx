@@ -14,6 +14,7 @@ import {
   RecommendationCard,
   DailyContent,
   QuickChecklist,
+  VaikuntaEkadasiBanner,
   YatraChecklist,
   DesktopSidebarWidget,
   HomeSkeleton
@@ -71,7 +72,7 @@ export default function HomePage() {
   const home = useHomeData();
   const { userLocation } = useTrip();
   const lang = useLanguage();
-  const t = TEXTS[lang];
+  const t = TEXTS[lang as keyof typeof TEXTS] || TEXTS.en;
   const [showLoreDrawer, setShowLoreDrawer] = useState(false);
 
   const origin = userLocation || TIRUPATI_CENTER;
@@ -140,7 +141,7 @@ export default function HomePage() {
   ];
 
   return (
-    <div className={styles.homeWrapper} style={{ backgroundColor: 'var(--bg-canvas, #FAF8F5)', minHeight: '100vh', width: '100%', maxWidth: '100%', overflowX: 'hidden', boxSizing: 'border-box' }}>
+    <div className={styles.homeWrapper} style={{ backgroundColor: 'var(--bg-canvas, #FAF8F5)', minHeight: '100vh', width: '100%', maxWidth: '100%', overflowX: 'hidden', overflowY: 'auto', boxSizing: 'border-box' }}>
       
       {/* 📱 MOBILE VIEW (<768px): 3-Layer Information Architecture */}
       <div className={styles.mobileOnly}>
@@ -153,6 +154,9 @@ export default function HomePage() {
           <div style={{ marginTop: '4px', marginBottom: '8px' }}>
             <QuickChecklist {...home.checklist} liveStatus={home.status.liveStatus} />
           </div>
+
+          {/* LAYER 2.1: VAIKUNTA DWARA DARSHAN & EKADASI COUNTDOWN BANNER */}
+          <VaikuntaEkadasiBanner />
 
           {/* LAYER 2.5: YATRA ESSENTIALS COMPLIANCE CHECKLIST */}
           <YatraChecklist />
@@ -573,6 +577,9 @@ export default function HomePage() {
 
             {/* Real-time SSD Free Token Quota, Slots & Counters Checklist */}
             <QuickChecklist {...home.checklist} liveStatus={home.status.liveStatus} />
+
+            {/* Vaikunta Dwara Darshan & Ekadasi Countdown */}
+            <VaikuntaEkadasiBanner />
 
             {/* Desktop Column 2 Fill: Annaprasadam, Helpline Deck & Trek Radar */}
             <DesktopSidebarWidget />

@@ -9,14 +9,32 @@ import { playSaarthiSonicIdent } from '@/lib/audioIdentity';
 
 const TEXTS = {
   en: {
-    todaysCompanion: 'Today\'s Companion',
+    todaysCompanion: "Today's Companion",
     didYouKnow: 'Did You Know?',
     share: 'Share',
+    listen: 'Listen',
+    stop: 'Stop'
   },
   te: {
     todaysCompanion: 'నేటి సహచరి',
     didYouKnow: 'మీకు తెలుసా?',
     share: 'షేర్ చేయండి',
+    listen: 'వినండి',
+    stop: 'ఆపండి'
+  },
+  hi: {
+    todaysCompanion: 'आज का साथी',
+    didYouKnow: 'क्या आप जानते हैं?',
+    share: 'साझा करें',
+    listen: 'सुनें',
+    stop: 'रोकें'
+  },
+  ta: {
+    todaysCompanion: 'இன்றைய துணை',
+    didYouKnow: 'உங்களுக்கு தெரியுமா?',
+    share: 'பகிரவும்',
+    listen: 'கேட்க',
+    stop: 'நிறுத்த'
   }
 };
 
@@ -24,7 +42,7 @@ export function DailyContent(props: any) {
   const { dailyContent, liveStatus, todayFestival, variant = 'mobile' } = props;
   const isDesktop = variant === 'desktop';
   const lang = useLanguage();
-  const t = TEXTS[lang];
+  const t = TEXTS[lang as keyof typeof TEXTS] || TEXTS.en;
 
   // Compute companion data — priority: API > engine with live context
   const companionData: TodaysCompanionData = useMemo(() => {
@@ -143,7 +161,7 @@ export function DailyContent(props: any) {
                 }}
               >
                 {isSpeaking ? <VolumeX size={11} color="#DC2626" /> : <Volume2 size={11} color="#D97706" />}
-                <span>{isSpeaking ? (lang === 'te' ? 'ఆపండి' : 'Stop') : (lang === 'te' ? 'వినండి' : 'Listen')}</span>
+                <span>{isSpeaking ? t.stop : t.listen}</span>
               </button>
 
               <button

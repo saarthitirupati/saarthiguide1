@@ -13,10 +13,164 @@ import styles from './Essentials.module.css';
 
 import { KNOWLEDGE_ITEMS, FAQ_ITEMS, CHECKLIST_ITEMS } from '@/content/knowledge';
 import { useRealtimeStatus } from '@/lib/useRealtimeStatus';
+import { useLanguage } from '@/lib/useLanguage';
 import { SrivariNamamVector } from '@/components/common/DevotionalSvgIcons';
+
+const TEXTS: Record<string, Record<string, string>> = {
+  en: {
+    headerTitle: 'Pilgrim Essentials',
+    searchTitle: 'What are you looking for?',
+    searchPlaceholder: 'Search lockers, food, rooms, tonsure...',
+    todaysNotice: "Today's Notice",
+    readinessTitle: 'Pre-Darshan Readiness',
+    hideChecklist: 'Hide Checklist',
+    searchResults: 'Search Results',
+    noFacilitiesFound: 'No facilities found matching',
+    trySearching: 'Try searching for "Phone", "Locker", "Food", "Room", or "Hair"',
+    viewDetails: 'View Details →',
+    whatDoYouNeed: 'What do you need right now?',
+    instantGuidance: 'Instant guidance before entering the temple',
+    secureBelongingsTitle: 'Secure Belongings & Free Lockers',
+    secureBelongingsSub: 'Deposit mobile phones, backpacks & shoes safely before entering queue scanners. 100% free with exit pickup.',
+    findLocker: 'Find a locker →',
+    freeMealsTitle: 'Free Meals',
+    freeMealsSub: 'Annaprasadam Complex',
+    findMeals: 'Find meal locations →',
+    hairOfferingTitle: 'Hair Offering',
+    hairOfferingSub: 'Kalyana Katta 24/7',
+    findHair: 'Find Kalyanakatta →',
+    accommodationTitle: 'Accommodation',
+    accommodationSub: 'PAC Halls & Rooms',
+    findRooms: 'Find rooms & PAC →',
+    shoppingTitle: 'Official Shopping',
+    shoppingSub: 'TTD Books & Laddus',
+    viewStores: 'View stores →',
+    supportEmergency: 'Support & Emergency',
+    helpdeskTitle: 'TTD Helpdesk',
+    helpdeskSub: 'Official 24/7 Pilgrim Enquiry',
+    callHelpdesk: 'Call 155257 →',
+    emergencyTitle: 'Emergency Help',
+    emergencySub: 'Police & Medical Services',
+    callEmergency: 'Call 108 →',
+    faqTitle: 'Frequently Asked Questions'
+  },
+  te: {
+    headerTitle: 'యాత్రా అవసరాలు',
+    searchTitle: 'మీరు దేనికోసం వెతుకుతున్నారు?',
+    searchPlaceholder: 'లాకర్లు, అన్నప్రసాదం, గదులు, కళ్యాణకట్ట శోధించండి...',
+    todaysNotice: 'నేటి ముఖ్యాంశం',
+    readinessTitle: 'దర్శన సూచిక సరిచూసుకోండి',
+    hideChecklist: 'జాబితా దాచు',
+    searchResults: 'శోధన ఫలితాలు',
+    noFacilitiesFound: 'సరిపోలే సదుపాయాలు లభించలేదు:',
+    trySearching: '"ఫోన్", "లాకర్", "ఆహారం", "గది" వంటి పదాలతో శోధించండి',
+    viewDetails: 'వివరాలు చూడండి →',
+    whatDoYouNeed: 'మీకు ఇప్పుడు ఏమి కావాలో ఎంచుకోండి',
+    instantGuidance: 'ఆలయంలోనికి వెళ్లేముందు అత్యవసర సమాచారం',
+    secureBelongingsTitle: 'వస్తువుల భద్రత & ఉచిత లాకర్లు',
+    secureBelongingsSub: 'క్యూ కాంప్లెక్స్ వెళ్లేముందు ఫోన్లు, లగేజీ, చెప్పులు భద్రపరచండి. 100% ఉచిత సర్వీస్.',
+    findLocker: 'లాకర్ కేంద్రాలు →',
+    freeMealsTitle: 'ఉచిత అన్నప్రసాదం',
+    freeMealsSub: 'మాతృశ్రీ తరిగొండ వెంగమాంబ అన్నప్రసాద భవనం',
+    findMeals: 'అన్నప్రసాదం వివరాలు →',
+    hairOfferingTitle: 'తలనీలాలు సమర్పణ',
+    hairOfferingSub: 'కళ్యాణకట్ట (24/7 ఉచిత సేవ)',
+    findHair: 'కళ్యాణకట్ట వివరాలు →',
+    accommodationTitle: 'వసతి & గదులు',
+    accommodationSub: 'పిఎసి హాల్స్ మరియు కాటేజీలు',
+    findRooms: 'వసతి కేంద్రాలు →',
+    shoppingTitle: 'అధికారిక షాపింగ్',
+    shoppingSub: 'టిటిడి పుస్తకాలు మరియు లడ్డూ కౌంటర్లు',
+    viewStores: 'అంగళ్ళు చూడండి →',
+    supportEmergency: 'సహాయం & అత్యవసరం',
+    helpdeskTitle: 'టిటిడి హెల్ప్‌డెస్క్',
+    helpdeskSub: '24/7 భక్తుల విచారణ కేంద్రం',
+    callHelpdesk: 'కాల్ చేయండి 155257 →',
+    emergencyTitle: 'అత్యవసర సహాయం',
+    emergencySub: 'పోలీస్ & వైద్యాధికారులు',
+    callEmergency: 'కాల్ చేయండి 108 →',
+    faqTitle: 'తరచూ అడిగే ప్రశ్నలు'
+  },
+  hi: {
+    headerTitle: 'तीर्थयात्री आवश्यकताएं',
+    searchTitle: 'आप क्या खोज रहे हैं?',
+    searchPlaceholder: 'लॉकर, भोजन, कमरे, मुंडन खोजें...',
+    todaysNotice: 'आज का नोटिस',
+    readinessTitle: 'दर्शन तैयारी चेकलिस्ट',
+    hideChecklist: 'सूची छिपाएं',
+    searchResults: 'खोज परिणाम',
+    noFacilitiesFound: 'कोई सुविधा नहीं मिली:',
+    trySearching: '"फोन", "लॉकर", "भोजन", "कमरा" खोज कर देखें',
+    viewDetails: 'विवरण देखें →',
+    whatDoYouNeed: 'आपको अभी क्या चाहिए?',
+    instantGuidance: 'मंदिर में प्रवेश करने से पहले त्वरित मार्गदर्शन',
+    secureBelongingsTitle: 'सामान सुरक्षा और मुफ्त लॉकर',
+    secureBelongingsSub: 'क्यू कॉम्प्लेक्स में प्रवेश से पहले फोन, बैग और जूते सुरक्षित जमा करें। 100% मुफ्त।',
+    findLocker: 'लॉकर खोजें →',
+    freeMealsTitle: 'मुफ्त भोजन',
+    freeMealsSub: 'अन्नप्रसादम कॉम्प्लेक्स',
+    findMeals: 'भोजन स्थल खोजें →',
+    hairOfferingTitle: 'मुंडन सेवा',
+    hairOfferingSub: 'कल्याण कट्टा 24/7',
+    findHair: 'कल्याण कट्टा खोजें →',
+    accommodationTitle: 'आवास और कमरे',
+    accommodationSub: 'पीएसी हॉल और कमरे',
+    findRooms: 'कमरे और पीएसी खोजें →',
+    shoppingTitle: 'आधिकारिक खरीदारी',
+    shoppingSub: 'टीटीडी पुस्तकें और लड्डू काउंटर',
+    viewStores: 'दुकानें देखें →',
+    supportEmergency: 'सहायता और आपातकालीन',
+    helpdeskTitle: 'टीटीडी हेल्पडेस्क',
+    helpdeskSub: 'आधिकारिक 24/7 पूछताछ',
+    callHelpdesk: 'कॉल करें 155257 →',
+    emergencyTitle: 'आपातकालीन सहायता',
+    emergencySub: 'पुलिस और चिकित्सा सेवाएं',
+    callEmergency: 'कॉल करें 108 →',
+    faqTitle: 'अक्सर पूछे जाने वाले प्रश्न'
+  },
+  ta: {
+    headerTitle: 'பயணத் தேவைகள்',
+    searchTitle: 'நீங்கள் எதைத் தேடுகிறீர்கள்?',
+    searchPlaceholder: 'லாக்கர், உணவு, அறைகள், மொட்டை தேடுக...',
+    todaysNotice: 'இன்றைய அறிவிப்பு',
+    readinessTitle: 'தரிசன தயாரிப்பு பட்டியல்',
+    hideChecklist: 'பட்டியலை மறைக்க',
+    searchResults: 'தேடல் முடிவுகள்',
+    noFacilitiesFound: 'பொருந்தும் வசதிகள் இல்லை:',
+    trySearching: '"போன்", "லாக்கர்", "உணவு", "அறை" எனத் தேடவும்',
+    viewDetails: 'விவரங்களை காண்க →',
+    whatDoYouNeed: 'உங்களுக்கு இப்போது என்ன தேவை?',
+    instantGuidance: 'கோவிலுக்குள் நுழைவதற்கு முன் உடனடி வழிகாட்டுதல்',
+    secureBelongingsTitle: 'பொருட்கள் பாதுகாப்பு & இலவச லாக்கர்கள்',
+    secureBelongingsSub: 'க்யூவில் நுழைவதற்கு முன் போன், பேக் மற்றும் காலணிகளை பாதுகாப்பாக வைக்கவும். 100% இலவசம்.',
+    findLocker: 'லாக்கரை காண்க →',
+    freeMealsTitle: 'இலவச உணவு',
+    freeMealsSub: 'அன்னப்ரசாதம் மையம்',
+    findMeals: 'உணவு இடங்கள் →',
+    hairOfferingTitle: 'முடி காணிக்கை',
+    hairOfferingSub: 'கல்யாண கட்டா 24/7',
+    findHair: 'கல்யாண கட்டா காண்க →',
+    accommodationTitle: 'தங்கும் இடம்',
+    accommodationSub: 'பிஏசி ஹால் & அறைகள்',
+    findRooms: 'அறைகள் காண்க →',
+    shoppingTitle: 'அதிகாரப்பூர்வ ஷாப்பிங்',
+    shoppingSub: 'டிடிடி புத்தகங்கள் & லட்டு',
+    viewStores: 'கடைகளை காண்க →',
+    supportEmergency: 'உதவி & அவசரம்',
+    helpdeskTitle: 'டிடிடி உதவி மையம்',
+    helpdeskSub: '24/7 பக்தர்கள் உதவி மையம்',
+    callHelpdesk: 'அழைக்க 155257 →',
+    emergencyTitle: 'அவசர உதவி',
+    emergencySub: 'போலீஸ் & மருத்துவ சேவைகள்',
+    callEmergency: 'அழைக்க 108 →',
+    faqTitle: 'அடிக்கடி கேட்கப்படும் கேள்விகள்'
+  }
+};
 
 export default function PilgrimEssentialsPage() {
   const router = useRouter();
+  const lang = useLanguage();
+  const t = TEXTS[lang as keyof typeof TEXTS] || TEXTS.en;
   const { status } = useRealtimeStatus();
   const [searchQuery, setSearchQuery] = useState('');
   const [showChecklist, setShowChecklist] = useState(false);
@@ -117,7 +271,7 @@ export default function PilgrimEssentialsPage() {
         <div className={styles.headerTitleContainer} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
           <SrivariNamamVector size={24} />
           <h1 style={{ margin: 0, fontFamily: "var(--font-sacred-serif), 'Cinzel', Georgia, serif" }}>
-            Pilgrim Essentials
+            {t.headerTitle}
           </h1>
         </div>
         <div className={styles.headerActions}>
@@ -140,14 +294,14 @@ export default function PilgrimEssentialsPage() {
         {/* Search Bar ("What are you looking for?") */}
         <div className={styles.searchContainer}>
           <div style={{ fontSize: '14px', fontWeight: 700, color: '#0F172A', marginBottom: '6px' }}>
-            What are you looking for?
+            {t.searchTitle}
           </div>
           <div className={styles.searchBar}>
             <Search size={18} color="#64748B" />
             <input 
               type="text"
               className={styles.searchInput}
-              placeholder="Search lockers, food, rooms, tonsure..."
+              placeholder={t.searchPlaceholder}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
@@ -173,7 +327,7 @@ export default function PilgrimEssentialsPage() {
             <div style={{ flex: 1 }}>
               <div className={styles.noticeHeader}>
                 <AlertTriangle size={14} color="#D97706" />
-                <span>Today's Notice</span>
+                <span>{t.todaysNotice}</span>
               </div>
               <p className={styles.noticeContent}>
                 {noticeText}
@@ -202,7 +356,7 @@ export default function PilgrimEssentialsPage() {
               <div className={styles.checklistHeader}>
                 <h3 className={styles.checklistTitle}>
                   <ClipboardCheck size={18} color="#0F5132" />
-                  Pre-Darshan Readiness
+                  {t.readinessTitle}
                 </h3>
                 <span className={styles.checklistProgress}>{checklistStats.checked} / {checklistStats.total} ({checklistStats.pct}%)</span>
               </div>
@@ -232,7 +386,7 @@ export default function PilgrimEssentialsPage() {
               </div>
 
               <button className={styles.minimizeBtn} onClick={() => setShowChecklist(false)}>
-                Hide Checklist
+                {t.hideChecklist}
               </button>
             </motion.section>
           )}
@@ -243,14 +397,14 @@ export default function PilgrimEssentialsPage() {
           <section className={styles.primaryGridSection}>
             <div className={styles.sectionHeaderRow}>
               <h2 className={styles.sectionTitle} style={{ fontSize: '17px' }}>
-                Search Results ({searchResults.length})
+                {t.searchResults} ({searchResults.length})
               </h2>
             </div>
             {searchResults.length === 0 ? (
               <div style={{ padding: '30px', textAlign: 'center', color: '#64748B' }}>
                 <HelpCircle size={36} color="#94A3B8" style={{ marginBottom: '8px' }} />
-                <p style={{ margin: 0, fontWeight: 600 }}>No facilities found matching "{searchQuery}"</p>
-                <p style={{ fontSize: '13px', marginTop: '4px' }}>Try searching for "Phone", "Locker", "Food", "Room", or "Hair"</p>
+                <p style={{ margin: 0, fontWeight: 600 }}>{t.noFacilitiesFound} "{searchQuery}"</p>
+                <p style={{ fontSize: '13px', marginTop: '4px' }}>{t.trySearching}</p>
               </div>
             ) : (
               <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
@@ -267,7 +421,7 @@ export default function PilgrimEssentialsPage() {
                     <p className={styles.utilityDecisionLoc}>{item.shortDescription}</p>
                     <div className={styles.utilityDecisionActionRow}>
                       <span className={styles.secondaryCardAction}>
-                        View Details →
+                        {t.viewDetails}
                       </span>
                     </div>
                   </div>
@@ -280,10 +434,10 @@ export default function PilgrimEssentialsPage() {
           <section style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
             <div>
               <h2 className={styles.sectionTitle} style={{ fontSize: '18px', margin: 0 }}>
-                What do you need right now?
+                {t.whatDoYouNeed}
               </h2>
               <p style={{ fontSize: '12.5px', color: '#64748B', margin: '2px 0 0 0', fontWeight: 500 }}>
-                Instant guidance before entering the temple
+                {t.instantGuidance}
               </p>
             </div>
 
@@ -303,14 +457,14 @@ export default function PilgrimEssentialsPage() {
               </div>
               <div className={styles.featuredContent}>
                 <div>
-                  <h3 className={styles.featuredTitle}>Secure Belongings & Free Lockers</h3>
+                  <h3 className={styles.featuredTitle}>{t.secureBelongingsTitle}</h3>
                   <p className={styles.featuredSub}>
-                    Deposit mobile phones, backpacks & shoes safely before entering queue scanners. 100% free with exit pickup.
+                    {t.secureBelongingsSub}
                   </p>
                 </div>
                 <button className={styles.featuredActionBtn}>
                   <Lock size={15} />
-                  <span>Find a locker →</span>
+                  <span>{t.findLocker}</span>
                 </button>
               </div>
             </div>
@@ -328,11 +482,11 @@ export default function PilgrimEssentialsPage() {
                 />
                 <div className={styles.secondaryCardBody}>
                   <div>
-                    <h4 className={styles.secondaryTitle}>Free Meals</h4>
-                    <p className={styles.secondarySub}>Annaprasadam Complex</p>
+                    <h4 className={styles.secondaryTitle}>{t.freeMealsTitle}</h4>
+                    <p className={styles.secondarySub}>{t.freeMealsSub}</p>
                   </div>
                   <div className={styles.secondaryCardAction}>
-                    <span>Find meal locations →</span>
+                    <span>{t.findMeals}</span>
                   </div>
                 </div>
               </div>
@@ -348,11 +502,11 @@ export default function PilgrimEssentialsPage() {
                 />
                 <div className={styles.secondaryCardBody}>
                   <div>
-                    <h4 className={styles.secondaryTitle}>Hair Offering</h4>
-                    <p className={styles.secondarySub}>Kalyana Katta 24/7</p>
+                    <h4 className={styles.secondaryTitle}>{t.hairOfferingTitle}</h4>
+                    <p className={styles.secondarySub}>{t.hairOfferingSub}</p>
                   </div>
                   <div className={styles.secondaryCardAction}>
-                    <span>Find Kalyanakatta →</span>
+                    <span>{t.findHair}</span>
                   </div>
                 </div>
               </div>
@@ -368,11 +522,11 @@ export default function PilgrimEssentialsPage() {
                 />
                 <div className={styles.secondaryCardBody}>
                   <div>
-                    <h4 className={styles.secondaryTitle}>Accommodation</h4>
-                    <p className={styles.secondarySub}>PAC Halls & Rooms</p>
+                    <h4 className={styles.secondaryTitle}>{t.accommodationTitle}</h4>
+                    <p className={styles.secondarySub}>{t.accommodationSub}</p>
                   </div>
                   <div className={styles.secondaryCardAction}>
-                    <span>Find rooms & PAC →</span>
+                    <span>{t.findRooms}</span>
                   </div>
                 </div>
               </div>
@@ -388,11 +542,11 @@ export default function PilgrimEssentialsPage() {
                 />
                 <div className={styles.secondaryCardBody}>
                   <div>
-                    <h4 className={styles.secondaryTitle}>Official Shopping</h4>
-                    <p className={styles.secondarySub}>TTD Books & Laddus</p>
+                    <h4 className={styles.secondaryTitle}>{t.shoppingTitle}</h4>
+                    <p className={styles.secondarySub}>{t.shoppingSub}</p>
                   </div>
                   <div className={styles.secondaryCardAction}>
-                    <span>View stores →</span>
+                    <span>{t.viewStores}</span>
                   </div>
                 </div>
               </div>
@@ -401,7 +555,7 @@ export default function PilgrimEssentialsPage() {
             {/* SUPPORT & EMERGENCY SECTION (CLEAN CARDS, SUBTLE RED) */}
             <div style={{ marginTop: '16px' }}>
               <h3 style={{ fontSize: '15px', fontWeight: 700, color: '#0F172A', margin: '0 0 10px 0' }}>
-                Support & Emergency
+                {t.supportEmergency}
               </h3>
               <div className={styles.supportEmergencyGrid}>
                 {/* Official Shopping / Helpdesk */}
@@ -411,13 +565,13 @@ export default function PilgrimEssentialsPage() {
                 >
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                     <HelpCircle size={18} color="#0F5132" />
-                    <span style={{ fontSize: '13.5px', fontWeight: 700, color: '#0F172A' }}>TTD Helpdesk</span>
+                    <span style={{ fontSize: '13.5px', fontWeight: 700, color: '#0F172A' }}>{t.helpdeskTitle}</span>
                   </div>
                   <p style={{ fontSize: '11.5px', color: '#64748B', margin: 0 }}>
-                    Official 24/7 Pilgrim Enquiry
+                    {t.helpdeskSub}
                   </p>
                   <span style={{ fontSize: '12px', fontWeight: 700, color: '#0F5132' }}>
-                    Call 155257 →
+                    {t.callHelpdesk}
                   </span>
                 </div>
 
@@ -428,13 +582,13 @@ export default function PilgrimEssentialsPage() {
                 >
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                     <ShieldAlert size={18} color="#DC2626" />
-                    <span style={{ fontSize: '13.5px', fontWeight: 700, color: '#991B1B' }}>Emergency Help</span>
+                    <span style={{ fontSize: '13.5px', fontWeight: 700, color: '#991B1B' }}>{t.emergencyTitle}</span>
                   </div>
                   <p style={{ fontSize: '11.5px', color: '#991B1B', margin: 0 }}>
-                    Police & Medical Services
+                    {t.emergencySub}
                   </p>
                   <span style={{ fontSize: '12px', fontWeight: 700, color: '#DC2626' }}>
-                    Call 108 →
+                    {t.callEmergency}
                   </span>
                 </div>
               </div>
@@ -446,7 +600,7 @@ export default function PilgrimEssentialsPage() {
         <section className={styles.faqSection} style={{ marginTop: '8px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
             <HelpCircle size={17} color="#475569" />
-            <h2 className={styles.sectionTitle} style={{ fontSize: '16px' }}>Frequently Asked Questions</h2>
+            <h2 className={styles.sectionTitle} style={{ fontSize: '16px' }}>{t.faqTitle}</h2>
           </div>
           
           <div className={styles.faqList}>

@@ -32,3 +32,8 @@ If the engine recommends a place, the API must always provide the reasons. If yo
 
 Any future changes, refactors, or modifications to the notification system (Web Push, FCM, live alerts, in-app notification badges, notification banners, push client, or service worker) REQUIRE EXPLICIT PERMISSION from the user before implementation. Do not modify notification logic, subscription schemas, dispatch payloads, or push delivery pathways without first asking the user and receiving their direct consent.
 
+# Strict Codebase Touch Guard
+
+DO NOT touch, edit, refactor, or create any code files in this codebase UNLESS the user explicitly instructs you to do so with direct permission (e.g. "modify this file", "go ahead and edit", "fix this"). Always explain your plan first and ask for explicit user consent before making any edits to the codebase.
+
+

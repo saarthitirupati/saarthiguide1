@@ -194,7 +194,7 @@ if (typeof window !== 'undefined') {
   }
 }
 
-export function getSaarthiLogoImage(timeoutMs = 150): Promise<HTMLImageElement | null> {
+export function getSaarthiLogoImage(timeoutMs = 800): Promise<HTMLImageElement | null> {
   if (typeof window === 'undefined') return Promise.resolve(null);
   if (cachedLogoImage && cachedLogoImage.complete && cachedLogoImage.naturalWidth > 0) {
     return Promise.resolve(cachedLogoImage);
@@ -203,7 +203,7 @@ export function getSaarthiLogoImage(timeoutMs = 150): Promise<HTMLImageElement |
   return Promise.race([
     new Promise<HTMLImageElement | null>((resolve) => {
       const img = new Image();
-      img.crossOrigin = 'anonymous';
+      // Do not set crossOrigin for relative local assets to prevent canvas taint in PWAs/WebViews
       img.onload = () => {
         cachedLogoImage = img;
         resolve(img);
@@ -639,8 +639,11 @@ export async function generateTodayInTirumalaCard(data: TodayPulseCardData): Pro
     // Clip circular shape so pin logo blends seamlessly
     ctx.beginPath();
     ctx.arc(logoX + logoSize / 2, logoY + logoSize / 2, logoSize / 2, 0, Math.PI * 2);
-    ctx.clip();
-    ctx.drawImage(logoImg, logoX, logoY, logoSize, logoSize);
+    try {
+      ctx.drawImage(logoImg, logoX, logoY, logoSize, logoSize);
+    } catch {
+      drawNamamIcon(ctx, logoX + logoSize / 2, logoY + logoSize / 2, 22);
+    }
     ctx.restore();
   } else {
     // Elegant fallback if image asset is not ready
@@ -1252,32 +1255,7 @@ export async function shareOrDownloadCard(
   const isMobile = /android|iphone|ipad|ipod|mobile/i.test(userAgent);
   const isIOS = /iphone|ipad|ipod/i.test(userAgent);
 
-  // 1. Native Mobile App Bridge Detection (Capacitor / Android Native / iOS WebKit)
-  const win = window as any;
-  if (win.Android && typeof win.Android.shareText === 'function') {
-    try {
-      win.Android.shareText(fullCaption, title);
-      return true;
-    } catch (e) {
-      console.warn('[Share] Android bridge share failed:', e);
-    }
-  }
-
-  if (win.Capacitor?.Plugins?.Share && typeof win.Capacitor.Plugins.Share.share === 'function') {
-    try {
-      await win.Capacitor.Plugins.Share.share({
-        title,
-        text: fullCaption,
-        url,
-        dialogTitle: title
-      });
-      return true;
-    } catch (e) {
-      console.warn('[Share] Capacitor plugin share failed:', e);
-    }
-  }
-
-  // 2. Construct File strictly with correct PNG mime type and name
+  // 1. Construct File strictly with correct PNG mime type and name
   let file: File;
   try {
     file = new File([blob], filename, { type: 'image/png', lastModified: Date.now() });
@@ -1289,7 +1267,7 @@ export async function shareOrDownloadCard(
     file = b as File;
   }
 
-  // 3. Native Web Share API Level 2 (Image File + Text + URL)
+  // 2. Native Web Share API Level 2 (Image File + Text + URL)
   if (typeof navigator !== 'undefined' && typeof navigator.share === 'function') {
     let canShareFile = false;
     try {
@@ -1315,25 +1293,52 @@ export async function shareOrDownloadCard(
         if (err?.name === 'AbortError' || err?.message?.includes('abort') || err?.message?.includes('cancel')) {
           return true;
         }
-        console.warn('[Share] File share failed, falling back to Web Share API text payload:', err);
+        console.warn('[Share] File share failed, falling back to Android bridge or text payload:', err);
       }
-    }
-
-    // 4. Web Share API Level 1 Fallback (Text + URL - Works 100% in Mobile Apps, WebViews, PWAs)
-    try {
-      await navigator.share({
-        title,
-        text: fullCaption,
-        url
-      });
-      return true;
-    } catch (err: any) {
-      if (err?.name === 'AbortError' || err?.message?.includes('abort') || err?.message?.includes('cancel')) {
-        return true;
-      }
-      console.warn('[Share] Web Share API text share failed, trying clipboard and app link:', err);
     }
   }
+
+  // 3. Native Mobile App Bridge (Capacitor / Android Native / iOS WebKit)
+  const win = window as any;
+  if (win.Android && typeof win.Android.shareImage === 'function') {
+    try {
+      const reader = new FileReader();
+      reader.readAsDataURL(blob);
+      reader.onloadend = () => {
+        const base64data = reader.result as string;
+        win.Android.shareImage(base64data, title, fullCaption);
+      };
+      return true;
+    } catch (e) {
+      console.warn('[Share] Android bridge shareImage failed:', e);
+    }
+  }
+
+  if (win.Android && typeof win.Android.shareText === 'function') {
+    try {
+      win.Android.shareText(fullCaption, title);
+      return true;
+    } catch (e) {
+      console.warn('[Share] Android bridge shareText failed:', e);
+    }
+  }
+
+    // 4. Web Share API Level 1 Fallback (Text + URL - Works 100% in Mobile Apps, WebViews, PWAs)
+    if (typeof navigator !== 'undefined' && typeof navigator.share === 'function') {
+      try {
+        await navigator.share({
+          title,
+          text: fullCaption,
+          url
+        });
+        return true;
+      } catch (err: any) {
+        if (err?.name === 'AbortError' || err?.message?.includes('abort') || err?.message?.includes('cancel')) {
+          return true;
+        }
+        console.warn('[Share] Web Share API text share failed, trying clipboard and app link:', err);
+      }
+    }
 
   // 5. Guaranteed Image PNG & Text Fallback: Copy to Clipboard + Direct Download + App Links
   try {
