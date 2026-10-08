@@ -21,14 +21,21 @@ export default function GoogleTranslate() {
     }
 
     const savedLang = localStorage.getItem('saarthi_user_language');
-    // Only load Google Translate if a non-English language is selected
     if (!savedLang || savedLang === 'en') return;
+
+    // Ensure googtrans cookie is active
+    document.cookie = `googtrans=/en/${savedLang}; path=/;`;
+    if (window.location.hostname && window.location.hostname !== 'localhost') {
+      document.cookie = `googtrans=/en/${savedLang}; domain=.${window.location.hostname}; path=/;`;
+    }
 
     const triggerTranslate = () => {
       const sel = document.querySelector('.goog-te-combo') as HTMLSelectElement | null;
       if (sel) {
-        sel.value = savedLang;
-        sel.dispatchEvent(new Event('change'));
+        if (sel.value !== savedLang) {
+          sel.value = savedLang;
+          sel.dispatchEvent(new Event('change'));
+        }
       }
     };
 
@@ -36,14 +43,18 @@ export default function GoogleTranslate() {
     if (!(window as any).google || !(window as any).google.translate) {
       if (!document.getElementById('google-translate-script')) {
         (window as any).googleTranslateElementInit = () => {
-          new (window as any).google.translate.TranslateElement(
-            {
-              pageLanguage: 'en',
-              includedLanguages: 'te,hi,ta',
-              autoDisplay: false,
-            },
-            'google_translate_element'
-          );
+          try {
+            new (window as any).google.translate.TranslateElement(
+              {
+                pageLanguage: 'en',
+                includedLanguages: 'te,hi,ta',
+                autoDisplay: false,
+              },
+              'google_translate_element'
+            );
+          } catch {
+            // Guard
+          }
 
           const poll = setInterval(() => {
             const sel = document.querySelector('.goog-te-combo') as HTMLSelectElement | null;
@@ -52,9 +63,9 @@ export default function GoogleTranslate() {
               sel.dispatchEvent(new Event('change'));
               clearInterval(poll);
             }
-          }, 200);
+          }, 150);
 
-          setTimeout(() => clearInterval(poll), 8000);
+          setTimeout(() => clearInterval(poll), 6000);
         };
 
         const script = document.createElement('script');
@@ -64,10 +75,11 @@ export default function GoogleTranslate() {
         document.body.appendChild(script);
       }
     } else {
-      // Script already loaded: re-trigger on route change after DOM renders
-      const timer = setTimeout(triggerTranslate, 300);
-      return () => clearTimeout(timer);
+      triggerTranslate();
     }
+
+    const interval = setInterval(triggerTranslate, 1000);
+    return () => clearInterval(interval);
   }, [pathname]);
 
   return (

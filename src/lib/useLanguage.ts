@@ -13,14 +13,18 @@ export function setAppLanguage(newLang: AppLang) {
   try {
     localStorage.setItem('saarthi_user_language', newLang);
     
-    // Always clear existing google translate cookie first to prevent target language mismatch
+    // Always clear existing google translate cookie first
     document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-    document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; domain=${window.location.hostname}; path=/;`;
+    if (window.location.hostname && window.location.hostname !== 'localhost') {
+      document.cookie = `googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; domain=.${window.location.hostname}; path=/;`;
+    }
 
     if (newLang !== 'en') {
       // Set google translate cookie for auto-translation to selected language
       document.cookie = `googtrans=/en/${newLang}; path=/;`;
-      document.cookie = `googtrans=/en/${newLang}; domain=${window.location.hostname}; path=/;`;
+      if (window.location.hostname && window.location.hostname !== 'localhost') {
+        document.cookie = `googtrans=/en/${newLang}; domain=.${window.location.hostname}; path=/;`;
+      }
     }
     window.dispatchEvent(new CustomEvent('saarthi_language_change', { detail: newLang }));
     window.location.reload();
