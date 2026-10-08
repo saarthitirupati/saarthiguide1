@@ -447,7 +447,7 @@ export function LocationPill({
       }}
     >
       <MapPin size={12} color={isGpsActive ? '#059669' : '#B45309'} strokeWidth={2.2} style={{ flexShrink: 0 }} />
-      <span style={{ 
+      <span className="notranslate" style={{ 
         color: isGpsActive ? '#065F46' : '#92400E', 
         letterSpacing: '-0.01em', 
         overflow: 'hidden', 

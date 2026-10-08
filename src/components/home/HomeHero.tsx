@@ -1463,10 +1463,10 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
           }}>
 
             {/* Left — Official Saarthi Brand Lockup */}
-            <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '6px', textDecoration: 'none', flexShrink: 0 }}>
-              <Logo size={32} />
+            <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '6px', textDecoration: 'none', flexShrink: 0, zIndex: 2 }}>
+              <Logo size={30} />
               <span className="notranslate" style={{
-                fontSize: 'clamp(18px, 4.5vw, 21px)',
+                fontSize: '18px',
                 fontWeight: 900,
                 color: '#0F5132',
                 letterSpacing: '-0.02em',
@@ -1479,17 +1479,18 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
             </Link>
 
             {/* Right — Action group */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', minWidth: 0, flexShrink: 1, justifyContent: 'flex-end' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '5px', minWidth: 0, flexShrink: 1, justifyContent: 'flex-end' }}>
               <LocationPill 
                 locationName={selectedLocation} 
                 isGpsActive={locationPermission === 'granted'}
                 onClick={() => setIsLocationModalOpen(true)} 
                 style={{ 
                   height: '32px',
-                  padding: '4px 9px', 
-                  fontSize: '12px', 
-                  gap: '4px', 
-                  maxWidth: 'clamp(115px, 45vw, 190px)' 
+                  padding: '4px 8px', 
+                  fontSize: '11.5px', 
+                  gap: '3px', 
+                  maxWidth: 'clamp(85px, 30vw, 140px)',
+                  flexShrink: 1
                 }}
               />
 

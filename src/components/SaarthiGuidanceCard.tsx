@@ -5,6 +5,8 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Sparkles, Flame, Navigation } from 'lucide-react';
 
+import { useLanguage } from '@/lib/useLanguage';
+
 interface GuidancePill {
   label: string;
   title: string;
@@ -26,40 +28,56 @@ interface SaarthiGuidanceCardProps {
 export default function SaarthiGuidanceCard({
   dayName,
   guidanceTitle,
-  quote = '"In calm faith, seek Srivari"',
+  quote,
   primaryPill,
   secondaryPill,
   tertiaryPill,
-  footerNote = 'Based on live queue data • Verified recently',
+  footerNote,
   className
 }: SaarthiGuidanceCardProps) {
   const router = useRouter();
+  const lang = useLanguage();
 
   // Dynamic day of week if not provided
   const currentDay = useMemo(() => {
     if (dayName) return dayName;
-    const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-    return days[new Date().getDay()];
-  }, [dayName]);
+    const daysEn = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const daysTe = ['ఆదివారం', 'సోమవారం', 'మంగళవారం', 'బుధవారం', 'గురువారం', 'శుక్రవారం', 'శనివారం'];
+    const daysHi = ['रविवार', 'सोमवार', 'मंगलवार', 'बुधवार', 'गुरुवार', 'शुक्रवार', 'शनिवार'];
+    const daysTa = ['ஞாயிறு', 'திங்கள்', 'செவ்வாய்', 'புதன்', 'வியாழன்', 'வெள்ளி', 'சனி'];
+    const idx = new Date().getDay();
+    if (lang === 'te') return daysTe[idx];
+    if (lang === 'hi') return daysHi[idx];
+    if (lang === 'ta') return daysTa[idx];
+    return daysEn[idx];
+  }, [dayName, lang]);
 
-  const defaultTitle = `${currentDay}: Visit Goddess Padmavathi at Tiruchanur first.`;
+  const defaultTitle = lang === 'te' ? `${currentDay}: తిరుచానూరు పద్మావతి అమ్మవారిని దర్శించుకోండి.` :
+                       lang === 'hi' ? `${currentDay}: तिरुचानूर पद्मावती अम्मावारी के दर्शन करें।` :
+                       lang === 'ta' ? `${currentDay}: திருச்சானூர் பத்மாவதி தாயாரை தரியுங்கள்.` :
+                       `${currentDay}: Visit Goddess Padmavathi at Tiruchanur first.`;
   const displayTitle = guidanceTitle || defaultTitle;
 
+  const defaultQuote = lang === 'te' ? '"ప్రశాంతమైన నమ్మకంతో శ్రీవారిని దర్శించండి"' :
+                       lang === 'hi' ? '"शांत भाव से श्रीवारी के दर्शन करें"' :
+                       lang === 'ta' ? '"அமைதியான பக்தியுடன் ஸ்ரீவாரியைத் தரிசியுங்கள்"' :
+                       '"In calm faith, seek Srivari"';
+
   const defaultPrimaryPill: GuidancePill = {
-    label: 'Sacred Shrine',
-    title: 'Padmavathi Temple',
+    label: lang === 'te' ? 'నేటి విశేషం' : lang === 'hi' ? 'पवित्र क्षेत्र' : lang === 'ta' ? 'புனித தலம்' : 'Sacred Shrine',
+    title: lang === 'te' ? 'తిరుచానూరు' : lang === 'hi' ? 'तिरुचानूर' : lang === 'ta' ? 'திருச்சானூர்' : 'Padmavathi Temple',
     url: '/place/padmavathi-temple'
   };
 
   const defaultSecondaryPill: GuidancePill = {
-    label: 'Best Route',
-    title: 'Local Shrines',
+    label: lang === 'te' ? 'ఉత్తమ మార్గం' : lang === 'hi' ? 'उत्तम मार्ग' : lang === 'ta' ? 'சிறந்த வழி' : 'Best Route',
+    title: lang === 'te' ? 'స్థానిక క్షేత్రాలు' : lang === 'hi' ? 'स्थानीय मंदिर' : lang === 'ta' ? 'உள்ளூர் தலங்கள்' : 'Local Shrines',
     url: '/explore'
   };
 
   const defaultTertiaryPill: GuidancePill = {
-    label: 'Optimal Time',
-    title: 'Early Morning',
+    label: lang === 'te' ? 'అనుకూల సమయం' : lang === 'hi' ? 'अनुकूल समय' : lang === 'ta' ? 'உகந்த நேரம்' : 'Optimal Time',
+    title: lang === 'te' ? 'ఉదయాన్నే' : lang === 'hi' ? 'प्रातः काल' : lang === 'ta' ? 'அதிகாலை' : 'Early Morning',
     url: '/route'
   };
 
@@ -101,7 +119,7 @@ export default function SaarthiGuidanceCard({
           <span>SAARTHI GUIDANCE</span>
         </div>
         <span style={{ fontSize: '12px', fontStyle: 'italic', fontWeight: 600, color: '#92400E', textAlign: 'right' }}>
-          {quote}
+          {quote || defaultQuote}
         </span>
       </div>
 
