@@ -221,33 +221,36 @@ export function QuickChecklist(props: any) {
             <span style={{ fontSize: '10.5px', fontWeight: 800, color: '#64748B', letterSpacing: '0.03em', textTransform: 'uppercase', display: 'block', marginBottom: '8px' }}>
               {t.collectionCentres}
             </span>
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '6px' }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: '6px', width: '100%', boxSizing: 'border-box' }}>
               {/* Vishnu Nivasam (Train/Station) */}
               <a
                 href="https://www.google.com/maps/place/Vishnu+Nivasam/@13.6281932,79.4205053,17z/data=!3m1!5s0x3a4d4b0898df978f:0x10422b2c2d88f4e3!4m20!1m10!3m9!1s0x3a4d4bbbe2ad2eff:0x6b655eee58504269!2sVishnu+Nivasam!5m2!4m1!1i2!8m2!3d13.6292776!4d79.4215889!16s%2Fg%2F11g1q7vspv!3m8!1s0x3a4d4bbbe2ad2eff:0x6b655eee58504269!5m2!4m1!1i2!8m2!3d13.6292776!4d79.4215889!16s%2Fg%2F11g1q7vspv"
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={(e) => e.stopPropagation()}
-                style={{ textDecoration: 'none', color: 'inherit' }}
+                style={{ textDecoration: 'none', color: 'inherit', minWidth: 0 }}
               >
                 <div style={{
                   background: '#F8FAFC',
                   border: '1px solid #E2E8F0',
                   borderRadius: '10px',
-                  padding: '8px 4px',
+                  padding: '8px 3px',
                   textAlign: 'center',
                   display: 'flex',
                   flexDirection: 'column',
                   alignItems: 'center',
-                  gap: '3px'
+                  gap: '3px',
+                  minWidth: 0,
+                  width: '100%',
+                  boxSizing: 'border-box'
                 }}>
-                  <div style={{ width: '26px', height: '26px', borderRadius: '50%', background: '#EFF6FF', color: '#2563EB', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <div style={{ width: '26px', height: '26px', borderRadius: '50%', background: '#EFF6FF', color: '#2563EB', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                     <Train size={13} />
                   </div>
-                  <span style={{ fontSize: '11px', fontWeight: 700, color: '#0F172A', lineHeight: 1.2 }}>
+                  <span className="notranslate" style={{ fontSize: '10.5px', fontWeight: 800, color: '#0F172A', lineHeight: 1.2, wordBreak: 'break-word', textAlign: 'center', width: '100%' }}>
                     {lang === 'te' ? 'విష్ణు నివాసం' : lang === 'hi' ? 'विष्णु निवासम' : lang === 'ta' ? 'விஷ்ணு நிவாஸம்' : 'Vishnu Nivasam'}
                   </span>
-                  <span style={{ fontSize: '9.5px', color: '#64748B', fontWeight: 500 }}>
+                  <span className="notranslate" style={{ fontSize: '9px', color: '#64748B', fontWeight: 500, lineHeight: 1.15, textAlign: 'center', width: '100%' }}>
                     {lang === 'te' ? 'రైల్వే స్టేషన్ ఎదురుగా' : lang === 'hi' ? 'रेलवे स्टेशन के सामने' : lang === 'ta' ? 'ரயில் நிலையம் எதிரில்' : 'Opp. Railway'}
                   </span>
                 </div>
@@ -259,26 +262,29 @@ export function QuickChecklist(props: any) {
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={(e) => e.stopPropagation()}
-                style={{ textDecoration: 'none', color: 'inherit' }}
+                style={{ textDecoration: 'none', color: 'inherit', minWidth: 0 }}
               >
                 <div style={{
                   background: '#F8FAFC',
                   border: '1px solid #E2E8F0',
                   borderRadius: '10px',
-                  padding: '8px 4px',
+                  padding: '8px 3px',
                   textAlign: 'center',
                   display: 'flex',
                   flexDirection: 'column',
                   alignItems: 'center',
-                  gap: '3px'
+                  gap: '3px',
+                  minWidth: 0,
+                  width: '100%',
+                  boxSizing: 'border-box'
                 }}>
-                  <div style={{ width: '26px', height: '26px', borderRadius: '50%', background: '#F0FDF4', color: '#16A34A', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <div style={{ width: '26px', height: '26px', borderRadius: '50%', background: '#F0FDF4', color: '#16A34A', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                     <Bus size={13} />
                   </div>
-                  <span style={{ fontSize: '11px', fontWeight: 700, color: '#0F172A', lineHeight: 1.2 }}>
+                  <span className="notranslate" style={{ fontSize: '10.5px', fontWeight: 800, color: '#0F172A', lineHeight: 1.2, wordBreak: 'break-word', textAlign: 'center', width: '100%' }}>
                     {lang === 'te' ? 'శ్రీనివాసం' : lang === 'hi' ? 'श्रीनिवासन' : lang === 'ta' ? 'ஸ்ரீநிவாஸம்' : 'Srinivasam'}
                   </span>
-                  <span style={{ fontSize: '9.5px', color: '#64748B', fontWeight: 500 }}>
+                  <span className="notranslate" style={{ fontSize: '9.5px', color: '#64748B', fontWeight: 500, lineHeight: 1.15, textAlign: 'center', width: '100%' }}>
                     {lang === 'te' ? 'బస్ స్టాండ్ ఎదురుగా' : lang === 'hi' ? 'बस स्टैंड के सामने' : lang === 'ta' ? 'பேருந்து நிலையம் எதிரில்' : 'Opp. Bus Stand'}
                   </span>
                 </div>
@@ -290,26 +296,29 @@ export function QuickChecklist(props: any) {
                 target="_blank"
                 rel="noopener noreferrer"
                 onClick={(e) => e.stopPropagation()}
-                style={{ textDecoration: 'none', color: 'inherit' }}
+                style={{ textDecoration: 'none', color: 'inherit', minWidth: 0 }}
               >
                 <div style={{
                   background: '#F8FAFC',
                   border: '1px solid #E2E8F0',
                   borderRadius: '10px',
-                  padding: '8px 4px',
+                  padding: '8px 3px',
                   textAlign: 'center',
                   display: 'flex',
                   flexDirection: 'column',
                   alignItems: 'center',
-                  gap: '3px'
+                  gap: '3px',
+                  minWidth: 0,
+                  width: '100%',
+                  boxSizing: 'border-box'
                 }}>
-                  <div style={{ width: '26px', height: '26px', borderRadius: '50%', background: '#FFFBEB', color: '#D97706', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <div style={{ width: '26px', height: '26px', borderRadius: '50%', background: '#FFFBEB', color: '#D97706', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                     <Mountain size={13} />
                   </div>
-                  <span style={{ fontSize: '11px', fontWeight: 700, color: '#0F172A', lineHeight: 1.2 }}>
+                  <span className="notranslate" style={{ fontSize: '10.5px', fontWeight: 800, color: '#0F172A', lineHeight: 1.2, wordBreak: 'break-word', textAlign: 'center', width: '100%' }}>
                     {lang === 'te' ? 'భూదేవి కాంప్లెక్స్' : lang === 'hi' ? 'भूदेवी कॉम्प्लेक्स' : lang === 'ta' ? 'பூதேவி காம்ப்ளக்ஸ்' : 'Bhudevi Complex'}
                   </span>
-                  <span style={{ fontSize: '9.5px', color: '#64748B', fontWeight: 500 }}>
+                  <span className="notranslate" style={{ fontSize: '9.5px', color: '#64748B', fontWeight: 500, lineHeight: 1.15, textAlign: 'center', width: '100%' }}>
                     {lang === 'te' ? 'అలిపిరి వద్ద' : lang === 'hi' ? 'अलिपिरी के पास' : lang === 'ta' ? 'அலிபிரி அருகில்' : 'Near Alipiri'}
                   </span>
                 </div>
