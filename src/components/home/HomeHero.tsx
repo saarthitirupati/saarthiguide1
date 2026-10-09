@@ -2003,7 +2003,7 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
         </div>
 
         {/* 1️⃣ THREE SIDE-BY-SIDE DARSHAN CARDS (100% DYNAMIC FROM ADMIN DB) */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '8px', marginBottom: '14px', position: 'relative', zIndex: 2 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: '6px', marginBottom: '14px', position: 'relative', zIndex: 2, width: '100%', boxSizing: 'border-box' }}>
           {(() => {
             const sarvaWait = getDarshanWait('sarva');
             const specialWait = getDarshanWait('special');
@@ -2036,11 +2036,15 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
             const isSsdPaused = ssdTokenStatus === 'paused';
             const isSsdIssuing = ssdTokenStatus === 'issuing' || liveSSD.toLowerCase().includes('issuing') || liveSSD.toLowerCase().includes('open');
 
-            let ssdTheme = { bg: '#FEF2F2', border: '#FECDD3', badgeBg: '#FEE2E2', badgeText: '#991B1B', iconColor: '#DC2626', iconComp: <TicketX size={24} color="#DC2626" />, waitText: lang === 'te' ? 'నేడు ముగిసింది' : 'Closed Today' };
+            const closedText = lang === 'te' ? 'నేడు ముగిసింది' : lang === 'hi' ? 'आज बंद है' : lang === 'ta' ? 'இன்று முடிந்தது' : 'Closed Today';
+            const issuingText = lang === 'te' ? 'జారీ అవుతున్నాయి' : lang === 'hi' ? 'जारी हैं' : lang === 'ta' ? 'வழங்கப்படுகிறது' : 'Issuing Now';
+            const pausedText = lang === 'te' ? 'తాత్కాలికంగా ఆపబడింది' : lang === 'hi' ? 'రుకా ہوا ہے' : lang === 'ta' ? 'நிறுத்தப்பட்டுள்ளது' : 'Paused';
+
+            let ssdTheme = { bg: '#FEF2F2', border: '#FECDD3', badgeBg: '#FEE2E2', badgeText: '#991B1B', iconColor: '#DC2626', iconComp: <TicketX size={22} color="#DC2626" />, waitText: closedText };
             if (isSsdIssuing) {
-              ssdTheme = { bg: '#F0FDF4', border: '#BBF7D0', badgeBg: '#DCFCE7', badgeText: '#166534', iconColor: '#059669', iconComp: <Ticket size={24} color="#059669" />, waitText: ssdWait !== '2–4 hrs' ? ssdWait : (lang === 'te' ? 'జారీ అవుతున్నాయి' : 'Issuing Now') };
+              ssdTheme = { bg: '#F0FDF4', border: '#BBF7D0', badgeBg: '#DCFCE7', badgeText: '#166534', iconColor: '#059669', iconComp: <Ticket size={22} color="#059669" />, waitText: ssdWait !== '2–4 hrs' ? ssdWait : issuingText };
             } else if (isSsdPaused) {
-              ssdTheme = { bg: '#FFFDF0', border: '#FDE68A', badgeBg: '#FEF3C7', badgeText: '#92400E', iconColor: '#D97706', iconComp: <Ticket size={24} color="#D97706" />, waitText: lang === 'te' ? 'తాత్కాలికంగా ఆపబడింది' : 'Paused' };
+              ssdTheme = { bg: '#FFFDF0', border: '#FDE68A', badgeBg: '#FEF3C7', badgeText: '#92400E', iconColor: '#D97706', iconComp: <Ticket size={22} color="#D97706" />, waitText: pausedText };
             } else if (liveSSD !== 'Closed' && liveSSD !== 'Check Counter') {
               ssdTheme.waitText = liveSSD;
             }
@@ -2049,8 +2053,8 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
               {
                 id: 'sarva',
                 href: '/darshan/sarva-darshan',
-                icon: <Building2 size={24} color={sarvaTheme.iconColor} />,
-                title: lang === 'te' ? 'సర్వదర్శనం' : 'Sarva Darshan',
+                icon: <Building2 size={22} color={sarvaTheme.iconColor} />,
+                title: lang === 'te' ? 'సర్వదర్శనం' : lang === 'hi' ? 'सर्व दर्शन' : lang === 'ta' ? 'சர்வ தரிசனம்' : 'Sarva Darshan',
                 wait: sarvaWait,
                 bg: sarvaTheme.bg,
                 border: sarvaTheme.border,
@@ -2060,8 +2064,8 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
               {
                 id: 'special',
                 href: '/darshan/special-entry',
-                icon: <Ticket size={24} color={specialTheme.iconColor} />,
-                title: lang === 'te' ? '₹300 ప్రవేశం' : '₹300 Entry',
+                icon: <Ticket size={22} color={specialTheme.iconColor} />,
+                title: lang === 'te' ? '₹300 ప్రవేశం' : lang === 'hi' ? '₹300 टिकट' : lang === 'ta' ? '₹300 கட்டணம்' : '₹300 Entry',
                 wait: specialWait,
                 bg: specialTheme.bg,
                 border: specialTheme.border,
@@ -2072,7 +2076,7 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                 id: 'ssd',
                 href: '/darshan/ssd-token',
                 icon: ssdTheme.iconComp,
-                title: lang === 'te' ? 'SSD టోకెన్లు' : 'SSD Tokens',
+                title: lang === 'te' ? 'SSD టోకెన్లు' : lang === 'hi' ? 'SSD टोकन' : lang === 'ta' ? 'SSD டோக்கன்' : 'SSD Tokens',
                 wait: ssdTheme.waitText,
                 bg: ssdTheme.bg,
                 border: ssdTheme.border,
@@ -2089,14 +2093,17 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                   textDecoration: 'none',
                   backgroundColor: card.bg,
                   border: `1.5px solid ${card.border}`,
-                  borderRadius: '16px',
-                  padding: '12px 6px 10px',
+                  borderRadius: '14px',
+                  padding: '10px 4px 8px',
                   display: 'flex',
                   flexDirection: 'column',
                   alignItems: 'center',
                   textAlign: 'center',
                   justifyContent: 'space-between',
-                  minHeight: '118px',
+                  minHeight: '112px',
+                  minWidth: 0,
+                  width: '100%',
+                  overflow: 'hidden',
                   boxSizing: 'border-box',
                   transition: 'transform 0.15s ease',
                   cursor: 'pointer'
@@ -2105,46 +2112,55 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
               >
                 {/* Top Vector Icon */}
                 <div style={{
-                  height: '32px',
+                  height: '28px',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  marginBottom: '4px'
+                  marginBottom: '2px',
+                  flexShrink: 0
                 }}>
                   {card.icon}
                 </div>
 
                 {/* Title */}
-                <div style={{
-                  fontSize: lang === 'te' ? '12px' : '11.5px',
+                <div className="notranslate" style={{
+                  fontSize: lang === 'ta' ? '11px' : lang === 'te' ? '11.5px' : '11px',
                   fontWeight: 800,
                   color: '#0F172A',
-                  marginBottom: '6px',
-                  lineHeight: 1.2
+                  marginBottom: '4px',
+                  lineHeight: 1.15,
+                  minWidth: 0,
+                  width: '100%',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap'
                 }}>
                   {card.title}
                 </div>
 
                 {/* Status Badge Pill */}
-                <div style={{
+                <div className="notranslate" style={{
                   backgroundColor: card.badgeBg,
                   color: card.badgeText,
-                  fontSize: '10.5px',
+                  fontSize: 'clamp(9px, 2.4vw, 10.5px)',
                   fontWeight: 800,
-                  padding: '3px 8px',
-                  borderRadius: '12px',
-                  marginBottom: '6px',
+                  padding: '3px 4px',
+                  borderRadius: '10px',
+                  marginBottom: '4px',
                   width: '100%',
-                  maxWidth: '92%',
+                  maxWidth: '98%',
+                  boxSizing: 'border-box',
                   whiteSpace: 'nowrap',
                   overflow: 'hidden',
-                  textOverflow: 'ellipsis'
+                  textOverflow: 'ellipsis',
+                  lineHeight: 1.15,
+                  display: 'inline-block'
                 }}>
                   {card.wait}
                 </div>
 
                 {/* Bottom Chevron Arrow */}
-                <ChevronRight size={13} color="#64748B" />
+                <ChevronRight size={12} color="#64748B" style={{ flexShrink: 0 }} />
               </Link>
             ));
           })()}
