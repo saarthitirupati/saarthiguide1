@@ -4,7 +4,6 @@ import React, { useState, useEffect } from 'react';
 import { 
   Download, 
   Check, 
-  Footprints, 
   PhoneCall, 
   Sparkles, 
   Shield, 
@@ -1620,34 +1619,7 @@ export default function OfflineTempleMap({
         </div>
       )}
 
-      {/* Step-by-Step Wayfinding Timeline */}
-      <div className={styles.timelineSection}>
-        <div className={styles.sectionHeading}>
-          <Footprints size={16} color="#0F5132" />
-          <span>{lang === 'te' ? 'ఆఫ్‌లైన్ నడక మార్గం (స్టెప్-బై-స్టెప్)' : 'Step-by-Step Wayfinding Route'}</span>
-        </div>
 
-        <div className={styles.timelineList}>
-          {layout.routeSteps.map((step) => (
-            <div key={step.stepNumber} className={styles.timelineItem}>
-              <div className={styles.stepNumber}>{step.stepNumber}</div>
-              <div className={styles.stepContent}>
-                <div className={styles.stepHeader}>
-                  <h4 className={styles.stepTitle}>
-                    {lang === 'te' ? step.titleTe : step.titleEn}
-                  </h4>
-                  <span className={styles.stepMeta}>
-                    {step.distance} • {step.timeMins} {lang === 'te' ? 'నిమి.' : 'mins'}
-                  </span>
-                </div>
-                <p className={styles.stepDesc}>
-                  {lang === 'te' ? step.descTe : step.descEn}
-                </p>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
 
       {/* Emergency Offline Contacts */}
       {layout.emergencyContacts && layout.emergencyContacts.length > 0 && (
