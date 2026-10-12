@@ -15,6 +15,7 @@ import {
   DailyContent,
   QuickChecklist,
   VaikuntaEkadasiBanner,
+  FootpathTimingsCard,
   YatraChecklist,
   DesktopSidebarWidget,
   HomeSkeleton
@@ -151,9 +152,12 @@ export default function HomePage() {
           <HomeHero {...home.hero} liveStatus={home.status.liveStatus} activeAlertsCount={home.alerts.activeAlertsCount} hideHeader={false} />
 
           {/* LAYER 2: SSD TOKEN STATUS & COLLECTION CENTRES (IMMEDIATELY AFTER CROWD DETAILS) */}
-          <div style={{ marginTop: '4px', marginBottom: '8px' }}>
+          <div style={{ marginTop: '4px', marginBottom: '4px' }}>
             <QuickChecklist {...home.checklist} liveStatus={home.status.liveStatus} />
           </div>
+
+          {/* LAYER 2.05: FOOTPATH TREK TIMINGS & RESTRICTIONS (SRIVARI METTU & ALIPIRI) */}
+          <FootpathTimingsCard />
 
           {/* LAYER 2.1: VAIKUNTA DWARA DARSHAN & EKADASI COUNTDOWN BANNER */}
           <VaikuntaEkadasiBanner />

@@ -170,21 +170,51 @@ export function DesktopSidebarWidget() {
         </div>
 
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
-          <div style={{ backgroundColor: '#F0FDF4', border: '1px solid #BBF7D0', borderRadius: '12px', padding: '9px 10px' }}>
-            <div style={{ fontSize: '11px', fontWeight: 800, color: '#166534' }}>
-              {isTe ? 'అలిపిరి మెట్ల మార్గం' : 'Alipiri Footpath'}
+          {/* Alipiri Footpath */}
+          <div style={{ backgroundColor: '#F0FDF4', border: '1px solid #BBF7D0', borderRadius: '12px', padding: '9px 10px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+            <div>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '2px' }}>
+                <span style={{ fontSize: '11px', fontWeight: 800, color: '#166534' }}>
+                  {isTe ? 'అలిపిరి మెట్ల మార్గం' : 'Alipiri Footpath'}
+                </span>
+                <span style={{ fontSize: '9px', fontWeight: 800, color: '#15803D', backgroundColor: '#DCFCE7', padding: '1px 5px', borderRadius: '4px' }}>
+                  Open
+                </span>
+              </div>
+              <div style={{ fontSize: '11px', fontWeight: 800, color: '#1E40AF', backgroundColor: '#EFF6FF', padding: '2px 6px', borderRadius: '6px', display: 'inline-flex', alignItems: 'center', gap: '3px', marginBottom: '4px' }}>
+                <Clock size={10} color="#2563EB" />
+                <span>5:00 AM – 9:30 PM</span>
+              </div>
+              <div style={{ fontSize: '11px', fontWeight: 700, color: '#475569' }}>
+                ~3,550 {isTe ? 'మెట్లు' : 'Steps'} (3.5-4 hrs)
+              </div>
             </div>
-            <div style={{ fontSize: '12px', fontWeight: 800, color: '#14532D', marginTop: '2px' }}>
-              ~3,550 {isTe ? 'మెట్లు' : 'Steps'} (3-4 hrs)
+            <div style={{ fontSize: '9.5px', color: '#15803D', fontWeight: 700, marginTop: '6px' }}>
+              ✓ 24/7 Lit • Free Van
             </div>
           </div>
 
-          <div style={{ backgroundColor: '#F0FDF4', border: '1px solid #BBF7D0', borderRadius: '12px', padding: '9px 10px' }}>
-            <div style={{ fontSize: '11px', fontWeight: 800, color: '#166534' }}>
-              {isTe ? 'శ్రీవారి మెట్టు మార్గం' : 'Srivari Mettu'}
+          {/* Srivari Mettu */}
+          <div style={{ backgroundColor: '#FFFDF7', border: '1px solid #FDE68A', borderRadius: '12px', padding: '9px 10px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+            <div>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '2px' }}>
+                <span style={{ fontSize: '11px', fontWeight: 800, color: '#B45309' }}>
+                  {isTe ? 'శ్రీవారి మెట్టు (ప్రత్యామ్నాయ)' : 'Srivari Mettu'}
+                </span>
+                <span style={{ fontSize: '9px', fontWeight: 800, color: '#15803D', backgroundColor: '#DCFCE7', padding: '1px 5px', borderRadius: '4px' }}>
+                  Open
+                </span>
+              </div>
+              <div style={{ fontSize: '11px', fontWeight: 800, color: '#92400E', backgroundColor: '#FEF3C7', padding: '2px 6px', borderRadius: '6px', display: 'inline-flex', alignItems: 'center', gap: '3px', marginBottom: '4px' }}>
+                <Clock size={10} color="#B45309" />
+                <span>6:00 AM – 5:30 PM</span>
+              </div>
+              <div style={{ fontSize: '11px', fontWeight: 700, color: '#475569' }}>
+                ~2,388 {isTe ? 'మెట్లు' : 'Steps'} (1.5-2 hrs)
+              </div>
             </div>
-            <div style={{ fontSize: '12px', fontWeight: 800, color: '#14532D', marginTop: '2px' }}>
-              ~2,388 {isTe ? 'మెట్లు' : 'Steps'} (1.5-2 hrs)
+            <div style={{ fontSize: '9.5px', color: '#B91C1C', fontWeight: 700, marginTop: '6px', backgroundColor: '#FEF2F2', padding: '3px 5px', borderRadius: '5px' }}>
+              ⚠️ {isTe ? '<12 సం. పిల్లలు 2:00 PM తర్వాత నిషేధం' : '<12 yrs not after 2:00 PM'}
             </div>
           </div>
         </div>

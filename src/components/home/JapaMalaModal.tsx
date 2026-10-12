@@ -14,7 +14,7 @@ import {
   Zap,
   Languages
 } from 'lucide-react';
-import { getGovindaNamaForBead, getNamaShortMeaning } from '../../data/govindaNamas';
+import { getGovindaNamaForBead, getNamaShortMeaning } from '@/data/govindaNamas';
 import { 
   playBeadComplete, 
   playJapa108Complete, 
