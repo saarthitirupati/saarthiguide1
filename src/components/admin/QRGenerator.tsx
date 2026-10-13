@@ -67,11 +67,13 @@ export default function QRGenerator({ slug, name, baseUrl }: QRGeneratorProps) {
     if (!ctx) return;
 
     const svgData = new XMLSerializer().serializeToString(svgRef.current);
+    const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
+    const blobUrl = URL.createObjectURL(svgBlob);
     const img = new Image();
-    img.src = 'data:image/svg+xml;base64,' + btoa(unescape(encodeURIComponent(svgData)));
 
     img.onload = () => {
       ctx.drawImage(img, 0, 0, 1200, 1200);
+      URL.revokeObjectURL(blobUrl);
       const pngUrl = canvas.toDataURL('image/png');
       const downloadLink = document.createElement('a');
       downloadLink.href = pngUrl;
@@ -80,6 +82,12 @@ export default function QRGenerator({ slug, name, baseUrl }: QRGeneratorProps) {
       downloadLink.click();
       document.body.removeChild(downloadLink);
     };
+
+    img.onerror = () => {
+      URL.revokeObjectURL(blobUrl);
+    };
+
+    img.src = blobUrl;
   }
 
   function downloadSVG() {
