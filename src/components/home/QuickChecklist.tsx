@@ -106,10 +106,16 @@ export function QuickChecklist(props: any) {
     ? liveStatus.ssdNotice.replace(/[\u{1F300}-\u{1FAFF}\u{2300}-\u{23FF}\u{2600}-\u{27BF}\u{FE00}-\u{FE0F}]/gu, '').replace(/\*/g, '').trim()
     : null;
 
+  const isSuspended = Boolean(
+    (cleanNotice && /suspend|cancel|brahmotsavam/i.test(cleanNotice)) ||
+    (formattedNextTime && /suspend|cancel/i.test(formattedNextTime)) ||
+    liveStatus.ssdTokenStatus === 'cancelled'
+  );
+
   return (
     <>
       {/* ═══════════════════════════════════════════════════
-          SSD TOKEN CARD (SOFT ELEVATION, HARMONIOUS TOKENS)
+          SSD TOKEN CARD (ELEVATED & DE-CLUTTERED HIGHLIGHT)
           ═══════════════════════════════════════════════════ */}
       <div style={{ padding: '0 14px 2px 14px' }}>
         <div
@@ -124,6 +130,7 @@ export function QuickChecklist(props: any) {
             color: 'inherit',
             background: '#FFFFFF',
             border: '1px solid rgba(15, 23, 42, 0.08)',
+            borderLeft: isSuspended ? '3.5px solid #EF4444' : liveStatus.ssdTokenStatus === 'issuing' ? '3.5px solid #10B981' : '3.5px solid #0F5132',
             borderRadius: '18px',
             padding: '14px 14px',
             boxShadow: '0 6px 20px -4px rgba(15, 23, 42, 0.04), 0 2px 6px rgba(15, 23, 42, 0.02)',
@@ -146,47 +153,65 @@ export function QuickChecklist(props: any) {
                 fontWeight: 600,
                 padding: '3px 10px',
                 borderRadius: '16px',
-                background: liveStatus.ssdTokenStatus === 'issuing' ? '#DCFCE7' : liveStatus.ssdTokenStatus === 'paused' ? '#FEF3C7' : '#FEE2E2',
-                color: liveStatus.ssdTokenStatus === 'issuing' ? '#166534' : liveStatus.ssdTokenStatus === 'paused' ? '#B45309' : '#DC2626',
-                border: `1px solid ${liveStatus.ssdTokenStatus === 'issuing' ? '#86EFAC' : liveStatus.ssdTokenStatus === 'paused' ? '#FDE68A' : '#FECACA'}`
+                background: isSuspended ? '#FEE2E2' : liveStatus.ssdTokenStatus === 'issuing' ? '#DCFCE7' : liveStatus.ssdTokenStatus === 'paused' ? '#FEF3C7' : '#F1F5F9',
+                color: isSuspended ? '#B91C1C' : liveStatus.ssdTokenStatus === 'issuing' ? '#166534' : liveStatus.ssdTokenStatus === 'paused' ? '#B45309' : '#475569',
+                border: `1px solid ${isSuspended ? '#FECACA' : liveStatus.ssdTokenStatus === 'issuing' ? '#86EFAC' : liveStatus.ssdTokenStatus === 'paused' ? '#FDE68A' : '#E2E8F0'}`
               }}>
-                {liveStatus.ssdTokenStatus === 'issuing' ? t.issuingNow : liveStatus.ssdTokenStatus === 'paused' ? t.paused : t.closed}
+                {isSuspended
+                  ? (lang === 'te' ? 'తాత్కాలిక నిలిపివేత' : 'Tokens Suspended')
+                  : liveStatus.ssdTokenStatus === 'issuing'
+                  ? t.issuingNow
+                  : liveStatus.ssdTokenStatus === 'paused'
+                  ? t.paused
+                  : t.closed}
               </span>
               <ChevronRight size={14} color="#94A3B8" />
             </div>
           </div>
 
-          {/* DYNAMIC ADVISORY BANNER IF NOTICE EXISTS */}
+          {/* UNIFIED ADVISORY BANNER */}
           {cleanNotice && (
             <div style={{
               background: '#FEF2F2',
               border: '1px solid #FECACA',
               borderRadius: '12px',
               padding: '10px 12px',
-              marginBottom: '8px',
+              marginBottom: '10px',
               display: 'flex',
               alignItems: 'flex-start',
               gap: '10px'
             }}>
               <ShieldAlert size={17} color="#DC2626" style={{ flexShrink: 0, marginTop: '2px' }} />
               <div style={{ flex: 1, minWidth: 0 }}>
-                <span style={{ fontSize: '10px', fontWeight: 700, color: '#991B1B', letterSpacing: '0.04em', textTransform: 'uppercase', display: 'block' }}>
-                  {t.importantAdvisory}
-                </span>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '6px' }}>
+                  <span style={{ fontSize: '10px', fontWeight: 700, color: '#991B1B', letterSpacing: '0.04em', textTransform: 'uppercase' }}>
+                    {t.importantAdvisory}
+                  </span>
+                  {isSuspended && (
+                    <span style={{ fontSize: '9.5px', fontWeight: 600, color: '#B91C1C', background: '#FEE2E2', border: '1px solid #FCA5A5', padding: '1px 6px', borderRadius: '4px' }}>
+                      Brahmotsavam
+                    </span>
+                  )}
+                </div>
                 <span style={{ fontSize: '12px', fontWeight: 600, color: '#7F1D1D', lineHeight: 1.4, display: 'block', marginTop: '2px' }}>
                   {cleanNotice}
                 </span>
+                {isSuspended && (
+                  <div style={{ marginTop: '6px', paddingTop: '6px', borderTop: '1px dashed #FCA5A5', fontSize: '11px', color: '#991B1B', fontWeight: 500, lineHeight: 1.35 }}>
+                    💡 {lang === 'te' ? 'ఉచిత సర్వ దర్శనం కోసం భక్తులు తిరుమల వైకుంఠం క్యూ కాంప్లెక్స్‌కు నేరుగా వెళ్లవచ్చు.' : 'Devotees can proceed directly to Vaikuntam Queue Complex in Tirumala for free Sarva Darshan without tokens.'}
+                  </div>
+                )}
               </div>
             </div>
           )}
 
-          {/* NEXT RELEASE TIME BANNER */}
+          {/* NEXT RELEASE / DARSHAN MODE ROW */}
           <div style={{
             background: liveStatus.ssdTokenStatus === 'issuing' ? '#F0FDF4' : '#F8FAFC',
             border: `1px solid ${liveStatus.ssdTokenStatus === 'issuing' ? '#BBF7D0' : '#E2E8F0'}`,
             borderRadius: '12px',
             padding: '10px 12px',
-            marginBottom: '8px',
+            marginBottom: isSuspended ? '10px' : '8px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
@@ -196,31 +221,46 @@ export function QuickChecklist(props: any) {
               <Clock size={16} color={liveStatus.ssdTokenStatus === 'issuing' ? '#16A34A' : '#64748B'} style={{ flexShrink: 0 }} />
               <div>
                 <span style={{ fontSize: '10.5px', fontWeight: 600, color: '#64748B', display: 'block' }}>
-                  {t.nextRelease}
+                  {isSuspended ? (lang === 'te' ? 'దర్శన విధానం' : 'Darshan Entry Mode') : t.nextRelease}
                 </span>
-                <span style={{ fontSize: '13.5px', fontWeight: 700, color: liveStatus.ssdTokenStatus === 'issuing' ? '#15803D' : '#1E293B', marginTop: '1px', display: 'block' }}>
-                  {formattedNextTime ? formattedNextTime : (liveStatus.ssdTokenStatus === 'issuing' ? t.tokensBeingIssued : '4:00 AM')}
+                <span style={{ fontSize: '13px', fontWeight: 700, color: liveStatus.ssdTokenStatus === 'issuing' ? '#15803D' : '#1E293B', marginTop: '1px', display: 'block' }}>
+                  {isSuspended
+                    ? (lang === 'te' ? 'టోకెన్ లేకుండా నేరుగా వైకుంఠం క్యూ' : 'Direct Walk-in Sarva Darshan')
+                    : (formattedNextTime ? formattedNextTime : (liveStatus.ssdTokenStatus === 'issuing' ? t.tokensBeingIssued : '4:00 AM'))}
                 </span>
               </div>
             </div>
+            {isSuspended && (
+              <span style={{ fontSize: '10px', fontWeight: 600, color: '#0F5132', background: '#F0FDF4', border: '1px solid #BBF7D0', padding: '2px 8px', borderRadius: '6px', whiteSpace: 'nowrap' }}>
+                Open 24/7
+              </span>
+            )}
           </div>
 
-          {/* Status helper text */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '5px', marginBottom: '10px' }}>
-            <span style={{ fontSize: '11.5px', color: '#64748B', fontWeight: 500, lineHeight: 1.35 }}>
-              {liveStatus.ssdTokenStatus === 'issuing'
-                ? t.activelyIssuing
-                : liveStatus.ssdTokenStatus === 'paused'
-                ? t.issuingPaused
-                : t.quotaCompleted}
-            </span>
-          </div>
+          {/* Status helper text (only shown when NOT suspended to avoid contradictory messaging) */}
+          {!isSuspended && (
+            <div style={{ display: 'flex', alignItems: 'center', gap: '5px', marginBottom: '10px' }}>
+              <span style={{ fontSize: '11.5px', color: '#64748B', fontWeight: 500, lineHeight: 1.35 }}>
+                {liveStatus.ssdTokenStatus === 'issuing'
+                  ? t.activelyIssuing
+                  : liveStatus.ssdTokenStatus === 'paused'
+                  ? t.issuingPaused
+                  : t.quotaCompleted}
+              </span>
+            </div>
+          )}
 
-          {/* VISUAL TILES FOR COLLECTION CENTRES (STRICTLY NO EMOJIS, LUCIDE ICONS) */}
+          {/* VISUAL TILES FOR COLLECTION CENTRES */}
           <div style={{ borderTop: '1px solid #F1F5F9', paddingTop: '10px', marginTop: '4px' }}>
-            <span style={{ fontSize: '10.5px', fontWeight: 600, color: '#64748B', letterSpacing: '0.03em', textTransform: 'uppercase', display: 'block', marginBottom: '8px' }}>
-              {t.collectionCentres}
-            </span>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
+              <span style={{ fontSize: '10.5px', fontWeight: 600, color: '#64748B', letterSpacing: '0.03em', textTransform: 'uppercase' }}>
+                {t.collectionCentres}
+              </span>
+              <span style={{ fontSize: '10.5px', fontWeight: 600, color: isSuspended ? '#EF4444' : '#0F5132' }}>
+                {isSuspended ? (lang === 'te' ? 'కౌంటర్లు ప్రస్తుతం మూసివేయబడ్డాయి' : 'Counters currently closed') : (lang === 'te' ? 'మ్యాప్ డైరెక్షన్స్' : 'Tap for directions')}
+              </span>
+            </div>
+
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: '6px', width: '100%', boxSizing: 'border-box' }}>
               {/* Vishnu Nivasam (Train/Station) */}
               <a
@@ -252,6 +292,18 @@ export function QuickChecklist(props: any) {
                   </span>
                   <span className="notranslate" style={{ fontSize: '9px', color: '#64748B', fontWeight: 500, lineHeight: 1.15, textAlign: 'center', width: '100%' }}>
                     {lang === 'te' ? 'రైల్వే స్టేషన్ ఎదురుగా' : lang === 'hi' ? 'रेलवे स्टेशन के सामने' : lang === 'ta' ? 'ரயில் நிலையம் எதிரில்' : 'Opp. Railway'}
+                  </span>
+                  <span style={{
+                    fontSize: '9px',
+                    fontWeight: 600,
+                    color: isSuspended ? '#94A3B8' : '#0F5132',
+                    background: isSuspended ? '#F1F5F9' : '#F0FDF4',
+                    border: `1px solid ${isSuspended ? '#E2E8F0' : '#BBF7D0'}`,
+                    padding: '1px 5px',
+                    borderRadius: '4px',
+                    marginTop: '2px'
+                  }}>
+                    {isSuspended ? (lang === 'te' ? 'మూసివేయబడింది' : 'Closed') : 'Map ↗'}
                   </span>
                 </div>
               </a>
@@ -287,6 +339,18 @@ export function QuickChecklist(props: any) {
                   <span className="notranslate" style={{ fontSize: '9.5px', color: '#64748B', fontWeight: 500, lineHeight: 1.15, textAlign: 'center', width: '100%' }}>
                     {lang === 'te' ? 'బస్ స్టాండ్ ఎదురుగా' : lang === 'hi' ? 'बस स्टैंड के सामने' : lang === 'ta' ? 'பேருந்து நிலையம் எதிரில்' : 'Opp. Bus Stand'}
                   </span>
+                  <span style={{
+                    fontSize: '9px',
+                    fontWeight: 600,
+                    color: isSuspended ? '#94A3B8' : '#0F5132',
+                    background: isSuspended ? '#F1F5F9' : '#F0FDF4',
+                    border: `1px solid ${isSuspended ? '#E2E8F0' : '#BBF7D0'}`,
+                    padding: '1px 5px',
+                    borderRadius: '4px',
+                    marginTop: '2px'
+                  }}>
+                    {isSuspended ? (lang === 'te' ? 'మూసివేయబడింది' : 'Closed') : 'Map ↗'}
+                  </span>
                 </div>
               </a>
 
@@ -321,14 +385,31 @@ export function QuickChecklist(props: any) {
                   <span className="notranslate" style={{ fontSize: '9.5px', color: '#64748B', fontWeight: 500, lineHeight: 1.15, textAlign: 'center', width: '100%' }}>
                     {lang === 'te' ? 'అలిపిరి వద్ద' : lang === 'hi' ? 'अलिपिरी के पास' : lang === 'ta' ? 'அலிபிரி அருகில்' : 'Near Alipiri'}
                   </span>
+                  <span style={{
+                    fontSize: '9px',
+                    fontWeight: 600,
+                    color: isSuspended ? '#94A3B8' : '#0F5132',
+                    background: isSuspended ? '#F1F5F9' : '#F0FDF4',
+                    border: `1px solid ${isSuspended ? '#E2E8F0' : '#BBF7D0'}`,
+                    padding: '1px 5px',
+                    borderRadius: '4px',
+                    marginTop: '2px'
+                  }}>
+                    {isSuspended ? (lang === 'te' ? 'మూసివేయబడింది' : 'Closed') : 'Map ↗'}
+                  </span>
                 </div>
               </a>
             </div>
           </div>
 
-          {/* Daily timing guide / Custom Admin Info */}
+          {/* Daily timing guide / Custom Admin Info (Deduplicated) */}
           {liveStatus.ssdTimingsGuide && (() => {
-            const points = cleanTimingsGuide(liveStatus.ssdTimingsGuide);
+            const rawPoints = cleanTimingsGuide(liveStatus.ssdTimingsGuide);
+            // Deduplicate: if suspended, exclude points that repeat the suspension notice
+            const points = isSuspended
+              ? rawPoints.filter(pt => !/suspend|cancel|brahmotsavam/i.test(pt))
+              : rawPoints;
+
             if (!points.length) return null;
 
             return (
