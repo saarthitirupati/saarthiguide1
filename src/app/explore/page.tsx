@@ -607,7 +607,7 @@ function ExploreContent() {
                 }
 
                 return (
-                  <Link href={`/place/${place.id}`} key={place.id} className={styles.curatedCard}>
+                  <Link href={`/place/${place.id}`} key={place.id} prefetch={false} className={styles.curatedCard}>
                     <div className={styles.curatedImage} style={{ backgroundImage: `url(${place.image || 'https://images.unsplash.com/photo-1514222134-b57cbf8ce673?auto=format&fit=crop&q=80&w=800'})` }} />
                     <div className={styles.curatedInfo}>
                       <h4>{getPlaceName(place, lang)}</h4>
@@ -633,7 +633,7 @@ function ExploreContent() {
                   </h2>
                   <div className={styles.horizontalScroll}>
                     {hiddenGems.map((place) => (
-                      <Link href={`/place/${place.id}`} key={place.id} className={styles.curatedCard}>
+                      <Link href={`/place/${place.id}`} key={place.id} prefetch={false} className={styles.curatedCard}>
                         <div
                           className={styles.curatedImage}
                           style={{ backgroundImage: `url(${place.image || 'https://images.unsplash.com/photo-1514222134-b57cbf8ce673?auto=format&fit=crop&q=80&w=800'})` }}
@@ -766,7 +766,7 @@ function ExploreContent() {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: index * 0.05 }}
                 >
-                  <Link href={`/place/${place.id}`} className={styles.templeLink}>
+                  <Link href={`/place/${place.id}`} prefetch={false} className={styles.templeLink}>
                     <div 
                       className={styles.itemImage}
                       style={{ backgroundImage: `url(${place.image || 'https://images.unsplash.com/photo-1514222134-b57cbf8ce673?auto=format&fit=crop&q=80&w=800'})` }}

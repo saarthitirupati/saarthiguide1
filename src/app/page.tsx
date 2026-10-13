@@ -189,6 +189,7 @@ export default function HomePage() {
                   <Link
                     key={srv.id}
                     href={srv.link}
+                    prefetch={false}
                     style={{
                       textDecoration: 'none',
                       backgroundColor: '#FFFFFF',
@@ -278,6 +279,7 @@ export default function HomePage() {
                   <Link 
                     key={p.id} 
                     href={`/place/${p.id}`} 
+                    prefetch={false}
                     style={{ 
                       textDecoration: 'none', 
                       flexShrink: 0, 
@@ -432,6 +434,7 @@ export default function HomePage() {
                     <Link
                       key={p.id}
                       href={`/place/${p.id}`}
+                      prefetch={false}
                       style={{
                         textDecoration: 'none',
                         backgroundColor: '#F8FAFC',
@@ -519,6 +522,7 @@ export default function HomePage() {
                     <Link
                       key={srv.id}
                       href={srv.link}
+                      prefetch={false}
                       style={{
                         textDecoration: 'none',
                         backgroundColor: '#FFFFFF',
