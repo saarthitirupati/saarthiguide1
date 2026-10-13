@@ -39,7 +39,7 @@ export default function DarshanDetailsPage() {
   const [activeStep, setActiveStep] = useState<number>(1);
 
   // Dynamic TTD Status Data
-  const [ssdTokenStatus, setSsdTokenStatus] = useState<'issuing' | 'paused' | 'closed-for-day'>('closed-for-day');
+  const [ssdTokenStatus, setSsdTokenStatus] = useState<'issuing' | 'paused' | 'closed-for-day' | 'suspended'>('closed-for-day');
   const [ssdNextTokenTime, setSsdNextTokenTime] = useState<string>('2:00 AM');
   const [ssdNotice, setSsdNotice] = useState<string>('');
 

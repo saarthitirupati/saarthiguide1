@@ -56,7 +56,7 @@ export default function SsdTokensStandalonePage() {
   const router = useRouter();
   const lang = useLanguage();
 
-  const [ssdStatus, setSsdStatus] = useState<'issuing' | 'paused' | 'closed-for-day'>('closed-for-day');
+  const [ssdStatus, setSsdStatus] = useState<'issuing' | 'paused' | 'closed-for-day' | 'suspended'>('closed-for-day');
   const [nextTokenTime, setNextTokenTime] = useState<string>('2:00 AM');
   const [notice, setNotice] = useState<string>('');
   const [loading, setLoading] = useState(true);

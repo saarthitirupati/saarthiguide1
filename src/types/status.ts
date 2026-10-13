@@ -9,7 +9,7 @@ export interface LiveStatus {
   ladduAvailability: 'available' | 'limited' | 'full';
   weather: string;
   darshans: Array<{ name: string; waitTime: string; peakHours: string }>;
-  ssdTokenStatus: 'issuing' | 'paused' | 'closed';
+  ssdTokenStatus: 'issuing' | 'paused' | 'closed' | 'closed-for-day' | 'suspended';
   ssdNextTokenTime: string;
   ssdTokenSlots: Array<{ slotTime: string; status: 'available' | 'filling' | 'closed'; tokensLeft: string }>;
   ssdNotice: string;

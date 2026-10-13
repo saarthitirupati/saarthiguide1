@@ -19,7 +19,7 @@ export default function AdminSsdTokensPage() {
   const [sendPushNotification, setSendPushNotification] = useState<boolean>(true);
   const [broadcastingPush, setBroadcastingPush] = useState<boolean>(false);
 
-  const [ssdTokenStatus, setSsdTokenStatus] = useState<'issuing' | 'paused' | 'closed-for-day'>('issuing');
+  const [ssdTokenStatus, setSsdTokenStatus] = useState<'issuing' | 'paused' | 'closed-for-day' | 'suspended'>('issuing');
   const [ssdNextTokenTime, setSsdNextTokenTime] = useState<string>('2:00 PM');
   const [ssdNotice, setSsdNotice] = useState<string>('');
   const [ssdTimingsGuide, setSsdTimingsGuide] = useState<string>('Offline free SSD tokens are released daily starting at 3:00 AM / 4:00 AM. Batches are allocated hourly for that day\'s Darshan. Counters close as soon as the daily quota runs out (~15,000 - 20,000 tokens).');
@@ -37,6 +37,34 @@ export default function AdminSsdTokensPage() {
     { name: 'Srinivasam Complex Counter', description: 'Opposite Tirupati RTC Central Bus Stand' },
     { name: 'Bhudevi Complex Counter', description: 'Near Alipiri Footpath Link Road' }
   ]);
+
+  const applyBrahmotsavamPreset = () => {
+    setSsdTokenStatus('suspended');
+    setSsdNextTokenTime('Suspended for Brahmotsavam');
+    setSsdNotice('SSD Tokens are cancelled due to Srivari Navaratri Brahmotsavam from OCT 11 to 22');
+    setSsdTimingsGuide('SSD tokens is suspended from today 10 oct 2026 to 20 Oct 2026 due to Srivari Navaratri Brahmotsavams.');
+    setSsdSlots(slots => slots.map(s => ({ ...s, status: 'closed', tokensLeft: 'Suspended' })));
+  };
+
+  const applyQuotaClosedPreset = () => {
+    setSsdTokenStatus('closed-for-day');
+    setSsdNextTokenTime('Tomorrow morning at 4:00 AM');
+    setSsdNotice('SSD and DD Tokens Quota completed for today across all counters.');
+    setSsdSlots(slots => slots.map(s => ({ ...s, status: 'closed', tokensLeft: 'Full' })));
+  };
+
+  const applyMorningIssuingPreset = () => {
+    setSsdTokenStatus('issuing');
+    setSsdNextTokenTime('Tokens issuing actively now');
+    setSsdNotice('');
+    setSsdSlots(slots => slots.map(s => ({ ...s, status: 'available', tokensLeft: 'Available' })));
+  };
+
+  const applyPausedPreset = () => {
+    setSsdTokenStatus('paused');
+    setSsdNextTokenTime('Next batch issuing at 2:00 PM');
+    setSsdNotice('Counters experiencing heavy rush. Issuing paused temporarily.');
+  };
 
   const fetchSsdData = async () => {
     try {
@@ -65,12 +93,16 @@ export default function AdminSsdTokensPage() {
     setBroadcastingPush(true);
     try {
       const adminToken = typeof window !== 'undefined' ? (localStorage.getItem('saarthi_admin_token') || 'saarthi_admin_token_2026') : 'saarthi_admin_token_2026';
-      const pushTitle = ssdTokenStatus === 'closed-for-day'
+      const pushTitle = ssdTokenStatus === 'suspended'
+        ? 'SSD Tokens Suspended (Brahmotsavam)'
+        : ssdTokenStatus === 'closed-for-day'
         ? 'Today’s SSD Token Quota Closed'
         : (ssdTokenStatus === 'paused'
             ? 'SSD Offline Tokens Paused'
             : `Free SSD Counters Opening at ${ssdNextTokenTime || '5:00 AM'}`);
-      const pushBody = ssdTokenStatus === 'closed-for-day'
+      const pushBody = ssdTokenStatus === 'suspended'
+        ? (ssdNotice?.trim() || 'SSD tokens suspended for festival. Direct walk-in Sarva Darshan open at Vaikuntam Queue Complex.')
+        : ssdTokenStatus === 'closed-for-day'
         ? (ssdNotice?.trim() || 'Offline SSD token quota for today is complete. Next issuance tomorrow morning.')
         : `Offline token counters opening shortly at Vishnu Nivasam & Srinivasam. Bring original Aadhaar cards for biometric issue.${ssdNotice?.trim() ? ` ${ssdNotice.trim()}` : ''}`;
 
@@ -199,6 +231,66 @@ export default function AdminSsdTokensPage() {
         </div>
       )}
 
+      {/* 1-Click Fast Presets */}
+      <div className={styles.dataQualitySection} style={{ marginBottom: '20px', background: '#F8FAFC', border: '1px solid #E2E8F0', padding: '16px', borderRadius: '14px' }}>
+        <h3 className={styles.sectionTitle} style={{ fontSize: '13px', color: '#0F172A', display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '8px' }}>
+          ⚡ 1-Click Status Presets
+        </h3>
+        <p style={{ fontSize: '12px', color: '#64748B', margin: '0 0 12px 0' }}>
+          Quickly configure festival suspension, quota closure, or active morning distribution:
+        </p>
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+          <button
+            type="button"
+            onClick={applyBrahmotsavamPreset}
+            style={{
+              padding: '7px 12px', borderRadius: '8px', border: '1px solid #FECACA',
+              background: '#FEF2F2', color: '#991B1B', fontWeight: 700, fontSize: '12px', cursor: 'pointer',
+              display: 'flex', alignItems: 'center', gap: '6px'
+            }}
+          >
+            <AlertTriangle size={13} color="#DC2626" />
+            Brahmotsavam Suspension
+          </button>
+          <button
+            type="button"
+            onClick={applyQuotaClosedPreset}
+            style={{
+              padding: '7px 12px', borderRadius: '8px', border: '1px solid #CBD5E1',
+              background: '#FFFFFF', color: '#334155', fontWeight: 700, fontSize: '12px', cursor: 'pointer',
+              display: 'flex', alignItems: 'center', gap: '6px'
+            }}
+          >
+            <XCircle size={13} color="#DC2626" />
+            Quota Closed for Today
+          </button>
+          <button
+            type="button"
+            onClick={applyMorningIssuingPreset}
+            style={{
+              padding: '7px 12px', borderRadius: '8px', border: '1px solid #BBF7D0',
+              background: '#F0FDF4', color: '#166534', fontWeight: 700, fontSize: '12px', cursor: 'pointer',
+              display: 'flex', alignItems: 'center', gap: '6px'
+            }}
+          >
+            <CheckCircle2 size={13} color="#16A34A" />
+            Morning Issuance Active
+          </button>
+          <button
+            type="button"
+            onClick={applyPausedPreset}
+            style={{
+              padding: '7px 12px', borderRadius: '8px', border: '1px solid #FDE68A',
+              background: '#FFFBEB', color: '#B45309', fontWeight: 700, fontSize: '12px', cursor: 'pointer',
+              display: 'flex', alignItems: 'center', gap: '6px'
+            }}
+          >
+            <PauseCircle size={13} color="#D97706" />
+            Temporarily Paused
+          </button>
+        </div>
+      </div>
+
       {/* Main Issuing Status Controls */}
       <div className={styles.dataQualitySection} style={{ marginBottom: '24px' }}>
         <h3 className={styles.sectionTitle}>
@@ -206,44 +298,61 @@ export default function AdminSsdTokensPage() {
           Global Issuing Status
         </h3>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px', marginBottom: '20px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '12px', marginBottom: '20px' }}>
           <button 
+            type="button"
             onClick={() => setSsdTokenStatus('issuing')}
             style={{
-              padding: '16px', borderRadius: '12px', cursor: 'pointer',
+              padding: '14px', borderRadius: '12px', cursor: 'pointer',
               border: `2px solid ${ssdTokenStatus === 'issuing' ? '#16A34A' : '#E2E8F0'}`,
               background: ssdTokenStatus === 'issuing' ? '#F0FDF4' : '#FFFFFF',
-              display: 'flex', alignItems: 'center', gap: '10px', fontWeight: 700, color: ssdTokenStatus === 'issuing' ? '#166534' : '#64748B'
+              display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 700, color: ssdTokenStatus === 'issuing' ? '#166534' : '#64748B'
             }}
           >
-            <CheckCircle2 size={20} color="#16A34A" />
+            <CheckCircle2 size={18} color="#16A34A" />
             Issuing Now
           </button>
 
           <button 
+            type="button"
             onClick={() => setSsdTokenStatus('paused')}
             style={{
-              padding: '16px', borderRadius: '12px', cursor: 'pointer',
+              padding: '14px', borderRadius: '12px', cursor: 'pointer',
               border: `2px solid ${ssdTokenStatus === 'paused' ? '#D97706' : '#E2E8F0'}`,
               background: ssdTokenStatus === 'paused' ? '#FFFBEB' : '#FFFFFF',
-              display: 'flex', alignItems: 'center', gap: '10px', fontWeight: 700, color: ssdTokenStatus === 'paused' ? '#B45309' : '#64748B'
+              display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 700, color: ssdTokenStatus === 'paused' ? '#B45309' : '#64748B'
             }}
           >
-            <PauseCircle size={20} color="#D97706" />
-            Paused / Wait Queue
+            <PauseCircle size={18} color="#D97706" />
+            Paused / Wait
           </button>
 
           <button 
+            type="button"
             onClick={() => setSsdTokenStatus('closed-for-day')}
             style={{
-              padding: '16px', borderRadius: '12px', cursor: 'pointer',
+              padding: '14px', borderRadius: '12px', cursor: 'pointer',
               border: `2px solid ${ssdTokenStatus === 'closed-for-day' ? '#DC2626' : '#E2E8F0'}`,
               background: ssdTokenStatus === 'closed-for-day' ? '#FEF2F2' : '#FFFFFF',
-              display: 'flex', alignItems: 'center', gap: '10px', fontWeight: 700, color: ssdTokenStatus === 'closed-for-day' ? '#991B1B' : '#64748B'
+              display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 700, color: ssdTokenStatus === 'closed-for-day' ? '#991B1B' : '#64748B'
             }}
           >
-            <XCircle size={20} color="#DC2626" />
+            <XCircle size={18} color="#DC2626" />
             Closed for Today
+          </button>
+
+          <button 
+            type="button"
+            onClick={() => setSsdTokenStatus('suspended')}
+            style={{
+              padding: '14px', borderRadius: '12px', cursor: 'pointer',
+              border: `2px solid ${ssdTokenStatus === 'suspended' ? '#EF4444' : '#E2E8F0'}`,
+              background: ssdTokenStatus === 'suspended' ? '#FEF2F2' : '#FFFFFF',
+              display: 'flex', alignItems: 'center', gap: '8px', fontWeight: 700, color: ssdTokenStatus === 'suspended' ? '#991B1B' : '#64748B'
+            }}
+          >
+            <AlertTriangle size={18} color="#DC2626" />
+            Suspended (Festival)
           </button>
         </div>
 
@@ -316,8 +425,13 @@ export default function AdminSsdTokensPage() {
           color: '#0F172A',
           lineHeight: 1.4
         }}>
-          <div style={{ fontWeight: 800, color: '#166534', marginBottom: '2px', display: 'flex', alignItems: 'center', gap: '6px' }}>
-            {ssdTokenStatus === 'closed-for-day' ? (
+          <div style={{ fontWeight: 800, color: ssdTokenStatus === 'suspended' ? '#B91C1C' : '#166534', marginBottom: '2px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+            {ssdTokenStatus === 'suspended' ? (
+              <>
+                <AlertTriangle size={14} color="#DC2626" />
+                <span>SSD Tokens Suspended (Brahmotsavam)</span>
+              </>
+            ) : ssdTokenStatus === 'closed-for-day' ? (
               <>
                 <AlertTriangle size={14} color="#D97706" />
                 <span>Today’s SSD Token Quota Closed</span>
@@ -330,7 +444,9 @@ export default function AdminSsdTokensPage() {
             )}
           </div>
           <div style={{ fontSize: '12px', color: '#475569' }}>
-            {ssdTokenStatus === 'closed-for-day'
+            {ssdTokenStatus === 'suspended'
+              ? (ssdNotice || 'SSD tokens suspended for festival. Direct walk-in Sarva Darshan open at Vaikuntam Queue Complex.')
+              : ssdTokenStatus === 'closed-for-day'
               ? (ssdNotice || 'Offline SSD token quota for today is complete. Next issuance tomorrow morning.')
               : `Offline token counters opening shortly at Vishnu Nivasam & Srinivasam. Bring original Aadhaar cards for biometric issue.${ssdNotice ? ` ${ssdNotice}` : ''}`}
           </div>

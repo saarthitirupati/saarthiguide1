@@ -44,13 +44,17 @@ export async function POST(req: Request) {
     // Automatic push notification matching the live preview
     const shouldSendPush = body.sendPush !== false;
     if (shouldSendPush) {
-      const pushTitle = updated.ssdTokenStatus === 'closed-for-day'
+      const pushTitle = updated.ssdTokenStatus === 'suspended'
+        ? 'SSD Tokens Suspended (Brahmotsavam)'
+        : updated.ssdTokenStatus === 'closed-for-day'
         ? 'Today’s SSD Token Quota Closed'
         : (updated.ssdTokenStatus === 'paused'
             ? 'SSD Offline Tokens Paused'
             : `Free SSD Counters Opening at ${updated.ssdNextTokenTime || '5:00 AM'}`);
 
-      const pushBody = updated.ssdTokenStatus === 'closed-for-day'
+      const pushBody = updated.ssdTokenStatus === 'suspended'
+        ? (updated.ssdNotice?.trim() || 'SSD tokens suspended for festival. Direct walk-in Sarva Darshan open at Vaikuntam Queue Complex.')
+        : updated.ssdTokenStatus === 'closed-for-day'
         ? (updated.ssdNotice?.trim() || 'Offline SSD token quota for today is complete. Next issuance tomorrow morning.')
         : `Offline token counters opening shortly at Vishnu Nivasam & Srinivasam. Bring original Aadhaar cards for biometric issue.${updated.ssdNotice?.trim() ? ` ${updated.ssdNotice.trim()}` : ''}`;
 

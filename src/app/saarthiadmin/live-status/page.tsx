@@ -323,6 +323,7 @@ export default function LiveStatusEditor() {
                   <option value="issuing">Issuing Tokens</option>
                   <option value="paused">Paused</option>
                   <option value="closed-for-day">Closed for Day</option>
+                  <option value="suspended">Tokens Suspended (Brahmotsavam / Festival)</option>
                 </select>
               </div>
 
