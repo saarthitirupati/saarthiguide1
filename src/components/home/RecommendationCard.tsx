@@ -227,91 +227,93 @@ export function RecommendationCard({
         boxSizing: 'border-box'
       }}>
         
-        {/* RECOMMENDED BADGE WITH PRIORITY TAG */}
-        <div>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <Sparkles size={18} color="#10B981" />
-              <span style={{ fontSize: '13px', fontWeight: 800, color: '#10B981', letterSpacing: '0.6px', textTransform: 'uppercase' }}>
-                {t.recommended} RIGHT NOW
+          {/* RECOMMENDED BADGE WITH PRIORITY TAG */}
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <Sparkles size={16} color="#0F5132" />
+                <span style={{ fontSize: '12px', fontWeight: 700, color: '#0F5132', letterSpacing: '0.04em', textTransform: 'uppercase' }}>
+                  {t.recommended} RIGHT NOW
+                </span>
+              </div>
+              <span style={{ fontSize: '11px', fontWeight: 600, color: '#064E3B', backgroundColor: '#DCFCE7', border: '1px solid rgba(15, 81, 50, 0.15)', padding: '3px 9px', borderRadius: '8px' }}>
+                {rec.priorityTag}
               </span>
             </div>
-            <span style={{ fontSize: '10.5px', fontWeight: 800, color: '#047857', backgroundColor: '#ECFDF5', border: '1px solid #A7F3D0', padding: '3px 10px', borderRadius: '10px' }}>
-              {rec.priorityTag}
-            </span>
-          </div>
 
-          {/* MAIN CONTENT ROW: LEFT DETAILS + RIGHT IMAGE THUMBNAIL */}
-          <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '16px', marginBottom: '16px' }}>
-            <div>
-              <h3 style={{ fontSize: isDesktop ? '24px' : '20px', fontWeight: 900, color: '#0F172A', margin: '0 0 12px 0', letterSpacing: '-0.01em', lineHeight: '1.25' }}>
-                {rec.title}
-              </h3>
+            {/* MAIN CONTENT ROW: LEFT DETAILS + RIGHT IMAGE THUMBNAIL */}
+            <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '16px', marginBottom: '16px' }}>
+              <div>
+                <h3 style={{ fontSize: isDesktop ? '22px' : '18px', fontWeight: 700, color: 'var(--color-text-primary, #1B1F2A)', margin: '0 0 10px 0', letterSpacing: '-0.015em', lineHeight: '1.3' }}>
+                  {rec.title}
+                </h3>
 
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '14px', color: '#475569', fontWeight: 600 }}>
-                  <Navigation size={16} color="#0F5132" />
-                  <span>{rec.distance}</span>
-                </div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13.5px', color: 'var(--color-text-secondary, #57534E)', fontWeight: 500 }}>
+                    <Navigation size={15} color="#0F5132" />
+                    <span>{rec.distance}</span>
+                  </div>
 
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '14px', color: '#0284C7', fontWeight: 700 }}>
-                  <Users size={16} color="#0284C7" />
-                  <span>Overall Crowd Wait: {rec.crowdStatus}</span>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13.5px', color: '#0369A1', fontWeight: 600 }}>
+                    <Users size={15} color="#0284C7" />
+                    <span>Overall Crowd Wait: {rec.crowdStatus}</span>
+                  </div>
                 </div>
               </div>
+
+              {/* RIGHT IMAGE THUMBNAIL */}
+              <div style={{
+                width: isDesktop ? '110px' : '84px',
+                height: isDesktop ? '88px' : '72px',
+                borderRadius: '14px',
+                backgroundImage: `url(${rec.image})`,
+                backgroundSize: 'cover',
+                backgroundPosition: 'center',
+                backgroundColor: '#F6F3EE',
+                border: '1px solid rgba(15, 23, 42, 0.06)',
+                flexShrink: 0
+              }} />
             </div>
 
-            {/* RIGHT IMAGE THUMBNAIL */}
+            {/* MANDATORY EXPLAINABLE REASON BADGE */}
             <div style={{
-              width: isDesktop ? '120px' : '90px',
-              height: isDesktop ? '95px' : '75px',
-              borderRadius: '18px',
-              backgroundImage: `url(${rec.image})`,
-              backgroundSize: 'cover',
-              backgroundPosition: 'center',
-              backgroundColor: '#F1F5F9',
-              flexShrink: 0
-            }} />
+              fontSize: '12.5px',
+              fontWeight: 500,
+              color: '#064E3B',
+              backgroundColor: '#F0FDF4',
+              border: '1px solid rgba(15, 81, 50, 0.15)',
+              padding: '10px 14px',
+              borderRadius: '12px',
+              marginBottom: '16px',
+              display: 'flex',
+              alignItems: 'flex-start',
+              gap: '8px',
+              lineHeight: '1.45'
+            }}>
+              <Info size={16} color="#0F5132" style={{ flexShrink: 0, marginTop: '2px' }} />
+              <span><strong style={{ fontWeight: 600 }}>{t.whyRecommended}</strong> {rec.reason}</span>
+            </div>
           </div>
 
-          {/* MANDATORY EXPLAINABLE REASON BADGE */}
-          <div style={{
-            fontSize: '12px',
-            fontWeight: 700,
-            color: '#047857',
-            backgroundColor: '#F0FDF4',
-            border: '1px solid #BBF7D0',
-            padding: '10px 14px',
-            borderRadius: '14px',
-            marginBottom: '16px',
+          {/* PRIMARY CTA BUTTON */}
+          <Link href={rec.link} style={{
             display: 'flex',
-            alignItems: 'flex-start',
-            gap: '8px',
-            lineHeight: '1.45'
+            alignItems: 'center',
+            justifyContent: 'center',
+            backgroundColor: '#0F5132',
+            color: '#FFFFFF',
+            padding: '12px 16px',
+            borderRadius: '14px',
+            fontSize: '14px',
+            fontWeight: 600,
+            textDecoration: 'none',
+            width: '100%',
+            textAlign: 'center',
+            boxShadow: '0 2px 8px rgba(15, 81, 50, 0.16)',
+            transition: 'background 0.2s ease, transform 0.15s ease'
           }}>
-            <Info size={16} color="#047857" style={{ flexShrink: 0, marginTop: '2px' }} />
-            <span><strong>{t.whyRecommended}</strong> {rec.reason}</span>
-          </div>
-        </div>
-
-        {/* PRIMARY CTA BUTTON */}
-        <Link href={rec.link} style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          backgroundColor: '#0F5132',
-          color: '#FFFFFF',
-          padding: '14px',
-          borderRadius: '16px',
-          fontSize: '14.5px',
-          fontWeight: 800,
-          textDecoration: 'none',
-          width: '100%',
-          textAlign: 'center',
-          boxShadow: '0 4px 14px rgba(15, 81, 50, 0.2)'
-        }}>
-          {isDesktop ? 'Start Navigation →' : t.viewDetails}
-        </Link>
+            {isDesktop ? 'Start Navigation →' : t.viewDetails}
+          </Link>
 
       </div>
     </div>

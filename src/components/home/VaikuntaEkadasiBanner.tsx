@@ -236,7 +236,7 @@ function getTypographyStyle(lang: AppLang) {
   switch (lang) {
     case 'hi':
       return {
-        titleWeight: 800,
+        titleWeight: 700,
         bodyWeight: 500,
         titleLineHeight: 1.25,
         bodyLineHeight: 1.5,
@@ -244,7 +244,7 @@ function getTypographyStyle(lang: AppLang) {
       };
     case 'ta':
       return {
-        titleWeight: 800,
+        titleWeight: 700,
         bodyWeight: 500,
         titleLineHeight: 1.3,
         bodyLineHeight: 1.5,
@@ -252,7 +252,7 @@ function getTypographyStyle(lang: AppLang) {
       };
     case 'te':
       return {
-        titleWeight: 800,
+        titleWeight: 700,
         bodyWeight: 500,
         titleLineHeight: 1.25,
         bodyLineHeight: 1.45,
@@ -261,8 +261,8 @@ function getTypographyStyle(lang: AppLang) {
     case 'en':
     default:
       return {
-        titleWeight: 900,
-        bodyWeight: 600,
+        titleWeight: 700,
+        bodyWeight: 500,
         titleLineHeight: 1.1,
         bodyLineHeight: 1.4,
         fontSizeScale: '100%'
@@ -311,9 +311,9 @@ export function VaikuntaEkadasiBanner() {
             borderRadius: '22px',
             overflow: 'hidden',
             cursor: 'pointer',
-            background: 'linear-gradient(135deg, #1C0A33 0%, #2D0E4C 50%, #44146E 100%)',
-            border: '1px solid rgba(234, 179, 8, 0.35)',
-            boxShadow: '0 8px 24px -4px rgba(28, 10, 51, 0.4), 0 2px 8px rgba(0, 0, 0, 0.2)',
+            background: 'linear-gradient(135deg, #132A1C 0%, #1A3C28 60%, #0F2317 100%)',
+            border: '1px solid rgba(200, 155, 60, 0.35)',
+            boxShadow: '0 8px 24px -4px rgba(19, 42, 28, 0.25), 0 2px 8px rgba(0, 0, 0, 0.1)',
             padding: '16px 16px 14px 18px',
             color: '#FFFFFF',
             display: 'flex',
@@ -327,7 +327,7 @@ export function VaikuntaEkadasiBanner() {
             style={{
               position: 'absolute',
               inset: 0,
-              opacity: 0.15,
+              opacity: 0.12,
               backgroundImage: 'radial-gradient(circle at 80% 50%, #FDE047 0%, transparent 65%)',
               pointerEvents: 'none'
             }}
@@ -336,21 +336,21 @@ export function VaikuntaEkadasiBanner() {
           {/* Left Text Block */}
           <div style={{ position: 'relative', zIndex: 2, flex: 1, paddingRight: '10px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '5px', marginBottom: '4px' }}>
-              <Sparkles size={11} color="#FDE047" />
-              <span style={{ fontSize: '10px', fontWeight: 800, letterSpacing: '0.08em', color: '#FDE047', textTransform: 'uppercase' }}>
+              <Sparkles size={11} color="#FDE68A" />
+              <span style={{ fontSize: '10px', fontWeight: 700, letterSpacing: '0.08em', color: '#FDE68A', textTransform: 'uppercase' }}>
                 {t.tagline}
               </span>
             </div>
 
             <h3
               style={{
-                fontSize: '18px',
+                fontSize: '17px',
                 fontWeight: typo.titleWeight,
-                color: '#FDE68A',
+                color: '#FEF3C7',
                 margin: '0 0 10px 0',
                 letterSpacing: '-0.01em',
                 lineHeight: typo.titleLineHeight,
-                fontFamily: 'serif'
+                fontFamily: 'inherit'
               }}
             >
               {t.title}
@@ -363,7 +363,7 @@ export function VaikuntaEkadasiBanner() {
                 alignItems: 'center',
                 gap: '8px',
                 backgroundColor: 'rgba(255, 255, 255, 0.08)',
-                border: '1px solid rgba(254, 240, 138, 0.3)',
+                border: '1px solid rgba(254, 240, 138, 0.25)',
                 backdropFilter: 'blur(8px)',
                 borderRadius: '16px',
                 padding: '4px 10px 4px 6px'
@@ -371,21 +371,20 @@ export function VaikuntaEkadasiBanner() {
             >
               <div
                 style={{
-                  backgroundColor: '#F59E0B',
-                  background: 'linear-gradient(180deg, #FDE047 0%, #D97706 100%)',
-                  color: '#1E1B4B',
-                  fontWeight: 900,
-                  fontSize: '15px',
-                  borderRadius: '11px',
-                  padding: '3px 10px',
-                  boxShadow: '0 2px 6px rgba(0,0,0,0.3)',
+                  background: 'linear-gradient(180deg, #FDE68A 0%, #D97706 100%)',
+                  color: '#132A1C',
+                  fontWeight: 700,
+                  fontSize: '14px',
+                  borderRadius: '10px',
+                  padding: '3px 9px',
+                  boxShadow: '0 2px 6px rgba(0,0,0,0.2)',
                   lineHeight: 1
                 }}
               >
                 {timeLeft.days}
               </div>
               <div style={{ display: 'flex', flexDirection: 'column' }}>
-                <span style={{ fontSize: '9px', fontWeight: 800, color: '#FDE68A', letterSpacing: '0.05em', lineHeight: 1.1 }}>
+                <span style={{ fontSize: '9px', fontWeight: 700, color: '#FDE68A', letterSpacing: '0.05em', lineHeight: 1.1 }}>
                   {t.daysLeft}
                 </span>
                 <span style={{ fontSize: '10.5px', fontWeight: typo.bodyWeight, color: '#E2E8F0', lineHeight: 1.1 }}>
@@ -485,7 +484,7 @@ export function VaikuntaEkadasiBanner() {
       </div>
 
       {/* ═══════════════════════════════════════════════════
-          FULL-SCREEN DIVINE COUNTDOWN MODAL (EXACT SPEC MATCH)
+          FULL-SCREEN DIVINE COUNTDOWN MODAL (OPTION A: HOME DEVOTIONAL IDENTITY)
           ═══════════════════════════════════════════════════ */}
       {modalOpen && (
         <div
@@ -493,7 +492,7 @@ export function VaikuntaEkadasiBanner() {
             position: 'fixed',
             inset: 0,
             zIndex: 9999,
-            backgroundColor: '#0F081D',
+            backgroundColor: '#FAF8F5',
             overflowY: 'auto',
             WebkitOverflowScrolling: 'touch',
             display: 'flex',
@@ -510,8 +509,8 @@ export function VaikuntaEkadasiBanner() {
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
-              background: 'linear-gradient(180deg, rgba(15,8,29,0.9) 0%, rgba(15,8,29,0.6) 100%)',
-              backdropFilter: 'blur(10px)'
+              background: '#FFFFFF',
+              borderBottom: '1px solid rgba(30, 35, 45, 0.08)'
             }}
           >
             <button
@@ -519,18 +518,33 @@ export function VaikuntaEkadasiBanner() {
               style={{
                 width: '36px',
                 height: '36px',
-                borderRadius: '50%',
-                backgroundColor: 'rgba(255, 255, 255, 0.15)',
-                border: '1px solid rgba(255, 255, 255, 0.2)',
-                color: '#FFFFFF',
+                borderRadius: '999px',
+                backgroundColor: '#F8FAFC',
+                border: '1px solid #E2E8F0',
+                color: '#1E232D',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 cursor: 'pointer'
               }}
+              aria-label="Back"
             >
               <ArrowLeft size={18} />
             </button>
+
+            <div style={{ textAlign: 'center' }}>
+              <h2
+                style={{
+                  fontSize: '15px',
+                  fontWeight: 600,
+                  color: '#1E232D',
+                  margin: 0,
+                  fontFamily: 'var(--font-sans), system-ui'
+                }}
+              >
+                Vaikunta Ekadasi 2026
+              </h2>
+            </div>
 
             <button
               onClick={() => {
@@ -545,292 +559,241 @@ export function VaikuntaEkadasiBanner() {
               style={{
                 width: '36px',
                 height: '36px',
-                borderRadius: '50%',
-                backgroundColor: 'rgba(255, 255, 255, 0.15)',
-                border: '1px solid rgba(255, 255, 255, 0.2)',
-                color: '#FFFFFF',
+                borderRadius: '999px',
+                backgroundColor: '#F8FAFC',
+                border: '1px solid #E2E8F0',
+                color: '#1E232D',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 cursor: 'pointer'
               }}
+              aria-label="Share"
             >
               <Share2 size={16} />
             </button>
           </div>
 
-          {/* Golden Vaikunta Dwaram Hero Banner Container */}
+          {/* Main Scrollable Content Shell (Mobile max-width 480px) */}
           <div
             style={{
-              position: 'relative',
               width: '100%',
-              minHeight: '480px',
-              padding: '10px 16px 40px',
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'flex-start',
-              background: 'linear-gradient(180deg, #180B2B 0%, #2A1046 40%, #150824 100%)',
-              overflow: 'hidden'
+              maxWidth: '480px',
+              margin: '0 auto',
+              padding: '16px 16px calc(88px + env(safe-area-inset-bottom, 16px)) 16px',
+              flex: 1
             }}
           >
-            {/* Ambient Devotional Lighting Rays */}
-            <div
-              style={{
-                position: 'absolute',
-                top: 0,
-                left: '50%',
-                transform: 'translateX(-50%)',
-                width: '120%',
-                height: '350px',
-                backgroundImage: 'radial-gradient(ellipse at 50% 20%, rgba(253, 224, 71, 0.2) 0%, rgba(217, 119, 6, 0.08) 50%, transparent 80%)',
-                pointerEvents: 'none'
-              }}
-            />
-
-            {/* Title Block */}
-            <div style={{ textAlign: 'center', marginTop: '4px', marginBottom: '14px', zIndex: 2 }}>
-              <span style={{ fontSize: '13.5px', fontFamily: 'serif', fontStyle: 'italic', color: '#FDE047', letterSpacing: '0.04em', display: 'block', marginBottom: '2px' }}>
-                {t.countdownTitle}
-              </span>
-              <h1
-                style={{
-                  fontSize: '28px',
-                  fontWeight: typo.titleWeight,
-                  color: '#FDE68A',
-                  margin: '0 0 4px',
-                  fontFamily: 'serif',
-                  letterSpacing: '0.03em',
-                  lineHeight: typo.titleLineHeight,
-                  textShadow: '0 2px 12px rgba(0,0,0,0.6)'
-                }}
-              >
-                {t.title}
-              </h1>
-              <p style={{ fontSize: '14px', color: '#FFFFFF', margin: 0, fontWeight: typo.bodyWeight, opacity: 0.95 }}>
-                {t.subtitle}
-              </p>
-
-              {/* Gold Badge 1: Swami Vari Divya Darshanam */}
-              <div style={{ display: 'inline-block', marginTop: '12px', padding: '6px 22px', borderRadius: '22px', backgroundColor: '#FFFDF5', border: '1.5px solid #FCD34D', boxShadow: '0 4px 16px rgba(252, 211, 77, 0.3)' }}>
-                <span style={{ fontSize: '13px', fontWeight: 800, color: '#1E1B4B', letterSpacing: '0.01em' }}>
-                  {t.badgeText}
-                </span>
-              </div>
-
-              {/* Gold Badge 2: The golden Vaikunta Dwaram opens soon */}
-              <div style={{ marginTop: '8px', display: 'flex', justifyContent: 'center' }}>
-                <div style={{ padding: '6px 18px', borderRadius: '18px', background: 'rgba(20, 8, 35, 0.85)', border: '1px solid rgba(253, 224, 71, 0.35)', backdropFilter: 'blur(6px)' }}>
-                  <span style={{ fontSize: '11.5px', fontStyle: 'italic', color: '#FDE68A', fontWeight: 500 }}>
-                    {t.goldDwaramText}
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            {/* Golden Door Frame Graphic (Srivari Vaikunta Dwaram Gates - 1:1 Match to Image) */}
+            {/* Unified Devotional Hero Card (Home Signature Style) */}
             <div
               style={{
                 position: 'relative',
-                width: '100%',
-                maxWidth: '340px',
-                height: '320px',
-                borderRadius: '26px 26px 0 0',
-                border: '4px solid #F59E0B',
-                background: 'linear-gradient(180deg, #3B1663 0%, #170A2A 100%)',
-                boxShadow: '0 14px 40px rgba(245, 158, 11, 0.45)',
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                margin: '10px 0 0',
-                overflow: 'hidden'
-              }}
-            >
-              <svg viewBox="0 0 300 280" style={{ width: '100%', height: '100%' }} fill="none" xmlns="http://www.w3.org/2000/svg">
-                {/* Outer Carved Golden Archway & Carved Pillars */}
-                <path d="M10 280 V30 Q150 5 290 30 V280 Z" fill="url(#gateGoldGrad)" stroke="#FEF08A" strokeWidth="2.5" />
-                <path d="M22 280 V44 Q150 22 278 44 V280 Z" fill="#240D03" />
-
-                {/* Pillar Ornamentation Lines */}
-                <line x1="16" y1="35" x2="16" y2="280" stroke="#FDE047" strokeWidth="1" opacity="0.6" />
-                <line x1="284" y1="35" x2="284" y2="280" stroke="#FDE047" strokeWidth="1" opacity="0.6" />
-
-                {/* Left Door Leaf */}
-                <g id="leftDoor">
-                  <rect x="28" y="48" width="118" height="220" rx="4" fill="url(#doorPanelGrad)" stroke="#FDE047" strokeWidth="3" />
-                  
-                  {/* Top Inner Carved Panel */}
-                  <rect x="36" y="56" width="102" height="70" rx="3" stroke="#FDE047" strokeWidth="1.5" fill="none" />
-                  {/* 8-Petal Carved Lotus Emblem (Top Panel) */}
-                  <g transform="translate(87, 91)">
-                    <circle cx="0" cy="0" r="18" fill="url(#lotusGold)" stroke="#FEF08A" strokeWidth="1" />
-                    <circle cx="0" cy="0" r="8" fill="#78350F" />
-                    <path d="M0 -18 L0 18 M-18 0 L18 0 M-13 -13 L13 13 M-13 13 L13 -13" stroke="#FDE047" strokeWidth="1.5" />
-                  </g>
-
-                  {/* Bottom Inner Carved Panel with U-Namam (Matches Image) */}
-                  <rect x="36" y="136" width="102" height="120" rx="3" stroke="#FDE047" strokeWidth="1.5" fill="none" />
-                  <circle cx="87" cy="196" r="34" fill="url(#namamGlow)" stroke="#FDE047" strokeWidth="2" />
-                  
-                  {/* Sacred Srivari U-Namam Emblem */}
-                  <path d="M72 176 H102 V216 H72 Z" fill="#FFFDF5" rx="3" stroke="#FDE047" strokeWidth="1" />
-                  <path d="M75 178 H81 V210 H75 Z M93 178 H99 V210 H93 Z" fill="#FFFFFF" />
-                  <path d="M84 183 H90 V214 H84 Z" fill="#DC2626" />
-                  <circle cx="87" cy="220" r="3.5" fill="#FDE047" />
-
-                  {/* Brass Studs Matrix */}
-                  <circle cx="42" cy="62" r="2.5" fill="#FDE047" /><circle cx="132" cy="62" r="2.5" fill="#FDE047" />
-                  <circle cx="42" cy="118" r="2.5" fill="#FDE047" /><circle cx="132" cy="118" r="2.5" fill="#FDE047" />
-                  <circle cx="42" cy="144" r="2.5" fill="#FDE047" /><circle cx="132" cy="144" r="2.5" fill="#FDE047" />
-                  <circle cx="42" cy="248" r="2.5" fill="#FDE047" /><circle cx="132" cy="248" r="2.5" fill="#FDE047" />
-                </g>
-
-                {/* Right Door Leaf */}
-                <g id="rightDoor">
-                  <rect x="154" y="48" width="118" height="220" rx="4" fill="url(#doorPanelGrad)" stroke="#FDE047" strokeWidth="3" />
-                  
-                  {/* Top Inner Carved Panel */}
-                  <rect x="162" y="56" width="102" height="70" rx="3" stroke="#FDE047" strokeWidth="1.5" fill="none" />
-                  {/* 8-Petal Carved Lotus Emblem (Top Panel) */}
-                  <g transform="translate(213, 91)">
-                    <circle cx="0" cy="0" r="18" fill="url(#lotusGold)" stroke="#FEF08A" strokeWidth="1" />
-                    <circle cx="0" cy="0" r="8" fill="#78350F" />
-                    <path d="M0 -18 L0 18 M-18 0 L18 0 M-13 -13 L13 13 M-13 13 L13 -13" stroke="#FDE047" strokeWidth="1.5" />
-                  </g>
-
-                  {/* Bottom Inner Carved Panel with U-Namam (Matches Image) */}
-                  <rect x="162" y="136" width="102" height="120" rx="3" stroke="#FDE047" strokeWidth="1.5" fill="none" />
-                  <circle cx="213" cy="196" r="34" fill="url(#namamGlow)" stroke="#FDE047" strokeWidth="2" />
-                  
-                  {/* Sacred Srivari U-Namam Emblem */}
-                  <path d="M198 176 H228 V216 H198 Z" fill="#FFFDF5" rx="3" stroke="#FDE047" strokeWidth="1" />
-                  <path d="M201 178 H207 V210 H201 Z M219 178 H225 V210 H219 Z" fill="#FFFFFF" />
-                  <path d="M210 183 H216 V214 H210 Z" fill="#DC2626" />
-                  <circle cx="213" cy="220" r="3.5" fill="#FDE047" />
-
-                  {/* Brass Studs Matrix */}
-                  <circle cx="168" cy="62" r="2.5" fill="#FDE047" /><circle cx="258" cy="62" r="2.5" fill="#FDE047" />
-                  <circle cx="168" cy="118" r="2.5" fill="#FDE047" /><circle cx="258" cy="118" r="2.5" fill="#FDE047" />
-                  <circle cx="168" cy="144" r="2.5" fill="#FDE047" /><circle cx="258" cy="144" r="2.5" fill="#FDE047" />
-                  <circle cx="168" cy="248" r="2.5" fill="#FDE047" /><circle cx="258" cy="248" r="2.5" fill="#FDE047" />
-                </g>
-
-                {/* Center Door Seam & Heavy Decorative Ring Handles */}
-                <line x1="150" y1="48" x2="150" y2="272" stroke="#FDE047" strokeWidth="3.5" />
-                <circle cx="138" cy="196" r="9" fill="url(#gateGoldGrad)" stroke="#FEF08A" strokeWidth="1.5" />
-                <circle cx="162" cy="196" r="9" fill="url(#gateGoldGrad)" stroke="#FEF08A" strokeWidth="1.5" />
-
-                {/* Decorative Festive Flower Garlands Hanging Across Top Arch */}
-                <path d="M28 48 Q150 78 272 48" stroke="#DC2626" strokeWidth="4.5" strokeDasharray="6 3" />
-                <path d="M28 56 Q150 86 272 56" stroke="#F59E0B" strokeWidth="4.5" strokeDasharray="6 3" />
-
-                <defs>
-                  <linearGradient id="gateGoldGrad" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="0%" stopColor="#FEF08A" />
-                    <stop offset="30%" stopColor="#FDE047" />
-                    <stop offset="70%" stopColor="#D97706" />
-                    <stop offset="100%" stopColor="#78350F" />
-                  </linearGradient>
-                  <linearGradient id="doorPanelGrad" x1="0" y1="0" x2="1" y2="1">
-                    <stop offset="0%" stopColor="#F59E0B" />
-                    <stop offset="40%" stopColor="#B45309" />
-                    <stop offset="80%" stopColor="#78350F" />
-                    <stop offset="100%" stopColor="#3B1606" />
-                  </linearGradient>
-                  <radialGradient id="lotusGold" cx="50%" cy="50%" r="50%">
-                    <stop offset="0%" stopColor="#FEF08A" />
-                    <stop offset="100%" stopColor="#B45309" />
-                  </radialGradient>
-                  <radialGradient id="namamGlow" cx="50%" cy="50%" r="50%">
-                    <stop offset="0%" stopColor="#FEF08A" stopOpacity="0.6" />
-                    <stop offset="100%" stopColor="#78350F" stopOpacity="0" />
-                  </radialGradient>
-                </defs>
-              </svg>
-            </div>
-
-            {/* Floating Live Countdown Card Overlay */}
-            <div
-              style={{
-                width: 'calc(100% - 24px)',
-                maxWidth: '400px',
-                backgroundColor: '#FFFDF7',
-                borderRadius: '24px',
+                borderRadius: '20px',
+                overflow: 'hidden',
+                background: 'linear-gradient(135deg, #132A1C 0%, #1A3C28 60%, #0F2317 100%)',
+                border: '1px solid rgba(200, 155, 60, 0.35)',
+                boxShadow: '0 8px 24px -4px rgba(19, 42, 28, 0.25), 0 2px 8px rgba(0, 0, 0, 0.1)',
                 padding: '20px 16px',
-                boxShadow: '0 12px 32px rgba(0, 0, 0, 0.35)',
-                border: '1px solid #FEF3C7',
-                color: '#1E1B4B',
-                textAlign: 'center',
-                zIndex: 5,
-                marginTop: '-10px'
+                color: '#FFFFFF'
               }}
             >
-              {/* 4-Column Metric Grid */}
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '8px', marginBottom: '16px' }}>
-                <div>
-                  <span style={{ fontSize: '26px', fontWeight: 900, color: '#881337', display: 'block', lineHeight: 1.1 }}>
+              {/* Subtle Devotional Background Radial Light */}
+              <div
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  opacity: 0.14,
+                  backgroundImage: 'radial-gradient(circle at 50% 25%, #FDE047 0%, transparent 70%)',
+                  pointerEvents: 'none'
+                }}
+              />
+
+              {/* Tagline & Badge Top Row */}
+              <div style={{ position: 'relative', zIndex: 2, display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
+                  <Sparkles size={12} color="#FDE68A" />
+                  <span style={{ fontSize: '11px', fontWeight: 600, letterSpacing: '0.08em', color: '#FDE68A', textTransform: 'uppercase' }}>
+                    {t.tagline}
+                  </span>
+                </div>
+                <span
+                  style={{
+                    background: 'rgba(255, 255, 255, 0.1)',
+                    border: '1px solid rgba(254, 240, 138, 0.25)',
+                    borderRadius: '999px',
+                    padding: '3px 9px',
+                    fontSize: '11px',
+                    fontWeight: 600,
+                    color: '#FDE68A'
+                  }}
+                >
+                  DEC 20, 2026
+                </span>
+              </div>
+
+              {/* Title & Subtitle */}
+              <div style={{ position: 'relative', zIndex: 2 }}>
+                <h1
+                  style={{
+                    fontSize: '22px',
+                    fontWeight: 700,
+                    color: '#FEF3C7',
+                    margin: '0 0 3px',
+                    fontFamily: 'var(--font-sans), system-ui',
+                    lineHeight: 1.2
+                  }}
+                >
+                  {t.title}
+                </h1>
+                <p style={{ fontSize: '13px', fontWeight: 500, color: '#CBD5E1', margin: '0 0 16px', lineHeight: 1.3 }}>
+                  {t.subtitle}
+                </p>
+              </div>
+
+              {/* 4-Column Metric Countdown Tiles */}
+              <div
+                style={{
+                  position: 'relative',
+                  zIndex: 2,
+                  display: 'grid',
+                  gridTemplateColumns: 'repeat(4, 1fr)',
+                  gap: '8px',
+                  marginBottom: '12px'
+                }}
+              >
+                <div
+                  style={{
+                    background: 'rgba(255, 255, 255, 0.08)',
+                    border: '1px solid rgba(254, 240, 138, 0.2)',
+                    borderRadius: '12px',
+                    padding: '10px 4px',
+                    textAlign: 'center'
+                  }}
+                >
+                  <span style={{ fontSize: '22px', fontWeight: 700, color: '#FDE68A', display: 'block', lineHeight: 1, fontFamily: 'var(--font-sans), system-ui' }}>
                     {timeLeft.days}
                   </span>
-                  <span style={{ fontSize: '11px', fontWeight: typo.bodyWeight, color: '#64748B' }}>
+                  <span style={{ fontSize: '10px', fontWeight: 500, color: '#E2E8F0', textTransform: 'uppercase', marginTop: '4px', display: 'block' }}>
                     {t.days}
                   </span>
                 </div>
-                <div style={{ borderLeft: '1px solid #E2E8F0' }}>
-                  <span style={{ fontSize: '26px', fontWeight: 900, color: '#881337', display: 'block', lineHeight: 1.1 }}>
+
+                <div
+                  style={{
+                    background: 'rgba(255, 255, 255, 0.08)',
+                    border: '1px solid rgba(254, 240, 138, 0.2)',
+                    borderRadius: '12px',
+                    padding: '10px 4px',
+                    textAlign: 'center'
+                  }}
+                >
+                  <span style={{ fontSize: '22px', fontWeight: 700, color: '#FDE68A', display: 'block', lineHeight: 1, fontFamily: 'var(--font-sans), system-ui' }}>
                     {timeLeft.hours.toString().padStart(2, '0')}
                   </span>
-                  <span style={{ fontSize: '11px', fontWeight: typo.bodyWeight, color: '#64748B' }}>
+                  <span style={{ fontSize: '10px', fontWeight: 500, color: '#E2E8F0', textTransform: 'uppercase', marginTop: '4px', display: 'block' }}>
                     {t.hours}
                   </span>
                 </div>
-                <div style={{ borderLeft: '1px solid #E2E8F0' }}>
-                  <span style={{ fontSize: '26px', fontWeight: 900, color: '#881337', display: 'block', lineHeight: 1.1 }}>
+
+                <div
+                  style={{
+                    background: 'rgba(255, 255, 255, 0.08)',
+                    border: '1px solid rgba(254, 240, 138, 0.2)',
+                    borderRadius: '12px',
+                    padding: '10px 4px',
+                    textAlign: 'center'
+                  }}
+                >
+                  <span style={{ fontSize: '22px', fontWeight: 700, color: '#FDE68A', display: 'block', lineHeight: 1, fontFamily: 'var(--font-sans), system-ui' }}>
                     {timeLeft.minutes.toString().padStart(2, '0')}
                   </span>
-                  <span style={{ fontSize: '11px', fontWeight: typo.bodyWeight, color: '#64748B' }}>
+                  <span style={{ fontSize: '10px', fontWeight: 500, color: '#E2E8F0', textTransform: 'uppercase', marginTop: '4px', display: 'block' }}>
                     {t.minutes}
                   </span>
                 </div>
-                <div style={{ borderLeft: '1px solid #E2E8F0' }}>
-                  <span style={{ fontSize: '26px', fontWeight: 900, color: '#881337', display: 'block', lineHeight: 1.1 }}>
+
+                <div
+                  style={{
+                    background: 'rgba(255, 255, 255, 0.08)',
+                    border: '1px solid rgba(254, 240, 138, 0.2)',
+                    borderRadius: '12px',
+                    padding: '10px 4px',
+                    textAlign: 'center'
+                  }}
+                >
+                  <span style={{ fontSize: '22px', fontWeight: 700, color: '#FDE68A', display: 'block', lineHeight: 1, fontFamily: 'var(--font-sans), system-ui' }}>
                     {timeLeft.seconds.toString().padStart(2, '0')}
                   </span>
-                  <span style={{ fontSize: '11px', fontWeight: typo.bodyWeight, color: '#64748B' }}>
+                  <span style={{ fontSize: '10px', fontWeight: 500, color: '#E2E8F0', textTransform: 'uppercase', marginTop: '4px', display: 'block' }}>
                     {t.seconds}
                   </span>
                 </div>
               </div>
 
-              {/* Target Date Pill */}
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px', padding: '10px', backgroundColor: '#FEF3C7', borderRadius: '14px', marginBottom: '14px' }}>
-                <Calendar size={18} color="#78350F" />
-                <div style={{ textAlign: 'left' }}>
-                  <span style={{ fontSize: '13px', fontWeight: typo.titleWeight, color: '#78350F', display: 'block', lineHeight: 1.2 }}>
-                    {t.fullTargetDateStr}
-                  </span>
-                  <span style={{ fontSize: '10.5px', color: '#92400E', fontWeight: typo.bodyWeight }}>
-                    {t.subtext}
-                  </span>
-                </div>
+              {/* Target Date Row */}
+              <div
+                style={{
+                  position: 'relative',
+                  zIndex: 2,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '8px',
+                  background: 'rgba(0, 0, 0, 0.22)',
+                  border: '1px solid rgba(254, 240, 138, 0.18)',
+                  borderRadius: '12px',
+                  padding: '9px 12px',
+                  marginBottom: '12px',
+                  flexWrap: 'wrap'
+                }}
+              >
+                <Calendar size={15} color="#FDE68A" />
+                <span style={{ fontSize: '12.5px', fontWeight: 600, color: '#FEF3C7' }}>
+                  {t.fullTargetDateStr}
+                </span>
+                <span style={{ fontSize: '11px', color: '#CBD5E1', fontWeight: 500 }}>
+                  • {t.subtext}
+                </span>
               </div>
 
-              {/* Locked Status Button */}
-              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '6px', width: '100%', padding: '12px', borderRadius: '25px', backgroundColor: '#57534E', color: '#F5F5F4', fontSize: '13px', fontWeight: 700 }}>
-                <Lock size={15} color="#FDE047" />
+              {/* Status Action Pill */}
+              <div
+                style={{
+                  position: 'relative',
+                  zIndex: 2,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '6px',
+                  width: '100%',
+                  padding: '11px 16px',
+                  borderRadius: '999px',
+                  background: 'linear-gradient(180deg, #FDE68A 0%, #D97706 100%)',
+                  color: '#132A1C',
+                  fontSize: '13px',
+                  fontWeight: 600,
+                  boxShadow: '0 2px 8px rgba(0,0,0,0.2)'
+                }}
+              >
+                <Lock size={15} color="#132A1C" />
                 <span>{t.darshanOpens}</span>
               </div>
             </div>
-          </div>
 
-          {/* Lower Scrollable Content Area */}
-          <div style={{ backgroundColor: '#FAF8F5', flex: 1, padding: '24px 16px 40px', color: '#0F172A' }}>
-            
             {/* Event Schedule Section */}
-            <div style={{ backgroundColor: '#FFFFFF', borderRadius: '20px', padding: '16px', border: '1px solid #E2E8F0', marginBottom: '16px', boxShadow: '0 4px 14px rgba(0,0,0,0.03)' }}>
+            <div
+              style={{
+                backgroundColor: '#FFFFFF',
+                borderRadius: '16px',
+                padding: '16px',
+                border: '1px solid rgba(30,35,45,0.08)',
+                marginTop: '16px',
+                boxShadow: '0 1px 2px rgba(0,0,0,0.04)'
+              }}
+            >
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '14px' }}>
-                <Calendar size={18} color="#4C1D95" />
-                <h3 style={{ fontSize: '15px', fontWeight: typo.titleWeight, color: '#1E1B4B', margin: 0 }}>
+                <Calendar size={18} color="#D97706" />
+                <h3 style={{ fontSize: '15px', fontWeight: 600, color: '#1E232D', margin: 0, fontFamily: 'var(--font-sans), system-ui' }}>
                   {t.eventSchedule}
                 </h3>
               </div>
@@ -838,20 +801,20 @@ export function VaikuntaEkadasiBanner() {
               <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
                 {t.scheduleItems.map((item, idx) => (
                   <div key={idx} style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
-                    <div style={{ width: '68px', backgroundColor: '#FEF3C7', borderRadius: '12px', padding: '8px 4px', textAlign: 'center', flexShrink: 0 }}>
-                      <span style={{ fontSize: '17px', fontWeight: 900, color: '#78350F', display: 'block', lineHeight: 1 }}>
+                    <div style={{ width: '64px', backgroundColor: '#F8FAFC', border: '1px solid #E2E8F0', borderRadius: '10px', padding: '6px 4px', textAlign: 'center', flexShrink: 0 }}>
+                      <span style={{ fontSize: '16px', fontWeight: 700, color: '#1E232D', display: 'block', lineHeight: 1 }}>
                         {item.date}
                       </span>
-                      <span style={{ fontSize: '8.5px', fontWeight: 800, color: '#92400E', textTransform: 'uppercase', display: 'block', marginTop: '2px' }}>
+                      <span style={{ fontSize: '9px', fontWeight: 600, color: '#64748B', textTransform: 'uppercase', display: 'block', marginTop: '2px' }}>
                         {item.month}
                       </span>
                     </div>
 
                     <div style={{ flex: 1 }}>
-                      <h4 style={{ fontSize: '13.5px', fontWeight: typo.titleWeight, color: '#1E1B4B', margin: '0 0 3px', lineHeight: typo.titleLineHeight }}>
+                      <h4 style={{ fontSize: '13.5px', fontWeight: 600, color: '#1E232D', margin: '0 0 3px', lineHeight: typo.titleLineHeight }}>
                         {item.title}
                       </h4>
-                      <p style={{ fontSize: '11.5px', color: '#475569', margin: 0, lineHeight: typo.bodyLineHeight, fontWeight: typo.bodyWeight }}>
+                      <p style={{ fontSize: '12px', color: '#64748B', margin: 0, lineHeight: typo.bodyLineHeight, fontWeight: 500 }}>
                         {item.desc}
                       </p>
                     </div>
@@ -861,21 +824,29 @@ export function VaikuntaEkadasiBanner() {
             </div>
 
             {/* Important Information Section */}
-            <div style={{ backgroundColor: '#FFFBEB', borderRadius: '20px', padding: '16px', border: '1px solid #FDE68A', boxShadow: '0 4px 14px rgba(251, 191, 36, 0.08)' }}>
+            <div
+              style={{
+                backgroundColor: '#FFFFFF',
+                borderRadius: '16px',
+                padding: '16px',
+                border: '1px solid rgba(30,35,45,0.08)',
+                marginTop: '14px',
+                boxShadow: '0 1px 2px rgba(0,0,0,0.04)'
+              }}
+            >
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
-                <Info size={18} color="#B45309" />
-                <h3 style={{ fontSize: '15px', fontWeight: typo.titleWeight, color: '#78350F', margin: 0 }}>
+                <Info size={18} color="#D97706" />
+                <h3 style={{ fontSize: '15px', fontWeight: 600, color: '#1E232D', margin: 0, fontFamily: 'var(--font-sans), system-ui' }}>
                   {t.importantInfo}
                 </h3>
               </div>
 
-              <ul style={{ margin: 0, paddingLeft: '18px', fontSize: '11.5px', color: '#78350F', lineHeight: typo.bodyLineHeight, fontWeight: typo.bodyWeight }}>
+              <ul style={{ margin: 0, paddingLeft: '18px', fontSize: '12px', color: '#475569', lineHeight: 1.5, fontWeight: 500 }}>
                 {t.bulletPoints.map((pt, i) => (
                   <li key={i} style={{ marginBottom: '6px' }}>{pt}</li>
                 ))}
               </ul>
             </div>
-
           </div>
         </div>
       )}

@@ -1467,11 +1467,11 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
               <Logo size={30} />
               <span className="notranslate" style={{
                 fontSize: '18px',
-                fontWeight: 900,
+                fontWeight: 700,
                 color: '#0F5132',
                 letterSpacing: '-0.02em',
                 lineHeight: 1,
-                fontFamily: 'Georgia, "Times New Roman", serif',
+                fontFamily: 'var(--font-sans), system-ui, sans-serif',
                 whiteSpace: 'nowrap',
               }}>
                 Saarthi
@@ -1552,7 +1552,7 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                     background: '#DC2626',
                     border: '1.5px solid #FFFFFF',
                     color: '#FFFFFF',
-                    fontSize: '9px', fontWeight: 800,
+                    fontSize: '9px', fontWeight: 600,
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                     letterSpacing: '-0.02em',
                   }}>
@@ -1616,7 +1616,7 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                 boxShadow: '0 1px 3px rgba(0,0,0,0.04)',
                 boxSizing: 'border-box'
               }}>
-                <span style={{ fontWeight: 800, color: '#B45309', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                <span style={{ fontWeight: 600, color: '#B45309', overflow: 'hidden', textOverflow: 'ellipsis' }}>
                   {dayShort}, {todayDateStr}
                 </span>
                 <span style={{ opacity: 0.35 }}>•</span>
@@ -1633,14 +1633,14 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                   display: 'inline-flex',
                   alignItems: 'center',
                   gap: 'clamp(3px, 1vw, 5px)',
-                  padding: '3.5px clamp(6px, 1.8vw, 9px)',
+                  padding: '4px clamp(7px, 2vw, 10px)',
                   borderRadius: '20px',
-                  background: 'linear-gradient(135deg, #FFFDF7 0%, #FEF3C7 55%, #FDE68A 100%)',
-                  border: '1.5px solid #D97706',
-                  boxShadow: '0 2px 6px rgba(217, 119, 6, 0.16)',
-                  fontSize: 'clamp(9.5px, 2.6vw, 11.5px)',
-                  fontWeight: 800,
-                  color: '#78350F',
+                  background: 'var(--surface-card, #FFFFFF)',
+                  border: '1px solid rgba(217, 119, 6, 0.28)',
+                  boxShadow: '0 1px 3px rgba(15, 23, 42, 0.04)',
+                  fontSize: 'clamp(9.5px, 2.6vw, 11px)',
+                  fontWeight: 700,
+                  color: '#92400E',
                   cursor: 'pointer',
                   transform: isChanting ? 'scale(0.96)' : 'scale(1)',
                   transition: 'all 0.2s cubic-bezier(0.16, 1, 0.3, 1)',
@@ -1655,18 +1655,17 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                   <span style={{ whiteSpace: 'nowrap', lineHeight: 1.2 }}>
                     {lang === 'te' ? 'ఓం నమో వేంకటేశాయ' : 'Om Namo Venkatesaya'}
                   </span>
-                  <span style={{ fontSize: 'clamp(7px, 1.8vw, 7.5px)', fontWeight: 600, color: '#92400E', opacity: 0.75, lineHeight: 1, letterSpacing: '0.02em' }}>
+                  <span style={{ fontSize: 'clamp(7px, 1.8vw, 7.5px)', fontWeight: 500, color: '#B45309', opacity: 0.85, lineHeight: 1, letterSpacing: '0.02em' }}>
                     {lang === 'te' ? 'జప మాల • నొక్కండి' : 'Japa Mala • Tap to Chant'}
                   </span>
                 </span>
                 <span style={{
                   fontSize: 'clamp(8.5px, 2.2vw, 9.5px)',
-                  fontWeight: 900,
-                  color: '#FEF3C7',
-                  background: '#78350F',
+                  fontWeight: 700,
+                  color: '#92400E',
+                  background: 'rgba(217, 119, 6, 0.12)',
                   padding: '1.5px clamp(4px, 1.2vw, 6px)',
                   borderRadius: '10px',
-                  border: '1px solid rgba(253, 224, 71, 0.4)',
                   lineHeight: 1.2,
                   letterSpacing: '0.02em',
                   flexShrink: 0
@@ -1829,19 +1828,18 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
         </div>
       </div>
 
-      {/* 🛕 SIGNATURE LIVE TEMPLE PULSE (BLACK OUTLINE INSIDE WHITE GLASS) */}
+      {/* 🛕 SIGNATURE LIVE TEMPLE PULSE (CALM DEVOTIONAL CONTAINER) */}
       <div style={{
         background: isRainy
-          ? 'linear-gradient(165deg, rgba(240, 249, 255, 0.96) 0%, rgba(224, 242, 254, 0.90) 50%, rgba(241, 245, 249, 0.93) 100%)'
-          : 'linear-gradient(165deg, rgba(255, 255, 255, 0.95) 0%, rgba(248, 250, 252, 0.88) 100%)',
+          ? 'linear-gradient(165deg, rgba(240, 249, 255, 0.98) 0%, rgba(224, 242, 254, 0.92) 50%, rgba(241, 245, 249, 0.95) 100%)'
+          : 'var(--surface-card, #FFFFFF)',
         borderRadius: '20px',
-        padding: '14px 12px',
-        color: '#0F172A',
+        padding: '16px 14px',
+        color: 'var(--color-text-primary, #1E232D)',
         boxShadow: isRainy
-          ? '0 16px 40px rgba(14, 116, 144, 0.12), 0 1px 3px rgba(0, 0, 0, 0.05)'
-          : '0 16px 40px rgba(15, 23, 42, 0.08), 0 1px 3px rgba(0, 0, 0, 0.05)',
-        border: isRainy ? '1.5px solid #38BDF8' : '1.5px solid #0F172A',
-        backdropFilter: 'blur(20px)',
+          ? '0 8px 24px rgba(14, 116, 144, 0.08), 0 1px 3px rgba(0, 0, 0, 0.04)'
+          : '0 8px 24px -4px rgba(15, 23, 42, 0.05), 0 2px 6px rgba(15, 23, 42, 0.02)',
+        border: isRainy ? '1px solid #BAE6FD' : '1px solid rgba(200, 155, 60, 0.28)',
         position: 'relative',
         overflow: 'hidden'
       }}>
@@ -1955,11 +1953,11 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
             }} />
             <h2 style={{
               fontSize: '15px',
-              fontWeight: 900,
-              letterSpacing: '-0.01em',
-              color: '#0F172A',
+              fontWeight: 700,
+              letterSpacing: '-0.015em',
+              color: 'var(--color-text-primary, #1E232D)',
               margin: 0,
-              lineHeight: 1.2
+              lineHeight: 1.25
             }}>
               {lang === 'te' ? 'తిరుమల లైవ్ స్టేటస్' : 'Tirumala Live Status'}
             </h2>
@@ -2124,11 +2122,11 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
 
                 {/* Title */}
                 <div className="notranslate" style={{
-                  fontSize: lang === 'ta' ? '11px' : lang === 'te' ? '11.5px' : '11px',
-                  fontWeight: 800,
-                  color: '#0F172A',
+                  fontSize: lang === 'ta' ? '11px' : lang === 'te' ? '11.5px' : '11.5px',
+                  fontWeight: 600,
+                  color: 'var(--color-text-primary, #1E232D)',
                   marginBottom: '4px',
-                  lineHeight: 1.15,
+                  lineHeight: 1.25,
                   minWidth: 0,
                   width: '100%',
                   overflow: 'hidden',
@@ -2142,10 +2140,10 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                 <div className="notranslate" style={{
                   backgroundColor: card.badgeBg,
                   color: card.badgeText,
-                  fontSize: 'clamp(9px, 2.4vw, 10.5px)',
-                  fontWeight: 800,
-                  padding: '3px 4px',
-                  borderRadius: '10px',
+                  fontSize: 'clamp(9px, 2.3vw, 10px)',
+                  fontWeight: 600,
+                  padding: '2.5px 5px',
+                  borderRadius: '8px',
                   marginBottom: '4px',
                   width: '100%',
                   maxWidth: '98%',
@@ -2153,7 +2151,7 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                   whiteSpace: 'nowrap',
                   overflow: 'hidden',
                   textOverflow: 'ellipsis',
-                  lineHeight: 1.15,
+                  lineHeight: 1.2,
                   display: 'inline-block'
                 }}>
                   {card.wait}
@@ -2337,7 +2335,7 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
               }}>
                 <div style={{
                   fontSize: '11px',
-                  fontWeight: 900,
+                  fontWeight: 600,
                   color: '#0F5132',
                   textTransform: lang === 'te' ? 'none' : 'uppercase',
                   letterSpacing: lang === 'te' ? 'normal' : '0.6px',
@@ -2363,7 +2361,7 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
               {/* Clean Recommendation Headline */}
               <div style={{
                 fontSize: lang === 'te' ? '14px' : '14.5px',
-                fontWeight: 800,
+                fontWeight: 700,
                 color: '#0F172A',
                 lineHeight: 1.35,
                 marginBottom: '12px',
@@ -2393,77 +2391,50 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                 const visualCards = isSsdClosed ? [
                   {
                     icon: <Flame size={13} color="#D97706" />,
-                    bg: '#FFFDF0',
-                    border: '1px solid #FDE68A',
                     title: lang === 'te' ? 'నేటి విశేషం' : lang === 'hi' ? 'పవిత్ర క్షేత్రం' : lang === 'ta' ? 'புனித தலம்' : 'Sacred Shrine',
-                    value: lang === 'te' ? shortShrine.te : shortShrine.en,
-                    color: '#92400E'
+                    value: lang === 'te' ? shortShrine.te : shortShrine.en
                   },
                   {
                     icon: <Navigation size={13} color="#2563EB" />,
-                    bg: '#EFF6FF',
-                    border: '1px solid #BFDBFE',
                     title: lang === 'te' ? 'ఉత్తమ మార్గం' : lang === 'hi' ? 'उत्तम मार्ग' : lang === 'ta' ? 'சிறந்த வழி' : 'Best Route',
-                    value: lang === 'te' ? 'స్థానిక క్షేత్రాలు' : lang === 'hi' ? 'स्थानीय मंदिर' : lang === 'ta' ? 'உள்ளூர் தலங்கள்' : 'Local Shrines',
-                    color: '#1E40AF'
+                    value: lang === 'te' ? 'స్థానిక క్షేత్రాలు' : lang === 'hi' ? 'स्थानीय मंदिर' : lang === 'ta' ? 'உள்ளூர் தலங்கள்' : 'Local Shrines'
                   },
                   {
                     icon: <Clock size={13} color="#059669" />,
-                    bg: '#ECFDF5',
-                    border: '1px solid #A7F3D0',
                     title: lang === 'te' ? 'అనుకూల సమయం' : lang === 'hi' ? 'अनुकूल समय' : lang === 'ta' ? 'உகந்த நேரம்' : 'Optimal Time',
-                    value: lang === 'te' ? 'ఉదయాన్నే' : lang === 'hi' ? 'प्रातः काल' : lang === 'ta' ? 'அதிகாலை' : 'Early Morning',
-                    color: '#065F46'
+                    value: lang === 'te' ? 'ఉదయాన్నే' : lang === 'hi' ? 'प्रातः काल' : lang === 'ta' ? 'அதிகாலை' : 'Early Morning'
                   }
                 ] : (isSsdOpen ? [
                   {
                     icon: <Ticket size={13} color="#16A34A" />,
-                    bg: '#F0FDF4',
-                    border: '1px solid #BBF7D0',
                     title: lang === 'te' ? 'కౌంటర్లు' : lang === 'hi' ? 'एसएसडी स्थिति' : lang === 'ta' ? 'எஸ்எஸ்டி நிலை' : 'SSD Status',
-                    value: lang === 'te' ? 'జారీ అవుతున్నాయి' : lang === 'hi' ? 'जारी हो रहे हैं' : lang === 'ta' ? 'வழங்கப்படுகிறது' : 'Issuing Now',
-                    color: '#166534'
+                    value: lang === 'te' ? 'జారీ అవుతున్నాయి' : lang === 'hi' ? 'जारी हो रहे हैं' : lang === 'ta' ? 'வழங்கப்படுகிறது' : 'Issuing Now'
                   },
                   {
                     icon: <Clock size={13} color="#2563EB" />,
-                    bg: '#EFF6FF',
-                    border: '1px solid #BFDBFE',
                     title: lang === 'te' ? 'సమయం ఆదా' : lang === 'hi' ? 'समय बचत' : lang === 'ta' ? 'நேர சேமிப்பு' : 'Time Saved',
-                    value: lang === 'te' ? '10+ గంటలు' : lang === 'hi' ? '10+ घंटे बचाएं' : lang === 'ta' ? '10+ மணிநேரம் சேమిப்பு' : 'Save 10+ Hrs',
-                    color: '#1E40AF'
+                    value: lang === 'te' ? '10+ గంటలు' : lang === 'hi' ? '10+ घंटे बचाएं' : lang === 'ta' ? '10+ மணிநேரம் சேமிப்பு' : 'Save 10+ Hrs'
                   },
                   {
                     icon: <MapPin size={13} color="#D97706" />,
-                    bg: '#FFFDF0',
-                    border: '1px solid #FDE68A',
                     title: lang === 'te' ? 'కేంద్రాలు' : lang === 'hi' ? 'काउंटर' : lang === 'ta' ? 'மையங்கள்' : 'Counters',
-                    value: lang === 'te' ? 'అలిపిరి & శ్రీనివాసం' : lang === 'hi' ? 'अलिपिरी और श्रीनिवासम' : lang === 'ta' ? 'அலிபிரி & சீனிவாசம்' : 'Alipiri & Srinivasam',
-                    color: '#92400E'
+                    value: lang === 'te' ? 'అలిపిరి & శ్రీనివాసం' : lang === 'hi' ? 'अलिपिरी और श्रीनिवासम' : lang === 'ta' ? 'அலிபிரி & சீனிவாசம்' : 'Alipiri & Srinivasam'
                   }
                 ] : [
                   {
                     icon: <Users size={13} color="#D97706" />,
-                    bg: '#FFFDF0',
-                    border: '1px solid #FDE68A',
                     title: lang === 'te' ? 'క్యూ సమయం' : lang === 'hi' ? 'कतार प्रवाह' : lang === 'ta' ? 'வரிசை நேரம்' : 'Queue Flow',
-                    value: sarvaWait || (lang === 'te' ? 'సాధారణం' : lang === 'hi' ? 'सामान्य' : lang === 'ta' ? 'மிதமான' : 'Moderate'),
-                    color: '#92400E'
+                    value: sarvaWait || (lang === 'te' ? 'సాధారణం' : lang === 'hi' ? 'सामान्य' : lang === 'ta' ? 'மிதமான' : 'Moderate')
                   },
                   {
                     icon: <Flame size={13} color="#D97706" />,
-                    bg: '#FFFDF0',
-                    border: '1px solid #FDE68A',
                     title: lang === 'te' ? 'విశేష క్షేత్రం' : lang === 'hi' ? 'పవిత్ర క్షేత్రం' : lang === 'ta' ? 'புனித தலம்' : 'Sacred Shrine',
-                    value: lang === 'te' ? shortShrine.te : shortShrine.en,
-                    color: '#92400E'
+                    value: lang === 'te' ? shortShrine.te : shortShrine.en
                   },
                   {
                     icon: <Clock size={13} color="#0F5132" />,
-                    bg: '#F0FDF4',
-                    border: '1px solid #BBF7D0',
                     title: lang === 'te' ? 'ఉత్తమ సమయం' : lang === 'hi' ? 'उत्तम समय' : lang === 'ta' ? 'சிறந்த நேரம்' : 'Best Time',
-                    value: lang === 'te' ? 'ఉదయాన్నే' : lang === 'hi' ? 'प्रातः काल' : lang === 'ta' ? 'அதிகாலை' : 'Early Morning',
-                    color: '#166534'
+                    value: lang === 'te' ? 'ఉదయాన్నే' : lang === 'hi' ? 'प्रातः काल' : lang === 'ta' ? 'அதிகாலை' : 'Early Morning'
                   }
                 ]);
 
@@ -2477,10 +2448,10 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                   }}>
                     {visualCards.map((card, idx) => (
                       <div key={idx} style={{
-                        backgroundColor: card.bg,
-                        border: card.border,
+                        backgroundColor: '#FAF8F5',
+                        border: '1px solid rgba(30, 35, 45, 0.08)',
                         borderRadius: '12px',
-                        padding: '7px 4px',
+                        padding: '8px 5px',
                         minHeight: '54px',
                         display: 'flex',
                         flexDirection: 'column',
@@ -2495,14 +2466,14 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                           alignItems: 'center',
                           justifyContent: 'center',
                           gap: '3px',
-                          marginBottom: '2px',
+                          marginBottom: '3px',
                           minWidth: 0,
                           maxWidth: '100%'
                         }}>
                           {card.icon}
                           <span className="notranslate" style={{
                             fontSize: '9.5px',
-                            fontWeight: 800,
+                            fontWeight: 600,
                             color: '#64748B',
                             whiteSpace: 'nowrap',
                             letterSpacing: '0.01em'
@@ -2512,9 +2483,9 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                         </div>
                         <div className="notranslate" style={{
                           fontSize: '11px',
-                          fontWeight: 800,
-                          color: card.color,
-                          lineHeight: 1.2,
+                          fontWeight: 700,
+                          color: '#1E232D',
+                          lineHeight: 1.25,
                           textAlign: 'center',
                           wordBreak: 'break-word',
                           display: '-webkit-box',

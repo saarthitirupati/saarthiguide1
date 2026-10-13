@@ -60,10 +60,10 @@ export function NextUpdateCard() {
         gap: '12px'
       }}>
         <div>
-          <div style={{ fontSize: '11px', fontWeight: 800, color: '#94A3B8', textTransform: 'uppercase', letterSpacing: '0.6px', marginBottom: '4px' }}>
+          <div style={{ fontSize: '11px', fontWeight: 600, color: '#94A3B8', textTransform: 'uppercase', letterSpacing: '0.6px', marginBottom: '4px' }}>
             NEXT AUTOMATIC UPDATE
           </div>
-          <div style={{ fontSize: '15px', fontWeight: 800, color: '#FFFFFF', lineHeight: '1.3' }}>
+          <div style={{ fontSize: '15px', fontWeight: 700, color: '#FFFFFF', lineHeight: '1.3' }}>
             Queue expected to improve in <span style={{ color: '#34D399' }}>2h 15m</span>
           </div>
           <div style={{ fontSize: '12px', color: '#94A3B8', marginTop: '2px', fontWeight: 500 }}>
@@ -81,7 +81,7 @@ export function NextUpdateCard() {
             padding: '10px 16px',
             borderRadius: '14px',
             fontSize: '13px',
-            fontWeight: 800,
+            fontWeight: 600,
             cursor: loading ? 'not-allowed' : 'pointer',
             display: 'flex',
             alignItems: 'center',

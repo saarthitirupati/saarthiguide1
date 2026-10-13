@@ -477,7 +477,7 @@ export function JapaMalaModal({ isOpen, onClose, lang }: JapaMalaModalProps) {
                   padding: '5px 12px',
                   color: '#FDE047',
                   fontSize: '12px',
-                  fontWeight: 800,
+                  fontWeight: 600,
                   cursor: 'pointer',
                   display: 'flex',
                   alignItems: 'center',
@@ -514,7 +514,7 @@ export function JapaMalaModal({ isOpen, onClose, lang }: JapaMalaModalProps) {
           {/* Prominent Header Titles */}
           <h2 style={{ 
             fontSize: '20px', 
-            fontWeight: 800, 
+            fontWeight: 600, 
             color: '#FFF8E7', 
             margin: '2px 0 0 0',
             letterSpacing: '0.04em',
@@ -545,7 +545,7 @@ export function JapaMalaModal({ isOpen, onClose, lang }: JapaMalaModalProps) {
           }}>
             {/* Top Bead Number Indicator with Underline */}
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: '10px' }}>
-              <span style={{ fontSize: '16px', fontWeight: 900, color: '#FDE047', lineHeight: 1 }}>
+              <span style={{ fontSize: '16px', fontWeight: 700, color: '#FDE047', lineHeight: 1 }}>
                 {activeBead}
               </span>
               <div style={{ width: '28px', height: '2px', background: '#D9A441', marginTop: '4px', borderRadius: '1px' }} />
@@ -613,7 +613,7 @@ export function JapaMalaModal({ isOpen, onClose, lang }: JapaMalaModalProps) {
             </div>
 
             {/* Bottom Strand Counter: 1 / 108 */}
-            <div style={{ fontSize: '13px', fontWeight: 800, color: '#FDE047', marginTop: '10px', letterSpacing: '0.04em' }}>
+            <div style={{ fontSize: '13px', fontWeight: 600, color: '#FDE047', marginTop: '10px', letterSpacing: '0.04em' }}>
               {activeBead} / 108
             </div>
           </div>
@@ -636,7 +636,7 @@ export function JapaMalaModal({ isOpen, onClose, lang }: JapaMalaModalProps) {
             </div>
             <div style={{
               fontSize: '20px',
-              fontWeight: 800,
+              fontWeight: 600,
               color: '#FEF08A',
               marginBottom: '12px',
               lineHeight: 1.35
@@ -662,7 +662,7 @@ export function JapaMalaModal({ isOpen, onClose, lang }: JapaMalaModalProps) {
               borderRadius: '14px',
               padding: '6px 14px',
               fontSize: '12.5px',
-              fontWeight: 800,
+              fontWeight: 600,
               color: '#FDE047',
               marginBottom: '18px'
             }}>
@@ -681,7 +681,7 @@ export function JapaMalaModal({ isOpen, onClose, lang }: JapaMalaModalProps) {
                 border: '1.5px solid #D9A441',
                 color: '#FFF8E7',
                 fontSize: '15px',
-                fontWeight: 800,
+                fontWeight: 600,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -718,7 +718,7 @@ export function JapaMalaModal({ isOpen, onClose, lang }: JapaMalaModalProps) {
                 borderRadius: '20px',
                 padding: '4px 16px',
                 fontSize: '11px',
-                fontWeight: 800,
+                fontWeight: 600,
                 color: '#FDE047',
                 letterSpacing: '0.08em',
                 textTransform: 'uppercase',
@@ -738,7 +738,7 @@ export function JapaMalaModal({ isOpen, onClose, lang }: JapaMalaModalProps) {
             {/* Telugu Sacred Mantra (Large, Centered, Highly Readable) */}
             <div style={{
               fontSize: 'clamp(28px, 7.5vw, 34px)',
-              fontWeight: 800,
+              fontWeight: 600,
               fontFamily: "var(--font-telugu-serif), 'Noto Serif Telugu', Georgia, serif",
               color: '#FFFFFF',
               margin: '0 0 8px 0',
@@ -774,7 +774,7 @@ export function JapaMalaModal({ isOpen, onClose, lang }: JapaMalaModalProps) {
               {localizedMeaningTitle && (
                 <div style={{
                   fontSize: '14px',
-                  fontWeight: 800,
+                  fontWeight: 600,
                   color: '#FEF08A',
                   marginBottom: '6px',
                   lineHeight: 1.4,
@@ -837,7 +837,7 @@ export function JapaMalaModal({ isOpen, onClose, lang }: JapaMalaModalProps) {
                   border: 'none',
                   color: '#071A14',
                   fontSize: '14px',
-                  fontWeight: 900,
+                  fontWeight: 700,
                   display: 'inline-flex',
                   alignItems: 'center',
                   gap: '8px',
@@ -897,10 +897,10 @@ export function JapaMalaModal({ isOpen, onClose, lang }: JapaMalaModalProps) {
             padding: '12px 16px'
           }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-              <span style={{ fontSize: '13px', fontWeight: 800, color: '#FFF8E7' }}>
+              <span style={{ fontSize: '13px', fontWeight: 600, color: '#FFF8E7' }}>
                 {currentLang === 'te' ? 'జప ప్రగతి' : 'Japa Progress'}
               </span>
-              <span style={{ fontSize: '13px', fontWeight: 900, color: '#FDE047' }}>
+              <span style={{ fontSize: '13px', fontWeight: 700, color: '#FDE047' }}>
                 {chantCount} / 108
               </span>
             </div>
@@ -938,7 +938,7 @@ export function JapaMalaModal({ isOpen, onClose, lang }: JapaMalaModalProps) {
                   border: '1px solid #D9A441',
                   color: '#FFF8E7',
                   fontSize: '14px',
-                  fontWeight: 800,
+                  fontWeight: 600,
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -962,7 +962,7 @@ export function JapaMalaModal({ isOpen, onClose, lang }: JapaMalaModalProps) {
                   border: '1.5px solid #D9A441',
                   color: '#FFF8E7',
                   fontSize: '16px',
-                  fontWeight: 800,
+                  fontWeight: 600,
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -989,7 +989,7 @@ export function JapaMalaModal({ isOpen, onClose, lang }: JapaMalaModalProps) {
                     border: 'none',
                     color: '#071A14',
                     fontSize: '16px',
-                    fontWeight: 900,
+                    fontWeight: 700,
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',

@@ -63,7 +63,7 @@ export function ShareableQuoteCardModal({ isOpen, onClose, quote, author, theme 
           padding: '16px 20px',
           borderBottom: '1px solid #F1F5F9'
         }}>
-          <span style={{ fontSize: '13px', fontWeight: 800, color: '#D97706', display: 'flex', alignItems: 'center', gap: '6px' }}>
+          <span style={{ fontSize: '13px', fontWeight: 600, color: '#D97706', display: 'flex', alignItems: 'center', gap: '6px' }}>
             <Sparkles size={16} />
             <span>Share Divine Blessing</span>
           </span>
@@ -90,7 +90,7 @@ export function ShareableQuoteCardModal({ isOpen, onClose, quote, author, theme 
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                 <Flame size={18} color="#FDE68A" />
-                <span style={{ fontSize: '11px', fontWeight: 900, letterSpacing: '1px', textTransform: 'uppercase', color: '#FDE68A' }}>
+                <span style={{ fontSize: '11px', fontWeight: 700, letterSpacing: '1px', textTransform: 'uppercase', color: '#FDE68A' }}>
                   SAARTHI · PILGRIM COMPANION
                 </span>
               </div>
@@ -115,7 +115,7 @@ export function ShareableQuoteCardModal({ isOpen, onClose, quote, author, theme 
             {/* Author */}
             <div style={{
               fontSize: '12px',
-              fontWeight: 800,
+              fontWeight: 600,
               color: '#FDE68A',
               textAlign: 'right',
               borderTop: '1px solid rgba(254, 230, 138, 0.3)',
@@ -141,7 +141,7 @@ export function ShareableQuoteCardModal({ isOpen, onClose, quote, author, theme 
                 borderRadius: '14px',
                 padding: '12px',
                 fontSize: '13px',
-                fontWeight: 800,
+                fontWeight: 600,
                 cursor: 'pointer',
                 boxShadow: '0 4px 12px rgba(37, 211, 102, 0.3)'
               }}
@@ -164,7 +164,7 @@ export function ShareableQuoteCardModal({ isOpen, onClose, quote, author, theme 
                 borderRadius: '14px',
                 padding: '12px',
                 fontSize: '13px',
-                fontWeight: 800,
+                fontWeight: 600,
                 cursor: 'pointer',
                 transition: 'all 0.2s ease'
               }}

@@ -164,7 +164,7 @@ export function YatraChecklist() {
             </div>
             <span style={{
               fontSize: '13.5px',
-              fontWeight: 800,
+              fontWeight: 700,
               color: '#0F172A',
               letterSpacing: '-0.01em'
             }}>
@@ -175,7 +175,7 @@ export function YatraChecklist() {
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <span style={{
               fontSize: '11px',
-              fontWeight: 800,
+              fontWeight: 600,
               padding: '2.5px 9px',
               borderRadius: '12px',
               backgroundColor: isAllDone ? '#DCFCE7' : 'rgba(15, 23, 42, 0.06)',
@@ -226,7 +226,7 @@ export function YatraChecklist() {
                 </div>
                 <span style={{
                   fontSize: '9.5px',
-                  fontWeight: 800,
+                  fontWeight: 600,
                   color: isChecked ? '#14532D' : '#334155',
                   whiteSpace: 'nowrap',
                   overflow: 'hidden',
@@ -252,7 +252,7 @@ export function YatraChecklist() {
             gap: '6px',
             color: '#14532D',
             fontSize: '11px',
-            fontWeight: 800,
+            fontWeight: 600,
             textAlign: 'center'
           }}>
             <ShieldCheck size={14} color="#15803D" />

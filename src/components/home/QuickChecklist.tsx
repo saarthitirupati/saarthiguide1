@@ -138,12 +138,12 @@ export function QuickChecklist(props: any) {
               <div style={{ width: '24px', height: '24px', borderRadius: '6px', background: '#F0FDF4', border: '1px solid #BBF7D0', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <Ticket size={13} color="#0F5132" />
               </div>
-              <span style={{ fontSize: '13px', fontWeight: 800, color: '#0F172A' }}>{t.ssdStatus}</span>
+              <span style={{ fontSize: '13px', fontWeight: 700, color: '#0F172A' }}>{t.ssdStatus}</span>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
               <span style={{
                 fontSize: '10.5px',
-                fontWeight: 800,
+                fontWeight: 600,
                 padding: '3px 10px',
                 borderRadius: '16px',
                 background: liveStatus.ssdTokenStatus === 'issuing' ? '#DCFCE7' : liveStatus.ssdTokenStatus === 'paused' ? '#FEF3C7' : '#FEE2E2',
@@ -163,17 +163,17 @@ export function QuickChecklist(props: any) {
               border: '1px solid #FECACA',
               borderRadius: '12px',
               padding: '10px 12px',
-              marginBottom: '10px',
+              marginBottom: '8px',
               display: 'flex',
               alignItems: 'flex-start',
               gap: '10px'
             }}>
-              <ShieldAlert size={18} color="#DC2626" style={{ flexShrink: 0, marginTop: '2px' }} />
+              <ShieldAlert size={17} color="#DC2626" style={{ flexShrink: 0, marginTop: '2px' }} />
               <div style={{ flex: 1, minWidth: 0 }}>
-                <span style={{ fontSize: '10px', fontWeight: 800, color: '#991B1B', letterSpacing: '0.04em', textTransform: 'uppercase', display: 'block' }}>
+                <span style={{ fontSize: '10px', fontWeight: 700, color: '#991B1B', letterSpacing: '0.04em', textTransform: 'uppercase', display: 'block' }}>
                   {t.importantAdvisory}
                 </span>
-                <span style={{ fontSize: '12.5px', fontWeight: 700, color: '#7F1D1D', lineHeight: 1.4, display: 'block', marginTop: '1px' }}>
+                <span style={{ fontSize: '12px', fontWeight: 600, color: '#7F1D1D', lineHeight: 1.4, display: 'block', marginTop: '2px' }}>
                   {cleanNotice}
                 </span>
               </div>
@@ -182,8 +182,8 @@ export function QuickChecklist(props: any) {
 
           {/* NEXT RELEASE TIME BANNER */}
           <div style={{
-            background: liveStatus.ssdTokenStatus === 'issuing' ? '#F0FDF4' : liveStatus.ssdTokenStatus === 'paused' ? '#FFFBEB' : '#FEF2F2',
-            border: `1px solid ${liveStatus.ssdTokenStatus === 'issuing' ? '#BBF7D0' : liveStatus.ssdTokenStatus === 'paused' ? '#FDE68A' : '#FECACA'}`,
+            background: liveStatus.ssdTokenStatus === 'issuing' ? '#F0FDF4' : '#F8FAFC',
+            border: `1px solid ${liveStatus.ssdTokenStatus === 'issuing' ? '#BBF7D0' : '#E2E8F0'}`,
             borderRadius: '12px',
             padding: '10px 12px',
             marginBottom: '8px',
@@ -193,12 +193,12 @@ export function QuickChecklist(props: any) {
             gap: '10px'
           }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <Clock size={16} color={liveStatus.ssdTokenStatus === 'issuing' ? '#16A34A' : liveStatus.ssdTokenStatus === 'paused' ? '#D97706' : '#DC2626'} style={{ flexShrink: 0 }} />
+              <Clock size={16} color={liveStatus.ssdTokenStatus === 'issuing' ? '#16A34A' : '#64748B'} style={{ flexShrink: 0 }} />
               <div>
                 <span style={{ fontSize: '10.5px', fontWeight: 600, color: '#64748B', display: 'block' }}>
                   {t.nextRelease}
                 </span>
-                <span style={{ fontSize: '14px', fontWeight: 800, color: liveStatus.ssdTokenStatus === 'issuing' ? '#15803D' : liveStatus.ssdTokenStatus === 'paused' ? '#B45309' : '#991B1B', marginTop: '1px', display: 'block' }}>
+                <span style={{ fontSize: '13.5px', fontWeight: 700, color: liveStatus.ssdTokenStatus === 'issuing' ? '#15803D' : '#1E293B', marginTop: '1px', display: 'block' }}>
                   {formattedNextTime ? formattedNextTime : (liveStatus.ssdTokenStatus === 'issuing' ? t.tokensBeingIssued : '4:00 AM')}
                 </span>
               </div>
@@ -218,7 +218,7 @@ export function QuickChecklist(props: any) {
 
           {/* VISUAL TILES FOR COLLECTION CENTRES (STRICTLY NO EMOJIS, LUCIDE ICONS) */}
           <div style={{ borderTop: '1px solid #F1F5F9', paddingTop: '10px', marginTop: '4px' }}>
-            <span style={{ fontSize: '10.5px', fontWeight: 800, color: '#64748B', letterSpacing: '0.03em', textTransform: 'uppercase', display: 'block', marginBottom: '8px' }}>
+            <span style={{ fontSize: '10.5px', fontWeight: 600, color: '#64748B', letterSpacing: '0.03em', textTransform: 'uppercase', display: 'block', marginBottom: '8px' }}>
               {t.collectionCentres}
             </span>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: '6px', width: '100%', boxSizing: 'border-box' }}>
@@ -247,7 +247,7 @@ export function QuickChecklist(props: any) {
                   <div style={{ width: '26px', height: '26px', borderRadius: '50%', background: '#EFF6FF', color: '#2563EB', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                     <Train size={13} />
                   </div>
-                  <span className="notranslate" style={{ fontSize: '10.5px', fontWeight: 800, color: '#0F172A', lineHeight: 1.2, wordBreak: 'break-word', textAlign: 'center', width: '100%' }}>
+                  <span className="notranslate" style={{ fontSize: '10.5px', fontWeight: 600, color: '#0F172A', lineHeight: 1.2, wordBreak: 'break-word', textAlign: 'center', width: '100%' }}>
                     {lang === 'te' ? 'విష్ణు నివాసం' : lang === 'hi' ? 'विष्णु निवासम' : lang === 'ta' ? 'விஷ்ணு நிவாஸம்' : 'Vishnu Nivasam'}
                   </span>
                   <span className="notranslate" style={{ fontSize: '9px', color: '#64748B', fontWeight: 500, lineHeight: 1.15, textAlign: 'center', width: '100%' }}>
@@ -281,7 +281,7 @@ export function QuickChecklist(props: any) {
                   <div style={{ width: '26px', height: '26px', borderRadius: '50%', background: '#F0FDF4', color: '#16A34A', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                     <Bus size={13} />
                   </div>
-                  <span className="notranslate" style={{ fontSize: '10.5px', fontWeight: 800, color: '#0F172A', lineHeight: 1.2, wordBreak: 'break-word', textAlign: 'center', width: '100%' }}>
+                  <span className="notranslate" style={{ fontSize: '10.5px', fontWeight: 600, color: '#0F172A', lineHeight: 1.2, wordBreak: 'break-word', textAlign: 'center', width: '100%' }}>
                     {lang === 'te' ? 'శ్రీనివాసం' : lang === 'hi' ? 'श्रीनिवासन' : lang === 'ta' ? 'ஸ்ரீநிவாஸம்' : 'Srinivasam'}
                   </span>
                   <span className="notranslate" style={{ fontSize: '9.5px', color: '#64748B', fontWeight: 500, lineHeight: 1.15, textAlign: 'center', width: '100%' }}>
@@ -315,7 +315,7 @@ export function QuickChecklist(props: any) {
                   <div style={{ width: '26px', height: '26px', borderRadius: '50%', background: '#FFFBEB', color: '#D97706', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                     <Mountain size={13} />
                   </div>
-                  <span className="notranslate" style={{ fontSize: '10.5px', fontWeight: 800, color: '#0F172A', lineHeight: 1.2, wordBreak: 'break-word', textAlign: 'center', width: '100%' }}>
+                  <span className="notranslate" style={{ fontSize: '10.5px', fontWeight: 600, color: '#0F172A', lineHeight: 1.2, wordBreak: 'break-word', textAlign: 'center', width: '100%' }}>
                     {lang === 'te' ? 'భూదేవి కాంప్లెక్స్' : lang === 'hi' ? 'भूदेवी कॉम्प्लेक्स' : lang === 'ta' ? 'பூதேவி காம்ப்ளக்ஸ்' : 'Bhudevi Complex'}
                   </span>
                   <span className="notranslate" style={{ fontSize: '9.5px', color: '#64748B', fontWeight: 500, lineHeight: 1.15, textAlign: 'center', width: '100%' }}>
@@ -339,12 +339,12 @@ export function QuickChecklist(props: any) {
                 display: 'flex',
                 gap: '8px',
                 alignItems: 'flex-start',
-                background: liveStatus.ssdTokenStatus === 'closed-for-day' ? '#FFFBEB' : '#F8FAFC',
+                background: '#F8FAFC',
                 padding: '10px 12px',
                 borderRadius: '10px',
-                border: `1px solid ${liveStatus.ssdTokenStatus === 'closed-for-day' ? '#FDE68A' : '#E2E8F0'}`
+                border: '1px solid #E2E8F0'
               }}>
-                <Clock size={13} color={liveStatus.ssdTokenStatus === 'closed-for-day' ? '#B45309' : '#64748B'} style={{ marginTop: '2px', flexShrink: 0 }} />
+                <Clock size={13} color="#64748B" style={{ marginTop: '2px', flexShrink: 0 }} />
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', flex: 1, minWidth: 0 }}>
                   {points.map((pt, i) => (
                     <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '6px' }}>
@@ -353,14 +353,14 @@ export function QuickChecklist(props: any) {
                           width: '4px',
                           height: '4px',
                           borderRadius: '50%',
-                          backgroundColor: liveStatus.ssdTokenStatus === 'closed-for-day' ? '#D97706' : '#64748B',
+                          backgroundColor: '#64748B',
                           marginTop: '5px',
                           flexShrink: 0
                         }} />
                       )}
                       <span style={{
                         fontSize: '11px',
-                        color: liveStatus.ssdTokenStatus === 'closed-for-day' ? '#78350F' : '#475569',
+                        color: '#475569',
                         lineHeight: 1.4,
                         fontWeight: 500
                       }}>

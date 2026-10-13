@@ -169,14 +169,14 @@ export default function HomePage() {
           <div style={{ padding: '0 14px', marginTop: '2px', marginBottom: '16px' }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
               <div>
-                <h2 style={{ fontSize: '15px', fontWeight: 800, color: '#0F172A', margin: 0, letterSpacing: '-0.01em' }}>
+                <h2 style={{ fontSize: '15px', fontWeight: 700, color: 'var(--color-text-primary, #1E232D)', margin: 0, letterSpacing: '-0.015em' }}>
                   {t.primaryServices}
                 </h2>
-                <p style={{ fontSize: '11px', color: '#64748B', margin: '1px 0 0 0', fontWeight: 500 }}>
+                <p style={{ fontSize: '11.5px', color: 'var(--color-text-secondary, #5A6270)', margin: '1px 0 0 0', fontWeight: 500 }}>
                   {t.servicesSub}
                 </p>
               </div>
-              <Link href="/essentials" style={{ fontSize: '11.5px', fontWeight: 800, color: '#0F5132', textDecoration: 'none' }}>
+              <Link href="/essentials" style={{ fontSize: '11.5px', fontWeight: 600, color: '#0F5132', textDecoration: 'none' }}>
                 {t.seeAll}
               </Link>
             </div>
@@ -192,11 +192,11 @@ export default function HomePage() {
                     prefetch={false}
                     style={{
                       textDecoration: 'none',
-                      backgroundColor: '#FFFFFF',
+                      backgroundColor: 'var(--surface-card, #FFFFFF)',
                       borderRadius: '16px',
                       overflow: 'hidden',
-                      border: '1px solid rgba(15, 23, 42, 0.06)',
-                      boxShadow: '0 6px 20px -4px rgba(15, 23, 42, 0.04), 0 2px 6px rgba(15, 23, 42, 0.02)',
+                      border: '1px solid rgba(30, 35, 45, 0.08)',
+                      boxShadow: '0 4px 14px -2px rgba(15, 23, 42, 0.04), 0 1px 3px rgba(15, 23, 42, 0.02)',
                       display: 'flex',
                       flexDirection: 'column',
                       minWidth: 0,
@@ -209,13 +209,13 @@ export default function HomePage() {
                       backgroundImage: `url(${srv.image})`,
                       backgroundSize: 'cover',
                       backgroundPosition: 'center',
-                      backgroundColor: '#F1F5F9',
+                      backgroundColor: '#F6F3EE',
                       position: 'relative'
                     }}>
                       <div style={{
                         position: 'absolute',
                         inset: 0,
-                        background: 'linear-gradient(180deg, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.45) 100%)'
+                        background: 'linear-gradient(180deg, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.4) 100%)'
                       }} />
                       <div style={{
                         position: 'absolute',
@@ -240,20 +240,20 @@ export default function HomePage() {
                         alignItems: 'center',
                         gap: '4px',
                         fontSize: '9.5px',
-                        fontWeight: 700,
+                        fontWeight: 600,
                         color: srv.statusColor,
                         marginBottom: '2px'
                       }}>
                         <span style={{ width: '4px', height: '4px', borderRadius: '50%', backgroundColor: 'currentColor' }} />
                         <span>{srv.status}</span>
                       </span>
-                      <h3 style={{ fontSize: '12.5px', fontWeight: 800, color: '#0F172A', margin: '0 0 2px', lineHeight: 1.25 }}>
+                      <h3 style={{ fontSize: '12.5px', fontWeight: 600, color: 'var(--color-text-primary, #1E232D)', margin: '0 0 2px', lineHeight: 1.3 }}>
                         {srv.title}
                       </h3>
-                      <p style={{ fontSize: '10.5px', color: '#64748B', margin: '0 0 6px', lineHeight: 1.25, fontWeight: 500 }}>
+                      <p style={{ fontSize: '10.5px', color: 'var(--color-text-secondary, #5A6270)', margin: '0 0 6px', lineHeight: 1.3, fontWeight: 400 }}>
                         {srv.subtitle}
                       </p>
-                      <div style={{ fontSize: '10.5px', fontWeight: 800, color: '#0F5132', display: 'flex', alignItems: 'center', gap: '2px' }}>
+                      <div style={{ fontSize: '10.5px', fontWeight: 600, color: '#0F5132', display: 'flex', alignItems: 'center', gap: '2px' }}>
                         <span>{t.navigate}</span>
                       </div>
                     </div>
@@ -267,10 +267,10 @@ export default function HomePage() {
           {nearbyPlaces.length > 0 && (
             <div style={{ padding: '0 0 16px' }}>
               <div style={{ padding: '0 14px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
-                <p style={{ fontSize: '13px', fontWeight: 800, color: '#0F172A', letterSpacing: '0.2px', margin: 0 }}>
+                <p style={{ fontSize: '13px', fontWeight: 600, color: '#0F172A', letterSpacing: '0.2px', margin: 0 }}>
                   {t.nearbyPlaces}
                 </p>
-                <Link href="/explore" style={{ fontSize: '11px', fontWeight: 800, color: '#0F5132', textDecoration: 'none' }}>
+                <Link href="/explore" style={{ fontSize: '11px', fontWeight: 600, color: '#0F5132', textDecoration: 'none' }}>
                   {t.seeAll}
                 </Link>
               </div>
@@ -324,7 +324,7 @@ export default function HomePage() {
                     <div style={{ padding: '7px 8px 9px' }}>
                       <p style={{
                         fontSize: '12px', 
-                        fontWeight: 800, 
+                        fontWeight: 600, 
                         color: '#0F172A', 
                         margin: '0 0 2px', 
                         lineHeight: 1.25,
@@ -369,7 +369,7 @@ export default function HomePage() {
                   <Sparkles size={13} color="#CA8A04" />
                 </div>
                 <div style={{ textAlign: 'left' }}>
-                  <span style={{ fontSize: '12.5px', fontWeight: 800, color: '#0F172A', display: 'block', lineHeight: 1.2 }}>
+                  <span style={{ fontSize: '12.5px', fontWeight: 600, color: '#0F172A', display: 'block', lineHeight: 1.2 }}>
                     {lang === 'te' ? 'స్వామివారి విశేషాలు & ఆధ్యాత్మిక విశేషాలు' : 'Sacred Lore, Chants & Traditions'}
                   </span>
                   <span style={{ fontSize: '10px', color: '#854D0E', fontWeight: 600 }}>
@@ -377,7 +377,7 @@ export default function HomePage() {
                   </span>
                 </div>
               </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '11px', fontWeight: 800, color: '#0F5132' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '11px', fontWeight: 600, color: '#0F5132' }}>
                 <span>{showLoreDrawer ? (lang === 'te' ? 'దాచు' : 'Hide') : (lang === 'te' ? 'చూడు' : 'View')}</span>
                 {showLoreDrawer ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
               </div>
@@ -396,7 +396,7 @@ export default function HomePage() {
       {/* 💻 DESKTOP & TABLET VIEW (>=768px): Multi-Column Command Center */}
       <div className={styles.desktopOnly}>
         <div style={{ marginBottom: '20px', padding: '8px 0' }}>
-          <h1 suppressHydrationWarning style={{ fontSize: '28px', fontWeight: 900, color: '#0F172A', margin: '0 0 6px 0', letterSpacing: '-0.02em' }}>
+          <h1 suppressHydrationWarning style={{ fontSize: '28px', fontWeight: 700, color: '#0F172A', margin: '0 0 6px 0', letterSpacing: '-0.02em' }}>
             {(() => {
               const hr = getISTDate().getHours();
               if (hr >= 5 && hr < 12) return lang === 'te' ? 'శుభోదయం' : 'Good Morning';
@@ -422,10 +422,10 @@ export default function HomePage() {
             {nearbyPlaces.length > 0 && (
               <div style={{ backgroundColor: '#FFFFFF', borderRadius: '24px', padding: '20px', border: '1px solid #E2E8F0', boxShadow: '0 4px 16px rgba(15, 23, 42, 0.03)' }}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
-                  <h2 style={{ fontSize: '17px', fontWeight: 800, color: '#0F172A', margin: 0 }}>
+                  <h2 style={{ fontSize: '17px', fontWeight: 600, color: '#0F172A', margin: 0 }}>
                     {t.nearbyPlaces}
                   </h2>
-                  <Link href="/explore" style={{ fontSize: '12.5px', fontWeight: 800, color: '#0F5132', textDecoration: 'none' }}>
+                  <Link href="/explore" style={{ fontSize: '12.5px', fontWeight: 600, color: '#0F5132', textDecoration: 'none' }}>
                     {t.seeAll}
                   </Link>
                 </div>
@@ -475,7 +475,7 @@ export default function HomePage() {
                       <div style={{ padding: '6px 8px' }}>
                         <p style={{
                           fontSize: '12px',
-                          fontWeight: 800,
+                          fontWeight: 600,
                           color: '#0F172A',
                           margin: 0,
                           lineHeight: 1.2,
@@ -503,14 +503,14 @@ export default function HomePage() {
             <div style={{ backgroundColor: '#FFFFFF', borderRadius: '24px', padding: '20px', border: '1px solid #E2E8F0', boxShadow: '0 4px 16px rgba(15, 23, 42, 0.03)' }}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px' }}>
                 <div>
-                  <h2 style={{ fontSize: '17px', fontWeight: 800, color: '#0F172A', margin: 0 }}>
+                  <h2 style={{ fontSize: '17px', fontWeight: 600, color: '#0F172A', margin: 0 }}>
                     {t.primaryServices}
                   </h2>
                   <p style={{ fontSize: '12px', color: '#64748B', margin: '2px 0 0', fontWeight: 500 }}>
                     {t.servicesSub}
                   </p>
                 </div>
-                <Link href="/essentials" style={{ fontSize: '12.5px', fontWeight: 800, color: '#0F5132', textDecoration: 'none' }}>
+                <Link href="/essentials" style={{ fontSize: '12.5px', fontWeight: 600, color: '#0F5132', textDecoration: 'none' }}>
                   {t.seeAll}
                 </Link>
               </div>
@@ -564,16 +564,16 @@ export default function HomePage() {
                         </div>
                       </div>
                       <div style={{ padding: '10px 12px' }}>
-                        <span style={{ fontSize: '10.5px', fontWeight: 800, color: srv.statusColor, display: 'block', marginBottom: '2px' }}>
+                        <span style={{ fontSize: '10.5px', fontWeight: 600, color: srv.statusColor, display: 'block', marginBottom: '2px' }}>
                           ● {srv.status}
                         </span>
-                        <h3 style={{ fontSize: '13.5px', fontWeight: 800, color: '#0F172A', margin: '0 0 2px' }}>
+                        <h3 style={{ fontSize: '13.5px', fontWeight: 600, color: '#0F172A', margin: '0 0 2px' }}>
                           {srv.title}
                         </h3>
                         <p style={{ fontSize: '11px', color: '#64748B', margin: '0 0 6px', lineHeight: 1.3 }}>
                           {srv.subtitle}
                         </p>
-                        <div style={{ fontSize: '11px', fontWeight: 800, color: '#0F5132', display: 'flex', alignItems: 'center', gap: '2px' }}>
+                        <div style={{ fontSize: '11px', fontWeight: 600, color: '#0F5132', display: 'flex', alignItems: 'center', gap: '2px' }}>
                           <span>{t.navigate}</span>
                         </div>
                       </div>

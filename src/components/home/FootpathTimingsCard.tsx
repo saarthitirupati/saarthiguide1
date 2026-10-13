@@ -37,7 +37,7 @@ export function FootpathTimingsCard() {
             <Footprints size={17} />
           </div>
           <div>
-            <h3 style={{ fontSize: '14.5px', fontWeight: 800, color: '#0F172A', margin: 0, lineHeight: 1.2 }}>
+            <h3 style={{ fontSize: '14.5px', fontWeight: 700, color: '#0F172A', margin: 0, lineHeight: 1.2 }}>
               {lang === 'te' ? 'తిరుమల సోపాన మార్గాల వేళలు' : 'Tirumala Footpath Routes'}
             </h3>
             <span style={{ fontSize: '11px', color: '#64748B', fontWeight: 500 }}>
@@ -53,7 +53,7 @@ export function FootpathTimingsCard() {
             alignItems: 'center',
             gap: '2px',
             fontSize: '11.5px',
-            fontWeight: 800,
+            fontWeight: 600,
             color: '#0F5132',
             textDecoration: 'none',
             backgroundColor: '#F0FDF4',
@@ -75,20 +75,21 @@ export function FootpathTimingsCard() {
       }}>
         {/* 1. Srivari Mettu (Alternative Route) */}
         <div style={{
-          backgroundColor: '#FFFDF7',
-          border: '1.5px solid #FDE68A',
+          backgroundColor: '#FFFFFF',
+          border: '1px solid rgba(30, 35, 45, 0.08)',
           borderRadius: '14px',
           padding: '12px 10px',
           display: 'flex',
           flexDirection: 'column',
-          justifyContent: 'space-between'
+          justifyContent: 'space-between',
+          boxShadow: '0 2px 8px rgba(15, 23, 42, 0.02)'
         }}>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '4px', marginBottom: '4px' }}>
               <span style={{
-                fontSize: '10px',
-                fontWeight: 800,
-                color: '#B45309',
+                fontSize: '9.5px',
+                fontWeight: 600,
+                color: '#64748B',
                 textTransform: 'uppercase',
                 letterSpacing: '0.04em'
               }}>
@@ -96,8 +97,8 @@ export function FootpathTimingsCard() {
               </span>
               <span style={{
                 fontSize: '9.5px',
-                fontWeight: 800,
-                color: '#15803D',
+                fontWeight: 600,
+                color: '#166534',
                 backgroundColor: '#DCFCE7',
                 padding: '2px 6px',
                 borderRadius: '6px'
@@ -106,7 +107,7 @@ export function FootpathTimingsCard() {
               </span>
             </div>
 
-            <h4 style={{ fontSize: '13px', fontWeight: 800, color: '#78350F', margin: '0 0 6px', lineHeight: 1.2 }}>
+            <h4 style={{ fontSize: '13px', fontWeight: 700, color: '#0F172A', margin: '0 0 6px', lineHeight: 1.2 }}>
               {lang === 'te' ? 'శ్రీవారి మెట్టు' : 'Srivari Mettu'}
             </h4>
 
@@ -115,20 +116,20 @@ export function FootpathTimingsCard() {
               display: 'inline-flex',
               alignItems: 'center',
               gap: '4px',
-              backgroundColor: '#FEF3C7',
-              border: '1px solid #FCD34D',
+              backgroundColor: '#F8FAFC',
+              border: '1px solid #E2E8F0',
               borderRadius: '8px',
               padding: '4px 7px',
               fontSize: '11px',
-              fontWeight: 800,
-              color: '#92400E',
+              fontWeight: 600,
+              color: '#1E293B',
               marginBottom: '6px'
             }}>
-              <Clock size={12} color="#B45309" />
+              <Clock size={12} color="#64748B" />
               <span>6:00 AM – 5:30 PM</span>
             </div>
 
-            <div style={{ fontSize: '10.5px', color: '#64748B', fontWeight: 600, marginBottom: '6px' }}>
+            <div style={{ fontSize: '10.5px', color: '#64748B', fontWeight: 500, marginBottom: '6px' }}>
               ~2,388 {lang === 'te' ? 'మెట్లు' : 'Steps'} • 1.5–2 hrs
             </div>
           </div>
@@ -143,8 +144,8 @@ export function FootpathTimingsCard() {
             borderRadius: '8px',
             padding: '5px 7px',
             fontSize: '10px',
-            fontWeight: 700,
-            color: '#B91C1C',
+            fontWeight: 600,
+            color: '#991B1B',
             lineHeight: 1.25
           }}>
             <Baby size={12} color="#DC2626" style={{ flexShrink: 0 }} />
@@ -158,20 +159,21 @@ export function FootpathTimingsCard() {
 
         {/* 2. Alipiri Mettu (Traditional Route) */}
         <div style={{
-          backgroundColor: '#F8FAFC',
-          border: '1.5px solid #E2E8F0',
+          backgroundColor: '#FFFFFF',
+          border: '1px solid rgba(30, 35, 45, 0.08)',
           borderRadius: '14px',
           padding: '12px 10px',
           display: 'flex',
           flexDirection: 'column',
-          justifyContent: 'space-between'
+          justifyContent: 'space-between',
+          boxShadow: '0 2px 8px rgba(15, 23, 42, 0.02)'
         }}>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '4px', marginBottom: '4px' }}>
               <span style={{
-                fontSize: '10px',
-                fontWeight: 800,
-                color: '#475569',
+                fontSize: '9.5px',
+                fontWeight: 600,
+                color: '#64748B',
                 textTransform: 'uppercase',
                 letterSpacing: '0.04em'
               }}>
@@ -179,8 +181,8 @@ export function FootpathTimingsCard() {
               </span>
               <span style={{
                 fontSize: '9.5px',
-                fontWeight: 800,
-                color: '#15803D',
+                fontWeight: 600,
+                color: '#166534',
                 backgroundColor: '#DCFCE7',
                 padding: '2px 6px',
                 borderRadius: '6px'
@@ -189,7 +191,7 @@ export function FootpathTimingsCard() {
               </span>
             </div>
 
-            <h4 style={{ fontSize: '13px', fontWeight: 800, color: '#0F172A', margin: '0 0 6px', lineHeight: 1.2 }}>
+            <h4 style={{ fontSize: '13px', fontWeight: 700, color: '#0F172A', margin: '0 0 6px', lineHeight: 1.2 }}>
               {lang === 'te' ? 'అలిపిరి మెట్టు' : 'Alipiri Mettu'}
             </h4>
 
@@ -198,20 +200,20 @@ export function FootpathTimingsCard() {
               display: 'inline-flex',
               alignItems: 'center',
               gap: '4px',
-              backgroundColor: '#EFF6FF',
-              border: '1px solid #BFDBFE',
+              backgroundColor: '#F8FAFC',
+              border: '1px solid #E2E8F0',
               borderRadius: '8px',
               padding: '4px 7px',
               fontSize: '11px',
-              fontWeight: 800,
-              color: '#1E40AF',
+              fontWeight: 600,
+              color: '#1E293B',
               marginBottom: '6px'
             }}>
-              <Clock size={12} color="#2563EB" />
+              <Clock size={12} color="#64748B" />
               <span>5:00 AM – 9:30 PM</span>
             </div>
 
-            <div style={{ fontSize: '10.5px', color: '#64748B', fontWeight: 600, marginBottom: '6px' }}>
+            <div style={{ fontSize: '10.5px', color: '#64748B', fontWeight: 500, marginBottom: '6px' }}>
               ~3,550 {lang === 'te' ? 'మెట్లు' : 'Steps'} • 3.5–4 hrs
             </div>
           </div>
@@ -226,7 +228,7 @@ export function FootpathTimingsCard() {
             borderRadius: '8px',
             padding: '5px 7px',
             fontSize: '10px',
-            fontWeight: 700,
+            fontWeight: 600,
             color: '#15803D',
             lineHeight: 1.25
           }}>

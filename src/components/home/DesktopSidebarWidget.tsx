@@ -27,11 +27,11 @@ export function DesktopSidebarWidget() {
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <h3 style={{ fontSize: '15px', fontWeight: 800, color: '#0F172A', margin: 0, display: 'flex', alignItems: 'center', gap: '7px' }}>
+          <h3 style={{ fontSize: '15px', fontWeight: 600, color: '#0F172A', margin: 0, display: 'flex', alignItems: 'center', gap: '7px' }}>
             <Utensils size={17} color="#D97706" />
             <span>{isTe ? 'అన్నప్రసాదం & లడ్డూ కౌంటర్లు' : 'Annaprasadam & Laddu Radar'}</span>
           </h3>
-          <span style={{ fontSize: '10.5px', fontWeight: 800, color: '#166534', backgroundColor: '#F0FDF4', border: '1px solid #BBF7D0', padding: '2px 7px', borderRadius: '6px' }}>
+          <span style={{ fontSize: '10.5px', fontWeight: 600, color: '#166534', backgroundColor: '#F0FDF4', border: '1px solid #BBF7D0', padding: '2px 7px', borderRadius: '6px' }}>
             {isTe ? 'ఉచిత భోజనం' : 'Free Service'}
           </span>
         </div>
@@ -39,11 +39,11 @@ export function DesktopSidebarWidget() {
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
           {/* Annaprasadam Complex */}
           <div style={{ backgroundColor: '#FFFBEB', border: '1px solid #FDE68A', borderRadius: '14px', padding: '10px 12px' }}>
-            <div style={{ fontSize: '11px', fontWeight: 800, color: '#B45309', marginBottom: '2px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+            <div style={{ fontSize: '11px', fontWeight: 600, color: '#B45309', marginBottom: '2px', display: 'flex', alignItems: 'center', gap: '4px' }}>
               <Utensils size={12} color="#D97706" />
               <span>{isTe ? 'మాతృశ్రీ తరిగొండ వెంగమాంబ' : 'Tarigonda Vengamamba'}</span>
             </div>
-            <div style={{ fontSize: '12.5px', fontWeight: 800, color: '#78350F', lineHeight: 1.2 }}>
+            <div style={{ fontSize: '12.5px', fontWeight: 600, color: '#78350F', lineHeight: 1.2 }}>
               {isTe ? 'ఉచిత అన్నప్రసాదం' : 'Free Unlimited Meals'}
             </div>
             <div style={{ fontSize: '10.5px', color: '#B45309', marginTop: '4px', fontWeight: 600 }}>
@@ -53,11 +53,11 @@ export function DesktopSidebarWidget() {
 
           {/* Laddu Counters */}
           <div style={{ backgroundColor: '#F0FDF4', border: '1px solid #BBF7D0', borderRadius: '14px', padding: '10px 12px' }}>
-            <div style={{ fontSize: '11px', fontWeight: 800, color: '#166534', marginBottom: '2px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+            <div style={{ fontSize: '11px', fontWeight: 600, color: '#166534', marginBottom: '2px', display: 'flex', alignItems: 'center', gap: '4px' }}>
               <Award size={12} color="#16A34A" />
               <span>{isTe ? 'శ్రీవారి లడ్డూ కౌంటర్లు' : 'Srivari Laddu Complex'}</span>
             </div>
-            <div style={{ fontSize: '12.5px', fontWeight: 800, color: '#14532D', lineHeight: 1.2 }}>
+            <div style={{ fontSize: '12.5px', fontWeight: 600, color: '#14532D', lineHeight: 1.2 }}>
               {isTe ? '32 కౌంటర్లు ప్రారంభంలో' : '32 Active Counters'}
             </div>
             <div style={{ fontSize: '10.5px', color: '#166534', marginTop: '4px', fontWeight: 600 }}>
@@ -81,11 +81,11 @@ export function DesktopSidebarWidget() {
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <h3 style={{ fontSize: '15px', fontWeight: 800, color: '#0F172A', margin: 0, display: 'flex', alignItems: 'center', gap: '7px' }}>
+          <h3 style={{ fontSize: '15px', fontWeight: 600, color: '#0F172A', margin: 0, display: 'flex', alignItems: 'center', gap: '7px' }}>
             <PhoneCall size={17} color="#DC2626" />
             <span>{isTe ? 'TTD 24x7 సహాయ కేంద్రాలు & అత్యవసరం' : '24x7 Helpline & Emergency Contacts'}</span>
           </h3>
-          <span style={{ fontSize: '10.5px', fontWeight: 800, color: '#991B1B', backgroundColor: '#FEF2F2', border: '1px solid #FECACA', padding: '2px 7px', borderRadius: '6px' }}>
+          <span style={{ fontSize: '10.5px', fontWeight: 600, color: '#991B1B', backgroundColor: '#FEF2F2', border: '1px solid #FECACA', padding: '2px 7px', borderRadius: '6px' }}>
             {isTe ? 'టోల్ ఫ్రీ' : 'Toll Free'}
           </span>
         </div>
@@ -94,7 +94,7 @@ export function DesktopSidebarWidget() {
           {/* TTD Main Toll Free */}
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', backgroundColor: '#F8FAFC', padding: '10px 12px', borderRadius: '12px', border: '1px solid #E2E8F0' }}>
             <div>
-              <div style={{ fontSize: '12.5px', fontWeight: 800, color: '#0F172A' }}>
+              <div style={{ fontSize: '12.5px', fontWeight: 600, color: '#0F172A' }}>
                 {isTe ? 'TTD ఉచిత కాల్ సెంటర్' : 'TTD Toll-Free Call Centre'}
               </div>
               <div style={{ fontSize: '11px', color: '#64748B', fontWeight: 600 }}>
@@ -112,7 +112,7 @@ export function DesktopSidebarWidget() {
                 padding: '5px 10px',
                 borderRadius: '8px',
                 fontSize: '11px',
-                fontWeight: 800,
+                fontWeight: 600,
                 textDecoration: 'none'
               }}
             >
@@ -124,21 +124,21 @@ export function DesktopSidebarWidget() {
           {/* CRO Inquiry & Ashwini Hospital Emergency */}
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
             <div style={{ backgroundColor: '#F8FAFC', padding: '9px 10px', borderRadius: '12px', border: '1px solid #E2E8F0' }}>
-              <div style={{ fontSize: '11px', fontWeight: 800, color: '#334155', display: 'flex', alignItems: 'center', gap: '4px' }}>
+              <div style={{ fontSize: '11px', fontWeight: 600, color: '#334155', display: 'flex', alignItems: 'center', gap: '4px' }}>
                 <MapPin size={12} color="#0284C7" />
                 <span>{isTe ? 'సీఆర్వో విచారణ' : 'Tirumala CRO'}</span>
               </div>
-              <div style={{ fontSize: '11.5px', fontWeight: 800, color: '#0F172A', marginTop: '2px' }}>
+              <div style={{ fontSize: '11.5px', fontWeight: 600, color: '#0F172A', marginTop: '2px' }}>
                 0877 2263590
               </div>
             </div>
 
             <div style={{ backgroundColor: '#FEF2F2', padding: '9px 10px', borderRadius: '12px', border: '1px solid #FECACA' }}>
-              <div style={{ fontSize: '11px', fontWeight: 800, color: '#991B1B', display: 'flex', alignItems: 'center', gap: '4px' }}>
+              <div style={{ fontSize: '11px', fontWeight: 600, color: '#991B1B', display: 'flex', alignItems: 'center', gap: '4px' }}>
                 <HeartPulse size={12} color="#DC2626" />
                 <span>{isTe ? 'అశ్విని ఆసుపత్రి' : 'Medical 108'}</span>
               </div>
-              <div style={{ fontSize: '11.5px', fontWeight: 800, color: '#7F1D1D', marginTop: '2px' }}>
+              <div style={{ fontSize: '11.5px', fontWeight: 600, color: '#7F1D1D', marginTop: '2px' }}>
                 0877 2263456
               </div>
             </div>
@@ -160,11 +160,11 @@ export function DesktopSidebarWidget() {
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <h3 style={{ fontSize: '15px', fontWeight: 800, color: '#0F172A', margin: 0, display: 'flex', alignItems: 'center', gap: '7px' }}>
+          <h3 style={{ fontSize: '15px', fontWeight: 600, color: '#0F172A', margin: 0, display: 'flex', alignItems: 'center', gap: '7px' }}>
             <Footprints size={17} color="#16A34A" />
             <span>{isTe ? 'సోపాన మార్గాలు & ఘాట్ రోడ్ సమయం' : 'Footpath Treks & Ghat Road Times'}</span>
           </h3>
-          <Link href="/route" style={{ fontSize: '11.5px', fontWeight: 800, color: '#0F5132', textDecoration: 'none' }}>
+          <Link href="/route" style={{ fontSize: '11.5px', fontWeight: 600, color: '#0F5132', textDecoration: 'none' }}>
             {isTe ? 'మార్గం చూడండి >' : 'View Route >'}
           </Link>
         </div>
@@ -174,14 +174,14 @@ export function DesktopSidebarWidget() {
           <div style={{ backgroundColor: '#F0FDF4', border: '1px solid #BBF7D0', borderRadius: '12px', padding: '9px 10px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
             <div>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '2px' }}>
-                <span style={{ fontSize: '11px', fontWeight: 800, color: '#166534' }}>
+                <span style={{ fontSize: '11px', fontWeight: 600, color: '#166534' }}>
                   {isTe ? 'అలిపిరి మెట్ల మార్గం' : 'Alipiri Footpath'}
                 </span>
-                <span style={{ fontSize: '9px', fontWeight: 800, color: '#15803D', backgroundColor: '#DCFCE7', padding: '1px 5px', borderRadius: '4px' }}>
+                <span style={{ fontSize: '9px', fontWeight: 600, color: '#15803D', backgroundColor: '#DCFCE7', padding: '1px 5px', borderRadius: '4px' }}>
                   Open
                 </span>
               </div>
-              <div style={{ fontSize: '11px', fontWeight: 800, color: '#1E40AF', backgroundColor: '#EFF6FF', padding: '2px 6px', borderRadius: '6px', display: 'inline-flex', alignItems: 'center', gap: '3px', marginBottom: '4px' }}>
+              <div style={{ fontSize: '11px', fontWeight: 600, color: '#1E40AF', backgroundColor: '#EFF6FF', padding: '2px 6px', borderRadius: '6px', display: 'inline-flex', alignItems: 'center', gap: '3px', marginBottom: '4px' }}>
                 <Clock size={10} color="#2563EB" />
                 <span>5:00 AM – 9:30 PM</span>
               </div>
@@ -198,14 +198,14 @@ export function DesktopSidebarWidget() {
           <div style={{ backgroundColor: '#FFFDF7', border: '1px solid #FDE68A', borderRadius: '12px', padding: '9px 10px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
             <div>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '2px' }}>
-                <span style={{ fontSize: '11px', fontWeight: 800, color: '#B45309' }}>
+                <span style={{ fontSize: '11px', fontWeight: 600, color: '#B45309' }}>
                   {isTe ? 'శ్రీవారి మెట్టు (ప్రత్యామ్నాయ)' : 'Srivari Mettu'}
                 </span>
-                <span style={{ fontSize: '9px', fontWeight: 800, color: '#15803D', backgroundColor: '#DCFCE7', padding: '1px 5px', borderRadius: '4px' }}>
+                <span style={{ fontSize: '9px', fontWeight: 600, color: '#15803D', backgroundColor: '#DCFCE7', padding: '1px 5px', borderRadius: '4px' }}>
                   Open
                 </span>
               </div>
-              <div style={{ fontSize: '11px', fontWeight: 800, color: '#92400E', backgroundColor: '#FEF3C7', padding: '2px 6px', borderRadius: '6px', display: 'inline-flex', alignItems: 'center', gap: '3px', marginBottom: '4px' }}>
+              <div style={{ fontSize: '11px', fontWeight: 600, color: '#92400E', backgroundColor: '#FEF3C7', padding: '2px 6px', borderRadius: '6px', display: 'inline-flex', alignItems: 'center', gap: '3px', marginBottom: '4px' }}>
                 <Clock size={10} color="#B45309" />
                 <span>6:00 AM – 5:30 PM</span>
               </div>
@@ -234,30 +234,30 @@ export function DesktopSidebarWidget() {
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <h3 style={{ fontSize: '15px', fontWeight: 800, color: '#0F172A', margin: 0, display: 'flex', alignItems: 'center', gap: '7px' }}>
+          <h3 style={{ fontSize: '15px', fontWeight: 600, color: '#0F172A', margin: 0, display: 'flex', alignItems: 'center', gap: '7px' }}>
             <Clock size={17} color="#0284C7" />
             <span>{isTe ? 'ఘాట్ రోడ్ వేగ పరిమితి & నిబంధనలు' : 'Ghat Road Rules & Speeds'}</span>
           </h3>
-          <span style={{ fontSize: '10.5px', fontWeight: 800, color: '#0369A1', backgroundColor: '#F0F9FF', border: '1px solid #BAE6FD', padding: '2px 7px', borderRadius: '6px' }}>
+          <span style={{ fontSize: '10.5px', fontWeight: 600, color: '#0369A1', backgroundColor: '#F0F9FF', border: '1px solid #BAE6FD', padding: '2px 7px', borderRadius: '6px' }}>
             {isTe ? 'TTD సెక్యూరిటీ' : 'TTD Security'}
           </span>
         </div>
 
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
           <div style={{ backgroundColor: '#F0F9FF', border: '1px solid #BAE6FD', borderRadius: '12px', padding: '9px 10px' }}>
-            <div style={{ fontSize: '11px', fontWeight: 800, color: '#0369A1' }}>
+            <div style={{ fontSize: '11px', fontWeight: 600, color: '#0369A1' }}>
               {isTe ? 'మొదటి ఘాట్ (పైకి)' : '1st Ghat (Upward)'}
             </div>
-            <div style={{ fontSize: '12px', fontWeight: 800, color: '#0C4A6E', marginTop: '2px' }}>
+            <div style={{ fontSize: '12px', fontWeight: 600, color: '#0C4A6E', marginTop: '2px' }}>
               {isTe ? 'కనీసం 28 నిమిషాలు (40 km/h)' : 'Min 28 Mins (40 km/h)'}
             </div>
           </div>
 
           <div style={{ backgroundColor: '#F0F9FF', border: '1px solid #BAE6FD', borderRadius: '12px', padding: '9px 10px' }}>
-            <div style={{ fontSize: '11px', fontWeight: 800, color: '#0369A1' }}>
+            <div style={{ fontSize: '11px', fontWeight: 600, color: '#0369A1' }}>
               {isTe ? 'రెండవ ఘాట్ (కిందికి)' : '2nd Ghat (Downward)'}
             </div>
-            <div style={{ fontSize: '12px', fontWeight: 800, color: '#0C4A6E', marginTop: '2px' }}>
+            <div style={{ fontSize: '12px', fontWeight: 600, color: '#0C4A6E', marginTop: '2px' }}>
               {isTe ? 'కనీసం 40 నిమిషాలు (30 km/h)' : 'Min 40 Mins (30 km/h)'}
             </div>
           </div>
@@ -278,18 +278,18 @@ export function DesktopSidebarWidget() {
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <h3 style={{ fontSize: '15px', fontWeight: 800, color: '#0F172A', margin: 0, display: 'flex', alignItems: 'center', gap: '7px' }}>
+          <h3 style={{ fontSize: '15px', fontWeight: 600, color: '#0F172A', margin: 0, display: 'flex', alignItems: 'center', gap: '7px' }}>
             <ShieldAlert size={17} color="#7C3AED" />
             <span>{isTe ? 'ఆలయ సాంప్రదాయ దుస్తుల నియమావళి' : 'Mandatory Temple Dress Code'}</span>
           </h3>
-          <span style={{ fontSize: '10.5px', fontWeight: 800, color: '#6D28D9', backgroundColor: '#F5F3FF', border: '1px solid #DDD6FE', padding: '2px 7px', borderRadius: '6px' }}>
+          <span style={{ fontSize: '10.5px', fontWeight: 600, color: '#6D28D9', backgroundColor: '#F5F3FF', border: '1px solid #DDD6FE', padding: '2px 7px', borderRadius: '6px' }}>
             {isTe ? 'తప్పనిసరి' : 'Mandatory'}
           </span>
         </div>
 
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '8px' }}>
           <div style={{ backgroundColor: '#F5F3FF', border: '1px solid #DDD6FE', borderRadius: '12px', padding: '9px 10px' }}>
-            <div style={{ fontSize: '11px', fontWeight: 800, color: '#6D28D9' }}>
+            <div style={{ fontSize: '11px', fontWeight: 600, color: '#6D28D9' }}>
               {isTe ? 'పురుషులు (Men)' : 'Men Attire'}
             </div>
             <div style={{ fontSize: '11.5px', fontWeight: 700, color: '#4C1D95', marginTop: '2px', lineHeight: 1.3 }}>
@@ -298,7 +298,7 @@ export function DesktopSidebarWidget() {
           </div>
 
           <div style={{ backgroundColor: '#F5F3FF', border: '1px solid #DDD6FE', borderRadius: '12px', padding: '9px 10px' }}>
-            <div style={{ fontSize: '11px', fontWeight: 800, color: '#6D28D9' }}>
+            <div style={{ fontSize: '11px', fontWeight: 600, color: '#6D28D9' }}>
               {isTe ? 'మహిళలు (Women)' : 'Women Attire'}
             </div>
             <div style={{ fontSize: '11.5px', fontWeight: 700, color: '#4C1D95', marginTop: '2px', lineHeight: 1.3 }}>

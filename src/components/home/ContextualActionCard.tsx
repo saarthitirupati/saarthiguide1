@@ -43,7 +43,7 @@ export function ContextualActionCard({ liveStatus }: { liveStatus: any }) {
     <div style={{ padding: '0 16px', marginTop: '20px' }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
         <div style={{ flex: 1, height: '1px', background: '#E2E8F0' }} />
-        <span style={{ fontSize: '11px', fontWeight: 800, color: '#64748B', letterSpacing: '0.05em', textTransform: 'uppercase' }}>
+        <span style={{ fontSize: '11px', fontWeight: 600, color: '#64748B', letterSpacing: '0.05em', textTransform: 'uppercase' }}>
           Recommended
         </span>
         <div style={{ flex: 1, height: '1px', background: '#E2E8F0' }} />

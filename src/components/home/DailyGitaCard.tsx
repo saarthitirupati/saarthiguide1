@@ -109,7 +109,7 @@ export function DailyGitaCard({ date, variant = 'desktop' }: DailyGitaCardProps)
           bottom: '-16px',
           fontSize: '110px',
           color: 'rgba(217, 119, 6, 0.04)',
-          fontWeight: 900,
+          fontWeight: 700,
           fontFamily: 'serif',
           userSelect: 'none',
           pointerEvents: 'none',
@@ -149,12 +149,12 @@ export function DailyGitaCard({ date, variant = 'desktop' }: DailyGitaCardProps)
           </div>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <div style={{ fontSize: '13px', fontWeight: 900, color: '#92400E', letterSpacing: '-0.01em', lineHeight: '1.2' }}>
+              <div style={{ fontSize: '13px', fontWeight: 700, color: '#92400E', letterSpacing: '-0.01em', lineHeight: '1.2' }}>
                 {lang === 'te' ? 'భగవద్గీత నిత్య శ్లోకం' : lang === 'hi' ? 'भगवद्गीता नित्य श्लोक' : lang === 'ta' ? 'பகவத் கீதை தினசரி ஸ்லோகம்' : 'Daily Gita Shloka'}
               </div>
               <span style={{
                 fontSize: '9.5px',
-                fontWeight: 900,
+                fontWeight: 700,
                 color: '#78350F',
                 backgroundColor: '#FEF3C7',
                 border: '1px solid #FCD34D',
@@ -193,7 +193,7 @@ export function DailyGitaCard({ date, variant = 'desktop' }: DailyGitaCardProps)
               borderRadius: '7px',
               padding: '3px 7px',
               fontSize: '10.5px',
-              fontWeight: 800,
+              fontWeight: 600,
               cursor: 'pointer',
               transition: 'all 0.15s ease'
             }}
@@ -209,7 +209,7 @@ export function DailyGitaCard({ date, variant = 'desktop' }: DailyGitaCardProps)
               borderRadius: '7px',
               padding: '3px 7px',
               fontSize: '10.5px',
-              fontWeight: 800,
+              fontWeight: 600,
               cursor: 'pointer',
               transition: 'all 0.15s ease'
             }}
@@ -225,7 +225,7 @@ export function DailyGitaCard({ date, variant = 'desktop' }: DailyGitaCardProps)
               borderRadius: '7px',
               padding: '3px 7px',
               fontSize: '10.5px',
-              fontWeight: 800,
+              fontWeight: 600,
               cursor: 'pointer',
               transition: 'all 0.15s ease'
             }}
@@ -251,7 +251,7 @@ export function DailyGitaCard({ date, variant = 'desktop' }: DailyGitaCardProps)
           style={{
             margin: 0,
             fontSize: script === 'en' ? '12.5px' : '14px',
-            fontWeight: 800,
+            fontWeight: 600,
             color: '#78350F',
             lineHeight: '1.5',
             whiteSpace: 'pre-line',
@@ -293,7 +293,7 @@ export function DailyGitaCard({ date, variant = 'desktop' }: DailyGitaCardProps)
         <span
           style={{
             fontSize: '10px',
-            fontWeight: 800,
+            fontWeight: 600,
             color: '#B45309',
             backgroundColor: '#FEF3C7',
             border: '1px solid #FDE68A',
@@ -316,7 +316,7 @@ export function DailyGitaCard({ date, variant = 'desktop' }: DailyGitaCardProps)
               borderRadius: '9px',
               padding: '4px 10px',
               fontSize: '11px',
-              fontWeight: 800,
+              fontWeight: 600,
               color: '#92400E',
               cursor: 'pointer',
               boxShadow: '0 2px 4px rgba(0,0,0,0.03)',
@@ -338,7 +338,7 @@ export function DailyGitaCard({ date, variant = 'desktop' }: DailyGitaCardProps)
               borderRadius: '9px',
               padding: '4px 10px',
               fontSize: '11px',
-              fontWeight: 800,
+              fontWeight: 600,
               color: '#92400E',
               cursor: 'pointer',
               boxShadow: '0 2px 4px rgba(0,0,0,0.03)',

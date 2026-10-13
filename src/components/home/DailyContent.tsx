@@ -78,13 +78,13 @@ export function DailyContent(props: any) {
 
       {/* ── SECTION HEADER ── */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px', gap: '8px' }}>
-        <h3 style={{ fontSize: '15.5px', fontWeight: 900, color: '#0F172A', margin: 0, display: 'flex', alignItems: 'center', gap: '6px' }}>
-          <Flame size={17} color="#D97706" />
+        <h3 style={{ fontSize: '15px', fontWeight: 700, color: '#0F172A', margin: 0, display: 'flex', alignItems: 'center', gap: '6px' }}>
+          <Flame size={16} color="#D97706" />
           <span>{t.todaysCompanion}</span>
         </h3>
         <span style={{
           fontSize: '10px',
-          fontWeight: 800,
+          fontWeight: 600,
           color: badge.text,
           backgroundColor: badge.bg,
           border: `1px solid ${badge.border}`,
@@ -104,21 +104,21 @@ export function DailyContent(props: any) {
       {/* ── VISUAL COMPANION MICRO-CARD ── */}
       <div style={{ marginBottom: '10px' }}>
         <div style={{
-          background: 'linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%)',
-          border: '1.5px solid #FDE68A',
+          background: 'var(--surface-card, #FFFFFF)',
+          border: '1px solid rgba(30, 35, 45, 0.08)',
           borderRadius: '16px',
           padding: '14px',
-          boxShadow: '0 3px 12px rgba(217, 119, 6, 0.06)',
+          boxShadow: '0 2px 10px rgba(15, 23, 42, 0.03)',
           display: 'flex',
           flexDirection: 'column',
           gap: '10px'
         }}>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '6px' }}>
-              <span style={{ fontSize: '10px', fontWeight: 900, color: '#B45309', textTransform: 'uppercase', letterSpacing: '0.5px', backgroundColor: '#FEF3C7', border: '1px solid #FDE68A', padding: '2px 7px', borderRadius: '5px' }}>
+              <span style={{ fontSize: '9.5px', fontWeight: 700, color: '#92400E', textTransform: 'uppercase', letterSpacing: '0.5px', backgroundColor: 'rgba(217, 119, 6, 0.1)', border: '1px solid rgba(217, 119, 6, 0.2)', padding: '2px 7px', borderRadius: '5px' }}>
                 {companionData.theme}
               </span>
-              <span style={{ fontSize: '10.5px', color: '#78350F', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '3px' }}>
+              <span style={{ fontSize: '10.5px', color: '#64748B', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '3px' }}>
                 <Sparkles size={12} color="#D97706" />
                 <span>{companionData.divineMoment.duration}</span>
               </span>
@@ -126,20 +126,20 @@ export function DailyContent(props: any) {
 
             <blockquote style={{
               fontSize: '13px',
-              fontWeight: 700,
-              color: '#78350F',
+              fontWeight: 600,
+              color: '#1E232D',
               margin: '0',
-              lineHeight: '1.4',
+              lineHeight: '1.45',
               fontStyle: 'italic',
-              borderLeft: '3px solid #FCD34D',
+              borderLeft: '3px solid #0F5132',
               paddingLeft: '10px'
             }}>
               "{companionData.divineMoment.quote}"
             </blockquote>
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: '6px', borderTop: '1px dashed #FDE68A' }}>
-            <div style={{ fontSize: '11px', fontWeight: 800, color: '#B45309' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: '8px', borderTop: '1px solid #F1F5F9' }}>
+            <div style={{ fontSize: '11px', fontWeight: 600, color: '#64748B' }}>
               ~ {companionData.divineMoment.author}
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
@@ -149,18 +149,18 @@ export function DailyContent(props: any) {
                   display: 'flex',
                   alignItems: 'center',
                   gap: '4px',
-                  backgroundColor: isSpeaking ? '#FEF3C7' : '#FFFFFF',
-                  border: `1px solid ${isSpeaking ? '#D97706' : '#FCD34D'}`,
+                  backgroundColor: isSpeaking ? '#FEF3C7' : '#F8FAFC',
+                  border: `1px solid ${isSpeaking ? '#D97706' : '#E2E8F0'}`,
                   borderRadius: '8px',
                   padding: '3px 8px',
                   fontSize: '10.5px',
-                  fontWeight: 800,
-                  color: '#B45309',
+                  fontWeight: 600,
+                  color: isSpeaking ? '#B45309' : '#1E293B',
                   cursor: 'pointer',
-                  boxShadow: '0 1px 3px rgba(0,0,0,0.03)'
+                  boxShadow: '0 1px 3px rgba(0,0,0,0.02)'
                 }}
               >
-                {isSpeaking ? <VolumeX size={11} color="#DC2626" /> : <Volume2 size={11} color="#D97706" />}
+                {isSpeaking ? <VolumeX size={11} color="#DC2626" /> : <Volume2 size={11} color="#64748B" />}
                 <span>{isSpeaking ? t.stop : t.listen}</span>
               </button>
 
@@ -170,17 +170,17 @@ export function DailyContent(props: any) {
                   display: 'flex',
                   alignItems: 'center',
                   gap: '4px',
-                  backgroundColor: '#FFFFFF',
-                  border: '1px solid #FCD34D',
+                  backgroundColor: '#F8FAFC',
+                  border: '1px solid #E2E8F0',
                   borderRadius: '8px',
                   padding: '3px 8px',
                   fontSize: '10.5px',
-                  fontWeight: 800,
-                  color: '#B45309',
+                  fontWeight: 600,
+                  color: '#1E293B',
                   cursor: 'pointer'
                 }}
               >
-                <Share2 size={11} />
+                <Share2 size={11} color="#64748B" />
                 <span>{t.share}</span>
               </button>
             </div>

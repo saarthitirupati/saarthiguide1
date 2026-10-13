@@ -69,7 +69,7 @@
 
 .headerTitle {
   font-size: 18px;
-  font-weight: 800;
+  font-weight: 600;
   color: var(--saarthi-emerald);
   line-height: 1.1;
   letter-spacing: -0.5px;
@@ -258,7 +258,7 @@
 
 .tempVal {
   font-size: 20px;
-  font-weight: 800;
+  font-weight: 600;
   color: var(--saarthi-dark);
   line-height: 1.1;
 }
@@ -322,7 +322,7 @@
   align-items: center;
   gap: 6px;
   font-size: 11px;
-  font-weight: 800;
+  font-weight: 600;
   color: var(--saarthi-gold);
   text-transform: uppercase;
   letter-spacing: 1px;
@@ -375,7 +375,7 @@
   border-radius: 12px;
   padding: 12px 20px;
   font-size: 13px;
-  font-weight: 800;
+  font-weight: 600;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -428,7 +428,7 @@
 
 .alertTitle {
   font-size: 13px;
-  font-weight: 800;
+  font-weight: 600;
   color: #C53030;
 }
 
@@ -458,7 +458,7 @@
 
 .dashboardTitle {
   font-size: 15px;
-  font-weight: 800;
+  font-weight: 600;
 }
 
 .liveIndicator {
@@ -513,7 +513,7 @@
 }
 .dColWait {
   font-size: 13px;
-  font-weight: 800;
+  font-weight: 600;
   text-align: right;
   display: flex;
   align-items: center;
@@ -564,7 +564,7 @@
 
 .ssdTitle {
   font-size: 16px;
-  font-weight: 800;
+  font-weight: 600;
   color: var(--saarthi-dark);
   display: flex;
   align-items: center;
@@ -606,7 +606,7 @@
 
 .ssdTime {
   font-size: 22px;
-  font-weight: 800;
+  font-weight: 600;
   color: var(--saarthi-dark);
   display: flex;
   align-items: baseline;
@@ -720,7 +720,7 @@
 
 .sectionTitle {
   font-size: 18px;
-  font-weight: 800;
+  font-weight: 600;
   color: var(--saarthi-dark);
   letter-spacing: -0.3px;
 }
@@ -767,7 +767,7 @@
   padding: 6px 10px;
   border-radius: 8px;
   font-size: 10px;
-  font-weight: 800;
+  font-weight: 600;
   color: #FFFFFF;
   backdrop-filter: blur(8px);
 }
@@ -778,7 +778,7 @@
 
 .nearbyTitle {
   font-size: 16px;
-  font-weight: 800;
+  font-weight: 600;
   color: var(--saarthi-dark);
   margin-bottom: 12px;
 }
@@ -865,7 +865,7 @@
 
 .essTitle {
   font-size: 13px;
-  font-weight: 800;
+  font-weight: 600;
   color: var(--saarthi-dark);
 }
 
@@ -1040,7 +1040,7 @@
 .interestInfo h3 {
   margin: 0;
   font-size: 13px;
-  font-weight: 800;
+  font-weight: 600;
   color: inherit;
 }
 .interestInfo p {
@@ -1100,7 +1100,7 @@
 }
 .liveSituationTitle {
   font-size: 11px;
-  font-weight: 800;
+  font-weight: 600;
   color: var(--saarthi-text);
   letter-spacing: 0.5px;
   display: flex;
@@ -1180,7 +1180,7 @@
   padding: 4px 8px;
   border-radius: 12px;
   font-size: 9px;
-  font-weight: 800;
+  font-weight: 600;
 }
 .darshanCenterSubtitle {
   font-size: 12px;
@@ -1226,7 +1226,7 @@
 
 .darshanQuickValue {
   font-size: 14px;
-  font-weight: 800;
+  font-weight: 600;
   color: #1E293B;
 }
 
@@ -1351,7 +1351,7 @@
 
 .ssdNextTokenTime {
   font-size: 12px;
-  font-weight: 800;
+  font-weight: 600;
   color: #1E40AF;
 }
 
@@ -1416,7 +1416,7 @@
 
 .bestForTodayLabel {
   font-size: 10px;
-  font-weight: 800;
+  font-weight: 600;
   color: var(--saarthi-gold);
   text-transform: uppercase;
   letter-spacing: 0.8px;
@@ -1426,7 +1426,7 @@
 
 .bestForTodayBody h3 {
   font-size: 18px;
-  font-weight: 800;
+  font-weight: 600;
   color: var(--saarthi-dark);
   margin: 0 0 8px;
   line-height: 1.2;
@@ -1449,7 +1449,7 @@
 
 .reasonsTitle {
   font-size: 10px;
-  font-weight: 800;
+  font-weight: 600;
   color: var(--saarthi-dark);
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -1497,7 +1497,7 @@
   border: none;
   color: var(--saarthi-emerald);
   font-size: 11px;
-  font-weight: 800;
+  font-weight: 600;
   cursor: pointer;
   padding: 0;
   display: flex;
@@ -1542,7 +1542,7 @@
 
 .spotlightCardTag {
   font-size: 10px;
-  font-weight: 800;
+  font-weight: 600;
   color: var(--saarthi-gold);
   text-transform: uppercase;
   letter-spacing: 0.8px;
@@ -1552,7 +1552,7 @@
 
 .spotlightCardBody h3 {
   font-size: 18px;
-  font-weight: 800;
+  font-weight: 600;
   color: var(--saarthi-dark);
   margin: 0 0 8px;
   line-height: 1.2;
@@ -1592,7 +1592,7 @@
 
 .whyRecommendedBox h4 {
   font-size: 10px;
-  font-weight: 800;
+  font-weight: 600;
   color: var(--saarthi-dark);
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -1632,7 +1632,7 @@
 .spotlightBtn {
   color: var(--saarthi-emerald);
   font-size: 11px;
-  font-weight: 800;
+  font-weight: 600;
   display: flex;
   align-items: center;
   gap: 4px;
@@ -1666,7 +1666,7 @@
 
 .cleanStoryTag {
   font-size: 10px;
-  font-weight: 800;
+  font-weight: 600;
   color: var(--saarthi-gold);
   text-transform: uppercase;
   letter-spacing: 0.8px;
@@ -1676,7 +1676,7 @@
 
 .cleanStoryBody h3 {
   font-size: 18px;
-  font-weight: 800;
+  font-weight: 600;
   color: var(--saarthi-dark);
   margin: 0 0 8px;
   line-height: 1.2;
@@ -1707,7 +1707,7 @@
 .cleanStoryBtn {
   color: var(--saarthi-emerald);
   font-size: 11px;
-  font-weight: 800;
+  font-weight: 600;
   display: flex;
   align-items: center;
   gap: 4px;
@@ -1734,6 +1734,7 @@
   max-width: 100%;
   overflow-x: hidden;
   box-sizing: border-box;
+  padding-bottom: calc(var(--layout-padding-bottom) + 36px);
 }
 
 .desktopOnly {

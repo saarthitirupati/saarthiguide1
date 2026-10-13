@@ -104,7 +104,7 @@ export function ActiveAlerts({ activePopupAlert, dismissAlert }: any) {
 
             <span style={{
               fontSize: '11px',
-              fontWeight: 800,
+              fontWeight: 600,
               color: '#F87171',
               letterSpacing: '1.5px',
               textTransform: 'uppercase',
@@ -115,10 +115,10 @@ export function ActiveAlerts({ activePopupAlert, dismissAlert }: any) {
 
             <h2 style={{
               fontSize: '19px',
-              fontWeight: 800,
+              fontWeight: 600,
               margin: '0 0 10px 0',
               lineHeight: 1.3,
-              fontFamily: 'var(--font-hero), Georgia, serif'
+              fontFamily: 'var(--font-sans), system-ui, sans-serif'
             }}>
               {activePopupAlert.title}
             </h2>
@@ -153,7 +153,7 @@ export function ActiveAlerts({ activePopupAlert, dismissAlert }: any) {
                     borderRadius: '12px',
                     padding: '12px',
                     fontSize: '13.5px',
-                    fontWeight: 800,
+                    fontWeight: 600,
                     cursor: 'pointer',
                     boxShadow: '0 4px 14px rgba(239, 68, 68, 0.4)'
                   }}
@@ -234,7 +234,7 @@ export function ActiveAlerts({ activePopupAlert, dismissAlert }: any) {
                   background: isEmergency ? '#FEE2E2' : (isHighPriority ? '#FFEDD5' : '#FEF3C7'),
                   color: isEmergency ? '#DC2626' : (isHighPriority ? '#EA580C' : '#D97706'),
                   fontSize: '10.5px',
-                  fontWeight: 800,
+                  fontWeight: 600,
                   textTransform: 'uppercase',
                   padding: '3px 8px',
                   borderRadius: '12px'
@@ -267,11 +267,11 @@ export function ActiveAlerts({ activePopupAlert, dismissAlert }: any) {
 
             <h3 style={{
               fontSize: '16px',
-              fontWeight: 800,
+              fontWeight: 600,
               color: '#0F172A',
               margin: '0 0 6px 0',
               lineHeight: 1.35,
-              fontFamily: 'var(--font-hero), Georgia, serif'
+              fontFamily: 'var(--font-sans), system-ui, sans-serif'
             }}>
               {activePopupAlert.title}
             </h3>
@@ -306,7 +306,7 @@ export function ActiveAlerts({ activePopupAlert, dismissAlert }: any) {
                     borderRadius: '12px',
                     padding: '10px',
                     fontSize: '12.5px',
-                    fontWeight: 800,
+                    fontWeight: 600,
                     cursor: 'pointer'
                   }}
                 >
@@ -400,7 +400,7 @@ export function ActiveAlerts({ activePopupAlert, dismissAlert }: any) {
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '2px' }}>
               <span style={{
                 fontSize: '10px',
-                fontWeight: 800,
+                fontWeight: 600,
                 color: accentColor,
                 textTransform: 'uppercase',
                 letterSpacing: '0.5px'
@@ -415,7 +415,7 @@ export function ActiveAlerts({ activePopupAlert, dismissAlert }: any) {
 
             <h4 style={{
               fontSize: '13.5px',
-              fontWeight: 800,
+              fontWeight: 600,
               color: '#0F172A',
               margin: '0 0 2px 0',
               lineHeight: 1.25,
