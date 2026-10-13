@@ -5,7 +5,7 @@
   "scripts": {
     "audit-places": "tsx scripts/verify_places.ts",
     "dev": "next dev",
-    "build": "npm run audit-places && next build && npx @opennextjs/cloudflare build",
+    "build": "npm run audit-places && npx @opennextjs/cloudflare build",
     "start": "next start",
     "lint": "eslint . --max-warnings=0",
     "type-check": "tsc --noEmit",

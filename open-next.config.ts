@@ -1,5 +1,6 @@
 // @ts-nocheck
 const config = {
+  buildCommand: "next build",
   default: {
     override: {
       wrapper: "cloudflare-node",
