@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.saarthiguide.in';
 
 export const metadata: Metadata = {
-  title: 'About Sunil Thatra & Saarthi Guide | Founder & Tirumala Guide Platform',
+  title: 'About Saarthi - Founder Sunil Thatra | Saarthi Guide Story',
   description: 'Sunil Thatra is the Founder & Creator of Saarthi (Saarthi Guide), the #1 digital guide platform for Tirupati & Tirumala pilgrims. Learn about Sunil Thatra, our mission, story, and product engineering.',
   keywords: [
     'Sunil Thatra',
@@ -42,17 +42,22 @@ export default function AboutLayout({ children }: { children: React.ReactNode })
   const jsonLdPerson = {
     '@context': 'https://schema.org',
     '@type': 'Person',
-    '@id': 'https://www.saarthiguide.in/about#sunil-thatra',
+    '@id': `${baseUrl}/about#sunil-thatra`,
     name: 'Sunil Thatra',
+    givenName: 'Sunil',
+    familyName: 'Thatra',
     alternateName: ['Sunil Thatra Saarthi', 'Sunil Thatra Tirupati'],
     jobTitle: 'Founder & Lead Creator',
     worksFor: {
       '@type': 'Organization',
-      name: 'Saarthi Guide',
-      url: 'https://www.saarthiguide.in'
+      name: 'Saarthi',
+      url: baseUrl
     },
-    url: 'https://www.saarthiguide.in/about',
+    url: `${baseUrl}/about`,
     image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1791044338/passportsize_f7dyq3.jpg',
+    sameAs: [
+      'https://www.linkedin.com/in/sunil-t-39a905315/'
+    ],
     knowsAbout: [
       'Tirupati Pilgrimage Guidance',
       'Tirumala Live Darshan Systems',
@@ -65,14 +70,19 @@ export default function AboutLayout({ children }: { children: React.ReactNode })
   const jsonLdOrg = {
     '@context': 'https://schema.org',
     '@type': 'Organization',
-    '@id': 'https://www.saarthiguide.in/#organization',
-    name: 'Saarthi Guide',
-    url: 'https://www.saarthiguide.in',
-    logo: 'https://www.saarthiguide.in/icon.png',
+    '@id': `${baseUrl}/#organization`,
+    name: 'Saarthi',
+    alternateName: ['Saarthi Guide', 'Saarthi Tirupati', 'Saarthi App', 'Saarthi by Sunil Thatra'],
+    url: baseUrl,
+    logo: `${baseUrl}/icon.png`,
+    sameAs: [
+      'https://play.google.com/store/apps/details?id=com.saarthi.guide',
+      'https://www.linkedin.com/in/sunil-t-39a905315/'
+    ],
     founder: {
       '@type': 'Person',
       name: 'Sunil Thatra',
-      url: 'https://www.saarthiguide.in/about'
+      url: `${baseUrl}/about`
     },
     description: 'Saarthi is the #1 trusted digital pilgrimage guide for Tirupati and Tirumala, founded by Sunil Thatra.'
   };

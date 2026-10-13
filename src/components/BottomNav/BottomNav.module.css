@@ -100,8 +100,8 @@
 }
 
 .activeLabel {
-  font-size: 13.5px;
-  font-weight: 800;
+  font-size: 13px;
+  font-weight: 700;
   letter-spacing: -0.01em;
   color: #FFFFFF;
   white-space: nowrap;
@@ -109,7 +109,7 @@
 
 .inactiveLabel {
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 500;
   letter-spacing: -0.01em;
   color: #475569;
   white-space: nowrap;
@@ -125,9 +125,9 @@
   justify-content: center;
   text-decoration: none;
   position: relative;
-  margin-top: -16px;
+  margin-top: -12px;
   width: 62px;
-  height: 68px;
+  height: 64px;
   flex-shrink: 0;
   -webkit-tap-highlight-color: transparent;
   transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
@@ -135,51 +135,49 @@
 }
 
 .fabWrapper:active {
-  transform: scale(0.92);
+  transform: scale(0.94);
 }
 
 .fabRing {
   position: absolute;
-  top: -3px;
-  left: 1px;
-  right: 1px;
-  width: 60px;
-  height: 60px;
+  top: -2px;
+  left: 2px;
+  right: 2px;
+  width: 58px;
+  height: 58px;
   border-radius: 50%;
-  border: 2px solid rgba(234, 88, 12, 0.3);
-  box-shadow: 0 0 0 3px rgba(234, 88, 12, 0.1);
+  border: 1.5px solid rgba(234, 88, 12, 0.2);
   pointer-events: none;
   z-index: 1;
 }
 
 .fabBtn {
   position: relative;
-  width: 52px;
-  height: 52px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #F59E0B 0%, #EA580C 100%);
+  background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
   display: flex;
   align-items: center;
   justify-content: center;
   color: #FFFFFF;
   box-shadow:
-    0 8px 20px rgba(234, 88, 12, 0.38),
-    0 2px 6px rgba(234, 88, 12, 0.2),
-    inset 0 1px 0 rgba(255, 255, 255, 0.4);
+    0 4px 14px rgba(217, 119, 6, 0.28),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
   z-index: 2;
 }
 
 .fabIcon {
   color: #FFFFFF;
-  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.25));
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
 }
 
 .fabLabel {
   font-size: 11px;
-  font-weight: 800;
+  font-weight: 600;
   color: #B45309;
   margin-top: 3px;
-  letter-spacing: 0.02em;
+  letter-spacing: 0.01em;
   white-space: nowrap;
   line-height: 1;
   transition: color 0.2s ease;
@@ -187,7 +185,7 @@
 
 .fabLabelActive {
   color: #0F5132;
-  font-weight: 900;
+  font-weight: 700;
 }
 
 /* ── Responsive Breakpoints for Mobile ─────────────────────── */

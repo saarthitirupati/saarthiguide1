@@ -48,7 +48,7 @@ export default function StoriesLibraryPage() {
           <Link href="/" style={{ color: '#0F172A', display: 'flex', alignItems: 'center', gap: '4px', textDecoration: 'none', fontSize: '13px', fontWeight: 700 }}>
             <ArrowLeft size={20} /> Home
           </Link>
-          <h1 style={{ fontSize: '16px', fontWeight: 900, color: '#0F172A', margin: 0, fontFamily: 'var(--font-hero), Georgia, serif' }}>
+          <h1 style={{ fontSize: '16px', fontWeight: 700, color: '#0F172A', margin: 0, fontFamily: 'var(--font-hero), Georgia, serif' }}>
             Story Library
           </h1>
           <div style={{ width: '50px' }} />
@@ -105,7 +105,7 @@ export default function StoriesLibraryPage() {
                 borderRadius: '20px',
                 padding: '6px 14px',
                 fontSize: '12px',
-                fontWeight: 800,
+                fontWeight: 600,
                 cursor: 'pointer',
                 whiteSpace: 'nowrap',
                 flexShrink: 0
@@ -147,15 +147,15 @@ export default function StoriesLibraryPage() {
 
                 <div style={{ flex: 1, minWidth: 0 }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' }}>
-                    <span style={{ fontSize: '10px', fontWeight: 800, color: '#B45309', background: '#FEF3C7', padding: '1px 6px', borderRadius: '6px' }}>
+                    <span style={{ fontSize: '10px', fontWeight: 600, color: '#B45309', background: '#FEF3C7', padding: '1px 6px', borderRadius: '6px' }}>
                       {story.readTime}
                     </span>
-                    <span style={{ fontSize: '10px', fontWeight: 800, color: '#047857', background: '#D1FAE5', padding: '1px 6px', borderRadius: '6px', textTransform: 'uppercase' }}>
+                    <span style={{ fontSize: '10px', fontWeight: 600, color: '#047857', background: '#D1FAE5', padding: '1px 6px', borderRadius: '6px', textTransform: 'uppercase' }}>
                       {story.category}
                     </span>
                   </div>
 
-                  <h3 style={{ fontSize: '14px', fontWeight: 900, color: '#0F172A', margin: '0 0 2px 0', lineHeight: 1.35 }}>
+                  <h3 style={{ fontSize: '14px', fontWeight: 700, color: '#0F172A', margin: '0 0 2px 0', lineHeight: 1.35 }}>
                     {story.title}
                   </h3>
 
@@ -172,7 +172,7 @@ export default function StoriesLibraryPage() {
           {filteredStories.length === 0 && (
             <div style={{ textAlign: 'center', padding: '40px 16px', background: '#FFFFFF', borderRadius: '20px', border: '1px solid #ECE9E3' }}>
               <BookOpen size={32} color="#94A3B8" style={{ marginBottom: '8px' }} />
-              <h3 style={{ fontSize: '15px', fontWeight: 800, color: '#0F172A', margin: '0 0 4px 0' }}>No stories found</h3>
+              <h3 style={{ fontSize: '15px', fontWeight: 600, color: '#0F172A', margin: '0 0 4px 0' }}>No stories found</h3>
               <p style={{ fontSize: '12.5px', color: '#64748B', margin: 0 }}>Try searching for a different keyword like 'Seven Hills', 'Hair', or 'Laddu'</p>
             </div>
           )}

@@ -89,12 +89,10 @@ export function DesktopHeader({ weather, temperature }: DesktopHeaderProps) {
           </div>
 
           {!isWebView && (
-            <a
-              href="https://play.google.com/store/apps/details?id=in.saarthiguide.travel"
-              target="_blank"
-              rel="noopener noreferrer"
+            <Link
+              href="/app"
               style={{
-                background: '#0F5132',
+                background: 'linear-gradient(135deg, #022819 0%, #064E3B 100%)',
                 color: '#FFFFFF',
                 fontWeight: 700,
                 fontSize: '12px',
@@ -104,11 +102,12 @@ export function DesktopHeader({ weather, temperature }: DesktopHeaderProps) {
                 display: 'flex',
                 alignItems: 'center',
                 gap: '6px',
-                boxShadow: '0 2px 6px rgba(15,81,50,0.2)'
+                boxShadow: '0 2px 6px rgba(2,40,25,0.25)',
+                border: '1px solid #C89B3C'
               }}
             >
-              <span>{lang === 'te' ? 'యాప్ డౌన్‌లోడ్' : 'Get App'}</span>
-            </a>
+              <span>{lang === 'te' ? 'యాప్ పొందండి' : 'Get App'}</span>
+            </Link>
           )}
 
           <button

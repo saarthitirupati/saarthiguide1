@@ -268,7 +268,7 @@ function TripEstimatorContent() {
               <ModeIcon size={20} color={iconInfo.color} />
             </div>
             <div style={{ minWidth: 0 }}>
-              <h3 style={{ fontSize: '15px', fontWeight: 800, color: '#0F172A', margin: 0 }}>{est.title}</h3>
+              <h3 style={{ fontSize: '15px', fontWeight: 600, color: '#0F172A', margin: 0 }}>{est.title}</h3>
               <span style={{ fontSize: '12px', color: '#64748B', display: 'flex', alignItems: 'center', gap: '4px', marginTop: '2px' }}>
                 <Clock size={11} /> ~{est.travelTimeMins} min · {est.distanceKm} km
               </span>
@@ -406,7 +406,7 @@ function TripEstimatorContent() {
 
         {/* ═══ 1. YOUR TRIP — Compact Config ═══ */}
         <div className={styles.card}>
-          <div style={{ fontSize: '11px', fontWeight: 800, color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '12px' }}>
+          <div style={{ fontSize: '11px', fontWeight: 600, color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '12px' }}>
             {lang === 'te' ? 'మీ ప్రయాణం' : 'Your Trip'}
           </div>
           
@@ -530,7 +530,7 @@ function TripEstimatorContent() {
           {estimateResult && (
             <div style={{ marginTop: '14px', paddingTop: '12px', borderTop: '1px solid #F1F5F9', display: 'flex', alignItems: 'center', gap: '8px' }}>
               <Navigation size={14} color="#0F5132" />
-              <span style={{ fontSize: '15px', fontWeight: 800, color: '#0F172A' }}>
+              <span style={{ fontSize: '15px', fontWeight: 600, color: '#0F172A' }}>
                 {estimateResult.distanceKm} km
               </span>
               <span style={{ fontSize: '13px', color: '#64748B' }}>
@@ -590,7 +590,7 @@ function TripEstimatorContent() {
             
             {/* Recommended cards */}
             {recommendedEstimates.length > 0 && activeTab === 'all' && (
-              <div style={{ fontSize: '11px', fontWeight: 800, color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '-4px' }}>
+              <div style={{ fontSize: '11px', fontWeight: 600, color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '-4px' }}>
                 Recommended for you
               </div>
             )}
@@ -617,7 +617,7 @@ function TripEstimatorContent() {
         {/* ═══ 4. ROUTE CARD — Compact, Light ═══ */}
         {estimateResult && (
           <div className={styles.card} style={{ padding: '16px 18px' }}>
-            <div style={{ fontSize: '11px', fontWeight: 800, color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '8px' }}>
+            <div style={{ fontSize: '11px', fontWeight: 600, color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.5px', marginBottom: '8px' }}>
               Route
             </div>
             <div style={{ fontSize: '14px', fontWeight: 700, color: '#0F172A', marginBottom: '4px' }}>
@@ -662,7 +662,7 @@ function TripEstimatorContent() {
           <div className={styles.accordionContent} style={{ marginBottom: '16px' }}>
             {/* Live Fuel Prices */}
             <div style={{ marginBottom: '14px' }}>
-              <div style={{ fontSize: '11px', fontWeight: 800, color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.4px', marginBottom: '6px' }}>
+              <div style={{ fontSize: '11px', fontWeight: 600, color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.4px', marginBottom: '6px' }}>
                 Live AP Fuel Prices ({fuelSource})
               </div>
               <div style={{ fontSize: '13px', fontWeight: 700, color: '#0F172A', display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
@@ -721,7 +721,7 @@ function TripEstimatorContent() {
             )}
 
             {/* Vehicle Mileage Sliders */}
-            <div style={{ fontSize: '12px', fontWeight: 800, color: '#0F172A', marginBottom: '10px' }}>
+            <div style={{ fontSize: '12px', fontWeight: 600, color: '#0F172A', marginBottom: '10px' }}>
               Custom Vehicle Mileage
             </div>
 

@@ -63,7 +63,7 @@
 }
 
 .placeName {
-  font-family: var(--font-body);
+  font-family: var(--font-sans);
   font-size: 9px;
   font-weight: 600;
   color: rgba(255, 255, 255, 0.9);
@@ -115,7 +115,7 @@
 }
 
 .statusMsg {
-  font-family: var(--font-body);
+  font-family: var(--font-sans);
   font-size: var(--text-body-lg);
   color: rgba(255, 255, 255, 0.7);
   line-height: 1.5;
@@ -152,13 +152,13 @@
 }
 
 .progressLabel {
-  font-family: var(--font-body);
+  font-family: var(--font-sans);
   font-size: var(--text-body-sm);
   color: rgba(255, 255, 255, 0.5);
 }
 
 .progressPct {
-  font-family: var(--font-body);
+  font-family: var(--font-sans);
   font-size: var(--text-body-sm);
   font-weight: 600;
   color: rgba(255, 255, 255, 0.8);
@@ -178,7 +178,7 @@
   align-items: center;
   gap: var(--space-3);
   color: rgba(255, 255, 255, 0.45);
-  font-family: var(--font-body);
+  font-family: var(--font-sans);
   font-size: var(--text-body-md);
   transition: color 0.4s ease;
 }

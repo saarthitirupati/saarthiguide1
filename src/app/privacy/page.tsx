@@ -27,7 +27,7 @@ export default function PrivacyPolicyPage() {
             <ArrowLeft size={20} />
           </Link>
           <div>
-            <h1 style={{ fontSize: '20px', fontWeight: 800, margin: 0, color: '#0F172A' }}>Privacy Policy</h1>
+            <h1 style={{ fontSize: '20px', fontWeight: 600, margin: 0, color: '#0F172A' }}>Privacy Policy</h1>
             <p style={{ fontSize: '12px', color: '#64748B', margin: '2px 0 0' }}>Last updated: August 2026</p>
           </div>
         </div>
@@ -36,7 +36,7 @@ export default function PrivacyPolicyPage() {
         <div style={{ backgroundColor: '#FFFFFF', borderRadius: '20px', padding: '24px', border: '1px solid #E2E8F0', marginBottom: '20px', boxShadow: '0 4px 16px rgba(15, 23, 42, 0.03)' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '12px' }}>
             <ShieldCheck size={24} color="#0F5132" />
-            <h2 style={{ fontSize: '16px', fontWeight: 800, margin: 0, color: '#0F5132' }}>Our Commitment to Pilgrim Privacy</h2>
+            <h2 style={{ fontSize: '16px', fontWeight: 600, margin: 0, color: '#0F5132' }}>Our Commitment to Pilgrim Privacy</h2>
           </div>
           <p style={{ fontSize: '13.5px', lineHeight: '1.6', color: '#334155', margin: 0 }}>
             Saarthi Guide (&quot;we&quot;, &quot;our&quot;, or &quot;us&quot;) is committed to protecting your privacy. This Pilgrim Companion application is designed with privacy-first principles to provide helpful, real-time guidance for pilgrims visiting Tirupati, Tirumala, and surrounding sacred shrines.
@@ -47,7 +47,7 @@ export default function PrivacyPolicyPage() {
         <div style={{ backgroundColor: '#FFFFFF', borderRadius: '20px', padding: '24px', border: '1px solid #E2E8F0', marginBottom: '20px', boxShadow: '0 4px 16px rgba(15, 23, 42, 0.03)' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '14px' }}>
             <Database size={20} color="#D97706" />
-            <h3 style={{ fontSize: '15px', fontWeight: 800, margin: 0 }}>1. Information We Collect</h3>
+            <h3 style={{ fontSize: '15px', fontWeight: 600, margin: 0 }}>1. Information We Collect</h3>
           </div>
           
           <div style={{ display: 'flex', flexDirection: 'column', gap: '14px', fontSize: '13px', lineHeight: '1.55', color: '#334155' }}>
@@ -82,7 +82,7 @@ export default function PrivacyPolicyPage() {
         <div style={{ backgroundColor: '#FFFFFF', borderRadius: '20px', padding: '24px', border: '1px solid #E2E8F0', marginBottom: '20px', boxShadow: '0 4px 16px rgba(15, 23, 42, 0.03)' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '14px' }}>
             <Lock size={20} color="#0F5132" />
-            <h3 style={{ fontSize: '15px', fontWeight: 800, margin: 0 }}>2. How Information is Used</h3>
+            <h3 style={{ fontSize: '15px', fontWeight: 600, margin: 0 }}>2. How Information is Used</h3>
           </div>
           <ul style={{ margin: 0, paddingLeft: '20px', fontSize: '13px', lineHeight: '1.6', color: '#334155' }}>
             <li>To display verified temple timings, wait times, and crowd advisories.</li>
@@ -95,7 +95,7 @@ export default function PrivacyPolicyPage() {
         <div style={{ backgroundColor: '#FFFFFF', borderRadius: '20px', padding: '24px', border: '1px solid #E2E8F0', marginBottom: '20px', boxShadow: '0 4px 16px rgba(15, 23, 42, 0.03)' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '14px' }}>
             <MapPin size={20} color="#2563EB" />
-            <h3 style={{ fontSize: '15px', fontWeight: 800, margin: 0 }}>3. Third-Party Navigation & Links</h3>
+            <h3 style={{ fontSize: '15px', fontWeight: 600, margin: 0 }}>3. Third-Party Navigation & Links</h3>
           </div>
           <p style={{ fontSize: '13px', lineHeight: '1.6', color: '#334155', margin: 0 }}>
             When you choose to navigate to a temple or service, the app may open Google Maps or external transport services. Please refer to the privacy policies of respective external map providers for their data practices.
@@ -106,7 +106,7 @@ export default function PrivacyPolicyPage() {
         <div style={{ backgroundColor: '#FFFFFF', borderRadius: '20px', padding: '24px', border: '1px solid #E2E8F0', marginBottom: '24px', boxShadow: '0 4px 16px rgba(15, 23, 42, 0.03)' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '14px' }}>
             <Mail size={20} color="#0F172A" />
-            <h3 style={{ fontSize: '15px', fontWeight: 800, margin: 0 }}>4. Contact & Developer Support</h3>
+            <h3 style={{ fontSize: '15px', fontWeight: 600, margin: 0 }}>4. Contact & Developer Support</h3>
           </div>
           <p style={{ fontSize: '13px', lineHeight: '1.6', color: '#334155', margin: '0 0 10px' }}>
             For privacy inquiries, questions, or corrections regarding temple information, contact:
@@ -118,7 +118,7 @@ export default function PrivacyPolicyPage() {
 
         {/* Footer */}
         <div style={{ textAlign: 'center' }}>
-          <Link href="/" style={{ fontSize: '13px', fontWeight: 800, color: '#0F5132', textDecoration: 'none' }}>
+          <Link href="/" style={{ fontSize: '13px', fontWeight: 600, color: '#0F5132', textDecoration: 'none' }}>
             ← Back to Saarthi Home
           </Link>
         </div>

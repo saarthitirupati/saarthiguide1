@@ -70,7 +70,7 @@ export default function AlertsPage() {
         >
           <ChevronLeft size={22} color="#0F172A" />
         </button>
-        <h1 style={{ fontSize: 18, fontWeight: 800, margin: 0, color: '#0F172A', display: 'flex', alignItems: 'center', gap: 8 }}>
+        <h1 style={{ fontSize: 18, fontWeight: 600, margin: 0, color: '#0F172A', display: 'flex', alignItems: 'center', gap: 8 }}>
           <Bell size={20} color="#2563EB" /> Temple Alerts & Notifications
         </h1>
       </div>
@@ -98,7 +98,7 @@ export default function AlertsPage() {
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                   <span style={{
                     fontSize: '11px',
-                    fontWeight: 800,
+                    fontWeight: 600,
                     color: '#DC2626',
                     background: '#FEE2E2',
                     padding: '3px 8px',
@@ -117,7 +117,7 @@ export default function AlertsPage() {
                 </div>
 
                 <div>
-                  <h3 style={{ fontSize: 15, fontWeight: 800, color: '#991B1B', margin: '0 0 4px 0' }}>
+                  <h3 style={{ fontSize: 15, fontWeight: 600, color: '#991B1B', margin: '0 0 4px 0' }}>
                     Important Operational Notice
                   </h3>
                   <p style={{ fontSize: 13.5, color: '#7F1D1D', lineHeight: 1.5, margin: 0 }}>
@@ -155,7 +155,7 @@ export default function AlertsPage() {
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                     <span style={{
                       fontSize: '11px',
-                      fontWeight: 800,
+                      fontWeight: 600,
                       color: isCritical ? '#B45309' : '#2563EB',
                       background: isCritical ? '#FEF3C7' : '#EFF6FF',
                       padding: '3px 8px',
@@ -174,7 +174,7 @@ export default function AlertsPage() {
                   </div>
 
                   <div>
-                    <h3 style={{ fontSize: 15, fontWeight: 800, color: '#0F172A', margin: '0 0 4px 0' }}>
+                    <h3 style={{ fontSize: 15, fontWeight: 600, color: '#0F172A', margin: '0 0 4px 0' }}>
                       {alert.title}
                     </h3>
                     <p style={{ fontSize: 13.5, color: '#334155', lineHeight: 1.5, margin: '0 0 8px 0' }}>
@@ -228,7 +228,7 @@ export default function AlertsPage() {
               <ShieldCheck size={24} color="#16A34A" />
             </div>
             <div>
-              <h2 style={{ fontSize: 16, fontWeight: 800, color: '#166534', margin: '0 0 4px 0' }}>No Active Advisories</h2>
+              <h2 style={{ fontSize: 16, fontWeight: 600, color: '#166534', margin: '0 0 4px 0' }}>No Active Advisories</h2>
               <p style={{ fontSize: 13.5, color: '#15803D', lineHeight: 1.5, margin: 0 }}>
                 Conditions are normal across Tirumala and Tirupati. There are no travel restrictions or emergency advisories at this time.
               </p>
@@ -236,7 +236,7 @@ export default function AlertsPage() {
           </div>
         )}
 
-        <h3 style={{ marginTop: 28, marginBottom: 12, fontSize: 15, fontWeight: 800, color: '#0F172A' }}>Standard Temple Guidelines</h3>
+        <h3 style={{ marginTop: 28, marginBottom: 12, fontSize: 15, fontWeight: 600, color: '#0F172A' }}>Standard Temple Guidelines</h3>
         <ul style={{ background: '#FFFFFF', padding: '16px 16px 16px 36px', borderRadius: 16, margin: 0, color: '#475569', fontSize: '13px', lineHeight: 1.6, border: '1px solid #E2E8F0' }}>
           <li style={{ marginBottom: 8 }}>Traditional dress code is mandatory for all Darshan queues.</li>
           <li style={{ marginBottom: 8 }}>Electronic gadgets including mobile phones are strictly prohibited inside the main temple premises.</li>

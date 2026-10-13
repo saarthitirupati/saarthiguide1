@@ -234,7 +234,7 @@ export default function AboutPage() {
               <ArrowLeft size={19} color="#0F5132" />
             </Link>
             <div>
-              <h1 style={{ fontSize: '20px', fontWeight: 900, color: '#0F5132', margin: 0, letterSpacing: '-0.01em', fontFamily: 'Georgia, serif' }}>
+              <h1 style={{ fontSize: '20px', fontWeight: 700, color: '#0F5132', margin: 0, letterSpacing: '-0.01em', fontFamily: 'var(--font-sans), system-ui, sans-serif' }}>
                 {t.title}
               </h1>
               <p style={{ fontSize: '11.5px', color: '#C89B3C', margin: '1px 0 0 0', fontWeight: 700 }}>
@@ -245,7 +245,7 @@ export default function AboutPage() {
           
           <div style={{ display: 'flex', alignItems: 'center', gap: '6px', backgroundColor: '#FEF9C3', border: '1px solid #FDE047', padding: '4px 10px', borderRadius: '20px' }}>
             <Sparkles size={13} color="#CA8A04" />
-            <span style={{ fontSize: '11px', fontWeight: 800, color: '#854D0E' }}>Official Guide</span>
+            <span style={{ fontSize: '11px', fontWeight: 600, color: '#854D0E' }}>Official Guide</span>
           </div>
         </div>
       </header>
@@ -269,7 +269,7 @@ export default function AboutPage() {
               alignItems: 'center', 
               gap: '6px', 
               fontSize: '11px', 
-              fontWeight: 800, 
+              fontWeight: 600, 
               color: '#FDE047', 
               backgroundColor: 'rgba(253, 224, 71, 0.15)', 
               border: '1px solid rgba(253, 224, 71, 0.3)', 
@@ -280,7 +280,7 @@ export default function AboutPage() {
               <Compass size={13} />
               <span>Saarthi • Your Digital Guide</span>
             </span>
-            <h2 style={{ fontSize: 'clamp(22px, 4.5vw, 30px)', fontWeight: 900, color: '#FFFFFF', margin: '0 0 12px 0', lineHeight: 1.3, letterSpacing: '-0.02em' }}>
+            <h2 style={{ fontSize: 'clamp(22px, 4.5vw, 30px)', fontWeight: 700, color: '#FFFFFF', margin: '0 0 12px 0', lineHeight: 1.3, letterSpacing: '-0.02em' }}>
               {t.subtitle}
             </h2>
             <p style={{ fontSize: '14.5px', color: '#D1FAE5', margin: 0, lineHeight: 1.65, fontWeight: 500 }}>
@@ -301,7 +301,7 @@ export default function AboutPage() {
             <div style={{ width: '28px', height: '28px', borderRadius: '8px', background: '#FEF9C3', border: '1px solid #FDE047', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <Award size={16} color="#CA8A04" />
             </div>
-            <h3 style={{ fontSize: '18px', fontWeight: 800, color: '#0F172A', margin: 0 }}>
+            <h3 style={{ fontSize: '18px', fontWeight: 600, color: '#0F172A', margin: 0 }}>
               {t.meetFounder}
             </h3>
           </div>
@@ -320,12 +320,33 @@ export default function AboutPage() {
               </div>
 
               <div>
-                <h4 style={{ fontSize: '22px', fontWeight: 900, color: '#0F5132', margin: '0 0 4px 0', fontFamily: 'Georgia, serif' }}>
+                <h4 style={{ fontSize: '22px', fontWeight: 700, color: '#0F5132', margin: '0 0 4px 0', fontFamily: 'var(--font-sans), system-ui, sans-serif' }}>
                   {t.founderName}
                 </h4>
-                <p style={{ fontSize: '13.5px', fontWeight: 800, color: '#C89B3C', margin: '0 0 8px 0' }}>
+                <p style={{ fontSize: '13.5px', fontWeight: 600, color: '#C89B3C', margin: '0 0 8px 0' }}>
                   {t.founderRole}
                 </p>
+                <a
+                  href="https://www.linkedin.com/in/sunil-t-39a905315/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                    fontSize: '12px',
+                    fontWeight: 600,
+                    color: '#0A66C2',
+                    textDecoration: 'none',
+                    background: '#F0F7FF',
+                    border: '1px solid #BAE6FD',
+                    padding: '4px 10px',
+                    borderRadius: '999px'
+                  }}
+                >
+                  <span>Sunil Thatra on LinkedIn</span>
+                  <ExternalLink size={12} />
+                </a>
               </div>
             </div>
 
@@ -336,7 +357,7 @@ export default function AboutPage() {
 
             {/* Areas of Work */}
             <div style={{ backgroundColor: '#F8FAFC', borderRadius: '16px', padding: '16px 20px', border: '1px solid #E2E8F0', marginTop: '6px' }}>
-              <h5 style={{ fontSize: '13.5px', fontWeight: 800, color: '#0F172A', margin: '0 0 10px 0' }}>
+              <h5 style={{ fontSize: '13.5px', fontWeight: 600, color: '#0F172A', margin: '0 0 10px 0' }}>
                 {t.areasTitle}
               </h5>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
@@ -376,7 +397,7 @@ export default function AboutPage() {
             <div style={{ width: '36px', height: '36px', borderRadius: '12px', background: '#F0FDF4', border: '1px solid #BBF7D0', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '14px' }}>
               <Target size={20} color="#0F5132" />
             </div>
-            <h3 style={{ fontSize: '17px', fontWeight: 800, color: '#0F172A', margin: '0 0 8px 0' }}>
+            <h3 style={{ fontSize: '17px', fontWeight: 600, color: '#0F172A', margin: '0 0 8px 0' }}>
               {t.missionTitle}
             </h3>
             <p style={{ fontSize: '13.5px', color: '#475569', margin: 0, lineHeight: 1.65 }}>
@@ -395,7 +416,7 @@ export default function AboutPage() {
             <div style={{ width: '36px', height: '36px', borderRadius: '12px', background: '#FFFBEB', border: '1px solid #FDE68A', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '14px' }}>
               <Sparkles size={20} color="#CA8A04" />
             </div>
-            <h3 style={{ fontSize: '17px', fontWeight: 800, color: '#0F172A', margin: '0 0 8px 0' }}>
+            <h3 style={{ fontSize: '17px', fontWeight: 600, color: '#0F172A', margin: '0 0 8px 0' }}>
               {t.visionTitle}
             </h3>
             <p style={{ fontSize: '13.5px', color: '#475569', margin: 0, lineHeight: 1.65 }}>
@@ -414,7 +435,7 @@ export default function AboutPage() {
           boxShadow: '0 6px 20px -4px rgba(15, 23, 42, 0.04)'
         }}>
           <div style={{ marginBottom: '16px' }}>
-            <h3 style={{ fontSize: '20px', fontWeight: 800, color: '#0F172A', margin: '0 0 6px 0' }}>
+            <h3 style={{ fontSize: '20px', fontWeight: 600, color: '#0F172A', margin: '0 0 6px 0' }}>
               {t.whyTitle}
             </h3>
           </div>
@@ -435,7 +456,7 @@ export default function AboutPage() {
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
             <Heart size={18} color="#D97706" />
-            <h3 style={{ fontSize: '18px', fontWeight: 800, color: '#78350F', margin: 0 }}>
+            <h3 style={{ fontSize: '18px', fontWeight: 600, color: '#78350F', margin: 0 }}>
               {t.storyTitle}
             </h3>
           </div>
@@ -483,7 +504,7 @@ export default function AboutPage() {
           alignItems: 'center',
           gap: '12px'
         }}>
-          <h4 style={{ fontSize: '17px', fontWeight: 800, color: '#0F172A', margin: 0 }}>
+          <h4 style={{ fontSize: '17px', fontWeight: 600, color: '#0F172A', margin: 0 }}>
             {t.contactTitle}
           </h4>
           <p style={{ fontSize: '13.5px', color: '#64748B', margin: 0 }}>
@@ -500,7 +521,7 @@ export default function AboutPage() {
               padding: '10px 22px',
               borderRadius: '20px',
               fontSize: '13.5px',
-              fontWeight: 800,
+              fontWeight: 600,
               textDecoration: 'none',
               boxShadow: '0 4px 12px rgba(15, 81, 50, 0.2)'
             }}

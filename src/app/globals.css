@@ -9,9 +9,9 @@
   --font-telugu: 'Noto Sans Telugu', 'Tiro Telugu', 'Gautami', 'Vani', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   --font-telugu-serif: 'Noto Serif Telugu', 'Tiro Telugu', 'Gautami', Georgia, serif;
   --font-sacred-serif: 'Cinzel', 'Playfair Display', Georgia, serif;
-  --font-heading: 'Plus Jakarta Sans', var(--font-telugu), system-ui, -apple-system, sans-serif;
-  --font-body: 'Inter', var(--font-telugu), system-ui, -apple-system, sans-serif;
-  --font-sans: var(--font-body);
+  --font-sans: 'Inter', 'Plus Jakarta Sans', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-heading: var(--font-sans);
+  --font-body: var(--font-sans);
 
   /* --- Core Palette --- */
   --bg-canvas: #FAF8F5;
@@ -201,16 +201,16 @@
   --color-error:   #D64545;
   --color-info:    #0E6B72;
 
-  --color-background:        #FAF7F2;
+  --color-background:        #FAF8F5;  /* 60% Ergonomic Warm Cream Canvas */
   --color-surface:           #FFFFFF;
   --color-surface-elevated:  #FFFFFF;
-  --color-border:            #E8E5DE;
-  --color-border-strong:     #E8E5DE;
+  --color-border:            rgba(30, 35, 45, 0.08);
+  --color-border-strong:     rgba(30, 35, 45, 0.12);
 
-  --color-text-primary:   #1B1F2A;
-  --color-text-secondary: #57534E;
-  --color-text-tertiary:  #A8A29E;
-  --color-text-inverse:   #FFFFFF;
+  --color-text-primary:   #1E232D;  /* 30% Anti-halation Deep Charcoal Ink (WCAG AAA) */
+  --color-text-secondary: #5A6270;  /* Slate Gray for secondary metadata */
+  --color-text-tertiary:  #848D9A;
+  --color-text-inverse:   #FAF8F5;
 
   --color-overlay: rgba(30, 27, 24, 0.5);
   --color-scrim:   rgba(30, 27, 24, 0.82);
@@ -331,7 +331,7 @@ body {
   position: relative;
   background-color: var(--color-background);
   color: var(--color-text-primary);
-  font-family: var(--font-body);
+  font-family: var(--font-sans);
   margin: 0;
   padding: 0;
   -webkit-font-smoothing: antialiased;
@@ -351,11 +351,48 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: var(--font-heading);
+  font-family: var(--font-sans);
   margin: 0;
-  font-weight: var(--font-weight-bold);
-  letter-spacing: var(--letter-spacing-tight);
-  color: var(--color-text-primary);
+  letter-spacing: -0.015em;
+  color: var(--color-text-primary, #1E232D);
+  text-wrap: balance;
+}
+
+h1 {
+  font-weight: 700;
+  font-size: clamp(1.65rem, 4vw, 2.25rem);
+  line-height: 1.25;
+}
+
+h2 {
+  font-weight: 700;
+  font-size: clamp(1.35rem, 3vw, 1.75rem);
+  line-height: 1.3;
+}
+
+h3 {
+  font-weight: 600;
+  font-size: clamp(1.1rem, 2.2vw, 1.3rem);
+  line-height: 1.35;
+}
+
+h4, h5, h6 {
+  font-weight: 600;
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+/* Guard against artificial 800/900-weight jumps causing visual eye strain */
+strong, b {
+  font-weight: 600;
+}
+
+/* Base Body Reading Physics (Golden Ratio 1.55x, 45-75 characters comfortable line tracking) */
+p {
+  line-height: 1.55;
+  margin: 0;
+  color: inherit;
+  max-width: 72ch;
 }
 
 /* ==========================================================================
@@ -375,7 +412,7 @@ html[lang="te"],
   font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
 }
 
-/* Headings in Telugu must never have negative letter-spacing, uppercase transform, or choked line-height */
+/* Headings in Telugu must have generous line-height so ottulu/vowels never collide */
 html[lang="te"] h1,
 html[lang="te"] h2,
 html[lang="te"] h3,
@@ -383,12 +420,13 @@ html[lang="te"] h4,
 html[lang="te"] h5,
 html[lang="te"] h6 {
   letter-spacing: 0 !important;
-  line-height: 1.45 !important;
+  line-height: 1.55 !important;
   font-weight: 700 !important;
   text-transform: none !important;
   font-family: var(--font-telugu) !important;
 }
 
+/* Telugu body text requires 1.65x line-height for optimal breathing room */
 html[lang="te"] p,
 html[lang="te"] span,
 html[lang="te"] div,
@@ -396,11 +434,7 @@ html[lang="te"] a,
 html[lang="te"] button {
   letter-spacing: 0 !important;
   text-transform: none !important;
-}
-
-p {
-  line-height: var(--line-height-relaxed);
-  margin: 0;
+  line-height: 1.65;
 }
 
 a {
@@ -456,7 +490,7 @@ input[type="submit"],
 }
 
 .section-header {
-  font-family: var(--font-heading);
+  font-family: var(--font-sans);
   font-size: var(--text-h2);
   font-weight: var(--font-weight-semibold);
   line-height: var(--line-height-snug);
@@ -464,7 +498,7 @@ input[type="submit"],
 }
 
 .body-text {
-  font-family: var(--font-body);
+  font-family: var(--font-sans);
   font-size: var(--text-body-lg);
   font-weight: var(--font-weight-regular);
   line-height: var(--line-height-relaxed);
@@ -472,7 +506,7 @@ input[type="submit"],
 }
 
 .button-text {
-  font-family: var(--font-body);
+  font-family: var(--font-sans);
   font-size: var(--text-body-md);
   font-weight: var(--font-weight-semibold);
   letter-spacing: var(--letter-spacing-wide);
@@ -480,7 +514,7 @@ input[type="submit"],
 }
 
 .caption {
-  font-family: var(--font-body);
+  font-family: var(--font-sans);
   font-size: var(--text-body-sm);
   font-weight: var(--font-weight-medium);
   line-height: var(--line-height-normal);
@@ -587,4 +621,10 @@ video::-webkit-media-text-track-region {
   background-size: 200% 100% !important;
   animation: shimmerWave 1.6s ease-in-out infinite !important;
 }
+
+/* === Saarthi Typography — 3 Tier System === */
+.text-title { font-weight: 700 !important; letter-spacing: -0.02em; }
+.text-label { font-weight: 600 !important; letter-spacing: 0.06em; }
+.text-body  { font-weight: 500 !important; line-height: 1.5; }
+.text-micro { font-weight: 500 !important; font-size: 11px; color: #6B7280; }
 

@@ -69,7 +69,7 @@ export default function WeatherPage() {
             
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
               <div>
-                <div style={{ fontSize: 64, fontWeight: 800, lineHeight: 1 }}>
+                <div style={{ fontSize: 64, fontWeight: 600, lineHeight: 1 }}>
                   {Math.round(weather.current?.temperature_2m || 0)}°
                 </div>
                 <div style={{ fontSize: 16, marginTop: 8, opacity: 0.9 }}>

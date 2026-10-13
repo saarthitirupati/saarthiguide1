@@ -79,10 +79,10 @@ export default function StoryDetailPage() {
         </button>
 
         <div style={{ textAlign: 'center' }}>
-          <span style={{ fontSize: '10px', fontWeight: 800, color: '#D97706', textTransform: 'uppercase', letterSpacing: '0.6px', display: 'block' }}>
+          <span style={{ fontSize: '10px', fontWeight: 600, color: '#D97706', textTransform: 'uppercase', letterSpacing: '0.6px', display: 'block' }}>
             Story of the Day
           </span>
-          <span style={{ fontSize: '12px', fontWeight: 800, color: '#0F172A' }}>
+          <span style={{ fontSize: '12px', fontWeight: 600, color: '#0F172A' }}>
             {story.category.toUpperCase()}
           </span>
         </div>
@@ -107,7 +107,7 @@ export default function StoryDetailPage() {
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px', flexWrap: 'wrap' }}>
             <span style={{
               fontSize: '11px',
-              fontWeight: 800,
+              fontWeight: 600,
               color: '#B45309',
               background: '#FEF3C7',
               border: '1px solid #FDE68A',
@@ -122,7 +122,7 @@ export default function StoryDetailPage() {
 
             <span style={{
               fontSize: '11px',
-              fontWeight: 800,
+              fontWeight: 600,
               color: '#15803D',
               background: '#DCFCE7',
               border: '1px solid #86EFAC',
@@ -138,7 +138,7 @@ export default function StoryDetailPage() {
 
           <h1 style={{
             fontSize: '22px',
-            fontWeight: 900,
+            fontWeight: 700,
             color: '#0F172A',
             margin: '0 0 6px 0',
             lineHeight: 1.3,
@@ -176,7 +176,7 @@ export default function StoryDetailPage() {
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#D97706', marginBottom: '6px' }}>
             <Sparkles size={16} />
-            <span style={{ fontSize: '11px', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.6px' }}>
+            <span style={{ fontSize: '11px', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.6px' }}>
               Quick Summary (30-Sec Read)
             </span>
           </div>
@@ -200,7 +200,7 @@ export default function StoryDetailPage() {
             >
               <h3 style={{
                 fontSize: '15px',
-                fontWeight: 800,
+                fontWeight: 600,
                 color: '#0F172A',
                 margin: '0 0 8px 0',
                 display: 'flex',
@@ -214,7 +214,7 @@ export default function StoryDetailPage() {
                   background: '#F1F5F9',
                   color: '#475569',
                   fontSize: '11px',
-                  fontWeight: 900,
+                  fontWeight: 700,
                   display: 'inline-flex',
                   alignItems: 'center',
                   justifyContent: 'center'
@@ -235,7 +235,7 @@ export default function StoryDetailPage() {
           <div style={{ marginBottom: '24px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '12px' }}>
               <BookOpen size={18} color="#D97706" />
-              <h3 style={{ fontSize: '15px', fontWeight: 800, color: '#0F172A', margin: 0 }}>
+              <h3 style={{ fontSize: '15px', fontWeight: 600, color: '#0F172A', margin: 0 }}>
                 Did You Know?
               </h3>
             </div>
@@ -275,7 +275,7 @@ export default function StoryDetailPage() {
         {/* ─── SECTION 5: RELATED PLACES ─── */}
         {relatedPlaces.length > 0 && (
           <div style={{ marginBottom: '24px' }}>
-            <h3 style={{ fontSize: '15px', fontWeight: 800, color: '#0F172A', margin: '0 0 12px 0', display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <h3 style={{ fontSize: '15px', fontWeight: 600, color: '#0F172A', margin: '0 0 12px 0', display: 'flex', alignItems: 'center', gap: '6px' }}>
               <MapPin size={18} color="#2F6144" /> Visit These Related Places
             </h3>
 
@@ -308,7 +308,7 @@ export default function StoryDetailPage() {
                         flexShrink: 0
                       }} />
                       <div>
-                        <h4 style={{ fontSize: '14px', fontWeight: 800, color: '#0F172A', margin: '0 0 2px 0' }}>
+                        <h4 style={{ fontSize: '14px', fontWeight: 600, color: '#0F172A', margin: '0 0 2px 0' }}>
                           {place.name}
                         </h4>
                         <span style={{ fontSize: '11.5px', color: '#64748B', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: '3px' }}>
@@ -334,7 +334,7 @@ export default function StoryDetailPage() {
           padding: '14px 16px',
           marginBottom: '24px'
         }}>
-          <span style={{ fontSize: '11px', fontWeight: 800, color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.6px', display: 'block', marginBottom: '8px' }}>
+          <span style={{ fontSize: '11px', fontWeight: 600, color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.6px', display: 'block', marginBottom: '8px' }}>
             Authentic Verification & Sources
           </span>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
@@ -376,7 +376,7 @@ export default function StoryDetailPage() {
                 borderRadius: '12px',
                 padding: '8px 20px',
                 fontSize: '13px',
-                fontWeight: 800,
+                fontWeight: 600,
                 cursor: 'pointer',
                 display: 'flex',
                 alignItems: 'center',
@@ -394,7 +394,7 @@ export default function StoryDetailPage() {
                 borderRadius: '12px',
                 padding: '8px 20px',
                 fontSize: '13px',
-                fontWeight: 800,
+                fontWeight: 600,
                 cursor: 'pointer',
                 display: 'flex',
                 alignItems: 'center',

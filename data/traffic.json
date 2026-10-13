@@ -843,5 +843,225 @@
     "date": "2026-10-08",
     "path": "/darshan/ssd-token",
     "count": 1
+  },
+  {
+    "date": "2026-10-09",
+    "path": "/",
+    "count": 119
+  },
+  {
+    "date": "2026-10-09",
+    "path": "/explore",
+    "count": 75
+  },
+  {
+    "date": "2026-10-09",
+    "path": "/planner",
+    "count": 62
+  },
+  {
+    "date": "2026-10-09",
+    "path": "/plans",
+    "count": 44
+  },
+  {
+    "date": "2026-10-09",
+    "path": "/generating",
+    "count": 38
+  },
+  {
+    "date": "2026-10-10",
+    "path": "/",
+    "count": 125
+  },
+  {
+    "date": "2026-10-10",
+    "path": "/explore",
+    "count": 83
+  },
+  {
+    "date": "2026-10-10",
+    "path": "/planner",
+    "count": 40
+  },
+  {
+    "date": "2026-10-10",
+    "path": "/plans",
+    "count": 32
+  },
+  {
+    "date": "2026-10-10",
+    "path": "/generating",
+    "count": 52
+  },
+  {
+    "date": "2026-10-10",
+    "path": "/darshan/sarva-darshan",
+    "count": 8
+  },
+  {
+    "date": "2026-10-10",
+    "path": "/darshan/special-entry",
+    "count": 1
+  },
+  {
+    "date": "2026-10-10",
+    "path": "/darshan/ssd-token",
+    "count": 8
+  },
+  {
+    "date": "2026-10-10",
+    "path": "/place/vinayaka-sagar",
+    "count": 1
+  },
+  {
+    "date": "2026-10-11",
+    "path": "/",
+    "count": 95
+  },
+  {
+    "date": "2026-10-11",
+    "path": "/explore",
+    "count": 52
+  },
+  {
+    "date": "2026-10-11",
+    "path": "/planner",
+    "count": 57
+  },
+  {
+    "date": "2026-10-11",
+    "path": "/plans",
+    "count": 57
+  },
+  {
+    "date": "2026-10-11",
+    "path": "/generating",
+    "count": 53
+  },
+  {
+    "date": "2026-10-12",
+    "path": "/",
+    "count": 109
+  },
+  {
+    "date": "2026-10-12",
+    "path": "/explore",
+    "count": 88
+  },
+  {
+    "date": "2026-10-12",
+    "path": "/planner",
+    "count": 32
+  },
+  {
+    "date": "2026-10-12",
+    "path": "/plans",
+    "count": 56
+  },
+  {
+    "date": "2026-10-12",
+    "path": "/generating",
+    "count": 42
+  },
+  {
+    "date": "2026-10-12",
+    "path": "/route",
+    "count": 1
+  },
+  {
+    "date": "2026-10-12",
+    "path": "/footpaths",
+    "count": 1
+  },
+  {
+    "date": "2026-10-13",
+    "path": "/",
+    "count": 110
+  },
+  {
+    "date": "2026-10-13",
+    "path": "/explore",
+    "count": 70
+  },
+  {
+    "date": "2026-10-13",
+    "path": "/planner",
+    "count": 32
+  },
+  {
+    "date": "2026-10-13",
+    "path": "/plans",
+    "count": 48
+  },
+  {
+    "date": "2026-10-13",
+    "path": "/generating",
+    "count": 61
+  },
+  {
+    "date": "2026-10-13",
+    "path": "/place/govindaraja",
+    "count": 1
+  },
+  {
+    "date": "2026-10-13",
+    "path": "/place/gandhi-road",
+    "count": 1
+  },
+  {
+    "date": "2026-10-13",
+    "path": "/darshan/ssd-token",
+    "count": 1
+  },
+  {
+    "date": "2026-10-13",
+    "path": "/darshan/sarva-darshan",
+    "count": 3
+  },
+  {
+    "date": "2026-10-13",
+    "path": "/essentials",
+    "count": 8
+  },
+  {
+    "date": "2026-10-13",
+    "path": "/essentials/secure-belongings",
+    "count": 4
+  },
+  {
+    "date": "2026-10-13",
+    "path": "/essentials/free-meals",
+    "count": 1
+  },
+  {
+    "date": "2026-10-13",
+    "path": "/essentials/hair-offering",
+    "count": 5
+  },
+  {
+    "date": "2026-10-13",
+    "path": "/essentials/shopping",
+    "count": 1
+  },
+  {
+    "date": "2026-10-13",
+    "path": "/essentials/accommodation",
+    "count": 1
+  },
+  {
+    "date": "2026-10-13",
+    "path": "/place/venkateswara",
+    "count": 2
+  },
+  {
+    "date": "2026-10-13",
+    "path": "/place/srivari-padalu-spot",
+    "count": 1
+  },
+  {
+    "date": "2026-10-13",
+    "path": "/place/srivari-mettu-path",
+    "count": 1
   }
 ]

@@ -31,7 +31,11 @@ export async function GET(request: Request) {
     // 5. Format API Response
     const responseData = buildApiResponse(context, sections);
 
-    return NextResponse.json(responseData);
+    return NextResponse.json(responseData, {
+      headers: {
+        'Cache-Control': 'public, max-age=30, s-maxage=60, stale-while-revalidate=300'
+      }
+    });
   } catch (error: any) {
     return NextResponse.json({
       success: false,

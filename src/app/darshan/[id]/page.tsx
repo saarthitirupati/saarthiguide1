@@ -202,7 +202,7 @@ export default function DarshanDetailsPage() {
   };
 
   return (
-    <div className={styles.container}>
+    <div className={styles.container} style={{ paddingBottom: 'calc(88px + env(safe-area-inset-bottom, 16px))' }}>
       
       {/* ── 1. MINIMAL APP BAR (SINGLE HEADER LOCKUP) ── */}
       <header className={styles.topAppBar}>
@@ -254,7 +254,14 @@ export default function DarshanDetailsPage() {
                   {lang === 'te' ? (data.teluguTitle || data.title) : data.title}
                 </h2>
               </div>
-              <span className={styles.statusPill} style={{ backgroundColor: themeColor, color: '#FFFFFF' }}>
+              <span
+                className={styles.statusPill}
+                style={{
+                  background: 'rgba(217, 119, 6, 0.12)',
+                  color: '#92400E',
+                  fontWeight: 700
+                }}
+              >
                 {id === 'ssd-token' ? 'TOKEN ENTRY' : id === 'special-entry' ? 'ONLINE SLOT' : 'WALK-IN DARSHAN'}
               </span>
             </div>
@@ -262,18 +269,18 @@ export default function DarshanDetailsPage() {
             {/* ⏱️ ESTIMATED WAITING TIME HERO BLOCK */}
             <div style={{
               background: '#FFFFFF',
-              border: '1.5px solid #E2E8F0',
+              border: '1px solid rgba(30, 35, 45, 0.08)',
               borderRadius: '16px',
               padding: '16px 18px',
               marginTop: '4px',
               boxShadow: '0 2px 10px rgba(15, 23, 42, 0.03)'
             }}>
-              <div style={{ fontSize: '11px', fontWeight: 800, color: '#64748B', letterSpacing: '0.05em', textTransform: 'uppercase' }}>
+              <div style={{ fontSize: '11px', fontWeight: 600, color: '#64748B', letterSpacing: '0.05em', textTransform: 'uppercase' }}>
                 {lang === 'te' ? 'అంచనా వేచియుండు సమయం' : 'ESTIMATED WAITING TIME'}
               </div>
               
               <div style={{ display: 'flex', alignItems: 'baseline', gap: '10px', marginTop: '4px', flexWrap: 'wrap' }}>
-                <span style={{ fontSize: '32px', fontWeight: 900, color: '#0F172A', letterSpacing: '-0.03em', lineHeight: 1 }}>
+                <span style={{ fontSize: '32px', fontWeight: 700, color: '#0F172A', letterSpacing: '-0.02em', lineHeight: 1 }}>
                   {id === 'ssd-token'
                     ? (ssdTokenStatus === 'closed-for-day' ? 'Closed' : liveWaitTime || '2–4 hrs')
                     : (liveWaitTime || data.waitTime)}
@@ -281,7 +288,7 @@ export default function DarshanDetailsPage() {
                 
                 <span style={{
                   fontSize: '11.5px',
-                  fontWeight: 800,
+                  fontWeight: 600,
                   padding: '4px 10px',
                   borderRadius: '99px',
                   backgroundColor: id === 'ssd-token' && ssdTokenStatus === 'closed-for-day' ? '#FEE2E2' : crowdLevel === 'EXTREME' ? '#FEE2E2' : crowdLevel === 'HIGH' || crowdLevel === 'MODERATE' ? '#FEF3C7' : '#DCFCE7',
@@ -310,18 +317,18 @@ export default function DarshanDetailsPage() {
                 paddingTop: '12px',
                 borderTop: '1px solid #F1F5F9'
               }}>
-                <span style={{ fontSize: '11px', fontWeight: 800, color: '#0F172A', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                <span style={{ fontSize: '11px', fontWeight: 600, color: '#0F172A', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
                   {lang === 'te' ? 'వెళ్ళే ముందు ముఖ్యమైనవి' : 'Before You Go'}
                 </span>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12.5px', color: '#334155', fontWeight: 600 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12.5px', color: '#334155', fontWeight: 500 }}>
                   <Ticket size={14} color="#0F5132" style={{ flexShrink: 0 }} />
                   <span>{id === 'special-entry' ? (lang === 'te' ? 'ఆన్‌లైన్ స్లాట్ టికెట్ తప్పనిసరి' : 'Advance ₹300 Online Ticket Required') : id === 'ssd-token' ? (lang === 'te' ? 'ఉచిత టోకెన్ లేదా తిరుపతి కౌంటర్' : 'Free SSD Token Voucher Required') : (lang === 'te' ? 'ముందస్తు టికెట్ అవసరం లేదు' : 'No advance ticket or token required')}</span>
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12.5px', color: '#334155', fontWeight: 600 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12.5px', color: '#334155', fontWeight: 500 }}>
                   <MapPin size={14} color="#0F5132" style={{ flexShrink: 0 }} />
                   <span>{lang === 'te' ? 'ప్రవేశం: వైకుంఠం క్యూ కాంప్లెక్స్-2 (VQC-II)' : `Entry Point: ${(data.entryGate || 'VQC-II, Tirumala').split(',')[0]}`}</span>
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12.5px', color: '#334155', fontWeight: 600 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12.5px', color: '#334155', fontWeight: 500 }}>
                   <UtensilsCrossed size={14} color="#0F5132" style={{ flexShrink: 0 }} />
                   <span>{lang === 'te' ? 'ఉచిత అన్నప్రసాదం & తాగునీరు అందుబాటులో ఉన్నాయి' : 'Free Annaprasadam, Milk & RO Water Included'}</span>
                 </div>
@@ -343,7 +350,7 @@ export default function DarshanDetailsPage() {
                   background: 'linear-gradient(135deg, #0F5132 0%, #064E3B 100%)',
                   color: '#FFFFFF',
                   fontSize: '13.5px',
-                  fontWeight: 800,
+                  fontWeight: 700,
                   border: 'none',
                   cursor: 'pointer',
                   display: 'flex',
@@ -360,25 +367,25 @@ export default function DarshanDetailsPage() {
 
             {/* ✨ SAARTHI SUGGESTS RECOMMENDATION CARD */}
             <div style={{
-              background: 'linear-gradient(135deg, #FFFDF7 0%, #FEF3C7 100%)',
-              border: '1.5px solid #FDE68A',
+              background: '#FFFFFF',
+              border: '1px solid rgba(30, 35, 45, 0.08)',
               borderRadius: '16px',
               padding: '14px 16px',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
               gap: '12px',
-              boxShadow: '0 2px 8px rgba(217, 119, 6, 0.08)'
+              boxShadow: '0 1px 3px rgba(15, 23, 42, 0.04)'
             }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <div style={{ width: '34px', height: '34px', borderRadius: '10px', background: '#F59E0B', color: '#FFFFFF', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                  <Sparkles size={18} />
+                <div style={{ width: '32px', height: '32px', borderRadius: '8px', background: '#FEF3C7', color: '#92400E', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                  <Sparkles size={16} />
                 </div>
                 <div>
-                  <div style={{ fontSize: '10px', fontWeight: 900, color: '#B45309', letterSpacing: '0.04em', textTransform: 'uppercase' }}>
-                    ✨ SAARTHI SUGGESTS
+                  <div style={{ fontSize: '10px', fontWeight: 600, color: '#92400E', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+                    SAARTHI SUGGESTS
                   </div>
-                  <div style={{ fontSize: '12.5px', fontWeight: 800, color: '#78350F', marginTop: '1px' }}>
+                  <div style={{ fontSize: '12.5px', fontWeight: 600, color: '#1E232D', marginTop: '1px' }}>
                     {lang === 'te' ? 'సమయం ఉందా? తిరుచానూరు శ్రీ పద్మావతి అమ్మవారిని దర్శించుకోండి.' : 'Have extra time today? Visit Sri Padmavathi Ammavari Temple.'}
                   </div>
                 </div>
@@ -386,20 +393,14 @@ export default function DarshanDetailsPage() {
               <Link 
                 href="/explore" 
                 style={{ 
-                  fontSize: '11.5px', 
-                  fontWeight: 800, 
-                  color: '#78350F', 
                   textDecoration: 'none',
                   whiteSpace: 'nowrap',
-                  background: '#FFFFFF',
-                  padding: '6px 12px',
-                  borderRadius: '20px',
-                  border: '1px solid #F59E0B',
-                  boxShadow: '0 1px 3px rgba(0,0,0,0.05)',
                   flexShrink: 0
                 }}
               >
-                {lang === 'te' ? 'వివరాలు →' : 'View details →'}
+                <span style={{ fontSize: '12px', fontWeight: 600, color: '#D97706' }}>
+                  {lang === 'te' ? 'వివరాలు →' : 'View details →'}
+                </span>
               </Link>
             </div>
 
@@ -429,7 +430,7 @@ export default function DarshanDetailsPage() {
                       <Ticket size={18} color="#FFFFFF" />
                     </div>
                     <div>
-                      <div style={{ fontSize: '12.5px', fontWeight: 800 }}>Book ₹300 Ticket on Official TTD Portal</div>
+                      <div style={{ fontSize: '12.5px', fontWeight: 600 }}>Book ₹300 Ticket on Official TTD Portal</div>
                       <div style={{ fontSize: '10.5px', opacity: 0.9 }}>ttdevasthanams.ap.gov.in</div>
                     </div>
                   </div>
@@ -441,7 +442,7 @@ export default function DarshanDetailsPage() {
             {/* TIRUPATI SSD TOKEN COUNTER TILES (SSD TOKEN ONLY) */}
             {id === 'ssd-token' && data.tokenLocations && data.tokenLocations.length > 0 && (
               <div>
-                <span style={{ fontSize: '12px', fontWeight: 800, color: '#0F172A', letterSpacing: '0.02em', display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '8px' }}>
+                <span style={{ fontSize: '12px', fontWeight: 600, color: '#0F172A', letterSpacing: '0.02em', display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '8px' }}>
                   <Ticket size={14} color="#E11D48" />
                   <span>{lang === 'te' ? 'SSD ఉచిత టోకెన్ కేంద్రాలు (తిరుపతి)' : 'Tirupati SSD Token Counters'}</span>
                 </span>
@@ -474,9 +475,9 @@ export default function DarshanDetailsPage() {
                               {icon}
                             </div>
                             <div>
-                              <div style={{ fontSize: '12.5px', fontWeight: 800, color: '#0F172A' }}>{loc.name}</div>
+                              <div style={{ fontSize: '12.5px', fontWeight: 600, color: '#0F172A' }}>{loc.name}</div>
                               <div style={{ fontSize: '11px', color: '#64748B', fontWeight: 500 }}>{loc.landmark}</div>
-                              <div style={{ fontSize: '10.5px', color: '#DC2626', fontWeight: 700, marginTop: '2px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                              <div style={{ fontSize: '10.5px', color: '#DC2626', fontWeight: 600, marginTop: '2px', display: 'flex', alignItems: 'center', gap: '4px' }}>
                                 <Clock size={11} color="#DC2626" />
                                 <span>{loc.counterHours}</span>
                               </div>
@@ -511,10 +512,10 @@ export default function DarshanDetailsPage() {
                   <ShieldAlert size={18} color="#DC2626" />
                 </div>
                 <div style={{ flex: 1, minWidth: 0 }}>
-                  <span style={{ fontSize: '10.5px', fontWeight: 900, color: '#991B1B', letterSpacing: '0.05em', textTransform: 'uppercase', display: 'block' }}>
+                  <span style={{ fontSize: '10.5px', fontWeight: 700, color: '#991B1B', letterSpacing: '0.05em', textTransform: 'uppercase', display: 'block' }}>
                     {lang === 'te' ? 'ముఖ్యమైన హెచ్చరిక' : 'IMPORTANT ADVISORY'}
                   </span>
-                  <span style={{ fontSize: '13.5px', fontWeight: 800, color: '#7F1D1D', lineHeight: 1.45, display: 'block', marginTop: '3px' }}>
+                  <span style={{ fontSize: '13.5px', fontWeight: 600, color: '#7F1D1D', lineHeight: 1.45, display: 'block', marginTop: '3px' }}>
                     {ssdNotice.replace(/@/g, ' · ')}
                   </span>
                 </div>
@@ -538,7 +539,7 @@ export default function DarshanDetailsPage() {
                   {data.journeySteps.length} STEPS · {liveWaitTime || '4–8 HRS'}
                 </span>
               </div>
-              <p style={{ fontSize: '11.5px', color: '#64748B', margin: '4px 0 0', fontWeight: 600 }}>
+              <p style={{ fontSize: '11.5px', color: '#64748B', margin: '4px 0 0', fontWeight: 500 }}>
                 {lang === 'te' ? 'వివరాలు చూడటానికి ఏదైనా మెట్టును నొక్కండి' : 'Tap any step to see entry guidelines & reporting rules'}
               </p>
             </div>
@@ -571,7 +572,7 @@ export default function DarshanDetailsPage() {
                         <div className={styles.stepHeader} style={{ justifyContent: 'space-between', width: '100%' }}>
                           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                             <span className={styles.stepNumberTag}>● {step.step}.</span>
-                            <h4 className={styles.stepTitle} style={{ fontSize: '13px', fontWeight: 800 }}>{step.title}</h4>
+                            <h4 className={styles.stepTitle} style={{ fontSize: '13px', fontWeight: 600 }}>{step.title}</h4>
                           </div>
                           <ChevronDown size={15} style={{ transform: isExpanded ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s ease', color: '#64748B' }} />
                         </div>
@@ -593,7 +594,7 @@ export default function DarshanDetailsPage() {
                           }}>
                             <p style={{ margin: 0, fontWeight: 500 }}>{step.desc}</p>
                             {step.estimatedTime && (
-                              <div style={{ marginTop: '6px', fontSize: '11px', fontWeight: 800, color: '#0F5132', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                              <div style={{ marginTop: '6px', fontSize: '11px', fontWeight: 600, color: '#0F5132', display: 'flex', alignItems: 'center', gap: '4px' }}>
                                 <Clock size={12} />
                                 <span>Approx. Duration: {step.estimatedTime}</span>
                               </div>
@@ -610,7 +611,7 @@ export default function DarshanDetailsPage() {
 
           {/* ── SECTION 3: UNIFIED USEFUL INFORMATION ACCORDIONS ── */}
           <div style={{ marginTop: '6px' }}>
-            <div style={{ fontSize: '13px', fontWeight: 900, color: '#0F172A', marginBottom: '8px', letterSpacing: '0.02em', paddingLeft: '2px' }}>
+            <div style={{ fontSize: '13px', fontWeight: 700, color: '#0F172A', marginBottom: '8px', letterSpacing: '0.02em', paddingLeft: '2px' }}>
               {lang === 'te' ? 'ఉపయోగకరమైన సమాచారం' : 'Useful Information'}
             </div>
 
@@ -643,15 +644,15 @@ export default function DarshanDetailsPage() {
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '10px' }}>
                       {/* Permitted Card */}
                       <div style={{ background: '#F0FDF4', border: '1.5px solid #BBF7D0', borderRadius: '12px', padding: '12px 10px' }}>
-                        <div style={{ fontSize: '12px', fontWeight: 900, color: '#166534', display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '8px' }}>
+                        <div style={{ fontSize: '12px', fontWeight: 700, color: '#166534', display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '8px' }}>
                           <CheckCircle2 size={15} color="#16A34A" />
                           <span>{lang === 'te' ? 'అనుమతించబడినవి' : 'Permitted Attire'}</span>
                         </div>
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                          <span style={{ fontSize: '11px', fontWeight: 700, color: '#14532D', background: '#FFFFFF', padding: '4px 8px', borderRadius: '6px', border: '1px solid #DCFCE7', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                          <span style={{ fontSize: '11px', fontWeight: 600, color: '#14532D', background: '#FFFFFF', padding: '4px 8px', borderRadius: '6px', border: '1px solid #DCFCE7', display: 'flex', alignItems: 'center', gap: '6px' }}>
                             <Shirt size={13} color="#16A34A" /> Men: Dhoti / Kurta-Pyjama
                           </span>
-                          <span style={{ fontSize: '11px', fontWeight: 700, color: '#14532D', background: '#FFFFFF', padding: '4px 8px', borderRadius: '6px', border: '1px solid #DCFCE7', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                          <span style={{ fontSize: '11px', fontWeight: 600, color: '#14532D', background: '#FFFFFF', padding: '4px 8px', borderRadius: '6px', border: '1px solid #DCFCE7', display: 'flex', alignItems: 'center', gap: '6px' }}>
                             <Shirt size={13} color="#16A34A" /> Women: Saree / Salwar Dupatta
                           </span>
                         </div>
@@ -659,15 +660,15 @@ export default function DarshanDetailsPage() {
 
                       {/* Prohibited Card */}
                       <div style={{ background: '#FEF2F2', border: '1.5px solid #FECDD3', borderRadius: '12px', padding: '12px 10px' }}>
-                        <div style={{ fontSize: '12px', fontWeight: 900, color: '#991B1B', display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '8px' }}>
+                        <div style={{ fontSize: '12px', fontWeight: 700, color: '#991B1B', display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '8px' }}>
                           <XCircle size={15} color="#DC2626" />
                           <span>{lang === 'te' ? 'నిషేధించబడినవి' : 'Prohibited Attire'}</span>
                         </div>
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                          <span style={{ fontSize: '11px', fontWeight: 700, color: '#7F1D1D', background: '#FFFFFF', padding: '4px 8px', borderRadius: '6px', border: '1px solid #FEE2E2', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                          <span style={{ fontSize: '11px', fontWeight: 600, color: '#7F1D1D', background: '#FFFFFF', padding: '4px 8px', borderRadius: '6px', border: '1px solid #FEE2E2', display: 'flex', alignItems: 'center', gap: '6px' }}>
                             <XCircle size={13} color="#DC2626" /> Shorts, Jeans, T-Shirts
                           </span>
-                          <span style={{ fontSize: '11px', fontWeight: 700, color: '#7F1D1D', background: '#FFFFFF', padding: '4px 8px', borderRadius: '6px', border: '1px solid #FEE2E2', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                          <span style={{ fontSize: '11px', fontWeight: 600, color: '#7F1D1D', background: '#FFFFFF', padding: '4px 8px', borderRadius: '6px', border: '1px solid #FEE2E2', display: 'flex', alignItems: 'center', gap: '6px' }}>
                             <XCircle size={13} color="#DC2626" /> Sleeveless & Western Casuals
                           </span>
                         </div>
@@ -684,7 +685,7 @@ export default function DarshanDetailsPage() {
                       alignItems: 'center',
                       gap: '8px',
                       fontSize: '11.5px',
-                      fontWeight: 700,
+                      fontWeight: 600,
                       color: '#92400E'
                     }}>
                       <ShieldAlert size={15} color="#D97706" style={{ flexShrink: 0 }} />
@@ -719,63 +720,63 @@ export default function DarshanDetailsPage() {
                 {openSections.amenities && (
                   <div className={styles.accordionBody}>
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '8px' }}>
-                      <div style={{ background: '#F0F9FF', border: '1px solid #BAE6FD', borderRadius: '10px', padding: '10px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        <div style={{ width: '28px', height: '28px', borderRadius: '8px', background: '#0284C7', color: '#FFFFFF', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                      <div style={{ background: '#F8FAFC', border: '1px solid #E2E8F0', borderRadius: '10px', padding: '10px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <div style={{ width: '28px', height: '28px', borderRadius: '8px', background: '#E0F2FE', color: '#0369A1', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                           <Droplet size={15} />
                         </div>
                         <div>
-                          <div style={{ fontSize: '11.5px', fontWeight: 800, color: '#0369A1' }}>RO Drinking Water</div>
-                          <div style={{ fontSize: '10px', color: '#0284C7', fontWeight: 600 }}>Every 10m in halls</div>
-                        </div>
-                      </div>
-
-                      <div style={{ background: '#FEF3C7', border: '1px solid #FDE68A', borderRadius: '10px', padding: '10px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        <div style={{ width: '28px', height: '28px', borderRadius: '8px', background: '#D97706', color: '#FFFFFF', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                          <UtensilsCrossed size={15} />
-                        </div>
-                        <div>
-                          <div style={{ fontSize: '11.5px', fontWeight: 800, color: '#92400E' }}>Hot Annaprasadam</div>
-                          <div style={{ fontSize: '10px', color: '#B45309', fontWeight: 600 }}>Meals & milk 24/7</div>
+                          <div style={{ fontSize: '11.5px', fontWeight: 600, color: '#1E293B' }}>RO Drinking Water</div>
+                          <div style={{ fontSize: '10px', color: '#64748B', fontWeight: 500 }}>Every 10m in halls</div>
                         </div>
                       </div>
 
                       <div style={{ background: '#F8FAFC', border: '1px solid #E2E8F0', borderRadius: '10px', padding: '10px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        <div style={{ width: '28px', height: '28px', borderRadius: '8px', background: '#475569', color: '#FFFFFF', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                        <div style={{ width: '28px', height: '28px', borderRadius: '8px', background: '#FEF3C7', color: '#92400E', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                          <UtensilsCrossed size={15} />
+                        </div>
+                        <div>
+                          <div style={{ fontSize: '11.5px', fontWeight: 600, color: '#1E293B' }}>Hot Annaprasadam</div>
+                          <div style={{ fontSize: '10px', color: '#64748B', fontWeight: 500 }}>Meals & milk 24/7</div>
+                        </div>
+                      </div>
+
+                      <div style={{ background: '#F8FAFC', border: '1px solid #E2E8F0', borderRadius: '10px', padding: '10px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <div style={{ width: '28px', height: '28px', borderRadius: '8px', background: '#F1F5F9', color: '#475569', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                           <Toilet size={15} />
                         </div>
                         <div>
-                          <div style={{ fontSize: '11.5px', fontWeight: 800, color: '#334155' }}>Restrooms</div>
-                          <div style={{ fontSize: '10px', color: '#64748B', fontWeight: 600 }}>Attached to each hall</div>
+                          <div style={{ fontSize: '11.5px', fontWeight: 600, color: '#1E293B' }}>Restrooms</div>
+                          <div style={{ fontSize: '10px', color: '#64748B', fontWeight: 500 }}>Attached to each hall</div>
                         </div>
                       </div>
 
-                      <div style={{ background: '#FEF2F2', border: '1px solid #FECDD3', borderRadius: '10px', padding: '10px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        <div style={{ width: '28px', height: '28px', borderRadius: '8px', background: '#DC2626', color: '#FFFFFF', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                      <div style={{ background: '#F8FAFC', border: '1px solid #E2E8F0', borderRadius: '10px', padding: '10px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <div style={{ width: '28px', height: '28px', borderRadius: '8px', background: '#FEE2E2', color: '#B91C1C', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                           <Hospital size={15} />
                         </div>
                         <div>
-                          <div style={{ fontSize: '11.5px', fontWeight: 800, color: '#991B1B' }}>24/7 Medical Clinic</div>
-                          <div style={{ fontSize: '10px', color: '#DC2626', fontWeight: 600 }}>Doctors & paramedics</div>
+                          <div style={{ fontSize: '11.5px', fontWeight: 600, color: '#1E293B' }}>24/7 Medical Clinic</div>
+                          <div style={{ fontSize: '10px', color: '#64748B', fontWeight: 500 }}>Doctors & paramedics</div>
                         </div>
                       </div>
 
-                      <div style={{ background: '#FDF2F8', border: '1px solid #FBCFE8', borderRadius: '10px', padding: '10px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        <div style={{ width: '28px', height: '28px', borderRadius: '8px', background: '#DB2777', color: '#FFFFFF', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                      <div style={{ background: '#F8FAFC', border: '1px solid #E2E8F0', borderRadius: '10px', padding: '10px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <div style={{ width: '28px', height: '28px', borderRadius: '8px', background: '#FCE7F3', color: '#BE185D', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                           <Baby size={15} />
                         </div>
                         <div>
-                          <div style={{ fontSize: '11.5px', fontWeight: 800, color: '#9D174D' }}>Infant Warm Milk</div>
-                          <div style={{ fontSize: '10px', color: '#DB2777', fontWeight: 600 }}>Prioritized for toddlers</div>
+                          <div style={{ fontSize: '11.5px', fontWeight: 600, color: '#1E293B' }}>Infant Warm Milk</div>
+                          <div style={{ fontSize: '10px', color: '#64748B', fontWeight: 500 }}>Prioritized for toddlers</div>
                         </div>
                       </div>
 
-                      <div style={{ background: '#FAF5FF', border: '1px solid #E9D5FF', borderRadius: '10px', padding: '10px', display: 'flex', alignItems: 'center', gap: '8px' }}>
-                        <div style={{ width: '28px', height: '28px', borderRadius: '8px', background: '#7C3AED', color: '#FFFFFF', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                      <div style={{ background: '#F8FAFC', border: '1px solid #E2E8F0', borderRadius: '10px', padding: '10px', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                        <div style={{ width: '28px', height: '28px', borderRadius: '8px', background: '#EDE9FE', color: '#6D28D9', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                           <Accessibility size={15} />
                         </div>
                         <div>
-                          <div style={{ fontSize: '11.5px', fontWeight: 800, color: '#6B21A8' }}>Wheelchair Ramps</div>
-                          <div style={{ fontSize: '10px', color: '#7C3AED', fontWeight: 600 }}>Attendant priority lane</div>
+                          <div style={{ fontSize: '11.5px', fontWeight: 600, color: '#1E293B' }}>Wheelchair Ramps</div>
+                          <div style={{ fontSize: '10px', color: '#64748B', fontWeight: 500 }}>Attendant priority lane</div>
                         </div>
                       </div>
                     </div>
@@ -814,7 +815,7 @@ export default function DarshanDetailsPage() {
                           <Layers size={16} />
                         </div>
                         <div>
-                          <div style={{ fontSize: '12px', fontWeight: 800, color: '#78350F' }}>31 Sequential Compartments</div>
+                          <div style={{ fontSize: '12px', fontWeight: 600, color: '#78350F' }}>31 Sequential Compartments</div>
                           <div style={{ fontSize: '11px', color: '#92400E', fontWeight: 500 }}>Approx. 45–60 mins per hall release cycle</div>
                         </div>
                       </div>
@@ -825,7 +826,7 @@ export default function DarshanDetailsPage() {
                           <Crown size={16} />
                         </div>
                         <div>
-                          <div style={{ fontSize: '12px', fontWeight: 800, color: '#78350F' }}>VIP & Seva Kainkaryam Clearances</div>
+                          <div style={{ fontSize: '12px', fontWeight: 600, color: '#78350F' }}>VIP & Seva Kainkaryam Clearances</div>
                           <div style={{ fontSize: '11px', color: '#92400E', fontWeight: 500 }}>Intermittent priority slots inside main shrine</div>
                         </div>
                       </div>
@@ -834,8 +835,8 @@ export default function DarshanDetailsPage() {
                       <div style={{ background: 'linear-gradient(135deg, #0F5132 0%, #064E3B 100%)', color: '#FFFFFF', borderRadius: '12px', padding: '12px 14px', display: 'flex', alignItems: 'center', gap: '10px', marginTop: '4px' }}>
                         <Sparkles size={20} color="#FDE68A" style={{ flexShrink: 0 }} />
                         <div>
-                          <div style={{ fontSize: '10px', fontWeight: 900, color: '#FDE68A', textTransform: 'uppercase', letterSpacing: '0.04em' }}>BEST DARSHAN WINDOW</div>
-                          <div style={{ fontSize: '12.5px', fontWeight: 800, marginTop: '1px' }}>Tuesdays & Wednesdays, 11:00 PM – 4:00 AM</div>
+                          <div style={{ fontSize: '10px', fontWeight: 700, color: '#FDE68A', textTransform: 'uppercase', letterSpacing: '0.04em' }}>BEST DARSHAN WINDOW</div>
+                          <div style={{ fontSize: '12.5px', fontWeight: 600, marginTop: '1px' }}>Tuesdays & Wednesdays, 11:00 PM – 4:00 AM</div>
                           <div style={{ fontSize: '10.5px', opacity: 0.85, fontWeight: 500 }}>Least crowd & fastest queue movement</div>
                         </div>
                       </div>

@@ -332,7 +332,7 @@ export default function OfflineMapsDirectoryPage() {
         {filteredLayouts.length === 0 && (
           <div style={{ textAlign: 'center', padding: '60px 20px', background: '#FFFFFF', borderRadius: '20px', border: '1px solid #E7E5E4' }}>
             <Compass size={40} color="#78716C" style={{ margin: '0 auto 12px auto' }} />
-            <h3 style={{ fontSize: '17px', fontWeight: 800, color: '#1C1917', margin: '0 0 6px 0' }}>
+            <h3 style={{ fontSize: '17px', fontWeight: 600, color: '#1C1917', margin: '0 0 6px 0' }}>
               {lang === 'te' ? 'మ్యాప్‌లు కనుగొనబడలేదు' : 'No Precinct Maps Match Your Query'}
             </h3>
             <p style={{ fontSize: '13px', color: '#78716C', margin: 0 }}>

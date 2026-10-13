@@ -1598,20 +1598,19 @@ export default function OfflineTempleMap({
                   style={{
                     display: 'inline-flex',
                     alignItems: 'center',
-                    gap: '6px',
-                    padding: '5px 12px',
-                    borderRadius: '999px',
-                    background: 'linear-gradient(135deg, #FFFDF7 0%, #FEF3C7 100%)',
-                    border: '1px solid #D97706',
-                    color: '#78350F',
-                    fontSize: '11px',
-                    fontWeight: 800,
-                    cursor: 'pointer',
-                    boxShadow: '0 1px 3px rgba(217, 119, 6, 0.12)',
+                    gap: '4px',
+                    background: 'none',
+                    border: 'none',
+                    padding: '4px 0',
+                    color: '#D97706',
+                    fontFamily: 'var(--font-sans), system-ui, sans-serif',
+                    fontSize: '12.5px',
+                    fontWeight: 600,
+                    cursor: 'pointer'
                   }}
                 >
                   <span>{lang === 'te' ? 'తదుపరి స్థానం' : 'Next Step on Circuit'}: {lang === 'te' ? nextP.nameTe : nextP.nameEn}</span>
-                  <span style={{ fontSize: '12px' }}>→</span>
+                  <span style={{ fontSize: '13px' }}>→</span>
                 </button>
               </div>
             );

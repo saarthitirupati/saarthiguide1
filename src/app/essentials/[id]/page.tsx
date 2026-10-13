@@ -6,7 +6,7 @@ import {
   ArrowLeft, MapPin, Clock, ShieldAlert, Navigation, Info, Check, X,
   Lock, Utensils, Scissors, Bed, ShoppingBag, HelpCircle, FileText,
   Share2, AlertTriangle, CheckCircle2, ChevronDown, ChevronUp,
-  Briefcase, Smartphone, Footprints, Droplets, Bus, Sparkles
+  Briefcase, Smartphone, Footprints, Droplets, Bus, Sparkles, Luggage
 } from 'lucide-react';
 import styles from '../Essentials.module.css';
 
@@ -123,7 +123,7 @@ export default function EssentialDetailPage({ params }: { params: Promise<{ id: 
     return (
       <div className={styles.container} style={{ justifyContent: 'center', alignItems: 'center', padding: '40px', textAlign: 'center' }}>
         <ShieldAlert size={48} color="#DC2626" style={{ marginBottom: '16px' }} />
-        <h2 style={{ fontSize: '18px', fontWeight: 800, margin: 0, color: '#0F172A' }}>Essential Facility Not Found</h2>
+        <h2 style={{ fontSize: '18px', fontWeight: 600, margin: 0, color: '#0F172A' }}>Essential Facility Not Found</h2>
         <p style={{ fontSize: '13px', color: '#64748B', margin: '8px 0 20px 0' }}>The requested facility does not exist in our directory.</p>
         <button onClick={() => router.push('/essentials')} className={styles.ctaButton} style={{ width: 'auto', padding: '0 24px' }}>
           Back to Essentials
@@ -270,8 +270,8 @@ export default function EssentialDetailPage({ params }: { params: Promise<{ id: 
         </div>
       )}
 
-      {/* Scrollable Container with Bottom Padding for Sticky 56px CTA */}
-      <div className={styles.scrollArea} style={{ paddingBottom: 'calc(76px + max(12px, env(safe-area-inset-bottom, 12px)))', gap: '18px' }}>
+      {/* Scrollable Container with Bottom Padding for Sticky 56px CTA + Floating Nav */}
+      <div className={styles.scrollArea} style={{ paddingBottom: 'calc(88px + 76px + env(safe-area-inset-bottom, 16px))', gap: '18px' }}>
         
         {/* COMPACT HERO */}
         <div className={styles.compactHero}>
@@ -291,85 +291,86 @@ export default function EssentialDetailPage({ params }: { params: Promise<{ id: 
               : item.description}
           </p>
           <div className={styles.heroLocationLine}>
-            <MapPin size={13} color="#0F5132" />
-            <span>{item.location} · {liveDistance ? liveDistance.displayText : 'Tirumala Hill'}</span>
+            <MapPin size={12} color="#64748B" />
+            <span>
+              {item.id === 'hair-offering' 
+                ? (lang === 'te' ? 'ప్రధాన కల్యాణకట్ట & 9 కేంద్రాలు · తిరుమల కొండ' : 'Main Kalyanakatta & 9 Centers · Tirumala Hill')
+                : item.id === 'secure-belongings'
+                ? (lang === 'te' ? 'VQC & PAC లాకర్ కౌంటర్లు · తిరుమల కొండ' : 'VQC & PAC Lockers · Tirumala Hill')
+                : item.id === 'free-meals'
+                ? (lang === 'te' ? 'తరిగొండ వెంగమాంబ & VQC హాళ్లు · తిరుమల కొండ' : 'Tarigonda Vengamamba Complex · Tirumala Hill')
+                : item.id === 'accommodation'
+                ? (lang === 'te' ? 'CRO కార్యాలయం & PAC హాళ్లు · తిరుమల కొండ' : 'CRO Office & PAC Halls · Tirumala Hill')
+                : item.location}
+              {liveDistance ? ` · ${liveDistance.displayText}` : ''}
+            </span>
           </div>
         </div>
 
         {/* OFFICIAL DEPOSIT LOCATIONS (TOP PRIORITY - PROMINENT LISTING) */}
         {item.id === 'secure-belongings' && item.subLocations && item.subLocations.length > 0 && (
-          <section style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-              <h3 className={styles.sectionTitle} style={{ fontSize: '14.5px', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.04em', margin: 0, color: '#0F172A' }}>
-                {lang === 'te' ? 'అధికారిక భద్రతా కేంద్రాలు (క్రమ అమరిక)' : 'Official Deposit Locations'}
-              </h3>
-              <span style={{ fontSize: '11px', fontWeight: 800, color: '#0F5132', background: '#E6F4EA', padding: '3px 10px', borderRadius: '12px', letterSpacing: '0.02em' }}>
-                {lang === 'te' ? '100% ఉచిత TTD' : '100% FREE TTD'}
+          <section id="official-locations-list" style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <h2 style={{ fontFamily: 'var(--font-sans), system-ui', fontWeight: 600, fontSize: '13px', letterSpacing: '0.05em', textTransform: 'uppercase', color: '#1E232D', margin: 0 }}>
+                {lang === 'te' ? 'అధికారిక భద్రతా కేంద్రాలు' : 'Official deposit locations'}
+              </h2>
+              <span style={{ background: 'rgba(217, 119, 6, 0.12)', color: '#92400E', fontWeight: 600, borderRadius: '999px', padding: '2px 8px', fontSize: '11px' }}>
+                {lang === 'te' ? '100% ఉచిత TTD' : '100% Free • TTD'}
               </span>
             </div>
 
-            <div className={styles.subLocationsSection}>
-              {item.subLocations.map((sub, idx) => (
-                <div key={idx} className={styles.subLocationCard} style={{ flexDirection: 'column', alignItems: 'stretch', gap: '8px' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '8px' }}>
-                    <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
-                      <div style={{
-                        width: '26px', height: '26px', borderRadius: '50%', backgroundColor: '#0F5132', color: '#FFFFFF',
-                        fontSize: '12.5px', fontWeight: 800, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, marginTop: '1px'
-                      }}>
-                        {idx + 1}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              {item.subLocations.map((sub, idx) => {
+                const isTargeted = (selectedDecisionId === 'phone' && idx === 0) ||
+                                   (selectedDecisionId === 'luggage' && (idx === 1 || idx === 4)) ||
+                                   (selectedDecisionId === 'shoes' && idx === 0);
+                return (
+                  <div 
+                    key={idx}
+                    id={`location-card-${idx}`}
+                    style={{
+                      background: '#FFFFFF',
+                      border: isTargeted ? '1.5px solid #0F5132' : '1px solid rgba(30, 35, 45, 0.08)',
+                      borderRadius: '16px',
+                      padding: '12px 14px',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: '5px',
+                      boxShadow: '0 1px 2px rgba(0, 0, 0, 0.03)',
+                      transition: 'border-color 0.2s ease, background 0.2s ease'
+                    }}
+                  >
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <h3 style={{ fontWeight: 600, fontSize: '14px', color: '#1E232D', margin: 0 }}>
+                        {sub.name}
+                      </h3>
+                      <span style={{ fontWeight: 500, fontSize: '12px', color: '#64748B' }}>
+                        {sub.distance} • {sub.walkTime}
+                      </span>
+                    </div>
+                    {sub.bestFor && (
+                      <div style={{ fontWeight: 500, fontSize: '12px', color: '#64748B' }}>
+                        {sub.bestFor}
                       </div>
-                      <div className={styles.subLocationInfo}>
-                        <h4 className={styles.subLocationName} style={{ fontSize: '15px', fontWeight: 800, color: '#0F172A', lineHeight: 1.3 }}>
-                          {sub.name}
-                        </h4>
-                        <div className={styles.subLocationMeta} style={{ marginTop: '3px', flexWrap: 'wrap', gap: '8px' }}>
-                          <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', fontWeight: 700, color: '#0F5132' }}>
-                            <MapPin size={13} color="#0F5132" />
-                            {sub.distance}
-                          </span>
-                          <span className={styles.subLocationWalk}>
-                            {sub.walkTime} {lang === 'te' ? 'నడక' : 'walk'}
-                          </span>
-                          <span style={{ fontSize: '11px', fontWeight: 700, color: '#16A34A', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-                            <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#22C55E', display: 'inline-block' }} />
-                            {sub.status}
-                          </span>
-                        </div>
-                      </div>
+                    )}
+                    <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '2px' }}>
+                      <button 
+                        style={{ background: 'none', border: 'none', padding: '2px 0', color: '#D97706', fontWeight: 600, fontSize: '12.5px', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '4px' }}
+                        onClick={() => handleOpenMap(sub.name)}
+                      >
+                        <span>{lang === 'te' ? 'మ్యాప్ మార్గం చూడండి →' : 'View directions →'}</span>
+                      </button>
                     </div>
                   </div>
-
-                  {sub.bestFor && (
-                    <div className={styles.subLocationBestFor} style={{ marginTop: '2px' }}>
-                      {sub.bestFor}
-                    </div>
-                  )}
-
-                  {sub.whyRecommended && (
-                    <div className={styles.subLocationWhy}>
-                      {sub.whyRecommended}
-                    </div>
-                  )}
-
-                  <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '4px' }}>
-                    <button 
-                      className={styles.utilityDecisionLink}
-                      style={{ padding: '8px 16px', borderRadius: '20px', background: '#0F5132', color: '#FFFFFF', border: 'none', fontWeight: 700, fontSize: '12.5px', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '6px' }}
-                      onClick={() => handleOpenMap(sub.name)}
-                    >
-                      <span>{lang === 'te' ? 'మ్యాప్ మార్గం →' : 'Map Directions →'}</span>
-                    </button>
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </section>
         )}
 
         {/* DECISION CARDS (WHAT -> WHERE -> ACTION) */}
         <section style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-          <h3 className={styles.sectionTitle} style={{ fontSize: '14.5px', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.04em', margin: 0, color: '#0F172A' }}>
+          <h3 className={styles.sectionTitle} style={{ fontSize: '14.5px', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.04em', margin: 0, color: '#0F172A' }}>
             {item.id === 'secure-belongings' 
               ? (lang === 'te' ? 'ఎక్కడికి వెళ్లాలి?' : 'Where Should I Go?')
               : item.id === 'free-meals'
@@ -380,96 +381,92 @@ export default function EssentialDetailPage({ params }: { params: Promise<{ id: 
           </h3>
 
           <div className={styles.utilityDecisionGrid}>
-            {/* SECURE BELONGINGS MATRIX */}
+            {/* SECURE BELONGINGS MATRIX — COMPACT CHIP SELECTOR */}
             {item.id === 'secure-belongings' && (
-              <>
-                {/* 1. Mobile Phone */}
-                <div 
-                  className={`${styles.utilityDecisionCard} ${selectedDecisionId === 'phone' ? styles.utilityDecisionCardActive : ''}`}
-                  onClick={() => setSelectedDecisionId('phone')}
-                >
-                  <div className={styles.utilityDecisionTop}>
-                    <div className={styles.utilityDecisionIconBox}>
-                      <Smartphone size={16} />
-                    </div>
-                    <h4 className={styles.utilityDecisionName}>
-                      {lang === 'te' ? 'మొబైల్ ఫోన్లు' : 'Mobile Phone'}
-                    </h4>
-                  </div>
-                  <p className={styles.utilityDecisionWhere}>
-                    VQC-I & VQC-II
-                  </p>
-                  <p className={styles.utilityDecisionMeta}>
-                    Free · Exit pickup
-                  </p>
-                  <div className={styles.utilityDecisionActionRow}>
-                    <button 
-                      className={styles.utilityDecisionLink}
-                      onClick={(e) => { e.stopPropagation(); setSelectedDecisionId('phone'); handleOpenMap('VQC-I Mobile Deposit'); }}
-                    >
-                      <span>Directions →</span>
-                    </button>
-                  </div>
-                </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                <div style={{ display: 'flex', gap: '8px', overflowX: 'auto', paddingBottom: '4px', scrollbarWidth: 'none' }}>
+                  <button 
+                    onClick={() => {
+                      setSelectedDecisionId('phone');
+                      const el = document.getElementById('location-card-0');
+                      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }}
+                    style={{
+                      background: selectedDecisionId === 'phone' ? 'rgba(217, 119, 6, 0.12)' : '#F8FAFC',
+                      color: selectedDecisionId === 'phone' ? '#92400E' : '#334155',
+                      border: selectedDecisionId === 'phone' ? '1px solid rgba(217, 119, 6, 0.25)' : '1px solid #E2E8F0',
+                      fontWeight: selectedDecisionId === 'phone' ? 600 : 500,
+                      borderRadius: '999px',
+                      padding: '8px 14px',
+                      fontSize: '13px',
+                      cursor: 'pointer',
+                      whiteSpace: 'nowrap',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '6px'
+                    }}
+                  >
+                    <span style={{ display: 'inline-flex', background: 'rgba(217, 119, 6, 0.12)', color: '#92400E', borderRadius: '6px', padding: '2px', marginRight: '2px' }}>
+                      <Smartphone size={14} strokeWidth={2} />
+                    </span>
+                    <span style={{ fontWeight: 600, fontSize: '13px' }}>{lang === 'te' ? 'మొబైల్ ఫోన్లు → VQC-I' : 'Mobile → VQC-I'}</span>
+                  </button>
 
-                {/* 2. Heavy Luggage */}
-                <div 
-                  className={`${styles.utilityDecisionCard} ${selectedDecisionId === 'luggage' ? styles.utilityDecisionCardActive : ''}`}
-                  onClick={() => setSelectedDecisionId('luggage')}
-                >
-                  <div className={styles.utilityDecisionTop}>
-                    <div className={styles.utilityDecisionIconBox}>
-                      <Briefcase size={16} />
-                    </div>
-                    <h4 className={styles.utilityDecisionName}>
-                      {lang === 'te' ? 'ప్రయాణ లగేజీ & బ్యాగులు' : 'Heavy Luggage'}
-                    </h4>
-                  </div>
-                  <p className={styles.utilityDecisionWhere}>
-                    PAC-2 / PAC-5
-                  </p>
-                  <p className={styles.utilityDecisionMeta}>
-                    Free · Open 24/7
-                  </p>
-                  <div className={styles.utilityDecisionActionRow}>
-                    <button 
-                      className={styles.utilityDecisionLink}
-                      onClick={(e) => { e.stopPropagation(); setSelectedDecisionId('luggage'); handleOpenMap('PAC-2 Madhava Nilayam'); }}
-                    >
-                      <span>Directions →</span>
-                    </button>
-                  </div>
-                </div>
+                  <button 
+                    onClick={() => {
+                      setSelectedDecisionId('luggage');
+                      const el = document.getElementById('location-card-1');
+                      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }}
+                    style={{
+                      background: selectedDecisionId === 'luggage' ? 'rgba(217, 119, 6, 0.12)' : '#F8FAFC',
+                      color: selectedDecisionId === 'luggage' ? '#92400E' : '#334155',
+                      border: selectedDecisionId === 'luggage' ? '1px solid rgba(217, 119, 6, 0.25)' : '1px solid #E2E8F0',
+                      fontWeight: selectedDecisionId === 'luggage' ? 600 : 500,
+                      borderRadius: '999px',
+                      padding: '8px 14px',
+                      fontSize: '13px',
+                      cursor: 'pointer',
+                      whiteSpace: 'nowrap',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '6px'
+                    }}
+                  >
+                    <span style={{ display: 'inline-flex', background: '#F8FAFC', border: '1px solid #E2E8F0', color: '#475569', borderRadius: '6px', padding: '2px', marginRight: '2px' }}>
+                      <Luggage size={14} strokeWidth={2} />
+                    </span>
+                    <span style={{ fontWeight: 600, fontSize: '13px' }}>{lang === 'te' ? 'లగేజీ & బ్యాగులు → PAC-2' : 'Luggage → PAC-2'}</span>
+                  </button>
 
-                {/* 3. Shoes & Footwear */}
-                <div 
-                  className={`${styles.utilityDecisionCard} ${selectedDecisionId === 'shoes' ? styles.utilityDecisionCardActive : ''}`}
-                  onClick={() => setSelectedDecisionId('shoes')}
-                >
-                  <div className={styles.utilityDecisionTop}>
-                    <div className={styles.utilityDecisionIconBox}>
-                      <Footprints size={16} />
-                    </div>
-                    <h4 className={styles.utilityDecisionName}>
-                      {lang === 'te' ? 'పాదరక్షలు (చెప్పులు)' : 'Shoes'}
-                    </h4>
-                  </div>
-                  <p className={styles.utilityDecisionWhere}>
-                    Free stands near entrance
-                  </p>
-                  <p className={styles.utilityDecisionMeta}>
-                    Free · Token provided
-                  </p>
-                  <div className={styles.utilityDecisionActionRow}>
-                    <button 
-                      className={styles.utilityDecisionLink}
-                      onClick={(e) => { e.stopPropagation(); setSelectedDecisionId('shoes'); handleOpenMap('VQC Footwear Counter'); }}
-                    >
-                      <span>Directions →</span>
-                    </button>
-                  </div>
+                  <button 
+                    onClick={() => {
+                      setSelectedDecisionId('shoes');
+                      const el = document.getElementById('location-card-0');
+                      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }}
+                    style={{
+                      background: selectedDecisionId === 'shoes' ? 'rgba(217, 119, 6, 0.12)' : '#F8FAFC',
+                      color: selectedDecisionId === 'shoes' ? '#92400E' : '#334155',
+                      border: selectedDecisionId === 'shoes' ? '1px solid rgba(217, 119, 6, 0.25)' : '1px solid #E2E8F0',
+                      fontWeight: selectedDecisionId === 'shoes' ? 600 : 500,
+                      borderRadius: '999px',
+                      padding: '8px 14px',
+                      fontSize: '13px',
+                      cursor: 'pointer',
+                      whiteSpace: 'nowrap',
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '6px'
+                    }}
+                  >
+                    <span style={{ display: 'inline-flex', background: '#F8FAFC', border: '1px solid #E2E8F0', color: '#475569', borderRadius: '6px', padding: '2px', marginRight: '2px' }}>
+                      <Footprints size={14} strokeWidth={2} />
+                    </span>
+                    <span style={{ fontWeight: 600, fontSize: '13px' }}>{lang === 'te' ? 'చెప్పులు → ఉచిత కౌంటర్లు' : 'Shoes → Free Stands'}</span>
+                  </button>
                 </div>
-              </>
+              </div>
             )}
 
             {/* FREE MEALS MATRIX */}
@@ -719,50 +716,65 @@ export default function EssentialDetailPage({ params }: { params: Promise<{ id: 
         </section>
 
         {/* BEFORE YOU GO */}
-        <section style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-          <h3 className={styles.sectionTitle} style={{ fontSize: '14.5px', fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.04em', margin: 0, color: '#0F172A' }}>
+        <section style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          <h3 style={{ fontFamily: 'var(--font-sans), system-ui', fontSize: '13px', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em', margin: 0, color: '#1E232D' }}>
             {lang === 'te' ? 'వెళ్లే ముందు' : 'Before You Go'}
           </h3>
 
-          <div style={{ background: '#FFFFFF', border: '1px solid #E2E8F0', borderRadius: '14px', padding: '14px 16px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', color: '#15803D', fontWeight: 600 }}>
-              <CheckCircle2 size={16} color="#16A34A" style={{ flexShrink: 0 }} />
-              <span>{lang === 'te' ? 'ఒరిజినల్ ఆధార్ కార్డు / ప్రభుత్వ ఫోటో గుర్తింపు కార్డు' : 'Physical Aadhaar or Govt Photo ID'}</span>
+          <div style={{ background: '#FFFFFF', border: '1px solid rgba(30, 35, 45, 0.08)', borderRadius: '16px', padding: '14px 16px', display: 'flex', flexDirection: 'column', gap: '10px', boxShadow: '0 1px 2px rgba(0,0,0,0.03)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <span style={{ background: '#F8FAFC', border: '1px solid #E2E8F0', borderRadius: '999px', width: '20px', height: '20px', display: 'grid', placeItems: 'center', color: '#059669', flexShrink: 0 }}>
+                <Check size={12} strokeWidth={2.5} />
+              </span>
+              <span style={{ fontFamily: 'var(--font-sans), system-ui', fontWeight: 500, fontSize: '13px', color: '#334155' }}>
+                {lang === 'te' ? 'ఒరిజినల్ ఆధార్ కార్డు / ప్రభుత్వ ఫోటో గుర్తింపు కార్డు' : 'Physical Aadhaar or Govt Photo ID'}
+              </span>
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', color: '#15803D', fontWeight: 600 }}>
-              <CheckCircle2 size={16} color="#16A34A" style={{ flexShrink: 0 }} />
-              <span>{lang === 'te' ? 'దర్శన టికెట్ ప్రింట్‌అవుట్ లేదా బార్‌కోడ్' : 'Darshan ticket (physical or barcode)'}</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <span style={{ background: '#F8FAFC', border: '1px solid #E2E8F0', borderRadius: '999px', width: '20px', height: '20px', display: 'grid', placeItems: 'center', color: '#059669', flexShrink: 0 }}>
+                <Check size={12} strokeWidth={2.5} />
+              </span>
+              <span style={{ fontFamily: 'var(--font-sans), system-ui', fontWeight: 500, fontSize: '13px', color: '#334155' }}>
+                {lang === 'te' ? 'దర్శన టికెట్ ప్రింట్‌అవుట్ లేదా బార్‌కోడ్' : 'Darshan ticket (physical or barcode)'}
+              </span>
             </div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', color: '#15803D', fontWeight: 600 }}>
-              <CheckCircle2 size={16} color="#16A34A" style={{ flexShrink: 0 }} />
-              <span>{lang === 'te' ? 'కొద్దిగా నగదు ₹50–₹100 (లడ్డూ లేదా తాళం కొరకు)' : 'Small cash ₹50–₹100'}</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <span style={{ background: '#F8FAFC', border: '1px solid #E2E8F0', borderRadius: '999px', width: '20px', height: '20px', display: 'grid', placeItems: 'center', color: '#059669', flexShrink: 0 }}>
+                <Check size={12} strokeWidth={2.5} />
+              </span>
+              <span style={{ fontFamily: 'var(--font-sans), system-ui', fontWeight: 500, fontSize: '13px', color: '#334155' }}>
+                {lang === 'te' ? 'కొద్దిగా నగదు ₹50–₹100 (లడ్డూ లేదా తాళం కొరకు)' : 'Small cash ₹50–₹100'}
+              </span>
             </div>
           </div>
 
-          {/* Prohibited Items Accordion (Soft Red) */}
-          <div className={styles.prohibitedAccordionCard}>
+          {/* Prohibited Items Accordion (M3 Neutral Card) */}
+          <div style={{ background: '#FFFFFF', border: '1px solid rgba(30, 35, 45, 0.08)', borderRadius: '16px', overflow: 'hidden', boxShadow: '0 1px 2px rgba(0,0,0,0.03)' }}>
             <button 
               className={styles.prohibitedAccordionHeader}
               onClick={() => setShowProhibited(p => !p)}
+              style={{ background: '#FFFFFF', padding: '12px 16px', border: 'none', width: '100%', display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer' }}
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <AlertTriangle size={15} color="#DC2626" />
-                <span style={{ fontSize: '13.5px', fontWeight: 700, color: '#991B1B' }}>
+                <div style={{ background: '#FEF3C7', color: '#92400E', borderRadius: '6px', width: '24px', height: '24px', display: 'grid', placeItems: 'center' }}>
+                  <AlertTriangle size={13} strokeWidth={2} />
+                </div>
+                <span style={{ fontWeight: 600, fontSize: '13px', color: '#1E232D' }}>
                   {lang === 'te' ? 'క్యూలోకి తీసుకెళ్లకూడని వస్తువులు' : 'Items not allowed inside'}
                 </span>
               </div>
-              {showProhibited ? <ChevronUp size={16} color="#991B1B" /> : <ChevronDown size={16} color="#991B1B" />}
+              {showProhibited ? <ChevronUp size={16} color="#64748B" /> : <ChevronDown size={16} color="#64748B" />}
             </button>
 
             {showProhibited && (
-              <div className={styles.accordionBody}>
-                <div style={{ fontSize: '11.5px', color: '#991B1B', fontStyle: 'italic', marginBottom: '2px' }}>
+              <div style={{ padding: '0 16px 14px 16px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                <div style={{ fontSize: '11.5px', color: '#64748B', fontStyle: 'normal', marginBottom: '2px' }}>
                   {lang === 'te' 
                     ? 'స్కానర్ వద్ద భద్రతా సిబ్బంది తిప్పి పంపుతారు. దర్శనానికి ముందే డిపాజిట్ చేయండి.'
                     : 'Flagged by metal detectors; strictly barred by sanctum security. Deposit these before entering.'}
                 </div>
                 {item.requirements?.prohibited?.map((req, idx) => (
-                  <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12.5px', color: '#B91C1C', fontWeight: 600 }}>
+                  <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12.5px', color: '#7F1D1D', fontWeight: 500 }}>
                     <X size={14} color="#DC2626" style={{ flexShrink: 0 }} />
                     <span>{req}</span>
                   </div>
@@ -781,7 +793,7 @@ export default function EssentialDetailPage({ params }: { params: Promise<{ id: 
             >
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <Clock size={16} color="#475569" />
-                <span style={{ fontSize: '13.5px', fontWeight: 700, color: '#0F172A' }}>
+                <span style={{ fontSize: '13.5px', fontWeight: 600, color: '#1E232D' }}>
                   {lang === 'te' ? 'విధానం ఎలా పనిచేస్తుంది?' : 'How It Works'}
                 </span>
               </div>
@@ -801,46 +813,6 @@ export default function EssentialDetailPage({ params }: { params: Promise<{ id: 
                     </div>
                   ))}
                 </div>
-              </div>
-            )}
-          </div>
-        )}
-
-        {/* OFFICIAL LOCATIONS (COLLAPSIBLE NEUTRAL ACCORDION) */}
-        {item.subLocations && item.subLocations.length > 0 && (
-          <div className={styles.neutralAccordionCard}>
-            <button 
-              className={styles.neutralAccordionHeader}
-              onClick={() => setShowAllLocations(p => !p)}
-            >
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <MapPin size={16} color="#0F5132" />
-                <span style={{ fontSize: '13.5px', fontWeight: 700, color: '#0F172A' }}>
-                  {lang === 'te' ? 'అధికారిక కేంద్రాలు & కౌంటర్లు' : 'Official Locations'}
-                </span>
-              </div>
-              {showAllLocations ? <ChevronUp size={16} color="#0F5132" /> : <ChevronDown size={16} color="#0F5132" />}
-            </button>
-
-            {showAllLocations && (
-              <div className={styles.accordionBody}>
-                {item.subLocations.map((loc, idx) => (
-                  <div key={idx} className={styles.subLocationCard} style={{ padding: '10px 12px' }}>
-                    <div className={styles.subLocationInfo}>
-                      <h4 className={styles.subLocationName} style={{ fontSize: '13.5px' }}>{loc.name}</h4>
-                      <div className={styles.subLocationMeta} style={{ fontSize: '11.5px' }}>
-                        <span>{loc.distance}</span>
-                        <span style={{ color: '#16A34A', fontWeight: 700 }}>• {loc.status}</span>
-                      </div>
-                    </div>
-                    <button 
-                      onClick={() => handleOpenMap(loc.name)}
-                      className={styles.utilityDecisionLink}
-                    >
-                      <span>Directions →</span>
-                    </button>
-                  </div>
-                ))}
               </div>
             )}
           </div>

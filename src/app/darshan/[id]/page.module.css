@@ -2,7 +2,7 @@
   padding: 0 0 5rem 0;
   max-width: 1080px;
   margin: 0 auto;
-  font-family: var(--font-heading), 'Plus Jakarta Sans', var(--font-body), 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
   background-color: #F8FAFC;
   min-height: 100vh;
   color: #0F172A;
@@ -118,7 +118,7 @@
 
 .appBarTitle {
   font-size: 15px;
-  font-weight: 900;
+  font-weight: 700;
   color: #0F172A;
   margin: 0;
   white-space: nowrap;
@@ -248,7 +248,7 @@
 
 .cardMainHeading {
   font-size: 17px;
-  font-weight: 900;
+  font-weight: 700;
   color: #0F172A;
   margin: 0;
   letter-spacing: -0.02em;
@@ -257,7 +257,7 @@
 
 .statusPill {
   font-size: 11px;
-  font-weight: 800;
+  font-weight: 600;
   padding: 4px 10px;
   border-radius: 99px;
   letter-spacing: 0.2px;
@@ -304,7 +304,7 @@
 
 .highlightValue {
   font-size: 18px;
-  font-weight: 900;
+  font-weight: 700;
   color: #9F1239;
   letter-spacing: -0.02em;
 }
@@ -328,7 +328,7 @@
 
 .centresHeading {
   font-size: 11.5px;
-  font-weight: 800;
+  font-weight: 600;
   color: #0F172A;
   text-transform: uppercase;
   letter-spacing: 0.3px;
@@ -360,7 +360,7 @@
 
 .centreName {
   color: #0F172A;
-  font-weight: 800;
+  font-weight: 600;
 }
 
 .centreLandmark {
@@ -449,7 +449,7 @@
 
 .accordionHeading {
   font-size: 14.5px;
-  font-weight: 900;
+  font-weight: 600;
   color: #0F172A;
   margin: 0;
   letter-spacing: -0.01em;
@@ -459,7 +459,7 @@
 .accordionSubheading {
   font-size: 11.5px;
   color: #64748B;
-  font-weight: 600;
+  font-weight: 500;
 }
 
 .accordionHeaderRight {
@@ -471,7 +471,7 @@
 
 .miniPillBadge {
   font-size: 11px;
-  font-weight: 800;
+  font-weight: 600;
   background: #F1F5F9;
   color: #475569;
   padding: 3px 8px;
@@ -577,14 +577,14 @@
 
 .stepNumberTag {
   font-size: 10px;
-  font-weight: 900;
+  font-weight: 600;
   color: #0F5132;
   letter-spacing: 0.5px;
 }
 
 .stepTitle {
   font-size: 13.5px;
-  font-weight: 800;
+  font-weight: 600;
   color: #0F172A;
   margin: 0;
 }
@@ -636,11 +636,11 @@
   align-items: center;
   gap: 6px;
   font-size: 12.5px;
-  font-weight: 800;
+  font-weight: 600;
 }
 
-.ruleBoxAllowed .ruleBoxTitle { color: #166534; }
-.ruleBoxProhibited .ruleBoxTitle { color: #991B1B; }
+.ruleBoxAllowed .ruleBoxTitle { color: #166534; font-weight: 600; }
+.ruleBoxProhibited .ruleBoxTitle { color: #991B1B; font-weight: 600; }
 
 .ruleTags {
   display: flex;
@@ -656,7 +656,7 @@
   border: 1px solid #86EFAC;
   color: #166534;
   font-size: 11.5px;
-  font-weight: 700;
+  font-weight: 600;
   padding: 4px 9px;
   border-radius: 7px;
 }
@@ -669,7 +669,7 @@
   border: 1px solid #FCA5A5;
   color: #991B1B;
   font-size: 11.5px;
-  font-weight: 700;
+  font-weight: 600;
   padding: 4px 9px;
   border-radius: 7px;
 }
@@ -729,7 +729,7 @@
 
 .amenityName {
   font-size: 12px;
-  font-weight: 800;
+  font-weight: 600;
   color: #0F172A;
 }
 
@@ -768,7 +768,7 @@
   padding: 8px 12px;
   border-radius: 10px;
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 /* Bottom Bar */
@@ -795,7 +795,7 @@
   padding: 14px 20px;
   border-radius: 14px;
   font-size: 14px;
-  font-weight: 800;
+  font-weight: 700;
   cursor: pointer;
   transition: all 0.15s cubic-bezier(0.16, 1, 0.3, 1);
   box-shadow: 0 4px 14px rgba(15, 23, 42, 0.12);

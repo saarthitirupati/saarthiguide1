@@ -118,7 +118,7 @@ export default function SsdTokensStandalonePage() {
       minHeight: '100vh',
       backgroundColor: '#F8FAFC',
       color: '#0F172A',
-      paddingBottom: '5rem',
+      paddingBottom: 'calc(88px + env(safe-area-inset-bottom, 16px))',
       fontFamily: 'var(--font-sans, system-ui, -apple-system, sans-serif)'
     }}>
       {/* ── 1. STICKY TOP APP BAR ── */}
@@ -154,7 +154,7 @@ export default function SsdTokensStandalonePage() {
             flexShrink: 0, boxShadow: '0 0 6px #10B981'
           }} />
           <h1 style={{
-            fontSize: '15px', fontWeight: 900, color: '#0F172A', margin: 0,
+            fontSize: '15px', fontWeight: 700, color: '#0F172A', margin: 0,
             whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'
           }}>
             {lang === 'te' ? 'టీటీడీ ఎస్‌ఎస్‌డి ఉచిత టోకెన్ సెంటర్లు' : 'SSD Free Token Live Status & Counters'}
@@ -220,7 +220,7 @@ export default function SsdTokensStandalonePage() {
                 <Ticket size={20} />
               </div>
               <div>
-                <h2 style={{ fontSize: '17px', fontWeight: 900, margin: 0, color: '#0F172A' }}>
+                <h2 style={{ fontSize: '17px', fontWeight: 700, margin: 0, color: '#0F172A' }}>
                   {lang === 'te' ? 'ఎస్‌ఎస్‌డి టోకెన్ ప్రత్యక్ష సమాచారం' : 'SSD Token Live Status'}
                 </h2>
                 <span style={{ fontSize: '11px', color: '#64748B', fontWeight: 600 }}>
@@ -230,7 +230,7 @@ export default function SsdTokensStandalonePage() {
             </div>
 
             <span style={{
-              fontSize: '11.5px', fontWeight: 800, padding: '4px 12px', borderRadius: '99px',
+              fontSize: '11.5px', fontWeight: 600, padding: '4px 12px', borderRadius: '99px',
               backgroundColor: statusBadge.bg, color: statusBadge.color, border: `1px solid ${statusBadge.border}`
             }}>
               {lang === 'te' ? statusBadge.textTe : statusBadge.textEn}
@@ -251,10 +251,10 @@ export default function SsdTokensStandalonePage() {
             }}>
               <ShieldAlert size={18} color="#DC2626" style={{ flexShrink: 0, marginTop: '2px' }} />
               <div>
-                <span style={{ fontSize: '10px', fontWeight: 800, color: '#991B1B', textTransform: 'uppercase', letterSpacing: '0.04em', display: 'block' }}>
+                <span style={{ fontSize: '10px', fontWeight: 600, color: '#991B1B', textTransform: 'uppercase', letterSpacing: '0.04em', display: 'block' }}>
                   {lang === 'te' ? 'ముఖ్యమైన హెచ్చరిక' : 'IMPORTANT ADVISORY'}
                 </span>
-                <span style={{ fontSize: '13px', fontWeight: 800, color: '#7F1D1D', marginTop: '2px', display: 'block', lineHeight: 1.4 }}>
+                <span style={{ fontSize: '13px', fontWeight: 600, color: '#7F1D1D', marginTop: '2px', display: 'block', lineHeight: 1.4 }}>
                   {notice}
                 </span>
               </div>
@@ -278,7 +278,7 @@ export default function SsdTokensStandalonePage() {
                 <div style={{ fontSize: '10.5px', fontWeight: 700, color: '#9F1239', textTransform: 'uppercase' }}>
                   {lang === 'te' ? 'మరుసటి రోజు టోకెన్ జారీ సమయం' : 'Next Token Release / Counter Opening'}
                 </div>
-                <div style={{ fontSize: '15px', fontWeight: 900, color: '#881337' }}>
+                <div style={{ fontSize: '15px', fontWeight: 700, color: '#881337' }}>
                   {nextTokenTime || '2:00 AM Daily'}
                 </div>
               </div>
@@ -296,7 +296,7 @@ export default function SsdTokensStandalonePage() {
         {/* ── 2. COLLECTION CENTRES (TIRUPATI COUNTERS WITH DIRECT MAPS) ── */}
         <section>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
-            <h3 style={{ fontSize: '15px', fontWeight: 900, color: '#0F172A', margin: 0, display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <h3 style={{ fontSize: '15px', fontWeight: 700, color: '#0F172A', margin: 0, display: 'flex', alignItems: 'center', gap: '6px' }}>
               <MapPin size={16} color="#E11D48" />
               <span>{lang === 'te' ? 'తిరుపతి ఎస్‌ఎస్‌డి టోకెన్ కౌంటర్లు' : 'Tirupati Token Counter Locations'}</span>
             </h3>
@@ -324,7 +324,7 @@ export default function SsdTokensStandalonePage() {
                         {icon}
                       </div>
                       <div>
-                        <h4 style={{ fontSize: '14px', fontWeight: 800, color: '#0F172A', margin: 0 }}>
+                        <h4 style={{ fontSize: '14px', fontWeight: 600, color: '#0F172A', margin: 0 }}>
                           {lang === 'te' ? center.nameTe : center.nameEn}
                         </h4>
                         <p style={{ fontSize: '11.5px', color: '#64748B', margin: '2px 0 0 0', fontWeight: 500 }}>
@@ -344,7 +344,7 @@ export default function SsdTokensStandalonePage() {
                       rel="noopener noreferrer"
                       style={{
                         background: '#F1F5F9', border: '1px solid #CBD5E1', color: '#0F172A',
-                        padding: '6px 10px', borderRadius: '8px', fontSize: '11px', fontWeight: 800,
+                        padding: '6px 10px', borderRadius: '8px', fontSize: '11px', fontWeight: 600,
                         textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '4px', flexShrink: 0
                       }}
                     >
@@ -364,7 +364,7 @@ export default function SsdTokensStandalonePage() {
           borderRadius: '16px',
           padding: '16px'
         }}>
-          <h3 style={{ fontSize: '15px', fontWeight: 900, color: '#0F172A', margin: '0 0 12px 0', display: 'flex', alignItems: 'center', gap: '6px' }}>
+          <h3 style={{ fontSize: '15px', fontWeight: 700, color: '#0F172A', margin: '0 0 12px 0', display: 'flex', alignItems: 'center', gap: '6px' }}>
             <ShieldCheck size={16} color="#16A34A" />
             <span>{lang === 'te' ? 'టోకెన్ పొందడానికి తప్పనిసరి నియమాలు' : 'Mandatory Rules & Requirements'}</span>
           </h3>
@@ -411,7 +411,7 @@ export default function SsdTokensStandalonePage() {
           borderRadius: '16px',
           padding: '16px'
         }}>
-          <h3 style={{ fontSize: '15px', fontWeight: 900, color: '#0F172A', margin: '0 0 12px 0', display: 'flex', alignItems: 'center', gap: '6px' }}>
+          <h3 style={{ fontSize: '15px', fontWeight: 700, color: '#0F172A', margin: '0 0 12px 0', display: 'flex', alignItems: 'center', gap: '6px' }}>
             <Navigation size={16} color="#4F46E5" />
             <span>{lang === 'te' ? 'ఎస్‌ఎస్‌డి టోకెన్ దర్శన విధానం' : 'SSD Token Journey Steps'}</span>
           </h3>
@@ -428,13 +428,13 @@ export default function SsdTokensStandalonePage() {
               <div key={st.step} style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
                 <div style={{
                   width: '26px', height: '26px', borderRadius: '50%', backgroundColor: '#EEF2FF',
-                  color: '#4F46E5', fontSize: '12px', fontWeight: 900, display: 'flex',
+                  color: '#4F46E5', fontSize: '12px', fontWeight: 700, display: 'flex',
                   alignItems: 'center', justifyContent: 'center', flexShrink: 0
                 }}>
                   {st.step}
                 </div>
                 <div>
-                  <div style={{ fontSize: '13px', fontWeight: 800, color: '#0F172A' }}>{st.title}</div>
+                  <div style={{ fontSize: '13px', fontWeight: 600, color: '#0F172A' }}>{st.title}</div>
                   <div style={{ fontSize: '11.5px', color: '#64748B', marginTop: '2px' }}>{st.desc}</div>
                 </div>
               </div>
@@ -447,7 +447,7 @@ export default function SsdTokensStandalonePage() {
           <Link href="/darshan/sarva-darshan" style={{ textDecoration: 'none' }}>
             <div style={{
               backgroundColor: '#FFFFFF', border: '1px solid #E2E8F0', borderRadius: '12px',
-              padding: '12px', textAlign: 'center', color: '#0F172A', fontSize: '12px', fontWeight: 800
+              padding: '12px', textAlign: 'center', color: '#0F172A', fontSize: '12px', fontWeight: 600
             }}>
               Sarva Darshan Guide $\rightarrow$
             </div>
@@ -456,7 +456,7 @@ export default function SsdTokensStandalonePage() {
           <Link href="/darshan/special-entry" style={{ textDecoration: 'none' }}>
             <div style={{
               backgroundColor: '#FFFFFF', border: '1px solid #E2E8F0', borderRadius: '12px',
-              padding: '12px', textAlign: 'center', color: '#4F46E5', fontSize: '12px', fontWeight: 800
+              padding: '12px', textAlign: 'center', color: '#4F46E5', fontSize: '12px', fontWeight: 600
             }}>
               ₹300 Special Entry $\rightarrow$
             </div>

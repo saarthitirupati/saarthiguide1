@@ -275,7 +275,7 @@ export default function FestivalDetail({ params }: { params: Promise<{ slug: str
 
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }}>
           <div style={{ marginBottom: 12 }}>{icon}</div>
-          <h1 style={{ margin: '0 0 8px', fontSize: 26, fontWeight: 800, color: 'white', lineHeight: 1.2 }}>{fest.name}</h1>
+          <h1 style={{ margin: '0 0 8px', fontSize: 26, fontWeight: 600, color: 'white', lineHeight: 1.2 }}>{fest.name}</h1>
           {dateStr && (
             <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
               <CalendarDays size={16} color="rgba(255,255,255,0.85)" />
@@ -351,16 +351,16 @@ export default function FestivalDetail({ params }: { params: Promise<{ slug: str
                 }}
               >
                 <div style={{ minWidth: 0, flex: 1 }}>
-                  <span style={{ fontSize: '11px', fontWeight: 800, color: '#047857', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+                  <span style={{ fontSize: '11px', fontWeight: 600, color: '#047857', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
                     Recommended Shrine Visit
                   </span>
-                  <h4 style={{ margin: '2px 0 0', fontSize: '15px', fontWeight: 800, color: '#064E3B' }}>
+                  <h4 style={{ margin: '2px 0 0', fontSize: '15px', fontWeight: 600, color: '#064E3B' }}>
                     {fest.location || 'Sri Kapileswara Swamy Temple'}
                   </h4>
                 </div>
                 <span style={{ 
                   fontSize: '12.5px', 
-                  fontWeight: 800, 
+                  fontWeight: 600, 
                   color: '#059669', 
                   background: 'white', 
                   padding: '8px 14px', 

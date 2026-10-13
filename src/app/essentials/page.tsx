@@ -289,7 +289,7 @@ export default function PilgrimEssentialsPage() {
       </header>
 
       {/* Main Scroll Content */}
-      <div className={styles.scrollArea} style={{ paddingBottom: '32px', gap: '20px' }}>
+      <div className={styles.scrollArea} style={{ paddingBottom: 'calc(88px + env(safe-area-inset-bottom, 16px))', gap: '20px' }}>
         
         {/* Search Bar ("What are you looking for?") */}
         <div className={styles.searchContainer}>
@@ -324,9 +324,21 @@ export default function PilgrimEssentialsPage() {
             initial={{ opacity: 0, y: -6 }}
             animate={{ opacity: 1, y: 0 }}
           >
-            <div style={{ flex: 1 }}>
+            <div style={{
+              width: '32px',
+              height: '32px',
+              borderRadius: '8px',
+              background: '#FEF3C7',
+              color: '#92400E',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexShrink: 0
+            }}>
+              <AlertTriangle size={16} />
+            </div>
+            <div style={{ flex: 1, minWidth: 0 }}>
               <div className={styles.noticeHeader}>
-                <AlertTriangle size={14} color="#D97706" />
                 <span>{t.todaysNotice}</span>
               </div>
               <p className={styles.noticeContent}>
@@ -336,7 +348,7 @@ export default function PilgrimEssentialsPage() {
             </div>
             <button 
               onClick={() => setDismissedNotice(true)}
-              style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#92400E', padding: '2px' }}
+              style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#94A3B8', padding: '2px', display: 'flex' }}
               aria-label="Dismiss notice"
             >
               <X size={16} />

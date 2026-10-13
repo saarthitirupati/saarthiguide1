@@ -60,6 +60,10 @@ export async function GET(request: Request) {
       totalCount: evaluated.length,
       userLocation: { lat: userLat, lng: userLng },
       places: evaluated
+    }, {
+      headers: {
+        'Cache-Control': 'public, max-age=30, s-maxage=60, stale-while-revalidate=300'
+      }
     });
   } catch (error: any) {
     return NextResponse.json({

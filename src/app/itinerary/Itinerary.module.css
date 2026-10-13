@@ -186,7 +186,7 @@
   left: 24px;
   color: var(--primary);
   font-size: 1.2rem;
-  font-weight: 900;
+  font-weight: 700;
 }
 
 .itemContent {
@@ -239,7 +239,7 @@
 
 .headerTitle h1 {
   font-size: 1.1rem;
-  font-weight: 800;
+  font-weight: 600;
   margin: 0;
 }
 
@@ -277,7 +277,7 @@
 
 .categoryBadge {
   font-size: 0.65rem;
-  font-weight: 800;
+  font-weight: 600;
   padding: 2px 8px;
   border-radius: 4px;
   text-transform: uppercase;

@@ -178,7 +178,7 @@ export function IPhoneInstallModal({ isOpen, onClose }: { isOpen: boolean; onClo
             marginBottom: '16px'
           }}>
             <CheckCircle2 size={16} color="#D97706" style={{ flexShrink: 0 }} />
-            <span>{lang === 'te' ? '100% ఆఫ్‌లైన్ మ్యాప్‌లు & ప్రత్యక్ష పుష్ నోటిఫికేషన్‌లు ఐఫోన్‌లో పనిచేస్తాయి.' : '100% Offline Maps & Live Push Notifications work seamlessly.'}</span>
+            <span>{lang === 'te' ? 'పూర్తి స్క్రీన్‌లో బ్రౌజర్ బార్లు లేకుండా నేరుగా పనిచేస్తుంది.' : 'Launches in full screen without browser bars right from your Home Screen.'}</span>
           </div>
 
           {/* Action Button */}

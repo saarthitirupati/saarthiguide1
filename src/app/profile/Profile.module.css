@@ -19,7 +19,7 @@
 
 .title {
   font-size: 32px;
-  font-weight: 800;
+  font-weight: 600;
   letter-spacing: -1px;
   margin-bottom: 8px;
 }
@@ -55,7 +55,7 @@
 
 .statVal {
   font-size: 28px;
-  font-weight: 800;
+  font-weight: 600;
   color: var(--color-saffron-500, #E9801D);
 }
 

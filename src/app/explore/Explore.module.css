@@ -21,7 +21,7 @@
 
 .header h1 {
   font-size: 17px;
-  font-weight: 800;
+  font-weight: 600;
   color: #0F172A;
   letter-spacing: -0.02em;
 }
@@ -59,25 +59,25 @@
 }
 
 .searchBar {
-  background: var(--md-sys-color-surface-container-low, #F6F3EE);
-  height: 52px;
-  padding: 0 18px;
-  border-radius: var(--md-sys-shape-corner-full, 999px);
+  background: #FFFFFF;
+  height: 48px;
+  padding: 0 16px;
+  border-radius: 16px;
   display: flex;
   align-items: center;
   gap: 12px;
   margin-bottom: 10px;
   width: 100%;
-  border: 1px solid var(--md-sys-color-outline-variant, #D5C3B6);
-  box-shadow: var(--md-sys-elevation-level1, 0 1px 3px rgba(0,0,0,0.04));
-  transition: all var(--md-sys-motion-duration-short, 150ms) var(--md-sys-motion-easing-standard);
+  border: 1px solid rgba(30, 35, 45, 0.08);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  transition: all 0.2s ease;
   box-sizing: border-box;
 }
 
 .searchBar:focus-within {
   background: #FFFFFF;
-  border-color: var(--md-sys-color-primary, #853F00);
-  box-shadow: 0 0 0 3px rgba(133, 63, 0, 0.12), var(--md-sys-elevation-level2);
+  border-color: rgba(217, 119, 6, 0.4);
+  box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.08);
 }
 
 .searchBar input {
@@ -112,14 +112,14 @@
   flex: 0 0 auto;
   height: 34px;
   padding: 0 14px;
-  border-radius: var(--md-sys-shape-corner-small, 8px);
-  font-size: 12px;
-  font-weight: 700;
-  background: var(--md-sys-color-surface-container-lowest, #FFFFFF);
-  color: var(--md-sys-color-on-surface-variant, #50453D);
-  border: 1px solid var(--md-sys-color-outline-variant, #E2E8F0);
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 500;
+  background: #FFFFFF;
+  color: #475569;
+  border: 1px solid rgba(30, 35, 45, 0.08);
   cursor: pointer;
-  transition: all var(--md-sys-motion-duration-short, 150ms) var(--md-sys-motion-easing-standard);
+  transition: all 0.18s cubic-bezier(0.2, 0, 0, 1);
   white-space: nowrap;
   display: inline-flex;
   align-items: center;
@@ -128,20 +128,21 @@
 }
 
 .filterItem:hover {
-  background: var(--md-sys-color-surface-container-low, #F6F3EE);
-  border-color: var(--md-sys-color-outline, #82756B);
+  background: #F8FAFC;
+  border-color: rgba(30, 35, 45, 0.15);
+  color: #1E232D;
 }
 
 .activeFilter {
-  background: var(--md-sys-color-primary-container, #FEF3C7);
-  color: var(--md-sys-color-on-primary-container, #78350F);
-  border-color: var(--md-sys-color-primary, #853F00);
-  font-weight: 800;
-  box-shadow: var(--md-sys-elevation-level1);
+  background: rgba(217, 119, 6, 0.12) !important;
+  color: #92400E !important;
+  border: 1px solid rgba(217, 119, 6, 0.25) !important;
+  font-weight: 600 !important;
+  box-shadow: none !important;
 }
 
 .content {
-  padding: 14px 16px 84px;
+  padding: 14px 16px calc(88px + env(safe-area-inset-bottom, 16px));
   max-width: 1440px;
   margin: 0 auto;
 }
@@ -170,7 +171,7 @@
 
 .curatedTitle {
   font-size: 16px;
-  font-weight: 800;
+  font-weight: 600;
   margin-bottom: 10px;
   color: #0F172A;
   letter-spacing: -0.02em;
@@ -271,7 +272,7 @@
 
 .sectionTitle {
   font-size: 18px;
-  font-weight: 800;
+  font-weight: 600;
   color: #0F172A;
   letter-spacing: -0.02em;
 }
@@ -289,6 +290,7 @@
 }
 
 .templeItem {
+  position: relative;
   background: #FFFFFF;
   border-radius: 16px;
   overflow: hidden;

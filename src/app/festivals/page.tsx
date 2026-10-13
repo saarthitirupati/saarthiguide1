@@ -127,7 +127,7 @@ export default function FestivalsPage() {
             <ChevronLeft size={22} color="#0F172A" />
           </button>
           <div>
-            <h1 style={{ fontSize: 18, fontWeight: 800, margin: 0, color: '#0F172A' }}>
+            <h1 style={{ fontSize: 18, fontWeight: 600, margin: 0, color: '#0F172A' }}>
               2026 Tirupati Festival Calendar
             </h1>
             <p style={{ fontSize: 12, margin: '2px 0 0', color: '#64748B', fontWeight: 500 }}>
@@ -262,7 +262,7 @@ export default function FestivalsPage() {
                             <CalendarHeart size={18} color={color} />
                           </div>
                           <div>
-                            <h3 style={{ margin: 0, fontSize: 16, fontWeight: 800, color: '#0F172A', lineHeight: 1.2 }}>
+                            <h3 style={{ margin: 0, fontSize: 16, fontWeight: 600, color: '#0F172A', lineHeight: 1.2 }}>
                               {fest.name}
                             </h3>
                             <span style={{ fontSize: 12, color: color, fontWeight: 700, marginTop: 2, display: 'block' }}>

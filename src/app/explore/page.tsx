@@ -123,34 +123,14 @@ function ExploreContent() {
   const [activeFilter, setActiveFilter] = useState('All');
   const [locationError, setLocationError] = useState(false);
   const [isLocationModalOpen, setIsLocationModalOpen] = useState(false);
-  const [savedPlaceIds, setSavedPlaceIds] = useState<string[]>([]);
-  const { userLocation, setUserLocation, setLocationPermission, locationName } = useTrip();
-
-  useEffect(() => {
-    try {
-      if (typeof window === 'undefined') return;
-      const saved = localStorage.getItem('saarthi_saved_places');
-      if (saved) setSavedPlaceIds(JSON.parse(saved));
-    } catch {
-      // Ignore storage errors
-    }
-  }, []);
+  const { userLocation, setUserLocation, setLocationPermission, locationName, savedPlaces, togglePlace } = useTrip();
 
   const toggleSavePlace = (id: string, e?: React.MouseEvent) => {
     if (e) {
       e.preventDefault();
       e.stopPropagation();
     }
-    setSavedPlaceIds(prev => {
-      const isSaved = prev.includes(id);
-      const next = isSaved ? prev.filter(i => i !== id) : [...prev, id];
-      try {
-        localStorage.setItem('saarthi_saved_places', JSON.stringify(next));
-      } catch {
-        // Ignore storage errors
-      }
-      return next;
-    });
+    togglePlace(id);
   };
 
   // Cross-collection search results from Supabase
@@ -316,7 +296,7 @@ function ExploreContent() {
       if (f === 'all' || f === 'nearby') {
         matchesFilter = true;
       } else if (f === 'saved') {
-        matchesFilter = savedPlaceIds.includes(place.id);
+        matchesFilter = savedPlaces.includes(place.id);
       } else {
         const pType = toStr(place.placeType).toLowerCase();
         const pCat = toStr(place.category).toLowerCase();
@@ -366,7 +346,7 @@ function ExploreContent() {
     result.sort((a: any, b: any) => (a.computedDistance ?? 999) - (b.computedDistance ?? 999));
 
     return result;
-  }, [searchQuery, activeFilter, places, userLocation, isAlternativeQuery, isTirupatiQuery, savedPlaceIds]);
+  }, [searchQuery, activeFilter, places, userLocation, isAlternativeQuery, isTirupatiQuery, savedPlaces]);
 
   const nearbyPlaces = useMemo(() => {
     return [...filteredPlaces]
@@ -405,7 +385,7 @@ function ExploreContent() {
     const counts: Record<string, number> = {
       All: rawSource.length,
       Nearby: 0,
-      Saved: savedPlaceIds.length,
+      Saved: savedPlaces.length,
       Spiritual: 0,
       Nature: 0,
       Water: 0,
@@ -446,7 +426,7 @@ function ExploreContent() {
         </Link>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           <SrivariNamamVector size={26} />
-          <h1 style={{ margin: 0, fontFamily: "var(--font-sacred-serif), 'Cinzel', Georgia, serif" }}>
+          <h1 style={{ margin: 0, fontFamily: 'var(--font-sans), system-ui', fontWeight: 600, fontSize: '13px', letterSpacing: '0.05em', textTransform: 'uppercase', color: '#1E232D' }}>
             {t.headerTitle}
           </h1>
         </div>
@@ -494,13 +474,13 @@ function ExploreContent() {
           <aside className={styles.sidebarFilter}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '20px', paddingBottom: '12px', borderBottom: '1px solid #F1F5F9' }}>
               <Filter size={18} color="#059669" />
-              <h3 style={{ fontSize: '16px', fontWeight: 800, color: '#0F172A', margin: 0 }}>
+              <h3 style={{ fontSize: '16px', fontWeight: 600, color: '#0F172A', margin: 0 }}>
                 {t.filtersHeader}
               </h3>
             </div>
 
             <div style={{ marginBottom: '20px' }}>
-              <label style={{ fontSize: '12px', fontWeight: 800, color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.05em', display: 'block', marginBottom: '10px' }}>
+              <label style={{ fontSize: '12px', fontWeight: 600, color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.05em', display: 'block', marginBottom: '10px' }}>
                 {t.categoriesLabel}
               </label>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
@@ -535,7 +515,7 @@ function ExploreContent() {
                           suppressHydrationWarning
                           style={{
                             fontSize: '11px',
-                            fontWeight: 800,
+                            fontWeight: 600,
                             color: isActive ? '#047857' : '#64748B',
                             background: isActive ? '#D1FAE5' : '#F1F5F9',
                             padding: '1.5px 7px',
@@ -565,114 +545,113 @@ function ExploreContent() {
                 <button onClick={() => setLocationError(false)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#92400E', flexShrink: 0 }}>✕</button>
               </div>
             )}
-        {/* Nearby Places Section */}
-        {filteredPlaces.length > 0 && (
-          <div className={styles.curatedSection}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-              <h2 className={styles.curatedTitle} style={{ display: 'flex', alignItems: 'center', gap: '6px', margin: 0 }}>
-                {t.nearby} <MapPin size={18} style={{ color: '#2F6144' }} />
-              </h2>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <LocationPill 
-                  locationName={locationName || (userLocation ? 'GPS' : 'Tirupati')}
-                  onClick={() => setIsLocationModalOpen(true)}
-                  style={{ fontSize: '11px', padding: '3px 9px' }}
-                />
-              </div>
-            </div>
-            
-            <LocationPickerModal
-              isOpen={isLocationModalOpen}
-              onClose={() => setIsLocationModalOpen(false)}
-            />
-            <div className={styles.horizontalScroll}>
-              {nearbyPlaces.map((place) => {
-                const dist = Number((place as any).computedDistance || 0);
-                const locStr = String(place.location || '').toLowerCase();
-                const isTirumala = locStr.includes('tirumala') || locStr.includes('narayanagiri') || String(place.category || '').toLowerCase().includes('tirumala');
-                const driveMins = estimateDriveDuration(dist, isTirumala);
-                const timeFormatted = formatTravelTime(driveMins, lang);
-
-                let travelStr = '';
-                const walkWord = lang === 'te' ? 'నడకదారి' : lang === 'hi' ? 'पैदल मार्ग' : lang === 'ta' ? 'நட நடைப்பாதை' : 'Walk';
-                const bikeWord = lang === 'te' ? 'బైక్/ఆటో' : lang === 'hi' ? 'बाइक/ऑटो' : lang === 'ta' ? 'பைக்/ஆட்டோ' : 'Bike';
-                const busWord = lang === 'te' ? 'బస్సు/కారు' : lang === 'hi' ? 'बस/कार' : lang === 'ta' ? 'பேருந்து/கார்' : 'Bus/Car';
-
-                if (dist <= 1.5) {
-                  travelStr = `${Math.max(1, Math.round(dist * 12))} ${lang === 'te' ? 'నిమిషాలు' : lang === 'hi' ? 'मिनट' : lang === 'ta' ? 'நிமிடம்' : 'mins'} • ${walkWord}`;
-                } else if (dist <= 8.0) {
-                  travelStr = `${timeFormatted} • ${bikeWord}`;
-                } else {
-                  travelStr = `${timeFormatted} • ${busWord}`;
-                }
-
-                return (
-                  <Link href={`/place/${place.id}`} key={place.id} prefetch={false} className={styles.curatedCard}>
-                    <div className={styles.curatedImage} style={{ backgroundImage: `url(${place.image || 'https://images.unsplash.com/photo-1514222134-b57cbf8ce673?auto=format&fit=crop&q=80&w=800'})` }} />
-                    <div className={styles.curatedInfo}>
-                      <h4>{getPlaceName(place, lang)}</h4>
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: '2px', marginTop: '2px' }}>
-                        <span style={{ color: '#2F6144', fontWeight: 800, fontSize: '11px' }}>
-                          {formatDistance(dist, lang)} {t.kmsAway} • {travelStr}
-                        </span>
-                      </div>
-                    </div>
-                  </Link>
-                );
-              })}
-            </div>
-          </div>
-        )}
-
-
-              {/* Hidden Gems Section */}
-              {hiddenGems.length > 0 && (
-                <div className={styles.curatedSection}>
-                  <h2 className={styles.curatedTitle} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                    {t.hiddenGems} <Sparkles size={18} style={{ color: '#6C63FF' }} />
+            {/* Nearby Places Section - Display only on 'All' overview without active search */}
+            {activeFilter === 'All' && !searchQuery && filteredPlaces.length > 0 && (
+              <div className={styles.curatedSection}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+                  <h2 className={styles.curatedTitle} style={{ display: 'flex', alignItems: 'center', gap: '6px', margin: 0 }}>
+                    {t.nearby} <MapPin size={18} style={{ color: '#0F5132' }} />
                   </h2>
-                  <div className={styles.horizontalScroll}>
-                    {hiddenGems.map((place) => (
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <LocationPill 
+                      locationName={locationName || (userLocation ? 'GPS' : 'Tirupati')}
+                      onClick={() => setIsLocationModalOpen(true)}
+                      style={{ fontSize: '11px', padding: '3px 9px' }}
+                    />
+                  </div>
+                </div>
+                
+                <LocationPickerModal
+                  isOpen={isLocationModalOpen}
+                  onClose={() => setIsLocationModalOpen(false)}
+                />
+                <div className={styles.horizontalScroll}>
+                  {nearbyPlaces.map((place) => {
+                    const dist = Number((place as any).computedDistance || 0);
+                    const locStr = String(place.location || '').toLowerCase();
+                    const isTirumala = locStr.includes('tirumala') || locStr.includes('narayanagiri') || String(place.category || '').toLowerCase().includes('tirumala');
+                    const driveMins = estimateDriveDuration(dist, isTirumala);
+                    const timeFormatted = formatTravelTime(driveMins, lang);
+
+                    let travelStr = '';
+                    const walkWord = lang === 'te' ? 'నడకదారి' : lang === 'hi' ? 'पैदल मार्ग' : lang === 'ta' ? 'நட நடைப்பாதை' : 'Walk';
+                    const bikeWord = lang === 'te' ? 'బైక్/ఆటో' : lang === 'hi' ? 'बाइक/ऑटो' : lang === 'ta' ? 'பைக்/ஆட்டோ' : 'Bike';
+                    const busWord = lang === 'te' ? 'బస్సు/కారు' : lang === 'hi' ? 'बस/कार' : lang === 'ta' ? 'பேருந்து/கார்' : 'Bus/Car';
+
+                    if (dist <= 1.5) {
+                      travelStr = `${Math.max(1, Math.round(dist * 12))} ${lang === 'te' ? 'నిమిషాలు' : lang === 'hi' ? 'मिनट' : lang === 'ta' ? 'நிமிடம்' : 'mins'} • ${walkWord}`;
+                    } else if (dist <= 8.0) {
+                      travelStr = `${timeFormatted} • ${bikeWord}`;
+                    } else {
+                      travelStr = `${timeFormatted} • ${busWord}`;
+                    }
+
+                    return (
                       <Link href={`/place/${place.id}`} key={place.id} prefetch={false} className={styles.curatedCard}>
-                        <div
-                          className={styles.curatedImage}
-                          style={{ backgroundImage: `url(${place.image || 'https://images.unsplash.com/photo-1514222134-b57cbf8ce673?auto=format&fit=crop&q=80&w=800'})` }}
-                        >
-                          {place.placeType && (
-                            <span className={styles.curatedImageBadge}>{place.placeType}</span>
-                          )}
-                        </div>
+                        <div className={styles.curatedImage} style={{ backgroundImage: `url(${place.image || 'https://images.unsplash.com/photo-1514222134-b57cbf8ce673?auto=format&fit=crop&q=80&w=800'})` }} />
                         <div className={styles.curatedInfo}>
-                          <h4 title={getPlaceName(place, lang)}>{getPlaceName(place, lang)}</h4>
-                          <div className={styles.curatedDistance}>
-                            <MapPin size={10} strokeWidth={2.5} />
-                            {formatDistance(Number((place as any).computedDistance || 0), lang)}
+                          <h4>{getPlaceName(place, lang)}</h4>
+                          <div style={{ display: 'flex', flexDirection: 'column', gap: '2px', marginTop: '2px' }}>
+                            <span style={{ color: '#64748B', fontWeight: 500, fontSize: '11px' }}>
+                              {formatDistance(dist, lang)} {t.kmsAway} • {travelStr}
+                            </span>
                           </div>
                         </div>
                       </Link>
-                    ))}
-                  </div>
+                    );
+                  })}
                 </div>
-              )}
+              </div>
+            )}
+
+            {/* Hidden Gems Section - Display only on 'All' overview without active search */}
+            {activeFilter === 'All' && !searchQuery && hiddenGems.length > 0 && (
+              <div className={styles.curatedSection}>
+                <h2 className={styles.curatedTitle} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  {t.hiddenGems} <Sparkles size={18} style={{ color: '#D97706' }} />
+                </h2>
+                <div className={styles.horizontalScroll}>
+                  {hiddenGems.map((place) => (
+                    <Link href={`/place/${place.id}`} key={place.id} prefetch={false} className={styles.curatedCard}>
+                      <div
+                        className={styles.curatedImage}
+                        style={{ backgroundImage: `url(${place.image || 'https://images.unsplash.com/photo-1514222134-b57cbf8ce673?auto=format&fit=crop&q=80&w=800'})` }}
+                      >
+                        {place.placeType && (
+                          <span className={styles.curatedImageBadge}>{place.placeType}</span>
+                        )}
+                      </div>
+                      <div className={styles.curatedInfo}>
+                        <h4 title={getPlaceName(place, lang)}>{getPlaceName(place, lang)}</h4>
+                        <div className={styles.curatedDistance}>
+                          <MapPin size={10} strokeWidth={2.5} />
+                          {formatDistance(Number((place as any).computedDistance || 0), lang)}
+                        </div>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
 
         {isAlternativeQuery && (
           <div style={{
-            background: '#FEF2F2',
-            border: '1px solid #FCA5A5',
+            background: '#FFFFFF',
+            border: '1px solid rgba(30, 35, 45, 0.08)',
             borderRadius: '16px',
             padding: '16px',
             marginBottom: '20px',
             display: 'flex',
             alignItems: 'flex-start',
             gap: '12px',
-            boxShadow: '0 2px 10px rgba(220,38,38,0.05)'
+            boxShadow: '0 1px 2px rgba(0, 0, 0, 0.04)'
           }}>
             <div style={{ 
               width: '32px', 
               height: '32px', 
-              borderRadius: '50%', 
-              background: 'rgba(220, 38, 38, 0.1)', 
-              color: '#DC2626', 
+              borderRadius: '8px', 
+              background: '#FEE2E2', 
+              color: '#B91C1C', 
               display: 'flex', 
               alignItems: 'center', 
               justifyContent: 'center',
@@ -681,10 +660,10 @@ function ExploreContent() {
               <AlertTriangle size={16} />
             </div>
             <div>
-              <h4 style={{ fontSize: '13.5px', fontWeight: 900, color: '#991B1B', margin: '0 0 2px 0' }}>
+              <h4 style={{ fontSize: '13.5px', fontWeight: 700, color: '#1E232D', margin: '0 0 2px 0' }}>
                 {lang === 'te' ? 'శ్రీవారి ఆలయంలో అత్యధిక భక్తుల రద్దీ' : lang === 'hi' ? 'श्रीवारी मंदिर में भारी भीड़' : lang === 'ta' ? 'ஸ்ரீவாரி கோவிலில் அதிக கூட்டம்' : 'Heavy Crowds at Srivari Temple'}
               </h4>
-              <p style={{ fontSize: '12.5px', color: '#7F1D1D', margin: 0, lineHeight: 1.45 }}>
+              <p style={{ fontSize: '12.5px', color: '#5A6270', margin: 0, lineHeight: 1.45, fontWeight: 500 }}>
                 {lang === 'te' ? 'తిరుమల శ్రీవారి ఆలయంలో ప్రస్తుతం దర్శన సమయం చాలా ఎక్కువగా ఉంది. మీ ప్రయాణాన్ని ప్రణాళికాబద్ధంగా మార్చుకోవడానికి ముందుగా తిరుపతిలోని ఇతర పవిత్ర ప్రదేశాలను దర్శించండి.' : lang === 'hi' ? 'श्रीवारी मंदिर में दर्शन की प्रतीक्षा अवधि अधिक है। हम आपको पहले तिरुपति के अन्य पवित्र स्थलों का दौरा करने की सलाह देते हैं।' : lang === 'ta' ? 'ஸ்ரீவாரி கோவிலில் தரிசன காத்திருப்பு நேரம் அதிகமாக உள்ளது. முதலில் திருப்பதியின் பிற திருத்தலங்களை ஆராய பரிந்துரைக்கிறோம்.' : 'Srivari Venkateswara Swamy Temple is currently experiencing extremely heavy wait times. We highly recommend exploring these alternative temples and scenic destinations in Tirupati and Tirumala first to optimize your journey.'}
               </p>
             </div>
@@ -693,22 +672,22 @@ function ExploreContent() {
 
         {isTirupatiQuery && (
           <div style={{
-            background: '#FFFBEB',
-            border: '1px solid #FCD34D',
+            background: '#FFFFFF',
+            border: '1px solid rgba(30, 35, 45, 0.08)',
             borderRadius: '16px',
             padding: '16px',
             marginBottom: '20px',
             display: 'flex',
             alignItems: 'flex-start',
             gap: '12px',
-            boxShadow: '0 2px 10px rgba(245,158,11,0.05)'
+            boxShadow: '0 1px 2px rgba(0, 0, 0, 0.04)'
           }}>
             <div style={{ 
               width: '32px', 
               height: '32px', 
-              borderRadius: '50%', 
-              background: 'rgba(245, 158, 11, 0.1)', 
-              color: '#D97706', 
+              borderRadius: '8px', 
+              background: '#FEF3C7', 
+              color: '#92400E', 
               display: 'flex', 
               alignItems: 'center', 
               justifyContent: 'center',
@@ -717,10 +696,10 @@ function ExploreContent() {
               <Compass size={16} />
             </div>
             <div>
-              <h4 style={{ fontSize: '13.5px', fontWeight: 900, color: '#92400E', margin: '0 0 2px 0' }}>
+              <h4 style={{ fontSize: '13.5px', fontWeight: 700, color: '#1E232D', margin: '0 0 2px 0' }}>
                 {lang === 'te' ? 'తిరుమలలో భక్తుల రద్దీ హెచ్చరిక' : lang === 'hi' ? 'तिरुमला में भारी भीड़ की चेतावनी' : lang === 'ta' ? 'திருமலையில் அதிக கூட்ட எச்சரிக்கை' : 'Heavy Crowds at Tirumala'}
               </h4>
-              <p style={{ fontSize: '12.5px', color: '#78350F', margin: 0, lineHeight: 1.45 }}>
+              <p style={{ fontSize: '12.5px', color: '#5A6270', margin: 0, lineHeight: 1.45, fontWeight: 500 }}>
                 {lang === 'te' ? 'తిరుమలలో ప్రస్తుతం భక్తుల రద్దీ ఎక్కువగా ఉంది. ముందుగా తిరుపతి కొండ కింద ఉన్న ఆకర్షణలను చూసి, సాయంత్రం రద్దీ తగ్గక కొండపైకి వెళ్లవలసిందిగా సూచిస్తున్నాము.' : lang === 'hi' ? 'तिरुमला में प्रतीक्षा समय अधिक है। पहले तिरुपति शहर के दर्शनीय स्थलों का आनंद लें और शाम को भीड़ कम होने पर पहाड़ी पर जाएं।' : lang === 'ta' ? 'திருமலையில் கூட்டம் அதிகமாக உள்ளது. முதலில் திருப்பதி அடிவார இடங்களை கண்டு மகிழ்ந்து, மாலையில் கூட்டங்குறைந்த பின் திருமலைக்கு செல்லவும்.' : 'Tirumala temple is currently experiencing heavy wait times. We recommend exploring these foothill attractions in Tirupati city first and heading up to the hills later in the evening when wait times decrease.'}
               </p>
             </div>
@@ -766,41 +745,48 @@ function ExploreContent() {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: index * 0.05 }}
                 >
+                  <button
+                    type="button"
+                    onClick={(e) => toggleSavePlace(place.id, e)}
+                    title={savedPlaces.includes(place.id) ? 'Remove from Saved' : 'Save Place'}
+                    aria-label={savedPlaces.includes(place.id) ? 'Remove from Saved' : 'Save Place'}
+                    style={{
+                      position: 'absolute',
+                      top: '12px',
+                      right: '12px',
+                      zIndex: 3,
+                      background: 'rgba(255, 255, 255, 0.92)',
+                      border: '1px solid rgba(0, 0, 0, 0.08)',
+                      borderRadius: '50%',
+                      width: '32px',
+                      height: '32px',
+                      padding: 0,
+                      cursor: 'pointer',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      boxShadow: '0 2px 6px rgba(0, 0, 0, 0.08)'
+                    }}
+                  >
+                    <Heart
+                      size={16}
+                      fill={savedPlaces.includes(place.id) ? '#E11D48' : 'none'}
+                      color={savedPlaces.includes(place.id) ? '#E11D48' : '#94A3B8'}
+                    />
+                  </button>
                   <Link href={`/place/${place.id}`} prefetch={false} className={styles.templeLink}>
                     <div 
                       className={styles.itemImage}
                       style={{ backgroundImage: `url(${place.image || 'https://images.unsplash.com/photo-1514222134-b57cbf8ce673?auto=format&fit=crop&q=80&w=800'})` }}
                     />
                     <div className={styles.itemInfo}>
-                      <div className={styles.itemHeader}>
-                        <h3 style={{ fontSize: '15px', fontWeight: 800, color: '#0F172A', margin: 0 }}>
+                      <div className={styles.itemHeader} style={{ paddingRight: '28px' }}>
+                        <h3 style={{ fontSize: '15.5px', fontWeight: 700, color: 'var(--color-text-primary, #1E232D)', margin: 0, letterSpacing: '-0.01em', lineHeight: 1.3 }}>
                           {getPlaceName(place, lang)}
                         </h3>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                          <button
-                            type="button"
-                            onClick={(e) => toggleSavePlace(place.id, e)}
-                            title={savedPlaceIds.includes(place.id) ? 'Remove from Saved' : 'Save Place'}
-                            style={{
-                              background: 'none',
-                              border: 'none',
-                              padding: '2px',
-                              cursor: 'pointer',
-                              display: 'flex',
-                              alignItems: 'center',
-                              justifyContent: 'center'
-                            }}
-                          >
-                            <Heart
-                              size={16}
-                              fill={savedPlaceIds.includes(place.id) ? '#E11D48' : 'none'}
-                              color={savedPlaceIds.includes(place.id) ? '#E11D48' : '#94A3B8'}
-                            />
-                          </button>
-                          <div className={styles.rating}>
-                            <Star size={14} fill="#FF9933" color="#FF9933" />
-                            <span>{place.rating}</span>
-                          </div>
+                        <div className={styles.rating}>
+                          <Star size={14} fill="#FF9933" color="#FF9933" />
+                          <span>{place.rating}</span>
                         </div>
                       </div>
 
@@ -810,17 +796,16 @@ function ExploreContent() {
                           display: 'inline-flex',
                           alignItems: 'center',
                           gap: '5px',
-                          backgroundColor: festCrowd.hasImpact && festCrowd.isFestivalActive ? '#FEF2F2' : '#FEF9C3',
-                          color: festCrowd.hasImpact && festCrowd.isFestivalActive ? '#991B1B' : '#854D0E',
+                          backgroundColor: festCrowd.hasImpact && festCrowd.isFestivalActive ? 'rgba(220, 38, 38, 0.08)' : 'rgba(217, 119, 6, 0.12)',
+                          color: festCrowd.hasImpact && festCrowd.isFestivalActive ? '#991B1B' : '#92400E',
                           fontSize: '11px',
-                          fontWeight: 700,
+                          fontWeight: 500,
                           borderRadius: '6px',
-                          padding: '2.5px 7px',
+                          padding: '3px 8px',
                           margin: '4px 0 6px 0',
-                          border: `1px solid ${festCrowd.hasImpact && festCrowd.isFestivalActive ? 'rgba(239, 68, 68, 0.35)' : 'rgba(234, 179, 8, 0.25)'}`,
                           lineHeight: 1.3
                         }}>
-                          <Sparkles size={11} color={festCrowd.hasImpact && festCrowd.isFestivalActive ? '#DC2626' : '#CA8A04'} style={{ flexShrink: 0 }} />
+                          <Sparkles size={11} color={festCrowd.hasImpact && festCrowd.isFestivalActive ? '#DC2626' : '#D97706'} style={{ flexShrink: 0 }} />
                           <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '300px' }}>
                             {explainableReason}
                           </span>
@@ -828,30 +813,33 @@ function ExploreContent() {
                       )}
 
                       <div className={styles.tags} style={{ marginTop: '6px' }}>
-                        <span className={styles.tag} style={{ backgroundColor: '#F3F4F6', color: '#374151', fontWeight: 700 }}>
+                        <span className={styles.tag} style={{ backgroundColor: '#F8FAFC', border: '1px solid #E2E8F0', color: '#475569', fontWeight: 500, borderRadius: '6px', padding: '2px 6px', fontSize: '11px' }}>
                           {place.category || place.placeType || 'Spot'}
                         </span>
 
                         {(place as any).computedDistance !== undefined ? (
-                          <span className={styles.tag} style={{ backgroundColor: '#E5F3EB', color: '#2F6144', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-                            <MapPin size={12} style={{ flexShrink: 0 }} />
+                          <span className={styles.tag} style={{ backgroundColor: 'rgba(217, 119, 6, 0.12)', color: '#92400E', fontWeight: 600, borderRadius: '999px', padding: '2px 8px', fontSize: '11px', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                            <MapPin size={11} style={{ flexShrink: 0 }} />
                             {Number((place as any).computedDistance) < 1.0
                               ? `${formatDistance(Number((place as any).computedDistance), lang)} ${t.kmsAway}`
                               : `${formatDistance(Number((place as any).computedDistance), lang)} (${formatTravelTime(estimateDriveDuration(Number((place as any).computedDistance)), lang)})`}
                           </span>
                         ) : (
-                          <span className={styles.tag}>{formatDistance(place.distanceKms || 5, lang)}</span>
+                          <span className={styles.tag} style={{ backgroundColor: '#F8FAFC', border: '1px solid #E2E8F0', color: '#475569', fontWeight: 500, borderRadius: '6px', padding: '2px 6px', fontSize: '11px' }}>{formatDistance(place.distanceKms || 5, lang)}</span>
                         )}
 
                         {festCrowd.hasImpact && festCrowd.isFestivalActive ? (
                           <span className={styles.tag} style={{
                             backgroundColor: '#FEE2E2',
                             color: '#991B1B',
-                            fontWeight: 800,
+                            fontWeight: 500,
                             display: 'inline-flex',
                             alignItems: 'center',
                             gap: '4px',
-                            border: '1px solid #FCA5A5'
+                            border: '1px solid #FCA5A5',
+                            borderRadius: '6px',
+                            padding: '2px 6px',
+                            fontSize: '11px'
                           }}>
                             {lang === 'te' ? festCrowd.badgeTextTe : festCrowd.badgeTextEn}
                           </span>
@@ -859,11 +847,14 @@ function ExploreContent() {
                           <span className={styles.tag} style={{
                             backgroundColor: '#EFF6FF',
                             color: '#1D4ED8',
-                            fontWeight: 800,
+                            fontWeight: 500,
                             display: 'inline-flex',
                             alignItems: 'center',
                             gap: '4px',
-                            border: '1px solid #BFDBFE'
+                            border: '1px solid #BFDBFE',
+                            borderRadius: '6px',
+                            padding: '2px 6px',
+                            fontSize: '11px'
                           }}>
                             {lang === 'te' ? festCrowd.badgeTextTe : festCrowd.badgeTextEn}
                           </span>
@@ -871,17 +862,20 @@ function ExploreContent() {
                           <span className={styles.tag} style={{
                             backgroundColor: crowd === 'High' ? '#FEE2E2' : '#DCFCE7',
                             color: crowd === 'High' ? '#991B1B' : '#166534',
-                            fontWeight: 800,
+                            fontWeight: 500,
                             display: 'inline-flex',
                             alignItems: 'center',
-                            gap: '4px'
+                            gap: '4px',
+                            borderRadius: '6px',
+                            padding: '2px 6px',
+                            fontSize: '11px'
                           }}>
                             ● {crowd === 'High' ? (lang === 'te' ? 'అత్యధిక రద్దీ' : lang === 'hi' ? 'भारी भीड़' : lang === 'ta' ? 'அதிக கூட்டம்' : 'High Crowd') : (lang === 'te' ? 'సాధారణ రద్దీ' : lang === 'hi' ? 'सामान्य भीड़' : lang === 'ta' ? 'குறைந்த கூட்டம்' : 'Moderate Crowd')}
                           </span>
                         ) : null}
 
                         {(place.tags || []).slice(0, 3).map((tag: string) => (
-                          <span key={tag} className={styles.tag}>{tag}</span>
+                          <span key={tag} className={styles.tag} style={{ backgroundColor: '#F8FAFC', border: '1px solid #E2E8F0', color: '#475569', fontWeight: 500, borderRadius: '6px', padding: '2px 6px', fontSize: '11px' }}>{tag}</span>
                         ))}
                       </div>
                     </div>

@@ -64,7 +64,7 @@ export default function OpenGraphImage() {
             <span
               style={{
                 fontSize: '20px',
-                fontWeight: 800,
+                fontWeight: 600,
                 color: '#FDE68A',
                 letterSpacing: '0.12em',
                 textTransform: 'uppercase',
@@ -100,7 +100,7 @@ export default function OpenGraphImage() {
             style={{
               fontSize: '56px',
               lineHeight: 1.12,
-              fontWeight: 900,
+              fontWeight: 700,
               color: '#FFFFFF',
               margin: 0,
               letterSpacing: '-0.02em',

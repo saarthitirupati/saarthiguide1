@@ -195,7 +195,7 @@ export default function QRScanTransitionPage() {
           backgroundColor: '#FEF3C7',
           border: '1px solid #FDE68A',
           fontSize: '11px',
-          fontWeight: 800,
+          fontWeight: 600,
           color: '#B45309',
           letterSpacing: '0.8px',
           textTransform: 'uppercase',
@@ -208,7 +208,7 @@ export default function QRScanTransitionPage() {
         {/* Warm Welcome Greeting */}
         <h1 style={{
           fontSize: '24px',
-          fontWeight: 900,
+          fontWeight: 700,
           color: '#1E293B',
           marginBottom: '4px',
           lineHeight: '1.25',
@@ -253,7 +253,7 @@ export default function QRScanTransitionPage() {
               }} />
               Opening Live Guide...
             </span>
-            <span style={{ color: '#B45309', fontWeight: 800, fontVariantNumeric: 'tabular-nums' }}>
+            <span style={{ color: '#B45309', fontWeight: 600, fontVariantNumeric: 'tabular-nums' }}>
               {progress}%
             </span>
           </div>
@@ -291,7 +291,7 @@ export default function QRScanTransitionPage() {
             color: '#FFFFFF',
             border: 'none',
             fontSize: '14px',
-            fontWeight: 800,
+            fontWeight: 600,
             cursor: 'pointer',
             boxShadow: '0 10px 22px -5px rgba(5, 150, 105, 0.4)',
             transition: 'all 0.2s ease',

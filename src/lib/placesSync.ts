@@ -1,7 +1,16 @@
 import { supabase } from '@/lib/supabase';
 import { PLACES, Place } from '@/data/places';
 
+let cachedPlaces: Place[] | null = null;
+let lastFetchTime = 0;
+const CACHE_TTL_MS = 60 * 1000;
+
 export async function fetchLivePlaces(): Promise<Place[]> {
+  // Return instant in-memory cache if fresh
+  if (cachedPlaces && (Date.now() - lastFetchTime < CACHE_TTL_MS)) {
+    return cachedPlaces;
+  }
+
   try {
     const { data, error } = await supabase.from('places').select('*');
     if (!error && data) {

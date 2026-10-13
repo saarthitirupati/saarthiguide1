@@ -34,8 +34,8 @@ export default function FootpathsPage() {
       minHeight: '100vh',
       backgroundColor: '#FAF8F5',
       color: '#0F172A',
-      fontFamily: 'var(--font-heading), system-ui, -apple-system, sans-serif',
-      paddingBottom: '80px'
+      fontFamily: 'var(--font-sans), system-ui, -apple-system, sans-serif',
+      paddingBottom: 'calc(88px + env(safe-area-inset-bottom, 16px))'
     }}>
       {/* ── 1. STICKY TOP APP BAR ── */}
       <header style={{
@@ -70,7 +70,7 @@ export default function FootpathsPage() {
             <ArrowLeft size={18} />
           </Link>
           <div>
-            <h1 style={{ fontSize: '16px', fontWeight: 900, color: '#0F172A', margin: 0, lineHeight: 1.2 }}>
+            <h1 style={{ fontSize: '16px', fontWeight: 700, color: '#0F172A', margin: 0, lineHeight: 1.2 }}>
               {lang === 'te' ? 'తిరుమల సోపాన మార్గాలు' : 'Tirumala Footpath Routes'}
             </h1>
             <span style={{ fontSize: '11px', color: '#64748B', fontWeight: 600 }}>
@@ -117,7 +117,7 @@ export default function FootpathsPage() {
             padding: '4px 10px',
             borderRadius: '99px',
             fontSize: '11px',
-            fontWeight: 800,
+            fontWeight: 600,
             letterSpacing: '0.04em',
             textTransform: 'uppercase',
             marginBottom: '10px'
@@ -126,7 +126,7 @@ export default function FootpathsPage() {
             <span>{lang === 'te' ? 'నడకదారి భక్తుల సమయాలు' : 'Live Pedestrian Gate Timings'}</span>
           </div>
 
-          <h2 style={{ fontSize: '22px', fontWeight: 900, margin: '0 0 8px', lineHeight: 1.25 }}>
+          <h2 style={{ fontSize: '22px', fontWeight: 700, margin: '0 0 8px', lineHeight: 1.25 }}>
             {lang === 'te' 
               ? 'శ్రీవారి మెట్టు & అలిపిరి నడక మార్గాల పూర్తి వివరాలు' 
               : 'Two Sacred Routes up the Seven Hills'}
@@ -151,7 +151,7 @@ export default function FootpathsPage() {
                 padding: '8px 12px',
                 borderRadius: '10px',
                 fontSize: '12px',
-                fontWeight: 800,
+                fontWeight: 600,
                 border: 'none',
                 cursor: 'pointer',
                 backgroundColor: selectedRoute === 'both' ? '#C89B3C' : 'rgba(255,255,255,0.15)',
@@ -168,7 +168,7 @@ export default function FootpathsPage() {
                 padding: '8px 12px',
                 borderRadius: '10px',
                 fontSize: '12px',
-                fontWeight: 800,
+                fontWeight: 600,
                 border: 'none',
                 cursor: 'pointer',
                 backgroundColor: selectedRoute === 'srivari' ? '#C89B3C' : 'rgba(255,255,255,0.15)',
@@ -185,7 +185,7 @@ export default function FootpathsPage() {
                 padding: '8px 12px',
                 borderRadius: '10px',
                 fontSize: '12px',
-                fontWeight: 800,
+                fontWeight: 600,
                 border: 'none',
                 cursor: 'pointer',
                 backgroundColor: selectedRoute === 'alipiri' ? '#C89B3C' : 'rgba(255,255,255,0.15)',
@@ -217,7 +217,7 @@ export default function FootpathsPage() {
               <div>
                 <span style={{
                   fontSize: '10.5px',
-                  fontWeight: 900,
+                  fontWeight: 700,
                   color: '#B45309',
                   backgroundColor: '#FEF3C7',
                   border: '1px solid #FCD34D',
@@ -228,7 +228,7 @@ export default function FootpathsPage() {
                 }}>
                   {lang === 'te' ? 'ప్రత్యామ్నాయ మార్గం • వేగవంతమైనది' : 'Alternative Route • Fastest Ascent'}
                 </span>
-                <h3 style={{ fontSize: '18px', fontWeight: 900, color: '#78350F', margin: '8px 0 2px' }}>
+                <h3 style={{ fontSize: '18px', fontWeight: 700, color: '#78350F', margin: '8px 0 2px' }}>
                   {lang === 'te' ? 'శ్రీవారి మెట్టు మార్గం' : 'Srivari Mettu Footpath'}
                 </h3>
                 <span style={{ fontSize: '12px', color: '#64748B', fontWeight: 600 }}>
@@ -238,7 +238,7 @@ export default function FootpathsPage() {
 
               <span style={{
                 fontSize: '11px',
-                fontWeight: 800,
+                fontWeight: 600,
                 color: '#15803D',
                 backgroundColor: '#DCFCE7',
                 border: '1px solid #BBF7D0',
@@ -261,20 +261,20 @@ export default function FootpathsPage() {
               marginBottom: '12px'
             }}>
               <div>
-                <div style={{ fontSize: '10.5px', fontWeight: 800, color: '#B45309', textTransform: 'uppercase' }}>
+                <div style={{ fontSize: '10.5px', fontWeight: 600, color: '#B45309', textTransform: 'uppercase' }}>
                   {lang === 'te' ? 'ప్రవేశ సమయాలు' : 'Gate Opening Hours'}
                 </div>
-                <div style={{ fontSize: '16px', fontWeight: 900, color: '#92400E', marginTop: '2px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <div style={{ fontSize: '16px', fontWeight: 700, color: '#92400E', marginTop: '2px', display: 'flex', alignItems: 'center', gap: '6px' }}>
                   <Clock size={16} color="#B45309" />
                   <span>6:00 AM – 5:30 PM</span>
                 </div>
               </div>
 
               <div style={{ textAlign: 'right' }}>
-                <div style={{ fontSize: '10.5px', fontWeight: 800, color: '#64748B', textTransform: 'uppercase' }}>
+                <div style={{ fontSize: '10.5px', fontWeight: 600, color: '#64748B', textTransform: 'uppercase' }}>
                   {lang === 'te' ? 'మెట్లు & సమయం' : 'Steps & Duration'}
                 </div>
-                <div style={{ fontSize: '13.5px', fontWeight: 800, color: '#0F172A', marginTop: '2px' }}>
+                <div style={{ fontSize: '13.5px', fontWeight: 600, color: '#0F172A', marginTop: '2px' }}>
                   ~2,388 Steps • ~1.5 - 2 hrs
                 </div>
               </div>
@@ -293,7 +293,7 @@ export default function FootpathsPage() {
             }}>
               <Baby size={18} color="#DC2626" style={{ flexShrink: 0, marginTop: '2px' }} />
               <div>
-                <span style={{ fontSize: '11px', fontWeight: 900, color: '#991B1B', textTransform: 'uppercase', letterSpacing: '0.04em', display: 'block' }}>
+                <span style={{ fontSize: '11px', fontWeight: 700, color: '#991B1B', textTransform: 'uppercase', letterSpacing: '0.04em', display: 'block' }}>
                   {lang === 'te' ? 'పిల్లల ప్రవేశ నియంత్రణ (ముఖ్యమైనది)' : 'Children Safety Restriction (Strict)'}
                 </span>
                 <span style={{ fontSize: '12.5px', fontWeight: 700, color: '#7F1D1D', lineHeight: 1.4, display: 'block', marginTop: '2px' }}>
@@ -335,7 +335,7 @@ export default function FootpathsPage() {
                 padding: '12px 16px',
                 borderRadius: '12px',
                 textDecoration: 'none',
-                fontWeight: 800,
+                fontWeight: 600,
                 fontSize: '13.5px',
                 boxShadow: '0 4px 14px rgba(217, 119, 6, 0.25)'
               }}
@@ -362,7 +362,7 @@ export default function FootpathsPage() {
               <div>
                 <span style={{
                   fontSize: '10.5px',
-                  fontWeight: 900,
+                  fontWeight: 700,
                   color: '#0369A1',
                   backgroundColor: '#E0F2FE',
                   border: '1px solid #BAE6FD',
@@ -373,7 +373,7 @@ export default function FootpathsPage() {
                 }}>
                   {lang === 'te' ? 'ప్రధాన సాంప్రదాయ మార్గం' : 'Main Traditional Route • 9 KM'}
                 </span>
-                <h3 style={{ fontSize: '18px', fontWeight: 900, color: '#0F172A', margin: '8px 0 2px' }}>
+                <h3 style={{ fontSize: '18px', fontWeight: 700, color: '#0F172A', margin: '8px 0 2px' }}>
                   {lang === 'te' ? 'అలిపిరి మెట్ల మార్గం' : 'Alipiri Mettu Footpath'}
                 </h3>
                 <span style={{ fontSize: '12px', color: '#64748B', fontWeight: 600 }}>
@@ -383,7 +383,7 @@ export default function FootpathsPage() {
 
               <span style={{
                 fontSize: '11px',
-                fontWeight: 800,
+                fontWeight: 600,
                 color: '#15803D',
                 backgroundColor: '#DCFCE7',
                 border: '1px solid #BBF7D0',
@@ -406,20 +406,20 @@ export default function FootpathsPage() {
               marginBottom: '12px'
             }}>
               <div>
-                <div style={{ fontSize: '10.5px', fontWeight: 800, color: '#0369A1', textTransform: 'uppercase' }}>
+                <div style={{ fontSize: '10.5px', fontWeight: 600, color: '#0369A1', textTransform: 'uppercase' }}>
                   {lang === 'te' ? 'ప్రవేశ సమయాలు' : 'Gate Opening Hours'}
                 </div>
-                <div style={{ fontSize: '16px', fontWeight: 900, color: '#0369A1', marginTop: '2px', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <div style={{ fontSize: '16px', fontWeight: 700, color: '#0369A1', marginTop: '2px', display: 'flex', alignItems: 'center', gap: '6px' }}>
                   <Clock size={16} color="#0284C7" />
                   <span>5:00 AM – 9:30 PM</span>
                 </div>
               </div>
 
               <div style={{ textAlign: 'right' }}>
-                <div style={{ fontSize: '10.5px', fontWeight: 800, color: '#64748B', textTransform: 'uppercase' }}>
+                <div style={{ fontSize: '10.5px', fontWeight: 600, color: '#64748B', textTransform: 'uppercase' }}>
                   {lang === 'te' ? 'మెట్లు & సమయం' : 'Steps & Duration'}
                 </div>
-                <div style={{ fontSize: '13.5px', fontWeight: 800, color: '#0F172A', marginTop: '2px' }}>
+                <div style={{ fontSize: '13.5px', fontWeight: 600, color: '#0F172A', marginTop: '2px' }}>
                   ~3,550 Steps • ~3.5 - 4.5 hrs
                 </div>
               </div>
@@ -456,7 +456,7 @@ export default function FootpathsPage() {
                 padding: '12px 16px',
                 borderRadius: '12px',
                 textDecoration: 'none',
-                fontWeight: 800,
+                fontWeight: 600,
                 fontSize: '13.5px',
                 boxShadow: '0 4px 14px rgba(2, 132, 199, 0.25)'
               }}
@@ -476,26 +476,26 @@ export default function FootpathsPage() {
           padding: '16px',
           boxShadow: '0 2px 8px rgba(0,0,0,0.02)'
         }}>
-          <h4 style={{ fontSize: '14px', fontWeight: 800, color: '#0F172A', margin: '0 0 10px' }}>
+          <h4 style={{ fontSize: '14px', fontWeight: 600, color: '#0F172A', margin: '0 0 10px' }}>
             {lang === 'te' ? 'త్వరిత పోలిక పట్టిక' : 'Quick Route Comparison'}
           </h4>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '12px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', padding: '6px 0', borderBottom: '1px solid #F1F5F9' }}>
               <span style={{ color: '#64748B', fontWeight: 600 }}>Distance</span>
-              <span style={{ fontWeight: 800 }}>Srivari Mettu (2.1 km) vs Alipiri (9 km)</span>
+              <span style={{ fontWeight: 600 }}>Srivari Mettu (2.1 km) vs Alipiri (9 km)</span>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', padding: '6px 0', borderBottom: '1px solid #F1F5F9' }}>
               <span style={{ color: '#64748B', fontWeight: 600 }}>Gate Open</span>
-              <span style={{ fontWeight: 800 }}>6:00 AM (Srivari) vs 5:00 AM (Alipiri)</span>
+              <span style={{ fontWeight: 600 }}>6:00 AM (Srivari) vs 5:00 AM (Alipiri)</span>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', padding: '6px 0', borderBottom: '1px solid #F1F5F9' }}>
               <span style={{ color: '#64748B', fontWeight: 600 }}>Gate Close</span>
-              <span style={{ fontWeight: 800 }}>5:30 PM (Srivari) vs 9:30 PM (Alipiri)</span>
+              <span style={{ fontWeight: 600 }}>5:30 PM (Srivari) vs 9:30 PM (Alipiri)</span>
             </div>
             <div style={{ display: 'flex', justifyContent: 'space-between', padding: '6px 0' }}>
               <span style={{ color: '#64748B', fontWeight: 600 }}>Kids &lt;12 Cutoff</span>
-              <span style={{ fontWeight: 800, color: '#DC2626' }}>2:00 PM at Srivari Mettu</span>
+              <span style={{ fontWeight: 600, color: '#DC2626' }}>2:00 PM at Srivari Mettu</span>
             </div>
           </div>
         </section>

@@ -133,7 +133,7 @@
   font-family: var(--font-display);
   font-size: 2.1rem;
   line-height: 1.2;
-  font-weight: 800;
+  font-weight: 600;
   margin: var(--space-2) 0;
   letter-spacing: -0.02em;
   text-shadow: 0 2px 12px rgba(0,0,0,0.45);
@@ -512,7 +512,7 @@
 
 .timingValue {
   font-size: 1.05rem;
-  font-weight: 800;
+  font-weight: 600;
   margin: var(--space-1) 0;
   color: var(--color-text-primary);
 }
@@ -1285,7 +1285,7 @@
 
 .ritualGroupHeader {
   font-size: 13px;
-  font-weight: 800;
+  font-weight: 600;
   color: #A0522D;
   text-transform: uppercase;
   letter-spacing: 0.6px;
@@ -1374,7 +1374,7 @@
 
 .timelineTime {
   font-size: 10px;
-  font-weight: 800;
+  font-weight: 600;
   color: #E9801D;
   background: #FFF3E0;
   padding: 4px 8px;
@@ -1661,7 +1661,7 @@
 
 .costTotalText {
   font-size: 26px;
-  font-weight: 800;
+  font-weight: 600;
   color: #10B981;
 }
 
@@ -1952,7 +1952,7 @@
 
 .modeFeaturedBadge {
   font-size: 0.7rem;
-  font-weight: 800;
+  font-weight: 600;
   background: #FEF08A;
   color: #854D0E;
   padding: 4px 10px;
@@ -1962,7 +1962,7 @@
 
 .modeBudgetBadge {
   font-size: 0.7rem;
-  font-weight: 800;
+  font-weight: 600;
   background: #D1FAE5;
   color: #065F46;
   padding: 4px 10px;
@@ -1972,7 +1972,7 @@
 
 .modeTitle {
   font-size: 1.2rem;
-  font-weight: 800;
+  font-weight: 600;
   margin: 0;
   color: var(--color-text-primary);
 }

@@ -38,7 +38,7 @@ export default function RequiredDocumentsPage() {
             <ArrowLeft size={20} color="#0F172A" />
           </button>
           <div>
-            <h1 style={{ fontSize: '22px', fontWeight: 800, color: '#0F172A', margin: 0 }}>
+            <h1 style={{ fontSize: '22px', fontWeight: 600, color: '#0F172A', margin: 0 }}>
               Required Documents
             </h1>
             <p style={{ fontSize: '13px', color: '#64748B', margin: '4px 0 0 0' }}>
@@ -61,7 +61,7 @@ export default function RequiredDocumentsPage() {
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px' }}>
             <AlertTriangle size={24} color="#E11D48" strokeWidth={2.5} />
-            <h2 style={{ fontSize: '18px', fontWeight: 800, color: '#9F1239', margin: 0 }}>
+            <h2 style={{ fontSize: '18px', fontWeight: 600, color: '#9F1239', margin: 0 }}>
               Critical Checklist Before You Ascend
             </h2>
           </div>
@@ -101,7 +101,7 @@ export default function RequiredDocumentsPage() {
         <div style={{ marginBottom: '24px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px', paddingLeft: '4px' }}>
             <FileText size={20} color="#3B82F6" strokeWidth={2.5} />
-            <h2 style={{ fontSize: '18px', fontWeight: 800, color: '#1E293B', margin: 0 }}>
+            <h2 style={{ fontSize: '18px', fontWeight: 600, color: '#1E293B', margin: 0 }}>
               Required Documents Breakdown
             </h2>
           </div>
@@ -149,7 +149,7 @@ export default function RequiredDocumentsPage() {
         <div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '16px', paddingLeft: '4px' }}>
             <Shirt size={20} color="#F59E0B" strokeWidth={2.5} />
-            <h2 style={{ fontSize: '18px', fontWeight: 800, color: '#1E293B', margin: 0 }}>
+            <h2 style={{ fontSize: '18px', fontWeight: 600, color: '#1E293B', margin: 0 }}>
               Official Tirumala Dress Code Rules
             </h2>
           </div>

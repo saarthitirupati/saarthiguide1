@@ -411,7 +411,7 @@ export default function OnboardingPage() {
                       marginBottom: '12px'
                     }}>
                       <Logo size={20} />
-                      <span style={{ fontSize: '13px', fontWeight: 800, color: '#0F5132' }}>Saarthi</span>
+                      <span style={{ fontSize: '13px', fontWeight: 600, color: '#0F5132' }}>Saarthi</span>
                     </div>
 
                     <h1 className={styles.stepTitle}>

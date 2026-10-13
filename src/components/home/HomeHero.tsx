@@ -1477,6 +1477,8 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                 Saarthi
               </span>
             </Link>
+            <h1 className="sr-only">Saarthi - Tirumala Tirupati Guide by Sunil Thatra</h1>
+            <p className="sr-only">Founded by Sunil Thatra, Saarthi Guide helps pilgrims with offline maps, darshan timings and essentials.</p>
 
             {/* Right — Action group */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '5px', minWidth: 0, flexShrink: 1, justifyContent: 'flex-end' }}>

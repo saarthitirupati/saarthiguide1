@@ -81,10 +81,12 @@ export default function SideMenu({ isOpen, onClose }: SideMenuProps) {
   const currentDict = TEXTS[langKey] || TEXTS.en;
   const t = (key: keyof typeof TEXTS.en) => currentDict[key] || TEXTS.en[key] || '';
   const [isWebView, setIsWebView] = useState(false);
+  const [isIOS, setIsIOS] = useState(false);
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
     const ua = navigator.userAgent || '';
+    setIsIOS(/iPhone|iPad|iPod/i.test(ua));
     if (/wv|Android.*Version\/[0-9.]+|SaarthiApp/i.test(ua) || (window as any).AndroidInterface !== undefined) {
       setIsWebView(true);
     }
@@ -196,16 +198,15 @@ export default function SideMenu({ isOpen, onClose }: SideMenuProps) {
 
             <div className={styles.footer}>
               {!isWebView && (
-                <a
-                  href="https://play.google.com/store/apps/details?id=in.saarthiguide.travel"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <Link
+                  href="/app"
+                  onClick={onClose}
                   style={{
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                     gap: '8px',
-                    background: 'linear-gradient(135deg, #0F5132 0%, #064E3B 100%)',
+                    background: 'linear-gradient(135deg, #022819 0%, #064E3B 100%)',
                     color: '#FFFFFF',
                     padding: '12px 16px',
                     borderRadius: '12px',
@@ -213,11 +214,16 @@ export default function SideMenu({ isOpen, onClose }: SideMenuProps) {
                     fontWeight: 700,
                     fontSize: '13px',
                     marginBottom: '12px',
-                    boxShadow: '0 4px 12px rgba(15,81,50,0.2)'
+                    boxShadow: '0 4px 12px rgba(2, 40, 25, 0.25)',
+                    border: '1px solid #C89B3C'
                   }}
                 >
-                  <span>{lang === 'te' ? '📲 ఆండ్రాయిడ్ యాప్ డౌన్‌లోడ్ చేయండి' : '📲 Download Android App'}</span>
-                </a>
+                  <span>
+                    {isIOS 
+                      ? (lang === 'te' ? '📲 ఐఫోన్‌లో సారథిని పొందండి' : '📲 Install Saarthi on iPhone')
+                      : (lang === 'te' ? '📲 సారథి యాప్‌ను పొందండి' : '📲 Get Saarthi App')}
+                  </span>
+                </Link>
               )}
 
               <div className={styles.spiritualTip}>

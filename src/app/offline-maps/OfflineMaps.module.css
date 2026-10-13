@@ -47,7 +47,7 @@
   padding: 5px 12px;
   border-radius: 20px;
   font-size: 12px;
-  font-weight: 800;
+  font-weight: 600;
 }
 
 .titleArea {
@@ -64,14 +64,14 @@
   padding: 4px 10px;
   border-radius: 12px;
   font-size: 11.5px;
-  font-weight: 800;
+  font-weight: 600;
   text-transform: uppercase;
   margin-bottom: 8px;
 }
 
 .mainTitle {
   font-size: 24px;
-  font-weight: 900;
+  font-weight: 700;
   color: #0F5132;
   margin: 0 0 6px 0;
   letter-spacing: -0.4px;
@@ -125,7 +125,7 @@
 
 .bulkTitle {
   font-size: 14.5px;
-  font-weight: 800;
+  font-weight: 600;
   color: #1C1917;
   margin: 0;
 }
@@ -147,7 +147,7 @@
   border-radius: 14px;
   padding: 12px 20px;
   font-size: 13.5px;
-  font-weight: 800;
+  font-weight: 600;
   cursor: pointer;
   box-shadow: 0 4px 12px rgba(15, 81, 50, 0.2);
   transition: all 0.2s;
@@ -289,7 +289,7 @@
   padding: 3px 8px;
   border-radius: 10px;
   font-size: 11px;
-  font-weight: 800;
+  font-weight: 600;
   color: #0F5132;
 }
 
@@ -303,7 +303,7 @@
   padding: 3px 8px;
   border-radius: 10px;
   font-size: 10.5px;
-  font-weight: 800;
+  font-weight: 600;
   display: flex;
   align-items: center;
   gap: 4px;
@@ -319,7 +319,7 @@
 
 .cardTitle {
   font-size: 16px;
-  font-weight: 800;
+  font-weight: 600;
   color: #1C1917;
   margin: 0 0 6px 0;
   line-height: 1.35;
@@ -351,7 +351,7 @@
   padding: 9px 12px;
   border-radius: 12px;
   font-size: 12.5px;
-  font-weight: 800;
+  font-weight: 600;
   text-decoration: none;
   transition: background 0.15s;
 }

@@ -5,7 +5,7 @@
   width: 100%;
   background-color: #FFFFFF; /* Pure White background */
   color: #0F172A; /* Deep Navy */
-  font-family: var(--font-body), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-family: var(--font-sans), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   display: flex;
   flex-direction: column;
   position: relative;
@@ -56,7 +56,7 @@
 }
 
 .headerTitle {
-  font-family: var(--font-display), Georgia, serif;
+  font-family: var(--font-sans), system-ui, sans-serif;
   font-size: 18px;
   font-weight: 700;
   color: #0F172A;
@@ -124,9 +124,9 @@
 }
 
 .heroTitle {
-  font-family: var(--font-display), Georgia, serif;
+  font-family: var(--font-sans), system-ui, sans-serif;
   font-size: 24px;
-  font-weight: 800;
+  font-weight: 600;
   color: #0F172A;
   margin: 0;
 }
@@ -208,14 +208,15 @@
 
 /* Today's Notice Card */
 .noticeBanner {
-  background: #FFFBEB;
-  border: 1px solid #FDE68A;
+  background: #FFFFFF;
+  border: 1px solid rgba(30, 35, 45, 0.08);
   border-radius: 16px;
   padding: 14px 16px;
   display: flex;
   align-items: flex-start;
   gap: 12px;
   position: relative;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
 }
 
 .noticeHeader {
@@ -223,23 +224,25 @@
   align-items: center;
   gap: 6px;
   font-size: 11px;
-  font-weight: 800;
-  color: #D97706;
+  font-weight: 600;
+  color: #92400E;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.06em;
 }
 
 .noticeContent {
-  font-size: 13px;
+  font-size: 13.5px;
   font-weight: 600;
-  color: #92400E;
+  color: #1E232D;
   margin: 4px 0 0 0;
+  line-height: 1.45;
 }
 
 .noticeTime {
   font-size: 11px;
-  color: #B45309;
-  margin-top: 2px;
+  color: #64748B;
+  margin-top: 3px;
+  font-weight: 500;
 }
 
 /* 2-Column Primary Actions Grid */
@@ -256,9 +259,9 @@
 }
 
 .sectionTitle {
-  font-family: var(--font-display), Georgia, serif;
+  font-family: var(--font-sans), system-ui, sans-serif;
   font-size: 18px;
-  font-weight: 800;
+  font-weight: 600;
   color: #0F172A;
   margin: 0;
 }
@@ -308,7 +311,7 @@
 }
 
 .primaryCardTitle {
-  font-family: var(--font-display), Georgia, serif;
+  font-family: var(--font-sans), system-ui, sans-serif;
   font-size: 18px;
   font-weight: 700;
   color: #0F172A;
@@ -372,9 +375,9 @@
 }
 
 .insideHeroTitle {
-  font-family: var(--font-display), Georgia, serif;
+  font-family: var(--font-sans), system-ui, sans-serif;
   font-size: 24px;
-  font-weight: 800;
+  font-weight: 600;
   color: #0F172A;
   margin: 0;
   display: flex;
@@ -455,12 +458,13 @@
 }
 
 .subLocationWalk {
-  background: #FEF3C7;
-  color: #B45309;
-  font-weight: 700;
+  background: rgba(217, 119, 6, 0.12);
+  color: #92400E;
+  font-weight: 600;
   padding: 2px 8px;
-  border-radius: 6px;
-  font-size: 11px;
+  border-radius: 999px;
+  font-size: 11.5px;
+  letter-spacing: 0.02em;
 }
 
 /* Step-by-Step Procedure Timeline */
@@ -491,7 +495,7 @@
   border-radius: 50%;
   background: #FEF3C7;
   color: #D97706;
-  font-weight: 800;
+  font-weight: 600;
   font-size: 14px;
   display: flex;
   align-items: center;
@@ -560,7 +564,7 @@
 
 .reqTitle {
   font-size: 13px;
-  font-weight: 800;
+  font-weight: 600;
   margin: 0;
 }
 
@@ -620,7 +624,7 @@
 
 .emergencyTitle {
   font-size: 14px;
-  font-weight: 800;
+  font-weight: 600;
   margin: 0;
 }
 
@@ -638,7 +642,7 @@
   height: 38px;
   padding: 0 16px;
   font-size: 13px;
-  font-weight: 800;
+  font-weight: 600;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -702,9 +706,9 @@
 }
 
 .welcomeTitle {
-  font-family: var(--font-display), Georgia, serif;
+  font-family: var(--font-sans), system-ui, sans-serif;
   font-size: 18px;
-  font-weight: 800;
+  font-weight: 600;
   margin: 0 0 6px 0;
   display: flex;
   align-items: center;
@@ -726,7 +730,7 @@
   border-radius: 12px;
   padding: 10px 18px;
   font-size: 13px;
-  font-weight: 800;
+  font-weight: 600;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
@@ -749,9 +753,9 @@
 }
 
 .checklistTitle {
-  font-family: var(--font-display), Georgia, serif;
+  font-family: var(--font-sans), system-ui, sans-serif;
   font-size: 16px;
-  font-weight: 800;
+  font-weight: 600;
   color: #0F172A;
   margin: 0;
   display: flex;
@@ -761,7 +765,7 @@
 
 .checklistProgress {
   font-size: 13px;
-  font-weight: 800;
+  font-weight: 600;
   color: #D97706;
 }
 
@@ -859,7 +863,7 @@
   align-items: center;
   gap: 8px;
   font-size: 13px;
-  font-weight: 800;
+  font-weight: 600;
   color: #B45309;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -917,7 +921,7 @@
 
 .highlightTitle {
   font-size: 13.5px;
-  font-weight: 800;
+  font-weight: 600;
   color: #0F172A;
   margin: 0;
   line-height: 1.25;
@@ -987,14 +991,14 @@
 
 .itemCategoryTitle {
   font-size: 14.5px;
-  font-weight: 800;
+  font-weight: 600;
   color: #0F172A;
   margin: 0;
 }
 
 .itemCategoryTag {
   font-size: 11px;
-  font-weight: 800;
+  font-weight: 600;
   background: #ECFDF5;
   color: #059669;
   border: 1px solid #A7F3D0;
@@ -1130,7 +1134,7 @@
   align-items: center;
   gap: 8px;
   font-size: 13px;
-  font-weight: 800;
+  font-weight: 600;
   color: #92400E;
   text-transform: uppercase;
   letter-spacing: 0.4px;
@@ -1171,7 +1175,7 @@
 
 .decisionFlowTag {
   font-size: 10px;
-  font-weight: 800;
+  font-weight: 600;
   text-transform: uppercase;
   padding: 2px 6px;
   border-radius: 6px;
@@ -1207,7 +1211,7 @@
 
 .subLocationBestFor {
   font-size: 11px;
-  font-weight: 800;
+  font-weight: 600;
   color: #0F5132;
   background: #F0FDF4;
   padding: 2px 8px;
@@ -1312,29 +1316,32 @@
   flex-direction: column;
   gap: 4px;
   padding: 4px 0 8px 0;
+  font-family: var(--font-sans), system-ui, sans-serif;
 }
 
 .heroPreHeading {
+  font-family: var(--font-sans), system-ui, sans-serif;
   font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 0.08em;
+  font-weight: 600;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: #0F5132;
+  color: #64748B;
 }
 
 .heroMainTitle {
-  font-family: var(--font-display), Georgia, serif;
-  font-size: 22px;
-  font-weight: 800;
-  color: #0F172A;
+  font-family: var(--font-sans), system-ui, sans-serif;
+  font-size: 19px;
+  font-weight: 700;
+  color: #1E232D;
   margin: 0;
-  line-height: 1.2;
+  line-height: 1.25;
 }
 
 .heroDesc {
-  font-size: 13.5px;
-  color: #475569;
-  line-height: 1.4;
+  font-size: 13px;
+  font-weight: 500;
+  color: #64748B;
+  line-height: 1.5;
   margin: 2px 0 6px 0;
 }
 
@@ -1342,9 +1349,9 @@
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  font-size: 12.5px;
-  font-weight: 600;
-  color: #0F5132;
+  font-size: 12px;
+  font-weight: 500;
+  color: #64748B;
 }
 
 /* Decision Cards (WHAT -> WHERE -> ACTION) */
@@ -1584,7 +1591,7 @@
 
 .featuredTitle {
   font-size: 17px;
-  font-weight: 800;
+  font-weight: 600;
   color: #0F172A;
   margin: 0;
 }

@@ -67,7 +67,7 @@
 
 .heroDecisionQuestion {
   font-size: 28px;
-  font-weight: 900;
+  font-weight: 700;
   color: #0F172A;
   margin: 0;
   line-height: 1.1;
@@ -80,7 +80,7 @@
   gap: 8px;
   padding: 8px 16px;
   border-radius: 100px;
-  font-weight: 800;
+  font-weight: 600;
   font-size: 15px;
   width: fit-content;
 }
@@ -149,7 +149,7 @@
 .metricInfo strong {
   font-size: 15px;
   color: #0F172A;
-  font-weight: 800;
+  font-weight: 600;
 }
 
 .metricInfo small {

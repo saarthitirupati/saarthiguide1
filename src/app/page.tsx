@@ -594,6 +594,41 @@ export default function HomePage() {
           </div>
         </div>
       </div>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "Is Saarthi Guide same as Saarthi?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes, Saarthi Guide is the complete app. Pilgrims and travelers frequently search for it simply as Saarthi. Saarthi is your offline Tirumala companion founded by Sunil Thatra."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Who is the founder of Saarthi?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Sunil Thatra is the founder of Saarthi (Saarthi Guide). He built Saarthi to help Tirupati and Tirumala pilgrims with verified offline maps, darshan wait times, and spiritual essentials."
+                }
+              },
+              {
+                "@type": "Question",
+                "name": "Does Saarthi work offline in Tirumala?",
+                "acceptedAnswer": {
+                  "@type": "Answer",
+                  "text": "Yes, Saarthi by Sunil Thatra works offline. Temple precinct maps, essentials guides, and japa mala work without internet connectivity across the Tirumala hills."
+                }
+              }
+            ]
+          })
+        }}
+      />
     </div>
   );
 }

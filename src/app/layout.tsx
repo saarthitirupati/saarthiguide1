@@ -13,17 +13,18 @@ const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.saarthiguide.in
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
   title: {
-    default: "Saarthi: Tirumala & Tirupati Pilgrim Guide | Live Darshan, SSD Tokens & Maps",
-    template: "%s | Saarthi Guide"
+    default: "Saarthi - Tirumala Tirupati Guide | Saarthi Guide",
+    template: "%s | Saarthi"
   },
-  description: "Saarthi is the #1 trusted pilgrimage guide for Tirupati and Tirumala. Real-time TTD darshan wait times, free SSD token counter status, 74+ offline temple precinct maps, ghat road speed rules & daily Bhagavad Gita.",
+  description: "Saarthi by Sunil Thatra - your offline Tirumala companion. Darshan timings, queue map, 82 temples, japa mala. The trusted Saarthi Guide for Tirupati Balaji.",
   keywords: [
+    "saarthi",
+    "saarthi guide",
     "tirumala saarthi",
     "saarthi tirupati",
     "saarthi tirumala",
     "tirupati saarthi",
     "tirumala saarthi tirupati",
-    "saarthi guide",
     "saarthi guide tirupati",
     "saarthi app tirupati",
     "Sunil Thatra",
@@ -44,9 +45,9 @@ export const metadata: Metadata = {
     "తిరుమల దర్శనం సమయాలు",
     "తిరుపతి ఆలయాలు"
   ],
-  authors: [{ name: "Saarthi Guide Team" }],
-  creator: "Saarthi Guide",
-  publisher: "Saarthi Guide",
+  authors: [{ name: "Sunil Thatra", url: "https://www.linkedin.com/in/sunil-t-39a905315/" }],
+  creator: "Sunil Thatra",
+  publisher: "Saarthi",
   alternates: {
     canonical: baseUrl,
   },
@@ -121,6 +122,26 @@ const jsonLdSchema = {
   "@context": "https://schema.org",
   "@graph": [
     {
+      "@type": "Organization",
+      "@id": `${baseUrl}/#organization`,
+      "name": "Saarthi",
+      "alternateName": [
+        "Saarthi Guide",
+        "Saarthi Tirupati",
+        "Saarthi App",
+        "Saarthi Tirumala",
+        "Saarthi by Sunil Thatra"
+      ],
+      "url": baseUrl,
+      "logo": `${baseUrl}/logo.png`,
+      "founder": { "@id": `${baseUrl}/#sunil-thatra` },
+      "foundingDate": "2024",
+      "sameAs": [
+        "https://play.google.com/store/apps/details?id=com.saarthi.guide",
+        "https://www.linkedin.com/in/sunil-t-39a905315/"
+      ]
+    },
+    {
       "@type": "WebSite",
       "@id": `${baseUrl}/#website`,
       "url": baseUrl,
@@ -138,7 +159,7 @@ const jsonLdSchema = {
       "description": "The official digital companion for Tirupati & Tirumala pilgrims. 100% offline temple precinct maps, live TTD darshan waiting times, and authentic Sthala Puranas.",
       "publisher": {
         "@type": "Organization",
-        "name": "Saarthi Guide",
+        "name": "Saarthi",
         "url": baseUrl,
         "logo": `${baseUrl}/logo.png`
       }
@@ -147,14 +168,17 @@ const jsonLdSchema = {
       "@type": "Person",
       "@id": `${baseUrl}/#sunil-thatra`,
       "name": "Sunil Thatra",
+      "givenName": "Sunil",
+      "familyName": "Thatra",
       "jobTitle": "Founder & Lead Developer",
       "worksFor": {
-        "@type": "Organization",
-        "name": "Saarthi Guide",
-        "url": baseUrl
+        "@id": `${baseUrl}/#organization`
       },
       "url": `${baseUrl}/about`,
       "image": "https://res.cloudinary.com/kniegqlj/image/upload/v1791044338/passportsize_f7dyq3.jpg",
+      "sameAs": [
+        "https://www.linkedin.com/in/sunil-t-39a905315/"
+      ],
       "description": "Founder of Saarthi, the trusted pilgrimage guide for Tirupati and Tirumala."
     },
     {
