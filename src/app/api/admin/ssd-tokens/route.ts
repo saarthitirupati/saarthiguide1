@@ -13,6 +13,8 @@ export async function GET() {
       ssdNotice: status.ssdNotice,
       ssdTimingsGuide: status.ssdTimingsGuide,
       ssdCounters: status.ssdCounters,
+      ssdAdvisoryTag: status.ssdAdvisoryTag,
+      ssdModeBadge: status.ssdModeBadge,
       lastUpdated: status.lastUpdated
     });
   } catch (error: any) {
@@ -36,6 +38,8 @@ export async function POST(req: Request) {
     if (body.ssdNotice !== undefined) updates.ssdNotice = body.ssdNotice;
     if (body.ssdTimingsGuide !== undefined) updates.ssdTimingsGuide = body.ssdTimingsGuide;
     if (body.ssdCounters !== undefined) updates.ssdCounters = body.ssdCounters;
+    if (body.ssdAdvisoryTag !== undefined) updates.ssdAdvisoryTag = body.ssdAdvisoryTag;
+    if (body.ssdModeBadge !== undefined) updates.ssdModeBadge = body.ssdModeBadge;
 
     // Read current state before update to detect changes
     const before = await readStatus();
@@ -82,6 +86,8 @@ export async function POST(req: Request) {
       ssdNotice: updated.ssdNotice,
       ssdTimingsGuide: updated.ssdTimingsGuide,
       ssdCounters: updated.ssdCounters,
+      ssdAdvisoryTag: updated.ssdAdvisoryTag,
+      ssdModeBadge: updated.ssdModeBadge,
       lastUpdated: updated.lastUpdated
     });
   } catch (error: any) {

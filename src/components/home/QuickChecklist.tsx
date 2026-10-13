@@ -187,18 +187,18 @@ export function QuickChecklist(props: any) {
                   <span style={{ fontSize: '10px', fontWeight: 700, color: '#991B1B', letterSpacing: '0.04em', textTransform: 'uppercase' }}>
                     {t.importantAdvisory}
                   </span>
-                  {isSuspended && (
+                  {(liveStatus.ssdAdvisoryTag?.trim() || isSuspended) && (
                     <span style={{ fontSize: '9.5px', fontWeight: 600, color: '#B91C1C', background: '#FEE2E2', border: '1px solid #FCA5A5', padding: '1px 6px', borderRadius: '4px' }}>
-                      Brahmotsavam
+                      {liveStatus.ssdAdvisoryTag?.trim() || (/brahmotsavam/i.test(cleanNotice) ? 'Brahmotsavam' : /vaikunta/i.test(cleanNotice) ? 'Vaikunta Ekadasi' : /rathasapthami/i.test(cleanNotice) ? 'Rathasapthami' : /rush/i.test(cleanNotice) ? 'High Rush' : /weather|rain/i.test(cleanNotice) ? 'Weather Alert' : 'Festival Alert')}
                     </span>
                   )}
                 </div>
                 <span style={{ fontSize: '12px', fontWeight: 600, color: '#7F1D1D', lineHeight: 1.4, display: 'block', marginTop: '2px' }}>
                   {cleanNotice}
                 </span>
-                {isSuspended && (
+                {(liveStatus.ssdTimingsGuide?.trim() || isSuspended) && (
                   <div style={{ marginTop: '6px', paddingTop: '6px', borderTop: '1px dashed #FCA5A5', fontSize: '11px', color: '#991B1B', fontWeight: 500, lineHeight: 1.35 }}>
-                    💡 {lang === 'te' ? 'ఉచిత సర్వ దర్శనం కోసం భక్తులు తిరుమల వైకుంఠం క్యూ కాంప్లెక్స్‌కు నేరుగా వెళ్లవచ్చు.' : 'Devotees can proceed directly to Vaikuntam Queue Complex in Tirumala for free Sarva Darshan without tokens.'}
+                    💡 {liveStatus.ssdTimingsGuide?.trim() || (lang === 'te' ? 'ఉచిత సర్వ దర్శనం కోసం భక్తులు తిరుమల వైకుంఠం క్యూ కాంప్లెక్స్‌కు నేరుగా వెళ్లవచ్చు.' : 'Devotees can proceed directly to Vaikuntam Queue Complex in Tirumala for free Sarva Darshan without tokens.')}
                   </div>
                 )}
               </div>
@@ -225,14 +225,14 @@ export function QuickChecklist(props: any) {
                 </span>
                 <span style={{ fontSize: '13px', fontWeight: 700, color: liveStatus.ssdTokenStatus === 'issuing' ? '#15803D' : '#1E293B', marginTop: '1px', display: 'block' }}>
                   {isSuspended
-                    ? (lang === 'te' ? 'టోకెన్ లేకుండా నేరుగా వైకుంఠం క్యూ' : 'Direct Walk-in Sarva Darshan')
+                    ? (formattedNextTime && !/suspend|cancel/i.test(formattedNextTime) ? formattedNextTime : (lang === 'te' ? 'టోకెన్ లేకుండా నేరుగా వైకుంఠం క్యూ' : 'Direct Walk-in Sarva Darshan'))
                     : (formattedNextTime ? formattedNextTime : (liveStatus.ssdTokenStatus === 'issuing' ? t.tokensBeingIssued : '4:00 AM'))}
                 </span>
               </div>
             </div>
-            {isSuspended && (
+            {(liveStatus.ssdModeBadge?.trim() || isSuspended) && (
               <span style={{ fontSize: '10px', fontWeight: 600, color: '#0F5132', background: '#F0FDF4', border: '1px solid #BBF7D0', padding: '2px 8px', borderRadius: '6px', whiteSpace: 'nowrap' }}>
-                Open 24/7
+                {liveStatus.ssdModeBadge?.trim() || 'Open 24/7'}
               </span>
             )}
           </div>

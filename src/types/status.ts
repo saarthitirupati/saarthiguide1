@@ -15,4 +15,6 @@ export interface LiveStatus {
   ssdNotice: string;
   ssdTimingsGuide: string;
   ssdCounters: Array<{ name: string; description: string }>;
+  ssdAdvisoryTag?: string;
+  ssdModeBadge?: string;
 }

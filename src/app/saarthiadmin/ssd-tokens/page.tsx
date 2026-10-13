@@ -23,6 +23,8 @@ export default function AdminSsdTokensPage() {
   const [ssdNextTokenTime, setSsdNextTokenTime] = useState<string>('2:00 PM');
   const [ssdNotice, setSsdNotice] = useState<string>('');
   const [ssdTimingsGuide, setSsdTimingsGuide] = useState<string>('Offline free SSD tokens are released daily starting at 3:00 AM / 4:00 AM. Batches are allocated hourly for that day\'s Darshan. Counters close as soon as the daily quota runs out (~15,000 - 20,000 tokens).');
+  const [ssdAdvisoryTag, setSsdAdvisoryTag] = useState<string>('');
+  const [ssdModeBadge, setSsdModeBadge] = useState<string>('');
   const [ssdSlots, setSsdSlots] = useState<SsdSlot[]>([
     { slotTime: '5:00 AM - 7:00 AM', status: 'closed', tokensLeft: 'Full' },
     { slotTime: '7:00 AM - 9:00 AM', status: 'closed', tokensLeft: 'Full' },
@@ -43,6 +45,8 @@ export default function AdminSsdTokensPage() {
     setSsdNextTokenTime('Suspended for Brahmotsavam');
     setSsdNotice('SSD Tokens are cancelled due to Srivari Navaratri Brahmotsavam from OCT 11 to 22');
     setSsdTimingsGuide('SSD tokens is suspended from today 10 oct 2026 to 20 Oct 2026 due to Srivari Navaratri Brahmotsavams.');
+    setSsdAdvisoryTag('Brahmotsavam');
+    setSsdModeBadge('Open 24/7');
     setSsdSlots(slots => slots.map(s => ({ ...s, status: 'closed', tokensLeft: 'Suspended' })));
   };
 
@@ -50,6 +54,8 @@ export default function AdminSsdTokensPage() {
     setSsdTokenStatus('closed-for-day');
     setSsdNextTokenTime('Tomorrow morning at 4:00 AM');
     setSsdNotice('SSD and DD Tokens Quota completed for today across all counters.');
+    setSsdAdvisoryTag('');
+    setSsdModeBadge('');
     setSsdSlots(slots => slots.map(s => ({ ...s, status: 'closed', tokensLeft: 'Full' })));
   };
 
@@ -57,6 +63,8 @@ export default function AdminSsdTokensPage() {
     setSsdTokenStatus('issuing');
     setSsdNextTokenTime('Tokens issuing actively now');
     setSsdNotice('');
+    setSsdAdvisoryTag('');
+    setSsdModeBadge('');
     setSsdSlots(slots => slots.map(s => ({ ...s, status: 'available', tokensLeft: 'Available' })));
   };
 
@@ -64,6 +72,8 @@ export default function AdminSsdTokensPage() {
     setSsdTokenStatus('paused');
     setSsdNextTokenTime('Next batch issuing at 2:00 PM');
     setSsdNotice('Counters experiencing heavy rush. Issuing paused temporarily.');
+    setSsdAdvisoryTag('High Rush');
+    setSsdModeBadge('Paused');
   };
 
   const fetchSsdData = async () => {
@@ -75,6 +85,8 @@ export default function AdminSsdTokensPage() {
         if (data.ssdNextTokenTime) setSsdNextTokenTime(data.ssdNextTokenTime);
         if (data.ssdNotice !== undefined) setSsdNotice(data.ssdNotice);
         if (data.ssdTimingsGuide !== undefined) setSsdTimingsGuide(data.ssdTimingsGuide);
+        if (data.ssdAdvisoryTag !== undefined) setSsdAdvisoryTag(data.ssdAdvisoryTag);
+        if (data.ssdModeBadge !== undefined) setSsdModeBadge(data.ssdModeBadge);
         if (Array.isArray(data.ssdTokenSlots)) setSsdSlots(data.ssdTokenSlots);
         if (Array.isArray(data.ssdCounters) && data.ssdCounters.length > 0) setSsdCounters(data.ssdCounters);
       }
@@ -150,6 +162,8 @@ export default function AdminSsdTokensPage() {
           ssdNextTokenTime,
           ssdNotice,
           ssdTimingsGuide,
+          ssdAdvisoryTag,
+          ssdModeBadge,
           ssdTokenSlots: ssdSlots,
           ssdCounters,
           sendPush: sendPushNotification
@@ -162,6 +176,8 @@ export default function AdminSsdTokensPage() {
         if (data.ssdNextTokenTime !== undefined) setSsdNextTokenTime(data.ssdNextTokenTime);
         if (data.ssdNotice !== undefined) setSsdNotice(data.ssdNotice);
         if (data.ssdTimingsGuide !== undefined) setSsdTimingsGuide(data.ssdTimingsGuide);
+        if (data.ssdAdvisoryTag !== undefined) setSsdAdvisoryTag(data.ssdAdvisoryTag);
+        if (data.ssdModeBadge !== undefined) setSsdModeBadge(data.ssdModeBadge);
         if (Array.isArray(data.ssdTokenSlots)) setSsdSlots(data.ssdTokenSlots);
         if (Array.isArray(data.ssdCounters)) setSsdCounters(data.ssdCounters);
 
@@ -356,16 +372,16 @@ export default function AdminSsdTokensPage() {
           </button>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: '16px' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: '16px', marginBottom: '14px' }}>
           <div>
             <label style={{ fontSize: '13px', fontWeight: 700, color: '#334155', display: 'block', marginBottom: '6px' }}>
-              Next Batch Release Time
+              Next Batch Release / Mode Time
             </label>
             <input 
               type="text" 
               value={ssdNextTokenTime}
               onChange={(e) => setSsdNextTokenTime(e.target.value)}
-              placeholder="e.g. 2:00 PM or Tomorrow 4 AM"
+              placeholder="e.g. 2:00 PM or Direct Walk-in Sarva Darshan"
               style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid #CBD5E1', fontSize: '14px' }}
             />
           </div>
@@ -379,6 +395,34 @@ export default function AdminSsdTokensPage() {
               value={ssdNotice}
               onChange={(e) => setSsdNotice(e.target.value)}
               placeholder="e.g. Counters experiencing high rush at Srinivasam Complex"
+              style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid #CBD5E1', fontSize: '14px' }}
+            />
+          </div>
+        </div>
+
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+          <div>
+            <label style={{ fontSize: '13px', fontWeight: 700, color: '#334155', display: 'block', marginBottom: '6px' }}>
+              Advisory Badge Tag (e.g. Brahmotsavam, High Rush)
+            </label>
+            <input 
+              type="text" 
+              value={ssdAdvisoryTag}
+              onChange={(e) => setSsdAdvisoryTag(e.target.value)}
+              placeholder="Auto-detected if empty (e.g. Brahmotsavam)"
+              style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid #CBD5E1', fontSize: '14px' }}
+            />
+          </div>
+
+          <div>
+            <label style={{ fontSize: '13px', fontWeight: 700, color: '#334155', display: 'block', marginBottom: '6px' }}>
+              Mode Status Badge (e.g. Open 24/7, Active, Paused)
+            </label>
+            <input 
+              type="text" 
+              value={ssdModeBadge}
+              onChange={(e) => setSsdModeBadge(e.target.value)}
+              placeholder="e.g. Open 24/7"
               style={{ width: '100%', padding: '10px', borderRadius: '8px', border: '1px solid #CBD5E1', fontSize: '14px' }}
             />
           </div>

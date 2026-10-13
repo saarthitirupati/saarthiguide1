@@ -41,6 +41,8 @@ export interface TirumalaStatus {
   ssdNotice: string;
   ssdTimingsGuide: string;
   ssdCounters: SsdCounter[];
+  ssdAdvisoryTag?: string;
+  ssdModeBadge?: string;
 }
 
 const DEFAULT_STATUS: TirumalaStatus = {
@@ -77,6 +79,8 @@ const DEFAULT_STATUS: TirumalaStatus = {
     { name: 'Srinivasam Complex Counter', description: 'Located opposite Tirupati RTC Central Bus Stand (Ideal for bus travelers)' },
     { name: 'Bhudevi Complex Counter', description: 'Located near Alipiri Footpath Link Road (Ideal for pedestrian pilgrims)' },
   ],
+  ssdAdvisoryTag: '',
+  ssdModeBadge: '',
 };
 
 let memoryStatus: TirumalaStatus = { ...DEFAULT_STATUS };
