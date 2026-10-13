@@ -82,7 +82,7 @@ export function FootpathTimingsCard() {
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-between',
-          boxShadow: '0 2px 8px rgba(15, 23, 42, 0.02)'
+          boxShadow: '0 1px 2px rgba(0, 0, 0, 0.04)'
         }}>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '4px', marginBottom: '4px' }}>
@@ -107,9 +107,16 @@ export function FootpathTimingsCard() {
               </span>
             </div>
 
-            <h4 style={{ fontSize: '13px', fontWeight: 700, color: '#0F172A', margin: '0 0 6px', lineHeight: 1.2 }}>
+            <h4 style={{ fontSize: '13px', fontWeight: 700, color: '#0F172A', margin: '0 0 4px', lineHeight: 1.2 }}>
               {lang === 'te' ? 'శ్రీవారి మెట్టు' : 'Srivari Mettu'}
             </h4>
+
+            {/* Scannable meta line */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '10.5px', color: '#64748B', fontWeight: 500, marginBottom: '6px' }}>
+              <span>~2,388 {lang === 'te' ? 'మెట్లు' : 'steps'}</span>
+              <span>•</span>
+              <span>1.5–2 hrs</span>
+            </div>
 
             {/* Time Pill */}
             <div style={{
@@ -117,7 +124,7 @@ export function FootpathTimingsCard() {
               alignItems: 'center',
               gap: '4px',
               backgroundColor: '#F8FAFC',
-              border: '1px solid #E2E8F0',
+              border: '1px solid rgba(15, 23, 42, 0.06)',
               borderRadius: '8px',
               padding: '4px 7px',
               fontSize: '11px',
@@ -128,31 +135,25 @@ export function FootpathTimingsCard() {
               <Clock size={12} color="#64748B" />
               <span>6:00 AM – 5:30 PM</span>
             </div>
-
-            <div style={{ fontSize: '10.5px', color: '#64748B', fontWeight: 500, marginBottom: '6px' }}>
-              ~2,388 {lang === 'te' ? 'మెట్లు' : 'Steps'} • 1.5–2 hrs
-            </div>
           </div>
 
-          {/* Child restriction warning badge */}
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '4px',
-            backgroundColor: '#FEF2F2',
-            border: '1px solid #FECACA',
-            borderRadius: '8px',
-            padding: '5px 7px',
-            fontSize: '10px',
-            fontWeight: 600,
-            color: '#991B1B',
-            lineHeight: 1.25
-          }}>
-            <Baby size={12} color="#DC2626" style={{ flexShrink: 0 }} />
-            <span>
-              {lang === 'te' 
-                ? '12 ఏళ్ల లోపు పిల్లలు 2:00 PM తర్వాత అనుమతించబడరు' 
-                : '<12 yrs kids not allowed after 2:00 PM'}
+          {/* Calm constraint badge */}
+          <div style={{ marginTop: '4px', display: 'flex', gap: '4px', flexWrap: 'wrap' }}>
+            <span style={{
+              background: 'rgba(239, 68, 68, 0.08)',
+              color: '#991B1B',
+              border: '1px solid rgba(239, 68, 68, 0.15)',
+              borderRadius: '999px',
+              padding: '3px 7px',
+              fontWeight: 600,
+              fontSize: '9.5px',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '3px',
+              lineHeight: 1.2
+            }}>
+              <Baby size={11} color="#DC2626" />
+              <span>{lang === 'te' ? '<12 ఏళ్లు 2 PM వరకు' : 'No kids <12 after 2 PM'}</span>
             </span>
           </div>
         </div>
@@ -166,7 +167,7 @@ export function FootpathTimingsCard() {
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-between',
-          boxShadow: '0 2px 8px rgba(15, 23, 42, 0.02)'
+          boxShadow: '0 1px 2px rgba(0, 0, 0, 0.04)'
         }}>
           <div>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '4px', marginBottom: '4px' }}>
@@ -191,9 +192,16 @@ export function FootpathTimingsCard() {
               </span>
             </div>
 
-            <h4 style={{ fontSize: '13px', fontWeight: 700, color: '#0F172A', margin: '0 0 6px', lineHeight: 1.2 }}>
+            <h4 style={{ fontSize: '13px', fontWeight: 700, color: '#0F172A', margin: '0 0 4px', lineHeight: 1.2 }}>
               {lang === 'te' ? 'అలిపిరి మెట్టు' : 'Alipiri Mettu'}
             </h4>
+
+            {/* Scannable meta line */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '10.5px', color: '#64748B', fontWeight: 500, marginBottom: '6px' }}>
+              <span>~3,550 {lang === 'te' ? 'మెట్లు' : 'steps'}</span>
+              <span>•</span>
+              <span>3.5–4 hrs</span>
+            </div>
 
             {/* Time Pill */}
             <div style={{
@@ -201,7 +209,7 @@ export function FootpathTimingsCard() {
               alignItems: 'center',
               gap: '4px',
               backgroundColor: '#F8FAFC',
-              border: '1px solid #E2E8F0',
+              border: '1px solid rgba(15, 23, 42, 0.06)',
               borderRadius: '8px',
               padding: '4px 7px',
               fontSize: '11px',
@@ -212,31 +220,37 @@ export function FootpathTimingsCard() {
               <Clock size={12} color="#64748B" />
               <span>5:00 AM – 9:30 PM</span>
             </div>
-
-            <div style={{ fontSize: '10.5px', color: '#64748B', fontWeight: 500, marginBottom: '6px' }}>
-              ~3,550 {lang === 'te' ? 'మెట్లు' : 'Steps'} • 3.5–4 hrs
-            </div>
           </div>
 
-          {/* Facility benefit badge */}
-          <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '4px',
-            backgroundColor: '#F0FDF4',
-            border: '1px solid #BBF7D0',
-            borderRadius: '8px',
-            padding: '5px 7px',
-            fontSize: '10px',
-            fontWeight: 600,
-            color: '#15803D',
-            lineHeight: 1.25
-          }}>
-            <ShieldCheck size={12} color="#16A34A" style={{ flexShrink: 0 }} />
-            <span>
-              {lang === 'te' 
-                ? '24 గంటల లైటింగ్ & లగేజీ రవాణా' 
-                : 'Covered canopy & free luggage van'}
+          {/* Calm visual facility badges */}
+          <div style={{ marginTop: '4px', display: 'flex', gap: '4px', flexWrap: 'wrap' }}>
+            <span style={{
+              background: 'rgba(16, 185, 129, 0.08)',
+              color: '#065F46',
+              border: '1px solid rgba(16, 185, 129, 0.2)',
+              borderRadius: '999px',
+              padding: '3px 7px',
+              fontWeight: 600,
+              fontSize: '9.5px',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '3px',
+              lineHeight: 1.2
+            }}>
+              <ShieldCheck size={11} color="#059669" />
+              <span>24/7 Lit</span>
+            </span>
+            <span style={{
+              background: '#F8FAFC',
+              border: '1px solid #E2E8F0',
+              color: '#475569',
+              borderRadius: '999px',
+              padding: '3px 7px',
+              fontWeight: 500,
+              fontSize: '9.5px',
+              lineHeight: 1.2
+            }}>
+              Luggage Van
             </span>
           </div>
         </div>

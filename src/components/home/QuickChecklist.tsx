@@ -130,10 +130,9 @@ export function QuickChecklist(props: any) {
             color: 'inherit',
             background: '#FFFFFF',
             border: '1px solid rgba(15, 23, 42, 0.08)',
-            borderLeft: isSuspended ? '3.5px solid #EF4444' : liveStatus.ssdTokenStatus === 'issuing' ? '3.5px solid #10B981' : '3.5px solid #0F5132',
-            borderRadius: '18px',
+            borderRadius: '16px',
             padding: '14px 14px',
-            boxShadow: '0 6px 20px -4px rgba(15, 23, 42, 0.04), 0 2px 6px rgba(15, 23, 42, 0.02)',
+            boxShadow: '0 1px 2px rgba(0, 0, 0, 0.04)',
             fontFamily: 'var(--font-sans, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, sans-serif)',
             transition: 'transform 0.16s cubic-bezier(0.23, 1, 0.32, 1), box-shadow 0.16s cubic-bezier(0.23, 1, 0.32, 1)'
           }}
@@ -152,13 +151,13 @@ export function QuickChecklist(props: any) {
                 fontSize: '10.5px',
                 fontWeight: 600,
                 padding: '3px 10px',
-                borderRadius: '16px',
-                background: isSuspended ? '#FEE2E2' : liveStatus.ssdTokenStatus === 'issuing' ? '#DCFCE7' : liveStatus.ssdTokenStatus === 'paused' ? '#FEF3C7' : '#F1F5F9',
-                color: isSuspended ? '#B91C1C' : liveStatus.ssdTokenStatus === 'issuing' ? '#166534' : liveStatus.ssdTokenStatus === 'paused' ? '#B45309' : '#475569',
-                border: `1px solid ${isSuspended ? '#FECACA' : liveStatus.ssdTokenStatus === 'issuing' ? '#86EFAC' : liveStatus.ssdTokenStatus === 'paused' ? '#FDE68A' : '#E2E8F0'}`
+                borderRadius: '999px',
+                background: isSuspended ? 'rgba(239, 68, 68, 0.08)' : liveStatus.ssdTokenStatus === 'issuing' ? '#DCFCE7' : liveStatus.ssdTokenStatus === 'paused' ? '#FEF3C7' : '#F1F5F9',
+                color: isSuspended ? '#991B1B' : liveStatus.ssdTokenStatus === 'issuing' ? '#166534' : liveStatus.ssdTokenStatus === 'paused' ? '#B45309' : '#475569',
+                border: `1px solid ${isSuspended ? 'rgba(239, 68, 68, 0.15)' : liveStatus.ssdTokenStatus === 'issuing' ? '#86EFAC' : liveStatus.ssdTokenStatus === 'paused' ? '#FDE68A' : '#E2E8F0'}`
               }}>
                 {isSuspended
-                  ? (lang === 'te' ? 'తాత్కాలిక నిలిపివేత' : 'Tokens Suspended')
+                  ? (lang === 'te' ? 'తాత్కాలిక నిలిపివేత' : 'Suspended')
                   : liveStatus.ssdTokenStatus === 'issuing'
                   ? t.issuingNow
                   : liveStatus.ssdTokenStatus === 'paused'
@@ -169,7 +168,7 @@ export function QuickChecklist(props: any) {
             </div>
           </div>
 
-          {/* UNIFIED ADVISORY BANNER */}
+          {/* UNIFIED ADVISORY BANNER (CALM & DEDUPLICATED) */}
           {cleanNotice && (
             <div style={{
               background: '#FEF2F2',
@@ -181,26 +180,32 @@ export function QuickChecklist(props: any) {
               alignItems: 'flex-start',
               gap: '10px'
             }}>
-              <ShieldAlert size={17} color="#DC2626" style={{ flexShrink: 0, marginTop: '2px' }} />
+              <ShieldAlert size={16} color="#DC2626" style={{ flexShrink: 0, marginTop: '2px' }} />
               <div style={{ flex: 1, minWidth: 0 }}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '6px' }}>
                   <span style={{ fontSize: '10px', fontWeight: 700, color: '#991B1B', letterSpacing: '0.04em', textTransform: 'uppercase' }}>
                     {t.importantAdvisory}
                   </span>
                   {(liveStatus.ssdAdvisoryTag?.trim() || isSuspended) && (
-                    <span style={{ fontSize: '9.5px', fontWeight: 600, color: '#B91C1C', background: '#FEE2E2', border: '1px solid #FCA5A5', padding: '1px 6px', borderRadius: '4px' }}>
+                    <span style={{ fontSize: '9.5px', fontWeight: 600, color: '#991B1B', background: 'rgba(239, 68, 68, 0.08)', border: '1px solid rgba(239, 68, 68, 0.2)', padding: '1px 6px', borderRadius: '4px' }}>
                       {liveStatus.ssdAdvisoryTag?.trim() || (/brahmotsavam/i.test(cleanNotice) ? 'Brahmotsavam' : /vaikunta/i.test(cleanNotice) ? 'Vaikunta Ekadasi' : /rathasapthami/i.test(cleanNotice) ? 'Rathasapthami' : /rush/i.test(cleanNotice) ? 'High Rush' : /weather|rain/i.test(cleanNotice) ? 'Weather Alert' : 'Festival Alert')}
                     </span>
                   )}
                 </div>
-                <span style={{ fontSize: '12px', fontWeight: 600, color: '#7F1D1D', lineHeight: 1.4, display: 'block', marginTop: '2px' }}>
+                <span style={{ fontSize: '12px', fontWeight: 500, color: '#7F1D1D', lineHeight: 1.45, display: 'block', marginTop: '3px' }}>
                   {cleanNotice}
                 </span>
-                {(liveStatus.ssdTimingsGuide?.trim() || isSuspended) && (
-                  <div style={{ marginTop: '6px', paddingTop: '6px', borderTop: '1px dashed #FCA5A5', fontSize: '11px', color: '#991B1B', fontWeight: 500, lineHeight: 1.35 }}>
-                    💡 {liveStatus.ssdTimingsGuide?.trim() || (lang === 'te' ? 'ఉచిత సర్వ దర్శనం కోసం భక్తులు తిరుమల వైకుంఠం క్యూ కాంప్లెక్స్‌కు నేరుగా వెళ్లవచ్చు.' : 'Devotees can proceed directly to Vaikuntam Queue Complex in Tirumala for free Sarva Darshan without tokens.')}
+                {/* Visual tip (Deduplicated: shown only if distinct guidance is provided, or a concise direct walk-in note) */}
+                {isSuspended ? (
+                  <div style={{ marginTop: '6px', paddingTop: '6px', borderTop: '1px dashed #FCA5A5', fontSize: '11px', color: '#991B1B', fontWeight: 500, lineHeight: 1.35, display: 'flex', alignItems: 'center', gap: '4px' }}>
+                    <span>💡</span>
+                    <span>{lang === 'te' ? 'తిరుమలలో ఉచిత దర్శనం (టోకెన్ లేకుండా నేరుగా వైకుంఠం క్యూ)' : 'Direct walk-in Sarva Darshan open at Tirumala (No tokens needed)'}</span>
                   </div>
-                )}
+                ) : liveStatus.ssdTimingsGuide?.trim() ? (
+                  <div style={{ marginTop: '6px', paddingTop: '6px', borderTop: '1px dashed #FCA5A5', fontSize: '11px', color: '#991B1B', fontWeight: 500, lineHeight: 1.35 }}>
+                    💡 {liveStatus.ssdTimingsGuide.trim()}
+                  </div>
+                ) : null}
               </div>
             </div>
           )}
@@ -250,157 +255,148 @@ export function QuickChecklist(props: any) {
             </div>
           )}
 
-          {/* VISUAL TILES FOR COLLECTION CENTRES */}
-          <div style={{ borderTop: '1px solid #F1F5F9', paddingTop: '10px', marginTop: '4px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
-              <span style={{ fontSize: '10.5px', fontWeight: 600, color: '#64748B', letterSpacing: '0.03em', textTransform: 'uppercase' }}>
-                {t.collectionCentres}
+          {/* COLLECTION CENTRES */}
+          {isSuspended ? (
+            /* Serene, collapsed line when suspended to remove heavy closed blocks */
+            <div style={{ borderTop: '1px solid #F1F5F9', paddingTop: '8px', marginTop: '4px', display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap' }}>
+              <span style={{ fontSize: '10.5px', fontWeight: 600, color: '#64748B' }}>
+                {t.collectionCentres}:
               </span>
-              <span style={{ fontSize: '10.5px', fontWeight: 600, color: isSuspended ? '#EF4444' : '#0F5132' }}>
-                {isSuspended ? (lang === 'te' ? 'కౌంటర్లు ప్రస్తుతం మూసివేయబడ్డాయి' : 'Counters currently closed') : (lang === 'te' ? 'మ్యాప్ డైరెక్షన్స్' : 'Tap for directions')}
+              <span style={{
+                background: '#F8FAFC',
+                border: '1px solid #E2E8F0',
+                color: '#64748B',
+                borderRadius: '999px',
+                padding: '3px 8px',
+                fontSize: '10px',
+                fontWeight: 500
+              }}>
+                {lang === 'te' ? 'విష్ణు నివాసం • శ్రీనివాసం • భూదేవి కాంప్లెక్స్ — మూసివేయబడ్డాయి' : 'Vishnu Nivasam • Srinivasam • Bhudevi — Closed'}
               </span>
             </div>
+          ) : (
+            /* Active Collection Centre Tiles when open/issuing */
+            <div style={{ borderTop: '1px solid #F1F5F9', paddingTop: '10px', marginTop: '4px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
+                <span style={{ fontSize: '10.5px', fontWeight: 600, color: '#64748B', letterSpacing: '0.03em', textTransform: 'uppercase' }}>
+                  {t.collectionCentres}
+                </span>
+                <span style={{ fontSize: '10.5px', fontWeight: 600, color: '#0F5132' }}>
+                  {lang === 'te' ? 'మ్యాప్ డైరెక్షన్స్' : 'Tap for directions'}
+                </span>
+              </div>
 
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: '6px', width: '100%', boxSizing: 'border-box' }}>
-              {/* Vishnu Nivasam (Train/Station) */}
-              <a
-                href="https://www.google.com/maps/place/Vishnu+Nivasam/@13.6281932,79.4205053,17z/data=!3m1!5s0x3a4d4b0898df978f:0x10422b2c2d88f4e3!4m20!1m10!3m9!1s0x3a4d4bbbe2ad2eff:0x6b655eee58504269!2sVishnu+Nivasam!5m2!4m1!1i2!8m2!3d13.6292776!4d79.4215889!16s%2Fg%2F11g1q7vspv!3m8!1s0x3a4d4bbbe2ad2eff:0x6b655eee58504269!5m2!4m1!1i2!8m2!3d13.6292776!4d79.4215889!16s%2Fg%2F11g1q7vspv"
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={(e) => e.stopPropagation()}
-                style={{ textDecoration: 'none', color: 'inherit', minWidth: 0 }}
-              >
-                <div style={{
-                  background: '#F8FAFC',
-                  border: '1px solid #E2E8F0',
-                  borderRadius: '10px',
-                  padding: '8px 3px',
-                  textAlign: 'center',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  gap: '3px',
-                  minWidth: 0,
-                  width: '100%',
-                  boxSizing: 'border-box'
-                }}>
-                  <div style={{ width: '26px', height: '26px', borderRadius: '50%', background: '#EFF6FF', color: '#2563EB', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                    <Train size={13} />
-                  </div>
-                  <span className="notranslate" style={{ fontSize: '10.5px', fontWeight: 600, color: '#0F172A', lineHeight: 1.2, wordBreak: 'break-word', textAlign: 'center', width: '100%' }}>
-                    {lang === 'te' ? 'విష్ణు నివాసం' : lang === 'hi' ? 'विष्णु निवासम' : lang === 'ta' ? 'விஷ்ணு நிவாஸம்' : 'Vishnu Nivasam'}
-                  </span>
-                  <span className="notranslate" style={{ fontSize: '9px', color: '#64748B', fontWeight: 500, lineHeight: 1.15, textAlign: 'center', width: '100%' }}>
-                    {lang === 'te' ? 'రైల్వే స్టేషన్ ఎదురుగా' : lang === 'hi' ? 'रेलवे स्टेशन के सामने' : lang === 'ta' ? 'ரயில் நிலையம் எதிரில்' : 'Opp. Railway'}
-                  </span>
-                  <span style={{
-                    fontSize: '9px',
-                    fontWeight: 600,
-                    color: isSuspended ? '#94A3B8' : '#0F5132',
-                    background: isSuspended ? '#F1F5F9' : '#F0FDF4',
-                    border: `1px solid ${isSuspended ? '#E2E8F0' : '#BBF7D0'}`,
-                    padding: '1px 5px',
-                    borderRadius: '4px',
-                    marginTop: '2px'
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: '6px', width: '100%', boxSizing: 'border-box' }}>
+                {/* Vishnu Nivasam */}
+                <a
+                  href="https://www.google.com/maps/place/Vishnu+Nivasam/@13.6281932,79.4205053,17z"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={(e) => e.stopPropagation()}
+                  style={{ textDecoration: 'none', color: 'inherit', minWidth: 0 }}
+                >
+                  <div style={{
+                    background: '#F8FAFC',
+                    border: '1px solid #E2E8F0',
+                    borderRadius: '10px',
+                    padding: '8px 3px',
+                    textAlign: 'center',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    gap: '3px',
+                    width: '100%',
+                    boxSizing: 'border-box'
                   }}>
-                    {isSuspended ? (lang === 'te' ? 'మూసివేయబడింది' : 'Closed') : 'Map ↗'}
-                  </span>
-                </div>
-              </a>
+                    <div style={{ width: '26px', height: '26px', borderRadius: '50%', background: '#EFF6FF', color: '#2563EB', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                      <Train size={13} />
+                    </div>
+                    <span className="notranslate" style={{ fontSize: '10.5px', fontWeight: 600, color: '#0F172A', lineHeight: 1.2, wordBreak: 'break-word', textAlign: 'center', width: '100%' }}>
+                      {lang === 'te' ? 'విష్ణు నివాసం' : 'Vishnu Nivasam'}
+                    </span>
+                    <span className="notranslate" style={{ fontSize: '9px', color: '#64748B', fontWeight: 500, lineHeight: 1.15, textAlign: 'center', width: '100%' }}>
+                      {lang === 'te' ? 'రైల్వే స్టేషన్ ఎదురుగా' : 'Opp. Railway'}
+                    </span>
+                    <span style={{ fontSize: '9px', fontWeight: 600, color: '#0F5132', background: '#F0FDF4', border: '1px solid #BBF7D0', padding: '1px 5px', borderRadius: '4px', marginTop: '2px' }}>
+                      Map ↗
+                    </span>
+                  </div>
+                </a>
 
-              {/* Srinivasam (Bus Stand) */}
-              <a
-                href="https://www.google.com/maps/place/Srinivasam/@13.6311961,79.4266529,17z/data=!3m1!5s0x3a4d4b0898df978f:0x10422b2c2d88f4e3!4m20!1m10!3m9!1s0x3a4d4bbbe2ad2eff:0x6b655eee58504269!2sVishnu+Nivasam!5m2!4m1!1i2!8m2!3d13.6292776!4d79.4215889!16s%2Fg%2F11g1q7vspv!3m8!1s0x3a4d4b1372b4101d:0x5da265ff8e42d9fa!5m2!4m1!1i2!8m2!3d13.6315627!4d79.4288389!16s%2Fg%2F1pyqs92yw"
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={(e) => e.stopPropagation()}
-                style={{ textDecoration: 'none', color: 'inherit', minWidth: 0 }}
-              >
-                <div style={{
-                  background: '#F8FAFC',
-                  border: '1px solid #E2E8F0',
-                  borderRadius: '10px',
-                  padding: '8px 3px',
-                  textAlign: 'center',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  gap: '3px',
-                  minWidth: 0,
-                  width: '100%',
-                  boxSizing: 'border-box'
-                }}>
-                  <div style={{ width: '26px', height: '26px', borderRadius: '50%', background: '#F0FDF4', color: '#16A34A', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                    <Bus size={13} />
-                  </div>
-                  <span className="notranslate" style={{ fontSize: '10.5px', fontWeight: 600, color: '#0F172A', lineHeight: 1.2, wordBreak: 'break-word', textAlign: 'center', width: '100%' }}>
-                    {lang === 'te' ? 'శ్రీనివాసం' : lang === 'hi' ? 'श्रीनिवासन' : lang === 'ta' ? 'ஸ்ரீநிவாஸம்' : 'Srinivasam'}
-                  </span>
-                  <span className="notranslate" style={{ fontSize: '9.5px', color: '#64748B', fontWeight: 500, lineHeight: 1.15, textAlign: 'center', width: '100%' }}>
-                    {lang === 'te' ? 'బస్ స్టాండ్ ఎదురుగా' : lang === 'hi' ? 'बस स्टैंड के सामने' : lang === 'ta' ? 'பேருந்து நிலையம் எதிரில்' : 'Opp. Bus Stand'}
-                  </span>
-                  <span style={{
-                    fontSize: '9px',
-                    fontWeight: 600,
-                    color: isSuspended ? '#94A3B8' : '#0F5132',
-                    background: isSuspended ? '#F1F5F9' : '#F0FDF4',
-                    border: `1px solid ${isSuspended ? '#E2E8F0' : '#BBF7D0'}`,
-                    padding: '1px 5px',
-                    borderRadius: '4px',
-                    marginTop: '2px'
+                {/* Srinivasam */}
+                <a
+                  href="https://www.google.com/maps/place/Srinivasam/@13.6311961,79.4266529,17z"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={(e) => e.stopPropagation()}
+                  style={{ textDecoration: 'none', color: 'inherit', minWidth: 0 }}
+                >
+                  <div style={{
+                    background: '#F8FAFC',
+                    border: '1px solid #E2E8F0',
+                    borderRadius: '10px',
+                    padding: '8px 3px',
+                    textAlign: 'center',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    gap: '3px',
+                    width: '100%',
+                    boxSizing: 'border-box'
                   }}>
-                    {isSuspended ? (lang === 'te' ? 'మూసివేయబడింది' : 'Closed') : 'Map ↗'}
-                  </span>
-                </div>
-              </a>
+                    <div style={{ width: '26px', height: '26px', borderRadius: '50%', background: '#F0FDF4', color: '#16A34A', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                      <Bus size={13} />
+                    </div>
+                    <span className="notranslate" style={{ fontSize: '10.5px', fontWeight: 600, color: '#0F172A', lineHeight: 1.2, wordBreak: 'break-word', textAlign: 'center', width: '100%' }}>
+                      {lang === 'te' ? 'శ్రీనివాసం' : 'Srinivasam'}
+                    </span>
+                    <span className="notranslate" style={{ fontSize: '9.5px', color: '#64748B', fontWeight: 500, lineHeight: 1.15, textAlign: 'center', width: '100%' }}>
+                      {lang === 'te' ? 'బస్ స్టాండ్ ఎదురుగా' : 'Opp. Bus Stand'}
+                    </span>
+                    <span style={{ fontSize: '9px', fontWeight: 600, color: '#0F5132', background: '#F0FDF4', border: '1px solid #BBF7D0', padding: '1px 5px', borderRadius: '4px', marginTop: '2px' }}>
+                      Map ↗
+                    </span>
+                  </div>
+                </a>
 
-              {/* Bhudevi (Alipiri Footpath) */}
-              <a
-                href="https://www.google.com/maps/place/Bhudevi+complex+Padayatra+tickets+counter/@13.6466715,79.4085658,18.14z/data=!3m1!5s0x3a4d4b0898df978f:0x10422b2c2d88f4e3!4m17!1m10!3m9!1s0x3a4d4bbbe2ad2eff:0x6b655eee58504269!2sVishnu+Nivasam!5m2!4m1!1i2!8m2!3d13.6292776!4d79.4215889!16s%2Fg%2F11g1q7vspv!3m5!1s0x3a4d4b002440a9d1:0x22ccbb84b1c113d2!8m2!3d13.6464948!4d79.4097309!16s%2Fg%2F11wb01cp7t"
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={(e) => e.stopPropagation()}
-                style={{ textDecoration: 'none', color: 'inherit', minWidth: 0 }}
-              >
-                <div style={{
-                  background: '#F8FAFC',
-                  border: '1px solid #E2E8F0',
-                  borderRadius: '10px',
-                  padding: '8px 3px',
-                  textAlign: 'center',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  gap: '3px',
-                  minWidth: 0,
-                  width: '100%',
-                  boxSizing: 'border-box'
-                }}>
-                  <div style={{ width: '26px', height: '26px', borderRadius: '50%', background: '#FFFBEB', color: '#D97706', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-                    <Mountain size={13} />
-                  </div>
-                  <span className="notranslate" style={{ fontSize: '10.5px', fontWeight: 600, color: '#0F172A', lineHeight: 1.2, wordBreak: 'break-word', textAlign: 'center', width: '100%' }}>
-                    {lang === 'te' ? 'భూదేవి కాంప్లెక్స్' : lang === 'hi' ? 'भूदेवी कॉम्प्लेक्स' : lang === 'ta' ? 'பூதேவி காம்ப்ளக்ஸ்' : 'Bhudevi Complex'}
-                  </span>
-                  <span className="notranslate" style={{ fontSize: '9.5px', color: '#64748B', fontWeight: 500, lineHeight: 1.15, textAlign: 'center', width: '100%' }}>
-                    {lang === 'te' ? 'అలిపిరి వద్ద' : lang === 'hi' ? 'अलिपिरी के पास' : lang === 'ta' ? 'அலிபிரி அருகில்' : 'Near Alipiri'}
-                  </span>
-                  <span style={{
-                    fontSize: '9px',
-                    fontWeight: 600,
-                    color: isSuspended ? '#94A3B8' : '#0F5132',
-                    background: isSuspended ? '#F1F5F9' : '#F0FDF4',
-                    border: `1px solid ${isSuspended ? '#E2E8F0' : '#BBF7D0'}`,
-                    padding: '1px 5px',
-                    borderRadius: '4px',
-                    marginTop: '2px'
+                {/* Bhudevi */}
+                <a
+                  href="https://www.google.com/maps/place/Bhudevi+complex+Padayatra+tickets+counter/@13.6466715,79.4085658,18.14z"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={(e) => e.stopPropagation()}
+                  style={{ textDecoration: 'none', color: 'inherit', minWidth: 0 }}
+                >
+                  <div style={{
+                    background: '#F8FAFC',
+                    border: '1px solid #E2E8F0',
+                    borderRadius: '10px',
+                    padding: '8px 3px',
+                    textAlign: 'center',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    gap: '3px',
+                    width: '100%',
+                    boxSizing: 'border-box'
                   }}>
-                    {isSuspended ? (lang === 'te' ? 'మూసివేయబడింది' : 'Closed') : 'Map ↗'}
-                  </span>
-                </div>
-              </a>
+                    <div style={{ width: '26px', height: '26px', borderRadius: '50%', background: '#FFFBEB', color: '#D97706', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+                      <Mountain size={13} />
+                    </div>
+                    <span className="notranslate" style={{ fontSize: '10.5px', fontWeight: 600, color: '#0F172A', lineHeight: 1.2, wordBreak: 'break-word', textAlign: 'center', width: '100%' }}>
+                      {lang === 'te' ? 'భూదేవి కాంప్లెక్స్' : 'Bhudevi Complex'}
+                    </span>
+                    <span className="notranslate" style={{ fontSize: '9.5px', color: '#64748B', fontWeight: 500, lineHeight: 1.15, textAlign: 'center', width: '100%' }}>
+                      {lang === 'te' ? 'అలిపిరి వద్ద' : 'Near Alipiri'}
+                    </span>
+                    <span style={{ fontSize: '9px', fontWeight: 600, color: '#0F5132', background: '#F0FDF4', border: '1px solid #BBF7D0', padding: '1px 5px', borderRadius: '4px', marginTop: '2px' }}>
+                      Map ↗
+                    </span>
+                  </div>
+                </a>
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Daily timing guide / Custom Admin Info (Deduplicated) */}
           {liveStatus.ssdTimingsGuide && (() => {
