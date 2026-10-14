@@ -28,7 +28,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
       `${data.title} entry gate`,
       `${data.title} booking rules`,
       'Tirumala darshan guide',
-      'TTD darshan wait time',
+      'Tirumala darshan wait time today',
       data.teluguTitle || 'తిరుమల దర్శనం',
     ],
     alternates: {

@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   keywords: [
     'Tirumala festival dates 2026',
     'Tirupati Brahmotsavam 2026',
-    'TTD festival calendar 2026',
+    'Tirumala festival calendar 2026',
     'Telugu Panchangam 2026 Tirumala',
     'Vaikuntha Ekadasi 2026 Tirumala',
     'Rathasapthami Tirupati 2026',

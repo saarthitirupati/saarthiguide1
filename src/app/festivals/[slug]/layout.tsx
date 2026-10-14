@@ -27,7 +27,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
       `${fest.name} date`,
       `${fest.name} crowd status`,
       'Tirumala festival dates 2026',
-      'TTD festival calendar',
+      'Tirumala temple festival calendar',
     ],
     alternates: {
       canonical: canonicalUrl,

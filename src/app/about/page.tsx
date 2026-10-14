@@ -243,9 +243,9 @@ export default function AboutPage() {
             </div>
           </div>
           
-          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', backgroundColor: '#FEF9C3', border: '1px solid #FDE047', padding: '4px 10px', borderRadius: '20px' }}>
-            <Sparkles size={13} color="#CA8A04" />
-            <span style={{ fontSize: '11px', fontWeight: 600, color: '#854D0E' }}>Official Guide</span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', backgroundColor: '#F0FDF4', border: '1px solid #BBF7D0', padding: '4px 10px', borderRadius: '20px' }}>
+            <Sparkles size={13} color="#16A34A" />
+            <span style={{ fontSize: '11px', fontWeight: 600, color: '#166534' }}>Independent Guide</span>
           </div>
         </div>
       </header>
@@ -529,6 +529,9 @@ export default function AboutPage() {
             <Mail size={16} />
             <span>{t.emailLabel} saarthiguide0@gmail.com</span>
           </a>
+          <p style={{ marginTop: '14px', fontSize: '11.5px', color: '#94A3B8', fontWeight: 500, margin: 0 }}>
+            Saarthi is an independent guide founded by Sunil Thatra. Not affiliated with Tirumala Tirupati Devasthanams.
+          </p>
         </footer>
 
       </main>

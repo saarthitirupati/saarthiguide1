@@ -4,7 +4,7 @@ const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.saarthiguide.in
 
 export const metadata: Metadata = {
   title: 'Tirumala Darshan Essentials: Free SSD Tokens, Luggage Lockers & Ghat Road Rules',
-  description: 'Complete guide for Tirumala pilgrims: Official TTD Free SSD token counter locations, timings, luggage & mobile phone lockers, and 28-minute Ghat Road speed rules.',
+  description: 'Complete guide for Tirumala pilgrims: Free SSD token counter locations, timings, luggage & mobile phone lockers, and 28-minute Ghat Road speed rules.',
   keywords: [
     'Tirupati SSD tokens counters',
     'Free darshan tokens Tirupati timings',

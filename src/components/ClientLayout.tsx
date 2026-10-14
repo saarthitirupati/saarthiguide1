@@ -16,6 +16,7 @@ import { TopAppDownloadBanner } from '@/components/AppDownloadBanner';
 import { syncExistingPushSubscription } from '@/lib/pushClient';
 
 import { AppLang } from '@/lib/useLanguage';
+import { FooterDisclaimer } from '@/components/FooterDisclaimer';
 
 const SplashScreen = dynamic(() => import('@/components/Splash/Splash'), {
   ssr: false,
@@ -125,6 +126,7 @@ function LayoutContent({
           paddingBottom: showBottomNav ? 'var(--layout-padding-bottom)' : (pathname === '/onboarding' ? '0px' : '24px')
         }}>
           {children}
+          {!isAdmin && pathname !== '/onboarding' && <FooterDisclaimer />}
         </div>
       </div>
     </>

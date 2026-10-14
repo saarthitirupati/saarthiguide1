@@ -3,8 +3,8 @@ import type { Metadata } from 'next';
 const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.saarthiguide.in';
 
 export const metadata: Metadata = {
-  title: 'About Saarthi - Founder Sunil Thatra | Saarthi Guide Story',
-  description: 'Sunil Thatra is the Founder & Creator of Saarthi (Saarthi Guide), the #1 digital guide platform for Tirupati & Tirumala pilgrims. Learn about Sunil Thatra, our mission, story, and product engineering.',
+  title: 'About Saarthi | Founded by Sunil Thatra',
+  description: 'Saarthi is an independent Tirumala guide founded by Sunil Thatra to help pilgrims with offline maps and darshan info.',
   keywords: [
     'Sunil Thatra',
     'Sunil Thatra Saarthi',
@@ -22,8 +22,8 @@ export const metadata: Metadata = {
     canonical: `${baseUrl}/about`,
   },
   openGraph: {
-    title: 'Sunil Thatra — Founder of Saarthi Guide',
-    description: 'Sunil Thatra is the Founder of Saarthi, a digital platform helping pilgrims in Tirupati & Tirumala with live darshan wait times, SSD tokens, and precinct maps.',
+    title: 'About Saarthi | Founded by Sunil Thatra',
+    description: 'Saarthi is an independent Tirumala guide founded by Sunil Thatra to help pilgrims with offline maps and darshan info.',
     url: `${baseUrl}/about`,
     siteName: 'Saarthi Guide',
     images: [
@@ -42,12 +42,12 @@ export default function AboutLayout({ children }: { children: React.ReactNode })
   const jsonLdPerson = {
     '@context': 'https://schema.org',
     '@type': 'Person',
-    '@id': `${baseUrl}/about#sunil-thatra`,
+    '@id': `${baseUrl}/about#founder`,
     name: 'Sunil Thatra',
     givenName: 'Sunil',
     familyName: 'Thatra',
     alternateName: ['Sunil Thatra Saarthi', 'Sunil Thatra Tirupati'],
-    jobTitle: 'Founder & Lead Creator',
+    jobTitle: 'Founder',
     worksFor: {
       '@type': 'Organization',
       name: 'Saarthi',
@@ -64,7 +64,7 @@ export default function AboutLayout({ children }: { children: React.ReactNode })
       'Software Architecture & Product Design',
       'Digital Pilgrimage Infrastructure'
     ],
-    description: 'Sunil Thatra is the Founder and Lead Creator of Saarthi Guide, a digital platform helping visitors and pilgrims in Tirupati and Tirumala.'
+    description: 'Founder of Saarthi, an independent pilgrimage guide for Tirupati and Tirumala.'
   };
 
   const jsonLdOrg = {
@@ -84,7 +84,7 @@ export default function AboutLayout({ children }: { children: React.ReactNode })
       name: 'Sunil Thatra',
       url: `${baseUrl}/about`
     },
-    description: 'Saarthi is the #1 trusted digital pilgrimage guide for Tirupati and Tirumala, founded by Sunil Thatra.'
+    description: 'Saarthi is an independent digital pilgrimage guide for Tirupati and Tirumala, founded by Sunil Thatra.'
   };
 
   return (

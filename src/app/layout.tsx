@@ -13,47 +13,17 @@ const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.saarthiguide.in
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
   title: {
-    default: "Saarthi - Tirumala Tirupati Guide | Saarthi Guide",
+    default: "Saarthi - Tirumala Tirupati Guide | Offline Maps & Darshan Info",
     template: "%s | Saarthi"
   },
-  description: "Saarthi by Sunil Thatra - your offline Tirumala companion. Darshan timings, queue map, 82 temples, japa mala. The trusted Saarthi Guide for Tirupati Balaji.",
-  keywords: [
-    "saarthi",
-    "saarthi guide",
-    "tirumala saarthi",
-    "saarthi tirupati",
-    "saarthi tirumala",
-    "tirupati saarthi",
-    "tirumala saarthi tirupati",
-    "saarthi guide tirupati",
-    "saarthi app tirupati",
-    "Sunil Thatra",
-    "Sunil Thatra Saarthi",
-    "Sunil Thatra Tirupati",
-    "founder of saarthi",
-    "saarthi founder",
-    "Tirumala darshan wait time today",
-    "Tirupati temple timings",
-    "TTD SSD tokens status",
-    "Kapila Theertham Tirupati",
-    "Srivari Padalu Tirumala",
-    "Sri Venkateswara Swamy Temple",
-    "Padmavathi Ammavari Temple Tiruchanur",
-    "Tirupati yatra companion",
-    "తిరుమల సారథి",
-    "సారథి తిరుపతి",
-    "తిరుమల దర్శనం సమయాలు",
-    "తిరుపతి ఆలయాలు"
-  ],
+  description: "Saarthi is your offline Tirumala companion - darshan timings, queue maps, 82 temples, japa mala. An independent guide founded by Sunil Thatra.",
   authors: [{ name: "Sunil Thatra", url: "https://www.linkedin.com/in/sunil-t-39a905315/" }],
   creator: "Sunil Thatra",
-  publisher: "Saarthi",
-  alternates: {
-    canonical: baseUrl,
-  },
+  keywords: ["saarthi", "saarthi app", "tirumala guide", "tirupati offline map", "saarthi founder sunil thatra"],
   openGraph: {
-    title: "Saarthi: Tirumala & Tirupati Pilgrim Guide | Live Darshan & Offline Maps",
-    description: "Saarthi — Your trusted divine companion for Tirupati & Tirumala. Verified TTD wait times, free SSD tokens, temple timings, dress codes, Sthala Puranas, and 100% offline precinct maps.",
+    title: "Saarthi - Tirumala Tirupati Guide",
+    description: "Offline Tirumala companion by Sunil Thatra. Maps, darshan info, essentials.",
+    type: "website",
     url: baseUrl,
     siteName: "Saarthi Guide",
     images: [
@@ -65,12 +35,11 @@ export const metadata: Metadata = {
       },
     ],
     locale: "en_IN",
-    type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Saarthi: Tirumala & Tirupati Pilgrim Guide",
-    description: "Live TTD darshan wait times, free SSD token counters, offline maps & temple guides for Tirupati & Tirumala.",
+    title: "Saarthi - Tirumala Tirupati Guide",
+    description: "Offline Tirumala companion by Sunil Thatra. Maps, darshan info, essentials.",
     images: [`${baseUrl}/twitter-image`],
   },
   verification: {
@@ -125,87 +94,39 @@ const jsonLdSchema = {
       "@type": "Organization",
       "@id": `${baseUrl}/#organization`,
       "name": "Saarthi",
-      "alternateName": [
-        "Saarthi Guide",
-        "Saarthi Tirupati",
-        "Saarthi App",
-        "Saarthi Tirumala",
-        "Saarthi by Sunil Thatra"
-      ],
+      "alternateName": ["Saarthi App", "Saarthi Guide"],
+      "description": "Saarthi is an independent offline guide for Tirumala Tirupati pilgrims",
       "url": baseUrl,
-      "logo": `${baseUrl}/logo.png`,
-      "founder": { "@id": `${baseUrl}/#sunil-thatra` },
-      "foundingDate": "2024",
-      "sameAs": [
-        "https://play.google.com/store/apps/details?id=com.saarthi.guide",
-        "https://www.linkedin.com/in/sunil-t-39a905315/"
-      ]
-    },
-    {
-      "@type": "WebSite",
-      "@id": `${baseUrl}/#website`,
-      "url": baseUrl,
-      "name": "Saarthi Guide",
-      "alternateName": [
-        "Saarthi",
-        "Saarthi Tirupati",
-        "Tirumala Saarthi",
-        "Tirupati Saarthi",
-        "Tirumala Saarthi Tirupati",
-        "Saarthi App",
-        "సారథి తిరుపతి",
-        "తిరుమల సారథి"
-      ],
-      "description": "The official digital companion for Tirupati & Tirumala pilgrims. 100% offline temple precinct maps, live TTD darshan waiting times, and authentic Sthala Puranas.",
-      "publisher": {
-        "@type": "Organization",
-        "name": "Saarthi",
-        "url": baseUrl,
-        "logo": `${baseUrl}/logo.png`
-      }
+      "founder": { "@id": `${baseUrl}/about/#founder` },
+      "foundingDate": "2024"
     },
     {
       "@type": "Person",
-      "@id": `${baseUrl}/#sunil-thatra`,
+      "@id": `${baseUrl}/about/#founder`,
       "name": "Sunil Thatra",
-      "givenName": "Sunil",
-      "familyName": "Thatra",
-      "jobTitle": "Founder & Lead Developer",
-      "worksFor": {
-        "@id": `${baseUrl}/#organization`
-      },
+      "jobTitle": "Founder",
+      "description": "Founder of Saarthi",
       "url": `${baseUrl}/about`,
-      "image": "https://res.cloudinary.com/kniegqlj/image/upload/v1791044338/passportsize_f7dyq3.jpg",
-      "sameAs": [
-        "https://www.linkedin.com/in/sunil-t-39a905315/"
-      ],
-      "description": "Founder of Saarthi, the trusted pilgrimage guide for Tirupati and Tirumala."
+      "sameAs": ["https://www.linkedin.com/in/sunil-t-39a905315/"]
     },
     {
-      "@type": "TouristInformationCenter",
-      "@id": `${baseUrl}/#center`,
-      "name": "Saarthi: Tirupati & Tirumala Pilgrim Guide",
-      "url": baseUrl,
-      "logo": `${baseUrl}/logo.png`,
-      "image": `${baseUrl}/logo.png`,
-      "description": "Tirupati & Tirumala pilgrimage guide with real-time darshan wait times, temple timings, dress codes, free SSD tokens, and 100% offline precinct maps.",
-      "founder": {
-        "@type": "Person",
-        "name": "Sunil Thatra",
-        "url": `${baseUrl}/about`
-      },
-      "areaServed": {
-        "@type": "AdministrativeArea",
-        "name": "Tirupati & Tirumala, Andhra Pradesh, India"
-      },
-      "knowsAbout": [
-        "Sri Venkateswara Swamy Temple Tirumala",
-        "Srivari Padalu",
-        "Kapila Theertham",
-        "TTD Darshan Wait Times",
-        "Tirupati Temples & Heritage",
-        "SSD Token Counters",
-        "Tirumala Ghat Road Rules"
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is Saarthi?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Saarthi is an independent offline guide for Tirumala Tirupati pilgrims. It helps with maps, darshan info and essentials." }
+        },
+        {
+          "@type": "Question",
+          "name": "Who founded Saarthi?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Saarthi was founded by Sunil Thatra." }
+        },
+        {
+          "@type": "Question",
+          "name": "Is Saarthi an official app?",
+          "acceptedAnswer": { "@type": "Answer", "text": "No. Saarthi is an independent guide founded by Sunil Thatra. It is not affiliated with Tirumala Tirupati Devasthanams." }
+        }
       ]
     }
   ]

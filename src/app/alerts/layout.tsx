@@ -4,10 +4,10 @@ const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.saarthiguide.in
 
 export const metadata: Metadata = {
   title: 'Live Tirumala Darshan Wait Times & Free SSD Token Counter Status',
-  description: 'Live TTD Darshan queue updates today: Sarva Darshan waiting hours, compartment crowd density, and free SSD token counter statuses at Srinivasam, Bhudevi, and Vishnu Nivasam.',
+  description: 'Live Tirumala Darshan queue updates today: Sarva Darshan waiting hours, compartment crowd density, and free SSD token counter statuses at Srinivasam, Bhudevi, and Vishnu Nivasam.',
   keywords: [
     'Tirumala darshan wait time today live',
-    'TTD SSD token status today',
+    'SSD token status today Tirupati',
     'Free darshan token counter status Tirupati',
     'Tirumala queue compartments waiting hours',
     'Sarva darshan waiting time today',
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     title: 'Live Tirumala Darshan Wait Times & SSD Token Counters | Saarthi Guide',
-    description: 'Real-time TTD queue status, compartment wait times, and free SSD token counter availability across Tirupati.',
+    description: 'Real-time darshan queue status, compartment wait times, and free SSD token counter availability across Tirupati.',
     url: `${baseUrl}/alerts`,
     siteName: 'Saarthi Guide',
     images: [

@@ -4,12 +4,12 @@ const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.saarthiguide.in
 
 export const metadata: Metadata = {
   title: 'Tirupati & Tirumala Trip Cost & Pilgrimage Budget Estimator',
-  description: 'Plan and calculate your complete Tirupati & Tirumala pilgrimage expenses: Travel toll passes, local cab fares, TTD accommodation costs, and prasadam budgets.',
+  description: 'Plan and calculate your complete Tirupati & Tirumala pilgrimage expenses: Travel toll passes, local cab fares, Tirumala accommodation costs, and prasadam budgets.',
   keywords: [
     'Tirupati trip budget calculator',
     'Tirumala pilgrimage cost estimator',
     'Tirupati toll fee charges',
-    'TTD accommodation rates Tirumala',
+    'Tirumala accommodation rates',
     'Tirupati family trip planning expenses',
     'తిరుపతి యాత్ర ఖర్చుల అంచనా',
   ],

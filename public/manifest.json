@@ -2,7 +2,7 @@
   "id": "/",
   "name": "Saarthi Guide",
   "short_name": "Saarthi",
-  "description": "Real-time pilgrimage companion for Tirupati & Tirumala. Live TTD darshan wait times, SSD token status, temple guides & verified transit.",
+  "description": "Real-time pilgrimage companion for Tirupati & Tirumala. Live darshan wait times, SSD token status, temple guides & verified transit.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
@@ -33,7 +33,7 @@
     {
       "name": "Live Darshan Wait Time",
       "short_name": "Darshan",
-      "description": "Check real-time TTD darshan queue status and wait hours",
+      "description": "Check real-time darshan queue status and wait hours",
       "url": "/darshan",
       "icons": [{ "src": "/icon-192.png", "sizes": "192x192" }]
     },
