@@ -520,7 +520,7 @@ export default function DarshanDetailsPage() {
                       { 
                         name: lang === 'te' ? 'విష్ణు నివాసం కాంప్లెక్స్' : 'Vishnu Nivasam Complex', 
                         addr: lang === 'te' ? 'తిరుపతి రైల్వే స్టేషన్ ప్లాట్‌ఫారమ్ 1 ఎదురుగా' : 'Directly opposite Tirupati Main Railway Station (Platform 1 Exit)', 
-                        query: 'Vishnu Nivasam Tirupati Main Railway Station', 
+                        mapUrl: 'https://www.google.com/maps/place/Tirupathi+in+vishnu+nivasam+rest+house/@13.6291509,79.4159267,16.57z/data=!4m9!1m2!2m1!1sSrinivasam+Complex+Tirupati!3m5!1s0x3a4d4bead70ef80b:0x67019ead37155b82!8m2!3d13.6291294!4d79.421782!16s%2Fg%2F11ssb0tp1j', 
                         icon: Train, 
                         iconColor: '#2563EB', 
                         iconBg: '#EFF6FF' 
@@ -528,7 +528,7 @@ export default function DarshanDetailsPage() {
                       { 
                         name: lang === 'te' ? 'శ్రీనివాసం కాంప్లెక్స్' : 'Srinivasam Complex', 
                         addr: lang === 'te' ? 'తిరుపతి సెంట్రల్ ఆర్టీసీ బస్టాండ్ ఎదురుగా' : 'Opposite Tirupati Central RTC Bus Station', 
-                        query: 'Srinivasam Complex Tirupati', 
+                        mapUrl: 'https://www.google.com/maps/place/Srinivasam+Complex,+SH+61,+Kothapalli,+Tirupati,+Andhra+Pradesh+517501/@13.6322127,79.4275624,18.77z/data=!4m10!1m2!2m1!1sSrinivasam+Complex+Tirupati!3m6!1s0x3a4d4ba8fb3a7c87:0xbb1d8612f380be25!8m2!3d13.6324562!4d79.4288488!15sChtTcmluaXZhc2FtIENvbXBsZXggVGlydXBhdGmSAQpzdWJwcmVtaXNl4AEA!16s%2Fg%2F11zhwd46nj', 
                         icon: Bus, 
                         iconColor: '#D97706', 
                         iconBg: '#FEF3C7' 
@@ -536,7 +536,7 @@ export default function DarshanDetailsPage() {
                       { 
                         name: lang === 'te' ? 'భూదేవి కాంప్లెక్స్' : 'Bhudevi Complex', 
                         addr: lang === 'te' ? 'అలిపిరి మెట్ల మార్గం ప్రారంభం వద్ద' : 'Alipiri Foot of the Hills (Alipiri Bypass Bus Stop)', 
-                        query: 'Bhudevi Complex Alipiri', 
+                        mapUrl: 'https://www.google.com/maps/place/Sri+Bhudevi+pilgrimage+Ttd+Dharshan%E2%80%99s+free+tickets/@13.6455158,79.4054241,17z/data=!4m9!1m2!2m1!1sSrinivasam+Complex+Tirupati!3m5!1s0x3a4d4b38f66460f1:0x73e082c2b7f1b30!8m2!3d13.6473239!4d79.4095922!16s%2Fg%2F11j8lvd91q', 
                         icon: Mountain, 
                         iconColor: '#059669', 
                         iconBg: '#D1FAE5' 
@@ -550,11 +550,11 @@ export default function DarshanDetailsPage() {
                           key={idx}
                           role="button"
                           tabIndex={0}
-                          onClick={() => window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(c.query)}`, '_blank')}
+                          onClick={() => window.open(c.mapUrl, '_blank', 'noopener,noreferrer')}
                           onKeyDown={(e) => {
                             if (e.key === 'Enter' || e.key === ' ') {
                               e.preventDefault();
-                              window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(c.query)}`, '_blank');
+                              window.open(c.mapUrl, '_blank', 'noopener,noreferrer');
                             }
                           }}
                           style={{

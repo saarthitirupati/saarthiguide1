@@ -24,7 +24,7 @@ const COLLECTION_CENTRES = [
     quotaInfoEn: 'High-capacity counter; fills quickly due to train arrivals',
     quotaInfoTe: 'రైలు భక్తులు ఎక్కువగా వచ్చే ప్రధాన కేంద్రం',
     iconType: 'train',
-    mapsUrl: 'https://www.google.com/maps/place/Vishnu+Nivasam/@13.6292776,79.4215889'
+    mapsUrl: 'https://www.google.com/maps/place/Tirupathi+in+vishnu+nivasam+rest+house/@13.6291509,79.4159267,16.57z/data=!4m9!1m2!2m1!1sSrinivasam+Complex+Tirupati!3m5!1s0x3a4d4bead70ef80b:0x67019ead37155b82!8m2!3d13.6291294!4d79.421782!16s%2Fg%2F11ssb0tp1j'
   },
   {
     id: 'srinivasam',
@@ -36,7 +36,7 @@ const COLLECTION_CENTRES = [
     quotaInfoEn: 'Primary counter for bus passengers with multi-lane desks',
     quotaInfoTe: 'ఆర్టీసీ బస్సు భక్తుల కోసం బహుళ బయోమెట్రిక్ కౌంటర్లు',
     iconType: 'bus',
-    mapsUrl: 'https://www.google.com/maps/place/Srinivasam/@13.6315627,79.4288389'
+    mapsUrl: 'https://www.google.com/maps/place/Srinivasam+Complex,+SH+61,+Kothapalli,+Tirupati,+Andhra+Pradesh+517501/@13.6322127,79.4275624,18.77z/data=!4m10!1m2!2m1!1sSrinivasam+Complex+Tirupati!3m6!1s0x3a4d4ba8fb3a7c87:0xbb1d8612f380be25!8m2!3d13.6324562!4d79.4288488!15sChtTcmluaXZhc2FtIENvbXBsZXggVGlydXBhdGmSAQpzdWJwcmVtaXNl4AEA!16s%2Fg%2F11zhwd46nj'
   },
   {
     id: 'bhudevi',
@@ -48,7 +48,7 @@ const COLLECTION_CENTRES = [
     quotaInfoEn: 'Recommended for private vehicle travelers & footpath pilgrims',
     quotaInfoTe: 'సొంత వాహనాలు మరియు నడకదారి భక్తులకు అత్యంత అనుకూలం',
     iconType: 'mountain',
-    mapsUrl: 'https://www.google.com/maps/place/Bhudevi+complex/@13.6464948,79.4097309'
+    mapsUrl: 'https://www.google.com/maps/place/Sri+Bhudevi+pilgrimage+Ttd+Dharshan%E2%80%99s+free+tickets/@13.6455158,79.4054241,17z/data=!4m9!1m2!2m1!1sSrinivasam+Complex+Tirupati!3m5!1s0x3a4d4b38f66460f1:0x73e082c2b7f1b30!8m2!3d13.6473239!4d79.4095922!16s%2Fg%2F11j8lvd91q'
   }
 ];
 
