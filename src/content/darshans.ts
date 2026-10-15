@@ -213,19 +213,19 @@ export const darshanRegistry: Record<string, DarshanDetail> = {
       {
         name: "Vishnu Nivasam Complex",
         landmark: "Directly opposite Tirupati Main Railway Station (Platform 1 Exit)",
-        counterHours: "Opens at 2:00 AM daily (until quota lasts)",
+        counterHours: "Opens early morning daily (subject to live quota)",
         quotaInfo: "High-capacity counter; fills quickly due to train arrivals"
       },
       {
         name: "Srinivasam Complex",
         landmark: "Opposite Tirupati Central RTC Bus Station, Tirupati",
-        counterHours: "Opens at 2:00 AM daily (until quota lasts)",
+        counterHours: "Opens early morning daily (subject to live quota)",
         quotaInfo: "Primary counter for bus passengers with multi-lane biometric desks"
       },
       {
         name: "Bhudevi Complex",
         landmark: "Alipiri Foot of the Hills (Alipiri Bypass Bus Stop)",
-        counterHours: "Opens at 2:00 AM daily (until quota lasts)",
+        counterHours: "Opens early morning daily (subject to live quota)",
         quotaInfo: "Recommended for private vehicle travelers and footpath pilgrims"
       }
     ],

@@ -20,7 +20,7 @@ const COLLECTION_CENTRES = [
     nameTe: 'విష్ణు నివాసం కాంప్లెక్స్',
     landmarkEn: 'Directly opposite Tirupati Main Railway Station (Platform 1 Exit)',
     landmarkTe: 'తిరుపతి రైల్వే స్టేషన్ ప్లాట్‌ఫారమ్ 1 ఎదురుగా',
-    counterHours: 'Opens at 2:00 AM daily (until quota lasts)',
+    counterHours: 'Opens early morning daily (subject to live quota)',
     quotaInfoEn: 'High-capacity counter; fills quickly due to train arrivals',
     quotaInfoTe: 'రైలు భక్తులు ఎక్కువగా వచ్చే ప్రధాన కేంద్రం',
     iconType: 'train',
@@ -32,7 +32,7 @@ const COLLECTION_CENTRES = [
     nameTe: 'శ్రీనివాసం కాంప్లెక్స్',
     landmarkEn: 'Opposite Tirupati Central RTC Bus Station',
     landmarkTe: 'తిరుపతి సెంట్రల్ ఆర్టీసీ బస్టాండ్ ఎదురుగా',
-    counterHours: 'Opens at 2:00 AM daily (until quota lasts)',
+    counterHours: 'Opens early morning daily (subject to live quota)',
     quotaInfoEn: 'Primary counter for bus passengers with multi-lane desks',
     quotaInfoTe: 'ఆర్టీసీ బస్సు భక్తుల కోసం బహుళ బయోమెట్రిక్ కౌంటర్లు',
     iconType: 'bus',
@@ -44,7 +44,7 @@ const COLLECTION_CENTRES = [
     nameTe: 'భూదేవి కాంప్లెక్స్',
     landmarkEn: 'Alipiri Foot of the Hills (Alipiri Bypass Bus Stop)',
     landmarkTe: 'అలిపిరి మెట్ల మార్గం ప్రారంభం వద్ద',
-    counterHours: 'Opens at 2:00 AM daily (until quota lasts)',
+    counterHours: 'Opens early morning daily (subject to live quota)',
     quotaInfoEn: 'Recommended for private vehicle travelers & footpath pilgrims',
     quotaInfoTe: 'సొంత వాహనాలు మరియు నడకదారి భక్తులకు అత్యంత అనుకూలం',
     iconType: 'mountain',
@@ -57,7 +57,7 @@ export default function SsdTokensStandalonePage() {
   const lang = useLanguage();
 
   const [ssdStatus, setSsdStatus] = useState<'issuing' | 'paused' | 'closed-for-day' | 'suspended'>('closed-for-day');
-  const [nextTokenTime, setNextTokenTime] = useState<string>('2:00 AM');
+  const [nextTokenTime, setNextTokenTime] = useState<string>('');
   const [notice, setNotice] = useState<string>('');
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
@@ -279,7 +279,7 @@ export default function SsdTokensStandalonePage() {
                   {lang === 'te' ? 'మరుసటి రోజు టోకెన్ జారీ సమయం' : 'Next Token Release / Counter Opening'}
                 </div>
                 <div style={{ fontSize: '15px', fontWeight: 700, color: '#881337' }}>
-                  {nextTokenTime || '2:00 AM Daily'}
+                  {nextTokenTime || (lang === 'te' ? 'ఉదయం వేళల్లో' : 'Early Morning Daily')}
                 </div>
               </div>
             </div>
@@ -331,8 +331,18 @@ export default function SsdTokensStandalonePage() {
                           {lang === 'te' ? center.landmarkTe : center.landmarkEn}
                         </p>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginTop: '6px' }}>
-                          <span style={{ fontSize: '10.5px', fontWeight: 700, color: '#E11D48', backgroundColor: '#FFE4E6', padding: '2px 8px', borderRadius: '6px' }}>
-                            ⏱ {center.counterHours}
+                          <span style={{ 
+                            fontSize: '10.5px', 
+                            fontWeight: 700, 
+                            color: ssdStatus === 'suspended' ? '#B91C1C' : ssdStatus === 'issuing' ? '#15803D' : '#C2410C', 
+                            backgroundColor: ssdStatus === 'suspended' ? '#FEF2F2' : ssdStatus === 'issuing' ? '#F0FDF4' : '#FFF7ED', 
+                            padding: '2px 8px', 
+                            borderRadius: '6px',
+                            border: `1px solid ${ssdStatus === 'suspended' ? '#FECACA' : ssdStatus === 'issuing' ? '#BBF7D0' : '#FED7AA'}`
+                          }}>
+                            ⏱ {ssdStatus === 'suspended' 
+                                ? (lang === 'te' ? 'టోకెన్లు నిలిపివేయబడ్డాయి' : 'Tokens Suspended')
+                                : (nextTokenTime || center.counterHours)}
                           </span>
                         </div>
                       </div>

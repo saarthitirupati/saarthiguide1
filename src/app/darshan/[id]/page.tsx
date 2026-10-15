@@ -12,7 +12,7 @@ import {
   Toilet, Hospital, Accessibility, Baby, Clock, Share2, Check,
   Navigation, Ticket, Users, Zap, ShieldCheck, ChevronDown, Lock,
   RefreshCw, AlertCircle, Compass, Gift, Train, Bus, Mountain, ExternalLink,
-  Layers, Crown
+  Layers, Crown, ArrowUpRight
 } from 'lucide-react';
 import { TirumalaStatus } from '@/lib/statusDb';
 import { useLanguage } from '@/lib/useLanguage';
@@ -40,7 +40,7 @@ export default function DarshanDetailsPage() {
 
   // Dynamic TTD Status Data
   const [ssdTokenStatus, setSsdTokenStatus] = useState<'issuing' | 'paused' | 'closed-for-day' | 'suspended'>('closed-for-day');
-  const [ssdNextTokenTime, setSsdNextTokenTime] = useState<string>('2:00 AM');
+  const [ssdNextTokenTime, setSsdNextTokenTime] = useState<string>('');
   const [ssdNotice, setSsdNotice] = useState<string>('');
 
   // Collapsible Sections (Roadmap & Why Wait open by default)
@@ -440,54 +440,180 @@ export default function DarshanDetailsPage() {
             )}
 
             {/* TIRUPATI SSD TOKEN COUNTER TILES (SSD TOKEN ONLY) */}
-            {id === 'ssd-token' && data.tokenLocations && data.tokenLocations.length > 0 && (
+            {id === 'ssd-token' && (
               <div>
                 <span style={{ fontSize: '12px', fontWeight: 600, color: '#0F172A', letterSpacing: '0.02em', display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '8px' }}>
                   <Ticket size={14} color="#E11D48" />
                   <span>{lang === 'te' ? 'SSD ఉచిత టోకెన్ కేంద్రాలు (తిరుపతి)' : 'Tirupati SSD Token Counters'}</span>
                 </span>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                  {data.tokenLocations.map((loc, idx) => {
-                    const mapsUrl = idx === 0 
-                      ? "https://www.google.com/maps/place/Vishnu+Nivasam/@13.6292776,79.4215889"
-                      : idx === 1
-                      ? "https://www.google.com/maps/place/Srinivasam/@13.6315627,79.4288389"
-                      : "https://www.google.com/maps/place/Bhudevi+complex/@13.6464948,79.4097309";
-                    const icon = idx === 0 ? <Train size={16} color="#2563EB" /> : idx === 1 ? <Bus size={16} color="#D97706" /> : <Mountain size={16} color="#059669" />;
-                    const iconBg = idx === 0 ? '#EFF6FF' : idx === 1 ? '#FEF3C7' : '#D1FAE5';
-                    return (
-                      <a key={idx} href={mapsUrl} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
-                        <div style={{
-                          background: '#FFFFFF',
-                          border: '1px solid #E2E8F0',
-                          borderRadius: '12px',
-                          padding: '10px 12px',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'space-between',
-                          boxShadow: '0 2px 5px rgba(0,0,0,0.02)'
-                        }}>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                  {(() => {
+                    const dynamicStatus = (() => {
+                      if (ssdTokenStatus === 'suspended') {
+                        return {
+                          text: lang === 'te' ? 'టోకెన్లు నిలిపివేయబడ్డాయి · తిరుమలలో ప్రత్యక్ష దర్శనం' : 'Tokens Suspended · Direct Walk-in Active',
+                          bg: '#FEF2F2',
+                          border: '#FECACA',
+                          color: '#B91C1C'
+                        };
+                      }
+                      if (ssdTokenStatus === 'issuing') {
+                        return {
+                          text: lang === 'te' ? 'ప్రస్తుతం టోకెన్లు జారీ అవుతున్నాయి (కోటా ఉన్నంత వరకు)' : 'Actively Issuing Now (until quota lasts)',
+                          bg: '#F0FDF4',
+                          border: '#BBF7D0',
+                          color: '#15803D'
+                        };
+                      }
+                      if (ssdTokenStatus === 'paused') {
+                        return {
+                          text: lang === 'te' 
+                            ? `తాత్కాలికంగా నిలిపివేయబడింది${ssdNextTokenTime ? ` · ${ssdNextTokenTime}` : ''}`
+                            : `Temporarily Paused${ssdNextTokenTime ? ` · ${ssdNextTokenTime}` : ''}`,
+                          bg: '#FFFBEB',
+                          border: '#FDE68A',
+                          color: '#B45309'
+                        };
+                      }
+                      if (ssdNextTokenTime) {
+                        const isCancelledOrSuspended = /cancel|suspend|close/i.test(ssdNextTokenTime);
+                        if (isCancelledOrSuspended) {
+                          return {
+                            text: ssdNextTokenTime,
+                            bg: '#FEF2F2',
+                            border: '#FECACA',
+                            color: '#DC2626'
+                          };
+                        }
+                        return {
+                          text: lang === 'te' ? `మరుసటి విడుదల: ${ssdNextTokenTime} (కోటా ఉన్నంత వరకు)` : `Next Release: ${ssdNextTokenTime} (until quota lasts)`,
+                          bg: '#FFF7ED',
+                          border: '#FED7AA',
+                          color: '#C2410C'
+                        };
+                      }
+                      return {
+                        text: lang === 'te' ? 'ఉదయం వేళల్లో తెరువబడును (కోటా ఉన్నంత వరకు)' : 'Opens early morning daily (until quota lasts)',
+                        bg: '#FFF7ED',
+                        border: '#FED7AA',
+                        color: '#C2410C'
+                      };
+                    })();
+
+                    const counters = [
+                      { 
+                        name: lang === 'te' ? 'విష్ణు నివాసం కాంప్లెక్స్' : 'Vishnu Nivasam Complex', 
+                        addr: lang === 'te' ? 'తిరుపతి రైల్వే స్టేషన్ ప్లాట్‌ఫారమ్ 1 ఎదురుగా' : 'Directly opposite Tirupati Main Railway Station (Platform 1 Exit)', 
+                        query: 'Vishnu Nivasam Tirupati Main Railway Station', 
+                        icon: Train, 
+                        iconColor: '#2563EB', 
+                        iconBg: '#EFF6FF' 
+                      },
+                      { 
+                        name: lang === 'te' ? 'శ్రీనివాసం కాంప్లెక్స్' : 'Srinivasam Complex', 
+                        addr: lang === 'te' ? 'తిరుపతి సెంట్రల్ ఆర్టీసీ బస్టాండ్ ఎదురుగా' : 'Opposite Tirupati Central RTC Bus Station', 
+                        query: 'Srinivasam Complex Tirupati', 
+                        icon: Bus, 
+                        iconColor: '#D97706', 
+                        iconBg: '#FEF3C7' 
+                      },
+                      { 
+                        name: lang === 'te' ? 'భూదేవి కాంప్లెక్స్' : 'Bhudevi Complex', 
+                        addr: lang === 'te' ? 'అలిపిరి మెట్ల మార్గం ప్రారంభం వద్ద' : 'Alipiri Foot of the Hills (Alipiri Bypass Bus Stop)', 
+                        query: 'Bhudevi Complex Alipiri', 
+                        icon: Mountain, 
+                        iconColor: '#059669', 
+                        iconBg: '#D1FAE5' 
+                      },
+                    ];
+
+                    return counters.map((c, idx) => {
+                      const IconComp = c.icon;
+                      return (
+                        <div
+                          key={idx}
+                          role="button"
+                          tabIndex={0}
+                          onClick={() => window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(c.query)}`, '_blank')}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter' || e.key === ' ') {
+                              e.preventDefault();
+                              window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(c.query)}`, '_blank');
+                            }
+                          }}
+                          style={{
+                            background: '#FFFFFF',
+                            border: '1px solid #E2E8F0',
+                            borderRadius: '14px',
+                            padding: '12px 14px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'space-between',
+                            gap: '12px',
+                            cursor: 'pointer',
+                            boxShadow: '0 1px 3px rgba(0,0,0,0.03)',
+                            transition: 'all 0.15s ease'
+                          }}
+                        >
+                          <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px', flex: 1, minWidth: 0 }}>
                             <div style={{
-                              width: '32px', height: '32px', borderRadius: '8px',
-                              background: iconBg, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0
+                              width: '40px',
+                              height: '40px',
+                              borderRadius: '10px',
+                              background: c.iconBg,
+                              display: 'flex',
+                              alignItems: 'center',
+                              justifyContent: 'center',
+                              flexShrink: 0
                             }}>
-                              {icon}
+                              <IconComp size={20} color={c.iconColor} />
                             </div>
-                            <div>
-                              <div style={{ fontSize: '12.5px', fontWeight: 600, color: '#0F172A' }}>{loc.name}</div>
-                              <div style={{ fontSize: '11px', color: '#64748B', fontWeight: 500 }}>{loc.landmark}</div>
-                              <div style={{ fontSize: '10.5px', color: '#DC2626', fontWeight: 600, marginTop: '2px', display: 'flex', alignItems: 'center', gap: '4px' }}>
-                                <Clock size={11} color="#DC2626" />
-                                <span>{loc.counterHours}</span>
+                            <div style={{ flex: 1, minWidth: 0 }}>
+                              <div style={{ fontSize: '13.5px', fontWeight: 700, color: '#0F172A', lineHeight: 1.3 }}>
+                                {c.name}
+                              </div>
+                              <div style={{ fontSize: '11.5px', color: '#475569', fontWeight: 500, marginTop: '2px', lineHeight: 1.35 }}>
+                                {c.addr}
+                              </div>
+                              <div style={{
+                                marginTop: '6px',
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: '4px',
+                                background: dynamicStatus.bg,
+                                border: `1px solid ${dynamicStatus.border}`,
+                                color: dynamicStatus.color,
+                                padding: '2px 7px',
+                                borderRadius: '6px',
+                                fontSize: '10.5px',
+                                fontWeight: 600
+                              }}>
+                                <Clock size={11} color={dynamicStatus.color} />
+                                <span>{dynamicStatus.text}</span>
                               </div>
                             </div>
                           </div>
-                          <Compass size={16} color="#64748B" style={{ flexShrink: 0 }} />
+
+                          <div style={{
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '3px',
+                            background: '#F0FDF4',
+                            border: '1px solid #DCFCE7',
+                            color: '#0F5132',
+                            padding: '6px 9px',
+                            borderRadius: '8px',
+                            fontSize: '11.5px',
+                            fontWeight: 600,
+                            flexShrink: 0
+                          }}>
+                            <span>{lang === 'te' ? 'నావిగేట్' : 'Navigate'}</span>
+                            <ArrowUpRight size={13} color="#0F5132" />
+                          </div>
                         </div>
-                      </a>
-                    );
-                  })}
+                      );
+                    });
+                  })()}
                 </div>
               </div>
             )}

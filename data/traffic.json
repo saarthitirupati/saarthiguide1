@@ -977,7 +977,7 @@
   {
     "date": "2026-10-13",
     "path": "/",
-    "count": 110
+    "count": 111
   },
   {
     "date": "2026-10-13",
@@ -1012,7 +1012,7 @@
   {
     "date": "2026-10-13",
     "path": "/darshan/ssd-token",
-    "count": 1
+    "count": 2
   },
   {
     "date": "2026-10-13",
@@ -1062,6 +1062,91 @@
   {
     "date": "2026-10-13",
     "path": "/place/srivari-mettu-path",
+    "count": 1
+  },
+  {
+    "date": "2026-10-13",
+    "path": "/saarthiadmin/login",
+    "count": 1
+  },
+  {
+    "date": "2026-10-13",
+    "path": "/saarthiadmin",
+    "count": 1
+  },
+  {
+    "date": "2026-10-13",
+    "path": "/saarthiadmin/ssd-tokens",
+    "count": 2
+  },
+  {
+    "date": "2026-10-14",
+    "path": "/",
+    "count": 118
+  },
+  {
+    "date": "2026-10-14",
+    "path": "/explore",
+    "count": 82
+  },
+  {
+    "date": "2026-10-14",
+    "path": "/planner",
+    "count": 52
+  },
+  {
+    "date": "2026-10-14",
+    "path": "/plans",
+    "count": 62
+  },
+  {
+    "date": "2026-10-14",
+    "path": "/generating",
+    "count": 32
+  },
+  {
+    "date": "2026-10-15",
+    "path": "/",
+    "count": 103
+  },
+  {
+    "date": "2026-10-15",
+    "path": "/explore",
+    "count": 88
+  },
+  {
+    "date": "2026-10-15",
+    "path": "/planner",
+    "count": 56
+  },
+  {
+    "date": "2026-10-15",
+    "path": "/plans",
+    "count": 57
+  },
+  {
+    "date": "2026-10-15",
+    "path": "/generating",
+    "count": 46
+  },
+  {
+    "date": "2026-10-15",
+    "path": "/darshan/ssd-token",
+    "count": 3
+  },
+  {
+    "date": "2026-10-15",
+    "path": "/darshan/sarva-darshan",
+    "count": 1
+  },
+  {
+    "date": "2026-10-15",
+    "path": "/essentials",
+    "count": 2
+  },
+  {
+    "date": "2026-10-15",
+    "path": "/essentials/secure-belongings",
     "count": 1
   }
 ]

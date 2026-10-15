@@ -78,6 +78,7 @@ export default function EssentialDetailPage({ params }: { params: Promise<{ id: 
 
   const isLocalUser = userLocation && isWithinTirupatiRegion(userLocation.lat, userLocation.lng);
   const effectiveLocation = isLocalUser ? userLocation! : TIRUPATI_CENTER;
+  const isUserOnHill = userLocation ? isCoordinateOnTirumalaHill(userLocation.lat, userLocation.lng) : false;
   const isTirumalaSpot = item?.location?.toLowerCase().includes('tirumala') || 
                          item?.location?.toLowerCase().includes('vqc') || 
                          (item?.coordinates ? isCoordinateOnTirumalaHill(item.coordinates.lat, item.coordinates.lng) : false);
@@ -98,6 +99,7 @@ export default function EssentialDetailPage({ params }: { params: Promise<{ id: 
     const distLabel = distKm < 1 ? `${distM} m` : `${distKm.toFixed(1)} km`;
 
     return {
+      distKm,
       label: distLabel,
       walkMins: isWalkable ? walkMins : null,
       displayText: isWalkable 
@@ -270,8 +272,8 @@ export default function EssentialDetailPage({ params }: { params: Promise<{ id: 
         </div>
       )}
 
-      {/* Scrollable Container with Bottom Padding for Sticky 56px CTA + Floating Nav */}
-      <div className={styles.scrollArea} style={{ paddingBottom: 'calc(88px + 76px + env(safe-area-inset-bottom, 16px))', gap: '18px' }}>
+      {/* Scrollable Container with Bottom Padding for Sticky 56px CTA */}
+      <div className={styles.scrollArea} style={{ paddingBottom: 'calc(100px + env(safe-area-inset-bottom, 24px))', gap: '18px' }}>
         
         {/* COMPACT HERO */}
         <div className={styles.compactHero}>
@@ -296,13 +298,15 @@ export default function EssentialDetailPage({ params }: { params: Promise<{ id: 
               {item.id === 'hair-offering' 
                 ? (lang === 'te' ? 'ప్రధాన కల్యాణకట్ట & 9 కేంద్రాలు · తిరుమల కొండ' : 'Main Kalyanakatta & 9 Centers · Tirumala Hill')
                 : item.id === 'secure-belongings'
-                ? (lang === 'te' ? 'VQC & PAC లాకర్ కౌంటర్లు · తిరుమల కొండ' : 'VQC & PAC Lockers · Tirumala Hill')
+                ? (lang === 'te' 
+                    ? (!isUserOnHill && liveDistance ? `తిరుమల కొండపై లాకర్లు · మీరు తిరుపతిలో ${liveDistance.label} దూరంలో ఉన్నారు` : 'VQC & PAC లాకర్ కౌంటర్లు · తిరుమల కొండ')
+                    : (!isUserOnHill && liveDistance ? `Showing lockers ON Tirumala Hill · You are ${liveDistance.label} away in Tirupati` : 'VQC & PAC Lockers · Tirumala Hill'))
                 : item.id === 'free-meals'
                 ? (lang === 'te' ? 'తరిగొండ వెంగమాంబ & VQC హాళ్లు · తిరుమల కొండ' : 'Tarigonda Vengamamba Complex · Tirumala Hill')
                 : item.id === 'accommodation'
                 ? (lang === 'te' ? 'CRO కార్యాలయం & PAC హాళ్లు · తిరుమల కొండ' : 'CRO Office & PAC Halls · Tirumala Hill')
                 : item.location}
-              {liveDistance ? ` · ${liveDistance.displayText}` : ''}
+              {(item.id !== 'secure-belongings' || isUserOnHill) && liveDistance ? ` · ${liveDistance.displayText}` : ''}
             </span>
           </div>
         </div>
@@ -314,8 +318,8 @@ export default function EssentialDetailPage({ params }: { params: Promise<{ id: 
               <h2 style={{ fontFamily: 'var(--font-sans), system-ui', fontWeight: 600, fontSize: '13px', letterSpacing: '0.05em', textTransform: 'uppercase', color: '#1E232D', margin: 0 }}>
                 {lang === 'te' ? 'అధికారిక భద్రతా కేంద్రాలు' : 'Official deposit locations'}
               </h2>
-              <span style={{ background: 'rgba(217, 119, 6, 0.12)', color: '#92400E', fontWeight: 600, borderRadius: '999px', padding: '2px 8px', fontSize: '11px' }}>
-                {lang === 'te' ? '100% ఉచిత TTD' : '100% Free • TTD'}
+              <span style={{ background: '#F0FDF4', color: '#0F5132', border: '1px solid #BBF7D0', fontWeight: 600, borderRadius: '999px', padding: '2px 8px', fontSize: '11px' }}>
+                {lang === 'te' ? '100% ఉచితం' : '100% Free Deposit'}
               </span>
             </div>
 
@@ -329,21 +333,28 @@ export default function EssentialDetailPage({ params }: { params: Promise<{ id: 
                     key={idx}
                     id={`location-card-${idx}`}
                     style={{
-                      background: '#FFFFFF',
+                      background: isTargeted ? '#F0FDF4' : '#FFFFFF',
                       border: isTargeted ? '1.5px solid #0F5132' : '1px solid rgba(30, 35, 45, 0.08)',
                       borderRadius: '16px',
                       padding: '12px 14px',
                       display: 'flex',
                       flexDirection: 'column',
                       gap: '5px',
-                      boxShadow: '0 1px 2px rgba(0, 0, 0, 0.03)',
+                      boxShadow: isTargeted ? '0 2px 6px rgba(15, 81, 50, 0.06)' : '0 1px 2px rgba(0, 0, 0, 0.03)',
                       transition: 'border-color 0.2s ease, background 0.2s ease'
                     }}
                   >
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <h3 style={{ fontWeight: 600, fontSize: '14px', color: '#1E232D', margin: 0 }}>
-                        {sub.name}
-                      </h3>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                        <h3 style={{ fontWeight: 600, fontSize: '14px', color: '#1E232D', margin: 0 }}>
+                          {sub.name}
+                        </h3>
+                        {isTargeted && (
+                          <span style={{ background: '#DCFCE7', color: '#0F5132', border: '1px solid #BBF7D0', borderRadius: '999px', padding: '1px 7px', fontSize: '10px', fontWeight: 600 }}>
+                            {lang === 'te' ? 'సిఫార్సు' : 'Recommended'}
+                          </span>
+                        )}
+                      </div>
                       <span style={{ fontWeight: 500, fontSize: '12px', color: '#64748B' }}>
                         {sub.distance} • {sub.walkTime}
                       </span>
@@ -353,12 +364,12 @@ export default function EssentialDetailPage({ params }: { params: Promise<{ id: 
                         {sub.bestFor}
                       </div>
                     )}
-                    <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '2px' }}>
+                    <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '4px' }}>
                       <button 
-                        style={{ background: 'none', border: 'none', padding: '2px 0', color: '#D97706', fontWeight: 600, fontSize: '12.5px', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '4px' }}
+                        style={{ background: 'none', border: 'none', padding: '4px 0', color: '#0F5132', fontWeight: 600, fontSize: '12.5px', cursor: 'pointer', display: 'inline-flex', alignItems: 'center', gap: '4px' }}
                         onClick={() => handleOpenMap(sub.name)}
                       >
-                        <span>{lang === 'te' ? 'మ్యాప్ మార్గం చూడండి →' : 'View directions →'}</span>
+                        <span>{lang === 'te' ? 'మ్యాప్ మార్గం చూడండి →' : 'Get directions →'}</span>
                       </button>
                     </div>
                   </div>
@@ -392,9 +403,9 @@ export default function EssentialDetailPage({ params }: { params: Promise<{ id: 
                       if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
                     }}
                     style={{
-                      background: selectedDecisionId === 'phone' ? 'rgba(217, 119, 6, 0.12)' : '#F8FAFC',
-                      color: selectedDecisionId === 'phone' ? '#92400E' : '#334155',
-                      border: selectedDecisionId === 'phone' ? '1px solid rgba(217, 119, 6, 0.25)' : '1px solid #E2E8F0',
+                      background: selectedDecisionId === 'phone' ? '#F0FDF4' : '#F8FAFC',
+                      color: selectedDecisionId === 'phone' ? '#0F5132' : '#475569',
+                      border: selectedDecisionId === 'phone' ? '1.5px solid #0F5132' : '1px solid #E2E8F0',
                       fontWeight: selectedDecisionId === 'phone' ? 600 : 500,
                       borderRadius: '999px',
                       padding: '8px 14px',
@@ -406,7 +417,14 @@ export default function EssentialDetailPage({ params }: { params: Promise<{ id: 
                       gap: '6px'
                     }}
                   >
-                    <span style={{ display: 'inline-flex', background: 'rgba(217, 119, 6, 0.12)', color: '#92400E', borderRadius: '6px', padding: '2px', marginRight: '2px' }}>
+                    <span style={{ 
+                      display: 'inline-flex', 
+                      background: selectedDecisionId === 'phone' ? '#DCFCE7' : '#F1F5F9', 
+                      color: selectedDecisionId === 'phone' ? '#0F5132' : '#64748B', 
+                      borderRadius: '6px', 
+                      padding: '2px', 
+                      marginRight: '2px' 
+                    }}>
                       <Smartphone size={14} strokeWidth={2} />
                     </span>
                     <span style={{ fontWeight: 600, fontSize: '13px' }}>{lang === 'te' ? 'మొబైల్ ఫోన్లు → VQC-I' : 'Mobile → VQC-I'}</span>
@@ -419,9 +437,9 @@ export default function EssentialDetailPage({ params }: { params: Promise<{ id: 
                       if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
                     }}
                     style={{
-                      background: selectedDecisionId === 'luggage' ? 'rgba(217, 119, 6, 0.12)' : '#F8FAFC',
-                      color: selectedDecisionId === 'luggage' ? '#92400E' : '#334155',
-                      border: selectedDecisionId === 'luggage' ? '1px solid rgba(217, 119, 6, 0.25)' : '1px solid #E2E8F0',
+                      background: selectedDecisionId === 'luggage' ? '#F0FDF4' : '#F8FAFC',
+                      color: selectedDecisionId === 'luggage' ? '#0F5132' : '#475569',
+                      border: selectedDecisionId === 'luggage' ? '1.5px solid #0F5132' : '1px solid #E2E8F0',
                       fontWeight: selectedDecisionId === 'luggage' ? 600 : 500,
                       borderRadius: '999px',
                       padding: '8px 14px',
@@ -433,7 +451,14 @@ export default function EssentialDetailPage({ params }: { params: Promise<{ id: 
                       gap: '6px'
                     }}
                   >
-                    <span style={{ display: 'inline-flex', background: '#F8FAFC', border: '1px solid #E2E8F0', color: '#475569', borderRadius: '6px', padding: '2px', marginRight: '2px' }}>
+                    <span style={{ 
+                      display: 'inline-flex', 
+                      background: selectedDecisionId === 'luggage' ? '#DCFCE7' : '#F1F5F9', 
+                      color: selectedDecisionId === 'luggage' ? '#0F5132' : '#64748B', 
+                      borderRadius: '6px', 
+                      padding: '2px', 
+                      marginRight: '2px' 
+                    }}>
                       <Luggage size={14} strokeWidth={2} />
                     </span>
                     <span style={{ fontWeight: 600, fontSize: '13px' }}>{lang === 'te' ? 'లగేజీ & బ్యాగులు → PAC-2' : 'Luggage → PAC-2'}</span>
@@ -446,9 +471,9 @@ export default function EssentialDetailPage({ params }: { params: Promise<{ id: 
                       if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' });
                     }}
                     style={{
-                      background: selectedDecisionId === 'shoes' ? 'rgba(217, 119, 6, 0.12)' : '#F8FAFC',
-                      color: selectedDecisionId === 'shoes' ? '#92400E' : '#334155',
-                      border: selectedDecisionId === 'shoes' ? '1px solid rgba(217, 119, 6, 0.25)' : '1px solid #E2E8F0',
+                      background: selectedDecisionId === 'shoes' ? '#F0FDF4' : '#F8FAFC',
+                      color: selectedDecisionId === 'shoes' ? '#0F5132' : '#475569',
+                      border: selectedDecisionId === 'shoes' ? '1.5px solid #0F5132' : '1px solid #E2E8F0',
                       fontWeight: selectedDecisionId === 'shoes' ? 600 : 500,
                       borderRadius: '999px',
                       padding: '8px 14px',
@@ -460,7 +485,14 @@ export default function EssentialDetailPage({ params }: { params: Promise<{ id: 
                       gap: '6px'
                     }}
                   >
-                    <span style={{ display: 'inline-flex', background: '#F8FAFC', border: '1px solid #E2E8F0', color: '#475569', borderRadius: '6px', padding: '2px', marginRight: '2px' }}>
+                    <span style={{ 
+                      display: 'inline-flex', 
+                      background: selectedDecisionId === 'shoes' ? '#DCFCE7' : '#F1F5F9', 
+                      color: selectedDecisionId === 'shoes' ? '#0F5132' : '#64748B', 
+                      borderRadius: '6px', 
+                      padding: '2px', 
+                      marginRight: '2px' 
+                    }}>
                       <Footprints size={14} strokeWidth={2} />
                     </span>
                     <span style={{ fontWeight: 600, fontSize: '13px' }}>{lang === 'te' ? 'చెప్పులు → ఉచిత కౌంటర్లు' : 'Shoes → Free Stands'}</span>
@@ -723,7 +755,7 @@ export default function EssentialDetailPage({ params }: { params: Promise<{ id: 
 
           <div style={{ background: '#FFFFFF', border: '1px solid rgba(30, 35, 45, 0.08)', borderRadius: '16px', padding: '14px 16px', display: 'flex', flexDirection: 'column', gap: '10px', boxShadow: '0 1px 2px rgba(0,0,0,0.03)' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <span style={{ background: '#F8FAFC', border: '1px solid #E2E8F0', borderRadius: '999px', width: '20px', height: '20px', display: 'grid', placeItems: 'center', color: '#059669', flexShrink: 0 }}>
+              <span style={{ background: '#ECFDF5', border: '1px solid #A7F3D0', borderRadius: '999px', width: '20px', height: '20px', display: 'grid', placeItems: 'center', color: '#059669', flexShrink: 0 }}>
                 <Check size={12} strokeWidth={2.5} />
               </span>
               <span style={{ fontFamily: 'var(--font-sans), system-ui', fontWeight: 500, fontSize: '13px', color: '#334155' }}>
@@ -731,7 +763,7 @@ export default function EssentialDetailPage({ params }: { params: Promise<{ id: 
               </span>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <span style={{ background: '#F8FAFC', border: '1px solid #E2E8F0', borderRadius: '999px', width: '20px', height: '20px', display: 'grid', placeItems: 'center', color: '#059669', flexShrink: 0 }}>
+              <span style={{ background: '#ECFDF5', border: '1px solid #A7F3D0', borderRadius: '999px', width: '20px', height: '20px', display: 'grid', placeItems: 'center', color: '#059669', flexShrink: 0 }}>
                 <Check size={12} strokeWidth={2.5} />
               </span>
               <span style={{ fontFamily: 'var(--font-sans), system-ui', fontWeight: 500, fontSize: '13px', color: '#334155' }}>
@@ -739,7 +771,7 @@ export default function EssentialDetailPage({ params }: { params: Promise<{ id: 
               </span>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <span style={{ background: '#F8FAFC', border: '1px solid #E2E8F0', borderRadius: '999px', width: '20px', height: '20px', display: 'grid', placeItems: 'center', color: '#059669', flexShrink: 0 }}>
+              <span style={{ background: '#ECFDF5', border: '1px solid #A7F3D0', borderRadius: '999px', width: '20px', height: '20px', display: 'grid', placeItems: 'center', color: '#059669', flexShrink: 0 }}>
                 <Check size={12} strokeWidth={2.5} />
               </span>
               <span style={{ fontFamily: 'var(--font-sans), system-ui', fontWeight: 500, fontSize: '13px', color: '#334155' }}>

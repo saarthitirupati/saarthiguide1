@@ -77,11 +77,11 @@ const TEXTS: Record<AppLang, TranslationSchema> = {
       }
     ],
     bulletPoints: [
-      'Huge crowds are expected during these 10 days - plan your visit early.',
-      'Vaikunta Dwara Darshan tokens / tickets are released separately by TTD - watch for the official announcement.',
-      'Follow TTD guidelines and queue discipline.',
-      'Carry a valid photo ID proof.',
-      'Check official TTD updates for the latest arrangements.'
+      'Expect huge crowds — Come early, plan for 10–12 hours.',
+      'Separate ticket needed — Vaikunta Dwara ticket is different. Check official updates.',
+      'Follow queue rules — Listen to temple staff.',
+      'Bring Aadhaar — Photo ID compulsory.',
+      'Check official updates — Do not trust agents or touts.'
     ]
   },
   te: {
@@ -124,11 +124,11 @@ const TEXTS: Record<AppLang, TranslationSchema> = {
       }
     ],
     bulletPoints: [
-      'ఈ 10 రోజుల్లో భారీ రద్దీ ఉండే అవకాశం ఉంది - మీ ప్రయాణాన్ని ముందుగానే ప్లాన్ చేసుకోండి.',
-      'వైకుంఠ ద్వార దర్శనం టోకెన్లు / టిక్కెట్లను TTD ప్రత్యేకంగా విడుదల చేస్తుంది - అధికారిక ప్రకటనను గమనించండి.',
-      'TTD నిబంధనలు మరియు క్యూ క్రమశిక్షణను పాటించండి.',
-      'చెల్లుబాటు అయ్యే ఫోటో గుర్తింపు కార్డును తీసుకురండి.',
-      'తాజా ఏర్పాట్ల కోసం TTD అధికారిక అప్‌డేట్‌లను చూడండి.'
+      'భారీ రద్దీ ఉంటుంది — 10–12 గంటలు సమయం పడుతుంది.',
+      'ప్రత్యేక టికెట్ అవసరం — అధికారిక వెబ్‌సైట్ మాత్రమే చూడండి.',
+      'క్యూ నిబంధనలు పాటించండి — సిబ్బంది సూచనలు వినండి.',
+      'ఆధార్ కార్డు తప్పనిసరి — ఒరిజినల్ ఐడీ కార్డు తెచ్చుకోండి.',
+      'దళారులను నమ్మవద్దు — అధికారిక ప్రకటనలు మాత్రమే చూడండి.'
     ]
   },
   hi: {
@@ -294,6 +294,32 @@ export function VaikuntaEkadasiBanner() {
     const interval = setInterval(calculateTime, 1000);
     return () => clearInterval(interval);
   }, []);
+
+  // Handle Android hardware back & popstate so WebView / PWA does not close
+  useEffect(() => {
+    if (!modalOpen) return;
+
+    if (typeof window !== 'undefined') {
+      window.history.pushState({ modal: 'vaikunta-ekadasi' }, '');
+    }
+
+    const handlePopState = () => {
+      setModalOpen(false);
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+    };
+  }, [modalOpen]);
+
+  const handleCloseModal = () => {
+    if (typeof window !== 'undefined' && window.history.state?.modal === 'vaikunta-ekadasi') {
+      window.history.back();
+    } else {
+      setModalOpen(false);
+    }
+  };
 
   return (
     <>
@@ -514,7 +540,7 @@ export function VaikuntaEkadasiBanner() {
             }}
           >
             <button
-              onClick={() => setModalOpen(false)}
+              onClick={handleCloseModal}
               style={{
                 width: '36px',
                 height: '36px',
@@ -841,10 +867,21 @@ export function VaikuntaEkadasiBanner() {
                 </h3>
               </div>
 
-              <ul style={{ margin: 0, paddingLeft: '18px', fontSize: '12px', color: '#475569', lineHeight: 1.5, fontWeight: 500 }}>
-                {t.bulletPoints.map((pt, i) => (
-                  <li key={i} style={{ marginBottom: '6px' }}>{pt}</li>
-                ))}
+              <ul style={{ margin: 0, paddingLeft: '18px', fontSize: '12.5px', color: '#475569', lineHeight: 1.55, fontWeight: 500 }}>
+                {t.bulletPoints.map((pt, i) => {
+                  const parts = pt.split(' — ');
+                  return (
+                    <li key={i} style={{ marginBottom: '8px' }}>
+                      {parts.length === 2 ? (
+                        <>
+                          <strong style={{ color: '#1E232D', fontWeight: 700 }}>{parts[0]}</strong> — {parts[1]}
+                        </>
+                      ) : (
+                        pt
+                      )}
+                    </li>
+                  );
+                })}
               </ul>
             </div>
           </div>

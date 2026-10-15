@@ -1,46 +1,46 @@
 [
   {
-    "id": "cmp_apsrtc_01",
-    "name": "APSRTC Bus Stickers",
-    "slug": "apsrtc",
-    "category": "apsrtc",
-    "location": "Tirupati Bus Station & Fleet",
-    "destination": "/darshan",
+    "id": "cab-01",
+    "name": "Tirupati Station Cab Decal #104",
+    "slug": "cab-01",
+    "category": "taxi",
+    "location": "Railway Station Taxi Stand",
+    "destination": "",
     "status": "active",
-    "createdAt": "2026-06-30T01:41:39.050Z",
-    "updatedAt": "2026-07-30T01:41:39.050Z"
+    "createdAt": "2026-08-19T16:20:46.645613+00:00",
+    "updatedAt": "2026-08-28T16:01:28.213+00:00"
   },
   {
-    "id": "cmp_bhimas_01",
-    "name": "Hotel Bhimas Reception",
-    "slug": "bhimas",
-    "category": "hotel",
-    "location": "Bhimas Grand Entrance",
-    "destination": "/explore",
-    "status": "active",
-    "createdAt": "2026-07-10T01:41:39.050Z",
-    "updatedAt": "2026-07-30T01:41:39.050Z"
-  },
-  {
-    "id": "cmp_alipiri_01",
+    "id": "alipiri",
     "name": "Alipiri Mettu Kiosk Standee",
     "slug": "alipiri",
     "category": "temple",
     "location": "Alipiri Footstep Entry",
     "destination": "/places/alipiri-mettu",
-    "status": "active",
-    "createdAt": "2026-07-15T01:41:39.050Z",
-    "updatedAt": "2026-07-30T01:41:39.050Z"
+    "status": "paused",
+    "createdAt": "2026-08-19T16:20:46.525083+00:00",
+    "updatedAt": "2026-08-28T16:01:32.531+00:00"
   },
   {
-    "id": "cmp_cab_01",
-    "name": "Tirupati Station Cab Decal #104",
-    "slug": "cab-01",
-    "category": "taxi",
-    "location": "Railway Station Taxi Stand",
-    "destination": "/",
-    "status": "active",
-    "createdAt": "2026-07-20T01:41:39.050Z",
-    "updatedAt": "2026-07-30T01:41:39.050Z"
+    "id": "bhimas",
+    "name": "Hotel Bhimas Reception",
+    "slug": "bhimas",
+    "category": "hotel",
+    "location": "Bhimas Grand Entrance",
+    "destination": "/explore",
+    "status": "paused",
+    "createdAt": "2026-08-19T16:20:46.405134+00:00",
+    "updatedAt": "2026-08-28T16:01:34.724+00:00"
+  },
+  {
+    "id": "apsrtc",
+    "name": "APSRTC Bus Stickers",
+    "slug": "apsrtc",
+    "category": "apsrtc",
+    "location": "Tirupati Bus Station & Fleet",
+    "destination": "",
+    "status": "paused",
+    "createdAt": "2026-08-19T16:20:46.284594+00:00",
+    "updatedAt": "2026-08-28T16:01:35.9+00:00"
   }
 ]

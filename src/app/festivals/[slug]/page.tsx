@@ -66,11 +66,11 @@ The Ekadasi fast (Upavasam) is observed by millions, and special sevas like Thom
       'Lord seen in Hamsa Vahanam in the evening',
     ],
     travelTips: [
-      'Darshan tokens sell out months in advance — book as soon as TTD opens slots.',
-      'Expect 20–30 hour queue waits for general darshan without a token.',
-      'All special sevas (Arjitha, Virtual) are typically suspended.',
-      'Stay in Tirupati city and take TTD-operated buses to Tirumala.',
-      'Bring warm clothing — Tirumala is cold in December nights.',
+      'Expect huge crowds — Come early, plan for 10–12 hours.',
+      'Separate ticket needed — Vaikunta Dwara ticket is different. Check official updates.',
+      'Follow queue rules — Listen to temple staff.',
+      'Bring Aadhaar — Photo ID compulsory.',
+      'Check official updates — Do not trust agents or touts.',
     ],
   },
   rathasapthami: {
@@ -218,6 +218,14 @@ export default function FestivalDetail({ params }: { params: Promise<{ slug: str
       .finally(() => setLoading(false));
   }, [slug]);
 
+  const handleBack = () => {
+    if (typeof window !== 'undefined' && window.history.length > 1) {
+      router.back();
+    } else {
+      router.replace('/');
+    }
+  };
+
   if (loading) {
     return (
       <div style={{ minHeight: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#FDF8F5' }}>
@@ -234,7 +242,7 @@ export default function FestivalDetail({ params }: { params: Promise<{ slug: str
       <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', background: '#FDF8F5', gap: 16 }}>
         <Sparkles size={48} color="#FF9933" />
         <h2 style={{ margin: 0, color: '#1F2937' }}>Festival not found</h2>
-        <button onClick={() => router.back()} style={{ padding: '10px 24px', borderRadius: 12, background: '#FF9933', color: 'white', border: 'none', fontWeight: 700, cursor: 'pointer' }}>Go Back</button>
+        <button onClick={handleBack} style={{ padding: '10px 24px', borderRadius: 12, background: '#FF9933', color: 'white', border: 'none', fontWeight: 700, cursor: 'pointer' }}>Go Back</button>
       </div>
     );
   }
@@ -266,7 +274,7 @@ export default function FestivalDetail({ params }: { params: Promise<{ slug: str
         <div style={{ position: 'absolute', bottom: -20, left: -20, width: 100, height: 100, borderRadius: '50%', background: 'rgba(255,255,255,0.06)' }} />
 
         <button
-          onClick={() => router.back()}
+          onClick={handleBack}
           style={{ background: 'rgba(255,255,255,0.2)', border: 'none', borderRadius: 12, padding: '8px 12px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6, marginBottom: 24 }}
         >
           <ChevronLeft size={20} color="white" />

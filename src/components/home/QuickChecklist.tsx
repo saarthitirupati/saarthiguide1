@@ -1,6 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
-import { Clock, MapPin, Ticket, Flag, CheckCircle2, ArrowRight, Circle, Compass, ChevronRight, Train, Bus, Mountain, ShieldAlert } from 'lucide-react';
+import { Clock, MapPin, Ticket, Flag, CheckCircle2, ArrowRight, ArrowUpRight, Circle, Compass, ChevronRight, Train, Bus, Mountain, ShieldAlert } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useLanguage } from '@/lib/useLanguage';
 
@@ -257,22 +257,78 @@ export function QuickChecklist(props: any) {
 
           {/* COLLECTION CENTRES */}
           {isSuspended ? (
-            /* Serene, collapsed line when suspended to remove heavy closed blocks */
-            <div style={{ borderTop: '1px solid #F1F5F9', paddingTop: '8px', marginTop: '4px', display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap' }}>
-              <span style={{ fontSize: '10.5px', fontWeight: 600, color: '#64748B' }}>
-                {t.collectionCentres}:
-              </span>
-              <span style={{
-                background: '#F8FAFC',
-                border: '1px solid #E2E8F0',
-                color: '#64748B',
-                borderRadius: '999px',
-                padding: '3px 8px',
-                fontSize: '10px',
-                fontWeight: 500
-              }}>
-                {lang === 'te' ? 'విష్ణు నివాసం • శ్రీనివాసం • భూదేవి కాంప్లెక్స్ — మూసివేయబడ్డాయి' : 'Vishnu Nivasam • Srinivasam • Bhudevi — Closed'}
-              </span>
+            /* Compact 3-Column Tappable Collection Centre Cards when Closed/Suspended */
+            <div style={{ borderTop: '1px solid #F1F5F9', paddingTop: '10px', marginTop: '6px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <span style={{ fontSize: '10.5px', fontWeight: 600, color: '#64748B', letterSpacing: '0.03em', textTransform: 'uppercase' }}>
+                    {t.collectionCentres}
+                  </span>
+                  <span style={{ background: '#F1F5F9', color: '#64748B', fontSize: '9.5px', fontWeight: 600, padding: '1px 7px', borderRadius: '999px', border: '1px solid #E2E8F0' }}>
+                    {lang === 'te' ? 'మూసివేయబడ్డాయి' : 'Closed'}
+                  </span>
+                </div>
+                <span style={{ fontSize: '10.5px', fontWeight: 600, color: '#0F5132' }}>
+                  {lang === 'te' ? 'మ్యాప్ డైరెక్షన్స్' : 'Tap for directions'}
+                </span>
+              </div>
+
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: '8px' }}>
+                {[
+                  { 
+                    name: lang === 'te' ? 'విష్ణు నివాసం' : 'Vishnu Nivasam', 
+                    sub: lang === 'te' ? 'రైల్వే స్టేషన్' : 'Opp. Railway', 
+                    icon: <Train size={14} color="#2563EB" />,
+                    iconBg: '#EFF6FF',
+                    q: 'Vishnu Nivasam Tirupati' 
+                  },
+                  { 
+                    name: lang === 'te' ? 'శ్రీనివాసం' : 'Srinivasam', 
+                    sub: lang === 'te' ? 'బస్ స్టాండ్' : 'Bus Stand', 
+                    icon: <Bus size={14} color="#16A34A" />,
+                    iconBg: '#F0FDF4',
+                    q: 'Srinivasam Complex Tirupati' 
+                  },
+                  { 
+                    name: lang === 'te' ? 'భూదేవి' : 'Bhudevi', 
+                    sub: lang === 'te' ? 'అలిపిరి రోడ్' : 'Alipiri Road', 
+                    icon: <Mountain size={14} color="#D97706" />,
+                    iconBg: '#FFFBEB',
+                    q: 'Bhudevi Complex Tirupati' 
+                  },
+                ].map(c => (
+                  <button
+                    key={c.q}
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(c.q)}`, '_blank', 'noopener,noreferrer');
+                    }}
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      alignItems: 'center',
+                      textAlign: 'center',
+                      padding: '10px 4px',
+                      borderRadius: '12px',
+                      background: '#F8FAFC',
+                      border: '1px solid #E2E8F0',
+                      cursor: 'pointer',
+                      transition: 'background 0.15s ease, border-color 0.15s ease',
+                      boxSizing: 'border-box'
+                    }}
+                  >
+                    <div style={{ width: '28px', height: '28px', borderRadius: '50%', background: c.iconBg, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '4px' }}>
+                      {c.icon}
+                    </div>
+                    <span style={{ fontSize: '11px', fontWeight: 700, color: '#1E293B', lineHeight: 1.2 }}>{c.name}</span>
+                    <span style={{ fontSize: '9.5px', color: '#64748B', fontWeight: 500, marginTop: '2px' }}>{c.sub}</span>
+                    <span style={{ marginTop: '6px', fontSize: '9px', fontWeight: 600, color: '#0F5132', background: '#F0FDF4', border: '1px solid #BBF7D0', padding: '2px 6px', borderRadius: '999px', display: 'inline-flex', alignItems: 'center', gap: '2px' }}>
+                      Navigate ↗
+                    </span>
+                  </button>
+                ))}
+              </div>
             </div>
           ) : (
             /* Active Collection Centre Tiles when open/issuing */
