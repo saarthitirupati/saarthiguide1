@@ -51,7 +51,7 @@ const DEFAULT_STATUS: TirumalaStatus = {
   crowdLevel: 'moderate',
   sevaStatus: 'All sevas open',
   notice: '',
-  lastUpdated: new Date().toISOString(),
+  lastUpdated: '2026-01-01T00:00:00.000Z',
   darshanSpeed: 'normal',
   accommodationStatus: 'available',
   ladduAvailability: 'available',

@@ -1,4 +1,5 @@
 import { supabase } from '@/lib/supabase';
+import defaultAlertsData from '../../data/live_alerts.json';
 import fs from 'fs/promises';
 import path from 'path';
 
@@ -29,9 +30,9 @@ async function readLocalAlerts(): Promise<LiveAlert[]> {
   try {
     const content = await fs.readFile(LOCAL_ALERTS_FILE, 'utf-8');
     const parsed = JSON.parse(content);
-    return Array.isArray(parsed) ? parsed : [];
+    return Array.isArray(parsed) && parsed.length > 0 ? parsed : (defaultAlertsData as LiveAlert[]);
   } catch {
-    return [];
+    return (defaultAlertsData as LiveAlert[]) || [];
   }
 }
 
@@ -104,6 +105,7 @@ export async function fetchLiveAlerts(showAll = false): Promise<LiveAlert[]> {
     if (local.length > 0) {
       return local;
     }
+    return (defaultAlertsData as LiveAlert[]) || [];
   }
 
   return sorted;

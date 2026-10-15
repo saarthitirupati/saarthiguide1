@@ -42,6 +42,8 @@ export default function DarshanDetailsPage() {
   const [ssdTokenStatus, setSsdTokenStatus] = useState<'issuing' | 'paused' | 'closed-for-day' | 'suspended'>('closed-for-day');
   const [ssdNextTokenTime, setSsdNextTokenTime] = useState<string>('');
   const [ssdNotice, setSsdNotice] = useState<string>('');
+  const [ssdAdvisoryTag, setSsdAdvisoryTag] = useState<string>('');
+  const [ssdModeBadge, setSsdModeBadge] = useState<string>('');
 
   // Collapsible Sections (Roadmap & Why Wait open by default)
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({
@@ -80,6 +82,12 @@ export default function DarshanDetailsPage() {
         }
         if (statusData.ssdNotice) {
           setSsdNotice(statusData.ssdNotice);
+        }
+        if (statusData.ssdAdvisoryTag) {
+          setSsdAdvisoryTag(statusData.ssdAdvisoryTag);
+        }
+        if (statusData.ssdModeBadge) {
+          setSsdModeBadge(statusData.ssdModeBadge);
         }
 
         const now = new Date();
@@ -257,12 +265,14 @@ export default function DarshanDetailsPage() {
               <span
                 className={styles.statusPill}
                 style={{
-                  background: 'rgba(217, 119, 6, 0.12)',
-                  color: '#92400E',
+                  background: id === 'ssd-token' && ssdTokenStatus === 'suspended' ? '#FEF2F2' : 'rgba(217, 119, 6, 0.12)',
+                  color: id === 'ssd-token' && ssdTokenStatus === 'suspended' ? '#B91C1C' : '#92400E',
                   fontWeight: 700
                 }}
               >
-                {id === 'ssd-token' ? 'TOKEN ENTRY' : id === 'special-entry' ? 'ONLINE SLOT' : 'WALK-IN DARSHAN'}
+                {id === 'ssd-token' 
+                  ? (ssdTokenStatus === 'suspended' ? (lang === 'te' ? 'నిలిపివేయబడింది' : (ssdAdvisoryTag || 'SUSPENDED')) : (ssdModeBadge || 'TOKEN ENTRY'))
+                  : id === 'special-entry' ? 'ONLINE SLOT' : 'WALK-IN DARSHAN'}
               </span>
             </div>
 
@@ -282,7 +292,7 @@ export default function DarshanDetailsPage() {
               <div style={{ display: 'flex', alignItems: 'baseline', gap: '10px', marginTop: '4px', flexWrap: 'wrap' }}>
                 <span style={{ fontSize: '32px', fontWeight: 700, color: '#0F172A', letterSpacing: '-0.02em', lineHeight: 1 }}>
                   {id === 'ssd-token'
-                    ? (ssdTokenStatus === 'closed-for-day' ? 'Closed' : liveWaitTime || '2–4 hrs')
+                    ? (ssdTokenStatus === 'suspended' ? (lang === 'te' ? 'నిలిపివేయబడింది' : 'Suspended') : ssdTokenStatus === 'closed-for-day' ? (lang === 'te' ? 'నేడు క్లోజ్' : 'Closed') : liveWaitTime || '2–4 hrs')
                     : (liveWaitTime || data.waitTime)}
                 </span>
                 
@@ -291,8 +301,8 @@ export default function DarshanDetailsPage() {
                   fontWeight: 600,
                   padding: '4px 10px',
                   borderRadius: '99px',
-                  backgroundColor: id === 'ssd-token' && ssdTokenStatus === 'closed-for-day' ? '#FEE2E2' : crowdLevel === 'EXTREME' ? '#FEE2E2' : crowdLevel === 'HIGH' || crowdLevel === 'MODERATE' ? '#FEF3C7' : '#DCFCE7',
-                  color: id === 'ssd-token' && ssdTokenStatus === 'closed-for-day' ? '#DC2626' : crowdLevel === 'EXTREME' ? '#DC2626' : crowdLevel === 'HIGH' || crowdLevel === 'MODERATE' ? '#B45309' : '#15803D',
+                  backgroundColor: id === 'ssd-token' && (ssdTokenStatus === 'suspended' || ssdTokenStatus === 'closed-for-day') ? '#FEE2E2' : crowdLevel === 'EXTREME' ? '#FEE2E2' : crowdLevel === 'HIGH' || crowdLevel === 'MODERATE' ? '#FEF3C7' : '#DCFCE7',
+                  color: id === 'ssd-token' && (ssdTokenStatus === 'suspended' || ssdTokenStatus === 'closed-for-day') ? '#DC2626' : crowdLevel === 'EXTREME' ? '#DC2626' : crowdLevel === 'HIGH' || crowdLevel === 'MODERATE' ? '#B45309' : '#15803D',
                   display: 'inline-flex',
                   alignItems: 'center',
                   gap: '6px'
@@ -301,10 +311,16 @@ export default function DarshanDetailsPage() {
                     width: '7px',
                     height: '7px',
                     borderRadius: '50%',
-                    backgroundColor: id === 'ssd-token' && ssdTokenStatus === 'closed-for-day' ? '#DC2626' : crowdLevel === 'EXTREME' ? '#DC2626' : crowdLevel === 'HIGH' ? '#D97706' : '#16A34A',
+                    backgroundColor: id === 'ssd-token' && (ssdTokenStatus === 'suspended' || ssdTokenStatus === 'closed-for-day') ? '#DC2626' : crowdLevel === 'EXTREME' ? '#DC2626' : crowdLevel === 'HIGH' ? '#D97706' : '#16A34A',
                     display: 'inline-block'
                   }} />
-                  <span>{id === 'ssd-token' && ssdTokenStatus === 'closed-for-day' ? (lang === 'te' ? 'నేడు క్లోజ్' : 'Closed for Day') : `${crowdLevel} WAIT · ${lastSyncTime}`}</span>
+                  <span>
+                    {id === 'ssd-token' && ssdTokenStatus === 'suspended'
+                      ? (lang === 'te' ? 'ప్రత్యక్ష దర్శనం కొనసాగుతుంది' : 'Direct Walk-in Active')
+                      : id === 'ssd-token' && ssdTokenStatus === 'closed-for-day' 
+                        ? (lang === 'te' ? 'నేడు క్లోజ్' : 'Closed for Day') 
+                        : `${crowdLevel} WAIT · ${lastSyncTime}`}
+                  </span>
                 </span>
               </div>
 
