@@ -49,7 +49,7 @@ function buildPayload(type: string, daysSince?: number, custom?: CustomPushData)
 
 async function handlePushDispatch(type: string, endpoint?: string, daysSince?: number, custom?: CustomPushData) {
   const pub = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY || 'BG66lKYjVyCTBCyVvgT0qpmwpFaJ414JqzVUVNZ14KRQlcC5UdqDUOp9USQElQ2r7vO6P4fzYlX3oFRuu4oR5V8';
-  const priv = process.env.VAPID_PRIVATE_KEY;
+  const priv = process.env.VAPID_PRIVATE_KEY || 'tdwjaJ5ZfrrPFNPyzsni4CZGLWwmftF7nl0LfUYAkDg';
 
   if (!pub || !priv) {
     console.warn('[PushSend] VAPID keys not configured in environment');
