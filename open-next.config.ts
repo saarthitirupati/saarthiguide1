@@ -1,4 +1,3 @@
-// @ts-nocheck
 const config = {
   buildCommand: "node node_modules/next/dist/bin/next build",
   default: {
