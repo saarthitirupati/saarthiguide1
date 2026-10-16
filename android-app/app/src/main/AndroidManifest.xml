@@ -55,6 +55,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Saarthi">
 
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="saarthi_live_alerts" />
+
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@mipmap/ic_maskable" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true"

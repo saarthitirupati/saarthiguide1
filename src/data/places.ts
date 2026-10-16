@@ -2572,6 +2572,68 @@ export const PLACES: Place[] = [
     travelEstimates: { 'tirupati': '90 mins' },
     relatedPlaces: ['talakona-falls', 'chandragiri-fort']
   },
+  {
+    id: 'ardhagiri-anjaneya',
+    name: 'Ardhagiri Sri Veeranjaneya Swamy Temple',
+    category: 'Day Trip',
+    placeType: 'spiritual',
+    location: 'Aragonda, Chittoor',
+    distanceKms: 75,
+    durationMins: 90,
+    budgetLevel: 'budget',
+    entryFeeNum: 0,
+    interests: ['spiritual', 'nature', 'mythology'],
+    openFrom: 5,
+    openTo: 21,
+    isMustVisit: true,
+    description: 'Ancient hill temple dedicated to Lord Veera Anjaneya Swamy in Aragonda. Famous for the sacred Sanjeevani Pushkarini whose medicinal waters never dry up and are believed to cure ailments.',
+    shortIntro: 'Ardhagiri Sri Veeranjaneya Swamy Temple at Aragonda is a renowned hill shrine situated on a fallen piece of the divine Sanjeevani mountain (Dronagiri) brought by Lord Hanuman in the Ramayana.',
+    whyVisit: 'Renowned for its unique Treta Yuga mythology and the sacred Sanjeevani Pushkarini—a natural spring water pond atop the hill that never dries up even in peak summer and contains medicinal mineral properties.',
+    history: 'According to the Ramayana, during the epic war in Lanka, Lakshmana fell unconscious due to Indrajit\'s weapon. Lord Hanuman flew to the Himalayas to fetch the Sanjeevani herb from the Dronagiri mountain. Unable to identify the herb, Hanuman carried the entire mountain. En route, a portion of the mountain (Ardha Giri = half hill) broke off and fell at this spot in Aragonda. Lord Hanuman manifested here facing north as Veera Anjaneya Swamy. Millions of devotees visit during Pournami (Full Moon) to take a holy dip and collect the healing Sanjeevani water.',
+    timings: '5:30 AM - 9:00 PM (All days open)',
+    entryFee: 'Free General Darshan',
+    address: 'Ardhagiri Temple Road, Aragonda, Thavanampalle Mandal, Chittoor District, Andhra Pradesh 517129',
+    rating: 4.8,
+    reviewCount: 9400,
+    image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1792061507/temple_38jQnYRH_202601081752470_vv6pfc.webp',
+    coordinates: { lat: 13.2946024, lng: 78.9512445 },
+    tags: ['Hanuman', 'Sanjeevani', 'Holy Water', 'Ardhagiri', 'Aragonda', 'Miracle Pond', 'Pournami'],
+    bestTime: 'Early morning (6:00 AM - 10:00 AM) or Pournami (Full Moon day) for Giripradakshina and holy water',
+    practicalInfo: {
+      dressCode: 'Traditional wear recommended (Dhoti/Kurta for men, Saree/Chudidar for women)',
+      food: 'Free Annadanam available in afternoon; local vegetarian stalls and refreshments at hill base',
+      parking: 'Ample vehicle parking available at hill base and mid-way'
+    },
+    travelEstimates: { 'tirupati': '100 mins', 'chittoor': '25 mins', 'kanipakam': '20 mins' },
+    relatedPlaces: ['kanipakam', 'chandragiri-fort', 'boyakonda-gangamma'],
+    travelByRTC: 'Direct APSRTC buses connect Chittoor Bus Stand to Aragonda (19 km) every 30 minutes. From Tirupati Central Bus Station, board any bus towards Chittoor/Kanipakam, then take a connecting bus or auto to Aragonda.',
+    travelByCar: 'Drive 75 km from Tirupati via Chandragiri and Kanipakam (NH69 / NH716), then take Kanipakam-Aragonda Road directly to the temple base. The entire route is well-paved highway with clear signboards.',
+    travelByBike: 'A scenic 75 km highway and countryside ride via Chandragiri and Kanipakam with picturesque views of the Aragonda hills.',
+    approxRTCFare: '₹75 - ₹95 per person from Tirupati via Chittoor',
+    approxCarCost: '₹800 - ₹1,000 for fuel (or ₹2,200 for local cab package)',
+    approxBikeCost: '₹350 for petrol',
+    significance: {
+      traditionType: 'temple',
+      whyVisitTe: 'త్రేతాయుగంలో లక్ష్మణుడిని బ్రతికించేందుకు హనుమంతుడు సంజీవని పర్వతాన్ని తెస్తుండగా దానిలో సగభాగం పడిన పవిత్ర ప్రదేశం అర్ధగిరి. ఇక్కడి సంజీవని పుష్కరిణి తీర్థం ఎప్పటికీ ఎండిపోదు, ఔషధ గుణాలు కలిగి సర్వ రోగాలను నయం చేస్తుందని భక్తుల ప్రగాఢ విశ్వాసం.',
+      whyVisitEn: 'According to the Ramayana, this is the sacred spot where half of the divine Sanjeevani hill fell from Lord Hanuman’s hands. The sacred Sanjeevani Pushkarini never dries up and holds renowned healing properties.',
+      actionsTe: [
+        'ఉత్తరాభిముఖంగా ఉన్న శ్రీ వీరాంజనేయ స్వామి వారిని దర్శించుకుని సిందూర పూజ చేస్తారు',
+        'కొండపై ఉన్న పవిత్ర సంజీవని పుష్కరిణి తీర్థాన్ని స్వీకరించి, సీసాలలో నింపి ఇంటికి తీసుకెళ్తారు',
+        'ప్రతి పౌర్ణమి నాడు అర్ధరాత్రి వేలాదిమంది భక్తులు కొండ చుట్టూ గిరిప్రదక్షిణ చేస్తారు',
+        'నిత్య అన్నదాన ప్రసాదం స్వీకరిస్తారు'
+      ],
+      actionsEn: [
+        'Seek blessings of North-facing Lord Veera Anjaneya Swamy with auspicious Sindhooram pooja',
+        'Collect and drink the sacred Sanjeevani Pushkarini medicinal water to take home for wellness',
+        'Perform sacred Giripradakshina (hill circumambulation) during auspicious Pournami (Full Moon) nights',
+        'Partake in the free Nitya Annadanam prasadam'
+      ],
+      culturalMeaningTe: 'అర్ధగిరి క్షేత్రం కేవలం ఆలయం మాత్రమే కాదు, రామాయణ యుగపు సంజీవని ఔషధ గుణాలు దాగి ఉన్న జీవధార. ఇక్కడి సంజీవని పుష్కరిణి నీటిని పవిత్ర గంగాజలంలా పూజించి ఇళ్ళలో భద్రపరుచుకుంటారు.',
+      culturalMeaningEn: 'Ardhagiri is revered as a living conduit to the Ramayana era. Devotees regard the spring waters of Sanjeevani Pushkarini as divinely medicinal, preserving it at home for healing and spiritual well-being.',
+      saarthiTipTe: 'సంజీవని పుష్కరిణి నుండి పవిత్ర తీర్థాన్ని ఇంటికి తీసుకెళ్లేందుకు శుభ్రమైన ఖాళీ బాటిల్‌ను వెంట తీసుకెళ్లండి. పౌర్ణమి నాడు వెళితే రాత్రి గిరిప్రదక్షిణ విశేష ఫలితాన్నిస్తుంది.',
+      saarthiTipEn: 'Carry a clean empty water container to collect the sacred Sanjeevani Pushkarini water to bring home. If visiting on Pournami (Full Moon), night-time Giripradakshina offers a deeply uplifting spiritual atmosphere.'
+    }
+  },
 
   // --- VI. PARKS & LEISURE ---
   {
@@ -2926,6 +2988,7 @@ export const PLACES: Place[] = [
   {
     id: 'historical-govindaraja-idol',
     name: 'Historical Govindaraja Swamy Idol (Manchinellagunta)',
+    nameTe: 'చారిత్రక గోవిందరాజ స్వామి విగ్రహం (మంచినీళ్లగుంట)',
     category: 'Historical',
     placeType: 'spiritual',
     location: 'Manchinellagunta, Tirupati',
@@ -2936,11 +2999,35 @@ export const PLACES: Place[] = [
     interests: ['spiritual', 'history', 'architecture', 'ramanujacharya'],
     openFrom: 6,
     openTo: 19,
+    openDays: ['Saturday'],
     isMustVisit: false,
     description: 'The monumental 1,000-year-old original stone idol of Lord Govindaraja Swamy resting near Narasimha Theertham at Manchinellagunta in Tirupati. Rescued from the sea during the 12th century Chola persecution in Chidambaram, it was brought safely to Tirupati by Vaishnavite devotees under Saint Ramanujacharya.',
+    descriptionTe: 'తిరుపతిలోని మంచినీళ్లగుంట నరసింహ తీర్థం వద్ద కొలువై ఉన్న 1000 ఏళ్ల పురాతన శ్రీ గోవిందరాజ స్వామి వారి అసలు శిలా విగ్రహం. 12వ శతాబ్దంలో చిదంబరంలో చోళుల కాలంలో సముద్రంలో వేయబడిన ఈ పవిత్ర విగ్రహాన్ని భక్తులు వెలికితీసి, శ్రీ రామానుజాచార్యుల మార్గదర్శకత్వంలో భద్రంగా తిరుపతికి తీసుకువచ్చారు.',
     shortIntro: 'The revered 1,000-year-old original reclining granite idol of Lord Govindaraja Swamy rescued from Chidambaram by Saint Ramanuja, preserved at Manchinellagunta.',
     history: 'Originally worshipped in the ancient Govindaraja shrine at Chidambaram (Tamil Nadu), the idol was cast into the sea during the 12th century by a Chola king hostile to Vaishnavism. Devotees recovered the sacred idol and brought it to Tirupati under the guidance of Sri Ramanujacharya. Because the rescued icon suffered minor transit damage—and Agamic scriptures restrict daily worship of a damaged primary icon—Sri Ramanujacharya consecrated a new sudda (lime-mortar) idol inside the main Sri Govindaraja Swamy Temple in 1130 CE, while this historic original granite idol was respectfully enshrined at Manchinellagunta.',
+    historyTe: 'తమిళనాడులోని చిదంబరం గోవిందరాజ ఆలయంలో పూజలందుకున్న ఈ చారిత్రక విగ్రహం 12వ శతాబ్దంలో శైవ చోళ రాజుల కాలంలో సముద్రంలో పడవేయబడింది. భక్తులు స్వామివారి విగ్రహాన్ని రక్షించి శ్రీ రామానుజాచార్యుల ఆధ్వర్యంలో తిరుపతికి చేర్చారు. తరలింపులో విగ్రహానికి స్వల్ప నష్టం వాటిల్లినందున, ఆగమ శాస్త్రాల ప్రకారం నిత్య పూజలకు కొత్త సుద్ద (సున్నం-ఇటుక) విగ్రహాన్ని క్రీ.శ. 1130లో ప్రస్తుత శ్రీ గోవిందరాజ స్వామి ఆలయంలో ప్రతిష్ఠించారు. మూల చారిత్రక శిలా విగ్రహాన్ని మంచినీళ్లగుంట వద్ద పవిత్రంగా ఉంచి శనివారాల్లో మాత్రమే భక్తుల దర్శనానికి అనుమతిస్తున్నారు.',
     whyVisit: 'Witness a profound thousand-year-old piece of living Vaishnavite history. The monumental idol depicts Lord Vishnu in Yoga Nidra reclining on the divine serpent Adisesha with Sridevi and Bhudevi.',
+    significance: {
+      traditionType: 'heritage',
+      whyVisitTe: 'చిదంబరం నుండి శ్రీ రామానుజాచార్యుల వారిచే తిరుపతికి తీసుకురాబడిన 1,000 సంవత్సరాల నాటి శ్రీ గోవిందరాజ స్వామి వారి అసలు చారిత్రక శయన ముద్ర శిలా విగ్రహాన్ని దర్శించడం విశేషం.',
+      whyVisitEn: 'Witness a profound thousand-year-old piece of living Vaishnavite history: the monumental granite Yoga Nidra idol rescued from Chidambaram by Saint Ramanujacharya.',
+      actionsTe: [
+        'ఆదిశేషునిపై యోగనిద్రలో ఉన్న శ్రీదేవి, భూదేవి సమేత గోవిందరాజ స్వామి చారిత్రక శిలా సౌందర్యాన్ని వీక్షించండి',
+        'శ్రీ రామానుజాచార్యుల వారు చిదంబరం నుండి తిరుపతికి ఈ పవిత్ర విగ్రహాన్ని రక్షించి తెచ్చిన చారిత్రక నేపథ్యాన్ని తెలుసుకోండి',
+        'శనివారం మాత్రమే లభించే దర్శన వేళలను సద్వినియోగం చేసుకోండి',
+        'నగరంలోని ప్రధాన శ్రీ గోవిందరాజ స్వామి ఆలయ దర్శనంతో దీనిని అనుసంధానించండి'
+      ],
+      actionsEn: [
+        'Admire the 1,000-year-old monumental black granite carving of Lord Vishnu in Yoga Nidra on Adisesha with Sridevi and Bhudevi',
+        'Learn the extraordinary historical rescue narrative guided by Saint Ramanujacharya from 12th-century Chidambaram',
+        'Take advantage of the exclusive Saturday-only visiting hours',
+        'Combine this sacred historical visit with the main Sri Govindaraja Swamy Temple in central Tirupati'
+      ],
+      culturalMeaningTe: 'ఈ విగ్రహం మధ్యయుగ భారతదేశంలో వైష్ణవ ధర్మ పరిరక్షణకు మరియు శ్రీ రామానుజాచార్యుల భక్తి విప్లవానికి శాశ్వత నిదర్శనంగా నిలుస్తుంది.',
+      culturalMeaningEn: 'Stands as an enduring monument to medieval Vaishnavite resilience and Saint Ramanujacharya\'s legendary preservation of sacred heritage in Tirupati.',
+      saarthiTipTe: 'ఈ క్షేత్రం కేవలం శనివారాల్లో మాత్రమే (ఉదయం 6:00 నుండి రాత్రి 7:00 వరకు) తెరిచి ఉంటుంది. వారంలోని మిగతా రోజుల్లో ప్రవేశం ఉండదు కాబట్టి శనివారం మాత్రమే ప్లాన్ చేసుకోండి.',
+      saarthiTipEn: 'Open ONLY on Saturdays (6:00 AM – 7:00 PM). Gates are closed on all other weekdays, so strictly schedule your visit for a Saturday.'
+    },
     timings: 'Saturdays Only: 6:00 AM - 7:00 PM',
     entryFee: 'Free Entry',
     address: 'Govindaraja Swamy Statue, Narasimha Theertham Road, Manchinellagunta, Tirupati, Andhra Pradesh 517501',
@@ -5006,15 +5093,15 @@ export const PLACES: Place[] = [
     relatedPlaces: ['kapila-theertham', 'divyaramam-park']
   },
 
-  // --- XVIII. SRI PARASARESWARA SWAMY TEMPLE (YOGIMALLAVARAM) ---
+  // --- XVIII. SRI PARASARESWARA SWAMY & KALA BHAIRAVA TEMPLE (YOGIMALLAVARAM) ---
   {
     id: 'parasareswara-swamy-temple',
-    name: 'Sri Parasareswara Swamy Temple (Yogimallavaram)',
-    nameTe: 'శ్రీ పరాశరేశ్వర స్వామి దేవాలయం (యోగిమల్లవరం)',
+    name: 'Sri Parasareswara Swamy & Kala Bhairava Temple (Yogimallavaram)',
+    nameTe: 'శ్రీ పరాశరేశ్వర & కాలభైరవ స్వామి ఆలయం (యోగిమల్లవరం)',
     category: 'Temples',
     placeType: 'spiritual',
     location: 'Yogimallavaram, Near Tiruchanoor',
-    distanceKms: 5.2,
+    distanceKms: 4.8,
     durationMins: 60,
     budgetLevel: 'budget',
     entryFeeNum: 0,
@@ -5022,64 +5109,67 @@ export const PLACES: Place[] = [
     openFrom: 6,
     openTo: 20,
     isMustVisit: true,
-    description: 'A 1,000-year-old ancient Chola Shiva temple situated on the northern bank of the sacred Swarnamukhi River in Yogimallavaram near Tiruchanoor. Built by Chola Emperor Rajaraja Chola I in 1008 CE, the temple commemorates both Arjuna\'s penance for the Pasupatastra and Sage Parasara\'s installation of Lord Shiva.',
-    descriptionTe: 'తిరుచానూరు సమీపంలో స్వర్ణముఖి నదీ తీరాన యోగిమల్లవరంలో వెలసిన 1,000 ఏళ్ల పురాతన చోళుల శైవ క్షేత్రం. క్రీ.శ. 1008లో మొదటి రాజరాజ చోళునిచే నిర్మితమైన ఈ ఆలయంలో అర్జునుడు పాశుపతాస్త్రం కోసం తపస్సు చేసిన గాథ, పరాశర మహర్షి ప్రతిష్ఠించిన శివలింగం విశేష ప్రాధాన్యత కలిగి ఉన్నాయి.',
-    history: 'Built by Rajaraja Chola I in 1008 CE and celebrated across 11 ancient stone inscriptions dating from the 11th to 13th centuries. According to Sthala Purana, Arjuna meditated here as a Yogi to acquire the Pasupatastra, and Lord Shiva tested his valor in the guise of a hunter (Mallu), giving the site its name Yogimallavaram. Sage Parasara (father of Veda Vyasa) later performed penance here to behold his deceased father Sakthi in heaven and consecrated the presiding Shiva Lingam.',
-    historyTe: 'క్రీ.శ. 1008లో మొదటి రాజరాజ చోళుని కాలంలో నిర్మించబడిన ఈ ఆలయంలో 11 చారిత్రక శాసనాలు లభించాయి. పాశుపతాస్త్ర సాధన కోసం అర్జునుడు (యోగి) తపస్సు చేయగా, పరమశివుడు వేటగాడి (మల్లు) రూపంలో పరీక్షించి వరం ప్రసాదించిన పవిత్ర స్థలం "యోగిమల్లవరం". వేదవ్యాసుని తండ్రి పరాశర మహర్షి ఇక్కడ శివారాధన చేసి తన తండ్రి దర్శనం పొందడం వలన ఈ స్వామికి "పరాశరేశ్వరుడు" అనే పేరు వచ్చింది.',
+    description: 'A 1,000-year-old ancient Chola temple in Yogimallavaram near Tiruchanoor, dedicated to Sri Parasareswara Swamy (Lord Shiva) and Sri Kala Bhairava. Built by Chola Emperor Rajaraja Chola I in 1008 CE on the banks of the Swarnamukhi River, it commemorates Arjuna\'s penance for the divine Pasupatastra, Sage Parasara\'s worship, and houses powerful guardian sub-shrines for Kubera Bhairava, Mrityunjaya Swamy, and Aishwarya Saneeswarar.',
+    descriptionTe: 'తిరుచానూరు సమీపంలో స్వర్ణముఖి నదీ తీరాన యోగిమల్లవరంలో వెలసిన 1,000 ఏళ్ల పురాతన చోళుల శైవ-భైరవ క్షేత్రం. క్రీ.శ. 1008లో మొదటి రాజరాజ చోళునిచే నిర్మితమైన ఈ ఆలయంలో అర్జునునికి పాశుపతాస్త్ర ప్రదానం, పరాశర మహర్షి ప్రతిష్ఠించిన శివలింగంతో పాటు అత్యంత శక్తివంతమైన శ్రీ కాలభైరవ, కుబేర భైరవ, మృత్యుంజయ, ఐశ్వర్య శనీశ్వర సన్నిధులు కొలువై ఉన్నాయి.',
+    history: 'Built by Rajaraja Chola I in 1008 CE and celebrated across 11 ancient stone inscriptions dating from the 11th to 13th centuries. According to Sthala Purana, during the Mahabharata, Arjuna came here as a Yogi to perform severe penance for Shiva\'s supreme weapon, the Pasupatastra. Lord Shiva tested his valor in the guise of a hunter (Mallu). Both shot a wild demon-boar and fought fiercely. When Arjuna surrendered by offering wild flowers, the garland appeared on the Shiva Lingam. Pleased, Shiva and Parvati granted him the Pasupatastra, naming the site Yogimallavaram ("Yogi" = Arjuna, "Mallu" = Hunter Shiva). Later, Sage Parasara (father of Veda Vyasa) consecrated the Shiva Lingam. Over time, Sri Kala Bhairava became deeply revered here as the supreme guardian deity.',
+    historyTe: 'మహాభారత కాలంలో పాశుపతాస్త్రం కోసం అర్జునుడు (యోగి) తపస్సు చేయగా, పరమశివుడు వేటగాడి (మల్లు) రూపంలో వచ్చి పరీక్షించి ప్రసన్నుడై పాశుపతాస్త్రం ప్రసాదించిన పవిత్ర స్థలం "యోగిమల్లవరం". వేదవ్యాసుని తండ్రి పరాశర మహర్షి ఇక్కడ శివారాధన చేయడంతో స్వామికి "పరాశరేశ్వరుడు" అనే పేరు వచ్చింది. క్రీ.శ. 1008లో చోళులచే నిర్మించబడిన ఈ ఆలయంలో 11 చారిత్రక శాసనాలు ఉన్నాయి. క్షేత్ర రక్షకుడిగా శ్రీ కాలభైరవుడు, కుబేర భైరవుడు విశేష పూజలందుకుంటున్నారు.',
     significance: {
       traditionType: 'temple',
-      whyVisitTe: 'తిరుచానూరు పద్మావతి అమ్మవారి దర్శనంతో పాటు దర్శించవలసిన అరుదైన 1,000 సంవత్సరాల పురాతన చోళుల శైవ క్షేత్రం. అర్జునునికి శివుడు పాశుపతాస్త్రం అనుగ్రహించిన పవిత్ర పుణ్యభూమి.',
-      whyVisitEn: 'A must-visit 1,000-year-old Chola architectural jewel near Tiruchanoor where Arjuna received the divine Pasupatastra and Sage Parasara attained his father\'s heavenly vision.',
+      whyVisitTe: 'తిరుచానూరు పద్మావతి అమ్మవారి ఆలయానికి కేవలం 1 కిమీ దూరంలో ఉన్న 1,000 ఏళ్ల పురాతన చోళుల చారిత్రక క్షేత్రం. అర్జునునికి పాశుపతాస్త్రం లభించిన పుణ్యభూమి మరియు భయాలు, శత్రుదోషాలు, ఆర్థిక ఇబ్బందులు తొలగించే శ్రీ కాలభైరవ, కుబేర భైరవ స్వాముల దర్శనం.',
+      whyVisitEn: 'A 1,000-year-old Chola architectural jewel near Tiruchanoor where Arjuna received the Pasupatastra and Sage Parasara worshipped Shiva. Devotees visit for the powerful protection of Kala Bhairava and prosperity blessings from Kubera Bhairava.',
       actionsTe: [
-        'తూర్పు ముఖంగా ప్రతిష్ఠించబడిన శ్రీ పరాశరేశ్వర లింగానికి మరియు శ్రీ కామాక్ష్యాంబ అమ్మవారికి పూజలు చేయండి',
-        'చోళుల కాలం నాటి 11 చారిత్రక శాసనాలను, గర్భాలయ రాతి శిల్ప కళను వీక్షించండి',
-        'ప్రదోషం మరియు సోమవారాల్లో నిర్వహించే రుద్రాభిషేకంలో పాల్గొనండి',
-        'స్వర్ణముఖి నది పరివాహక ప్రాంతంలోని ప్రశాంత ఆధ్యాత్మికతను అనుభవించండి'
+        'శ్రీ పరాశరేశ్వర లింగానికి, కామాక్ష్యాంబ అమ్మవారికి మరియు రక్షక దైవమైన శ్రీ కాలభైరవ స్వామికి పూజలు చేయండి',
+        'ప్రతి నెలా వచ్చే కృష్ణాష్టమి / కాలభైరవాష్టమి రోజున కాలభైరవునికి వడమాల లేదా గుమ్మడికాయ దీపారాధన సమర్పించండి',
+        'సంపద మరియు ఆర్థిక స్థిరత్వం కోసం కుబేర భైరవ, ఐశ్వర్య శనీశ్వర సన్నిధులను దర్శించండి',
+        'చోళుల కాలం నాటి 11 చారిత్రక శాసనాలను, పురాతన రాతి స్తంభాల శిల్పకళను వీక్షించండి'
       ],
       actionsEn: [
-        'Seek blessings of East-facing Sri Parasareswara Swamy and Sri Kamakshyamba Devi',
-        'Admire 11th-century Chola granite architecture and authentic historical stone inscriptions (sasanams)',
-        'Participate in traditional Rudra Abhishekam on Somavaram and Pradosham days',
-        'Experience the calm Vedic heritage on the northern banks of the holy Swarnamukhi River'
+        'Seek blessings of Sri Parasareswara Swamy, Kamakshyamba Devi, and guardian deity Sri Kala Bhairava',
+        'Offer pumpkin deepam (oil lamps) and vadai malas on monthly Ashtami (Kala Bhairava Ashtami) for obstacle removal',
+        'Pray at sub-shrines of Kubera Bhairava, Aishwarya Saneeswarar, and Mrityunjaya Swamy for wealth and health protection',
+        'Examine 11 authentic 11th–13th century Chola stone inscriptions and granite sanctum carvings'
       ],
-      culturalMeaningTe: 'తిరుపతి-తిరుచానూరు ప్రాంతంలో వైష్ణవ సాంప్రదాయంతో పాటు సమానంగా పరిఢవిల్లిన ప్రాచీన చోళుల శైవ వైభవానికి, అర్జునుని వీరత్వానికి మరియు పరాశరుని పితృభక్తికి ఈ ఆలయం ప్రతీక.',
-      culturalMeaningEn: 'Standing on the Swarnamukhi riverbank, this temple bridges Mahabharata epic history with Chola imperial devotion, showcasing how Shaivism and Vaishnavism harmoniously flourished side-by-side near Tiruchanoor.',
-      saarthiTipTe: 'తిరుచానూరు పద్మావతి అమ్మవారి ఆలయానికి కేవలం 3 కిమీ దూరంలో ఉంది. ఉదయం 7:00–10:00 లేదా సాయంత్రం 5:00–7:00 సమయం దర్శనానికి అత్యంత ప్రశాంతమైనది. ప్రదోష పూజలు విశేష ఫలితాన్నిస్తాయి.',
-      saarthiTipEn: 'Located just 3 km from Tiruchanoor Padmavathi Temple — easily clubbed together in one trip. Early mornings (7:00–10:00 AM) or evenings during Pradosham offer an intensely serene, unhurried darshan experience.'
+      culturalMeaningTe: 'తిరుపతి పరిసరాల్లో శైవ, శాక్త, భైరవ సంప్రదాయాల మేళవింపుగా విలసిల్లిన ప్రాచీన క్షేత్రం. మహాభారత వీరగాథతో ముడిపడిన ఈ ఆలయం ధైర్యాన్ని, సంరక్షణను అనుగ్రహించే శక్తి పీఠం.',
+      culturalMeaningEn: 'Bridging Mahabharata epic lore with imperial Chola history, this sanctuary represents spiritual courage and divine protection against negative forces and financial distress.',
+      saarthiTipTe: 'తిరుచానూరు పద్మావతి అమ్మవారి ఆలయం నుండి ఆటోలో 5 నిమిషాల్లో చేరుకోవచ్చు. ప్రతి నెలా బహుళ అష్టమి రోజున మరియు ఆదివారాల్లో కాలభైరవునికి రాహుకాల పూజలు విశేష ఫలితాన్నిస్తాయి.',
+      saarthiTipEn: 'Located just 1.5 km (5-minute auto ride) from Tiruchanoor Padmavathi Temple. Monthly Krishna Ashtami and Rahu Kalam timings on Sundays are especially powerful for Kala Bhairava darshan.'
     },
-    timings: '6:00 AM - 12:00 PM, 4:30 PM - 8:00 PM',
-    entryFee: 'Free (Special Abhishekam tickets available at counter)',
-    address: 'Sri Parasareswara Swamy Temple, Yogimallavaram, Near Tiruchanoor Bypass, Tirupati District, Andhra Pradesh 517503',
-    rating: 4.7,
-    reviewCount: 2800,
-    image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1790327596/sri-kamakshyamba-sametha-sri-parashareshwaraswami-temple-tirupati-ho-tirupati-temples-R2nuogw9vB-250_fk1qmc.jpg',
-    coordinates: { lat: 13.6074496, lng: 79.4444212 },
-    shortIntro: 'A 1,000-year-old Chola architectural temple in Yogimallavaram dedicated to Lord Shiva, consecrated by Sage Parasara and sanctified by Arjuna\'s penance.',
-    whyVisit: 'Historic 11th-century Chola Shiva temple where Arjuna was granted the Pasupatastra and Sage Parasara installed the sacred Shiva Lingam.',
+    timings: '6:00 AM - 12:30 PM, 4:30 PM - 8:30 PM (All Days)',
+    entryFee: 'Free General Darshan',
+    address: 'Sri Parasareswara Swamy & Kala Bhairava Temple, Yogimallavaram, Near Tiruchanoor, Tirupati District, Andhra Pradesh 517503',
+    rating: 4.8,
+    reviewCount: 3400,
+    image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1792067673/2-78-500x445_kbojqm.jpg',
+    coordinates: { lat: 13.6067802, lng: 79.4414611 },
+    shortIntro: 'A 1,000-year-old Chola temple in Yogimallavaram near Tiruchanoor dedicated to Lord Shiva and Kala Bhairava, sanctified by Arjuna\'s Pasupatastra penance.',
+    whyVisit: 'Historic 11th-century Chola Shiva-Bhairava temple where Arjuna was granted the Pasupatastra. Renowned for Kala Bhairava Ashtami rituals, Kubera Bhairava, and Chola granite architecture.',
     openingTime: '6:00 AM',
-    closingTime: '8:00 PM',
+    closingTime: '8:30 PM',
     duration: '45 mins to 1 hour',
-    travelByRTC: 'Buses from Tirupati to Tiruchanoor are available every 5-10 mins. Alight at Yogimallavaram arch on Tiruchanoor Highway and walk 10 mins or take auto.',
-    travelByCar: '5.2 km from Tirupati Bus Stand via Padmavathi Puram and Tiruchanoor Bypass. Direct road access with parking near temple.',
-    travelByBike: '12-minute scenic ride from central Tirupati towards Tiruchanoor.',
-    approxRTCFare: '₹15 RTC bus / ₹30 auto',
+    travelByRTC: 'APSRTC buses towards Tiruchanoor run every 5 minutes from Tirupati CBS. Alight at Yogimallavaram arch / Tiruchanoor bypass and walk 10 minutes or take a shared auto.',
+    travelByCar: 'Direct 4.8 km drive from Tirupati central via Padmavathi Puram and Tiruchanoor bypass road. Paved road with parking area outside temple gate.',
+    travelByBike: '10-minute ride from Tirupati city center towards Tiruchanoor.',
+    approxRTCFare: '₹15 bus / ₹30 auto from Tirupati',
     approxCarCost: '₹40 fuel or ₹120 auto/cab',
     approxBikeCost: '₹20 petrol',
-    images: ['https://res.cloudinary.com/kniegqlj/image/upload/v1790327596/sri-kamakshyamba-sametha-sri-parashareshwaraswami-temple-tirupati-ho-tirupati-temples-R2nuogw9vB-250_fk1qmc.jpg'],
-    tags: ['Chola Temple', 'Shiva Temple', 'Arjuna Pasupatastra', 'Yogimallavaram', 'Must Visit', 'Heritage 1008 CE'],
-    bestTime: 'Morning (7:00 AM - 10:00 AM) or evening (5:00 PM - 7:30 PM), especially Mondays and Pradosham',
+    images: [
+      'https://res.cloudinary.com/kniegqlj/image/upload/v1792067673/2-78-500x445_kbojqm.jpg',
+      'https://res.cloudinary.com/kniegqlj/image/upload/v1790327596/sri-kamakshyamba-sametha-sri-parashareshwaraswami-temple-tirupati-ho-tirupati-temples-R2nuogw9vB-250_fk1qmc.jpg'
+    ],
+    tags: ['Kala Bhairava', 'Parasareswara', 'Chola Temple', 'Shiva Temple', 'Yogimallavaram', 'Tiruchanur', 'Ashtami', 'Kubera Bhairava'],
+    bestTime: 'Morning (6:30 AM - 10:00 AM) or evening (5:00 PM - 8:00 PM); monthly Ashtami and Pradosham',
     idealFor: ['Pilgrims', 'Families', 'Senior Citizens', 'Photographers'],
     status: 'Published',
     importanceLevel: 'Iconic',
     visitDifficulty: 'Easy',
     visitType: 'Must Visit',
-    oneReasonToVisit: 'Over 1,000 years of unbroken Chola history, Arjuna\'s Pasupatastra sacred legend, and profound Shaivite tranquility right next to Tiruchanoor.',
+    oneReasonToVisit: '1,000 years of unbroken Chola history, Arjuna\'s Pasupatastra legend, and powerful Kala Bhairava & Kubera Bhairava blessings 5 mins from Tiruchanoor.',
     verification: {
       status: 'Verified',
       tier: 'Gold',
       source: 'Temple Officials',
-      confidenceScore: 0.95,
-      lastUpdated: '2026-09-25'
+      confidenceScore: 0.98,
+      lastUpdated: '2026-10-15'
     },
     recommendationContext: {
       bestTimeOfDay: ['Morning', 'Evening'],
@@ -5091,16 +5181,31 @@ export const PLACES: Place[] = [
       wheelchairAccessible: true,
       recommendationReasons: [
         'Authentic 1,000-year-old stone temple built by Rajaraja Chola I in 1008 CE',
-        'Direct epic connection to Arjuna receiving the Pasupatastra weapon from Shiva',
-        'Consecrated by Sage Parasara, father of Veda Vyasa',
-        'Located only 3 km from Tiruchanoor Padmavathi Ammavari Temple — ideal combination visit'
+        'Direct epic connection to Arjuna receiving the divine Pasupatastra weapon from Shiva',
+        'Famous Kala Bhairava and Kubera Bhairava shrines for obstacle removal and prosperity',
+        'Located only 1.5 km from Tiruchanoor Padmavathi Ammavari Temple — ideal combination visit'
       ]
     },
     searchIntelligence: {
-      aliases: ['Parasareswara Swamy Temple', 'Yogimallavaram Temple', 'Thiru Parasareswaram', 'Parashareshwara Temple', 'Kamakshyamba Temple Yogimallavaram'],
-      tags: ['parasareswara', 'yogimallavaram', 'chola temple', 'shiva temple tiruchanoor', 'arjuna pasupatastra'],
-      intentQueries: ['parasareswara swamy temple timings', 'yogimallavaram shiva temple', 'ancient temples near tiruchanoor', 'chola temples in tirupati'],
-      misspellings: ['parashareswara', 'yogimallavarm', 'parashareswaraswami', 'parasareswar']
+      aliases: [
+        'Yogimallavaram Kala Bhairavar Temple',
+        'Yogimallavaram Kala Bhairava Temple',
+        'Sri Kalabhairava Temple Yogimallavaram',
+        'Parasareswara Swamy Temple',
+        'Sri Parasareswara Swamy Temple',
+        'Thiru Parasareswaram',
+        'Kubera Bhairava Temple Tiruchanur',
+        'Kamakshyamba Temple Yogimallavaram'
+      ],
+      tags: ['kala bhairava', 'parasareswara', 'yogimallavaram', 'chola temple', 'shiva temple tiruchanoor', 'arjuna pasupatastra', 'kubera bhairava'],
+      intentQueries: [
+        'kala bhairava temple yogimallavaram',
+        'yogimallavaram temple timings',
+        'parasareswara swamy temple timings',
+        'ancient temples near tiruchanoor',
+        'ashtami kala bhairava pooja tirupati'
+      ],
+      misspellings: ['kalabhairavar', 'parashareswara', 'yogimallavarm', 'parashareswaraswami', 'parasareswar']
     },
     relationships: {
       nearby: ['tiruchanur'],
@@ -5108,24 +5213,24 @@ export const PLACES: Place[] = [
       sameCategory: ['kapila-theertham']
     },
     spiritualInfo: {
-      god: 'Lord Sri Parasareswara Swamy (Lord Shiva) & Sri Kamakshyamba Devi',
-      knownFor: 'Arjuna Pasupatastra boon site, Parasara Maharishi penance, and 11th-century Chola granite architecture',
-      mantra: 'Om Namah Shivaya | Om Parasareswaraya Namah',
+      god: 'Sri Kala Bhairava & Sri Parasareswara Swamy (Lord Shiva) & Sri Kamakshyamba Devi',
+      knownFor: 'Arjuna Pasupatastra boon site, Kala Bhairava protection, Kubera Bhairava prosperity, and 1008 CE Chola granite inscriptions',
+      mantra: 'Om Hram Hreem Hroum Sah Sri Kala Bhairavaya Namah | Om Namah Shivaya',
       devoteeTips: [
-        'Offer Bilva leaves and milk abhishekam on Mondays or Pradosha days.',
-        'Take a few minutes to read the ancient stone inscriptions carved around the sanctum walls.'
+        'Light a pumpkin deepam or sesame oil lamp for Kala Bhairava on Ashtami or Sunday Rahu Kalam.',
+        'Offer Bilva leaves to Sri Parasareswara Lingam and admire the 11th-century Chola wall inscriptions.'
       ]
     },
     practicalInfo: {
-      dressCode: 'Traditional Hindu temple attire (Dhoti/Kurta or formal pants for men; Saree/Churidar for women)',
-      food: 'Annadanam and prasadam stalls available in nearby Tiruchanoor town',
-      parking: 'Spacious temple premises parking available'
+      dressCode: 'Traditional Hindu temple attire (Dhoti/Kurta or formal wear for men; Saree/Churidar for women)',
+      food: 'Eateries and restaurants available in nearby Tiruchanoor town',
+      parking: 'Spacious vehicle parking space available directly outside temple entrance'
     },
     visitorTips: {
       dressCode: 'Modest and traditional clothing recommended for entering sanctum.',
-      crowdNote: 'Peaceful on regular days; moderate footfall on Maha Shivaratri, Karthika Masam, and Pradosham.',
-      photoRule: 'Photography allowed in outer mandapam and temple corridors; prohibited inside the sanctum sanctorum.',
-      entryRule: 'Free entry. Open to all devotees.'
+      crowdNote: 'Peaceful on weekdays; moderate rush on Kala Bhairava Ashtami, Maha Shivaratri, and Pradosham.',
+      photoRule: 'Photography permitted in outer mandapam and courtyard; prohibited inside inner sanctum.',
+      entryRule: 'Free entry for all devotees.'
     },
     facilities: {
       parking: 'Dedicated parking space available in front of temple',
@@ -5133,8 +5238,8 @@ export const PLACES: Place[] = [
       drinkingWater: 'Clean drinking water available',
       wheelchair: 'Ground floor sanctum with flat stone courtyard'
     },
-    travelEstimates: { 'tiruchanur': '6 mins drive', 'renigunta-junction': '15 mins drive' },
-    mapUrl: 'https://www.google.com/maps/place/Sri+Kamakshyamba+Sametha+Sri+Parashareshwaraswami+Temple/@13.6074496,79.4444212,17z',
+    travelEstimates: { 'tiruchanur': '5 mins drive', 'renigunta-junction': '15 mins drive', 'tirupati': '10 mins drive' },
+    mapUrl: 'https://www.google.com/maps/place/Sri+Kalabhairava+Temple/@13.6067802,79.4414611,17z/data=!3m1!4b1!4m6!3m5!1s0x3a4d4b8e0ffd7a5d:0xa5c3d1ac207b6287!8m2!3d13.6067802!4d79.4414611!16s%2Fg%2F11gb40gvln',
     relatedPlaces: ['tiruchanur', 'kapila-theertham', 'srikalahasti']
   }
 ];

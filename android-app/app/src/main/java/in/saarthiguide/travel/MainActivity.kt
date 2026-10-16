@@ -126,10 +126,33 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun createNotificationChannel() {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            try {
+                val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as? android.app.NotificationManager
+                if (notificationManager != null) {
+                    val channel = android.app.NotificationChannel(
+                        "saarthi_live_alerts",
+                        "Tirumala Live Alerts",
+                        android.app.NotificationManager.IMPORTANCE_HIGH
+                    ).apply {
+                        description = "Urgent crowd, temple timing, and travel updates"
+                        enableVibration(true)
+                        enableLights(true)
+                        lockscreenVisibility = android.app.Notification.VISIBILITY_PUBLIC
+                        setShowBadge(true)
+                    }
+                    notificationManager.createNotificationChannel(channel)
+                }
+            } catch (_: Exception) {}
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        createNotificationChannel()
         checkNotificationPermission()
         fetchAndRegisterFcmToken()
 

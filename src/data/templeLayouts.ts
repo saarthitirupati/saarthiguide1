@@ -6563,13 +6563,13 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
   'historical-govindaraja-idol': {
     placeId: 'historical-govindaraja-idol',
     titleEn: 'Historical Govindaraja Swamy Idol (Manchinellagunta) Precinct Map',
-    titleTe: 'historical-govindaraja-idol ప్రాంగణ మ్యాప్',
+    titleTe: 'శ్రీ చారిత్రక గోవిందరాజ స్వామి విగ్రహం (మంచినీళ్లగుంట) ప్రాంగణ మ్యాప్',
     layoutType: 'city-shrine',
     centerCoordinates: { lat: 13.6330302, lng: 79.4112725 },
     defaultZoom: 18,
     compassBearingDeg: 0,
     sanctumNameEn: 'Historical Govindaraja Swamy Idol (Manchinellagunta) Sanctum & Main Area',
-    sanctumNameTe: 'historical-govindaraja-idol ప్రధాన స్థలం',
+    sanctumNameTe: 'శ్రీ చారిత్రక గోవిందరాజ స్వామి మూలవిగ్రహం & సన్నిధి',
     routePath: [[430, 275], [130, 250], [270, 260], [270, 130], [390, 150], [380, 210]],
     pins: [
       {
@@ -6611,7 +6611,7 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
       {
         id: 'sanctum',
         nameEn: 'Historical Govindaraja Swamy Idol (Manchinellagunta) Sanctum / Main Point',
-        nameTe: 'historical-govindaraja-idol ప్రధాన స్థలం',
+        nameTe: 'శ్రీ చారిత్రక గోవిందరాజ స్వామి మూలవిగ్రహం',
         category: 'sanctum',
         lat: 13.633030,
         lng: 79.411272,

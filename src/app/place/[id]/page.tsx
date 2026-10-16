@@ -15,7 +15,7 @@ import { PLACES, Place, getPlaceGuideData } from '@/data/places';
 import { PlaceSignificance, TraditionType } from '@/types/place';
 import { useTrip } from '@/components/TripContext';
 import { useRealtimePlaces } from '@/lib/useRealtimePlaces';
-import { calculateDrivingDistance, isCoordinateOnTirumalaHill, isWithinTirupatiRegion, TIRUPATI_CENTER, formatTravelTime, estimateDriveDuration, formatDistance, getISTDate } from '@/utils/location';
+import { calculateDrivingDistance, isCoordinateOnTirumalaHill, isWithinTirupatiRegion, TIRUPATI_CENTER, formatTravelTime, estimateDriveDuration, formatDistance, getISTDate, getPlaceName } from '@/utils/location';
 import { findNearestPlaceCandidates } from '@/lib/location';
 import { useLanguage } from '@/lib/useLanguage';
 import { getFestivalCrowdIntelligence } from '@/utils/festivalCrowd';
@@ -240,9 +240,16 @@ export default function PlaceDetails() {
   // Determine current open status based on Tirupati local time (IST, UTC+5:30)
   const istDate = getISTDate();
   const currentHour = istDate.getHours() + istDate.getMinutes() / 60;
-  const isOpenNow = (place.openFrom !== undefined && place.openTo !== undefined)
+  const currentDayIndex = istDate.getDay();
+  const DAY_NAMES = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  const currentDayName = DAY_NAMES[currentDayIndex];
+  const isDayOpen = place.openDays && place.openDays.length > 0
+    ? place.openDays.includes(currentDayName)
+    : (place.timings && place.timings.toLowerCase().includes('saturdays only') ? currentDayIndex === 6 : true);
+
+  const isOpenNow = isDayOpen && (place.openFrom !== undefined && place.openTo !== undefined)
     ? currentHour >= place.openFrom && currentHour < place.openTo
-    : true;
+    : (isDayOpen && place.openFrom === undefined);
 
   // Format timings string safely
   const defaultTimingsFallback = `${place.openFrom || 6}:00 AM – ${place.openTo ? (place.openTo > 12 ? `${place.openTo - 12}:00 PM` : `${place.openTo}:00 AM`) : '9:00 PM'}`;
@@ -1635,7 +1642,7 @@ export default function PlaceDetails() {
             wordBreak: 'break-word',
             maxWidth: '100%'
           }}>
-            {place.name}
+            {getPlaceName(place, lang)}
           </h1>
           <div style={{
             display: 'flex',

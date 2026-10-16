@@ -1390,6 +1390,70 @@
     ]
   },
   {
+    "id": "ardhagiri-anjaneya",
+    "name": "Ardhagiri Sri Veeranjaneya Swamy Temple",
+    "category": "Day Trip",
+    "placeType": "spiritual",
+    "location": "Aragonda, Chittoor",
+    "distanceKms": 75,
+    "durationMins": 90,
+    "budgetLevel": "budget",
+    "entryFeeNum": 0,
+    "interests": [
+      "spiritual",
+      "nature",
+      "mythology"
+    ],
+    "openFrom": 5,
+    "openTo": 21,
+    "isMustVisit": true,
+    "description": "Ancient hill temple dedicated to Lord Veera Anjaneya Swamy in Aragonda. Famous for the sacred Sanjeevani Pushkarini whose medicinal waters never dry up and are believed to cure ailments.",
+    "shortIntro": "Ardhagiri Sri Veeranjaneya Swamy Temple at Aragonda is a renowned hill shrine situated on a fallen piece of the divine Sanjeevani mountain (Dronagiri) brought by Lord Hanuman in the Ramayana.",
+    "whyVisit": "Renowned for its unique Treta Yuga mythology and the sacred Sanjeevani Pushkarini—a natural spring water pond atop the hill that never dries up even in peak summer and contains medicinal mineral properties.",
+    "history": "According to the Ramayana, during the epic war in Lanka, Lakshmana fell unconscious due to Indrajit's weapon. Lord Hanuman flew to the Himalayas to fetch the Sanjeevani herb from the Dronagiri mountain. Unable to identify the herb, Hanuman carried the entire mountain. En route, a portion of the mountain (Ardha Giri = half hill) broke off and fell at this spot in Aragonda. Lord Hanuman manifested here facing north as Veera Anjaneya Swamy. Millions of devotees visit during Pournami (Full Moon) to take a holy dip and collect the healing Sanjeevani water.",
+    "timings": "5:30 AM - 9:00 PM (All days open)",
+    "entryFee": "Free General Darshan",
+    "address": "Ardhagiri Temple Road, Aragonda, Thavanampalle Mandal, Chittoor District, Andhra Pradesh 517129",
+    "rating": 4.8,
+    "reviewCount": 9400,
+    "image": "https://res.cloudinary.com/kniegqlj/image/upload/v1792061507/temple_38jQnYRH_202601081752470_vv6pfc.webp",
+    "coordinates": {
+      "lat": 13.2946024,
+      "lng": 78.9512445
+    },
+    "tags": [
+      "Hanuman",
+      "Sanjeevani",
+      "Holy Water",
+      "Ardhagiri",
+      "Aragonda",
+      "Miracle Pond",
+      "Pournami"
+    ],
+    "bestTime": "Early morning (6:00 AM - 10:00 AM) or Pournami (Full Moon day) for Giripradakshina and holy water",
+    "practicalInfo": {
+      "dressCode": "Traditional wear recommended (Dhoti/Kurta for men, Saree/Chudidar for women)",
+      "food": "Free Annadanam available in afternoon; local vegetarian stalls and refreshments at hill base",
+      "parking": "Ample vehicle parking available at hill base and mid-way"
+    },
+    "travelEstimates": {
+      "tirupati": "100 mins",
+      "chittoor": "25 mins",
+      "kanipakam": "20 mins"
+    },
+    "relatedPlaces": [
+      "kanipakam",
+      "chandragiri-fort",
+      "boyakonda-gangamma"
+    ],
+    "travelByRTC": "Direct APSRTC buses connect Chittoor Bus Stand to Aragonda (19 km) every 30 minutes. From Tirupati Central Bus Station, board any bus towards Chittoor/Kanipakam, then take a connecting bus or auto to Aragonda.",
+    "travelByCar": "Drive 75 km from Tirupati via Chandragiri and Kanipakam (NH69 / NH716), then take Kanipakam-Aragonda Road directly to the temple base. The entire route is well-paved highway with clear signboards.",
+    "travelByBike": "A scenic 75 km highway and countryside ride via Chandragiri and Kanipakam with picturesque views of the Aragonda hills.",
+    "approxRTCFare": "₹75 - ₹95 per person from Tirupati via Chittoor",
+    "approxCarCost": "₹800 - ₹1,000 for fuel (or ₹2,200 for local cab package)",
+    "approxBikeCost": "₹350 for petrol"
+  },
+  {
     "id": "silparamam-tirupati",
     "name": "Silparamam (Arts & Crafts)",
     "category": "Parks & Leisure",
@@ -3374,5 +3438,167 @@
     "bestTime": "Morning",
     "practicalInfo": { "dressCode": "Modest attire", "food": "Sattvic Jain food at ashram", "parking": "Ample" },
     "travelEstimates": { "tirupati": "15 mins" }
+  },
+  {
+    "id": "parasareswara-swamy-temple",
+    "name": "Sri Parasareswara Swamy & Kala Bhairava Temple (Yogimallavaram)",
+    "category": "Temples",
+    "placeType": "spiritual",
+    "location": "Yogimallavaram, Near Tiruchanoor",
+    "distanceKms": 4.8,
+    "durationMins": 60,
+    "budgetLevel": "budget",
+    "entryFeeNum": 0,
+    "interests": [
+      "spiritual",
+      "history",
+      "heritage",
+      "architecture"
+    ],
+    "openFrom": 6,
+    "openTo": 20,
+    "isMustVisit": true,
+    "description": "A 1,000-year-old ancient Chola temple in Yogimallavaram near Tiruchanoor, dedicated to Sri Parasareswara Swamy (Lord Shiva) and Sri Kala Bhairava. Built by Chola Emperor Rajaraja Chola I in 1008 CE on the banks of the Swarnamukhi River, it commemorates Arjuna's penance for the divine Pasupatastra, Sage Parasara's worship, and houses powerful guardian sub-shrines for Kubera Bhairava, Mrityunjaya Swamy, and Aishwarya Saneeswarar.",
+    "shortIntro": "A 1,000-year-old Chola temple in Yogimallavaram near Tiruchanoor dedicated to Lord Shiva and Kala Bhairava, sanctified by Arjuna's Pasupatastra penance.",
+    "whyVisit": "Historic 11th-century Chola Shiva-Bhairava temple where Arjuna was granted the Pasupatastra. Renowned for Kala Bhairava Ashtami rituals, Kubera Bhairava, and Chola granite architecture.",
+    "history": "Built by Rajaraja Chola I in 1008 CE and celebrated across 11 ancient stone inscriptions dating from the 11th to 13th centuries. According to Sthala Purana, during the Mahabharata, Arjuna came here as a Yogi to perform severe penance for Shiva's supreme weapon, the Pasupatastra. Lord Shiva tested his valor in the guise of a hunter (Mallu). Both shot a wild demon-boar and fought fiercely. When Arjuna surrendered by offering wild flowers, the garland appeared on the Shiva Lingam. Pleased, Shiva and Parvati granted him the Pasupatastra, naming the site Yogimallavaram (\"Yogi\" = Arjuna, \"Mallu\" = Hunter Shiva). Later, Sage Parasara consecrated the Shiva Lingam. Over time, Sri Kala Bhairava became deeply revered here as the supreme guardian deity.",
+    "timings": "6:00 AM - 12:30 PM, 4:30 PM - 8:30 PM (All Days)",
+    "entryFee": "Free General Darshan",
+    "address": "Sri Parasareswara Swamy & Kala Bhairava Temple, Yogimallavaram, Near Tiruchanoor, Tirupati District, Andhra Pradesh 517503",
+    "rating": 4.8,
+    "reviewCount": 3400,
+    "image": "https://res.cloudinary.com/kniegqlj/image/upload/v1792067673/2-78-500x445_kbojqm.jpg",
+    "images": [
+      "https://res.cloudinary.com/kniegqlj/image/upload/v1792067673/2-78-500x445_kbojqm.jpg",
+      "https://res.cloudinary.com/kniegqlj/image/upload/v1790327596/sri-kamakshyamba-sametha-sri-parashareshwaraswami-temple-tirupati-ho-tirupati-temples-R2nuogw9vB-250_fk1qmc.jpg"
+    ],
+    "coordinates": {
+      "lat": 13.6067802,
+      "lng": 79.4414611
+    },
+    "tags": [
+      "Kala Bhairava",
+      "Parasareswara",
+      "Chola Temple",
+      "Shiva Temple",
+      "Yogimallavaram",
+      "Tiruchanur",
+      "Ashtami",
+      "Kubera Bhairava"
+    ],
+    "bestTime": "Morning (6:30 AM - 10:00 AM) or evening (5:00 PM - 8:00 PM); monthly Ashtami and Pradosham",
+    "practicalInfo": {
+      "dressCode": "Traditional Hindu temple attire",
+      "food": "Eateries in nearby Tiruchanoor town",
+      "parking": "Parking space outside temple entrance"
+    },
+    "travelEstimates": {
+      "tiruchanur": "5 mins",
+      "tirupati": "10 mins"
+    },
+    "relatedPlaces": [
+      "tiruchanur",
+      "kapila-theertham",
+      "srikalahasti"
+    ],
+    "travelByRTC": "APSRTC buses towards Tiruchanoor run every 5 minutes from Tirupati CBS. Alight at Yogimallavaram arch and walk 10 minutes or take a shared auto.",
+    "travelByCar": "Direct 4.8 km drive from Tirupati central via Padmavathi Puram and Tiruchanoor bypass road. Paved road with parking area outside temple gate.",
+    "travelByBike": "10-minute ride from Tirupati city center towards Tiruchanoor.",
+    "approxRTCFare": "₹15 bus / ₹30 auto from Tirupati",
+    "approxCarCost": "₹40 fuel or ₹120 auto/cab",
+    "approxBikeCost": "₹20 petrol"
+  },
+  {
+    "id": "historical-govindaraja-idol",
+    "name": "Historical Govindaraja Swamy Idol (Manchinellagunta)",
+    "nameTe": "చారిత్రక గోవిందరాజ స్వామి విగ్రహం (మంచినీళ్లగుంట)",
+    "category": "Historical",
+    "placeType": "spiritual",
+    "location": "Manchinellagunta, Tirupati",
+    "distanceKms": 1.2,
+    "durationMins": 30,
+    "budgetLevel": "budget",
+    "entryFeeNum": 0,
+    "interests": [
+      "spiritual",
+      "history",
+      "architecture",
+      "ramanujacharya"
+    ],
+    "openFrom": 6,
+    "openTo": 19,
+    "openDays": [
+      "Saturday"
+    ],
+    "isMustVisit": false,
+    "description": "The monumental 1,000-year-old original stone idol of Lord Govindaraja Swamy resting near Narasimha Theertham at Manchinellagunta in Tirupati. Rescued from the sea during the 12th century Chola persecution in Chidambaram, it was brought safely to Tirupati by Vaishnavite devotees under Saint Ramanujacharya.",
+    "descriptionTe": "తిరుపతిలోని మంచినీళ్లగుంట నరసింహ తీర్థం వద్ద కొలువై ఉన్న 1000 ఏళ్ల పురాతన శ్రీ గోవిందరాజ స్వామి వారి అసలు శిలా విగ్రహం. 12వ శతాబ్దంలో చిదంబరంలో చోళుల కాలంలో సముద్రంలో వేయబడిన ఈ పవిత్ర విగ్రహాన్ని భక్తులు వెలికితీసి, శ్రీ రామానుజాచార్యుల మార్గదర్శకత్వంలో భద్రంగా తిరుపతికి తీసుకువచ్చారు.",
+    "shortIntro": "The revered 1,000-year-old original reclining granite idol of Lord Govindaraja Swamy rescued from Chidambaram by Saint Ramanuja, preserved at Manchinellagunta.",
+    "history": "Originally worshipped in the ancient Govindaraja shrine at Chidambaram (Tamil Nadu), the idol was cast into the sea during the 12th century by a Chola king hostile to Vaishnavism. Devotees recovered the sacred idol and brought it to Tirupati under the guidance of Sri Ramanujacharya. Because the rescued icon suffered minor transit damage—and Agamic scriptures restrict daily worship of a damaged primary icon—Sri Ramanujacharya consecrated a new sudda (lime-mortar) idol inside the main Sri Govindaraja Swamy Temple in 1130 CE, while this historic original granite idol was respectfully enshrined at Manchinellagunta.",
+    "historyTe": "తమిళనాడులోని చిదంబరం గోవిందరాజ ఆలయంలో పూజలందుకున్న ఈ చారిత్రక విగ్రహం 12వ శతాబ్దంలో శైవ చోళ రాజుల కాలంలో సముద్రంలో పడవేయబడింది. భక్తులు స్వామివారి విగ్రహాన్ని రక్షించి శ్రీ రామానుజాచార్యుల ఆధ్వర్యంలో తిరుపతికి చేర్చారు. తరలింపులో విగ్రహానికి స్వల్ప నష్టం వాటిల్లినందున, ఆగమ శాస్త్రాల ప్రకారం నిత్య పూజలకు కొత్త సుద్ద (సున్నం-ఇటుక) విగ్రహాన్ని క్రీ.శ. 1130లో ప్రస్తుత శ్రీ గోవిందరాజ స్వామి ఆలయంలో ప్రతిష్ఠించారు. మూల చారిత్రక శిలా విగ్రహాన్ని మంచినీళ్లగుంట వద్ద పవిత్రంగా ఉంచి శనివారాల్లో మాత్రమే భక్తుల దర్శనానికి అనుమతిస్తున్నారు.",
+    "whyVisit": "Witness a profound thousand-year-old piece of living Vaishnavite history. The monumental idol depicts Lord Vishnu in Yoga Nidra reclining on the divine serpent Adisesha with Sridevi and Bhudevi.",
+    "timings": "Saturdays Only: 6:00 AM - 7:00 PM",
+    "entryFee": "Free Entry",
+    "address": "Govindaraja Swamy Statue, Narasimha Theertham Road, Manchinellagunta, Tirupati, Andhra Pradesh 517501",
+    "rating": 4.8,
+    "reviewCount": 1450,
+    "image": "https://res.cloudinary.com/kniegqlj/image/upload/v1787057778/481996827_656641993547622_2922518879072320805_n.jpg_xtzexs.jpg",
+    "images": [
+      "https://res.cloudinary.com/kniegqlj/image/upload/v1787057778/481996827_656641993547622_2922518879072320805_n.jpg_xtzexs.jpg"
+    ],
+    "coordinates": {
+      "lat": 13.6330302,
+      "lng": 79.4112725
+    },
+    "openingTime": "6:00 AM (Saturdays)",
+    "closingTime": "7:00 PM (Saturdays)",
+    "duration": "20 to 30 mins",
+    "travelByRTC": "Within walking distance (1 km) or a 5-min auto ride from Tirupati Railway Station / Govindaraja Swamy main temple.",
+    "travelByCar": "5 minutes drive from central Tirupati near Narasimha Theertham.",
+    "travelByBike": "3-5 minutes ride from Tirupati railway station.",
+    "approxRTCFare": "₹10-₹20 local auto / walking",
+    "approxCarCost": "₹30-₹50 auto fare",
+    "approxBikeCost": "₹15 petrol estimate",
+    "visitorTips": {
+      "dressCode": "Decent modest / traditional wear.",
+      "crowdNote": "Open ONLY on Saturdays. Plan your visit accordingly as access is closed on other weekdays.",
+      "footwearRule": "Remove footwear near the idol enclosure.",
+      "photoRule": "Photography permitted in respectful manner.",
+      "entryRule": "Free public access on Saturdays."
+    },
+    "tags": [
+      "Historic Idol",
+      "Ramanuja",
+      "Chidambaram",
+      "Manchinellagunta",
+      "Yoga Nidra",
+      "Hidden Gem",
+      "Adisesha",
+      "Saturday Only"
+    ],
+    "bestTime": "Saturdays Only (Morning 6:00 AM - 10:00 AM or Evening sunset hours)",
+    "practicalInfo": {
+      "dressCode": "Modest",
+      "food": "Town restaurants nearby",
+      "parking": "Street parking available"
+    },
+    "spiritualInfo": {
+      "god": "Lord Govindaraja Swamy (Reclining Vishnu / Yoga Nidra)",
+      "knownFor": "1000-Year Historic Chidambaram Idol, Ramanujacharya Rescue Legend",
+      "mantra": "Om Namo Narayanaya",
+      "devoteeTips": [
+        "Combine with a visit to the main Sri Govindaraja Swamy Temple in town"
+      ]
+    },
+    "travelEstimates": {
+      "govindaraja": "5 mins",
+      "tirupati": "3 mins",
+      "kapila-theertham": "8 mins"
+    },
+    "relatedPlaces": [
+      "govindaraja",
+      "tataiahgunta-gangamma",
+      "kapila-theertham"
+    ]
   }
 ]

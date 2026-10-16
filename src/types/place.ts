@@ -148,6 +148,7 @@ export interface Place {
   history: string;
   historyTe?: string;
   timings: string;
+  openDays?: string[];
   entryFee: string;
   address: string;
   rating: number;

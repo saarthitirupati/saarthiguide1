@@ -36,73 +36,59 @@ interface PushPayload {
  * Send a push notification to all subscribed users (Web Push + Native Android FCM).
  * Silently removes expired/invalid subscriptions.
  */
+/**
+ * Helper to process promises in batches to prevent hitting Cloudflare / network subrequest concurrency limits
+ */
+async function processInBatches<T>(items: T[], batchSize: number, handler: (item: T) => Promise<any>): Promise<void> {
+  for (let i = 0; i < items.length; i += batchSize) {
+    const batch = items.slice(i, i + batchSize);
+    await Promise.allSettled(batch.map(handler));
+  }
+}
+
+/**
+ * Send a push notification to all subscribed users (Web Push + Native Android FCM).
+ * Silently removes expired/invalid subscriptions and stays within Cloudflare subrequest limits.
+ */
 export async function pushNotifyAll(payload: PushPayload) {
-  // 1. Web Push Dispatch
+  // 1. Web Push Dispatch (only for browser push subscriptions)
   if (ensureVapid()) {
     try {
       const { data: subs, error } = await supabase
         .from('push_subscriptions')
         .select('id, endpoint, keys_p256dh, keys_auth');
 
-      if (!error && subs?.length) {
+      // Only dispatch standard browser push subscriptions here (FCM is handled separately)
+      const webSubs = (subs || []).filter(
+        (s) => s.endpoint && !s.endpoint.startsWith('https://fcm.googleapis.com/fcm/native/')
+      );
+
+      if (!error && webSubs.length > 0) {
         const body = JSON.stringify(payload);
         const gone: number[] = [];
 
-        await Promise.allSettled(
-          subs.map(async (sub) => {
-            // Handle Native Android FCM endpoints stored in push_subscriptions
-            if (sub.endpoint.startsWith('https://fcm.googleapis.com/fcm/native/')) {
-              const fcmToken = sub.endpoint.replace('https://fcm.googleapis.com/fcm/native/', '');
-              if (fcmToken && fcmToken.length > 20) {
-                const deepLink = payload.url
-                  ? (payload.url.startsWith('http') ? payload.url : `https://www.saarthiguide.in${payload.url}`)
-                  : 'https://www.saarthiguide.in';
-                const fcmRes = await sendFCMNotification({
-                  token: fcmToken,
-                  title: payload.title,
-                  body: payload.body,
-                  deepLink,
-                  data: {
-                    tag: payload.tag || 'saarthi-alert',
-                    url: deepLink,
-                  },
-                });
-                if (
-                  !fcmRes.success &&
-                  fcmRes.error &&
-                  (fcmRes.error.includes('registration-token-not-registered') ||
-                    fcmRes.error.includes('UNREGISTERED') ||
-                    fcmRes.error.includes('404'))
-                ) {
-                  gone.push(sub.id);
-                }
-              }
-              return;
-            }
-
-            // Standard Web Push dispatch
-            try {
-              await webpush.sendNotification(
-                {
-                  endpoint: sub.endpoint,
-                  keys: { p256dh: sub.keys_p256dh, auth: sub.keys_auth },
+        await processInBatches(webSubs, 15, async (sub) => {
+          try {
+            await webpush.sendNotification(
+              {
+                endpoint: sub.endpoint,
+                keys: { p256dh: sub.keys_p256dh, auth: sub.keys_auth },
+              },
+              body,
+              {
+                TTL: 86400,
+                headers: {
+                  Urgency: 'high',
+                  Topic: payload.tag || 'saarthi-alert',
                 },
-                body,
-                {
-                  TTL: 86400,
-                  headers: {
-                    Urgency: 'high',
-                    Topic: payload.tag || 'saarthi-alert',
-                  },
-                }
-              );
-            } catch (err: any) {
-              if (err.statusCode === 404 || err.statusCode === 410 || err.statusCode === 403) {
-                gone.push(sub.id);
               }
+            );
+          } catch (err: any) {
+            if (err.statusCode === 404 || err.statusCode === 410 || err.statusCode === 403) {
+              gone.push(sub.id);
             }
-          })
-        );
+          }
+        });
 
         if (gone.length) {
           await supabase.from('push_subscriptions').delete().in('id', gone);
@@ -113,7 +99,7 @@ export async function pushNotifyAll(payload: PushPayload) {
     }
   }
 
-  // 2. Native Android FCM Push Dispatch
+  // 2. Native Android FCM Push Dispatch (dedicated handler for real devices)
   try {
     const { data: devices, error: devErr } = await supabase
       .from('user_devices')
@@ -121,42 +107,54 @@ export async function pushNotifyAll(payload: PushPayload) {
       .eq('is_active', true)
       .not('fcm_token', 'is', null);
 
-    const validDevices = (devices || []).filter(d => d.fcm_token && d.fcm_token.trim().length > 20);
-    if (!devErr && validDevices.length) {
-      console.log(`[PushNotifyAll] Dispatching FCM push to ${validDevices.length} active Android devices for "${payload.title}"`);
+    const validDevices = (devices || []).filter((d) => d.fcm_token && d.fcm_token.trim().length > 20);
+
+    // Deduplicate by token to avoid double notifications to multi-account or re-registered devices
+    const uniqueDeviceMap = new Map<string, string>();
+    for (const d of validDevices) {
+      if (d.fcm_token) uniqueDeviceMap.set(d.fcm_token.trim(), d.device_id);
+    }
+
+    if (!devErr && uniqueDeviceMap.size > 0) {
+      console.log(`[PushNotifyAll] Dispatching FCM push to ${uniqueDeviceMap.size} active Android devices for "${payload.title}"`);
       const deadDevices: string[] = [];
+      const deadTokens: string[] = [];
       const deepLink = payload.url
         ? (payload.url.startsWith('http') ? payload.url : `https://www.saarthiguide.in${payload.url}`)
         : 'https://www.saarthiguide.in';
 
-      await Promise.allSettled(
-        validDevices.map(async (dev) => {
-          if (!dev.fcm_token) return;
-          const res = await sendFCMNotification({
-            token: dev.fcm_token,
-            title: payload.title,
-            body: payload.body,
-            deepLink,
-            data: {
-              tag: payload.tag || 'saarthi-alert',
-              url: deepLink,
-            },
-          });
+      const entries = Array.from(uniqueDeviceMap.entries()); // [token, deviceId]
 
-          if (
-            !res.success &&
-            res.error &&
-            (res.error.includes('registration-token-not-registered') ||
-              res.error.includes('UNREGISTERED') ||
-              res.error.includes('404'))
-          ) {
-            deadDevices.push(dev.device_id);
-          }
-        })
-      );
+      // Dispatch in batches of 15 to stay safely under Cloudflare subrequest limits
+      await processInBatches(entries, 15, async ([token, deviceId]) => {
+        const res = await sendFCMNotification({
+          token,
+          title: payload.title,
+          body: payload.body,
+          deepLink,
+          data: {
+            tag: payload.tag || 'saarthi-alert',
+            url: deepLink,
+          },
+        });
+
+        if (
+          !res.success &&
+          res.error &&
+          (res.error.includes('registration-token-not-registered') ||
+            res.error.includes('UNREGISTERED') ||
+            res.error.includes('404'))
+        ) {
+          deadDevices.push(deviceId);
+          deadTokens.push(`https://fcm.googleapis.com/fcm/native/${token}`);
+        }
+      });
 
       if (deadDevices.length) {
         await supabase.from('user_devices').update({ is_active: false }).in('device_id', deadDevices);
+      }
+      if (deadTokens.length) {
+        await supabase.from('push_subscriptions').delete().in('endpoint', deadTokens);
       }
     } else {
       console.log('[PushNotifyAll] No active Android FCM devices currently registered');
