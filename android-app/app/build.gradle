@@ -11,8 +11,8 @@ android {
         applicationId 'in.saarthiguide.travel'
         minSdk 24
         targetSdk 34
-        versionCode 110
-        versionName '1.1.6'
+        versionCode 111
+        versionName '1.1.7'
 
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
