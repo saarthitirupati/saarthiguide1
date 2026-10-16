@@ -313,7 +313,7 @@ export default function OnboardingPresentation() {
                           }}
                         />
                         <p style={{ fontSize: '9px', color: '#6B7280', marginTop: '6px', textAlign: 'center' }}>
-                          e.g. Raghav, Sreeja, Mahesh
+                          e.g. Sekhar, Usha, Saarthi
                         </p>
                       </div>
 
