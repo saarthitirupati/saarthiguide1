@@ -10,7 +10,7 @@ android {
     defaultConfig {
         applicationId 'in.saarthiguide.travel'
         minSdk 24
-        targetSdk 36
+        targetSdk 34
         versionCode 110
         versionName '1.1.6'
 

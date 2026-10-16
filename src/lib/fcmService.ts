@@ -17,17 +17,10 @@ function base64UrlEncode(data: string | Buffer): string {
     .replace(/\//g, '_');
 }
 
-let cachedAccessToken: { token: string; expiresAt: number } | null = null;
-
 /**
- * Generates Google OAuth2 Access Token from Service Account JSON using native Node.js crypto.
- * Caches the token in-memory for 50 minutes to prevent hitting Google/Cloudflare rate limits.
+ * Generates Google OAuth2 Access Token from Service Account JSON using native Node.js crypto
  */
 async function getFCMAccessToken(serviceAccount: any): Promise<string | null> {
-  if (cachedAccessToken && Date.now() < cachedAccessToken.expiresAt) {
-    return cachedAccessToken.token;
-  }
-
   try {
     const now = Math.floor(Date.now() / 1000);
     const header = { alg: 'RS256', typ: 'JWT' };
@@ -43,10 +36,9 @@ async function getFCMAccessToken(serviceAccount: any): Promise<string | null> {
     const encodedClaimSet = base64UrlEncode(JSON.stringify(claimSet));
     const signatureInput = `${encodedHeader}.${encodedClaimSet}`;
 
-    const privateKey = (serviceAccount.private_key || '').replace(/\\n/g, '\n');
     const signer = crypto.createSign('RSA-SHA256');
     signer.update(signatureInput);
-    const signature = base64UrlEncode(signer.sign(privateKey));
+    const signature = base64UrlEncode(signer.sign(serviceAccount.private_key));
 
     const jwt = `${signatureInput}.${signature}`;
 
@@ -59,17 +51,8 @@ async function getFCMAccessToken(serviceAccount: any): Promise<string | null> {
       }),
     });
 
-    const data: any = await res.json();
-    if (data && data.access_token) {
-      cachedAccessToken = {
-        token: data.access_token,
-        expiresAt: Date.now() + 50 * 60 * 1000, // Cache for 50 mins (token is valid for 60)
-      };
-      return data.access_token;
-    }
-
-    console.warn('[FCM] OAuth response did not contain access_token:', data);
-    return null;
+    const data = await res.json();
+    return data.access_token || null;
   } catch (err) {
     console.error('[FCM] Error generating access token:', err);
     return null;
@@ -114,15 +97,10 @@ export async function sendFCMNotification(
         ...(payload.data || {}),
       },
       android: {
-        priority: 'HIGH',
+        priority: 'high',
         notification: {
           channel_id: 'saarthi_live_alerts',
           sound: 'default',
-          default_sound: true,
-          default_vibrate_timings: true,
-          visibility: 'PUBLIC',
-          notification_priority: 'PRIORITY_MAX',
-          icon: 'ic_maskable',
         },
       },
     },
