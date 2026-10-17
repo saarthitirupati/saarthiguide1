@@ -291,9 +291,10 @@ export function VaikuntaEkadasiBanner() {
     };
 
     calculateTime();
+    if (!modalOpen) return;
     const interval = setInterval(calculateTime, 1000);
     return () => clearInterval(interval);
-  }, []);
+  }, [modalOpen]);
 
   // Handle Android hardware back & popstate so WebView / PWA does not close
   useEffect(() => {
