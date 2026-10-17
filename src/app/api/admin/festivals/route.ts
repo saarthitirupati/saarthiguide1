@@ -108,6 +108,7 @@ export async function POST(req: Request) {
       body: doc.description || `Upcoming festival at Tirumala — ${doc.date}`,
       url: '/festivals',
       tag: 'festival-new',
+      category: 'High Priority'
     }).catch(() => {});
 
     return NextResponse.json({ festival: data[0] }, { status: 201 });

@@ -42,7 +42,8 @@ export async function pushNotifyAll(payload: PushPayload) {
     try {
       const { data: subs, error } = await supabase
         .from('push_subscriptions')
-        .select('id, endpoint, keys_p256dh, keys_auth');
+        .select('id, endpoint, keys_p256dh, keys_auth')
+        .limit(10000);
 
       if (!error && subs?.length) {
         const body = JSON.stringify(payload);
@@ -118,7 +119,8 @@ export async function pushNotifyAll(payload: PushPayload) {
       .from('user_devices')
       .select('device_id, fcm_token')
       .eq('is_active', true)
-      .not('fcm_token', 'is', null);
+      .not('fcm_token', 'is', null)
+      .limit(10000);
 
     const validDevices = (devices || []).filter(d => d.fcm_token && d.fcm_token.trim().length > 20);
     if (!devErr && validDevices.length) {
@@ -209,6 +211,15 @@ export async function notifySsdUpdates(
         body: (updated.ssdNotice || '').trim() || `Today's offline SSD token quota is complete. Next issuance: ${updated.ssdNextTokenTime || 'tomorrow morning'}.`,
         url: '/darshan/ssd-token',
         tag: 'ssd-status',
+        category: 'High Priority'
+      }).catch(() => {});
+    } else if (updated.ssdTokenStatus === 'suspended') {
+      pushNotifyAll({
+        title: 'SSD Tokens Suspended (Brahmotsavam)',
+        body: (updated.ssdNotice || '').trim() || 'SSD tokens are temporarily suspended. Direct walk-in Sarva Darshan open at Vaikuntam complexes.',
+        url: '/darshan/ssd-token',
+        tag: 'ssd-status',
+        category: 'High Priority'
       }).catch(() => {});
     }
   }

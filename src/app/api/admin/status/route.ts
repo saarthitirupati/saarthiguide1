@@ -40,6 +40,34 @@ export async function POST(req: Request) {
       console.error('[PushNotify] Error broadcasting guaranteed Live Status update:', err);
     });
 
+    // Guaranteed SSD push when SSD fields are saved from live-status admin
+    const hasSsdUpdate = body.ssdTokenStatus !== undefined || body.ssdNextTokenTime !== undefined || body.ssdTokenSlots !== undefined;
+    if (hasSsdUpdate) {
+      const ssdTitle = updated.ssdTokenStatus === 'suspended'
+        ? 'SSD Tokens Suspended (Brahmotsavam)'
+        : updated.ssdTokenStatus === 'closed-for-day'
+        ? 'Today’s SSD Token Quota Closed'
+        : (updated.ssdTokenStatus === 'paused'
+            ? 'SSD Offline Tokens Paused'
+            : (updated.ssdTokenStatus === 'issuing'
+                ? 'Free SSD Tokens Issuing Now'
+                : `SSD Token Counters: Next at ${updated.ssdNextTokenTime || 'morning'}`));
+
+      const ssdBody = updated.ssdNotice?.trim() || (updated.ssdTokenStatus === 'closed-for-day'
+        ? `Offline SSD quota complete for today. Next token issuance: ${updated.ssdNextTokenTime || 'tomorrow morning'}.`
+        : `Tirupati offline SSD counters updated. Next release: ${updated.ssdNextTokenTime || 'active'}.`);
+
+      pushNotifyAll({
+        title: ssdTitle,
+        body: ssdBody,
+        url: '/darshan/ssd-token',
+        tag: 'ssd-status',
+        category: 'High Priority'
+      }).catch((err: any) => {
+        console.error('[PushNotify] Error broadcasting SSD update from status route:', err);
+      });
+    }
+
     return NextResponse.json(updated);
   } catch (e: any) {
     return NextResponse.json({ error: e.message }, { status: 400 });

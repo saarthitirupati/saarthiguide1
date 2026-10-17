@@ -29,13 +29,15 @@ export async function POST(req: Request) {
 
     const alertBody = alert.description || (alert as any).message;
     const shouldSendPush = data.sendPush !== false;
-    if (shouldSendPush && alert && (alert.status === 'Published' || (alert as any).active) && alertBody) {
+    if (shouldSendPush && alert && alert.status !== 'Draft' && alertBody) {
       try {
         await pushNotifyAll({
           title: alert.title ? alert.title : 'Tirumala Operational Alert',
           body: alertBody,
           url: '/alerts',
-          tag: `alert-${alert.id || 'live'}`
+          tag: `alert-${alert.id || 'live'}`,
+          category: alert.category || 'High Priority',
+          target_location: alert.target_location || 'All Users'
         });
       } catch (err) {
         console.error('[PushNotify] Error broadcasting emergency alert:', err);

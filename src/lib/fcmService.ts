@@ -93,6 +93,8 @@ export async function sendFCMNotification(
         body: payload.body,
       },
       data: {
+        title: payload.title,
+        body: payload.body,
         deepLink: payload.deepLink || 'https://www.saarthiguide.in',
         ...(payload.data || {}),
       },

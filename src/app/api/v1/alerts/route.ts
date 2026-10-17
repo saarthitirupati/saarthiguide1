@@ -28,7 +28,7 @@ export async function POST(request: Request) {
     const createdAlert = await saveLiveAlert(body);
 
     const shouldSendPush = body.sendPush !== false;
-    if (shouldSendPush && createdAlert && (createdAlert.status === 'Published' || (createdAlert as any).active)) {
+    if (shouldSendPush && createdAlert && createdAlert.status !== 'Draft') {
       try {
         await pushNotifyAll({
           title: createdAlert.title ? createdAlert.title : 'Tirumala Operational Alert',
@@ -36,7 +36,7 @@ export async function POST(request: Request) {
           url: '/alerts',
           tag: `alert-${createdAlert.id || 'live'}`,
           target_location: createdAlert.target_location || 'All Users',
-          category: createdAlert.category,
+          category: createdAlert.category || 'High Priority',
           image: createdAlert.image || undefined
         });
       } catch (err) {
@@ -65,8 +65,8 @@ export async function PUT(request: Request) {
 
     const updatedAlert = await saveLiveAlert(body);
 
-    const shouldSendPush = body.sendPush === true;
-    if (shouldSendPush && updatedAlert && (updatedAlert.status === 'Published' || (updatedAlert as any).active)) {
+    const shouldSendPush = body.sendPush !== false;
+    if (shouldSendPush && updatedAlert && updatedAlert.status !== 'Draft') {
       try {
         await pushNotifyAll({
           title: updatedAlert.title ? updatedAlert.title : 'Tirumala Operational Alert',
@@ -74,7 +74,7 @@ export async function PUT(request: Request) {
           url: '/alerts',
           tag: `alert-${updatedAlert.id || 'live'}`,
           target_location: updatedAlert.target_location || 'All Users',
-          category: updatedAlert.category,
+          category: updatedAlert.category || 'High Priority',
           image: updatedAlert.image || undefined
         });
       } catch (err) {
