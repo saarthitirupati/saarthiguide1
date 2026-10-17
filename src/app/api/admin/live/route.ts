@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase';
 import { isAuthorizedAdmin } from '@/lib/authGuard';
 import { readStatus, updateStatus, TirumalaStatus } from '@/lib/statusDb';
-import { notifyLiveStatusUpdates } from '@/lib/pushNotify';
+import { notifyLiveStatusUpdates, pushNotifyAll } from '@/lib/pushNotify';
 
 export async function POST(req: Request) {
   try {
@@ -65,8 +65,17 @@ export async function POST(req: Request) {
     }
     const updated = await updateStatus(statusUpdates);
 
-    // Push notification for live metrics and wait time changes
-    notifyLiveStatusUpdates(before, updated).catch((err) => {
+    // Guaranteed push notification to all devices on every live queue update
+    const wait = updated.waitTime || 'Current queue active';
+    const crowd = updated.crowdLevel ? ` (${updated.crowdLevel} crowd)` : '';
+
+    pushNotifyAll({
+      title: 'Tirumala Darshan Timings Updated',
+      body: `Live update: Wait time is ${wait}${crowd}. Plan your darshan visit accordingly.`,
+      url: '/alerts',
+      tag: 'live-darshan-update',
+      category: 'High Priority'
+    }).catch((err: any) => {
       console.error('[PushNotify] Error broadcasting live updates:', err);
     });
 

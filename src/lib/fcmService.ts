@@ -97,10 +97,15 @@ export async function sendFCMNotification(
         ...(payload.data || {}),
       },
       android: {
-        priority: 'high',
+        priority: 'HIGH',
         notification: {
           channel_id: 'saarthi_live_alerts',
           sound: 'default',
+          default_sound: true,
+          default_vibrate_timings: true,
+          visibility: 'PUBLIC',
+          notification_priority: 'PRIORITY_MAX',
+          icon: 'ic_maskable',
         },
       },
     },

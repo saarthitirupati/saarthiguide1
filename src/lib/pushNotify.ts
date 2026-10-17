@@ -71,8 +71,7 @@ export async function pushNotifyAll(payload: PushPayload) {
                   !fcmRes.success &&
                   fcmRes.error &&
                   (fcmRes.error.includes('registration-token-not-registered') ||
-                    fcmRes.error.includes('UNREGISTERED') ||
-                    fcmRes.error.includes('404'))
+                    fcmRes.error.includes('UNREGISTERED'))
                 ) {
                   gone.push(sub.id);
                 }
@@ -147,8 +146,7 @@ export async function pushNotifyAll(payload: PushPayload) {
             !res.success &&
             res.error &&
             (res.error.includes('registration-token-not-registered') ||
-              res.error.includes('UNREGISTERED') ||
-              res.error.includes('404'))
+              res.error.includes('UNREGISTERED'))
           ) {
             deadDevices.push(dev.device_id);
           }
