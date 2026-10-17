@@ -312,9 +312,6 @@ export default function OnboardingPresentation() {
                             boxSizing: 'border-box'
                           }}
                         />
-                        <p style={{ fontSize: '9px', color: '#6B7280', marginTop: '6px', textAlign: 'center' }}>
-                          e.g. Sekhar, Usha, Saarthi
-                        </p>
                       </div>
 
                       <div className={styles.privacyNote} style={{ marginTop: '24px' }}>

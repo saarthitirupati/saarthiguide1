@@ -494,9 +494,6 @@ export default function OnboardingPage() {
                       onKeyDown={(e) => e.key === 'Enter' && name.trim() && nextStep()}
                       autoFocus
                     />
-                    <p style={{ fontSize: '12px', color: '#64748B', marginTop: '8px', textAlign: 'center', fontWeight: 600 }}>
-                      {t.nameExamples}
-                    </p>
                   </div>
 
                   <div className={styles.privacyBadge}>
