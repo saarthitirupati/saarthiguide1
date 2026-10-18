@@ -17,15 +17,50 @@ function base64UrlEncode(data: string | Buffer): string {
     .replace(/\//g, '_');
 }
 
+let cachedAccessToken: string | null = null;
+let cachedTokenExpiresAt: number = 0;
+
+/**
+ * Safely parses and normalizes Google Service Account JSON from environment variables
+ */
+export function getParsedServiceAccount(): any | null {
+  const serviceAccountRaw = process.env.FCM_SERVICE_ACCOUNT_KEY;
+  if (!serviceAccountRaw) return null;
+  try {
+    let raw = serviceAccountRaw.trim();
+    if ((raw.startsWith("'") && raw.endsWith("'")) || (raw.startsWith('"') && raw.endsWith('"'))) {
+      raw = raw.slice(1, -1);
+    }
+    const parsed = JSON.parse(raw);
+    if (parsed.private_key && typeof parsed.private_key === 'string') {
+      parsed.private_key = parsed.private_key.replace(/\\n/g, '\n');
+    }
+    return parsed;
+  } catch (e) {
+    console.error('[FCM] Failed to parse FCM_SERVICE_ACCOUNT_KEY JSON:', e);
+    return null;
+  }
+}
+
 /**
  * Generates Google OAuth2 Access Token from Service Account JSON using native Node.js crypto
+ * Automatically caches token in memory for up to 55 minutes.
  */
-async function getFCMAccessToken(serviceAccount: any): Promise<string | null> {
+export async function getFCMAccessToken(serviceAccount?: any): Promise<string | null> {
+  const sa = serviceAccount || getParsedServiceAccount();
+  if (!sa || !sa.client_email || !sa.private_key) {
+    return null;
+  }
+
   try {
     const now = Math.floor(Date.now() / 1000);
+    if (cachedAccessToken && cachedTokenExpiresAt > now + 60) {
+      return cachedAccessToken;
+    }
+
     const header = { alg: 'RS256', typ: 'JWT' };
     const claimSet = {
-      iss: serviceAccount.client_email,
+      iss: sa.client_email,
       scope: 'https://www.googleapis.com/auth/firebase.messaging',
       aud: 'https://oauth2.googleapis.com/token',
       exp: now + 3600,
@@ -38,7 +73,7 @@ async function getFCMAccessToken(serviceAccount: any): Promise<string | null> {
 
     const signer = crypto.createSign('RSA-SHA256');
     signer.update(signatureInput);
-    const signature = base64UrlEncode(signer.sign(serviceAccount.private_key));
+    const signature = base64UrlEncode(signer.sign(sa.private_key));
 
     const jwt = `${signatureInput}.${signature}`;
 
@@ -52,7 +87,12 @@ async function getFCMAccessToken(serviceAccount: any): Promise<string | null> {
     });
 
     const data = await res.json();
-    return data.access_token || null;
+    if (data.access_token) {
+      cachedAccessToken = data.access_token;
+      cachedTokenExpiresAt = now + (data.expires_in || 3600);
+      return cachedAccessToken;
+    }
+    return null;
   } catch (err) {
     console.error('[FCM] Error generating access token:', err);
     return null;
@@ -63,21 +103,16 @@ async function getFCMAccessToken(serviceAccount: any): Promise<string | null> {
  * Sends a native Android lock-screen FCM push notification via Google FCM HTTP v1 API
  */
 export async function sendFCMNotification(
-  payload: FCMMessagePayload
+  payload: FCMMessagePayload,
+  preloadedToken?: string,
+  preloadedServiceAccount?: any
 ): Promise<{ success: boolean; error?: string }> {
-  const serviceAccountRaw = process.env.FCM_SERVICE_ACCOUNT_KEY;
-  if (!serviceAccountRaw) {
+  const serviceAccount = preloadedServiceAccount || getParsedServiceAccount();
+  if (!serviceAccount) {
     return { success: false, error: 'FCM_SERVICE_ACCOUNT_KEY not configured in server environment' };
   }
 
-  let serviceAccount: any;
-  try {
-    serviceAccount = JSON.parse(serviceAccountRaw);
-  } catch {
-    return { success: false, error: 'Failed to parse FCM_SERVICE_ACCOUNT_KEY JSON' };
-  }
-
-  const accessToken = await getFCMAccessToken(serviceAccount);
+  const accessToken = preloadedToken || (await getFCMAccessToken(serviceAccount));
   if (!accessToken) {
     return { success: false, error: 'Failed to authenticate with Google FCM OAuth2' };
   }

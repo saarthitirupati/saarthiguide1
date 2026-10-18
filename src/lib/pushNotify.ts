@@ -1,6 +1,6 @@
 import webpush from 'web-push';
 import { supabase } from '@/lib/supabase';
-import { sendFCMNotification } from '@/lib/fcmService';
+import { sendFCMNotification, getFCMAccessToken, getParsedServiceAccount } from '@/lib/fcmService';
 
 let vapidConfigured = false;
 function ensureVapid(): boolean {
@@ -8,7 +8,6 @@ function ensureVapid(): boolean {
   const pub = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY;
   const priv = process.env.VAPID_PRIVATE_KEY;
   if (!pub || !priv) {
-    console.warn('[PushNotify] VAPID keys not configured in environment (NEXT_PUBLIC_VAPID_PUBLIC_KEY / VAPID_PRIVATE_KEY)');
     return false;
   }
   try {
@@ -16,7 +15,7 @@ function ensureVapid(): boolean {
     vapidConfigured = true;
     return true;
   } catch (err) {
-    console.error('Failed to set VAPID details:', err);
+    console.error('[PushNotify] Failed to set VAPID details:', err);
     return false;
   }
 }
@@ -34,32 +33,113 @@ interface PushPayload {
 
 /**
  * Send a push notification to all subscribed users (Web Push + Native Android FCM).
- * Silently removes expired/invalid subscriptions.
+ * Deduplicates FCM tokens across user_devices and push_subscriptions.
+ * Dispatches FCM in concurrent batches using cached OAuth2 credentials.
+ * Cleans up invalid/expired tokens without dropping errors.
  */
 export async function pushNotifyAll(payload: PushPayload) {
-  // 1. Web Push Dispatch
-  if (ensureVapid()) {
-    try {
-      const { data: subs, error } = await supabase
-        .from('push_subscriptions')
-        .select('id, endpoint, keys_p256dh, keys_auth')
-        .limit(10000);
+  const deepLink = payload.url
+    ? (payload.url.startsWith('http') ? payload.url : `https://www.saarthiguide.in${payload.url}`)
+    : 'https://www.saarthiguide.in';
 
-      if (!error && subs?.length) {
-        const body = JSON.stringify(payload);
-        const gone: number[] = [];
+  // 1. Fetch both push_subscriptions and active user_devices concurrently
+  const [subsRes, devRes] = await Promise.allSettled([
+    supabase.from('push_subscriptions').select('id, endpoint, keys_p256dh, keys_auth').limit(10000),
+    supabase.from('user_devices').select('device_id, fcm_token').eq('is_active', true).not('fcm_token', 'is', null).limit(10000),
+  ]);
 
-        await Promise.allSettled(
-          subs.map(async (sub) => {
-            // Handle Native Android FCM endpoints stored in push_subscriptions
-            if (sub.endpoint.startsWith('https://fcm.googleapis.com/fcm/native/')) {
-              const fcmToken = sub.endpoint.replace('https://fcm.googleapis.com/fcm/native/', '');
-              if (fcmToken && fcmToken.length > 20) {
-                const deepLink = payload.url
-                  ? (payload.url.startsWith('http') ? payload.url : `https://www.saarthiguide.in${payload.url}`)
-                  : 'https://www.saarthiguide.in';
-                const fcmRes = await sendFCMNotification({
-                  token: fcmToken,
+  const subs = subsRes.status === 'fulfilled' && !subsRes.value.error ? subsRes.value.data || [] : [];
+  const devices = devRes.status === 'fulfilled' && !devRes.value.error ? devRes.value.data || [] : [];
+
+  // 2. Separate into Web Push subscriptions and deduplicated FCM tokens
+  const webSubs: Array<{ id: number; endpoint: string; keys_p256dh: string; keys_auth: string }> = [];
+  const fcmTokenToSubIds = new Map<string, number[]>();
+  const fcmTokenToDevIds = new Map<string, string[]>();
+
+  for (const s of subs) {
+    if (s.endpoint.startsWith('https://fcm.googleapis.com/fcm/native/')) {
+      const token = s.endpoint.replace('https://fcm.googleapis.com/fcm/native/', '').trim();
+      if (token.length > 20) {
+        const existing = fcmTokenToSubIds.get(token) || [];
+        existing.push(s.id);
+        fcmTokenToSubIds.set(token, existing);
+      }
+    } else {
+      webSubs.push(s);
+    }
+  }
+
+  for (const d of devices) {
+    const token = d.fcm_token?.trim();
+    if (token && token.length > 20) {
+      const existing = fcmTokenToDevIds.get(token) || [];
+      existing.push(d.device_id);
+      fcmTokenToDevIds.set(token, existing);
+    }
+  }
+
+  const allFcmTokens = Array.from(new Set([...fcmTokenToSubIds.keys(), ...fcmTokenToDevIds.keys()]));
+  const deadSubIds: number[] = [];
+  let webSuccessCount = 0;
+
+  // 3. Dispatch Web Push (Browsers)
+  if (webSubs.length > 0) {
+    if (ensureVapid()) {
+      const body = JSON.stringify(payload);
+      const webResults = await Promise.allSettled(
+        webSubs.map(async (sub) => {
+          try {
+            await webpush.sendNotification(
+              {
+                endpoint: sub.endpoint,
+                keys: { p256dh: sub.keys_p256dh, auth: sub.keys_auth },
+              },
+              body,
+              {
+                TTL: 86400,
+                headers: {
+                  Urgency: 'high',
+                  Topic: payload.tag || 'saarthi-alert',
+                },
+              }
+            );
+            return { success: true, id: sub.id };
+          } catch (err: any) {
+            if (err.statusCode === 404 || err.statusCode === 410 || err.statusCode === 403) {
+              deadSubIds.push(sub.id);
+            }
+            return { success: false, id: sub.id, error: err };
+          }
+        })
+      );
+      webSuccessCount = webResults.filter(r => r.status === 'fulfilled' && (r.value as any).success).length;
+    } else {
+      console.warn('[PushNotifyAll] VAPID keys not configured; skipped browser Web Push for', webSubs.length, 'subscriptions');
+    }
+  }
+
+  // 4. Dispatch FCM Push (Native Android & TWA App)
+  let fcmSuccessCount = 0;
+  const deadFcmTokens: string[] = [];
+
+  if (allFcmTokens.length > 0) {
+    const serviceAccount = getParsedServiceAccount();
+    if (!serviceAccount) {
+      console.warn('[PushNotifyAll] FCM_SERVICE_ACCOUNT_KEY not configured or invalid; skipped FCM push for', allFcmTokens.length, 'devices');
+    } else {
+      const accessToken = await getFCMAccessToken(serviceAccount);
+      if (!accessToken) {
+        console.error('[PushNotifyAll] Failed to obtain FCM OAuth2 access token');
+      } else {
+        // Chunk tokens into batches of 25 to respect concurrency limits and avoid timeouts
+        const chunkSize = 25;
+        for (let i = 0; i < allFcmTokens.length; i += chunkSize) {
+          const chunk = allFcmTokens.slice(i, i + chunkSize);
+          const results = await Promise.allSettled(
+            chunk.map(token =>
+              sendFCMNotification(
+                {
+                  token,
                   title: payload.title,
                   body: payload.body,
                   deepLink,
@@ -67,103 +147,57 @@ export async function pushNotifyAll(payload: PushPayload) {
                     tag: payload.tag || 'saarthi-alert',
                     url: deepLink,
                   },
-                });
-                if (
-                  !fcmRes.success &&
-                  fcmRes.error &&
-                  (fcmRes.error.includes('registration-token-not-registered') ||
-                    fcmRes.error.includes('UNREGISTERED'))
-                ) {
-                  gone.push(sub.id);
-                }
-              }
-              return;
-            }
-
-            // Standard Web Push dispatch
-            try {
-              await webpush.sendNotification(
-                {
-                  endpoint: sub.endpoint,
-                  keys: { p256dh: sub.keys_p256dh, auth: sub.keys_auth },
                 },
-                body,
-                {
-                  TTL: 86400,
-                  headers: {
-                    Urgency: 'high',
-                    Topic: payload.tag || 'saarthi-alert',
-                  },
+                accessToken,
+                serviceAccount
+              ).then(res => ({ token, ...res }))
+            )
+          );
+
+          for (const res of results) {
+            if (res.status === 'fulfilled') {
+              if (res.value.success) {
+                fcmSuccessCount++;
+              } else {
+                const err = res.value.error || '';
+                if (err.includes('registration-token-not-registered') || err.includes('UNREGISTERED') || err.includes('404')) {
+                  deadFcmTokens.push(res.value.token);
                 }
-              );
-            } catch (err: any) {
-              if (err.statusCode === 404 || err.statusCode === 410 || err.statusCode === 403) {
-                gone.push(sub.id);
               }
             }
-          })
-        );
-
-        if (gone.length) {
-          await supabase.from('push_subscriptions').delete().in('id', gone);
+          }
         }
       }
-    } catch (wpErr) {
-      console.error('[PushNotifyAll] Web push dispatch exception:', wpErr);
     }
   }
 
-  // 2. Native Android FCM Push Dispatch
+  // 5. Clean up dead subscriptions/devices asynchronously
   try {
-    const { data: devices, error: devErr } = await supabase
-      .from('user_devices')
-      .select('device_id, fcm_token')
-      .eq('is_active', true)
-      .not('fcm_token', 'is', null)
-      .limit(10000);
+    for (const token of deadFcmTokens) {
+      const subIds = fcmTokenToSubIds.get(token);
+      if (subIds && subIds.length) deadSubIds.push(...subIds);
 
-    const validDevices = (devices || []).filter(d => d.fcm_token && d.fcm_token.trim().length > 20);
-    if (!devErr && validDevices.length) {
-      console.log(`[PushNotifyAll] Dispatching FCM push to ${validDevices.length} active Android devices for "${payload.title}"`);
-      const deadDevices: string[] = [];
-      const deepLink = payload.url
-        ? (payload.url.startsWith('http') ? payload.url : `https://www.saarthiguide.in${payload.url}`)
-        : 'https://www.saarthiguide.in';
-
-      await Promise.allSettled(
-        validDevices.map(async (dev) => {
-          if (!dev.fcm_token) return;
-          const res = await sendFCMNotification({
-            token: dev.fcm_token,
-            title: payload.title,
-            body: payload.body,
-            deepLink,
-            data: {
-              tag: payload.tag || 'saarthi-alert',
-              url: deepLink,
-            },
-          });
-
-          if (
-            !res.success &&
-            res.error &&
-            (res.error.includes('registration-token-not-registered') ||
-              res.error.includes('UNREGISTERED'))
-          ) {
-            deadDevices.push(dev.device_id);
-          }
-        })
-      );
-
-      if (deadDevices.length) {
-        await supabase.from('user_devices').update({ is_active: false }).in('device_id', deadDevices);
+      const devIds = fcmTokenToDevIds.get(token);
+      if (devIds && devIds.length) {
+        await supabase.from('user_devices').update({ is_active: false }).in('device_id', devIds);
       }
-    } else {
-      console.log('[PushNotifyAll] No active Android FCM devices currently registered');
     }
-  } catch (fcmErr) {
-    console.error('[PushNotifyAll] FCM dispatch exception:', fcmErr);
+
+    if (deadSubIds.length > 0) {
+      const uniqueDeadSubIds = Array.from(new Set(deadSubIds));
+      await supabase.from('push_subscriptions').delete().in('id', uniqueDeadSubIds);
+    }
+  } catch (cleanErr) {
+    console.warn('[PushNotifyAll] Error cleaning up dead tokens:', cleanErr);
   }
+
+  console.log(`[PushNotifyAll] Complete: ${fcmSuccessCount}/${allFcmTokens.length} FCM delivered, ${webSuccessCount}/${webSubs.length} Web delivered.`);
+
+  return {
+    success: true,
+    fcm: { delivered: fcmSuccessCount, total: allFcmTokens.length },
+    web: { delivered: webSuccessCount, total: webSubs.length },
+  };
 }
 
 export interface StatusLike {
@@ -192,21 +226,21 @@ export async function notifySsdUpdates(
   // 1. Status change (issuing / paused / closed-for-day)
   if (updated.ssdTokenStatus && updated.ssdTokenStatus !== prev.ssdTokenStatus) {
     if (updated.ssdTokenStatus === 'issuing') {
-      pushNotifyAll({
+      await pushNotifyAll({
         title: 'SSD Tokens are LIVE!',
         body: 'Srivari Seva Darshanam offline tokens are being issued now at Tirumala & Tirupati counters.',
         url: '/darshan/ssd-token',
         tag: 'ssd-status',
       }).catch(() => {});
     } else if (updated.ssdTokenStatus === 'paused') {
-      pushNotifyAll({
+      await pushNotifyAll({
         title: 'SSD Tokens Paused',
         body: (updated.ssdNotice || '').trim() || 'Token issuing has been temporarily paused. Please check back shortly.',
         url: '/darshan/ssd-token',
         tag: 'ssd-status',
       }).catch(() => {});
     } else if (updated.ssdTokenStatus === 'closed-for-day') {
-      pushNotifyAll({
+      await pushNotifyAll({
         title: 'Today’s SSD Quota Closed',
         body: (updated.ssdNotice || '').trim() || `Today's offline SSD token quota is complete. Next issuance: ${updated.ssdNextTokenTime || 'tomorrow morning'}.`,
         url: '/darshan/ssd-token',
@@ -214,7 +248,7 @@ export async function notifySsdUpdates(
         category: 'High Priority'
       }).catch(() => {});
     } else if (updated.ssdTokenStatus === 'suspended') {
-      pushNotifyAll({
+      await pushNotifyAll({
         title: 'SSD Tokens Suspended (Brahmotsavam)',
         body: (updated.ssdNotice || '').trim() || 'SSD tokens are temporarily suspended. Direct walk-in Sarva Darshan open at Vaikuntam complexes.',
         url: '/darshan/ssd-token',
@@ -229,7 +263,7 @@ export async function notifySsdUpdates(
   const nextTime = (updated.ssdNextTokenTime || '').trim();
   if (nextTime && nextTime !== prevTime) {
     const noticeExtra = (updated.ssdNotice || '').trim() ? ` • ${updated.ssdNotice!.trim()}` : '';
-    pushNotifyAll({
+    await pushNotifyAll({
       title: 'SSD Token Timings Updated',
       body: `Next token batch release: ${nextTime}.${noticeExtra} Counters open at Vishnu Nivasam & Srinivasam.`,
       url: '/darshan/ssd-token',
@@ -246,7 +280,7 @@ export async function notifySsdUpdates(
       const slotText = available.length > 0
         ? `Open slots: ${available.map(s => s.slotTime).slice(0, 3).join(', ')}.`
         : 'Slot availability and timings have been refreshed.';
-      pushNotifyAll({
+      await pushNotifyAll({
         title: 'SSD Darshan Slots Updated',
         body: `${slotText} Check live counter timings now.`,
         url: '/darshan/ssd-token',
@@ -259,7 +293,7 @@ export async function notifySsdUpdates(
   const prevNotice = (prev.ssdNotice || '').trim();
   const nextNotice = (updated.ssdNotice || '').trim();
   if (nextNotice && nextNotice !== prevNotice && updated.ssdTokenStatus === prev.ssdTokenStatus) {
-    pushNotifyAll({
+    await pushNotifyAll({
       title: 'SSD Token Update',
       body: nextNotice,
       url: '/darshan/ssd-token',
@@ -282,7 +316,7 @@ export async function notifyLiveStatusUpdates(
   const prevNotice = (prev.notice || '').trim();
   const nextNotice = (updated.notice || '').trim();
   if (nextNotice && nextNotice !== prevNotice) {
-    pushNotifyAll({
+    await pushNotifyAll({
       title: 'Tirumala Live Update',
       body: nextNotice,
       url: '/alerts',
@@ -307,7 +341,7 @@ export async function notifyLiveStatusUpdates(
 
   if (darshanChanges.length > 0) {
     const crowdInfo = updated.crowdLevel ? ` • Crowd: ${updated.crowdLevel}` : '';
-    pushNotifyAll({
+    await pushNotifyAll({
       title: 'Live Darshan Timings Updated',
       body: `Live update: ${darshanChanges.slice(0, 2).join(' • ')}${crowdInfo}.`,
       url: '/alerts',
@@ -315,7 +349,7 @@ export async function notifyLiveStatusUpdates(
     }).catch(() => {});
   } else if (waitChanged) {
     const crowdInfo = updated.crowdLevel ? ` (${updated.crowdLevel} crowd)` : '';
-    pushNotifyAll({
+    await pushNotifyAll({
       title: 'Darshan Wait Time Updated',
       body: `Current wait time updated to ${nextWait}${crowdInfo}. Plan your darshan visit accordingly.`,
       url: '/alerts',
@@ -328,7 +362,7 @@ export async function notifyLiveStatusUpdates(
   const nextCrowd = (updated.crowdLevel || '').trim().toLowerCase();
   if (nextCrowd && nextCrowd !== prevCrowd) {
     if (nextCrowd === 'low') {
-      pushNotifyAll({
+      await pushNotifyAll({
         title: 'Low Crowd at Tirumala!',
         body: `Wait time: ${nextWait || prevWait || 'minimal'}. Favorable conditions for smooth, peaceful darshan.`,
         url: '/alerts',
@@ -336,14 +370,14 @@ export async function notifyLiveStatusUpdates(
       }).catch(() => {});
     } else if (nextCrowd === 'high' || nextCrowd === 'very-high') {
       const label = nextCrowd === 'very-high' ? 'Very High' : 'High';
-      pushNotifyAll({
+      await pushNotifyAll({
         title: 'Heavy Rush at Tirumala',
         body: `Crowd level is now ${label}. Wait time: ${nextWait || prevWait || 'extended'}. Expect compartment delays.`,
         url: '/alerts',
         tag: 'live-crowd',
       }).catch(() => {});
     } else if (nextCrowd === 'moderate') {
-      pushNotifyAll({
+      await pushNotifyAll({
         title: 'Moderate Crowd at Tirumala',
         body: `Crowd has normalized to Moderate. Current wait time: ${nextWait || prevWait || '2-3 hours'}.`,
         url: '/alerts',

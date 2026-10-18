@@ -69,7 +69,7 @@ export async function POST(req: Request) {
     const wait = updated.waitTime || 'Current queue active';
     const crowd = updated.crowdLevel ? ` (${updated.crowdLevel} crowd)` : '';
 
-    pushNotifyAll({
+    await pushNotifyAll({
       title: 'Tirumala Darshan Timings Updated',
       body: `Live update: Wait time is ${wait}${crowd}. Plan your darshan visit accordingly.`,
       url: '/alerts',

@@ -103,7 +103,7 @@ export async function POST(req: Request) {
     if (error) throw error;
 
     // Notify users about new festival
-    pushNotifyAll({
+    await pushNotifyAll({
       title: doc.name,
       body: doc.description || `Upcoming festival at Tirumala — ${doc.date}`,
       url: '/festivals',

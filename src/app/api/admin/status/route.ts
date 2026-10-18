@@ -30,7 +30,7 @@ export async function POST(req: Request) {
     const crowd = updated.crowdLevel ? ` (${updated.crowdLevel} crowd)` : '';
     const notice = updated.notice?.trim() ? ` • ${updated.notice.trim()}` : '';
 
-    pushNotifyAll({
+    await pushNotifyAll({
       title: 'Tirumala Live Status Updated',
       body: `Live update: Wait time is ${wait}${crowd}.${notice} Tap for darshan guide.`,
       url: '/alerts',
@@ -57,7 +57,7 @@ export async function POST(req: Request) {
         ? `Offline SSD quota complete for today. Next token issuance: ${updated.ssdNextTokenTime || 'tomorrow morning'}.`
         : `Tirupati offline SSD counters updated. Next release: ${updated.ssdNextTokenTime || 'active'}.`);
 
-      pushNotifyAll({
+      await pushNotifyAll({
         title: ssdTitle,
         body: ssdBody,
         url: '/darshan/ssd-token',

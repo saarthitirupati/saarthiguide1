@@ -66,7 +66,7 @@ export async function POST(req: Request) {
             ? (updated.ssdNotice?.trim() || 'Offline SSD counter issue paused temporarily.')
             : (updated.ssdNotice?.trim() || `Offline token counters active at Vishnu Nivasam & Srinivasam. Bring original Aadhaar cards.${updated.ssdNextTokenTime ? ` Next release: ${updated.ssdNextTokenTime}.` : ''}`));
 
-      pushNotifyAll({
+      await pushNotifyAll({
         title: pushTitle,
         body: pushBody,
         url: '/darshan/ssd-token',
@@ -76,7 +76,7 @@ export async function POST(req: Request) {
         console.error('[PushNotify] Error broadcasting SSD update:', err);
       });
     } else {
-      notifySsdUpdates(before, updated).catch((err) => {
+      await notifySsdUpdates(before, updated).catch((err) => {
         console.error('[PushNotify] Error broadcasting SSD update:', err);
       });
     }

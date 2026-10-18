@@ -45,7 +45,7 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
     // Notify users about festival update
     if (data && data[0]) {
       const { pushNotifyAll } = await import('@/lib/pushNotify');
-      pushNotifyAll({
+      await pushNotifyAll({
         title: data[0].name || 'Tirumala Festival Update',
         body: data[0].description || `Updated festival schedule at Tirumala — ${data[0].date || ''}`,
         url: '/festivals',
