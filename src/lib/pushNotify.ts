@@ -1,6 +1,7 @@
 import webpush from 'web-push';
 import { supabase } from '@/lib/supabase';
 import { sendFCMNotification, getFCMAccessToken, getParsedServiceAccount } from '@/lib/fcmService';
+import { after } from 'next/server';
 
 let vapidConfigured = false;
 function ensureVapid(): boolean {
@@ -37,16 +38,27 @@ interface PushPayload {
  * Dispatches FCM in concurrent batches using cached OAuth2 credentials.
  * Cleans up invalid/expired tokens without dropping errors.
  */
-export async function pushNotifyAll(payload: PushPayload) {
+/**
+ * Executes push notification delivery across Web Push and FCM.
+ * Batches outbound requests in controlled chunks of 25 to avoid saturating sockets or exceeding subrequest limits.
+ */
+export async function executePushDispatch(payload: PushPayload) {
   const deepLink = payload.url
     ? (payload.url.startsWith('http') ? payload.url : `https://www.saarthiguide.in${payload.url}`)
     : 'https://www.saarthiguide.in';
 
-  // 1. Fetch both push_subscriptions and active user_devices concurrently
+  // 1. Fetch both push_subscriptions and active user_devices concurrently, prioritizing most active first
   const [subsRes, devRes] = await Promise.allSettled([
-    supabase.from('push_subscriptions').select('id, endpoint, keys_p256dh, keys_auth').limit(10000),
-    supabase.from('user_devices').select('device_id, fcm_token').eq('is_active', true).not('fcm_token', 'is', null).limit(10000),
+    supabase.from('push_subscriptions').select('id, endpoint, keys_p256dh, keys_auth').order('last_seen_at', { ascending: false }).limit(10000),
+    supabase.from('user_devices').select('device_id, fcm_token').eq('is_active', true).not('fcm_token', 'is', null).order('updated_at', { ascending: false }).limit(10000),
   ]);
+
+  if (subsRes.status === 'rejected' || (subsRes.status === 'fulfilled' && subsRes.value.error)) {
+    console.error('[PushNotifyAll] Error querying push_subscriptions:', subsRes.status === 'rejected' ? subsRes.reason : subsRes.value.error);
+  }
+  if (devRes.status === 'rejected' || (devRes.status === 'fulfilled' && devRes.value.error)) {
+    console.error('[PushNotifyAll] Error querying user_devices:', devRes.status === 'rejected' ? devRes.reason : devRes.value.error);
+  }
 
   const subs = subsRes.status === 'fulfilled' && !subsRes.value.error ? subsRes.value.data || [] : [];
   const devices = devRes.status === 'fulfilled' && !devRes.value.error ? devRes.value.data || [] : [];
@@ -81,13 +93,22 @@ export async function pushNotifyAll(payload: PushPayload) {
   const allFcmTokens = Array.from(new Set([...fcmTokenToSubIds.keys(), ...fcmTokenToDevIds.keys()]));
   const deadSubIds: number[] = [];
   let webSuccessCount = 0;
+  let fcmSuccessCount = 0;
+  const deadFcmTokens: string[] = [];
 
-  // 3. Dispatch Web Push (Browsers)
-  if (webSubs.length > 0) {
-    if (ensureVapid()) {
-      const body = JSON.stringify(payload);
-      const webResults = await Promise.allSettled(
-        webSubs.map(async (sub) => {
+  // 3 & 4. Dispatch Web Push and Android FCM concurrently in parallel for instant delivery
+  const dispatchWeb = async () => {
+    if (webSubs.length === 0) return;
+    if (!ensureVapid()) {
+      console.warn('[PushNotifyAll] VAPID keys not configured; skipped browser Web Push for', webSubs.length, 'subscriptions');
+      return;
+    }
+    const body = JSON.stringify(payload);
+    const chunkSize = 25;
+    for (let i = 0; i < webSubs.length; i += chunkSize) {
+      const chunk = webSubs.slice(i, i + chunkSize);
+      const chunkResults = await Promise.allSettled(
+        chunk.map(async (sub) => {
           try {
             await webpush.sendNotification(
               {
@@ -112,64 +133,60 @@ export async function pushNotifyAll(payload: PushPayload) {
           }
         })
       );
-      webSuccessCount = webResults.filter(r => r.status === 'fulfilled' && (r.value as any).success).length;
-    } else {
-      console.warn('[PushNotifyAll] VAPID keys not configured; skipped browser Web Push for', webSubs.length, 'subscriptions');
+      webSuccessCount += chunkResults.filter(r => r.status === 'fulfilled' && (r.value as any).success).length;
     }
-  }
+  };
 
-  // 4. Dispatch FCM Push (Native Android & TWA App)
-  let fcmSuccessCount = 0;
-  const deadFcmTokens: string[] = [];
-
-  if (allFcmTokens.length > 0) {
+  const dispatchFcm = async () => {
+    if (allFcmTokens.length === 0) return;
     const serviceAccount = getParsedServiceAccount();
     if (!serviceAccount) {
       console.warn('[PushNotifyAll] FCM_SERVICE_ACCOUNT_KEY not configured or invalid; skipped FCM push for', allFcmTokens.length, 'devices');
-    } else {
-      const accessToken = await getFCMAccessToken(serviceAccount);
-      if (!accessToken) {
-        console.error('[PushNotifyAll] Failed to obtain FCM OAuth2 access token');
-      } else {
-        // Chunk tokens into batches of 25 to respect concurrency limits and avoid timeouts
-        const chunkSize = 25;
-        for (let i = 0; i < allFcmTokens.length; i += chunkSize) {
-          const chunk = allFcmTokens.slice(i, i + chunkSize);
-          const results = await Promise.allSettled(
-            chunk.map(token =>
-              sendFCMNotification(
-                {
-                  token,
-                  title: payload.title,
-                  body: payload.body,
-                  deepLink,
-                  data: {
-                    tag: payload.tag || 'saarthi-alert',
-                    url: deepLink,
-                  },
-                },
-                accessToken,
-                serviceAccount
-              ).then(res => ({ token, ...res }))
-            )
-          );
+      return;
+    }
+    const accessToken = await getFCMAccessToken(serviceAccount);
+    if (!accessToken) {
+      console.error('[PushNotifyAll] Failed to obtain FCM OAuth2 access token');
+      return;
+    }
+    const chunkSize = 25;
+    for (let i = 0; i < allFcmTokens.length; i += chunkSize) {
+      const chunk = allFcmTokens.slice(i, i + chunkSize);
+      const results = await Promise.allSettled(
+        chunk.map(token =>
+          sendFCMNotification(
+            {
+              token,
+              title: payload.title,
+              body: payload.body,
+              deepLink,
+              data: {
+                tag: payload.tag || 'saarthi-alert',
+                url: deepLink,
+              },
+            },
+            accessToken,
+            serviceAccount
+          ).then(res => ({ token, ...res }))
+        )
+      );
 
-          for (const res of results) {
-            if (res.status === 'fulfilled') {
-              if (res.value.success) {
-                fcmSuccessCount++;
-              } else {
-                const err = res.value.error || '';
-                if (err.includes('registration-token-not-registered') || err.includes('UNREGISTERED') || err.includes('404')) {
-                  deadFcmTokens.push(res.value.token);
-                }
-              }
+      for (const res of results) {
+        if (res.status === 'fulfilled') {
+          if (res.value.success) {
+            fcmSuccessCount++;
+          } else {
+            const err = res.value.error || '';
+            if (err.includes('registration-token-not-registered') || err.includes('UNREGISTERED') || err.includes('404')) {
+              deadFcmTokens.push(res.value.token);
             }
           }
         }
       }
     }
-  }
+  };
+
+  await Promise.allSettled([dispatchWeb(), dispatchFcm()]);
 
   // 5. Clean up dead subscriptions/devices asynchronously
   try {
@@ -198,6 +215,27 @@ export async function pushNotifyAll(payload: PushPayload) {
     fcm: { delivered: fcmSuccessCount, total: allFcmTokens.length },
     web: { delivered: webSuccessCount, total: webSubs.length },
   };
+}
+
+/**
+ * Safely dispatches push notifications. When called inside a Next.js request handler,
+ * schedules delivery in the background via Next.js after() / Cloudflare waitUntil()
+ * so the HTTP response returns immediately without timing out or hitting subrequest limits.
+ */
+export async function pushNotifyAll(payload: PushPayload) {
+  try {
+    after(async () => {
+      try {
+        await executePushDispatch(payload);
+      } catch (err) {
+        console.error('[PushNotifyAll] Background dispatch error:', err);
+      }
+    });
+    return { success: true, scheduled: true };
+  } catch (_e) {
+    // Outside request scope
+    return executePushDispatch(payload);
+  }
 }
 
 export interface StatusLike {

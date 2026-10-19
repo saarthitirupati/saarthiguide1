@@ -48,8 +48,8 @@ function buildPayload(type: string, daysSince?: number, custom?: CustomPushData)
 }
 
 async function handlePushDispatch(type: string, endpoint?: string, daysSince?: number, custom?: CustomPushData) {
-  const pub = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY || 'BG66lKYjVyCTBCyVvgT0qpmwpFaJ414JqzVUVNZ14KRQlcC5UdqDUOp9USQElQ2r7vO6P4fzYlX3oFRuu4oR5V8';
-  const priv = process.env.VAPID_PRIVATE_KEY || 'tdwjaJ5ZfrrPFNPyzsni4CZGLWwmftF7nl0LfUYAkDg';
+  const pub = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY;
+  const priv = process.env.VAPID_PRIVATE_KEY;
 
   if (!pub || !priv) {
     console.warn('[PushSend] VAPID keys not configured in environment');
@@ -69,7 +69,7 @@ async function handlePushDispatch(type: string, endpoint?: string, daysSince?: n
   // If broadcasting to all users (no specific web endpoint, not re-engagement), notify both Web Push and Native Android FCM
   if (!endpoint && type !== 'reengagement') {
     await pushNotifyAll(payload);
-    return NextResponse.json({ ok: true, sent: 1, broadcast: true });
+    return NextResponse.json({ ok: true, status: 'scheduled', scheduled: true, broadcast: true });
   }
 
   // Fetch subscriptions — specific endpoint or all; re-engagement filters by inactivity
@@ -131,8 +131,14 @@ async function checkAuth(req: Request): Promise<boolean> {
   // 1. Allow authenticated admin session from admin panel
   if (await isAuthorizedAdmin(req)) return true;
 
-  // 2. Allow in local dev if no secret configured
-  if (!process.env.CRON_SECRET) return true;
+  // 2. Allow in local dev only if no secret configured; FAIL CLOSED in production
+  if (!process.env.CRON_SECRET) {
+    if (process.env.NODE_ENV === 'production') {
+      console.error('[checkAuth] CRON_SECRET is not configured in production environment. Rejecting request.');
+      return false;
+    }
+    return true;
+  }
 
   // 3. Allow valid CRON_SECRET from cron triggers
   const authHeader = req.headers.get('authorization');

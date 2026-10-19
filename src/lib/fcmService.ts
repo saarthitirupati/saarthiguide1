@@ -136,9 +136,9 @@ export async function sendFCMNotification(
       android: {
         priority: 'HIGH',
         notification: {
-          channel_id: 'saarthi_live_alerts',
-          sound: 'default',
-          default_sound: true,
+          channel_id: 'saarthi_live_alerts_v3',
+          sound: 'soundreality_bell',
+          default_sound: false,
           default_vibrate_timings: true,
           visibility: 'PUBLIC',
           notification_priority: 'PRIORITY_MAX',
@@ -160,8 +160,8 @@ export async function sendFCMNotification(
 
     if (!res.ok) {
       const errText = await res.text();
-      console.error('[FCM] Send failed:', errText);
-      return { success: false, error: errText };
+      console.error(`[FCM] Send failed HTTP ${res.status}:`, errText);
+      return { success: false, error: `HTTP ${res.status}: ${errText}` };
     }
 
     return { success: true };
