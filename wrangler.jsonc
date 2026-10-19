@@ -12,7 +12,8 @@
   },
   "vars": {
     "NEXT_PUBLIC_VAPID_PUBLIC_KEY": "BG66lKYjVyCTBCyVvgT0qpmwpFaJ414JqzVUVNZ14KRQlcC5UdqDUOp9USQElQ2r7vO6P4fzYlX3oFRuu4oR5V8",
-    "VAPID_PRIVATE_KEY": "tdwjaJ5ZfrrPFNPyzsni4CZGLWwmftF7nl0LfUYAkDg"
+    "VAPID_PRIVATE_KEY": "tdwjaJ5ZfrrPFNPyzsni4CZGLWwmftF7nl0LfUYAkDg",
+    "CRON_SECRET": "saarthi_cron_sec_8a39f1c7d2e4"
   },
   "observability": {
     "logs": {
