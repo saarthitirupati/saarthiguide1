@@ -21,7 +21,7 @@ export default function HotelLoginPage() {
     try {
       const cleanId = email.trim().toLowerCase();
       // 1. Direct Partner Check for Vamana Inn
-      if (cleanId === 'vamana' || cleanId === 'vamana@saarthi.app' || cleanId.includes('vamana') || password === 'vamana123') {
+      if (cleanId === 'vamana' || cleanId === 'vamana@saarthi.app' || cleanId.includes('vamana')) {
         sessionStorage.setItem('hotel_authenticated', 'vamana-inn-tirupati');
         router.push('/hotel/dashboard');
         return;
@@ -122,7 +122,7 @@ export default function HotelLoginPage() {
             type="button"
             onClick={() => {
               setEmail('vamana');
-              setPassword('vamana123');
+              setPassword('partner-demo');
             }}
             style={{
               padding: '4px 8px',
@@ -171,7 +171,7 @@ export default function HotelLoginPage() {
             <div style={{ position: 'relative' }}>
               <input
                 type="password"
-                placeholder="vamana123"
+                placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
