@@ -5,7 +5,7 @@ import { CloudSun, Users, CalendarHeart, AlertTriangle } from 'lucide-react';
 import styles from './QuickGlance.module.css';
 import { useRealtimeStatus } from '@/lib/useRealtimeStatus';
 import { useTrip } from '@/components/TripContext';
-import { TIRUPATI_CENTER } from '@/utils/location';
+import { TIRUPATI_CENTER, TIRUMALA_CENTER } from '@/utils/location';
 
 export default function QuickGlance() {
   const { status } = useRealtimeStatus();
@@ -13,9 +13,9 @@ export default function QuickGlance() {
   const [weather, setWeather] = useState('...');
   
   useEffect(() => {
-    // Fetch live weather based on user location or fallback to Tirupati
-    const lat = userLocation?.lat || TIRUPATI_CENTER.lat;
-    const lng = userLocation?.lng || TIRUPATI_CENTER.lng;
+    // Fetch live weather based on user location or fallback to Tirumala
+    const lat = userLocation?.lat || TIRUMALA_CENTER.lat;
+    const lng = userLocation?.lng || TIRUMALA_CENTER.lng;
     
     fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&current=temperature_2m`)
       .then(res => res.json())

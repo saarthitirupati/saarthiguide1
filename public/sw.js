@@ -1,7 +1,7 @@
 // Saarthi Guide Service Worker v1
 // Caches app shell & visited pages for full offline support on Tirumala hill
 
-const CACHE_NAME = 'saarthi-v12';
+const CACHE_NAME = 'saarthi-v13';
 const APP_SHELL = [
   '/',
   '/explore',
@@ -189,7 +189,7 @@ self.addEventListener('push', (event) => {
     renotify: true,
     data: { url: url },
     vibrate: [200, 100, 200],
-    requireInteraction: false,
+    requireInteraction: true,
     silent: false,
   };
 

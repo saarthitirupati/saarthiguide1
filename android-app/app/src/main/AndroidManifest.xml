@@ -47,6 +47,7 @@
     </queries>
 
     <application
+        android:name=".Application"
         android:allowBackup="true"
         android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
@@ -57,7 +58,7 @@
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_channel_id"
-            android:value="saarthi_live_alerts" />
+            android:value="saarthi_live_alerts_v3" />
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"

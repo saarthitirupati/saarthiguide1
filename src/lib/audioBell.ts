@@ -34,7 +34,8 @@ import {
   playSaarthiSonicIdent,
   stopSaarthiSonicIdent,
   playVeenaPluck,
-  playMalaCompletionSonicIdent
+  playMalaCompletionSonicIdent,
+  playOmNotificationSound
 } from './audioIdentity';
 
 export {
@@ -57,7 +58,8 @@ export {
   playSaarthiSonicIdent,
   stopSaarthiSonicIdent,
   playVeenaPluck,
-  playMalaCompletionSonicIdent
+  playMalaCompletionSonicIdent,
+  playOmNotificationSound
 };
 
 /**

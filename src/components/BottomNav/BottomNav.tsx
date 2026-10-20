@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Home, Compass, Layers } from 'lucide-react';
+import { Home, BedDouble, Car, Layers, Compass } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import styles from './BottomNav.module.css';
@@ -11,47 +11,75 @@ import { useLanguage } from '@/lib/useLanguage';
 const TEXTS = {
   en: {
     home: 'Home',
+    rooms: 'Rooms',
+    cabs: 'Cabs',
     essentials: 'Essentials',
-    explore: 'Explore'
+    explore: 'Explore',
   },
   te: {
     home: 'హోమ్',
+    rooms: 'గదులు',
+    cabs: 'క్యాబ్స్',
     essentials: 'అవసరాలు',
-    explore: 'అన్వేషించు'
+    explore: 'అన్వేషించు',
   },
   hi: {
     home: 'होम',
+    rooms: 'कमरे',
+    cabs: 'कैब्स',
     essentials: 'आवश्यकताएं',
-    explore: 'खोजें'
+    explore: 'खोजें',
   },
   ta: {
     home: 'முகப்பு',
+    rooms: 'அறைகள்',
+    cabs: 'கேப்ஸ்',
     essentials: 'தேவைகள்',
-    explore: 'ஆராய்க'
-  }
+    explore: 'ஆராய்க',
+  },
 };
 
-const getNavItems = (t: Record<string, string> | undefined) => {
-  const safeT = t || TEXTS.en;
-  return [
-    { name: safeT.home || 'Home',             icon: Home,     href: '/' },
-    { name: safeT.essentials || 'Essentials', icon: Layers,   href: '/essentials', isFab: true },
-    { name: safeT.explore || 'Explore',       icon: Compass,  href: '/explore' },
-  ];
-};
+type TextMap = Record<string, string>;
+
+const getNavItems = (t: TextMap) => [
+  { key: 'home',       name: t.home || 'Home',             icon: Home,      href: '/' },
+  { key: 'rooms',      name: t.rooms || 'Rooms',           icon: BedDouble, href: '/tirupati-hotels' },
+  { key: 'essentials', name: t.essentials || 'Essentials', icon: Layers,    href: '/essentials', isFab: true },
+  { key: 'cabs',       name: t.cabs || 'Cabs',             icon: Car,       href: '/cab-booking' },
+  { key: 'explore',    name: t.explore || 'Explore',       icon: Compass,   href: '/explore' },
+];
 
 export default function BottomNav() {
-  const pathname  = usePathname();
+  const pathname = usePathname();
   const [mounted, setMounted] = useState(false);
   const lang = useLanguage();
-  const t = (TEXTS as Record<string, Record<string, string>>)[lang] || TEXTS.en;
+  const t = (TEXTS as Record<string, TextMap>)[lang] || TEXTS.en;
 
-  useEffect(() => { setMounted(true); }, []);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const navItems = getNavItems(t);
 
   return (
-    <nav className={styles.nav} suppressHydrationWarning>
+    <nav
+      className={styles.nav}
+      style={{
+        position: 'fixed',
+        bottom: 0,
+        left: 0,
+        right: 0,
+        width: '100%',
+        maxWidth: '100%',
+        margin: 0,
+        borderRadius: 0,
+        borderTop: '1px solid rgba(226, 232, 240, 0.95)',
+        backgroundColor: '#FFFFFF',
+        zIndex: 1000,
+        boxShadow: '0 -2px 10px rgba(0, 0, 0, 0.05)',
+      }}
+      suppressHydrationWarning
+    >
       <div className={styles.container}>
         {navItems.map((item) => {
           const isActive = mounted && (
@@ -61,18 +89,18 @@ export default function BottomNav() {
 
           if (item.isFab) {
             return (
-              <div key={item.name} className={styles.slot}>
+              <div key={item.key} className={styles.slot}>
                 <Link href={item.href} className={styles.fabWrapper}>
-                  <motion.div 
+                  <motion.div
                     className={styles.fabRing}
                     animate={{
                       scale: [1, 1.15, 1],
-                      opacity: [0.75, 0.25, 0.75]
+                      opacity: [0.75, 0.25, 0.75],
                     }}
                     transition={{
                       repeat: Infinity,
                       duration: 2.8,
-                      ease: 'easeInOut'
+                      ease: 'easeInOut',
                     }}
                   />
                   <motion.div
@@ -85,7 +113,7 @@ export default function BottomNav() {
                       animate={isActive ? { rotate: [0, 180, 360], scale: [1, 1.15, 1] } : { scale: 1, rotate: 0 }}
                       transition={{ duration: 0.5, ease: 'easeOut' }}
                     >
-                      <item.icon size={26} className={styles.fabIcon} />
+                      <item.icon size={24} className={styles.fabIcon} />
                     </motion.div>
                   </motion.div>
                   <span className={`${styles.fabLabel} ${isActive ? styles.fabLabelActive : ''}`}>
@@ -97,33 +125,25 @@ export default function BottomNav() {
           }
 
           return (
-            <div key={item.name} className={styles.slot}>
-              <Link 
-                href={item.href} 
-                className={`${styles.navLink} ${isActive ? styles.navLinkActive : styles.navLinkInactive}`}
+            <div key={item.key} className={styles.slot}>
+              <Link
+                href={item.href}
+                className={styles.navLink}
               >
                 <motion.div
-                  className={styles.navContent}
-                  whileTap={{ scale: 0.92 }}
+                  className={`${styles.iconWrapper} ${isActive ? styles.iconWrapperActive : ''}`}
+                  whileTap={{ scale: 0.9 }}
                   transition={{ type: 'spring', stiffness: 500, damping: 25 }}
                 >
-                  <motion.div
-                    animate={{ 
-                      scale: isActive ? 1.08 : 1,
-                      y: isActive ? -1 : 0
-                    }}
-                    transition={{ type: 'spring', stiffness: 420, damping: 22 }}
-                    style={{ display: 'flex', alignItems: 'center' }}
-                  >
-                    <item.icon
-                      size={22}
-                      className={isActive ? styles.activeIcon : styles.inactiveIcon}
-                    />
-                  </motion.div>
-                  <span className={isActive ? styles.activeLabel : styles.inactiveLabel}>
-                    {item.name}
-                  </span>
+                  <item.icon
+                    size={20}
+                    strokeWidth={isActive ? 2.4 : 1.8}
+                    className={isActive ? styles.activeIcon : styles.inactiveIcon}
+                  />
                 </motion.div>
+                <span className={isActive ? styles.activeLabel : styles.inactiveLabel}>
+                  {item.name}
+                </span>
               </Link>
             </div>
           );

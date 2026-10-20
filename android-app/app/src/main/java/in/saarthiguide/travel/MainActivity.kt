@@ -131,14 +131,35 @@ class MainActivity : AppCompatActivity() {
             try {
                 val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as? android.app.NotificationManager
                 if (notificationManager != null) {
+                    val alertsChannel = android.app.NotificationChannel(
+                        "saarthi_alerts_v2",
+                        "Saarthi Alerts",
+                        android.app.NotificationManager.IMPORTANCE_HIGH
+                    ).apply {
+                        description = "Live temple timings, crowd updates, and SSD token alerts"
+                        enableVibration(true)
+                        enableLights(true)
+                        lockscreenVisibility = android.app.Notification.VISIBILITY_PUBLIC
+                        setShowBadge(true)
+                    }
+                    val soundUri = android.net.Uri.parse("android.resource://" + packageName + "/" + R.raw.om_notification)
+                    val audioAttributes = android.media.AudioAttributes.Builder()
+                        .setContentType(android.media.AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                        .setUsage(android.media.AudioAttributes.USAGE_NOTIFICATION)
+                        .build()
+
+                    alertsChannel.setSound(soundUri, audioAttributes)
+                    notificationManager.createNotificationChannel(alertsChannel)
+
                     val channel = android.app.NotificationChannel(
-                        "saarthi_live_alerts",
+                        "saarthi_live_alerts_v4",
                         "Tirumala Live Alerts",
                         android.app.NotificationManager.IMPORTANCE_HIGH
                     ).apply {
                         description = "Urgent crowd, temple timing, and travel updates"
                         enableVibration(true)
                         enableLights(true)
+                        setSound(soundUri, audioAttributes)
                         lockscreenVisibility = android.app.Notification.VISIBILITY_PUBLIC
                         setShowBadge(true)
                     }

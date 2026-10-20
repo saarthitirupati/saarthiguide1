@@ -78,7 +78,7 @@ function LayoutContent({
 
   const isExcluded = pathname === '/onboarding' || pathname === '/splash' || isAdmin || isStudio;
   const isCheckingOrNeedsOnboarding = !isExcluded && (needsOnboarding === true);
-  const showBottomNav = !showSplash && !isAdmin && ['/', '/explore', '/saved', '/profile', '/essentials'].includes(pathname);
+  const showBottomNav = !showSplash && !isAdmin && ['/', '/explore', '/saved', '/profile', '/essentials', '/tirupati-hotels', '/cab-booking', '/journey'].includes(pathname);
   const hideContent = !isAdmin && (showSplash || isCheckingOrNeedsOnboarding);
 
   return (

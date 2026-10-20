@@ -85,8 +85,13 @@ class SaarthiFirebaseService : FirebaseMessagingService() {
     }
 
     private fun showLockScreenNotification(title: String, body: String, targetUrl: String) {
-        val channelId = "saarthi_live_alerts"
+        val channelId = "saarthi_live_alerts_v4"
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val soundUri = Uri.parse("android.resource://" + packageName + "/" + R.raw.om_notification)
+        val audioAttributes = android.media.AudioAttributes.Builder()
+            .setContentType(android.media.AudioAttributes.CONTENT_TYPE_SONIFICATION)
+            .setUsage(android.media.AudioAttributes.USAGE_NOTIFICATION)
+            .build()
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
@@ -96,6 +101,8 @@ class SaarthiFirebaseService : FirebaseMessagingService() {
             ).apply {
                 description = "Urgent crowd, temple timing, and travel updates"
                 enableVibration(true)
+                enableLights(true)
+                setSound(soundUri, audioAttributes)
                 lockscreenVisibility = android.app.Notification.VISIBILITY_PUBLIC
                 setShowBadge(true)
             }
@@ -119,9 +126,10 @@ class SaarthiFirebaseService : FirebaseMessagingService() {
             .setContentTitle(title)
             .setContentText(body)
             .setPriority(NotificationCompat.PRIORITY_MAX)
-            .setCategory(NotificationCompat.CATEGORY_ALARM)
+            .setCategory(NotificationCompat.CATEGORY_EVENT)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-            .setDefaults(NotificationCompat.DEFAULT_ALL)
+            .setSound(soundUri)
+            .setDefaults(NotificationCompat.DEFAULT_VIBRATE or NotificationCompat.DEFAULT_LIGHTS)
             .setAutoCancel(true)
             .setContentIntent(pendingIntent)
             .build()

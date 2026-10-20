@@ -1,10 +1,10 @@
 {
-  "waitTime": "1-5 Hours ",
+  "waitTime": "6-8 Hours",
   "bestTime": "",
   "crowdLevel": "low",
   "sevaStatus": "All sevas open",
   "notice": "HIGH CROWD WARNING: Ghat road traffic slow. Exercise caution.",
-  "lastUpdated": "2026-10-15T01:31:28.888+00:00",
+  "lastUpdated": "2026-10-20T01:22:55.908+00:00",
   "darshanSpeed": "normal",
   "accommodationStatus": "available",
   "ladduAvailability": "available",
@@ -12,17 +12,17 @@
   "darshans": [
     {
       "name": "Sarva Darshan (Free)",
-      "waitTime": "1-5 Hours ",
+      "waitTime": "6-8 Hours",
       "peakHours": "Daily 10 AM - 6 PM"
     },
     {
       "name": "Special Entry (₹300)",
-      "waitTime": "2-4 Hours",
+      "waitTime": "3-4 Hours ",
       "peakHours": "Daily 9 AM - 3 PM"
     },
     {
       "name": "Divya Darshan (Footpath)",
-      "waitTime": "Suspended ",
+      "waitTime": "suspended ",
       "peakHours": "Daily 8 AM - 4 PM"
     },
     {
@@ -31,41 +31,41 @@
       "peakHours": "Daily 6 AM - 8 AM"
     }
   ],
-  "ssdTokenStatus": "closed-for-day",
-  "ssdNextTokenTime": "SSD are Cancelled ",
+  "ssdTokenStatus": "suspended",
+  "ssdNextTokenTime": "Suspended for Brahmotsavam",
   "ssdTokenSlots": [
     {
       "slotTime": "5:00 AM - 7:00 AM",
       "status": "closed",
-      "tokensLeft": "Full"
+      "tokensLeft": "Suspended"
     },
     {
       "slotTime": "7:00 AM - 9:00 AM",
       "status": "closed",
-      "tokensLeft": "Full"
+      "tokensLeft": "Suspended"
     },
     {
       "slotTime": "9:00 AM - 11:00 AM",
       "status": "closed",
-      "tokensLeft": "Full"
+      "tokensLeft": "Suspended"
     },
     {
       "slotTime": "11:00 AM - 1:00 PM",
       "status": "closed",
-      "tokensLeft": "Full"
+      "tokensLeft": "Suspended"
     },
     {
       "slotTime": "2:00 PM - 4:00 PM",
       "status": "closed",
-      "tokensLeft": "Full"
+      "tokensLeft": "Suspended"
     },
     {
       "slotTime": "4:00 PM - 6:00 PM",
       "status": "closed",
-      "tokensLeft": "Full"
+      "tokensLeft": "Suspended"
     }
   ],
-  "ssdNotice": "SSD  Tokens are cancelled due to Srivari Navaratri Brahmotsavam from OCT 11 to 22",
+  "ssdNotice": "SSD Tokens are cancelled due to Srivari Navaratri Brahmotsavam from OCT 11 to 22",
   "ssdTimingsGuide": "SSD tokens is suspended from today 10 oct 2026 to 20 Oct 2026 due to Srivari Navaratri Brahmotsavams.",
   "ssdCounters": [
     {
@@ -81,6 +81,6 @@
       "description": "Located near Alipiri Footpath Link Road (Ideal for pedestrian pilgrims)"
     }
   ],
-  "ssdAdvisoryTag": "",
-  "ssdModeBadge": ""
+  "ssdAdvisoryTag": "Brahmotsavam",
+  "ssdModeBadge": "Open 24/7"
 }

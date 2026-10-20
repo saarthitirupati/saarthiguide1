@@ -65,6 +65,9 @@ android-app/app/saarthi-release.keystore
 
 # local cloned agent skills
 .agents/google-skills/
+.agents/skills/
+awesome-skills/
+sound/
 
 # separate mobile codebase
 saarthi_mobile/

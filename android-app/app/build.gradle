@@ -5,14 +5,14 @@ plugins {
 
 android {
     namespace 'in.saarthiguide.travel'
-    compileSdk 36
+    compileSdk 35
 
     defaultConfig {
         applicationId 'in.saarthiguide.travel'
         minSdk 24
-        targetSdk 36
-        versionCode 112
-        versionName '1.1.8'
+        targetSdk 35
+        versionCode 119
+        versionName '1.2.4'
 
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }

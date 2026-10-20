@@ -639,3 +639,29 @@ export const stopSaarthiSonicIdent = stopScreen1Opening;
 export const playVeenaPluck = playBeadComplete;
 export const playMalaCompletionSonicIdent = playJapa108Complete;
 
+/**
+ * 🕉️ Sacred Om Notification Sound (/audio/om-notification.mp3)
+ * Plays the sacred Om notification chime for live alerts, notifications, and notices.
+ */
+let activeNotificationAudio: HTMLAudioElement | null = null;
+
+export async function playOmNotificationSound(volume: number = 0.95): Promise<boolean> {
+  if (typeof window === 'undefined') return false;
+  try {
+    if (activeNotificationAudio) {
+      activeNotificationAudio.pause();
+      activeNotificationAudio.currentTime = 0;
+    }
+    const audio = new Audio('/audio/om-notification.mp3');
+    audio.preload = 'auto';
+    audio.volume = Math.max(0, Math.min(1, volume));
+    activeNotificationAudio = audio;
+    await audio.play();
+    return true;
+  } catch (err) {
+    console.debug('Om notification audio playback prevented or deferred:', err);
+    return false;
+  }
+}
+
+

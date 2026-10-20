@@ -136,8 +136,8 @@ export async function sendFCMNotification(
       android: {
         priority: 'HIGH',
         notification: {
-          channel_id: 'saarthi_live_alerts_v3',
-          sound: 'soundreality_bell',
+          channel_id: 'saarthi_live_alerts_v4',
+          sound: 'om_notification',
           default_sound: false,
           default_vibrate_timings: true,
           visibility: 'PUBLIC',

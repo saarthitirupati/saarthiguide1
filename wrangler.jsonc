@@ -1,5 +1,5 @@
 {
-  "$schema": "node_modules/wrangler/config-schema.json",
+  "$schema": "https://raw.githubusercontent.com/cloudflare/workers-sdk/main/packages/wrangler/config-schema.json",
   "name": "saarthiguide1",
   "main": ".open-next/worker.js",
   "compatibility_date": "2026-10-06",
@@ -27,5 +27,8 @@
       "head_sampling_rate": 1,
       "persist": true
     }
+  },
+  "placement": {
+    "mode": "smart"
   }
 }

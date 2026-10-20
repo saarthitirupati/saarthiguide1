@@ -2,30 +2,32 @@ import { NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase';
 
 let cachedWeather: { temp: number; condition: string; timestamp: number } = {
-  temp: 26,
+  temp: 23,
   condition: 'Pleasant',
-  timestamp: Date.now()
+  timestamp: 0
 };
 
 async function getWeatherFast(): Promise<{ temp: number; condition: string }> {
   const now = Date.now();
-  if ((now - cachedWeather.timestamp) < 300000) {
+  if ((now - cachedWeather.timestamp) < 300000 && cachedWeather.timestamp > 0) {
     return { temp: cachedWeather.temp, condition: cachedWeather.condition };
   }
 
   try {
     const weatherRes = await fetch(
-      'https://api.open-meteo.com/v1/forecast?latitude=13.6288&longitude=79.4192&current=temperature_2m,weather_code',
-      { signal: AbortSignal.timeout(400), next: { revalidate: 300 } }
+      'https://api.open-meteo.com/v1/forecast?latitude=13.6832&longitude=79.3473&current=temperature_2m,weather_code',
+      { signal: AbortSignal.timeout(1200), next: { revalidate: 300 } }
     );
     if (weatherRes.ok) {
       const data = await weatherRes.json();
       if (data?.current) {
-        const temp = Math.round(data.current.temperature_2m ?? 26);
+        const temp = Math.round(data.current.temperature_2m ?? 23);
         const code = data.current.weather_code ?? 0;
         let condition = 'Pleasant';
         if (code >= 1 && code <= 3) condition = 'Partly Cloudy';
+        else if (code >= 45 && code <= 48) condition = 'Foggy / Misty';
         else if (code >= 51 && code <= 82) condition = 'Rainy';
+        else if (code >= 95) condition = 'Thunderstorm';
         cachedWeather = { temp, condition, timestamp: now };
         return { temp, condition };
       }

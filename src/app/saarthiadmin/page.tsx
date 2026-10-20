@@ -26,7 +26,9 @@ import {
   Sparkles,
   Calendar,
   Fuel,
-  Compass
+  Compass,
+  Bell,
+  BedDouble
 } from 'lucide-react';
 import { PLACES } from '@/data/places';
 import { Place } from '@/types/place';
@@ -46,11 +48,27 @@ interface GrowthStats {
   activeCampaigns: number;
 }
 
+interface LaunchInterestItem {
+  id: string;
+  service: 'cabs' | 'rooms';
+  timestamp: string;
+  phone?: string;
+  email?: string;
+}
+
+interface LaunchInterestStats {
+  total: number;
+  cabs: number;
+  rooms: number;
+  recent?: LaunchInterestItem[];
+}
+
 export default function AdminDashboard() {
   const [places, setPlaces] = useState<Place[]>(PLACES);
   const [alerts, setAlerts] = useState<any[]>([]);
   const [liveStatus, setLiveStatus] = useState<LiveGroundSnapshot | null>(null);
   const [growthMetrics, setGrowthMetrics] = useState<GrowthStats | null>(null);
+  const [launchInterest, setLaunchInterest] = useState<LaunchInterestStats | null>(null);
   const [loading, setLoading] = useState(true);
   const [lastSyncTime, setLastSyncTime] = useState<string>('Just now');
 
@@ -68,12 +86,13 @@ export default function AdminDashboard() {
       setLoading(true);
       const headers = getAdminHeaders();
       
-      // Fetch places, alerts, live status, and growth metrics concurrently
-      const [placesData, alertsData, statusData, growthData] = await Promise.all([
+      // Fetch places, alerts, live status, growth metrics, and launch interest concurrently
+      const [placesData, alertsData, statusData, growthData, launchData] = await Promise.all([
         safeFetchJson<any>('/api/admin/places', { headers }),
         safeFetchJson<any>('/api/v1/alerts?all=true', { headers }),
         safeFetchJson<any>('/api/v1/status'),
-        safeFetchJson<any>('/api/admin/growth', { headers })
+        safeFetchJson<any>('/api/admin/growth', { headers }),
+        safeFetchJson<any>('/api/launch-interest')
       ]);
 
       if (placesData && placesData.places && placesData.places.length > 0) {
@@ -104,6 +123,15 @@ export default function AdminDashboard() {
         setGrowthMetrics(growthData.metrics);
       }
 
+      if (launchData?.success) {
+        setLaunchInterest({
+          total: Number(launchData.total) || 0,
+          cabs: Number(launchData.cabs) || 0,
+          rooms: Number(launchData.rooms) || 0,
+          recent: Array.isArray(launchData.recent) ? launchData.recent : [],
+        });
+      }
+
       setLastSyncTime(new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }));
     } catch (e) {
       console.error('Failed to load dashboard metrics:', e);
@@ -112,8 +140,31 @@ export default function AdminDashboard() {
     }
   };
 
+  const fetchLaunchInterest = async () => {
+    try {
+      const launchData = await safeFetchJson<any>('/api/launch-interest');
+      if (launchData?.success) {
+        setLaunchInterest({
+          total: Number(launchData.total) || 0,
+          cabs: Number(launchData.cabs) || 0,
+          rooms: Number(launchData.rooms) || 0,
+          recent: Array.isArray(launchData.recent) ? launchData.recent : [],
+        });
+      }
+    } catch (err) {
+      console.error('Failed to poll launch waitlist:', err);
+    }
+  };
+
   useEffect(() => {
     fetchDashboardData();
+
+    // Live auto-polling every 10 seconds for real-time demand sync
+    const pollInterval = setInterval(() => {
+      fetchLaunchInterest();
+    }, 10000);
+
+    return () => clearInterval(pollInterval);
   }, []);
 
   // --- Dynamic Stats Calculations ---
@@ -520,6 +571,47 @@ export default function AdminDashboard() {
           </div>
         </div>
 
+        {/* Launch Waitlist / Notify Demand Card */}
+        <div className={styles.statCard} style={{ borderLeft: '4px solid #F59E0B' }}>
+          <div className={styles.statTopRow}>
+            <span className={styles.statLabel}>LAUNCH NOTIFY DEMAND</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation();
+                  fetchLaunchInterest();
+                }}
+                title="Refresh Live Waitlist"
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  cursor: 'pointer',
+                  padding: '3px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  color: '#94A3B8',
+                  borderRadius: '4px'
+                }}
+              >
+                <RefreshCw size={13} />
+              </button>
+              <div className={styles.statIcon}><Bell size={18} color="#D97706"/></div>
+            </div>
+          </div>
+          <div className={styles.statValue}>
+            {launchInterest ? launchInterest.total : 0}
+          </div>
+          <div className={styles.subStats}>
+            <span className={styles.subStatSuccess} style={{ color: '#0F5132', fontWeight: 600 }}>
+              🚗 {launchInterest?.cabs || 0} Cabs
+            </span>
+            <span style={{ color: '#CBD5E1', margin: '0 4px' }}>·</span>
+            <span className={styles.subStatSuccess} style={{ color: '#D97706', fontWeight: 600 }}>
+              🛏️ {launchInterest?.rooms || 0} Rooms
+            </span>
+          </div>
+        </div>
+
       </div>
 
       {/* ── Live Data Quality Audit ── */}
@@ -557,6 +649,115 @@ export default function AdminDashboard() {
                 </Link>
               </div>
             ))
+          )}
+        </div>
+      </div>
+
+      {/* ── Live Launch Waitlist Activity ── */}
+      <div className={styles.dataQualitySection} style={{ marginTop: '24px' }}>
+        <div className={styles.sectionTitle}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <Bell size={16} color="#D97706" />
+            <span>Live Launch Waitlist Demand (Real-Time Stream)</span>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <span style={{
+              fontSize: '11px',
+              fontWeight: 700,
+              backgroundColor: '#FEF3C7',
+              color: '#B45309',
+              padding: '3px 8px',
+              borderRadius: '12px'
+            }}>
+              Auto-sync: 10s
+            </span>
+            <button
+              onClick={fetchLaunchInterest}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '4px',
+                padding: '4px 10px',
+                borderRadius: '8px',
+                border: '1px solid #CBD5E1',
+                backgroundColor: '#FFFFFF',
+                fontSize: '12px',
+                fontWeight: 600,
+                color: '#334155',
+                cursor: 'pointer'
+              }}
+            >
+              <RefreshCw size={12} />
+              <span>Sync Now</span>
+            </button>
+          </div>
+        </div>
+
+        <div style={{ padding: '8px 0' }}>
+          {(!launchInterest?.recent || launchInterest.recent.length === 0) ? (
+            <div style={{ padding: '24px 16px', textAlign: 'center', color: '#64748B', fontSize: '13px' }}>
+              No waitlist signups recorded yet. Registrations on <Link href="/cab-booking" style={{ color: '#0F5132', fontWeight: 600 }}>/cab-booking</Link> and <Link href="/tirupati-hotels" style={{ color: '#0F5132', fontWeight: 600 }}>/tirupati-hotels</Link> will stream here live.
+            </div>
+          ) : (
+            <div style={{ overflowX: 'auto' }}>
+              <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '13px' }}>
+                <thead>
+                  <tr style={{ borderBottom: '1px solid #E2E8F0', color: '#64748B', fontSize: '11.5px', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                    <th style={{ padding: '10px 12px' }}>Time</th>
+                    <th style={{ padding: '10px 12px' }}>Service</th>
+                    <th style={{ padding: '10px 12px' }}>Pilgrim Contact</th>
+                    <th style={{ padding: '10px 12px' }}>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {launchInterest.recent.slice(0, 15).map((item) => (
+                    <tr key={item.id} style={{ borderBottom: '1px solid #F1F5F9' }}>
+                      <td style={{ padding: '10px 12px', color: '#475569', fontSize: '12px', whiteSpace: 'nowrap' }}>
+                        {new Date(item.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
+                        <span style={{ color: '#94A3B8', fontSize: '11px', display: 'block' }}>
+                          {new Date(item.timestamp).toLocaleDateString([], { month: 'short', day: 'numeric' })}
+                        </span>
+                      </td>
+                      <td style={{ padding: '10px 12px', fontWeight: 600 }}>
+                        {item.service === 'cabs' ? (
+                          <span style={{ display: 'inline-flex', alignItems: 'center', gap: '5px', color: '#0F5132' }}>
+                            🚗 Ghat Road Cab
+                          </span>
+                        ) : (
+                          <span style={{ display: 'inline-flex', alignItems: 'center', gap: '5px', color: '#B45309' }}>
+                            🛏️ Pilgrim Room
+                          </span>
+                        )}
+                      </td>
+                      <td style={{ padding: '10px 12px', color: '#1E293B', fontFamily: 'monospace', fontSize: '12.5px' }}>
+                        {item.phone ? (
+                          <span style={{ color: '#0F5132', fontWeight: 600 }}>
+                            📞 {item.phone}
+                          </span>
+                        ) : (
+                          <span style={{ color: '#94A3B8', fontStyle: 'italic', fontFamily: 'inherit' }}>
+                            Anonymous Pilgrim
+                          </span>
+                        )}
+                      </td>
+                      <td style={{ padding: '10px 12px' }}>
+                        <span style={{
+                          display: 'inline-block',
+                          padding: '3px 8px',
+                          borderRadius: '10px',
+                          fontSize: '11px',
+                          fontWeight: 700,
+                          backgroundColor: '#ECFDF5',
+                          color: '#065F46'
+                        }}>
+                          Queued for Launch
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           )}
         </div>
       </div>

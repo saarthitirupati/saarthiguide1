@@ -70,11 +70,11 @@ export default function FootpathsPage() {
             <ArrowLeft size={18} />
           </Link>
           <div>
-            <h1 style={{ fontSize: '16px', fontWeight: 700, color: '#0F172A', margin: 0, lineHeight: 1.2 }}>
-              {lang === 'te' ? 'తిరుమల సోపాన మార్గాలు' : 'Tirumala Footpath Routes'}
+            <h1 style={{ fontSize: '16px', fontWeight: 800, color: '#0F172A', margin: 0, lineHeight: 1.2 }}>
+              {lang === 'te' ? 'తిరుమల సోపాన మార్గాలు' : 'Footpath Routes'}
             </h1>
             <span style={{ fontSize: '11px', color: '#64748B', fontWeight: 600 }}>
-              {lang === 'te' ? 'అలిపిరి & శ్రీవారి మెట్టు వేళలు' : 'Alipiri & Srivari Mettu Trek Timings'}
+              {lang === 'te' ? 'లైవ్ సమయాలు & నిబంధనలు' : 'Live Gate Timings & Guidelines'}
             </span>
           </div>
         </div>
@@ -103,7 +103,7 @@ export default function FootpathsPage() {
       <div style={{
         background: 'linear-gradient(135deg, #022819 0%, #064E3B 100%)',
         color: '#FFFFFF',
-        padding: '24px 18px 32px',
+        padding: '20px 16px 26px',
         borderBottom: '3px solid #C89B3C'
       }}>
         <div style={{ maxWidth: '680px', margin: '0 auto' }}>
@@ -114,44 +114,42 @@ export default function FootpathsPage() {
             backgroundColor: 'rgba(200, 155, 60, 0.2)',
             border: '1px solid rgba(200, 155, 60, 0.4)',
             color: '#FDE047',
-            padding: '4px 10px',
+            padding: '3px 10px',
             borderRadius: '99px',
             fontSize: '11px',
-            fontWeight: 600,
+            fontWeight: 700,
             letterSpacing: '0.04em',
             textTransform: 'uppercase',
-            marginBottom: '10px'
+            marginBottom: '8px'
           }}>
-            <Sparkles size={13} color="#C89B3C" />
-            <span>{lang === 'te' ? 'నడకదారి భక్తుల సమయాలు' : 'Live Pedestrian Gate Timings'}</span>
+            <Sparkles size={12} color="#C89B3C" />
+            <span>{lang === 'te' ? 'లైవ్ సమయాలు' : 'Live Timings'}</span>
           </div>
 
-          <h2 style={{ fontSize: '22px', fontWeight: 700, margin: '0 0 8px', lineHeight: 1.25 }}>
-            {lang === 'te' 
-              ? 'శ్రీవారి మెట్టు & అలిపిరి నడక మార్గాల పూర్తి వివరాలు' 
-              : 'Two Sacred Routes up the Seven Hills'}
+          <h2 style={{ fontSize: '20px', fontWeight: 800, margin: '0 0 6px', lineHeight: 1.25 }}>
+            {lang === 'te' ? 'తిరుమల కొండ నడక మార్గాలు' : 'Two Trek Pathways up Tirumala'}
           </h2>
 
-          <p style={{ fontSize: '13px', color: '#D1FAE5', margin: 0, lineHeight: 1.45, fontWeight: 500 }}>
+          <p style={{ fontSize: '12.5px', color: '#D1FAE5', margin: 0, lineHeight: 1.45 }}>
             {lang === 'te'
-              ? 'శ్రీవారి మెట్టు వేగవంతమైన ప్రత్యామ్నాయ మార్గం. అలిపిరి సాంప్రదాయ సుదీర్ఘ మార్గం. నియమాలను ముందుగా గమనించండి.'
-              : 'Srivari Mettu offers the shorter 2.1 km trek. Alipiri is the historic 9 km pathway with 24/7 security & shelters.'}
+              ? 'శ్రీవారి మెట్టు (2.1 కి.మీ - వేగవంతమైనది) • అలిపిరి (9 కి.మీ - 24/7 రక్షణ)'
+              : 'Srivari Mettu (2.1 km • Faster) vs Alipiri Mettu (9 km • Historic 24/7 route)'}
           </p>
 
           {/* Quick Filter Switch */}
           <div style={{
             display: 'flex',
             gap: '6px',
-            marginTop: '16px'
+            marginTop: '14px'
           }}>
             <button
               onClick={() => setSelectedRoute('both')}
               style={{
                 flex: 1,
-                padding: '8px 12px',
+                padding: '7px 10px',
                 borderRadius: '10px',
-                fontSize: '12px',
-                fontWeight: 600,
+                fontSize: '11.5px',
+                fontWeight: 700,
                 border: 'none',
                 cursor: 'pointer',
                 backgroundColor: selectedRoute === 'both' ? '#C89B3C' : 'rgba(255,255,255,0.15)',
@@ -159,16 +157,16 @@ export default function FootpathsPage() {
                 transition: 'all 0.15s ease'
               }}
             >
-              {lang === 'te' ? 'అన్నీ చూడండి' : 'Compare Both'}
+              {lang === 'te' ? 'అన్నీ' : 'Compare'}
             </button>
             <button
               onClick={() => setSelectedRoute('srivari')}
               style={{
                 flex: 1,
-                padding: '8px 12px',
+                padding: '7px 10px',
                 borderRadius: '10px',
-                fontSize: '12px',
-                fontWeight: 600,
+                fontSize: '11.5px',
+                fontWeight: 700,
                 border: 'none',
                 cursor: 'pointer',
                 backgroundColor: selectedRoute === 'srivari' ? '#C89B3C' : 'rgba(255,255,255,0.15)',
@@ -182,10 +180,10 @@ export default function FootpathsPage() {
               onClick={() => setSelectedRoute('alipiri')}
               style={{
                 flex: 1,
-                padding: '8px 12px',
+                padding: '7px 10px',
                 borderRadius: '10px',
-                fontSize: '12px',
-                fontWeight: 600,
+                fontSize: '11.5px',
+                fontWeight: 700,
                 border: 'none',
                 cursor: 'pointer',
                 backgroundColor: selectedRoute === 'alipiri' ? '#C89B3C' : 'rgba(255,255,255,0.15)',
@@ -193,131 +191,149 @@ export default function FootpathsPage() {
                 transition: 'all 0.15s ease'
               }}
             >
-              {lang === 'te' ? 'అలిపిరి మెట్టు' : 'Alipiri Mettu'}
+              {lang === 'te' ? 'అలిపిరి' : 'Alipiri'}
             </button>
           </div>
         </div>
       </div>
 
       {/* ── 3. MAIN ROUTE DETAILS CONTAINER ── */}
-      <main style={{ maxWidth: '680px', margin: '-16px auto 0', padding: '0 16px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+      <main style={{ maxWidth: '680px', margin: '-14px auto 0', padding: '0 16px', display: 'flex', flexDirection: 'column', gap: '14px' }}>
 
-        {/* ── CARD 1: SRIVARI METTU (ALTERNATIVE ROUTE) ── */}
+        {/* ── SIDE-BY-SIDE QUICK COMPARISON MATRIX (When Compare Both) ── */}
+        {selectedRoute === 'both' && (
+          <section style={{
+            backgroundColor: '#FFFFFF',
+            borderRadius: '18px',
+            border: '1.5px solid #E2E8F0',
+            padding: '14px 16px',
+            boxShadow: '0 4px 14px rgba(0,0,0,0.04)'
+          }}>
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', borderBottom: '1px solid #F1F5F9', paddingBottom: '10px', marginBottom: '8px' }}>
+              <div>
+                <span style={{ fontSize: '10px', fontWeight: 700, color: '#B45309', backgroundColor: '#FEF3C7', padding: '2px 6px', borderRadius: '4px' }}>Fastest</span>
+                <div style={{ fontSize: '14px', fontWeight: 800, color: '#0F172A', marginTop: '4px' }}>Srivari Mettu</div>
+                <div style={{ fontSize: '11px', color: '#64748B' }}>2.1 km • ~2,388 steps</div>
+              </div>
+              <div style={{ borderLeft: '1px solid #F1F5F9', paddingLeft: '12px' }}>
+                <span style={{ fontSize: '10px', fontWeight: 700, color: '#0369A1', backgroundColor: '#E0F2FE', padding: '2px 6px', borderRadius: '4px' }}>Traditional</span>
+                <div style={{ fontSize: '14px', fontWeight: 800, color: '#0F172A', marginTop: '4px' }}>Alipiri Mettu</div>
+                <div style={{ fontSize: '11px', color: '#64748B' }}>9.0 km • ~3,550 steps</div>
+              </div>
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '11.5px' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', padding: '4px 0', borderBottom: '1px solid #F8FAFC' }}>
+                <div><strong>Hours:</strong> 6:00 AM – 5:30 PM</div>
+                <div style={{ borderLeft: '1px solid #F1F5F9', paddingLeft: '12px' }}><strong>Hours:</strong> 5:00 AM – 9:30 PM</div>
+              </div>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', padding: '4px 0', borderBottom: '1px solid #F8FAFC' }}>
+                <div><strong>Trek:</strong> ~1.5 - 2 hrs</div>
+                <div style={{ borderLeft: '1px solid #F1F5F9', paddingLeft: '12px' }}><strong>Trek:</strong> ~3.5 - 4.5 hrs</div>
+              </div>
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px', padding: '4px 0' }}>
+                <div style={{ color: '#DC2626' }}><strong>Kids:</strong> Allowed till 2 PM</div>
+                <div style={{ borderLeft: '1px solid #F1F5F9', paddingLeft: '12px', color: '#059669' }}><strong>Kids:</strong> Allowed till 9:30 PM</div>
+              </div>
+            </div>
+          </section>
+        )}
+
+        {/* ── CARD 1: SRIVARI METTU ── */}
         {(selectedRoute === 'both' || selectedRoute === 'srivari') && (
           <section style={{
             backgroundColor: '#FFFFFF',
-            borderRadius: '20px',
-            border: '2px solid #FDE68A',
-            padding: '20px 18px',
-            boxShadow: '0 8px 24px rgba(217, 119, 6, 0.08)',
-            position: 'relative'
+            borderRadius: '18px',
+            border: '1.5px solid #FDE68A',
+            padding: '16px',
+            boxShadow: '0 4px 14px rgba(217, 119, 6, 0.06)'
           }}>
-            {/* Header Lockup */}
-            <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '10px', marginBottom: '12px' }}>
-              <div>
+            {/* Header */}
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <span style={{
-                  fontSize: '10.5px',
+                  fontSize: '10px',
                   fontWeight: 700,
                   color: '#B45309',
                   backgroundColor: '#FEF3C7',
                   border: '1px solid #FCD34D',
-                  padding: '3px 8px',
-                  borderRadius: '6px',
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.04em'
+                  padding: '2px 6px',
+                  borderRadius: '5px'
                 }}>
-                  {lang === 'te' ? 'ప్రత్యామ్నాయ మార్గం • వేగవంతమైనది' : 'Alternative Route • Fastest Ascent'}
+                  Shortest Route
                 </span>
-                <h3 style={{ fontSize: '18px', fontWeight: 700, color: '#78350F', margin: '8px 0 2px' }}>
-                  {lang === 'te' ? 'శ్రీవారి మెట్టు మార్గం' : 'Srivari Mettu Footpath'}
+                <h3 style={{ fontSize: '16px', fontWeight: 800, color: '#78350F', margin: 0 }}>
+                  Srivari Mettu
                 </h3>
-                <span style={{ fontSize: '12px', color: '#64748B', fontWeight: 600 }}>
-                  Srinivasa Mangapuram / Chandragiri side
-                </span>
               </div>
-
-              <span style={{
-                fontSize: '11px',
-                fontWeight: 600,
-                color: '#15803D',
-                backgroundColor: '#DCFCE7',
-                border: '1px solid #BBF7D0',
-                padding: '4px 10px',
-                borderRadius: '99px'
-              }}>
+              <span style={{ fontSize: '10.5px', fontWeight: 700, color: '#15803D', backgroundColor: '#DCFCE7', padding: '3px 8px', borderRadius: '12px' }}>
                 Open Daily
               </span>
             </div>
 
-            {/* Timings Highlight Pill */}
+            {/* Quick Metrics Bar */}
             <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(3, 1fr)',
+              gap: '6px',
               backgroundColor: '#FFFBEB',
-              border: '1.5px solid #FDE68A',
-              borderRadius: '14px',
-              padding: '12px 14px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              marginBottom: '12px'
+              border: '1px solid #FDE68A',
+              borderRadius: '10px',
+              padding: '8px 10px',
+              textAlign: 'center',
+              marginBottom: '10px'
             }}>
               <div>
-                <div style={{ fontSize: '10.5px', fontWeight: 600, color: '#B45309', textTransform: 'uppercase' }}>
-                  {lang === 'te' ? 'ప్రవేశ సమయాలు' : 'Gate Opening Hours'}
-                </div>
-                <div style={{ fontSize: '16px', fontWeight: 700, color: '#92400E', marginTop: '2px', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <Clock size={16} color="#B45309" />
-                  <span>6:00 AM – 5:30 PM</span>
-                </div>
+                <div style={{ fontSize: '10px', color: '#B45309', fontWeight: 600 }}>Distance</div>
+                <div style={{ fontSize: '12.5px', fontWeight: 800, color: '#92400E' }}>2.1 km</div>
               </div>
-
-              <div style={{ textAlign: 'right' }}>
-                <div style={{ fontSize: '10.5px', fontWeight: 600, color: '#64748B', textTransform: 'uppercase' }}>
-                  {lang === 'te' ? 'మెట్లు & సమయం' : 'Steps & Duration'}
-                </div>
-                <div style={{ fontSize: '13.5px', fontWeight: 600, color: '#0F172A', marginTop: '2px' }}>
-                  ~2,388 Steps • ~1.5 - 2 hrs
-                </div>
+              <div style={{ borderLeft: '1px solid #FDE68A', borderRight: '1px solid #FDE68A' }}>
+                <div style={{ fontSize: '10px', color: '#B45309', fontWeight: 600 }}>Steps</div>
+                <div style={{ fontSize: '12.5px', fontWeight: 800, color: '#92400E' }}>2,388</div>
+              </div>
+              <div>
+                <div style={{ fontSize: '10px', color: '#B45309', fontWeight: 600 }}>Duration</div>
+                <div style={{ fontSize: '12.5px', fontWeight: 800, color: '#92400E' }}>~1.5-2 hrs</div>
               </div>
             </div>
 
-            {/* ⚠️ CRITICAL CHILD RESTRICTION ALERT */}
+            {/* Gate Timings Bar */}
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', backgroundColor: '#F8FAFC', borderRadius: '8px', padding: '6px 10px', marginBottom: '10px', fontSize: '11.5px' }}>
+              <span style={{ color: '#64748B', fontWeight: 600 }}>Gate Hours:</span>
+              <span style={{ fontWeight: 800, color: '#1E293B', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                <Clock size={12} color="#D97706" /> 6:00 AM – 5:30 PM
+              </span>
+            </div>
+
+            {/* Child Restriction Pill */}
             <div style={{
               backgroundColor: '#FEF2F2',
-              border: '1.5px solid #FECACA',
-              borderRadius: '14px',
-              padding: '12px 14px',
+              border: '1px solid #FECACA',
+              borderRadius: '8px',
+              padding: '8px 10px',
               display: 'flex',
-              alignItems: 'flex-start',
-              gap: '10px',
-              marginBottom: '14px'
+              alignItems: 'center',
+              gap: '8px',
+              marginBottom: '12px',
+              fontSize: '11px',
+              fontWeight: 700,
+              color: '#991B1B'
             }}>
-              <Baby size={18} color="#DC2626" style={{ flexShrink: 0, marginTop: '2px' }} />
-              <div>
-                <span style={{ fontSize: '11px', fontWeight: 700, color: '#991B1B', textTransform: 'uppercase', letterSpacing: '0.04em', display: 'block' }}>
-                  {lang === 'te' ? 'పిల్లల ప్రవేశ నియంత్రణ (ముఖ్యమైనది)' : 'Children Safety Restriction (Strict)'}
-                </span>
-                <span style={{ fontSize: '12.5px', fontWeight: 700, color: '#7F1D1D', lineHeight: 1.4, display: 'block', marginTop: '2px' }}>
-                  {lang === 'te'
-                    ? '12 సంవత్సరాల లోపు పిల్లలను మధ్యాహ్నం 2:00 PM తర్వాత ఈ మార్గంలో అనుమతించరు.'
-                    : 'Children under 12 years are NOT allowed to enter Srivari Mettu after 2:00 PM due to forest security.'}
-                </span>
-              </div>
+              <Baby size={15} color="#DC2626" style={{ flexShrink: 0 }} />
+              <span>Children &lt;12 yrs entry strictly closes at 2:00 PM</span>
             </div>
 
-            {/* Key Advantages Checklist */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', marginBottom: '16px' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', color: '#334155', fontWeight: 600 }}>
-                <CheckCircle2 size={15} color="#16A34A" style={{ flexShrink: 0 }} />
-                <span>{lang === 'te' ? 'అలిపిరి కంటే దాదాపు 2 గంటల సమయం ఆదా అవుతుంది.' : 'Saves approx. 2 hours of trek time compared to Alipiri.'}</span>
-              </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', color: '#334155', fontWeight: 600 }}>
-                <CheckCircle2 size={15} color="#16A34A" style={{ flexShrink: 0 }} />
-                <span>{lang === 'te' ? 'అత్యధిక భాగం సోపాన మార్గం కప్పబడి ఉంటుంది.' : 'Fully sheltered steps with continuous resting gazebos.'}</span>
-              </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', color: '#334155', fontWeight: 600 }}>
-                <CheckCircle2 size={15} color="#16A34A" style={{ flexShrink: 0 }} />
-                <span>{lang === 'te' ? 'దివ్య దర్శనం టోకెన్లు 1,200వ మెట్టు వద్ద లభిస్తాయి (కోటా ఉన్నప్పుడు).' : 'Divya Darshan biometric tokens at step 1,200 (when quota active).'}</span>
-              </div>
+            {/* Key Advantages Tags */}
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '14px' }}>
+              <span style={{ fontSize: '10.5px', fontWeight: 600, color: '#166534', backgroundColor: '#F0FDF4', border: '1px solid #BBF7D0', padding: '3px 8px', borderRadius: '6px' }}>
+                ✓ Saves 2 hours trek time
+              </span>
+              <span style={{ fontSize: '10.5px', fontWeight: 600, color: '#166534', backgroundColor: '#F0FDF4', border: '1px solid #BBF7D0', padding: '3px 8px', borderRadius: '6px' }}>
+                ✓ Fully sheltered steps
+              </span>
+              <span style={{ fontSize: '10.5px', fontWeight: 600, color: '#166534', backgroundColor: '#F0FDF4', border: '1px solid #BBF7D0', padding: '3px 8px', borderRadius: '6px' }}>
+                ✓ Divya Darshan tokens at step 1,200
+              </span>
             </div>
 
             {/* GPS Navigation Action */}
@@ -332,113 +348,98 @@ export default function FootpathsPage() {
                 gap: '8px',
                 backgroundColor: '#D97706',
                 color: '#FFFFFF',
-                padding: '12px 16px',
+                padding: '11px 16px',
                 borderRadius: '12px',
                 textDecoration: 'none',
-                fontWeight: 600,
-                fontSize: '13.5px',
-                boxShadow: '0 4px 14px rgba(217, 119, 6, 0.25)'
+                fontWeight: 700,
+                fontSize: '13px',
+                boxShadow: '0 4px 12px rgba(217, 119, 6, 0.2)'
               }}
             >
-              <Navigation size={16} />
-              <span>{lang === 'te' ? 'శ్రీవారి మెట్టు ప్రవేశానికి GPS దారి' : 'Navigate to Srivari Mettu Gate'}</span>
-              <ExternalLink size={14} style={{ opacity: 0.8 }} />
+              <Navigation size={15} />
+              <span>Navigate to Srivari Mettu Gate</span>
+              <ExternalLink size={13} style={{ opacity: 0.8 }} />
             </a>
           </section>
         )}
 
-        {/* ── CARD 2: ALIPIRI METTU (TRADITIONAL ROUTE) ── */}
+        {/* ── CARD 2: ALIPIRI METTU ── */}
         {(selectedRoute === 'both' || selectedRoute === 'alipiri') && (
           <section style={{
             backgroundColor: '#FFFFFF',
-            borderRadius: '20px',
-            border: '2px solid #BAE6FD',
-            padding: '20px 18px',
-            boxShadow: '0 8px 24px rgba(2, 132, 199, 0.08)',
-            position: 'relative'
+            borderRadius: '18px',
+            border: '1.5px solid #BAE6FD',
+            padding: '16px',
+            boxShadow: '0 4px 14px rgba(2, 132, 199, 0.06)'
           }}>
-            {/* Header Lockup */}
-            <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '10px', marginBottom: '12px' }}>
-              <div>
+            {/* Header */}
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <span style={{
-                  fontSize: '10.5px',
+                  fontSize: '10px',
                   fontWeight: 700,
                   color: '#0369A1',
                   backgroundColor: '#E0F2FE',
                   border: '1px solid #BAE6FD',
-                  padding: '3px 8px',
-                  borderRadius: '6px',
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.04em'
+                  padding: '2px 6px',
+                  borderRadius: '5px'
                 }}>
-                  {lang === 'te' ? 'ప్రధాన సాంప్రదాయ మార్గం' : 'Main Traditional Route • 9 KM'}
+                  Historic Pathway
                 </span>
-                <h3 style={{ fontSize: '18px', fontWeight: 700, color: '#0F172A', margin: '8px 0 2px' }}>
-                  {lang === 'te' ? 'అలిపిరి మెట్ల మార్గం' : 'Alipiri Mettu Footpath'}
+                <h3 style={{ fontSize: '16px', fontWeight: 800, color: '#0F172A', margin: 0 }}>
+                  Alipiri Mettu
                 </h3>
-                <span style={{ fontSize: '12px', color: '#64748B', fontWeight: 600 }}>
-                  Alipiri Circle / Garuda Statue Base
-                </span>
               </div>
-
-              <span style={{
-                fontSize: '11px',
-                fontWeight: 600,
-                color: '#15803D',
-                backgroundColor: '#DCFCE7',
-                border: '1px solid #BBF7D0',
-                padding: '4px 10px',
-                borderRadius: '99px'
-              }}>
+              <span style={{ fontSize: '10.5px', fontWeight: 700, color: '#15803D', backgroundColor: '#DCFCE7', padding: '3px 8px', borderRadius: '12px' }}>
                 Open Daily
               </span>
             </div>
 
-            {/* Timings Highlight Pill */}
+            {/* Quick Metrics Bar */}
             <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(3, 1fr)',
+              gap: '6px',
               backgroundColor: '#F0F9FF',
               border: '1.5px solid #BAE6FD',
-              borderRadius: '14px',
-              padding: '12px 14px',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              marginBottom: '12px'
+              borderRadius: '10px',
+              padding: '8px 10px',
+              textAlign: 'center',
+              marginBottom: '10px'
             }}>
               <div>
-                <div style={{ fontSize: '10.5px', fontWeight: 600, color: '#0369A1', textTransform: 'uppercase' }}>
-                  {lang === 'te' ? 'ప్రవేశ సమయాలు' : 'Gate Opening Hours'}
-                </div>
-                <div style={{ fontSize: '16px', fontWeight: 700, color: '#0369A1', marginTop: '2px', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  <Clock size={16} color="#0284C7" />
-                  <span>5:00 AM – 9:30 PM</span>
-                </div>
+                <div style={{ fontSize: '10px', color: '#0369A1', fontWeight: 600 }}>Distance</div>
+                <div style={{ fontSize: '12.5px', fontWeight: 800, color: '#0284C7' }}>9.0 km</div>
               </div>
-
-              <div style={{ textAlign: 'right' }}>
-                <div style={{ fontSize: '10.5px', fontWeight: 600, color: '#64748B', textTransform: 'uppercase' }}>
-                  {lang === 'te' ? 'మెట్లు & సమయం' : 'Steps & Duration'}
-                </div>
-                <div style={{ fontSize: '13.5px', fontWeight: 600, color: '#0F172A', marginTop: '2px' }}>
-                  ~3,550 Steps • ~3.5 - 4.5 hrs
-                </div>
+              <div style={{ borderLeft: '1px solid #BAE6FD', borderRight: '1px solid #BAE6FD' }}>
+                <div style={{ fontSize: '10px', color: '#0369A1', fontWeight: 600 }}>Steps</div>
+                <div style={{ fontSize: '12.5px', fontWeight: 800, color: '#0284C7' }}>3,550</div>
+              </div>
+              <div>
+                <div style={{ fontSize: '10px', color: '#0369A1', fontWeight: 600 }}>Duration</div>
+                <div style={{ fontSize: '12.5px', fontWeight: 800, color: '#0284C7' }}>~3.5-4.5 hrs</div>
               </div>
             </div>
 
-            {/* Key Advantages Checklist */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', marginBottom: '16px' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', color: '#334155', fontWeight: 600 }}>
-                <CheckCircle2 size={15} color="#0284C7" style={{ flexShrink: 0 }} />
-                <span>{lang === 'te' ? '24/7 విద్యుత్ దీపాలు మరియు పూర్తి సీసీటీవీ నిఘా రక్షణ.' : '24/7 illuminated pathway with full forest security patrols.'}</span>
-              </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', color: '#334155', fontWeight: 600 }}>
-                <CheckCircle2 size={15} color="#0284C7" style={{ flexShrink: 0 }} />
-                <span>{lang === 'te' ? 'ఉచిత లగేజీ రవాణా: అలిపిరిలో ఇస్తే తిరుమలలో ఉచితంగా అందజేస్తారు.' : 'Free luggage van service: Drop bags at Alipiri, collect atop hills.'}</span>
-              </div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12px', color: '#334155', fontWeight: 600 }}>
-                <CheckCircle2 size={15} color="#0284C7" style={{ flexShrink: 0 }} />
-                <span>{lang === 'te' ? 'గాలిగోపురం వద్ద ఉచిత తాగునీరు, మజ్జిగ మరియు ప్రథమ చికిత్స కేంద్రాలు.' : 'Galigopuram rest station with free RO water & medical posts.'}</span>
-              </div>
+            {/* Gate Timings Bar */}
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', backgroundColor: '#F8FAFC', borderRadius: '8px', padding: '6px 10px', marginBottom: '10px', fontSize: '11.5px' }}>
+              <span style={{ color: '#64748B', fontWeight: 600 }}>Gate Hours:</span>
+              <span style={{ fontWeight: 800, color: '#1E293B', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                <Clock size={12} color="#0284C7" /> 5:00 AM – 9:30 PM
+              </span>
+            </div>
+
+            {/* Key Advantages Tags */}
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginBottom: '14px' }}>
+              <span style={{ fontSize: '10.5px', fontWeight: 600, color: '#0369A1', backgroundColor: '#F0F9FF', border: '1px solid #BAE6FD', padding: '3px 8px', borderRadius: '6px' }}>
+                ✓ 24/7 Illuminated & Security
+              </span>
+              <span style={{ fontSize: '10.5px', fontWeight: 600, color: '#0369A1', backgroundColor: '#F0F9FF', border: '1px solid #BAE6FD', padding: '3px 8px', borderRadius: '6px' }}>
+                ✓ Free luggage van to Tirumala
+              </span>
+              <span style={{ fontSize: '10.5px', fontWeight: 600, color: '#0369A1', backgroundColor: '#F0F9FF', border: '1px solid #BAE6FD', padding: '3px 8px', borderRadius: '6px' }}>
+                ✓ Medical & RO water at Galigopuram
+              </span>
             </div>
 
             {/* GPS Navigation Action */}
@@ -453,52 +454,20 @@ export default function FootpathsPage() {
                 gap: '8px',
                 backgroundColor: '#0284C7',
                 color: '#FFFFFF',
-                padding: '12px 16px',
+                padding: '11px 16px',
                 borderRadius: '12px',
                 textDecoration: 'none',
-                fontWeight: 600,
-                fontSize: '13.5px',
-                boxShadow: '0 4px 14px rgba(2, 132, 199, 0.25)'
+                fontWeight: 700,
+                fontSize: '13px',
+                boxShadow: '0 4px 12px rgba(2, 132, 199, 0.2)'
               }}
             >
-              <Navigation size={16} />
-              <span>{lang === 'te' ? 'అలిపిరి ప్రవేశానికి GPS దారి' : 'Navigate to Alipiri Gate'}</span>
-              <ExternalLink size={14} style={{ opacity: 0.8 }} />
+              <Navigation size={15} />
+              <span>Navigate to Alipiri Gate</span>
+              <ExternalLink size={13} style={{ opacity: 0.8 }} />
             </a>
           </section>
         )}
-
-        {/* ── 4. QUICK SUMMARY COMPARISON TABLE ── */}
-        <section style={{
-          backgroundColor: '#FFFFFF',
-          borderRadius: '16px',
-          border: '1px solid #E2E8F0',
-          padding: '16px',
-          boxShadow: '0 2px 8px rgba(0,0,0,0.02)'
-        }}>
-          <h4 style={{ fontSize: '14px', fontWeight: 600, color: '#0F172A', margin: '0 0 10px' }}>
-            {lang === 'te' ? 'త్వరిత పోలిక పట్టిక' : 'Quick Route Comparison'}
-          </h4>
-
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', fontSize: '12px' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', padding: '6px 0', borderBottom: '1px solid #F1F5F9' }}>
-              <span style={{ color: '#64748B', fontWeight: 600 }}>Distance</span>
-              <span style={{ fontWeight: 600 }}>Srivari Mettu (2.1 km) vs Alipiri (9 km)</span>
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', padding: '6px 0', borderBottom: '1px solid #F1F5F9' }}>
-              <span style={{ color: '#64748B', fontWeight: 600 }}>Gate Open</span>
-              <span style={{ fontWeight: 600 }}>6:00 AM (Srivari) vs 5:00 AM (Alipiri)</span>
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', padding: '6px 0', borderBottom: '1px solid #F1F5F9' }}>
-              <span style={{ color: '#64748B', fontWeight: 600 }}>Gate Close</span>
-              <span style={{ fontWeight: 600 }}>5:30 PM (Srivari) vs 9:30 PM (Alipiri)</span>
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', padding: '6px 0' }}>
-              <span style={{ color: '#64748B', fontWeight: 600 }}>Kids &lt;12 Cutoff</span>
-              <span style={{ fontWeight: 600, color: '#DC2626' }}>2:00 PM at Srivari Mettu</span>
-            </div>
-          </div>
-        </section>
 
       </main>
     </div>

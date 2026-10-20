@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { ChevronLeft, CloudSun, Sun, Droplets, Wind, MapPin, Cloud, CloudRain, CloudLightning } from 'lucide-react';
 import { useTrip } from '@/components/TripContext';
-import { TIRUPATI_CENTER } from '@/utils/location';
+import { TIRUPATI_CENTER, TIRUMALA_CENTER } from '@/utils/location';
 
 function getWeatherIcon(code: number) {
   if (code === 0) return <Sun size={24} color="#F59E0B" />;
@@ -31,8 +31,8 @@ export default function WeatherPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const lat = userLocation?.lat || TIRUPATI_CENTER.lat;
-    const lng = userLocation?.lng || TIRUPATI_CENTER.lng;
+    const lat = userLocation?.lat || TIRUMALA_CENTER.lat;
+    const lng = userLocation?.lng || TIRUMALA_CENTER.lng;
 
     fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lng}&current=temperature_2m,relative_humidity_2m,apparent_temperature,precipitation,rain,showers,weather_code,wind_speed_10m&daily=weather_code,temperature_2m_max,temperature_2m_min&timezone=auto`)
       .then(res => res.json())
@@ -64,7 +64,7 @@ export default function WeatherPage() {
           <div style={{ background: 'linear-gradient(135deg, #FFB75E 0%, #ED8F03 100%)', borderRadius: 24, padding: 32, color: 'white', position: 'relative', overflow: 'hidden', boxShadow: '0 12px 30px rgba(237, 143, 3, 0.2)' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8, opacity: 0.9, marginBottom: 16 }}>
               <MapPin size={16} />
-              <span style={{ fontSize: 14, fontWeight: 500 }}>{userLocation ? 'Your Location' : 'Tirupati, AP'}</span>
+              <span style={{ fontSize: 14, fontWeight: 500 }}>{userLocation ? 'Your Location' : 'Tirumala (Hilltop), AP'}</span>
             </div>
             
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>

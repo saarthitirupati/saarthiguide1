@@ -324,29 +324,64 @@ export default function DarshanDetailsPage() {
                 </span>
               </div>
 
-              {/* BEFORE YOU GO (3 CONCISE CHECKPOINTS) */}
+              {/* BEFORE YOU GO: 3 VISUAL PILLS */}
               <div style={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '8px',
+                display: 'grid',
+                gridTemplateColumns: 'repeat(3, 1fr)',
+                gap: '6px',
                 marginTop: '14px',
                 paddingTop: '12px',
                 borderTop: '1px solid #F1F5F9'
               }}>
-                <span style={{ fontSize: '11px', fontWeight: 600, color: '#0F172A', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
-                  {lang === 'te' ? 'వెళ్ళే ముందు ముఖ్యమైనవి' : 'Before You Go'}
-                </span>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12.5px', color: '#334155', fontWeight: 500 }}>
-                  <Ticket size={14} color="#0F5132" style={{ flexShrink: 0 }} />
-                  <span>{id === 'special-entry' ? (lang === 'te' ? 'ఆన్‌లైన్ స్లాట్ టికెట్ తప్పనిసరి' : 'Advance ₹300 Online Ticket Required') : id === 'ssd-token' ? (lang === 'te' ? 'ఉచిత టోకెన్ లేదా తిరుపతి కౌంటర్' : 'Free SSD Token Voucher Required') : (lang === 'te' ? 'ముందస్తు టికెట్ అవసరం లేదు' : 'No advance ticket or token required')}</span>
+                <div style={{
+                  backgroundColor: '#F0FDF4',
+                  border: '1px solid #DCFCE7',
+                  borderRadius: '10px',
+                  padding: '8px 6px',
+                  textAlign: 'center',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  gap: '4px'
+                }}>
+                  <Ticket size={15} color="#15803D" />
+                  <span style={{ fontSize: '11px', fontWeight: 700, color: '#166534', lineHeight: 1.2 }}>
+                    {id === 'special-entry' ? '₹300 Ticket' : id === 'ssd-token' ? 'SSD Token' : 'Free Walk-in'}
+                  </span>
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12.5px', color: '#334155', fontWeight: 500 }}>
-                  <MapPin size={14} color="#0F5132" style={{ flexShrink: 0 }} />
-                  <span>{lang === 'te' ? 'ప్రవేశం: వైకుంఠం క్యూ కాంప్లెక్స్-2 (VQC-II)' : `Entry Point: ${(data.entryGate || 'VQC-II, Tirumala').split(',')[0]}`}</span>
+
+                <div style={{
+                  backgroundColor: '#EFF6FF',
+                  border: '1px solid #DBEAFE',
+                  borderRadius: '10px',
+                  padding: '8px 6px',
+                  textAlign: 'center',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  gap: '4px'
+                }}>
+                  <MapPin size={15} color="#2563EB" />
+                  <span style={{ fontSize: '11px', fontWeight: 700, color: '#1E40AF', lineHeight: 1.2 }}>
+                    {(data.entryGate || 'VQC-II').split(',')[0]}
+                  </span>
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '12.5px', color: '#334155', fontWeight: 500 }}>
-                  <UtensilsCrossed size={14} color="#0F5132" style={{ flexShrink: 0 }} />
-                  <span>{lang === 'te' ? 'ఉచిత అన్నప్రసాదం & తాగునీరు అందుబాటులో ఉన్నాయి' : 'Free Annaprasadam, Milk & RO Water Included'}</span>
+
+                <div style={{
+                  backgroundColor: '#FEF3C7',
+                  border: '1px solid #FDE68A',
+                  borderRadius: '10px',
+                  padding: '8px 6px',
+                  textAlign: 'center',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  gap: '4px'
+                }}>
+                  <UtensilsCrossed size={15} color="#D97706" />
+                  <span style={{ fontSize: '11px', fontWeight: 700, color: '#92400E', lineHeight: 1.2 }}>
+                    Free Meals & RO
+                  </span>
                 </div>
               </div>
 
