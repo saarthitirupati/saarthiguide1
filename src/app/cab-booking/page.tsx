@@ -18,15 +18,20 @@ export default function CabBookingPage() {
       }
     }
 
-    // Fetch dynamic count
-    fetch('/api/launch-interest', { cache: 'no-store' })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data?.success && typeof data?.cabs === 'number') {
-          setWaitlistCount(data.cabs);
-        }
-      })
-      .catch((err) => console.error('Failed to load waitlist count:', err));
+    const fetchCount = () => {
+      fetch('/api/launch-interest', { cache: 'no-store' })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data?.success && typeof data?.cabs === 'number') {
+            setWaitlistCount(data.cabs);
+          }
+        })
+        .catch((err) => console.error('Failed to load waitlist count:', err));
+    };
+
+    fetchCount();
+    const interval = setInterval(fetchCount, 10000);
+    return () => clearInterval(interval);
   }, []);
 
   const handleNotify = async (e?: React.FormEvent) => {
@@ -330,6 +335,34 @@ export default function CabBookingPage() {
             letterSpacing: '0.02em'
           }}>
             Coming Soon • Tirumala Ghat Cabs
+          </span>
+        </div>
+
+        {/* ── REAL-TIME DYNAMIC WAITLIST PILL ── */}
+        <div style={{
+          display: 'inline-flex',
+          alignItems: 'center',
+          gap: '7px',
+          backgroundColor: '#F0FDF4',
+          border: '1px solid #BBF7D0',
+          borderRadius: '20px',
+          padding: '5px 14px',
+          margin: '2px auto 10px',
+          fontSize: '12px',
+          fontWeight: 700,
+          color: '#15803D'
+        }}>
+          <span style={{
+            width: '7px',
+            height: '7px',
+            borderRadius: '50%',
+            backgroundColor: '#16A34A',
+            display: 'inline-block'
+          }} />
+          <span>
+            {waitlistCount !== null && waitlistCount > 0
+              ? `${waitlistCount} Pilgrims on Priority Waitlist`
+              : 'Priority Cab Waitlist Active'}
           </span>
         </div>
 

@@ -1,4 +1,6 @@
 import { NextResponse } from 'next/server';
+import fs from 'fs';
+import path from 'path';
 import { supabase } from '@/lib/supabase';
 
 export async function POST(req: Request) {
@@ -26,7 +28,31 @@ export async function POST(req: Request) {
 
     const bookingId = `SRTH-${Date.now().toString().slice(-6)}`;
 
-    // Optional: attempt recording to Supabase hotel_bookings if table exists
+    // 1. Record into launch-notifications.json for real-time room count
+    try {
+      const NOTIF_FILE = path.join(process.cwd(), 'data', 'launch-notifications.json');
+      let store: any = { total: 0, cabs: 0, rooms: 0, items: [] };
+      if (fs.existsSync(NOTIF_FILE)) {
+        store = JSON.parse(fs.readFileSync(NOTIF_FILE, 'utf-8'));
+      }
+      store.rooms = (Number(store.rooms) || 0) + 1;
+      store.total = (Number(store.total) || 0) + 1;
+      if (!Array.isArray(store.items)) store.items = [];
+      store.items.unshift({
+        id: bookingId,
+        service: 'rooms',
+        timestamp: new Date().toISOString(),
+        phone: guestPhone,
+        hotelName,
+        totalAmount,
+      });
+      if (store.items.length > 500) store.items = store.items.slice(0, 500);
+      fs.writeFileSync(NOTIF_FILE, JSON.stringify(store, null, 2));
+    } catch (e) {
+      console.warn('Failed to update local notifications store:', e);
+    }
+
+    // 2. Optional: attempt recording to Supabase hotel_bookings if table exists
     try {
       await supabase
         .from('hotel_bookings')

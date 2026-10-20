@@ -344,6 +344,138 @@ export default function AdminDashboard() {
         </div>
       </div>
 
+      {/* ── Real-Time Travel & Stay Demand KPI Cards ── */}
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
+        gap: '14px',
+        marginBottom: '24px'
+      }}>
+        {/* Cabs Live Demand Card */}
+        <div style={{
+          background: '#FFFFFF',
+          border: '1.5px solid #BBF7D0',
+          borderRadius: '16px',
+          padding: '16px 18px',
+          boxShadow: '0 2px 10px rgba(0,0,0,0.04)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: '12px'
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <div style={{
+              width: '44px',
+              height: '44px',
+              borderRadius: '12px',
+              backgroundColor: '#ECFDF5',
+              color: '#0F5132',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexShrink: 0
+            }}>
+              <Car size={22} />
+            </div>
+            <div>
+              <div style={{ fontSize: '11.5px', fontWeight: 700, color: '#047857', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                Ghat Cabs Waitlist
+              </div>
+              <div style={{ fontSize: '24px', fontWeight: 900, color: '#0F172A', lineHeight: 1.1, marginTop: '2px' }}>
+                {launchInterest?.cabs !== undefined ? launchInterest.cabs : 0}
+                <span style={{ fontSize: '12px', fontWeight: 600, color: '#64748B', marginLeft: '6px' }}>Pilgrims</span>
+              </div>
+              <div style={{ fontSize: '11px', color: '#059669', fontWeight: 600, marginTop: '2px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#10B981', display: 'inline-block' }} />
+                Real-Time Demand Stream
+              </div>
+            </div>
+          </div>
+          <Link
+            href="/cab-booking"
+            target="_blank"
+            style={{
+              fontSize: '11.5px',
+              fontWeight: 700,
+              color: '#0F5132',
+              backgroundColor: '#F0FDF4',
+              border: '1px solid #DCFCE7',
+              padding: '6px 10px',
+              borderRadius: '8px',
+              textDecoration: 'none',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '4px'
+            }}
+          >
+            <span>View</span>
+            <ExternalLink size={11} />
+          </Link>
+        </div>
+
+        {/* Rooms Live Bookings & Inquiries Card */}
+        <div style={{
+          background: '#FFFFFF',
+          border: '1.5px solid #FED7AA',
+          borderRadius: '16px',
+          padding: '16px 18px',
+          boxShadow: '0 2px 10px rgba(0,0,0,0.04)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: '12px'
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <div style={{
+              width: '44px',
+              height: '44px',
+              borderRadius: '12px',
+              backgroundColor: '#FFF7ED',
+              color: '#C2410C',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexShrink: 0
+            }}>
+              <BedDouble size={22} />
+            </div>
+            <div>
+              <div style={{ fontSize: '11.5px', fontWeight: 700, color: '#C2410C', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                Room Bookings &amp; Inquiries
+              </div>
+              <div style={{ fontSize: '24px', fontWeight: 900, color: '#0F172A', lineHeight: 1.1, marginTop: '2px' }}>
+                {launchInterest?.rooms !== undefined ? launchInterest.rooms : 0}
+                <span style={{ fontSize: '12px', fontWeight: 600, color: '#64748B', marginLeft: '6px' }}>Pilgrims</span>
+              </div>
+              <div style={{ fontSize: '11px', color: '#D97706', fontWeight: 600, marginTop: '2px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#F59E0B', display: 'inline-block' }} />
+                Real-Time Demand Stream
+              </div>
+            </div>
+          </div>
+          <Link
+            href="/hotel/dashboard"
+            target="_blank"
+            style={{
+              fontSize: '11.5px',
+              fontWeight: 700,
+              color: '#C2410C',
+              backgroundColor: '#FFF7ED',
+              border: '1px solid #FFEDD5',
+              padding: '6px 10px',
+              borderRadius: '8px',
+              textDecoration: 'none',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '4px'
+            }}
+          >
+            <span>Manage</span>
+            <ExternalLink size={11} />
+          </Link>
+        </div>
+      </div>
+
       {/* ── Executive Health Banner ── */}
       <div className={styles.healthBanner}>
         <div className={styles.healthLeft}>

@@ -18,15 +18,20 @@ export default function TirupatiHotelsPage() {
       }
     }
 
-    // Fetch dynamic count
-    fetch('/api/launch-interest', { cache: 'no-store' })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data?.success && typeof data?.rooms === 'number') {
-          setWaitlistCount(data.rooms);
-        }
-      })
-      .catch((err) => console.error('Failed to load waitlist count:', err));
+    const fetchCount = () => {
+      fetch('/api/launch-interest', { cache: 'no-store' })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data?.success && typeof data?.rooms === 'number') {
+            setWaitlistCount(data.rooms);
+          }
+        })
+        .catch((err) => console.error('Failed to load waitlist count:', err));
+    };
+
+    fetchCount();
+    const interval = setInterval(fetchCount, 10000);
+    return () => clearInterval(interval);
   }, []);
 
   const handleNotify = async (e?: React.FormEvent) => {
