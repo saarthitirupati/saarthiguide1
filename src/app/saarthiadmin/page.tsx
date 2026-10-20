@@ -33,6 +33,7 @@ import {
 import { PLACES } from '@/data/places';
 import { Place } from '@/types/place';
 import { safeFetchJson } from '@/lib/safeFetch';
+import { supabase } from '@/lib/supabase';
 
 interface LiveGroundSnapshot {
   waitTime?: string;
@@ -142,6 +143,25 @@ export default function AdminDashboard() {
 
   const fetchLaunchInterest = async () => {
     try {
+      const { data, error } = await supabase
+        .from('live_updates')
+        .select('value')
+        .eq('module', 'launch_waitlist')
+        .single();
+
+      if (!error && data?.value) {
+        const parsed = typeof data.value === 'string' ? JSON.parse(data.value) : data.value;
+        setLaunchInterest({
+          total: Number(parsed.total) || 0,
+          cabs: Number(parsed.cabs) || 0,
+          rooms: Number(parsed.rooms) || 0,
+          recent: Array.isArray(parsed.items) ? parsed.items : [],
+        });
+        return;
+      }
+    } catch (e) {}
+
+    try {
       const launchData = await safeFetchJson<any>('/api/launch-interest');
       if (launchData?.success) {
         setLaunchInterest({
@@ -159,12 +179,41 @@ export default function AdminDashboard() {
   useEffect(() => {
     fetchDashboardData();
 
-    // Live auto-polling every 10 seconds for real-time demand sync
+    // 1. Supabase Realtime connection for instant live counts
+    const channelName = `admin_waitlist_${Date.now()}`;
+    const channel = supabase
+      .channel(channelName)
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'live_updates' },
+        (payload: any) => {
+          try {
+            const row = payload?.new;
+            if (row?.module === 'launch_waitlist' && row?.value) {
+              const parsed = typeof row.value === 'string' ? JSON.parse(row.value) : row.value;
+              setLaunchInterest({
+                total: Number(parsed.total) || 0,
+                cabs: Number(parsed.cabs) || 0,
+                rooms: Number(parsed.rooms) || 0,
+                recent: Array.isArray(parsed.items) ? parsed.items : [],
+              });
+            }
+          } catch (err) {
+            console.error('Realtime waitlist parse notice:', err);
+          }
+        }
+      )
+      .subscribe();
+
+    // 2. Fallback polling every 8 seconds
     const pollInterval = setInterval(() => {
       fetchLaunchInterest();
-    }, 10000);
+    }, 8000);
 
-    return () => clearInterval(pollInterval);
+    return () => {
+      clearInterval(pollInterval);
+      supabase.removeChannel(channel);
+    };
   }, []);
 
   // --- Dynamic Stats Calculations ---
@@ -383,11 +432,11 @@ export default function AdminDashboard() {
               </div>
               <div style={{ fontSize: '24px', fontWeight: 900, color: '#0F172A', lineHeight: 1.1, marginTop: '2px' }}>
                 {launchInterest?.cabs !== undefined ? launchInterest.cabs : 0}
-                <span style={{ fontSize: '12px', fontWeight: 600, color: '#64748B', marginLeft: '6px' }}>Pilgrims</span>
+                <span style={{ fontSize: '12px', fontWeight: 600, color: '#64748B', marginLeft: '6px' }}>Real Signups</span>
               </div>
-              <div style={{ fontSize: '11px', color: '#059669', fontWeight: 600, marginTop: '2px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+              <div style={{ fontSize: '11px', color: '#059669', fontWeight: 600, marginTop: '3px', display: 'flex', alignItems: 'center', gap: '4px' }}>
                 <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#10B981', display: 'inline-block' }} />
-                Real-Time Demand Stream
+                <span>Public: 98 + {launchInterest?.cabs || 0} ({98 + (launchInterest?.cabs || 0)}) • Supabase Realtime</span>
               </div>
             </div>
           </div>
@@ -445,11 +494,11 @@ export default function AdminDashboard() {
               </div>
               <div style={{ fontSize: '24px', fontWeight: 900, color: '#0F172A', lineHeight: 1.1, marginTop: '2px' }}>
                 {launchInterest?.rooms !== undefined ? launchInterest.rooms : 0}
-                <span style={{ fontSize: '12px', fontWeight: 600, color: '#64748B', marginLeft: '6px' }}>Pilgrims</span>
+                <span style={{ fontSize: '12px', fontWeight: 600, color: '#64748B', marginLeft: '6px' }}>Real Bookings</span>
               </div>
-              <div style={{ fontSize: '11px', color: '#D97706', fontWeight: 600, marginTop: '2px', display: 'flex', alignItems: 'center', gap: '4px' }}>
+              <div style={{ fontSize: '11px', color: '#D97706', fontWeight: 600, marginTop: '3px', display: 'flex', alignItems: 'center', gap: '4px' }}>
                 <span style={{ width: '6px', height: '6px', borderRadius: '50%', backgroundColor: '#F59E0B', display: 'inline-block' }} />
-                Real-Time Demand Stream
+                <span>Public: 98 + {launchInterest?.rooms || 0} ({98 + (launchInterest?.rooms || 0)}) • Supabase Realtime</span>
               </div>
             </div>
           </div>

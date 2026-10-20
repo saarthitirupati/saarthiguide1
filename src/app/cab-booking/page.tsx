@@ -3,6 +3,9 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { ArrowLeft, Bell, CheckCircle2, Sparkles } from 'lucide-react';
+import { supabase } from '@/lib/supabase';
+
+const BASE_CAB_WAITLIST = 98;
 
 export default function CabBookingPage() {
   const [waitlistCount, setWaitlistCount] = useState<number | null>(null);
@@ -18,7 +21,26 @@ export default function CabBookingPage() {
       }
     }
 
-    const fetchCount = () => {
+    // 1. Initial direct fetch from Supabase live_updates
+    const fetchCount = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('live_updates')
+          .select('value')
+          .eq('module', 'launch_waitlist')
+          .single();
+
+        if (!error && data?.value) {
+          const parsed = typeof data.value === 'string' ? JSON.parse(data.value) : data.value;
+          if (typeof parsed?.cabs === 'number') {
+            setWaitlistCount(parsed.cabs);
+            return;
+          }
+        }
+      } catch (err) {
+        // Fallback to internal API
+      }
+
       fetch('/api/launch-interest', { cache: 'no-store' })
         .then((res) => res.json())
         .then((data) => {
@@ -30,8 +52,37 @@ export default function CabBookingPage() {
     };
 
     fetchCount();
-    const interval = setInterval(fetchCount, 10000);
-    return () => clearInterval(interval);
+
+    // 2. Real-time WebSocket connection to Supabase live_updates
+    const channelName = `realtime_cabs_waitlist_${Date.now()}`;
+    const channel = supabase
+      .channel(channelName)
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'live_updates' },
+        (payload: any) => {
+          try {
+            const row = payload?.new;
+            if (row?.module === 'launch_waitlist' && row?.value) {
+              const parsed = typeof row.value === 'string' ? JSON.parse(row.value) : row.value;
+              if (typeof parsed?.cabs === 'number') {
+                setWaitlistCount(parsed.cabs);
+              }
+            }
+          } catch (e) {
+            console.error('Error handling realtime cab waitlist:', e);
+          }
+        }
+      )
+      .subscribe();
+
+    // 3. Fallback interval every 8s
+    const interval = setInterval(fetchCount, 8000);
+
+    return () => {
+      clearInterval(interval);
+      supabase.removeChannel(channel);
+    };
   }, []);
 
   const handleNotify = async (e?: React.FormEvent) => {
@@ -56,6 +107,8 @@ export default function CabBookingPage() {
       setSubmitting(false);
     }
   };
+
+  const totalPilgrims = BASE_CAB_WAITLIST + (waitlistCount !== null ? waitlistCount : 0);
 
   return (
     <div style={{
@@ -360,9 +413,7 @@ export default function CabBookingPage() {
             display: 'inline-block'
           }} />
           <span>
-            {waitlistCount !== null && waitlistCount > 0
-              ? `${waitlistCount} Pilgrims on Priority Waitlist`
-              : 'Priority Cab Waitlist Active'}
+            {`${totalPilgrims} Pilgrims on Priority Waitlist`}
           </span>
         </div>
 
@@ -388,7 +439,7 @@ export default function CabBookingPage() {
             gap: '10px',
             boxShadow: notified ? 'none' : '0 6px 18px rgba(15, 81, 50, 0.28)',
             transition: 'all 0.25s ease',
-            margin: '8px auto 28px'
+            margin: '8px auto 16px'
           }}
         >
           {submitting ? (
@@ -408,6 +459,23 @@ export default function CabBookingPage() {
             </>
           )}
         </button>
+
+        {notified && (
+          <div style={{
+            backgroundColor: '#ECFDF5',
+            border: '1px solid #A7F3D0',
+            borderRadius: '12px',
+            padding: '10px 16px',
+            fontSize: '12.5px',
+            color: '#065F46',
+            fontWeight: 600,
+            margin: '0 auto 20px',
+            maxWidth: '360px',
+            lineHeight: 1.4
+          }}>
+            Joined along with {totalPilgrims} pilgrims. We will alert you first when verified Ghat cabs go live!
+          </div>
+        )}
 
         {/* Back to Home Link */}
         <Link

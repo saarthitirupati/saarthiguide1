@@ -48,8 +48,44 @@ export async function POST(req: Request) {
       });
       if (store.items.length > 500) store.items = store.items.slice(0, 500);
       fs.writeFileSync(NOTIF_FILE, JSON.stringify(store, null, 2));
+
+      // Sync to Supabase live_updates for instant Realtime notification
+      try {
+        const { data: currentSb } = await supabase
+          .from('live_updates')
+          .select('value')
+          .eq('module', 'launch_waitlist')
+          .single();
+
+        let sbStore: any = { total: 0, cabs: 0, rooms: 0, items: [] };
+        if (currentSb?.value) {
+          sbStore = typeof currentSb.value === 'string' ? JSON.parse(currentSb.value) : currentSb.value;
+        }
+        sbStore.rooms = (Number(sbStore.rooms) || 0) + 1;
+        sbStore.total = (Number(sbStore.total) || 0) + 1;
+        if (!Array.isArray(sbStore.items)) sbStore.items = [];
+        sbStore.items.unshift({
+          id: bookingId,
+          service: 'rooms',
+          timestamp: new Date().toISOString(),
+          phone: guestPhone,
+          hotelName,
+          totalAmount,
+        });
+        if (sbStore.items.length > 100) sbStore.items = sbStore.items.slice(0, 100);
+
+        await supabase
+          .from('live_updates')
+          .update({
+            value: JSON.stringify(sbStore),
+            updated_at: new Date().toISOString()
+          })
+          .eq('module', 'launch_waitlist');
+      } catch (sbErr) {
+        console.warn('Supabase waitlist sync notice:', sbErr);
+      }
     } catch (e) {
-      console.warn('Failed to update local notifications store:', e);
+      console.warn('Failed to update notifications store:', e);
     }
 
     // 2. Optional: attempt recording to Supabase hotel_bookings if table exists

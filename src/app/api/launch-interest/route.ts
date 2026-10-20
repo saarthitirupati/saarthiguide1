@@ -59,8 +59,68 @@ function saveStore(store: LaunchNotificationStore) {
   }
 }
 
+async function getSupabaseStore(): Promise<LaunchNotificationStore | null> {
+  try {
+    const { data, error } = await supabase
+      .from('live_updates')
+      .select('value')
+      .eq('module', 'launch_waitlist')
+      .single();
+
+    if (!error && data?.value) {
+      const parsed = typeof data.value === 'string' ? JSON.parse(data.value) : data.value;
+      return {
+        total: Number(parsed.total) || 0,
+        cabs: Number(parsed.cabs) || 0,
+        rooms: Number(parsed.rooms) || 0,
+        items: Array.isArray(parsed.items) ? parsed.items : [],
+      };
+    }
+  } catch (e) {
+    console.warn('Supabase waitlist fetch notice:', e);
+  }
+  return null;
+}
+
+async function saveSupabaseStore(store: LaunchNotificationStore) {
+  try {
+    const payload = JSON.stringify({
+      total: store.total,
+      cabs: store.cabs,
+      rooms: store.rooms,
+      items: store.items.slice(0, 100),
+      updatedAt: new Date().toISOString()
+    });
+
+    const { data, error } = await supabase
+      .from('live_updates')
+      .update({
+        value: payload,
+        updated_at: new Date().toISOString()
+      })
+      .eq('module', 'launch_waitlist')
+      .select();
+
+    if (error || !data || data.length === 0) {
+      await supabase.from('live_updates').insert([{
+        city_id: 'fe00af26-47fd-4a92-a988-8c0c9565709f',
+        module: 'launch_waitlist',
+        title: 'Real-Time Cabs & Room Booking Demand',
+        value: payload,
+        badge: 'ACTIVE',
+        is_active: true
+      }]);
+    }
+  } catch (e) {
+    console.warn('Supabase waitlist update notice:', e);
+  }
+}
+
 export async function GET() {
-  const store = getStore();
+  const sbStore = await getSupabaseStore();
+  const fileStore = getStore();
+  const store = sbStore || fileStore;
+
   return NextResponse.json({
     success: true,
     total: store.total,
@@ -81,7 +141,9 @@ export async function POST(req: Request) {
     const phone = typeof body?.phone === 'string' ? body.phone.slice(0, 30) : undefined;
     const email = typeof body?.email === 'string' ? body.email.slice(0, 80) : undefined;
 
-    const store = getStore();
+    const sbStore = await getSupabaseStore();
+    const store = sbStore || getStore();
+
     const item: LaunchNotificationItem = {
       id: `notif_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`,
       service,
@@ -102,20 +164,9 @@ export async function POST(req: Request) {
       store.rooms = (store.rooms || 0) + 1;
     }
 
+    // Persist to Supabase (broadcasts Realtime update) and local store
+    await saveSupabaseStore(store);
     saveStore(store);
-
-    // Optional non-fatal async save to Supabase
-    try {
-      await supabase.from('launch_waitlist').insert([{
-        id: item.id,
-        service: item.service,
-        timestamp: item.timestamp,
-        phone: item.phone || null,
-        email: item.email || null,
-      }]);
-    } catch {
-      // Non-blocking fallback
-    }
 
     return NextResponse.json({
       success: true,
