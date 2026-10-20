@@ -2443,61 +2443,64 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                     display: 'grid',
                     gridTemplateColumns: 'repeat(3, minmax(0, 1fr))',
                     gap: '6px',
-                    marginBottom: '10px',
+                    marginBottom: '8px',
                     width: '100%'
                   }}>
-                    {visualCards.map((card, idx) => (
-                      <div key={idx} style={{
-                        backgroundColor: '#FAF8F5',
-                        border: '1px solid rgba(30, 35, 45, 0.08)',
-                        borderRadius: '12px',
-                        padding: '8px 5px',
-                        minHeight: '54px',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        textAlign: 'center',
-                        minWidth: 0,
-                        boxSizing: 'border-box'
-                      }}>
-                        <div style={{
+                    {visualCards.map((card, idx) => {
+                      const isPositive = /issuing|జారీ|जारी|வழங்க/i.test(card.value);
+                      return (
+                        <div key={idx} style={{
+                          backgroundColor: '#F8FAFC',
+                          border: '1px solid rgba(15, 23, 42, 0.06)',
+                          borderRadius: '10px',
+                          padding: '6px 5px',
                           display: 'flex',
+                          flexDirection: 'column',
                           alignItems: 'center',
                           justifyContent: 'center',
-                          gap: '3px',
-                          marginBottom: '3px',
-                          minWidth: 0,
-                          maxWidth: '100%'
-                        }}>
-                          {card.icon}
-                          <span className="notranslate" style={{
-                            fontSize: '9.5px',
-                            fontWeight: 600,
-                            color: '#64748B',
-                            whiteSpace: 'nowrap',
-                            letterSpacing: '0.01em'
-                          }}>
-                            {card.title}
-                          </span>
-                        </div>
-                        <div className="notranslate" style={{
-                          fontSize: '11px',
-                          fontWeight: 700,
-                          color: '#1E232D',
-                          lineHeight: 1.25,
                           textAlign: 'center',
-                          wordBreak: 'break-word',
-                          display: '-webkit-box',
-                          WebkitLineClamp: 2,
-                          WebkitBoxOrient: 'vertical',
-                          overflow: 'hidden',
-                          width: '100%'
+                          minWidth: 0,
+                          boxSizing: 'border-box'
                         }}>
-                          {card.value}
+                          <div style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            gap: '3px',
+                            marginBottom: '2px',
+                            minWidth: 0,
+                            maxWidth: '100%'
+                          }}>
+                            {card.icon}
+                            <span className="notranslate" style={{
+                              fontSize: '9px',
+                              fontWeight: 600,
+                              color: '#64748B',
+                              whiteSpace: 'nowrap',
+                              letterSpacing: '0.02em',
+                              textTransform: 'uppercase'
+                            }}>
+                              {card.title}
+                            </span>
+                          </div>
+                          <div className="notranslate" style={{
+                            fontSize: '10.5px',
+                            fontWeight: 700,
+                            color: isPositive ? '#15803D' : '#0F172A',
+                            lineHeight: 1.25,
+                            textAlign: 'center',
+                            wordBreak: 'break-word',
+                            display: '-webkit-box',
+                            WebkitLineClamp: 2,
+                            WebkitBoxOrient: 'vertical',
+                            overflow: 'hidden',
+                            width: '100%'
+                          }}>
+                            {card.value}
+                          </div>
                         </div>
-                      </div>
-                    ))}
+                      );
+                    })}
                   </div>
                 );
               })()}

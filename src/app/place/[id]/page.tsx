@@ -747,38 +747,46 @@ export default function PlaceDetails() {
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: '8px' }}>
       {/* Dress Code */}
-      <div style={{ backgroundColor: '#FFFFFF', border: '1px solid rgba(15, 23, 42, 0.06)', borderRadius: '14px', padding: '11px 12px', boxShadow: '0 3px 10px rgba(15,23,42,0.03)', minWidth: 0, overflow: 'hidden' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' }}>
-          <Shirt size={14} color="#0F5132" style={{ flexShrink: 0 }} />
-          <span style={{ fontSize: '10.5px', fontWeight: 700, color: '#64748B', whiteSpace: 'nowrap' }}>{lang === 'te' ? 'దుస్తుల నియమావళి' : 'Dress Code'}</span>
+      <div style={{ backgroundColor: '#FFFFFF', border: '1px solid rgba(15, 23, 42, 0.06)', borderRadius: '12px', padding: '10px 12px', boxShadow: '0 2px 8px rgba(15,23,42,0.03)', minWidth: 0, overflow: 'hidden' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '3px' }}>
+          <Shirt size={13} color="#0F5132" style={{ flexShrink: 0 }} />
+          <span style={{ fontSize: '10px', fontWeight: 700, color: '#64748B', whiteSpace: 'nowrap', textTransform: 'uppercase', letterSpacing: '0.02em' }}>
+            {lang === 'te' ? 'దుస్తుల నియమావళి' : 'Dress Code'}
+          </span>
         </div>
-        <div style={{ fontSize: '12px', fontWeight: 600, color: '#0F172A', lineHeight: 1.3, wordBreak: 'break-word' }}>
-          {lang === 'te' 
-            ? 'సాంప్రదాయ దుస్తులు' 
-            : (place.practicalInfo?.dressCode?.includes('Strict') ? 'Traditional Mandatory' : 'Traditional / Modest')}
+        <div style={{ fontSize: '11.5px', fontWeight: 600, color: '#0F172A', lineHeight: 1.3, wordBreak: 'break-word' }}>
+          {!isTemple
+            ? (lang === 'te' ? 'ఎటువంటి సాధారణ దుస్తులైనా' : 'Casual / Any Attire')
+            : (lang === 'te' 
+                ? 'సాంప్రదాయ దుస్తులు' 
+                : (place.practicalInfo?.dressCode?.includes('Strict') ? 'Traditional Mandatory' : 'Traditional / Modest'))}
         </div>
       </div>
 
       {/* Entry Fee */}
-      <div style={{ backgroundColor: '#FFFFFF', border: '1px solid rgba(15, 23, 42, 0.06)', borderRadius: '14px', padding: '11px 12px', boxShadow: '0 3px 10px rgba(15,23,42,0.03)', minWidth: 0, overflow: 'hidden' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' }}>
-          <Sparkles size={14} color="#0F5132" style={{ flexShrink: 0 }} />
-          <span style={{ fontSize: '10.5px', fontWeight: 700, color: '#64748B', whiteSpace: 'nowrap' }}>{lang === 'te' ? 'ప్రవేశ రుసుము' : 'Entry Fee'}</span>
+      <div style={{ backgroundColor: '#FFFFFF', border: '1px solid rgba(15, 23, 42, 0.06)', borderRadius: '12px', padding: '10px 12px', boxShadow: '0 2px 8px rgba(15,23,42,0.03)', minWidth: 0, overflow: 'hidden' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '3px' }}>
+          <Sparkles size={13} color="#0F5132" style={{ flexShrink: 0 }} />
+          <span style={{ fontSize: '10px', fontWeight: 700, color: '#64748B', whiteSpace: 'nowrap', textTransform: 'uppercase', letterSpacing: '0.02em' }}>
+            {lang === 'te' ? 'ప్రవేశ రుసుము' : 'Entry Fee'}
+          </span>
         </div>
-        <div style={{ fontSize: '12px', fontWeight: 600, color: '#0F172A', lineHeight: 1.3, wordBreak: 'break-word' }}>
+        <div style={{ fontSize: '11.5px', fontWeight: 600, color: '#0F172A', lineHeight: 1.3, wordBreak: 'break-word' }}>
           {place.entryFeeNum === 0 || !place.entryFeeNum 
-            ? (lang === 'te' ? 'ఉచిత దర్శనం' : 'Free Darshan') 
+            ? (isTemple ? (lang === 'te' ? 'ఉచిత దర్శనం' : 'Free Darshan') : (lang === 'te' ? 'ఉచిత ప్రవేశం' : 'Free Entry')) 
             : (lang === 'te' ? `₹${place.entryFeeNum} ఒక్కొక్కరికి` : `₹${place.entryFeeNum} per person`)}
         </div>
       </div>
 
       {/* Parking */}
-      <div style={{ backgroundColor: '#FFFFFF', border: '1px solid rgba(15, 23, 42, 0.06)', borderRadius: '14px', padding: '11px 12px', boxShadow: '0 3px 10px rgba(15,23,42,0.03)', minWidth: 0, overflow: 'hidden' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' }}>
-          <Car size={14} color="#0F5132" style={{ flexShrink: 0 }} />
-          <span style={{ fontSize: '10.5px', fontWeight: 700, color: '#64748B', whiteSpace: 'nowrap' }}>{lang === 'te' ? 'పార్కింగ్' : 'Parking'}</span>
+      <div style={{ backgroundColor: '#FFFFFF', border: '1px solid rgba(15, 23, 42, 0.06)', borderRadius: '12px', padding: '10px 12px', boxShadow: '0 2px 8px rgba(15,23,42,0.03)', minWidth: 0, overflow: 'hidden' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '3px' }}>
+          <Car size={13} color="#0F5132" style={{ flexShrink: 0 }} />
+          <span style={{ fontSize: '10px', fontWeight: 700, color: '#64748B', whiteSpace: 'nowrap', textTransform: 'uppercase', letterSpacing: '0.02em' }}>
+            {lang === 'te' ? 'పార్కింగ్' : 'Parking'}
+          </span>
         </div>
-        <div style={{ fontSize: '12px', fontWeight: 600, color: '#0F172A', lineHeight: 1.3, wordBreak: 'break-word' }}>
+        <div style={{ fontSize: '11.5px', fontWeight: 600, color: '#0F172A', lineHeight: 1.3, wordBreak: 'break-word' }}>
           {lang === 'te' 
             ? 'పార్కింగ్ అందుబాటులో ఉంది' 
             : (() => {
@@ -793,15 +801,19 @@ export default function PlaceDetails() {
       </div>
 
       {/* Photography / Mobile */}
-      <div style={{ backgroundColor: '#FFFFFF', border: '1px solid rgba(15, 23, 42, 0.06)', borderRadius: '14px', padding: '11px 12px', boxShadow: '0 3px 10px rgba(15,23,42,0.03)', minWidth: 0, overflow: 'hidden' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' }}>
-          <Camera size={14} color="#0F5132" style={{ flexShrink: 0 }} />
-          <span style={{ fontSize: '10.5px', fontWeight: 700, color: '#64748B', whiteSpace: 'nowrap' }}>{lang === 'te' ? 'ఫోన్లు & కెమెరా' : 'Phones & Camera'}</span>
+      <div style={{ backgroundColor: '#FFFFFF', border: '1px solid rgba(15, 23, 42, 0.06)', borderRadius: '12px', padding: '10px 12px', boxShadow: '0 2px 8px rgba(15,23,42,0.03)', minWidth: 0, overflow: 'hidden' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '3px' }}>
+          <Camera size={13} color="#0F5132" style={{ flexShrink: 0 }} />
+          <span style={{ fontSize: '10px', fontWeight: 700, color: '#64748B', whiteSpace: 'nowrap', textTransform: 'uppercase', letterSpacing: '0.02em' }}>
+            {lang === 'te' ? 'ఫోన్లు & కెమెరా' : 'Phones & Camera'}
+          </span>
         </div>
-        <div style={{ fontSize: '12px', fontWeight: 600, color: '#0F172A', lineHeight: 1.3, wordBreak: 'break-word' }}>
-          {lang === 'te'
-            ? (place.id === 'venkateswara' ? 'ఖచ్చితంగా నిషేధం' : 'గర్భగుడి వెలుపల అనుమతి')
-            : (place.id === 'venkateswara' ? 'Strictly Prohibited' : 'Allowed Outside Main Temple')}
+        <div style={{ fontSize: '11.5px', fontWeight: 600, color: '#0F172A', lineHeight: 1.3, wordBreak: 'break-word' }}>
+          {!isTemple
+            ? (lang === 'te' ? 'అనుమతించబడును' : 'Allowed Everywhere')
+            : (place.id === 'venkateswara'
+                ? (lang === 'te' ? 'ఖచ్చితంగా నిషేధం' : 'Strictly Prohibited')
+                : (lang === 'te' ? 'గర్భగుడి వెలుపల అనుమతి' : 'Allowed Outside Sanctum'))}
         </div>
       </div>
       </div>

@@ -257,15 +257,9 @@ export default function HomePage() {
                         <span style={{ width: '4px', height: '4px', borderRadius: '50%', backgroundColor: 'currentColor' }} />
                         <span>{srv.status}</span>
                       </span>
-                      <h3 style={{ fontSize: '12.5px', fontWeight: 600, color: 'var(--color-text-primary, #1E232D)', margin: '0 0 2px', lineHeight: 1.3 }}>
+                      <h3 style={{ fontSize: '12.5px', fontWeight: 600, color: 'var(--color-text-primary, #1E232D)', margin: 0, lineHeight: 1.3 }}>
                         {srv.title}
                       </h3>
-                      <p style={{ fontSize: '10.5px', color: 'var(--color-text-secondary, #5A6270)', margin: '0 0 6px', lineHeight: 1.3, fontWeight: 400 }}>
-                        {srv.subtitle}
-                      </p>
-                      <div style={{ fontSize: '10.5px', fontWeight: 600, color: '#0F5132', display: 'flex', alignItems: 'center', gap: '2px' }}>
-                        <span>{t.navigate}</span>
-                      </div>
                     </div>
                   </Link>
                 );
@@ -577,15 +571,9 @@ export default function HomePage() {
                         <span style={{ fontSize: '10.5px', fontWeight: 600, color: srv.statusColor, display: 'block', marginBottom: '2px' }}>
                           ● {srv.status}
                         </span>
-                        <h3 style={{ fontSize: '13.5px', fontWeight: 600, color: '#0F172A', margin: '0 0 2px' }}>
+                        <h3 style={{ fontSize: '13.5px', fontWeight: 600, color: '#0F172A', margin: 0 }}>
                           {srv.title}
                         </h3>
-                        <p style={{ fontSize: '11px', color: '#64748B', margin: '0 0 6px', lineHeight: 1.3 }}>
-                          {srv.subtitle}
-                        </p>
-                        <div style={{ fontSize: '11px', fontWeight: 600, color: '#0F5132', display: 'flex', alignItems: 'center', gap: '2px' }}>
-                          <span>{t.navigate}</span>
-                        </div>
                       </div>
                     </Link>
                   );

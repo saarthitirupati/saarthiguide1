@@ -195,17 +195,13 @@ export function QuickChecklist(props: any) {
                 <span style={{ fontSize: '12px', fontWeight: 500, color: '#7F1D1D', lineHeight: 1.45, display: 'block', marginTop: '3px' }}>
                   {cleanNotice}
                 </span>
-                {/* Visual tip (Deduplicated: shown only if distinct guidance is provided, or a concise direct walk-in note) */}
-                {isSuspended ? (
+                {/* Visual tip: only show walk-in guidance note if suspended to avoid cluttering advisory banner */}
+                {isSuspended && (
                   <div style={{ marginTop: '6px', paddingTop: '6px', borderTop: '1px dashed #FCA5A5', fontSize: '11px', color: '#991B1B', fontWeight: 500, lineHeight: 1.35, display: 'flex', alignItems: 'center', gap: '4px' }}>
                     <span>💡</span>
                     <span>{lang === 'te' ? 'తిరుమలలో ఉచిత దర్శనం (టోకెన్ లేకుండా నేరుగా వైకుంఠం క్యూ)' : 'Direct walk-in Sarva Darshan open at Tirumala (No tokens needed)'}</span>
                   </div>
-                ) : liveStatus.ssdTimingsGuide?.trim() ? (
-                  <div style={{ marginTop: '6px', paddingTop: '6px', borderTop: '1px dashed #FCA5A5', fontSize: '11px', color: '#991B1B', fontWeight: 500, lineHeight: 1.35 }}>
-                    💡 {liveStatus.ssdTimingsGuide.trim()}
-                  </div>
-                ) : null}
+                )}
               </div>
             </div>
           )}
@@ -457,10 +453,18 @@ export function QuickChecklist(props: any) {
           {/* Daily timing guide / Custom Admin Info (Deduplicated) */}
           {liveStatus.ssdTimingsGuide && (() => {
             const rawPoints = cleanTimingsGuide(liveStatus.ssdTimingsGuide);
-            // Deduplicate: if suspended, exclude points that repeat the suspension notice
-            const points = isSuspended
-              ? rawPoints.filter(pt => !/suspend|cancel|brahmotsavam/i.test(pt))
-              : rawPoints;
+            // Deduplicate: if suspended or already shown in cleanNotice, exclude duplicate points
+            const points = rawPoints.filter(pt => {
+              if (isSuspended && /suspend|cancel|brahmotsavam/i.test(pt)) return false;
+              if (cleanNotice) {
+                const normPt = pt.toLowerCase().replace(/[^a-z0-9]/g, '');
+                const normNotice = cleanNotice.toLowerCase().replace(/[^a-z0-9]/g, '');
+                if (normPt && normNotice && (normNotice.includes(normPt) || normPt.includes(normNotice))) {
+                  return false;
+                }
+              }
+              return true;
+            });
 
             if (!points.length) return null;
 

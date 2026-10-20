@@ -9478,15 +9478,15 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
 
   'municipal-park-tirupati': {
     placeId: 'municipal-park-tirupati',
-    titleEn: 'Municipal Park (MCT) Precinct Map',
-    titleTe: 'municipal-park-tirupati ప్రాంగణ మ్యాప్',
+    titleEn: 'Municipal Park (MCT) Layout',
+    titleTe: 'మున్సిపల్ పార్కు లేఅవుట్',
     layoutType: 'urban-park',
     centerCoordinates: { lat: 13.6473327, lng: 79.4263512 },
     defaultZoom: 18,
     compassBearingDeg: 0,
-    sanctumNameEn: 'Municipal Park (MCT) Sanctum & Main Area',
-    sanctumNameTe: 'municipal-park-tirupati ప్రధాన స్థలం',
-    routePath: [[430, 275], [130, 250], [270, 260], [270, 130], [390, 150], [380, 210]],
+    sanctumNameEn: 'Musical Dancing Fountain Arena',
+    sanctumNameTe: 'మ్యూజికల్ ఫౌంటెన్ వేదిక',
+    routePath: [[430, 275], [310, 270], [160, 220], [150, 120], [270, 135], [390, 150]],
     pins: [
       {
         id: 'parking',
@@ -9497,56 +9497,56 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
         lng: 79.426951,
         svgX: 430,
         svgY: 275,
-        descEn: 'Designated parking for cars, bikes, and visitor vehicles near main entry.',
+        descEn: 'Designated parking for cars, bikes, and visitor vehicles near entrance.',
         descTe: 'వాహనాల పార్కింగ్ ప్రదేశం.'
       },
       {
-        id: 'footwear',
-        nameEn: 'Free Footwear Stand & Holding Area',
-        nameTe: 'ఉచిత పాదరక్షల భద్రతా కేంద్రం',
-        category: 'footwear',
-        lat: 13.646933,
-        lng: 79.425951,
-        svgX: 130,
-        svgY: 250,
-        descEn: 'Footwear deposit counter and visitor holding area.',
-        descTe: 'ఉచిత పాదరక్షల కేంద్రం.'
-      },
-      {
         id: 'entry',
-        nameEn: 'Main Arch & Entry Gate',
-        nameTe: 'ప్రధాన ప్రవేశ ద్వారం',
+        nameEn: 'Main Entrance & Ticket Counter',
+        nameTe: 'ప్రధాన ప్రవేశ ద్వారం & టికెట్ కౌంటర్',
         category: 'entry',
         lat: 13.647033,
         lng: 79.426351,
-        svgX: 270,
-        svgY: 260,
-        descEn: 'Main entrance gate leading into premises.',
-        descTe: 'ప్రధాన ప్రవేశ ద్వారం.'
+        svgX: 310,
+        svgY: 270,
+        descEn: 'Park entrance gate and MCT ticket booking counter.',
+        descTe: 'ప్రవేశ ద్వారం మరియు టికెట్ కౌంటర్.'
+      },
+      {
+        id: 'kids',
+        nameEn: 'Children\'s Play Zone & Rides',
+        nameTe: 'పిల్లల ఆటస్థలం',
+        category: 'info',
+        lat: 13.646933,
+        lng: 79.425951,
+        svgX: 160,
+        svgY: 220,
+        descEn: 'Playground area equipped with swings, slides, and recreational equipment.',
+        descTe: 'పిల్లల ఆటల స్థలం మరియు వినోద పరికరాలు.'
       },
       {
         id: 'sanctum',
-        nameEn: 'Municipal Park (MCT) Sanctum / Main Point',
-        nameTe: 'municipal-park-tirupati ప్రధాన స్థలం',
+        nameEn: 'Musical Dancing Fountain Arena',
+        nameTe: 'మ్యూజికల్ ఫౌంటెన్ వేదిక',
         category: 'sanctum',
         lat: 13.647333,
         lng: 79.426351,
         svgX: 270,
-        svgY: 130,
-        descEn: 'Main shrine and central point of interest.',
-        descTe: 'ముఖ్య దివ్య స్థల ప్రవేశం మరియు దర్శనం.'
+        svgY: 135,
+        descEn: 'Central musical dancing fountain with synchronized light and music shows (7:00 PM – 8:00 PM).',
+        descTe: 'రంగురంగుల లైట్లు మరియు సంగీతంతో కూడిన మ్యూజికల్ ఫౌంటెన్ షో వేదిక.'
       },
       {
-        id: 'info',
-        nameEn: 'Information & Utility Desk',
-        nameTe: 'సమాచార విభాగం & తాగునీరు',
+        id: 'gardens',
+        nameEn: 'Landscaped Lawns & Walking Promenade',
+        nameTe: 'పచ్చని లాన్లు & వాకింగ్ ట్రాక్',
         category: 'info',
         lat: 13.647733,
         lng: 79.426751,
         svgX: 390,
         svgY: 150,
-        descEn: 'Information counter and RO drinking water point.',
-        descTe: 'సమాచార కేంద్రం మరియు తాగునీటి సదుపాయం.'
+        descEn: 'Manicured flower beds, green lawns, and paved walking promenade.',
+        descTe: 'పూల తోటలు, పచ్చని లాన్లు మరియు విశ్రాంతి ప్రదేశం.'
       }
     ],
     routeSteps: [
@@ -9556,30 +9556,39 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
         titleTe: 'పార్కింగ్ చేరుకోవడం',
         distance: '0.0 km',
         timeMins: 0,
-        descEn: 'Park vehicle near designated parking area.',
+        descEn: 'Park vehicle near the designated parking area.',
         descTe: 'వాహనాన్ని నిర్ణీత స్థలంలో పార్క్ చేయండి.'
       },
       {
         stepNumber: 2,
-        titleEn: 'Main Entry & Footwear Deposit',
-        titleTe: 'ప్రవేశం & పాదరక్షలు',
-        distance: '40m',
+        titleEn: 'Main Entrance & Entry Tickets',
+        titleTe: 'ప్రవేశం & టికెట్',
+        distance: '30m',
         timeMins: 2,
-        descEn: 'Proceed to entrance and deposit shoes if applicable.',
-        descTe: 'ప్రధాన ద్వారం వద్దకు చేరుకోండి.'
+        descEn: 'Purchase entry tickets at the counter and enter the park.',
+        descTe: 'టికెట్ కౌంటర్ వద్ద ప్రవేశ టికెట్లు తీసుకుని పార్కులోకి ప్రవేశించండి.'
       },
       {
         stepNumber: 3,
-        titleEn: 'Main Sanctum & Visitor Experience',
-        titleTe: 'ప్రధాన దర్శనం',
+        titleEn: 'Play Zone & Garden Walk',
+        titleTe: 'తోటలు & ఆటస్థలం',
+        distance: '80m',
+        timeMins: 20,
+        descEn: 'Relax along the landscaped walking tracks and enjoy the children playground.',
+        descTe: 'పచ్చని తోటల్లో విహరించి, పిల్లల ఆటస్థలంలో ఆహ్లాదకర సమయం గడపండి.'
+      },
+      {
+        stepNumber: 4,
+        titleEn: 'Musical Fountain Show (Evening)',
+        titleTe: 'మ్యూజికల్ ఫౌంటెన్ షో',
         distance: '60m',
-        timeMins: 10,
-        descEn: 'Experience the main shrine and serene surroundings.',
-        descTe: 'ముఖ్య స్థలాన్ని దర్శించి ఆనందించండి.'
+        timeMins: 45,
+        descEn: 'Enjoy the vibrant evening synchronized musical fountain performance (7:00 PM – 8:00 PM).',
+        descTe: 'సాయంత్రం 7:00 గంటలకు ప్రారంభమయ్యే రంగుల మ్యూజికల్ ఫౌంటెన్ ప్రదర్శనను వీక్షించండి.'
       }
     ],
     emergencyContacts: [
-      { titleEn: 'Saarthi Helpline', titleTe: 'సారథి హెల్ప్‌లైన్', number: '08772264555' },
+      { titleEn: 'MCT Park Helpdesk', titleTe: 'మున్సిపల్ పార్కు హెల్ప్‌డెస్క్', number: '08772256789' },
       { titleEn: 'Emergency Services', titleTe: 'అత్యవసర సేవల హెల్ప్‌లైన్', number: '112' }
     ]
   },

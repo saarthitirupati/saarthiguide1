@@ -4,7 +4,7 @@
   "crowdLevel": "low",
   "sevaStatus": "All sevas open",
   "notice": "HIGH CROWD WARNING: Ghat road traffic slow. Exercise caution.",
-  "lastUpdated": "2026-10-20T05:51:42.921+00:00",
+  "lastUpdated": "2026-10-20T12:16:16.272+00:00",
   "darshanSpeed": "normal",
   "accommodationStatus": "available",
   "ladduAvailability": "available",
@@ -31,8 +31,8 @@
       "peakHours": "Daily 6 AM - 8 AM"
     }
   ],
-  "ssdTokenStatus": "suspended",
-  "ssdNextTokenTime": "Suspended for Brahmotsavam",
+  "ssdTokenStatus": "issuing",
+  "ssdNextTokenTime": "Started at 5:00 PM",
   "ssdTokenSlots": [
     {
       "slotTime": "5:00 AM - 7:00 AM",
@@ -65,8 +65,8 @@
       "tokensLeft": "Suspended"
     }
   ],
-  "ssdNotice": "SSD Tokens are cancelled due to Srivari Navaratri Brahmotsavam from OCT 11 to 22",
-  "ssdTimingsGuide": "SSD tokens is suspended from today 10 oct 2026 to 20 Oct 2026 due to Srivari Navaratri Brahmotsavams.",
+  "ssdNotice": "*⏰ 21st October – SSD 8K & DD 2K Tokens Issue Started @ 5:00PM",
+  "ssdTimingsGuide": "*⏰ 21st October – SSD 8K & DD 2K Tokens Issue Started @ 5:00Pm*\n\n*🔹 SSD Tokens – Current Status*\n\n  ✅ • Available Tokens: *7996*\n\n*🔹 Srivari Mettu Divya Darshan Tokens*\n\n  ✅ • Available Tokens: *2000*\n\n",
   "ssdCounters": [
     {
       "name": "Vishnu Nivasam Counter",
@@ -81,6 +81,6 @@
       "description": "Located near Alipiri Footpath Link Road (Ideal for pedestrian pilgrims)"
     }
   ],
-  "ssdAdvisoryTag": "Brahmotsavam",
+  "ssdAdvisoryTag": "",
   "ssdModeBadge": "Open 24/7"
 }
