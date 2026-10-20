@@ -359,7 +359,7 @@ export function ActiveAlerts({ activePopupAlert, dismissAlert }: any) {
         }}
         style={{
           position: 'fixed',
-          top: 'max(68px, calc(env(safe-area-inset-top, 0px) + 62px))',
+          top: 'calc(env(safe-area-inset-top, 0px) + 58px)',
           left: '14px',
           right: '14px',
           margin: '0 auto',

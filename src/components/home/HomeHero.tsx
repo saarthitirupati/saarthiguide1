@@ -1449,7 +1449,7 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
           maxWidth: '100vw',
           overflowX: 'hidden',
           boxSizing: 'border-box',
-          paddingTop: 'max(14px, calc(env(safe-area-inset-top, 0px) + 8px))'
+          paddingTop: 'env(safe-area-inset-top, 0px)'
         }}>
           <div style={{
             maxWidth: '100%',
