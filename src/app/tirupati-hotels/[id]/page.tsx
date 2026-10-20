@@ -36,17 +36,6 @@ export default function HotelDetailPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [bookingSuccess, setBookingSuccess] = useState<any>(null);
 
-  if (!hotel) {
-    return (
-      <div style={{ padding: '40px 20px', textAlign: 'center', minHeight: '100vh', backgroundColor: '#F8FAFC' }}>
-        <p style={{ fontSize: '16px', color: '#64748B' }}>Hotel not found.</p>
-        <Link href="/tirupati-hotels" style={{ color: '#0F5132', fontWeight: 600, textDecoration: 'none' }}>
-          ← Back to all stays
-        </Link>
-      </div>
-    );
-  }
-
   // Calculate nights & total
   const nights = useMemo(() => {
     try {
@@ -59,6 +48,17 @@ export default function HotelDetailPage() {
       return 1;
     }
   }, [checkIn, checkOut]);
+
+  if (!hotel) {
+    return (
+      <div style={{ padding: '40px 20px', textAlign: 'center', minHeight: '100vh', backgroundColor: '#F8FAFC' }}>
+        <p style={{ fontSize: '16px', color: '#64748B' }}>Hotel not found.</p>
+        <Link href="/tirupati-hotels" style={{ color: '#0F5132', fontWeight: 600, textDecoration: 'none' }}>
+          ← Back to all stays
+        </Link>
+      </div>
+    );
+  }
 
   const totalAmount = hotel.pricePerNight * nights * roomsCount;
 
