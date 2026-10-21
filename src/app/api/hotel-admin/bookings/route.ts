@@ -26,36 +26,35 @@ export async function GET(req: Request) {
   }
 
   try {
-    // 1. Try hotel_bookings table first
+    const bookingsMap = new Map<string, any>();
+
+    // 1. Try hotel_bookings table
     const { data: sbData, error: sbError } = await supabase
       .from('hotel_bookings')
       .select('*')
       .order('created_at', { ascending: false });
 
-    if (!sbError && Array.isArray(sbData) && sbData.length > 0) {
-      return NextResponse.json({ success: true, bookings: sbData, source: 'hotel_bookings' });
+    if (!sbError && Array.isArray(sbData)) {
+      for (const b of sbData) {
+        if (b?.id) bookingsMap.set(b.id, b);
+      }
     }
 
-    // 2. 100% persistent fallback to live_updates cloud table (never fails or wipes on Vercel)
+    // 2. Persistent live_updates cloud table (module = hotel_booking)
     const { data: luData, error: luError } = await supabase
       .from('live_updates')
       .select('*')
       .eq('module', 'hotel_booking')
       .order('updated_at', { ascending: false });
 
-    if (!luError && luData && luData.length > 0) {
-      const parsedBookings = luData
-        .map(row => {
-          try {
-            return typeof row.value === 'string' ? JSON.parse(row.value) : row.value;
-          } catch {
-            return null;
+    if (!luError && Array.isArray(luData)) {
+      for (const row of luData) {
+        try {
+          const parsed = typeof row.value === 'string' ? JSON.parse(row.value) : row.value;
+          if (parsed?.id && !bookingsMap.has(parsed.id)) {
+            bookingsMap.set(parsed.id, parsed);
           }
-        })
-        .filter(Boolean);
-
-      if (parsedBookings.length > 0) {
-        return NextResponse.json({ success: true, bookings: parsedBookings, source: 'live_updates_backup' });
+        } catch {}
       }
     }
 
@@ -70,31 +69,37 @@ export async function GET(req: Request) {
       try {
         const parsed = typeof waitlistRow.value === 'string' ? JSON.parse(waitlistRow.value) : waitlistRow.value;
         const roomItems = (parsed.items || [])
-          .filter((item: any) => item.service === 'rooms' && item.hotelName)
-          .map((item: any) => ({
-            id: item.id,
-            hotel_id: 'vamana-inn-tirupati',
-            hotel_name: item.hotelName || 'Hotel Vamana Inn, Tirupati',
-            guest_name: item.guest_name || 'Pilgrim Guest',
-            guest_phone: item.phone || '',
-            check_in: item.check_in || new Date().toISOString().slice(0, 10),
-            check_out: item.check_out || new Date(Date.now() + 86400000).toISOString().slice(0, 10),
-            guests_count: item.guests_count || 2,
-            rooms_count: item.rooms_count || 1,
-            budget_per_night: item.totalAmount || 2500,
-            cab_preference: 'yes',
-            status: 'new',
-            created_at: item.timestamp || new Date().toISOString()
-          }));
+          .filter((item: any) => item.service === 'rooms' && item.hotelName);
 
-        if (roomItems.length > 0) {
-          return NextResponse.json({ success: true, bookings: roomItems, source: 'launch_waitlist_backup' });
+        for (const item of roomItems) {
+          if (item?.id && !bookingsMap.has(item.id)) {
+            bookingsMap.set(item.id, {
+              id: item.id,
+              hotel_id: 'vamana-inn-tirupati',
+              hotel_name: item.hotelName || 'Hotel Vamana Inn & Partner Stays',
+              guest_name: item.guest_name || item.name || 'Pilgrim Guest',
+              guest_phone: item.phone || '',
+              check_in: item.check_in || new Date().toISOString().slice(0, 10),
+              check_out: item.check_out || new Date(Date.now() + 86400000).toISOString().slice(0, 10),
+              guests_count: item.guests_count || 2,
+              rooms_count: item.rooms_count || 1,
+              budget_per_night: item.totalAmount || 2500,
+              cab_preference: 'yes',
+              status: item.status || 'new',
+              created_at: item.timestamp || new Date().toISOString()
+            });
+          }
         }
       } catch {}
     }
 
-    // 4. Return clean empty array (never mock data and never local filesystem)
-    return NextResponse.json({ success: true, bookings: [], source: 'empty' });
+    const merged = Array.from(bookingsMap.values()).sort((a, b) => {
+      const timeA = new Date(a.created_at || 0).getTime();
+      const timeB = new Date(b.created_at || 0).getTime();
+      return timeB - timeA;
+    });
+
+    return NextResponse.json({ success: true, bookings: merged, count: merged.length });
   } catch (err: any) {
     return NextResponse.json({ success: false, error: err.message }, { status: 500 });
   }

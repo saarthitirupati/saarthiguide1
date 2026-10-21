@@ -20,7 +20,7 @@ export async function POST(req: Request) {
       specialRequirements = '',
       communicationLanguage = 'Telugu',
       totalAmount,
-      whatsappPhone = '919876543210'
+      whatsappPhone = '919398542837'
     } = body;
 
     // Server-side validation
@@ -138,7 +138,7 @@ export async function POST(req: Request) {
           .from('live_updates')
           .select('value')
           .eq('module', 'launch_waitlist')
-          .single();
+          .maybeSingle();
 
         let sbStore: any = { total: 0, cabs: 0, rooms: 0, items: [] };
         if (currentSb?.value) {
@@ -157,13 +157,17 @@ export async function POST(req: Request) {
         });
         if (sbStore.items.length > 100) sbStore.items = sbStore.items.slice(0, 100);
 
-        await supabase
+        const { error: waitlistErr } = await supabase
           .from('live_updates')
           .update({
             value: JSON.stringify(sbStore),
             updated_at: nowIso
           })
           .eq('module', 'launch_waitlist');
+
+        if (waitlistErr) {
+          console.warn('Supabase waitlist update notice:', waitlistErr.message);
+        }
       } catch (sbErr) {
         console.warn('Supabase waitlist sync notice:', sbErr);
       }
@@ -190,8 +194,9 @@ export async function POST(req: Request) {
 
     // 3b. 100% persistent cloud backup in live_updates table (never wiped by Vercel cold starts)
     try {
-      await supabase.from('live_updates').insert([
+      const { error: luInsertErr } = await supabase.from('live_updates').insert([
         {
+          city_id: 'fe00af26-47fd-4a92-a988-8c0c9565709f',
           module: 'hotel_booking',
           title: `Booking: ${trimmedName}`,
           value: JSON.stringify(bookingRecord),
@@ -200,6 +205,9 @@ export async function POST(req: Request) {
           updated_at: nowIso
         }
       ]);
+      if (luInsertErr) {
+        console.warn('live_updates insert notice:', luInsertErr.message);
+      }
     } catch (luErr) {
       console.warn('live_updates backup sync notice:', luErr);
     }

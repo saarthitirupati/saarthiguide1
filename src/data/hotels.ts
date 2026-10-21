@@ -67,7 +67,7 @@ export const HOTELS: Hotel[] = [
       'Free Cancellation'
     ],
     googleMapsUrl: 'https://www.google.com/maps/place/Hotel+Vamana+inn/@13.6483611,79.4253116,17z/data=!3m1!4b1!4m9!3m8!1s0x3a4d4ba400000001:0x29c9841470837235!5m2!4m1!1i2!8m2!3d13.6483611!4d79.4253116!16s%2Fg%2F11h7smxw2h',
-    whatsappPhone: '919876543210',
+    whatsappPhone: '919398542837',
     policies: {
       checkIn: '12:00 PM',
       checkOut: '11:00 AM',
