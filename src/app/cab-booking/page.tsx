@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { ArrowLeft, Bell, CheckCircle2, Sparkles } from 'lucide-react';
+import { ArrowLeft, Bell, CheckCircle2, Sparkles, Phone } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 
 const BASE_CAB_WAITLIST = 98;
@@ -18,6 +18,8 @@ export default function CabBookingPage() {
       const stored = localStorage.getItem('saarthi_notified_cabs');
       if (stored === 'true') {
         setNotified(true);
+        const storedPhone = localStorage.getItem('saarthi_notified_cabs_phone');
+        if (storedPhone) setPhone(storedPhone);
       }
     }
 
@@ -98,6 +100,9 @@ export default function CabBookingPage() {
     try {
       if (typeof window !== 'undefined') {
         localStorage.setItem('saarthi_notified_cabs', 'true');
+        if (phone.trim()) {
+          localStorage.setItem('saarthi_notified_cabs_phone', phone.trim());
+        }
       }
       const res = await fetch('/api/launch-interest', {
         method: 'POST',
@@ -426,63 +431,129 @@ export default function CabBookingPage() {
           </span>
         </div>
 
-        {/* ── DYNAMIC NOTIFY ME BUTTON ── */}
-        <button
-          type="button"
-          onClick={() => handleNotify()}
-          disabled={submitting || notified}
-          style={{
+        {/* ── PHONE NUMBER INPUT & NOTIFY ACTION ── */}
+        {!notified ? (
+          <form
+            onSubmit={handleNotify}
+            style={{
+              width: '100%',
+              maxWidth: '360px',
+              margin: '8px auto 16px',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '10px'
+            }}
+          >
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              backgroundColor: '#FFFFFF',
+              border: '1.5px solid #CBD5E1',
+              borderRadius: '28px',
+              padding: '4px 14px',
+              boxShadow: '0 2px 8px rgba(15, 81, 50, 0.06)',
+              boxSizing: 'border-box'
+            }}>
+              <Phone size={16} color="#0F5132" style={{ marginRight: '8px', flexShrink: 0 }} />
+              <span style={{ fontSize: '14px', fontWeight: 700, color: '#475569', marginRight: '6px' }}>
+                +91
+              </span>
+              <input
+                type="tel"
+                inputMode="numeric"
+                pattern="[0-9]{10}"
+                maxLength={10}
+                placeholder="Enter 10-digit mobile number"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value.replace(/\D/g, '').slice(0, 10))}
+                required
+                style={{
+                  flex: 1,
+                  border: 'none',
+                  outline: 'none',
+                  backgroundColor: 'transparent',
+                  fontSize: '14px',
+                  fontWeight: 600,
+                  color: '#1B2A1E',
+                  padding: '12px 0',
+                  letterSpacing: phone.length > 0 ? '0.04em' : 'normal'
+                }}
+              />
+            </div>
+
+            <button
+              type="submit"
+              disabled={submitting || phone.replace(/\D/g, '').length < 10}
+              style={{
+                width: '100%',
+                backgroundColor: phone.replace(/\D/g, '').length === 10 ? '#0F5132' : '#94A3B8',
+                color: '#FFFFFF',
+                border: 'none',
+                borderRadius: '28px',
+                padding: '14px 28px',
+                fontSize: '15px',
+                fontWeight: 700,
+                cursor: phone.replace(/\D/g, '').length === 10 ? (submitting ? 'wait' : 'pointer') : 'not-allowed',
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '10px',
+                boxShadow: phone.replace(/\D/g, '').length === 10 ? '0 6px 18px rgba(15, 81, 50, 0.28)' : 'none',
+                transition: 'all 0.25s ease'
+              }}
+            >
+              {submitting ? (
+                <>
+                  <Bell size={18} />
+                  <span>Saving Preference...</span>
+                </>
+              ) : (
+                <>
+                  <Bell size={18} />
+                  <span>Notify Me</span>
+                </>
+              )}
+            </button>
+          </form>
+        ) : (
+          <div style={{
             width: '100%',
             maxWidth: '360px',
-            backgroundColor: notified ? '#ECFDF5' : '#0F5132',
-            color: notified ? '#065F46' : '#FFFFFF',
-            border: notified ? '1.5px solid #A7F3D0' : 'none',
-            borderRadius: '28px',
-            padding: '14px 28px',
-            fontSize: '15px',
-            fontWeight: 700,
-            cursor: notified ? 'default' : submitting ? 'wait' : 'pointer',
-            display: 'inline-flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '10px',
-            boxShadow: notified ? 'none' : '0 6px 18px rgba(15, 81, 50, 0.28)',
-            transition: 'all 0.25s ease',
             margin: '8px auto 16px'
-          }}
-        >
-          {submitting ? (
-            <>
-              <Bell size={18} />
-              <span>Subscribing...</span>
-            </>
-          ) : notified ? (
-            <>
+          }}>
+            <div style={{
+              width: '100%',
+              backgroundColor: '#ECFDF5',
+              color: '#065F46',
+              border: '1.5px solid #A7F3D0',
+              borderRadius: '28px',
+              padding: '14px 28px',
+              fontSize: '15px',
+              fontWeight: 700,
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '10px',
+              boxSizing: 'border-box'
+            }}>
               <CheckCircle2 size={18} color="#059669" />
               <span>You&apos;ll be notified</span>
-            </>
-          ) : (
-            <>
-              <Bell size={18} />
-              <span>Notify Me</span>
-            </>
-          )}
-        </button>
+            </div>
 
-        {notified && (
-          <div style={{
-            backgroundColor: '#ECFDF5',
-            border: '1px solid #A7F3D0',
-            borderRadius: '12px',
-            padding: '10px 16px',
-            fontSize: '12.5px',
-            color: '#065F46',
-            fontWeight: 600,
-            margin: '0 auto 20px',
-            maxWidth: '360px',
-            lineHeight: 1.4
-          }}>
-            Joined along with {totalPilgrims} pilgrims. We will alert you first when verified Ghat cabs go live!
+            <div style={{
+              backgroundColor: '#F0FDF4',
+              border: '1px solid #BBF7D0',
+              borderRadius: '14px',
+              padding: '12px 16px',
+              fontSize: '12.5px',
+              color: '#15803D',
+              fontWeight: 600,
+              marginTop: '12px',
+              lineHeight: 1.45,
+              textAlign: 'center'
+            }}>
+              Joined along with {totalPilgrims} pilgrims. {phone ? `We will alert +91 ${phone} first` : 'We will alert you first'} when verified Ghat cabs go live!
+            </div>
           </div>
         )}
 
