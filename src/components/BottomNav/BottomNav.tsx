@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Home, BedDouble, Car, Layers, Compass } from 'lucide-react';
+import { Home, Layers, Compass } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import styles from './BottomNav.module.css';
@@ -11,29 +11,21 @@ import { useLanguage } from '@/lib/useLanguage';
 const TEXTS = {
   en: {
     home: 'Home',
-    rooms: 'Rooms',
-    cabs: 'Cabs',
     essentials: 'Essentials',
     explore: 'Explore',
   },
   te: {
     home: 'హోమ్',
-    rooms: 'గదులు',
-    cabs: 'క్యాబ్స్',
     essentials: 'అవసరాలు',
     explore: 'అన్వేషించు',
   },
   hi: {
     home: 'होम',
-    rooms: 'कमरे',
-    cabs: 'कैब्स',
     essentials: 'आवश्यकताएं',
     explore: 'खोजें',
   },
   ta: {
     home: 'முகப்பு',
-    rooms: 'அறைகள்',
-    cabs: 'கேப்ஸ்',
     essentials: 'தேவைகள்',
     explore: 'ஆராய்க',
   },
@@ -43,9 +35,7 @@ type TextMap = Record<string, string>;
 
 const getNavItems = (t: TextMap) => [
   { key: 'home',       name: t.home || 'Home',             icon: Home,      href: '/' },
-  { key: 'rooms',      name: t.rooms || 'Rooms',           icon: BedDouble, href: '/tirupati-hotels' },
   { key: 'essentials', name: t.essentials || 'Essentials', icon: Layers,    href: '/essentials', isFab: true },
-  { key: 'cabs',       name: t.cabs || 'Cabs',             icon: Car,       href: '/cab-booking' },
   { key: 'explore',    name: t.explore || 'Explore',       icon: Compass,   href: '/explore' },
 ];
 
