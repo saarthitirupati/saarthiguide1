@@ -25,7 +25,11 @@ export async function GET(request: Request) {
       success: true,
       data: festivals
     };
-    return NextResponse.json(response);
+    return NextResponse.json(response, {
+      headers: {
+        'Cache-Control': 'public, max-age=600, s-maxage=3600, stale-while-revalidate=86400'
+      }
+    });
   } catch (error: any) {
     console.error('API Error (/api/v1/festivals):', error);
     try {
@@ -36,6 +40,10 @@ export async function GET(request: Request) {
       return NextResponse.json({
         success: true,
         data: fallback
+      }, {
+        headers: {
+          'Cache-Control': 'public, max-age=600, s-maxage=3600, stale-while-revalidate=86400'
+        }
       });
     } catch {
       return NextResponse.json({

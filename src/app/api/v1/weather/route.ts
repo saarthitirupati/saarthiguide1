@@ -10,7 +10,11 @@ export async function GET() {
     );
     if (!res.ok) throw new Error(`upstream ${res.status}`);
     const data = await res.json();
-    return NextResponse.json(data);
+    return NextResponse.json(data, {
+      headers: {
+        'Cache-Control': 'public, max-age=300, s-maxage=600, stale-while-revalidate=300'
+      }
+    });
   } catch (_err: any) {
     return NextResponse.json({
       current: {
@@ -18,6 +22,10 @@ export async function GET() {
         weather_code: 1
       },
       fallback: true
+    }, {
+      headers: {
+        'Cache-Control': 'public, max-age=300, s-maxage=600, stale-while-revalidate=300'
+      }
     });
   }
 }

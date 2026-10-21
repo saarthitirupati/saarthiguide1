@@ -90,7 +90,7 @@ export default function BottomNav() {
           if (item.isFab) {
             return (
               <div key={item.key} className={styles.slot}>
-                <Link href={item.href} className={styles.fabWrapper}>
+                <Link href={item.href} prefetch={false} className={styles.fabWrapper}>
                   <motion.div
                     className={styles.fabRing}
                     animate={{
@@ -128,6 +128,7 @@ export default function BottomNav() {
             <div key={item.key} className={styles.slot}>
               <Link
                 href={item.href}
+                prefetch={false}
                 className={styles.navLink}
               >
                 <motion.div

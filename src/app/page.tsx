@@ -592,6 +592,97 @@ export default function HomePage() {
           </div>
         </div>
       </div>
+
+      {/* ── AUTHORITATIVE PILGRIM SEO CONTENT SECTION ── */}
+      <section 
+        aria-labelledby="seo-guide-heading" 
+        style={{
+          marginTop: '32px',
+          padding: '24px 18px',
+          backgroundColor: '#FFFFFF',
+          borderRadius: '24px',
+          border: '1px solid #E2E8F0',
+          boxShadow: '0 4px 20px rgba(15, 23, 42, 0.03)',
+          color: '#1E293B',
+          lineHeight: 1.65
+        }}
+      >
+        <div style={{ maxWidth: '960px', margin: '0 auto' }}>
+          <span style={{ 
+            display: 'inline-block', 
+            fontSize: '11px', 
+            fontWeight: 700, 
+            textTransform: 'uppercase', 
+            letterSpacing: '0.08em', 
+            color: '#0F5132', 
+            backgroundColor: '#F0FDF4', 
+            border: '1px solid #DCFCE7', 
+            padding: '3px 10px', 
+            borderRadius: '999px',
+            marginBottom: '10px'
+          }}>
+            Independent Pilgrim Guide
+          </span>
+          <h1 id="seo-guide-heading" style={{ fontSize: '20px', fontWeight: 800, color: '#0F172A', margin: '0 0 10px 0', letterSpacing: '-0.01em' }}>
+            Tirupati Guide for Pilgrims - Rooms, Cabs & Stay
+          </h1>
+          <p style={{ fontSize: '13px', color: '#475569', marginBottom: '18px' }}>
+            <strong>Saarthi Guide</strong> (often searched as <em>Sarthi</em>) is an independent, non-commercial offline travel companion founded by Tirupati local <strong>Sunil Thatra</strong>. Built specifically for Sri Venkateswara devotees, Saarthi eliminates middleman exploitation, removes travel anxiety, and provides verified, real-world guidance across Tirupati and the sacred Tirumala hills.
+          </p>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '14px', marginTop: '14px' }}>
+            <div style={{ padding: '16px', borderRadius: '16px', backgroundColor: '#F8FAFC', border: '1px solid #E2E8F0' }}>
+              <h2 style={{ fontSize: '14.5px', fontWeight: 700, color: '#0F172A', margin: '0 0 6px 0' }}>
+                Verified Pilgrim Stays in Tirupati
+              </h2>
+              <p style={{ fontSize: '12px', color: '#64748B', margin: '0 0 10px 0' }}>
+                Direct, zero-commission contacts for clean budget lodges, dharamshalas, and traditional mutts near Tirupati Railway Station, Central Bus Stand, Srinivasam, and Vishnu Nivasam.
+              </p>
+              <Link href="/rooms" prefetch={false} style={{ fontSize: '12px', fontWeight: 700, color: '#0F5132', textDecoration: 'none' }}>
+                Explore Verified Rooms →
+              </Link>
+            </div>
+
+            <div style={{ padding: '16px', borderRadius: '16px', backgroundColor: '#F8FAFC', border: '1px solid #E2E8F0' }}>
+              <h2 style={{ fontSize: '14.5px', fontWeight: 700, color: '#0F172A', margin: '0 0 6px 0' }}>
+                Tirupati to Tirumala Cabs & Taxis
+              </h2>
+              <p style={{ fontSize: '12px', color: '#64748B', margin: '0 0 10px 0' }}>
+                Transparent fixed rates for uphill/downhill ghat road taxi transfers, Renigunta Airport pickups, and local temple sightseeing (Kanipakam, Golden Temple, Kalahasti).
+              </p>
+              <Link href="/cabs" prefetch={false} style={{ fontSize: '12px', fontWeight: 700, color: '#0F5132', textDecoration: 'none' }}>
+                Check Fixed Cab Fares →
+              </Link>
+            </div>
+
+            <div style={{ padding: '16px', borderRadius: '16px', backgroundColor: '#F8FAFC', border: '1px solid #E2E8F0' }}>
+              <h2 style={{ fontSize: '14.5px', fontWeight: 700, color: '#0F172A', margin: '0 0 6px 0' }}>
+                Offline Maps & Darshan Guidance
+              </h2>
+              <p style={{ fontSize: '12px', color: '#64748B', margin: '0 0 10px 0' }}>
+                Detailed trekking steps for Alipiri and Srivari Mettu footpaths, live Sarva Darshan waiting updates, free Annaprasadam timings, and luggage locker locations saved offline.
+              </p>
+              <Link href="/guide" prefetch={false} style={{ fontSize: '12px', fontWeight: 700, color: '#0F5132', textDecoration: 'none' }}>
+                Open Pilgrim Directory →
+              </Link>
+            </div>
+          </div>
+
+          <div style={{ marginTop: '18px', paddingTop: '12px', borderTop: '1px solid #E2E8F0', display: 'flex', flexWrap: 'wrap', gap: '12px', alignItems: 'center', justifyContent: 'space-between', fontSize: '11.5px', color: '#94A3B8' }}>
+            <span>Independent travel guide founded by Sunil Thatra • Not affiliated with TTD</span>
+            <div style={{ display: 'flex', gap: '10px' }}>
+              <Link href="/rooms" prefetch={false} style={{ color: '#0F5132', textDecoration: 'none', fontWeight: 600 }}>Tirupati Rooms</Link>
+              <span>•</span>
+              <Link href="/cabs" prefetch={false} style={{ color: '#0F5132', textDecoration: 'none', fontWeight: 600 }}>Tirumala Cabs</Link>
+              <span>•</span>
+              <Link href="/darshan/sarva-darshan" prefetch={false} style={{ color: '#0F5132', textDecoration: 'none', fontWeight: 600 }}>Free Darshan</Link>
+              <span>•</span>
+              <Link href="/about" prefetch={false} style={{ color: '#0F5132', textDecoration: 'none', fontWeight: 600 }}>About Founder</Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{

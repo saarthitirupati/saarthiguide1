@@ -16,6 +16,36 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1.0,
     },
     {
+      url: `${baseUrl}/rooms`,
+      lastModified: now,
+      changeFrequency: 'daily',
+      priority: 0.95,
+    },
+    {
+      url: `${baseUrl}/tirupati-hotels`,
+      lastModified: now,
+      changeFrequency: 'daily',
+      priority: 0.95,
+    },
+    {
+      url: `${baseUrl}/cabs`,
+      lastModified: now,
+      changeFrequency: 'daily',
+      priority: 0.95,
+    },
+    {
+      url: `${baseUrl}/cab-booking`,
+      lastModified: now,
+      changeFrequency: 'daily',
+      priority: 0.95,
+    },
+    {
+      url: `${baseUrl}/guide`,
+      lastModified: now,
+      changeFrequency: 'daily',
+      priority: 0.95,
+    },
+    {
       url: `${baseUrl}/explore`,
       lastModified: now,
       changeFrequency: 'daily',
