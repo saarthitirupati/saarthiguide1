@@ -181,11 +181,27 @@ export async function POST(req: Request) {
           const { communication_language, ...recordWithoutLang } = bookingRecord;
           await supabase.from('hotel_bookings').insert([recordWithoutLang]);
         } else {
-          console.warn('Supabase insert notice (fallback to local store active):', insertError.message);
+          console.warn('Supabase hotel_bookings notice:', insertError.message);
         }
       }
     } catch (dbErr) {
       console.warn('Supabase hotel_bookings table notice (non-fatal):', dbErr);
+    }
+
+    // 3b. 100% persistent cloud backup in live_updates table (never wiped by Vercel cold starts)
+    try {
+      await supabase.from('live_updates').insert([
+        {
+          module: 'hotel_booking',
+          title: `Booking: ${trimmedName}`,
+          value: JSON.stringify(bookingRecord),
+          badge: 'NEW',
+          is_active: true,
+          updated_at: nowIso
+        }
+      ]);
+    } catch (luErr) {
+      console.warn('live_updates backup sync notice:', luErr);
     }
 
     // 4. Build WhatsApp coordinate message

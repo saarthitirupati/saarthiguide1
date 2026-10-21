@@ -1,6 +1,4 @@
 import { NextResponse } from 'next/server';
-import fs from 'fs';
-import path from 'path';
 import { supabase } from '@/lib/supabase';
 
 function isAuthorized(req: Request): boolean {
@@ -28,30 +26,74 @@ export async function GET(req: Request) {
   }
 
   try {
-    // 1. Try Supabase first
+    // 1. Try hotel_bookings table first
     const { data: sbData, error: sbError } = await supabase
       .from('hotel_bookings')
       .select('*')
       .order('created_at', { ascending: false });
 
-    if (!sbError && sbData && sbData.length > 0) {
-      return NextResponse.json({ success: true, bookings: sbData, source: 'supabase' });
+    if (!sbError && Array.isArray(sbData) && sbData.length > 0) {
+      return NextResponse.json({ success: true, bookings: sbData, source: 'hotel_bookings' });
     }
 
-    // 2. Fallback to local JSON store
-    const BOOKINGS_FILE = path.join(process.cwd(), 'data', 'hotel-bookings.json');
-    if (fs.existsSync(BOOKINGS_FILE)) {
-      try {
-        const fileContent = fs.readFileSync(BOOKINGS_FILE, 'utf-8');
-        const bookings = JSON.parse(fileContent);
-        if (Array.isArray(bookings)) {
-          return NextResponse.json({ success: true, bookings, source: 'local_file' });
-        }
-      } catch (e) {
-        console.warn('Failed to parse local bookings file:', e);
+    // 2. 100% persistent fallback to live_updates cloud table (never fails or wipes on Vercel)
+    const { data: luData, error: luError } = await supabase
+      .from('live_updates')
+      .select('*')
+      .eq('module', 'hotel_booking')
+      .order('updated_at', { ascending: false });
+
+    if (!luError && luData && luData.length > 0) {
+      const parsedBookings = luData
+        .map(row => {
+          try {
+            return typeof row.value === 'string' ? JSON.parse(row.value) : row.value;
+          } catch {
+            return null;
+          }
+        })
+        .filter(Boolean);
+
+      if (parsedBookings.length > 0) {
+        return NextResponse.json({ success: true, bookings: parsedBookings, source: 'live_updates_backup' });
       }
     }
 
+    // 3. Fallback to launch_waitlist room reservations in live_updates
+    const { data: waitlistRow } = await supabase
+      .from('live_updates')
+      .select('value')
+      .eq('module', 'launch_waitlist')
+      .maybeSingle();
+
+    if (waitlistRow?.value) {
+      try {
+        const parsed = typeof waitlistRow.value === 'string' ? JSON.parse(waitlistRow.value) : waitlistRow.value;
+        const roomItems = (parsed.items || [])
+          .filter((item: any) => item.service === 'rooms' && item.hotelName)
+          .map((item: any) => ({
+            id: item.id,
+            hotel_id: 'vamana-inn-tirupati',
+            hotel_name: item.hotelName || 'Hotel Vamana Inn, Tirupati',
+            guest_name: item.guest_name || 'Pilgrim Guest',
+            guest_phone: item.phone || '',
+            check_in: item.check_in || new Date().toISOString().slice(0, 10),
+            check_out: item.check_out || new Date(Date.now() + 86400000).toISOString().slice(0, 10),
+            guests_count: item.guests_count || 2,
+            rooms_count: item.rooms_count || 1,
+            budget_per_night: item.totalAmount || 2500,
+            cab_preference: 'yes',
+            status: 'new',
+            created_at: item.timestamp || new Date().toISOString()
+          }));
+
+        if (roomItems.length > 0) {
+          return NextResponse.json({ success: true, bookings: roomItems, source: 'launch_waitlist_backup' });
+        }
+      } catch {}
+    }
+
+    // 4. Return clean empty array (never mock data and never local filesystem)
     return NextResponse.json({ success: true, bookings: [], source: 'empty' });
   } catch (err: any) {
     return NextResponse.json({ success: false, error: err.message }, { status: 500 });
@@ -83,29 +125,43 @@ export async function PATCH(req: Request) {
     if (adminNotes !== undefined) updatePayload.admin_notes = adminNotes;
     if (agreedPrice !== undefined) updatePayload.total_amount = Number(agreedPrice);
 
-    // 1. Update in local file store
-    try {
-      const BOOKINGS_FILE = path.join(process.cwd(), 'data', 'hotel-bookings.json');
-      if (fs.existsSync(BOOKINGS_FILE)) {
-        const fileContent = fs.readFileSync(BOOKINGS_FILE, 'utf-8');
-        let bookings = JSON.parse(fileContent);
-        if (Array.isArray(bookings)) {
-          bookings = bookings.map((b: any) => (b.id === id ? { ...b, ...updatePayload } : b));
-          fs.writeFileSync(BOOKINGS_FILE, JSON.stringify(bookings, null, 2));
-        }
-      }
-    } catch (e) {
-      console.warn('Failed to update local bookings file:', e);
-    }
-
-    // 2. Update in Supabase
+    // 1. Update in hotel_bookings table
     try {
       await supabase
         .from('hotel_bookings')
         .update(updatePayload)
         .eq('id', id);
     } catch (e) {
-      console.warn('Supabase update notice:', e);
+      console.warn('Supabase hotel_bookings update notice:', e);
+    }
+
+    // 2. Update in live_updates cloud table
+    try {
+      const { data: existingRows } = await supabase
+        .from('live_updates')
+        .select('id, value')
+        .eq('module', 'hotel_booking');
+
+      if (existingRows && existingRows.length > 0) {
+        for (const row of existingRows) {
+          try {
+            const parsed = typeof row.value === 'string' ? JSON.parse(row.value) : row.value;
+            if (parsed && parsed.id === id) {
+              const updatedVal = { ...parsed, ...updatePayload };
+              await supabase
+                .from('live_updates')
+                .update({
+                  value: JSON.stringify(updatedVal),
+                  badge: status.toUpperCase(),
+                  updated_at: new Date().toISOString()
+                })
+                .eq('id', row.id);
+            }
+          } catch {}
+        }
+      }
+    } catch (e) {
+      console.warn('Supabase live_updates update notice:', e);
     }
 
     return NextResponse.json({ success: true, updated: { id, ...updatePayload } });

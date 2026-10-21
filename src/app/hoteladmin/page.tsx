@@ -114,11 +114,10 @@ export default function HotelAdminPage() {
     }
   }, [router]);
 
-  // 2. Fetch bookings from API and Supabase
+  // 2. Fetch bookings via resilient API (never direct client queries to avoid 404s)
   const fetchBookings = async () => {
     setIsLoading(true);
     try {
-      // Direct API fetch (handles server-side session, Supabase query, and local file fallback)
       const res = await fetch('/api/hotel-admin/bookings', {
         headers: {
           'x-hotel-auth': 'vamana-inn-tirupati',
@@ -127,25 +126,11 @@ export default function HotelAdminPage() {
         cache: 'no-store'
       });
       const json = await res.json();
-      if (json?.success && Array.isArray(json.bookings) && json.bookings.length > 0) {
+      if (json?.success && Array.isArray(json.bookings)) {
         setBookings(json.bookings);
-        setIsLoading(false);
-        return;
       }
-
-      // Supabase direct fallback query
-      const { data, error } = await supabase
-        .from('hotel_bookings')
-        .select('*')
-        .order('created_at', { ascending: false });
-
-      if (!error && data && data.length > 0) {
-        setBookings(data as Booking[]);
-      } else {
-        setBookings(sampleBookings);
-      }
-    } catch {
-      setBookings(sampleBookings);
+    } catch (e) {
+      console.warn('HotelAdmin fetch notice:', e);
     } finally {
       setIsLoading(false);
     }
@@ -155,26 +140,33 @@ export default function HotelAdminPage() {
     if (!isAuthenticated) return;
     fetchBookings();
 
-    // 3. Supabase Realtime Subscription for Live Updates
-    const channelName = `realtime_hoteladmin_${Date.now()}`;
+    // 3. Dual Supabase Realtime Subscription (hotel_bookings + live_updates cloud backup)
+    const channelName = `hotel-admin-realtime-${Date.now()}`;
     const channel = supabase
       .channel(channelName)
       .on(
         'postgres_changes',
         { event: '*', schema: 'public', table: 'hotel_bookings' },
+        () => {
+          fetchBookings();
+        }
+      )
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'live_updates' },
         (payload: any) => {
-          if (payload.eventType === 'INSERT') {
-            setBookings(prev => [payload.new as Booking, ...prev]);
-          } else if (payload.eventType === 'UPDATE') {
-            setBookings(prev => prev.map(b => (b.id === payload.new.id ? { ...b, ...payload.new } : b)));
-          } else if (payload.eventType === 'DELETE') {
-            setBookings(prev => prev.filter(b => b.id !== payload.old.id));
+          if (
+            payload?.new?.module === 'hotel_booking' ||
+            payload?.new?.module === 'launch_waitlist' ||
+            payload?.old?.module === 'hotel_booking'
+          ) {
+            fetchBookings();
           }
         }
       )
       .subscribe();
 
-    // Also periodic fallback poll every 10s
+    // Periodic fallback poll every 10s
     const pollInterval = setInterval(() => {
       fetchBookings();
     }, 10000);

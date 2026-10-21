@@ -61,17 +61,6 @@ export default function HotelDashboardPage() {
           return;
         }
       }
-
-      // 2. Direct Supabase query fallback
-      const { data: sbData, error } = await supabase
-        .from('hotel_bookings')
-        .select('*')
-        .order('created_at', { ascending: false });
-
-      if (!error && sbData && sbData.length > 0) {
-        setBookings(sbData as Booking[]);
-        setLastSynced(new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit' }));
-      }
     } catch (e) {
       console.warn('Dashboard fetch notice:', e);
     } finally {
@@ -92,7 +81,7 @@ export default function HotelDashboardPage() {
 
     fetchBookings();
 
-    // Realtime listener for Postgres changes
+    // Dual Realtime listener for Postgres changes (hotel_bookings + live_updates)
     const channelName = `realtime_vamana_dash_${Date.now()}`;
     const channel = supabase
       .channel(channelName)
@@ -101,12 +90,25 @@ export default function HotelDashboardPage() {
         { event: '*', schema: 'public', table: 'hotel_bookings' },
         () => fetchBookings(true)
       )
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'live_updates' },
+        (payload: any) => {
+          if (
+            payload?.new?.module === 'hotel_booking' ||
+            payload?.new?.module === 'launch_waitlist' ||
+            payload?.old?.module === 'hotel_booking'
+          ) {
+            fetchBookings(true);
+          }
+        }
+      )
       .subscribe();
 
-    // Polling fallback every 8 seconds
+    // Polling fallback every 10 seconds
     const interval = setInterval(() => {
       fetchBookings(true);
-    }, 8000);
+    }, 10000);
 
     return () => {
       clearInterval(interval);
