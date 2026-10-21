@@ -1282,12 +1282,12 @@
   {
     "date": "2026-10-20",
     "path": "/",
-    "count": 112
+    "count": 115
   },
   {
     "date": "2026-10-20",
     "path": "/explore",
-    "count": 84
+    "count": 85
   },
   {
     "date": "2026-10-20",
@@ -1307,12 +1307,12 @@
   {
     "date": "2026-10-20",
     "path": "/tirupati-hotels",
-    "count": 8
+    "count": 9
   },
   {
     "date": "2026-10-20",
     "path": "/cab-booking",
-    "count": 16
+    "count": 17
   },
   {
     "date": "2026-10-20",
@@ -1347,6 +1347,66 @@
   {
     "date": "2026-10-20",
     "path": "/darshan/ssd-token",
+    "count": 1
+  },
+  {
+    "date": "2026-10-20",
+    "path": "/place/municipal-park-tirupati",
+    "count": 2
+  },
+  {
+    "date": "2026-10-21",
+    "path": "/",
+    "count": 93
+  },
+  {
+    "date": "2026-10-21",
+    "path": "/explore",
+    "count": 69
+  },
+  {
+    "date": "2026-10-21",
+    "path": "/planner",
+    "count": 32
+  },
+  {
+    "date": "2026-10-21",
+    "path": "/plans",
+    "count": 69
+  },
+  {
+    "date": "2026-10-21",
+    "path": "/generating",
+    "count": 38
+  },
+  {
+    "date": "2026-10-21",
+    "path": "/tirupati-hotels",
+    "count": 17
+  },
+  {
+    "date": "2026-10-21",
+    "path": "/cab-booking",
+    "count": 2
+  },
+  {
+    "date": "2026-10-21",
+    "path": "/hotel/dashboard",
+    "count": 7
+  },
+  {
+    "date": "2026-10-21",
+    "path": "/hotel/login",
+    "count": 2
+  },
+  {
+    "date": "2026-10-21",
+    "path": "/hoteladmin",
+    "count": 7
+  },
+  {
+    "date": "2026-10-21",
+    "path": "/hotel",
     "count": 1
   }
 ]

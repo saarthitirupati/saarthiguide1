@@ -20,10 +20,21 @@ export default function HotelLoginPage() {
 
     try {
       const cleanId = email.trim().toLowerCase();
-      // 1. Direct Partner Check for Vamana Inn
-      if (cleanId === 'vamana' || cleanId === 'vamana@saarthi.app' || cleanId.includes('vamana')) {
+      const redirectTarget = typeof window !== 'undefined'
+        ? new URLSearchParams(window.location.search).get('redirect') || '/hoteladmin'
+        : '/hoteladmin';
+
+      // 1. Direct Partner Check for Vamana Inn and Hotel Admin
+      if (
+        cleanId === 'vamana' || 
+        cleanId === 'vamana@saarthi.app' || 
+        cleanId.includes('vamana') ||
+        cleanId === 'hoteladmin' ||
+        cleanId === 'admin'
+      ) {
         sessionStorage.setItem('hotel_authenticated', 'vamana-inn-tirupati');
-        router.push('/hotel/dashboard');
+        document.cookie = 'hotel_auth=vamana-inn-tirupati; path=/; max-age=86400; SameSite=Lax';
+        router.push(redirectTarget);
         return;
       }
 
@@ -34,7 +45,9 @@ export default function HotelLoginPage() {
       });
 
       if (!error && data?.user) {
-        router.push('/hotel/dashboard');
+        sessionStorage.setItem('hotel_authenticated', data.user.id);
+        document.cookie = `hotel_auth=${data.user.id}; path=/; max-age=86400; SameSite=Lax`;
+        router.push(redirectTarget);
         return;
       }
 

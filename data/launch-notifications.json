@@ -1,8 +1,24 @@
 {
-  "total": 3,
+  "total": 5,
   "cabs": 2,
-  "rooms": 1,
+  "rooms": 3,
   "items": [
+    {
+      "id": "SRTH-524589",
+      "service": "rooms",
+      "timestamp": "2026-10-21T05:12:04.589Z",
+      "phone": "9014580724",
+      "hotelName": "Hotel Vamana Inn & Partner Stays",
+      "totalAmount": 1200
+    },
+    {
+      "id": "SRTH-506737",
+      "service": "rooms",
+      "timestamp": "2026-10-21T04:21:46.737Z",
+      "phone": "9876567898",
+      "hotelName": "Hotel Vamana Inn & Partner Stays",
+      "totalAmount": 1600
+    },
     {
       "id": "notif_1792477704425_ehck",
       "service": "cabs",

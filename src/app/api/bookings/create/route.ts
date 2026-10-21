@@ -15,20 +15,103 @@ export async function POST(req: Request) {
       checkOut,
       guests = 2,
       rooms = 1,
-      totalAmount = 799,
+      budgetPerNight = 2500,
+      cabPreference = 'yes',
+      specialRequirements = '',
+      communicationLanguage = 'Telugu',
+      totalAmount,
       whatsappPhone = '919876543210'
     } = body;
 
-    if (!guestName || !guestPhone) {
+    // Server-side validation
+    const trimmedName = typeof guestName === 'string' ? guestName.trim() : '';
+    if (!trimmedName || trimmedName.length < 2) {
       return NextResponse.json(
-        { success: false, error: 'Guest name and phone number are required.' },
+        { success: false, error: 'Please enter your full name (at least 2 characters).' },
         { status: 400 }
       );
     }
 
-    const bookingId = `SRTH-${Date.now().toString().slice(-6)}`;
+    const cleanPhone = String(guestPhone || '').replace(/\D/g, '');
+    if (cleanPhone.length < 10) {
+      return NextResponse.json(
+        { success: false, error: 'Please enter a valid 10-digit mobile number.' },
+        { status: 400 }
+      );
+    }
+    const formattedPhone = cleanPhone.slice(-10);
 
-    // 1. Record into launch-notifications.json for real-time room count
+    if (!checkIn || !checkOut) {
+      return NextResponse.json(
+        { success: false, error: 'Please select both check-in and check-out dates.' },
+        { status: 400 }
+      );
+    }
+
+    const inDate = new Date(checkIn);
+    const outDate = new Date(checkOut);
+    if (isNaN(inDate.getTime()) || isNaN(outDate.getTime())) {
+      return NextResponse.json(
+        { success: false, error: 'Invalid check-in or check-out date format.' },
+        { status: 400 }
+      );
+    }
+
+    if (outDate < inDate) {
+      return NextResponse.json(
+        { success: false, error: 'Check-out date cannot be earlier than check-in date.' },
+        { status: 400 }
+      );
+    }
+
+    const guestsCount = Math.max(1, Math.min(30, Number(guests) || 2));
+    const roomsCount = Math.max(1, Math.min(10, Number(rooms) || 1));
+    const budget = Math.max(500, Number(budgetPerNight) || 2500);
+    const calculatedAmount = totalAmount ? Number(totalAmount) : budget;
+    const bookingId = `SRTH-${Date.now().toString().slice(-6)}`;
+    const nowIso = new Date().toISOString();
+
+    const bookingRecord = {
+      id: bookingId,
+      hotel_id: hotelId,
+      hotel_name: hotelName,
+      guest_name: trimmedName,
+      guest_phone: formattedPhone,
+      check_in: checkIn,
+      check_out: checkOut,
+      guests_count: guestsCount,
+      rooms_count: roomsCount,
+      budget_per_night: budget,
+      cab_preference: cabPreference,
+      special_requirements: typeof specialRequirements === 'string' ? specialRequirements.trim() : '',
+      communication_language: communicationLanguage || 'Telugu',
+      total_amount: calculatedAmount,
+      status: 'new',
+      admin_notes: '',
+      created_at: nowIso,
+      updated_at: nowIso
+    };
+
+    // 1. Central JSON fallback file store (ensures instant zero-downtime reliability)
+    try {
+      const BOOKINGS_FILE = path.join(process.cwd(), 'data', 'hotel-bookings.json');
+      let allBookings: any[] = [];
+      if (fs.existsSync(BOOKINGS_FILE)) {
+        try {
+          allBookings = JSON.parse(fs.readFileSync(BOOKINGS_FILE, 'utf-8'));
+          if (!Array.isArray(allBookings)) allBookings = [];
+        } catch {
+          allBookings = [];
+        }
+      }
+      allBookings.unshift(bookingRecord);
+      if (allBookings.length > 500) allBookings = allBookings.slice(0, 500);
+      fs.writeFileSync(BOOKINGS_FILE, JSON.stringify(allBookings, null, 2));
+    } catch (fsErr) {
+      console.warn('Local hotel-bookings file write warning:', fsErr);
+    }
+
+    // 2. Record into launch-notifications.json for real-time room count
     try {
       const NOTIF_FILE = path.join(process.cwd(), 'data', 'launch-notifications.json');
       let store: any = { total: 0, cabs: 0, rooms: 0, items: [] };
@@ -41,10 +124,10 @@ export async function POST(req: Request) {
       store.items.unshift({
         id: bookingId,
         service: 'rooms',
-        timestamp: new Date().toISOString(),
-        phone: guestPhone,
+        timestamp: nowIso,
+        phone: formattedPhone,
         hotelName,
-        totalAmount,
+        totalAmount: calculatedAmount,
       });
       if (store.items.length > 500) store.items = store.items.slice(0, 500);
       fs.writeFileSync(NOTIF_FILE, JSON.stringify(store, null, 2));
@@ -67,10 +150,10 @@ export async function POST(req: Request) {
         sbStore.items.unshift({
           id: bookingId,
           service: 'rooms',
-          timestamp: new Date().toISOString(),
-          phone: guestPhone,
+          timestamp: nowIso,
+          phone: formattedPhone,
           hotelName,
-          totalAmount,
+          totalAmount: calculatedAmount,
         });
         if (sbStore.items.length > 100) sbStore.items = sbStore.items.slice(0, 100);
 
@@ -78,7 +161,7 @@ export async function POST(req: Request) {
           .from('live_updates')
           .update({
             value: JSON.stringify(sbStore),
-            updated_at: new Date().toISOString()
+            updated_at: nowIso
           })
           .eq('module', 'launch_waitlist');
       } catch (sbErr) {
@@ -88,45 +171,40 @@ export async function POST(req: Request) {
       console.warn('Failed to update notifications store:', e);
     }
 
-    // 2. Optional: attempt recording to Supabase hotel_bookings if table exists
+    // 3. Secure Supabase hotel_bookings persistence
     try {
-      await supabase
+      const { error: insertError } = await supabase
         .from('hotel_bookings')
-        .insert([
-          {
-            id: bookingId,
-            hotel_id: hotelId,
-            hotel_name: hotelName,
-            guest_name: guestName,
-            guest_phone: guestPhone,
-            check_in: checkIn,
-            check_out: checkOut,
-            guests_count: guests,
-            rooms_count: rooms,
-            total_amount: totalAmount,
-            status: 'pending',
-            created_at: new Date().toISOString()
-          }
-        ]);
+        .insert([bookingRecord]);
+      if (insertError) {
+        if (insertError.message?.includes('communication_language')) {
+          const { communication_language, ...recordWithoutLang } = bookingRecord;
+          await supabase.from('hotel_bookings').insert([recordWithoutLang]);
+        } else {
+          console.warn('Supabase insert notice (fallback to local store active):', insertError.message);
+        }
+      }
     } catch (dbErr) {
-      // Graceful fallback - proceed without blocking guest
       console.warn('Supabase hotel_bookings table notice (non-fatal):', dbErr);
     }
 
-    // Build WhatsApp URL
+    // 4. Build WhatsApp coordinate message
+    const cabText = cabPreference === 'yes' ? 'Yes, Cab needed' : cabPreference === 'contact' ? 'Discuss cab options' : 'No cab (Room only)';
     const message = 
-      `*New Booking Request - ${hotelName}*\n` +
+      `*New Pilgrim Stay Request - Saarthi*\n` +
       `-----------------------------------\n` +
       `• *Ref ID:* ${bookingId}\n` +
-      `• *Guest:* ${guestName}\n` +
-      `• *Phone:* ${guestPhone}\n` +
+      `• *Guest:* ${trimmedName}\n` +
+      `• *Phone:* ${formattedPhone}\n` +
+      `• *Language:* ${communicationLanguage || 'Telugu'}\n` +
       `• *Check-in:* ${checkIn}\n` +
       `• *Check-out:* ${checkOut}\n` +
-      `• *Rooms:* ${rooms} Room(s)\n` +
-      `• *Guests:* ${guests} Guest(s)\n` +
-      `• *Total Price:* ₹${totalAmount}\n` +
+      `• *Pilgrims:* ${guestsCount} Pilgrim(s)\n` +
+      `• *Budget:* ₹${budget} per room/night\n` +
+      `• *Cab Preference:* ${cabText}\n` +
+      (specialRequirements ? `• *Special Notes:* ${specialRequirements}\n` : '') +
       `-----------------------------------\n` +
-      `_Booked via Saarthi App. Please confirm room availability._`;
+      `_Submitted via Saarthi Pilgrim App. Team coordination required._`;
 
     const whatsappUrl = `https://wa.me/${whatsappPhone.replace(/\D/g, '')}?text=${encodeURIComponent(message)}`;
 
@@ -135,17 +213,23 @@ export async function POST(req: Request) {
       bookingId,
       whatsappUrl,
       details: {
+        bookingId,
         hotelName,
-        guestName,
+        guestName: trimmedName,
+        guestPhone: formattedPhone,
+        communicationLanguage: communicationLanguage || 'Telugu',
         checkIn,
         checkOut,
-        totalAmount
+        guestsCount,
+        budget,
+        cabPreference,
+        specialRequirements
       }
     });
   } catch (error: any) {
     console.error('Booking creation error:', error);
     return NextResponse.json(
-      { success: false, error: error.message || 'Failed to process booking.' },
+      { success: false, error: error.message || 'Failed to process stay request.' },
       { status: 500 }
     );
   }

@@ -4,7 +4,7 @@
    Glassmorphism, 24px radius, Clean 8pt grid
    ============================================= */
 
-:root {
+.page {
   --saarthi-emerald: #14532D;
   --saarthi-gold: #C89B3C;
   --saarthi-ivory: #FAF8F4;
@@ -12,9 +12,7 @@
   --saarthi-gray: #F0F2F5;
   --saarthi-text: #2D3748;
   --saarthi-text-light: #718096;
-}
 
-.page {
   min-height: 100vh;
   background-color: var(--saarthi-ivory);
   color: var(--saarthi-text);

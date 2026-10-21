@@ -4,7 +4,7 @@
    100% viewport width, zero blank space, fluid grid
    ============================================= */
 
-:root {
+.container {
   --saarthi-emerald: #0F5132;
   --saarthi-emerald-light: #F0FDF4;
   --saarthi-gold: #C89B3C;
@@ -14,9 +14,7 @@
   --saarthi-text: #1E293B;
   --saarthi-text-muted: #64748B;
   --saarthi-border: #E2E8F0;
-}
 
-.container {
   height: 100vh;
   height: 100dvh;
   max-height: 100vh;

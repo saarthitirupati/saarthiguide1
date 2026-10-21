@@ -1,10 +1,10 @@
 {
-  "waitTime": "8-10 Hours",
+  "waitTime": "6-8 Hours",
   "bestTime": "",
   "crowdLevel": "low",
   "sevaStatus": "All sevas open",
   "notice": "HIGH CROWD WARNING: Ghat road traffic slow. Exercise caution.",
-  "lastUpdated": "2026-10-20T12:16:16.272+00:00",
+  "lastUpdated": "2026-10-21T03:27:20.626+00:00",
   "darshanSpeed": "normal",
   "accommodationStatus": "available",
   "ladduAvailability": "available",
@@ -12,17 +12,17 @@
   "darshans": [
     {
       "name": "Sarva Darshan (Free)",
-      "waitTime": "8-10 Hours",
+      "waitTime": "6-8 Hours",
       "peakHours": "Daily 10 AM - 6 PM"
     },
     {
       "name": "Special Entry (₹300)",
-      "waitTime": "1-3 Hours ",
+      "waitTime": "1-2 Hours ",
       "peakHours": "Daily 9 AM - 3 PM"
     },
     {
       "name": "Divya Darshan (Footpath)",
-      "waitTime": "suspended ",
+      "waitTime": "3-4 hours",
       "peakHours": "Daily 8 AM - 4 PM"
     },
     {
@@ -31,7 +31,7 @@
       "peakHours": "Daily 6 AM - 8 AM"
     }
   ],
-  "ssdTokenStatus": "issuing",
+  "ssdTokenStatus": "paused",
   "ssdNextTokenTime": "Started at 5:00 PM",
   "ssdTokenSlots": [
     {
@@ -66,7 +66,7 @@
     }
   ],
   "ssdNotice": "*⏰ 21st October – SSD 8K & DD 2K Tokens Issue Started @ 5:00PM",
-  "ssdTimingsGuide": "*⏰ 21st October – SSD 8K & DD 2K Tokens Issue Started @ 5:00Pm*\n\n*🔹 SSD Tokens – Current Status*\n\n  ✅ • Available Tokens: *7996*\n\n*🔹 Srivari Mettu Divya Darshan Tokens*\n\n  ✅ • Available Tokens: *2000*\n\n",
+  "ssdTimingsGuide": "⏰ 21st October – SSD 8K & DD 2K Tokens Issue Started @ 5:00Pm\n\n*🔹 SSD Tokens – Current Status*\n\n  ✅ • Available Tokens: *6534*\n\n*🔹 Srivari Mettu Divya Darshan Tokens*\n\n  ✅ • Available Tokens: *1898*\n\n",
   "ssdCounters": [
     {
       "name": "Vishnu Nivasam Counter",
