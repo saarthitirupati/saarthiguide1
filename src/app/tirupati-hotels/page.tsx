@@ -5,7 +5,8 @@ import Link from 'next/link';
 import { 
   Bed, User, Phone, Calendar, Users, IndianRupee, Car, 
   FileText, ShieldCheck, Send, CheckCircle2, ChevronDown, 
-  Bell, MessageSquare, RefreshCw
+  Bell, MessageSquare, RefreshCw, ArrowLeft, Sparkles, Check,
+  Languages, MapPin
 } from 'lucide-react';
 import Logo from '@/components/Logo/Logo';
 
@@ -269,95 +270,71 @@ export default function TirupatiHotelsPage() {
       color: '#1B2A1E',
       maxWidth: '680px',
       margin: '0 auto',
-      paddingBottom: '100px',
+      paddingBottom: '72px',
       boxSizing: 'border-box',
       fontFamily: 'system-ui, -apple-system, sans-serif'
     }}>
-      {/* ── TOP HEADER (Saarthi Brand Header) ── */}
+      {/* ── TOP HEADER (Saarthi Subpage Navigation) ── */}
       <header style={{
         position: 'sticky',
         top: 0,
         zIndex: 40,
-        backgroundColor: '#FFFFFF',
+        backgroundColor: 'rgba(255, 255, 255, 0.95)',
+        backdropFilter: 'blur(12px)',
         borderBottom: '1px solid #ECEEEA',
         padding: '12px 18px',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between'
       }}>
-        {/* Left: Saarthi Logo & Name */}
-        <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none' }}>
-          <div style={{ width: '32px', height: '32px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <Logo size={32} />
-          </div>
-          <span style={{ fontSize: '18px', fontWeight: 800, color: '#0F5132', letterSpacing: '-0.02em' }}>
-            Saarthi
-          </span>
-        </Link>
-
-        {/* Right: Tirupati Location Pill, Lang, Alert Bell */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          {/* Location Pill */}
-          <div style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '4px',
-            backgroundColor: '#F0FDF4',
-            border: '1px solid #BBF7D0',
-            color: '#166534',
-            padding: '5px 10px',
-            borderRadius: '20px',
-            fontSize: '11.5px',
-            fontWeight: 700
-          }}>
-            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="#166534" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
-              <circle cx="12" cy="10" r="3" />
-            </svg>
-            <span>Tirupati</span>
-            <ChevronDown size={13} color="#166534" />
-          </div>
-
-          {/* Language Selector */}
-          <div style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '4px',
-            backgroundColor: '#FFFFFF',
-            border: '1px solid #D1D5DB',
-            color: '#374151',
-            padding: '5px 9px',
-            borderRadius: '20px',
-            fontSize: '11px',
-            fontWeight: 700
-          }}>
-            <span>文A EN</span>
-          </div>
-
-          {/* Bell Icon */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <Link
-            href="/alerts"
+            href="/"
             style={{
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              width: '32px',
-              height: '32px',
+              width: '36px',
+              height: '36px',
               borderRadius: '50%',
-              backgroundColor: '#F3F4F6',
-              color: '#374151',
+              backgroundColor: '#F1F5F0',
+              color: '#0F5132',
               textDecoration: 'none'
             }}
           >
-            <Bell size={16} />
+            <ArrowLeft size={18} />
           </Link>
+          <div>
+            <h1 style={{ fontSize: '16px', fontWeight: 800, margin: 0, color: '#1B2A1E', lineHeight: 1.2 }}>
+              Pilgrim Stay
+            </h1>
+            <p style={{ fontSize: '11px', margin: 0, color: '#687968' }}>
+              Tirupati Foothills & Temple Stays
+            </p>
+          </div>
+        </div>
+
+        <div style={{
+          display: 'inline-flex',
+          alignItems: 'center',
+          gap: '5px',
+          backgroundColor: '#F0FDF4',
+          border: '1px solid #BBF7D0',
+          color: '#166534',
+          padding: '4px 10px',
+          borderRadius: '20px',
+          fontSize: '11px',
+          fontWeight: 700
+        }}>
+          <ShieldCheck size={13} color="#166534" />
+          <span>Verified Stays</span>
         </div>
       </header>
 
 
 
-      {/* ── MAIN CONTENT CONTAINER ── */}
-      <main style={{ padding: '8px 18px 24px' }}>
+      {/* ── MAIN CONTENT CONTAINER (72px padding-bottom for compact clearance above bottom nav) ── */}
+      <main style={{ padding: '8px 16px 72px' }}>
         {/* ── SUCCESS VIEW: Request Submitted ── */}
         {submittedBooking ? (
           <div style={{
@@ -503,53 +480,61 @@ export default function TirupatiHotelsPage() {
           </div>
         ) : (
           /* ── MAIN ROOM BOOKING REQUEST FORM ── */
-          <div style={{
-            backgroundColor: '#FFFFFF',
-            borderRadius: '24px',
-            border: '1px solid #ECEEEA',
-            padding: '22px 18px',
-            boxShadow: '0 4px 18px rgba(0,0,0,0.03)'
-          }}>
-            {/* Header Box: Bed Icon in light green circle + Title */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+            {/* Visual Hero Banner Card */}
             <div style={{
-              backgroundColor: '#ECFDF5',
-              borderRadius: '18px',
-              padding: '16px 14px',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '14px',
-              marginBottom: '20px'
+              borderRadius: '20px',
+              overflow: 'hidden',
+              boxShadow: '0 8px 24px -4px rgba(15, 81, 50, 0.16)',
+              border: '1px solid #ECEEEA',
+              backgroundColor: '#0F5132',
+              position: 'relative'
             }}>
-              <div style={{
-                width: '46px',
-                height: '46px',
-                borderRadius: '14px',
-                backgroundColor: '#FFFFFF',
-                border: '1.5px solid #A7F3D0',
-                color: '#0F5132',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                flexShrink: 0,
-                boxShadow: '0 2px 6px rgba(15, 81, 50, 0.08)'
-              }}>
-                <Bed size={24} color="#0F5132" />
-              </div>
-              <div>
-                <h1 style={{
-                  fontSize: '18px',
-                  fontWeight: 800,
-                  margin: '0 0 3px',
-                  color: '#1B2A1E',
-                  letterSpacing: '-0.02em',
-                  lineHeight: 1.2
-                }}>
-                  Find Your Pilgrim Stay
-                </h1>
-                <p style={{ fontSize: '12px', color: '#4B5563', margin: 0, lineHeight: 1.4 }}>
-                  Tell us your requirements. Our team will help coordinate your stay.
-                </p>
-              </div>
+              <img
+                src="/hotel-hero.png"
+                alt="Find Comfortable Rooms in Tirupati"
+                style={{
+                  width: '100%',
+                  height: 'auto',
+                  display: 'block',
+                  maxHeight: '220px',
+                  objectFit: 'cover'
+                }}
+              />
+            </div>
+
+            {/* Quick Feature Chips */}
+            <div style={{ display: 'flex', gap: '6px', overflowX: 'auto', paddingBottom: '2px' }}>
+              {[
+                { icon: MapPin, text: 'Near Temple' },
+                { icon: ShieldCheck, text: 'Verified Stays' },
+                { icon: IndianRupee, text: 'Budget Friendly' }
+              ].map((badge, idx) => {
+                const IconComponent = badge.icon;
+                return (
+                  <div
+                    key={idx}
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '4px',
+                      backgroundColor: '#FFFFFF',
+                      border: '1px solid #ECEEEA',
+                      padding: '4px 10px',
+                      borderRadius: '16px',
+                      fontSize: '11px',
+                      fontWeight: 700,
+                      color: '#0F5132',
+                      whiteSpace: 'nowrap',
+                      flexShrink: 0,
+                      boxShadow: '0 1px 4px rgba(0,0,0,0.02)'
+                    }}
+                  >
+                    <IconComponent size={12} color="#0F5132" />
+                    <span>{badge.text}</span>
+                  </div>
+                );
+              })}
             </div>
 
             {/* Error Banner */}
@@ -560,361 +545,439 @@ export default function TirupatiHotelsPage() {
                 borderRadius: '12px',
                 padding: '10px 14px',
                 color: '#B91C1C',
-                fontSize: '12.5px',
-                fontWeight: 600,
-                marginBottom: '16px'
+                fontSize: '12px',
+                fontWeight: 600
               }}>
                 ⚠️ {validationError}
               </div>
             )}
 
-            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-              {/* Field 1: Full Name */}
-              <div>
-                <label style={{ display: 'block', fontSize: '13px', fontWeight: 700, color: '#1B2A1E', marginBottom: '6px' }}>
-                  Full Name <span style={{ color: '#DC2626' }}>*</span>
-                </label>
-                <div style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  backgroundColor: '#FFFFFF',
-                  border: '1.5px solid #E5E7EB',
-                  borderRadius: '12px',
-                  padding: '10px 14px'
-                }}>
-                  <User size={16} color="#9CA3AF" style={{ marginRight: '10px', flexShrink: 0 }} />
-                  <input
-                    type="text"
-                    required
-                    placeholder="Enter your name"
-                    value={fullName}
-                    onChange={(e) => setFullName(e.target.value)}
-                    style={{
-                      border: 'none',
-                      outline: 'none',
-                      width: '100%',
-                      fontSize: '13.5px',
-                      color: '#1B2A1E',
-                      backgroundColor: 'transparent'
-                    }}
-                  />
-                </div>
-              </div>
+            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
 
-              {/* Field 2: Mobile Number */}
-              <div>
-                <label style={{ display: 'block', fontSize: '13px', fontWeight: 700, color: '#1B2A1E', marginBottom: '6px' }}>
-                  Mobile Number <span style={{ color: '#DC2626' }}>*</span>
-                </label>
-                <div style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  backgroundColor: '#FFFFFF',
-                  border: '1.5px solid #E5E7EB',
-                  borderRadius: '12px',
-                  padding: '10px 14px'
-                }}>
-                  <Phone size={16} color="#9CA3AF" style={{ marginRight: '10px', flexShrink: 0 }} />
-                  <input
-                    type="tel"
-                    required
-                    maxLength={10}
-                    placeholder="Enter 10-digit mobile number"
-                    value={mobileNumber}
-                    onChange={(e) => setMobileNumber(e.target.value.replace(/\D/g, ''))}
-                    style={{
-                      border: 'none',
-                      outline: 'none',
-                      width: '100%',
-                      fontSize: '13.5px',
-                      color: '#1B2A1E',
-                      backgroundColor: 'transparent'
-                    }}
-                  />
-                </div>
-              </div>
-
-              {/* Communication Language Selector */}
-              <div>
-                <label style={{ display: 'block', fontSize: '13px', fontWeight: 700, color: '#1B2A1E', marginBottom: '6px' }}>
-                  Preferred Language (for Call / WhatsApp)
-                </label>
-                <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
-                  {[
-                    { code: 'Telugu', label: 'తెలుగు (Telugu)' },
-                    { code: 'English', label: 'English' },
-                    { code: 'Hindi', label: 'हिंदी (Hindi)' },
-                    { code: 'Tamil', label: 'தமிழ் (Tamil)' },
-                    { code: 'Kannada', label: 'ಕನ್ನಡ (Kannada)' }
-                  ].map((lang) => (
-                    <button
-                      key={lang.code}
-                      type="button"
-                      onClick={() => setPreferredLanguage(lang.code)}
-                      style={{
-                        padding: '6px 12px',
-                        borderRadius: '20px',
-                        fontSize: '12px',
-                        fontWeight: 700,
-                        cursor: 'pointer',
-                        border: preferredLanguage === lang.code ? '1.5px solid #0F5132' : '1px solid #E5E7EB',
-                        backgroundColor: preferredLanguage === lang.code ? '#ECFDF5' : '#FFFFFF',
-                        color: preferredLanguage === lang.code ? '#0F5132' : '#4B5563',
-                        transition: 'all 0.15s ease'
-                      }}
-                    >
-                      {lang.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Field 3 & 4: Check-in Date & Check-out Date (2 columns) */}
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
-                <div>
-                  <label style={{ display: 'block', fontSize: '13px', fontWeight: 700, color: '#1B2A1E', marginBottom: '6px' }}>
-                    Check-in Date <span style={{ color: '#DC2626' }}>*</span>
-                  </label>
-                  <div style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    backgroundColor: '#FFFFFF',
-                    border: '1.5px solid #E5E7EB',
-                    borderRadius: '12px',
-                    padding: '9px 12px'
-                  }}>
-                    <Calendar size={15} color="#9CA3AF" style={{ marginRight: '8px', flexShrink: 0 }} />
-                    <input
-                      type="date"
-                      required
-                      min={todayStr}
-                      value={checkInDate}
-                      onChange={(e) => setCheckInDate(e.target.value)}
-                      style={{
-                        border: 'none',
-                        outline: 'none',
-                        width: '100%',
-                        fontSize: '12.5px',
-                        color: checkInDate ? '#1B2A1E' : '#9CA3AF',
-                        backgroundColor: 'transparent',
-                        fontFamily: 'inherit'
-                      }}
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <label style={{ display: 'block', fontSize: '13px', fontWeight: 700, color: '#1B2A1E', marginBottom: '6px' }}>
-                    Check-out Date <span style={{ color: '#DC2626' }}>*</span>
-                  </label>
-                  <div style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    backgroundColor: '#FFFFFF',
-                    border: '1.5px solid #E5E7EB',
-                    borderRadius: '12px',
-                    padding: '9px 12px'
-                  }}>
-                    <Calendar size={15} color="#9CA3AF" style={{ marginRight: '8px', flexShrink: 0 }} />
-                    <input
-                      type="date"
-                      required
-                      min={checkInDate || todayStr}
-                      value={checkOutDate}
-                      onChange={(e) => setCheckOutDate(e.target.value)}
-                      style={{
-                        border: 'none',
-                        outline: 'none',
-                        width: '100%',
-                        fontSize: '12.5px',
-                        color: checkOutDate ? '#1B2A1E' : '#9CA3AF',
-                        backgroundColor: 'transparent',
-                        fontFamily: 'inherit'
-                      }}
-                    />
-                  </div>
-                </div>
-              </div>
-
-              {/* Field 5: Number of Pilgrims */}
-              <div>
-                <label style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '13px', fontWeight: 700, color: '#1B2A1E', marginBottom: '8px' }}>
-                  <Users size={15} color="#0F5132" />
-                  <span>Number of Pilgrims</span>
-                </label>
-                <div style={{
-                  display: 'grid',
-                  gridTemplateColumns: 'repeat(4, 1fr)',
-                  gap: '8px'
-                }}>
-                  {(['1 person', '2 people', '3–4 people', '5 or more'] as const).map((option) => {
-                    const isSelected = pilgrimsCount === option;
-                    return (
-                      <button
-                        key={option}
-                        type="button"
-                        onClick={() => setPilgrimsCount(option)}
-                        style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          gap: '6px',
-                          padding: '10px 4px',
-                          borderRadius: '12px',
-                          border: isSelected ? '1.5px solid #0F5132' : '1.5px solid #E5E7EB',
-                          backgroundColor: isSelected ? '#ECFDF5' : '#FFFFFF',
-                          color: isSelected ? '#0F5132' : '#4B5563',
-                          fontSize: '12px',
-                          fontWeight: isSelected ? 800 : 600,
-                          cursor: 'pointer',
-                          transition: 'all 0.15s ease'
-                        }}
-                      >
-                        <span style={{
-                          width: '12px',
-                          height: '12px',
-                          borderRadius: '50%',
-                          border: isSelected ? '4px solid #0F5132' : '1.5px solid #D1D5DB',
-                          boxSizing: 'border-box'
-                        }} />
-                        <span>{option}</span>
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-
-              {/* Field 6: Budget per room, per night */}
-              <div style={{ paddingTop: '4px' }}>
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
-                  <label style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '13px', fontWeight: 700, color: '#1B2A1E' }}>
-                    <IndianRupee size={15} color="#0F5132" />
-                    <span>Budget per room, per night</span>
-                  </label>
-                  <span style={{ fontSize: '18px', fontWeight: 800, color: '#0F5132' }}>
-                    ₹ {budget.toLocaleString('en-IN')}
-                  </span>
-                </div>
-
-                {/* Range Slider */}
-                <input
-                  type="range"
-                  min="1200"
-                  max="7500"
-                  step="100"
-                  value={budget}
-                  onChange={(e) => setBudget(Number(e.target.value))}
-                  style={{
-                    width: '100%',
-                    height: '6px',
-                    borderRadius: '3px',
-                    accentColor: '#0F5132',
-                    cursor: 'pointer'
-                  }}
-                />
-
-                {/* Range Scale Labels */}
-                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '11px', color: '#6B7280', marginTop: '4px' }}>
-                  <span>₹ 1,200</span>
-                  <span>₹ 4,500</span>
-                  <span>₹ 7,500</span>
-                </div>
-                <p style={{ fontSize: '11px', color: '#6B7280', margin: '4px 0 0 0' }}>
-                  Final room availability and price will be confirmed by our team.
-                </p>
-              </div>
-
-              {/* Field 7: Do you need a cab? */}
-              <div style={{ paddingTop: '4px', borderTop: '1px solid #F3F4F6' }}>
-                <label style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '13px', fontWeight: 700, color: '#1B2A1E', marginBottom: '8px' }}>
-                  <Car size={15} color="#0F5132" />
-                  <span>Do you need a cab?</span>
-                </label>
-
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                  {[
-                    { key: 'yes', label: 'Yes, I need a cab' },
-                    { key: 'no', label: 'No, room only' },
-                    { key: 'contact', label: 'Please contact me about cab options' }
-                  ].map(item => {
-                    const isSelected = needCab === item.key;
-                    return (
-                      <label
-                        key={item.key}
-                        onClick={() => setNeedCab(item.key as any)}
-                        style={{
-                          display: 'flex',
-                          alignItems: 'center',
-                          gap: '10px',
-                          padding: '8px 12px',
-                          borderRadius: '10px',
-                          border: isSelected ? '1px solid #A7F3D0' : '1px solid transparent',
-                          backgroundColor: isSelected ? '#F0FDF4' : 'transparent',
-                          cursor: 'pointer',
-                          fontSize: '13px',
-                          color: isSelected ? '#0F5132' : '#374151',
-                          fontWeight: isSelected ? 700 : 500
-                        }}
-                      >
-                        <span style={{
-                          width: '16px',
-                          height: '16px',
-                          borderRadius: '50%',
-                          border: isSelected ? '5px solid #0F5132' : '1.5px solid #CBD5E1',
-                          boxSizing: 'border-box'
-                        }} />
-                        <span>{item.label}</span>
-                      </label>
-                    );
-                  })}
-                </div>
-              </div>
-
-              {/* Field 8: Additional requirements (optional) */}
-              <div style={{ paddingTop: '4px', borderTop: '1px solid #F3F4F6' }}>
-                <label style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '13px', fontWeight: 700, color: '#1B2A1E', marginBottom: '6px' }}>
-                  <FileText size={15} color="#0F5132" />
-                  <span>Additional requirements (optional)</span>
-                </label>
-                <textarea
-                  rows={2}
-                  placeholder="Temple pickup, elderly pilgrims, special requirements..."
-                  value={additionalNotes}
-                  onChange={(e) => setAdditionalNotes(e.target.value)}
-                  style={{
-                    width: '100%',
-                    boxSizing: 'border-box',
-                    border: '1.5px solid #E5E7EB',
-                    borderRadius: '12px',
-                    padding: '10px 12px',
-                    fontSize: '13px',
-                    color: '#1B2A1E',
-                    outline: 'none',
-                    resize: 'none',
-                    fontFamily: 'inherit'
-                  }}
-                />
-              </div>
-
-              {/* Disclaimer Notice Box */}
+              {/* ── SECTION 1: CONTACT DETAILS ── */}
               <div style={{
-                backgroundColor: '#ECFDF5',
-                border: '1px solid #A7F3D0',
-                borderRadius: '14px',
-                padding: '12px 14px',
-                display: 'flex',
-                gap: '10px',
-                alignItems: 'flex-start'
+                backgroundColor: '#FFFFFF',
+                borderRadius: '16px',
+                border: '1px solid #ECEEEA',
+                padding: '14px',
+                boxShadow: '0 2px 6px rgba(0, 0, 0, 0.02)'
               }}>
-                <ShieldCheck size={20} color="#0F5132" style={{ flexShrink: 0, marginTop: '2px' }} />
-                <div>
-                  <strong style={{ fontSize: '12.5px', color: '#0F5132', display: 'block', marginBottom: '2px' }}>
-                    Booking request, not instant confirmation
-                  </strong>
-                  <span style={{ fontSize: '11.5px', color: '#065F46', lineHeight: 1.4, display: 'block' }}>
-                    Our team will check availability and contact you to confirm the details before your booking is finalized.
-                  </span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '10px' }}>
+                  <User size={15} color="#0F5132" />
+                  <h2 style={{ fontSize: '13px', fontWeight: 800, color: '#1B2A1E', margin: 0 }}>
+                    1. Contact & Language
+                  </h2>
                 </div>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                  {/* Name & Phone Grid */}
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: '8px' }}>
+                    <div>
+                      <label style={{ display: 'block', fontSize: '11px', fontWeight: 700, color: '#4B5563', marginBottom: '3px' }}>
+                        Full Name <span style={{ color: '#DC2626' }}>*</span>
+                      </label>
+                      <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        backgroundColor: '#FAF8F5',
+                        border: '1px solid #E5E7EB',
+                        borderRadius: '10px',
+                        padding: '8px 10px'
+                      }}>
+                        <User size={14} color="#9CA3AF" style={{ marginRight: '6px', flexShrink: 0 }} />
+                        <input
+                          type="text"
+                          required
+                          placeholder="Your name"
+                          value={fullName}
+                          onChange={(e) => setFullName(e.target.value)}
+                          style={{
+                            border: 'none',
+                            outline: 'none',
+                            width: '100%',
+                            fontSize: '12.5px',
+                            color: '#1B2A1E',
+                            backgroundColor: 'transparent'
+                          }}
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label style={{ display: 'block', fontSize: '11px', fontWeight: 700, color: '#4B5563', marginBottom: '3px' }}>
+                        WhatsApp Mobile <span style={{ color: '#DC2626' }}>*</span>
+                      </label>
+                      <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        backgroundColor: '#FAF8F5',
+                        border: '1px solid #E5E7EB',
+                        borderRadius: '10px',
+                        padding: '8px 10px'
+                      }}>
+                        <Phone size={14} color="#9CA3AF" style={{ marginRight: '6px', flexShrink: 0 }} />
+                        <span style={{ fontSize: '12px', fontWeight: 700, color: '#6B7280', marginRight: '4px' }}>+91</span>
+                        <input
+                          type="tel"
+                          required
+                          maxLength={10}
+                          placeholder="10-digit number"
+                          value={mobileNumber}
+                          onChange={(e) => setMobileNumber(e.target.value.replace(/\D/g, ''))}
+                          style={{
+                            border: 'none',
+                            outline: 'none',
+                            width: '100%',
+                            fontSize: '12.5px',
+                            color: '#1B2A1E',
+                            backgroundColor: 'transparent'
+                          }}
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Language Selection Chips with Lucide Icons */}
+                  <div>
+                    <label style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '11px', fontWeight: 700, color: '#4B5563', marginBottom: '5px' }}>
+                      <Languages size={12} color="#0F5132" />
+                      <span>Preferred Call Language</span>
+                    </label>
+                    <div style={{ display: 'flex', gap: '5px', flexWrap: 'wrap' }}>
+                      {[
+                        { code: 'Telugu', label: 'తెలుగు' },
+                        { code: 'English', label: 'English' },
+                        { code: 'Hindi', label: 'हिंदी' },
+                        { code: 'Tamil', label: 'தமிழ்' },
+                        { code: 'Kannada', label: 'ಕನ್ನಡ' }
+                      ].map((lang) => {
+                        const isSelected = preferredLanguage === lang.code;
+                        return (
+                          <button
+                            key={lang.code}
+                            type="button"
+                            onClick={() => setPreferredLanguage(lang.code)}
+                            style={{
+                              display: 'inline-flex',
+                              alignItems: 'center',
+                              gap: '4px',
+                              padding: '5px 10px',
+                              borderRadius: '16px',
+                              fontSize: '11.5px',
+                              fontWeight: 700,
+                              cursor: 'pointer',
+                              border: isSelected ? '1.5px solid #0F5132' : '1px solid #E5E7EB',
+                              backgroundColor: isSelected ? '#ECFDF5' : '#FAF8F5',
+                              color: isSelected ? '#0F5132' : '#4B5563',
+                              transition: 'all 0.15s ease'
+                            }}
+                          >
+                            {isSelected && <Check size={11} color="#0F5132" />}
+                            <span>{lang.label}</span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* ── SECTION 2: STAY & PILGRIMS ── */}
+              <div style={{
+                backgroundColor: '#FFFFFF',
+                borderRadius: '16px',
+                border: '1px solid #ECEEEA',
+                padding: '14px',
+                boxShadow: '0 2px 6px rgba(0, 0, 0, 0.02)'
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '10px' }}>
+                  <Calendar size={15} color="#0F5132" />
+                  <h2 style={{ fontSize: '13px', fontWeight: 800, color: '#1B2A1E', margin: 0 }}>
+                    2. Stay Dates & Pilgrims
+                  </h2>
+                </div>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                  {/* Dates */}
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: '8px' }}>
+                    <div>
+                      <label style={{ display: 'block', fontSize: '11px', fontWeight: 700, color: '#4B5563', marginBottom: '3px' }}>
+                        Check-in <span style={{ color: '#DC2626' }}>*</span>
+                      </label>
+                      <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        backgroundColor: '#FAF8F5',
+                        border: '1px solid #E5E7EB',
+                        borderRadius: '10px',
+                        padding: '8px 10px'
+                      }}>
+                        <Calendar size={13} color="#0F5132" style={{ marginRight: '6px', flexShrink: 0 }} />
+                        <input
+                          type="date"
+                          required
+                          min={todayStr}
+                          value={checkInDate}
+                          onChange={(e) => setCheckInDate(e.target.value)}
+                          style={{
+                            border: 'none',
+                            outline: 'none',
+                            width: '100%',
+                            fontSize: '12px',
+                            color: checkInDate ? '#1B2A1E' : '#9CA3AF',
+                            backgroundColor: 'transparent',
+                            fontFamily: 'inherit'
+                          }}
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label style={{ display: 'block', fontSize: '11px', fontWeight: 700, color: '#4B5563', marginBottom: '3px' }}>
+                        Check-out <span style={{ color: '#DC2626' }}>*</span>
+                      </label>
+                      <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        backgroundColor: '#FAF8F5',
+                        border: '1px solid #E5E7EB',
+                        borderRadius: '10px',
+                        padding: '8px 10px'
+                      }}>
+                        <Calendar size={13} color="#0F5132" style={{ marginRight: '6px', flexShrink: 0 }} />
+                        <input
+                          type="date"
+                          required
+                          min={checkInDate || todayStr}
+                          value={checkOutDate}
+                          onChange={(e) => setCheckOutDate(e.target.value)}
+                          style={{
+                            border: 'none',
+                            outline: 'none',
+                            width: '100%',
+                            fontSize: '12px',
+                            color: checkOutDate ? '#1B2A1E' : '#9CA3AF',
+                            backgroundColor: 'transparent',
+                            fontFamily: 'inherit'
+                          }}
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Pilgrim Count Cards */}
+                  <div>
+                    <label style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '11px', fontWeight: 700, color: '#4B5563', marginBottom: '5px' }}>
+                      <Users size={12} color="#0F5132" />
+                      <span>Pilgrims & Room Count</span>
+                    </label>
+                    <div style={{
+                      display: 'grid',
+                      gridTemplateColumns: 'repeat(4, 1fr)',
+                      gap: '6px'
+                    }}>
+                      {[
+                        { key: '1 person', title: '1', sub: 'Single' },
+                        { key: '2 people', title: '2', sub: '1 Room' },
+                        { key: '3–4 people', title: '3–4', sub: 'Family' },
+                        { key: '5 or more', title: '5+', sub: 'Suite' }
+                      ].map((item) => {
+                        const isSelected = pilgrimsCount === item.key;
+                        return (
+                          <button
+                            key={item.key}
+                            type="button"
+                            onClick={() => setPilgrimsCount(item.key as any)}
+                            style={{
+                              display: 'flex',
+                              flexDirection: 'column',
+                              alignItems: 'center',
+                              padding: '7px 2px',
+                              borderRadius: '10px',
+                              border: isSelected ? '1.5px solid #0F5132' : '1px solid #E5E7EB',
+                              backgroundColor: isSelected ? '#ECFDF5' : '#FAF8F5',
+                              color: isSelected ? '#0F5132' : '#4B5563',
+                              cursor: 'pointer',
+                              transition: 'all 0.15s ease'
+                            }}
+                          >
+                            <span style={{ fontSize: '13px', fontWeight: 800 }}>{item.title}</span>
+                            <span style={{ fontSize: '10px', color: isSelected ? '#065F46' : '#6B7280' }}>{item.sub}</span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* ── SECTION 3: PREFERENCES & EXTRAS ── */}
+              <div style={{
+                backgroundColor: '#FFFFFF',
+                borderRadius: '16px',
+                border: '1px solid #ECEEEA',
+                padding: '14px',
+                boxShadow: '0 2px 6px rgba(0, 0, 0, 0.02)'
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '10px' }}>
+                  <IndianRupee size={15} color="#0F5132" />
+                  <h2 style={{ fontSize: '13px', fontWeight: 800, color: '#1B2A1E', margin: 0 }}>
+                    3. Budget & Preferences
+                  </h2>
+                </div>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                  {/* Budget Slider */}
+                  <div>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '5px' }}>
+                      <span style={{ fontSize: '11px', fontWeight: 700, color: '#4B5563' }}>
+                        Budget / Night
+                      </span>
+                      <span style={{
+                        fontSize: '13px',
+                        fontWeight: 800,
+                        color: '#0F5132',
+                        backgroundColor: '#ECFDF5',
+                        border: '1px solid #BBF7D0',
+                        padding: '2px 8px',
+                        borderRadius: '12px'
+                      }}>
+                        ₹ {budget.toLocaleString('en-IN')}
+                      </span>
+                    </div>
+
+                    {/* Presets */}
+                    <div style={{ display: 'flex', gap: '6px', marginBottom: '8px' }}>
+                      {[
+                        { label: '₹1.2k (Budget)', val: 1200 },
+                        { label: '₹2.5k (Standard)', val: 2500 },
+                        { label: '₹4.5k (Deluxe)', val: 4500 }
+                      ].map((preset) => {
+                        const isPresetActive = budget === preset.val;
+                        return (
+                          <button
+                            key={preset.val}
+                            type="button"
+                            onClick={() => setBudget(preset.val)}
+                            style={{
+                              flex: 1,
+                              padding: '5px 2px',
+                              borderRadius: '8px',
+                              fontSize: '10.5px',
+                              fontWeight: 700,
+                              cursor: 'pointer',
+                              border: isPresetActive ? '1.5px solid #0F5132' : '1px solid #E5E7EB',
+                              backgroundColor: isPresetActive ? '#ECFDF5' : '#FAF8F5',
+                              color: isPresetActive ? '#0F5132' : '#6B7280',
+                              transition: 'all 0.15s ease'
+                            }}
+                          >
+                            {preset.label}
+                          </button>
+                        );
+                      })}
+                    </div>
+
+                    <input
+                      type="range"
+                      min="1200"
+                      max="7500"
+                      step="100"
+                      value={budget}
+                      onChange={(e) => setBudget(Number(e.target.value))}
+                      style={{
+                        width: '100%',
+                        height: '5px',
+                        borderRadius: '3px',
+                        accentColor: '#0F5132',
+                        cursor: 'pointer'
+                      }}
+                    />
+                  </div>
+
+                  {/* Cab Selection (Clean horizontal pills) */}
+                  <div>
+                    <label style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '11px', fontWeight: 700, color: '#4B5563', marginBottom: '5px' }}>
+                      <Car size={12} color="#0F5132" />
+                      <span>Tirumala Ghat Cab?</span>
+                    </label>
+                    <div style={{ display: 'flex', gap: '6px' }}>
+                      {[
+                        { key: 'yes', label: 'Yes, need cab' },
+                        { key: 'no', label: 'Room only' },
+                        { key: 'contact', label: 'Call me' }
+                      ].map(item => {
+                        const isSelected = needCab === item.key;
+                        return (
+                          <button
+                            key={item.key}
+                            type="button"
+                            onClick={() => setNeedCab(item.key as any)}
+                            style={{
+                              flex: 1,
+                              padding: '6px 4px',
+                              borderRadius: '10px',
+                              border: isSelected ? '1.5px solid #0F5132' : '1px solid #E5E7EB',
+                              backgroundColor: isSelected ? '#ECFDF5' : '#FAF8F5',
+                              fontSize: '11px',
+                              color: isSelected ? '#0F5132' : '#4B5563',
+                              fontWeight: isSelected ? 800 : 600,
+                              cursor: 'pointer',
+                              transition: 'all 0.15s ease'
+                            }}
+                          >
+                            {item.label}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  {/* Special Requests */}
+                  <div>
+                    <div style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      backgroundColor: '#FAF8F5',
+                      border: '1px solid #E5E7EB',
+                      borderRadius: '10px',
+                      padding: '7px 10px'
+                    }}>
+                      <FileText size={13} color="#9CA3AF" style={{ marginRight: '6px', flexShrink: 0 }} />
+                      <input
+                        type="text"
+                        placeholder="Special requests (ground floor, elderly...)"
+                        value={additionalNotes}
+                        onChange={(e) => setAdditionalNotes(e.target.value)}
+                        style={{
+                          width: '100%',
+                          border: 'none',
+                          outline: 'none',
+                          fontSize: '12px',
+                          color: '#1B2A1E',
+                          backgroundColor: 'transparent',
+                          fontFamily: 'inherit'
+                        }}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Trust Badge */}
+              <div style={{
+                backgroundColor: '#F0FDF4',
+                border: '1px solid #BBF7D0',
+                borderRadius: '12px',
+                padding: '8px 12px',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px'
+              }}>
+                <ShieldCheck size={16} color="#0F5132" style={{ flexShrink: 0 }} />
+                <span style={{ fontSize: '11.5px', color: '#065F46', fontWeight: 600 }}>
+                  Free booking request • No advance payment required
+                </span>
               </div>
 
               {/* Submit Button */}
@@ -923,44 +986,44 @@ export default function TirupatiHotelsPage() {
                 disabled={isSubmitting}
                 style={{
                   width: '100%',
-                  backgroundColor: '#0F5132',
+                  background: 'linear-gradient(135deg, #0F5132 0%, #166534 100%)',
                   color: '#FFFFFF',
                   border: 'none',
-                  borderRadius: '24px',
-                  padding: '14px 20px',
-                  fontSize: '15px',
+                  borderRadius: '20px',
+                  padding: '13px 20px',
+                  fontSize: '14.5px',
                   fontWeight: 800,
                   cursor: isSubmitting ? 'default' : 'pointer',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
                   gap: '8px',
-                  boxShadow: '0 4px 14px rgba(15, 81, 50, 0.25)',
-                  transition: 'background-color 0.2s ease',
+                  boxShadow: '0 4px 14px rgba(15, 81, 50, 0.22)',
+                  transition: 'opacity 0.2s ease',
                   opacity: isSubmitting ? 0.75 : 1
                 }}
               >
                 {isSubmitting ? (
                   <>
-                    <RefreshCw size={18} className="animate-spin" />
-                    <span>Submitting Request...</span>
+                    <RefreshCw size={16} className="animate-spin" />
+                    <span>Submitting...</span>
                   </>
                 ) : (
                   <>
-                    <Send size={16} />
-                    <span>Submit Request</span>
+                    <Send size={15} />
+                    <span>Submit Stay Request</span>
                   </>
                 )}
               </button>
 
               {/* Microcopy below button */}
               <p style={{
-                fontSize: '11.5px',
+                fontSize: '11px',
                 color: '#6B7280',
                 textAlign: 'center',
                 margin: '0 auto'
               }}>
-                We'll get back to you soon with the best options for your stay.
+                Direct partner rates. Zero booking fee.
               </p>
             </form>
           </div>

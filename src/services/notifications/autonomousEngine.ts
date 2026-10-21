@@ -66,6 +66,25 @@ function getISTDate(): { dateStr: string; hour: number; minute: number } {
 
 async function getBroadcastLog(): Promise<BroadcastLog> {
   try {
+    const { data } = await supabase
+      .from('feature_flags')
+      .select('name, updatedAt')
+      .like('name', 'last_broadcast_%')
+      .order('updatedAt', { ascending: false })
+      .limit(1)
+      .maybeSingle();
+
+    if (data && data.name) {
+      const parts = data.name.replace('last_broadcast_', '').split('_');
+      const dateStr = parts[0];
+      const type = parts.slice(1).join('_') || 'unknown';
+      inMemoryBroadcastLog.lastBroadcastDate = dateStr;
+      inMemoryBroadcastLog.lastBroadcastType = type;
+      inMemoryBroadcastLog.lastBroadcastTime = data.updatedAt;
+    }
+  } catch {}
+
+  try {
     const data = await fs.readFile(BROADCAST_FILE, 'utf-8');
     const parsed = JSON.parse(data);
     inMemoryBroadcastLog = { ...inMemoryBroadcastLog, ...parsed };
@@ -77,6 +96,17 @@ async function getBroadcastLog(): Promise<BroadcastLog> {
 
 async function saveBroadcastLog(log: BroadcastLog): Promise<void> {
   inMemoryBroadcastLog = log;
+  try {
+    await supabase.from('feature_flags').upsert(
+      {
+        name: `last_broadcast_${log.lastBroadcastDate}_${log.lastBroadcastType}`,
+        isEnabled: true,
+        updatedAt: new Date().toISOString()
+      },
+      { onConflict: 'name' }
+    );
+  } catch {}
+
   try {
     await fs.writeFile(BROADCAST_FILE, JSON.stringify(log, null, 2), 'utf-8');
   } catch {
@@ -96,6 +126,19 @@ export async function evaluateAutonomousTrigger(): Promise<AutonomousDecision> {
   // 1. RULE 1: Night Ghat Road Curfew (9:00 PM - 10:15 PM IST)
   // Alipiri toll gate ascending road closes strictly at 11:00 PM.
   if (hour === 21 || (hour === 22 && minute <= 15)) {
+    if (log.lastBroadcastDate === dateStr && log.lastBroadcastType === 'ghat_curfew') {
+      return {
+        shouldBroadcast: false,
+        type: 'none',
+        title: '',
+        body: '',
+        url: '',
+        tag: '',
+        urgency: 'normal',
+        reason: `Ghat road curfew alert already sent today (${dateStr}).`
+      };
+    }
+
     return {
       shouldBroadcast: true,
       type: 'ghat_curfew',
@@ -109,7 +152,20 @@ export async function evaluateAutonomousTrigger(): Promise<AutonomousDecision> {
   }
 
   // 2. RULE 2: Offline SSD Token Counters Opening (4:30 AM - 5:30 AM IST) - Connected to Admin Panel
-  if (hour === 4 && minute >= 30 || hour === 5 && minute <= 30) {
+  if ((hour === 4 && minute >= 30) || (hour === 5 && minute <= 30)) {
+    if (log.lastBroadcastDate === dateStr && log.lastBroadcastType === 'ssd_morning') {
+      return {
+        shouldBroadcast: false,
+        type: 'none',
+        title: '',
+        body: '',
+        url: '',
+        tag: '',
+        urgency: 'normal',
+        reason: `SSD morning counter alert already sent today (${dateStr}).`
+      };
+    }
+
     const isClosed = status.ssdTokenStatus === 'closed-for-day';
     const openTime = status.ssdNextTokenTime || '5:00 AM';
     const activeCounters = status.ssdCounters && status.ssdCounters.length > 0

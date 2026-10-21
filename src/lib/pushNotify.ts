@@ -350,19 +350,11 @@ export async function notifyLiveStatusUpdates(
   if (!updated) return;
   const prev = before || {};
 
-  // 1. Live notice / announcement changed
+  // 1. Check what changed
   const prevNotice = (prev.notice || '').trim();
   const nextNotice = (updated.notice || '').trim();
-  if (nextNotice && nextNotice !== prevNotice) {
-    await pushNotifyAll({
-      title: 'Tirumala Live Update',
-      body: nextNotice,
-      url: '/alerts',
-      tag: 'tirumala-notice',
-    }).catch(() => {});
-  }
+  const noticeChanged = Boolean(nextNotice && nextNotice !== prevNotice);
 
-  // 2. Darshan Timings changed (individual categories or overall wait time)
   const darshanChanges: string[] = [];
   if (Array.isArray(updated.darshans) && Array.isArray(prev.darshans)) {
     for (const d of updated.darshans) {
@@ -375,53 +367,50 @@ export async function notifyLiveStatusUpdates(
 
   const prevWait = (prev.waitTime || '').trim();
   const nextWait = (updated.waitTime || '').trim();
-  const waitChanged = nextWait && nextWait !== prevWait;
+  const waitChanged = Boolean(nextWait && nextWait !== prevWait);
 
-  if (darshanChanges.length > 0) {
-    const crowdInfo = updated.crowdLevel ? ` • Crowd: ${updated.crowdLevel}` : '';
-    await pushNotifyAll({
-      title: 'Live Darshan Timings Updated',
-      body: `Live update: ${darshanChanges.slice(0, 2).join(' • ')}${crowdInfo}.`,
-      url: '/alerts',
-      tag: 'live-darshan-timings',
-    }).catch(() => {});
-  } else if (waitChanged) {
-    const crowdInfo = updated.crowdLevel ? ` (${updated.crowdLevel} crowd)` : '';
-    await pushNotifyAll({
-      title: 'Darshan Wait Time Updated',
-      body: `Current wait time updated to ${nextWait}${crowdInfo}. Plan your darshan visit accordingly.`,
-      url: '/alerts',
-      tag: 'live-darshan-timings',
-    }).catch(() => {});
-  }
-
-  // 3. Crowd Level change (Low / Moderate / High / Very High)
   const prevCrowd = (prev.crowdLevel || '').trim().toLowerCase();
   const nextCrowd = (updated.crowdLevel || '').trim().toLowerCase();
-  if (nextCrowd && nextCrowd !== prevCrowd) {
-    if (nextCrowd === 'low') {
-      await pushNotifyAll({
-        title: 'Low Crowd at Tirumala!',
-        body: `Wait time: ${nextWait || prevWait || 'minimal'}. Favorable conditions for smooth, peaceful darshan.`,
-        url: '/alerts',
-        tag: 'live-crowd',
-      }).catch(() => {});
-    } else if (nextCrowd === 'high' || nextCrowd === 'very-high') {
-      const label = nextCrowd === 'very-high' ? 'Very High' : 'High';
-      await pushNotifyAll({
-        title: 'Heavy Rush at Tirumala',
-        body: `Crowd level is now ${label}. Wait time: ${nextWait || prevWait || 'extended'}. Expect compartment delays.`,
-        url: '/alerts',
-        tag: 'live-crowd',
-      }).catch(() => {});
-    } else if (nextCrowd === 'moderate') {
-      await pushNotifyAll({
-        title: 'Moderate Crowd at Tirumala',
-        body: `Crowd has normalized to Moderate. Current wait time: ${nextWait || prevWait || '2-3 hours'}.`,
-        url: '/alerts',
-        tag: 'live-crowd',
-      }).catch(() => {});
-    }
+  const crowdChanged = Boolean(nextCrowd && nextCrowd !== prevCrowd);
+
+  // If nothing meaningful changed, do not push
+  if (!noticeChanged && !waitChanged && !crowdChanged && darshanChanges.length === 0) {
+    return;
   }
+
+  // Determine a single, clear headline
+  let title = 'Tirumala Live Status Updated';
+  if (crowdChanged && (nextCrowd === 'high' || nextCrowd === 'very-high')) {
+    title = nextCrowd === 'very-high' ? 'Heavy Rush at Tirumala' : 'High Crowd at Tirumala';
+  } else if (crowdChanged && nextCrowd === 'low') {
+    title = 'Low Crowd at Tirumala!';
+  } else if (noticeChanged) {
+    title = 'Tirumala Live Advisory';
+  } else if (waitChanged || darshanChanges.length > 0) {
+    title = 'Darshan Wait Time Updated';
+  }
+
+  // Compose a single cohesive body
+  const parts: string[] = [];
+  if (noticeChanged) {
+    parts.push(nextNotice);
+  }
+  if (darshanChanges.length > 0) {
+    parts.push(darshanChanges.slice(0, 2).join(' • '));
+  } else if (nextWait) {
+    const crowdStr = updated.crowdLevel ? ` (${updated.crowdLevel} crowd)` : '';
+    parts.push(`Current wait: ${nextWait}${crowdStr}`);
+  }
+
+  const body = parts.join(' • ') || 'Live darshan queue timings have been refreshed.';
+
+  // Dispatch a single consolidated notification
+  await pushNotifyAll({
+    title,
+    body,
+    url: '/alerts',
+    tag: 'live-status-update',
+    category: 'High Priority'
+  }).catch(() => {});
 }
 
