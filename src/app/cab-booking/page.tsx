@@ -21,14 +21,14 @@ export default function CabBookingPage() {
       }
     }
 
-    // 1. Initial direct fetch from Supabase live_updates
+    // 1. Initial direct fetch from Supabase live_updates with resilient internal API fallback
     const fetchCount = async () => {
       try {
         const { data, error } = await supabase
           .from('live_updates')
           .select('value')
           .eq('module', 'launch_waitlist')
-          .single();
+          .maybeSingle();
 
         if (!error && data?.value) {
           const parsed = typeof data.value === 'string' ? JSON.parse(data.value) : data.value;
@@ -41,14 +41,17 @@ export default function CabBookingPage() {
         // Fallback to internal API
       }
 
-      fetch('/api/launch-interest', { cache: 'no-store' })
-        .then((res) => res.json())
-        .then((data) => {
+      try {
+        const res = await fetch('/api/launch-interest', { cache: 'no-store' });
+        if (res.ok) {
+          const data = await res.json();
           if (data?.success && typeof data?.cabs === 'number') {
             setWaitlistCount(data.cabs);
           }
-        })
-        .catch((err) => console.error('Failed to load waitlist count:', err));
+        }
+      } catch (err) {
+        console.error('Failed to load waitlist count:', err);
+      }
     };
 
     fetchCount();
@@ -96,11 +99,17 @@ export default function CabBookingPage() {
       if (typeof window !== 'undefined') {
         localStorage.setItem('saarthi_notified_cabs', 'true');
       }
-      await fetch('/api/launch-interest', {
+      const res = await fetch('/api/launch-interest', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ service: 'cabs', phone: phone.trim() || undefined }),
       });
+      if (res.ok) {
+        const data = await res.json();
+        if (data?.counts?.cabs && typeof data.counts.cabs === 'number') {
+          setWaitlistCount(data.counts.cabs);
+        }
+      }
     } catch (e) {
       console.error('Failed to record cab launch interest:', e);
     } finally {
