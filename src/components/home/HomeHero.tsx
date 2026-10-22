@@ -1537,7 +1537,7 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                 </span>
               </button>
 
-              <Link href="/alerts" aria-label="Notifications" style={{
+              <Link href="/alerts" prefetch={false} aria-label="Notifications" style={{
                 width: '32px', height: '32px', flexShrink: 0,
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 textDecoration: 'none', position: 'relative'
@@ -1694,6 +1694,7 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
         }}>
           <Link
             href="/darshan/sarva-darshan"
+            prefetch={false}
             aria-label={lang === 'te' ? 'దర్శనం' : 'Darshan'}
             title={lang === 'te' ? 'దర్శనం' : 'Darshan'}
             style={{
@@ -1709,6 +1710,7 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
           />
           <Link
             href="/darshan/ssd-token"
+            prefetch={false}
             aria-label={lang === 'te' ? 'టోకెన్లు' : 'Tokens'}
             title={lang === 'te' ? 'టోకెన్లు' : 'Tokens'}
             style={{
@@ -1724,6 +1726,7 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
           />
           <Link
             href="/explore"
+            prefetch={false}
             aria-label={lang === 'te' ? 'సమీపంలోనివి' : 'Nearby'}
             title={lang === 'te' ? 'సమీపంలోనివి' : 'Nearby'}
             style={{
@@ -1999,6 +2002,7 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
               <Link
                 key={card.id}
                 href={card.href}
+                prefetch={false}
                 style={{
                   textDecoration: 'none',
                   backgroundColor: card.bg,

@@ -296,7 +296,7 @@ export function RecommendationCard({
           </div>
 
           {/* PRIMARY CTA BUTTON */}
-          <Link href={rec.link} style={{
+          <Link href={rec.link} prefetch={false} style={{
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',

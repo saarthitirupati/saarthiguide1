@@ -176,7 +176,7 @@ export default function HomePage() {
                   {t.servicesSub}
                 </p>
               </div>
-              <Link href="/essentials" style={{ fontSize: '11.5px', fontWeight: 600, color: '#0F5132', textDecoration: 'none' }}>
+              <Link href="/essentials" prefetch={false} style={{ fontSize: '11.5px', fontWeight: 600, color: '#0F5132', textDecoration: 'none' }}>
                 {t.seeAll}
               </Link>
             </div>

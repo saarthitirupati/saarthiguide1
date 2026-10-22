@@ -1,14 +1,12 @@
 // Saarthi Guide Service Worker v1
 // Caches app shell & visited pages for full offline support on Tirumala hill
 
-const CACHE_NAME = 'saarthi-v14';
+const CACHE_NAME = 'saarthi-v13';
 const APP_SHELL = [
   '/',
   '/explore',
   '/essentials',
   '/offline-maps',
-  '/onboarding',
-  '/tirupati-hotels',
   '/manifest.json',
   '/icon-192.png',
   '/icon-512.png',
@@ -81,12 +79,8 @@ self.addEventListener('fetch', (event) => {
           }
           return response;
         })
-        .catch(async () => {
-          const cached = await caches.match(request);
-          return cached || new Response(JSON.stringify({ error: 'Offline', offline: true }), {
-            status: 503,
-            headers: { 'Content-Type': 'application/json' }
-          });
+        .catch(() => {
+          return caches.match(request);
         })
     );
     return;
@@ -122,7 +116,7 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // HTML page navigations: network-first, fallback to cache, then offline response
+  // HTML page navigations: network-first, fallback to cache
   if (request.mode === 'navigate' || request.headers.get('accept')?.includes('text/html')) {
     event.respondWith(
       fetch(request)
@@ -133,21 +127,14 @@ self.addEventListener('fetch', (event) => {
           }
           return response;
         })
-        .catch(async () => {
-          const cached = await caches.match(request);
-          if (cached) return cached;
-          const rootCached = await caches.match('/');
-          if (rootCached) return rootCached;
-          return new Response(
-            '<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Saarthi Guide - Offline</title><style>body{font-family:system-ui,-apple-system,sans-serif;margin:0;padding:24px;background:#0d1117;color:#f0f6fc;display:flex;min-height:100vh;align-items:center;justify-content:center;text-align:center;}h2{margin:0 0 12px;color:#d4af37;}p{color:#8b949e;margin:0 0 20px;}button{background:#d4af37;color:#0d1117;border:none;padding:12px 24px;border-radius:12px;font-weight:700;font-size:15px;cursor:pointer;}</style></head><body><div><h2>Pilgrim Offline Notice</h2><p>You appear to be offline. Reconnect or reload when signal is restored.</p><button onclick="window.location.reload()">Retry Connection</button></div></body></html>',
-            { status: 503, headers: { 'Content-Type': 'text/html; charset=utf-8' } }
-          );
+        .catch(() => {
+          return caches.match(request).then((cached) => cached || caches.match('/'));
         })
     );
     return;
   }
 
-  // Everything else: stale-while-revalidate with safe Response fallback
+  // Everything else: stale-while-revalidate
   event.respondWith(
     caches.match(request).then((cached) => {
       const fetchPromise = fetch(request).then((response) => {
@@ -156,7 +143,7 @@ self.addEventListener('fetch', (event) => {
           caches.open(CACHE_NAME).then((cache) => cache.put(request, clone));
         }
         return response;
-      }).catch(() => cached || new Response(null, { status: 404, statusText: 'Not Found' }));
+      }).catch(() => cached);
 
       return cached || fetchPromise;
     })

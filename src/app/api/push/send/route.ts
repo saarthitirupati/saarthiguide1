@@ -38,7 +38,6 @@ function buildPayload(type: string, daysSince?: number, custom?: CustomPushData)
   }
 
   switch (type) {
-    case 'morning_update': return buildFestivalReminder() || buildDailySpotNotification();
     case 'daily_spot':   return buildDailySpotNotification();
     case 'festival':     return buildFestivalReminder();
     case 'weekend':      return buildWeekendSuggestion();
@@ -66,33 +65,6 @@ async function handlePushDispatch(type: string, endpoint?: string, daysSince?: n
 
   const payload = buildPayload(type, daysSince, custom);
   if (!payload) return NextResponse.json({ ok: true, sent: 0, reason: 'No payload generated' });
-
-  // Enforce 1 automated morning broadcast per calendar day (prevents daily_spot + festival clash)
-  if (!endpoint && (type === 'daily_spot' || type === 'festival' || type === 'morning_update')) {
-    const todayStr = new Date().toLocaleDateString('en-CA', { timeZone: 'Asia/Kolkata' });
-    try {
-      const { data: existing } = await supabase
-        .from('feature_flags')
-        .select('name')
-        .eq('name', `sent_morning_push_${todayStr}`)
-        .maybeSingle();
-
-      if (existing) {
-        return NextResponse.json({
-          ok: true,
-          sent: 0,
-          reason: `Morning notification already dispatched today (${todayStr})`
-        });
-      }
-
-      await supabase.from('feature_flags').upsert(
-        { name: `sent_morning_push_${todayStr}`, isEnabled: true, updatedAt: new Date().toISOString() },
-        { onConflict: 'name' }
-      );
-    } catch (_err) {
-      // Fallback gracefully if database lookup fails
-    }
-  }
 
   // If broadcasting to all users (no specific web endpoint, not re-engagement), notify both Web Push and Native Android FCM
   if (!endpoint && type !== 'reengagement') {

@@ -8,9 +8,7 @@ export async function GET() {
     const status = await readStatus();
     return NextResponse.json(status, {
       headers: {
-        'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate',
-        'Pragma': 'no-cache',
-        'Expires': '0',
+        'Cache-Control': 'public, max-age=3, s-maxage=5, stale-while-revalidate=10',
       },
     });
   } catch (e: any) {

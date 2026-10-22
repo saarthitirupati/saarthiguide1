@@ -224,16 +224,7 @@ export default function ClientLayout({
     }
   };
 
-  // Track page views (skip admin routes)
-  useEffect(() => {
-    if (!isAdmin && pathname) {
-      fetch('/api/v1/analytics', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'page_view', metadata: { path: pathname } }),
-      }).catch(() => {});
-    }
-  }, [pathname, isAdmin]);
+
 
   return (
     <TripProvider>

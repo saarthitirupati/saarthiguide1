@@ -25,7 +25,22 @@ export async function POST(req: Request) {
     const before = await readStatus();
     const updated = await updateStatus(body);
 
-    // If SSD fields were updated, broadcast dedicated SSD alert; otherwise broadcast live status update
+    // Guaranteed push notification to all devices on every admin Save
+    const wait = updated.waitTime || 'Current queue active';
+    const crowd = updated.crowdLevel ? ` (${updated.crowdLevel} crowd)` : '';
+    const notice = updated.notice?.trim() ? ` • ${updated.notice.trim()}` : '';
+
+    await pushNotifyAll({
+      title: 'Tirumala Live Status Updated',
+      body: `Live update: Wait time is ${wait}${crowd}.${notice} Tap for darshan guide.`,
+      url: '/alerts',
+      tag: 'live-status-update',
+      category: 'High Priority'
+    }).catch((err: any) => {
+      console.error('[PushNotify] Error broadcasting guaranteed Live Status update:', err);
+    });
+
+    // Guaranteed SSD push when SSD fields are saved from live-status admin
     const hasSsdUpdate = body.ssdTokenStatus !== undefined || body.ssdNextTokenTime !== undefined || body.ssdTokenSlots !== undefined;
     if (hasSsdUpdate) {
       const ssdTitle = updated.ssdTokenStatus === 'suspended'
@@ -50,20 +65,6 @@ export async function POST(req: Request) {
         category: 'High Priority'
       }).catch((err: any) => {
         console.error('[PushNotify] Error broadcasting SSD update from status route:', err);
-      });
-    } else {
-      const wait = updated.waitTime || 'Current queue active';
-      const crowd = updated.crowdLevel ? ` (${updated.crowdLevel} crowd)` : '';
-      const notice = updated.notice?.trim() ? ` • ${updated.notice.trim()}` : '';
-
-      await pushNotifyAll({
-        title: 'Tirumala Live Status Updated',
-        body: `Live update: Wait time is ${wait}${crowd}.${notice} Tap for darshan guide.`,
-        url: '/alerts',
-        tag: 'live-status-update',
-        category: 'High Priority'
-      }).catch((err: any) => {
-        console.error('[PushNotify] Error broadcasting guaranteed Live Status update:', err);
       });
     }
 

@@ -21,5 +21,9 @@ export async function GET() {
     learn: { storyOfTheDay: story },
     story,
     allStories: STORIES
+  }, {
+    headers: {
+      'Cache-Control': 'public, max-age=1800, s-maxage=3600, stale-while-revalidate=86400'
+    }
   });
 }
