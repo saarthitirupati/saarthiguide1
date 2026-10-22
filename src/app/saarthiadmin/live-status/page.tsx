@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Activity, Clock, Bell, Save, Users, Ticket, Footprints, Star, Landmark, MapPin } from 'lucide-react';
+import { Activity, Clock, Bell, Save, Users, Ticket, Footprints, Star, Landmark, MapPin, Sunrise } from 'lucide-react';
 import styles from '../admin.module.css';
 import { notifyRealtimeUpdate } from '@/lib/useRealtimeStatus';
 
@@ -62,6 +62,8 @@ export default function LiveStatusEditor() {
   });
   const [statusSaving, setStatusSaving] = useState(false);
   const [statusSaved, setStatusSaved] = useState(false);
+  const [morningSending, setMorningSending] = useState(false);
+  const [morningSent, setMorningSent] = useState(false);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -88,6 +90,33 @@ export default function LiveStatusEditor() {
       return `${num} ${num === 1 ? 'hour' : 'hours'}`;
     }
     return clean;
+  };
+
+  const sendGoodMorningPush = async () => {
+    setMorningSending(true);
+    try {
+      const adminToken = typeof window !== 'undefined' ? (localStorage.getItem('saarthi_admin_token') || 'saarthi_admin_token_2026') : 'saarthi_admin_token_2026';
+      const res = await fetch('/api/push/send', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${adminToken}`
+        },
+        credentials: 'include',
+        body: JSON.stringify({ type: 'good_morning' })
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setMorningSent(true);
+        setTimeout(() => setMorningSent(false), 3000);
+      } else {
+        alert('Failed to send Good Morning push: ' + (data.error || 'Unknown error'));
+      }
+    } catch (err: any) {
+      alert('Error sending Good Morning push: ' + (err?.message || 'Network error'));
+    } finally {
+      setMorningSending(false);
+    }
   };
 
   const saveStatus = async () => {
@@ -540,21 +569,42 @@ export default function LiveStatusEditor() {
           </div>
         </div>
 
-        <button
-          onClick={saveStatus}
-          disabled={statusSaving}
-          style={{
-            display: 'flex', alignItems: 'center', gap: 8,
-            background: statusSaved ? '#16A34A' : 'linear-gradient(135deg, #E9801D, #D0A73D)',
-            color: '#fff', border: 'none', borderRadius: 10,
-            padding: '10px 20px', fontSize: 13, fontWeight: 700,
-            cursor: statusSaving ? 'not-allowed' : 'pointer',
-            opacity: statusSaving ? 0.7 : 1, transition: 'all 0.2s'
-          }}
-        >
-          <Save size={15} />
-          {statusSaving ? 'Saving…' : statusSaved ? '✓ Saved!' : 'Publish Status'}
-        </button>
+        <div style={{ display: 'flex', gap: 12, alignItems: 'center', flexWrap: 'wrap' }}>
+          <button
+            onClick={saveStatus}
+            disabled={statusSaving}
+            style={{
+              display: 'flex', alignItems: 'center', gap: 8,
+              background: statusSaved ? '#16A34A' : 'linear-gradient(135deg, #E9801D, #D0A73D)',
+              color: '#fff', border: 'none', borderRadius: 10,
+              padding: '10px 20px', fontSize: 13, fontWeight: 700,
+              cursor: statusSaving ? 'not-allowed' : 'pointer',
+              opacity: statusSaving ? 0.7 : 1, transition: 'all 0.2s'
+            }}
+          >
+            <Save size={15} />
+            {statusSaving ? 'Saving…' : statusSaved ? '✓ Saved & Pushed!' : 'Publish Status'}
+          </button>
+
+          <button
+            onClick={sendGoodMorningPush}
+            disabled={morningSending}
+            style={{
+              display: 'flex', alignItems: 'center', gap: 8,
+              background: morningSent ? '#16A34A' : '#1E293B',
+              color: morningSent ? '#fff' : '#F59E0B',
+              border: '1px solid #475569',
+              borderRadius: 10,
+              padding: '10px 18px', fontSize: 13, fontWeight: 700,
+              cursor: morningSending ? 'not-allowed' : 'pointer',
+              opacity: morningSending ? 0.7 : 1, transition: 'all 0.2s'
+            }}
+            title="Broadcast Suprabhatam Good Morning notification to all subscribers"
+          >
+            <Sunrise size={15} />
+            {morningSending ? 'Sending Suprabhatam…' : morningSent ? '✓ Suprabhatam Sent!' : '🌅 Send Good Morning Push'}
+          </button>
+        </div>
       </div>
     </motion.div>
   );

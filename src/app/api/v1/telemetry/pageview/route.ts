@@ -26,12 +26,14 @@ export async function POST(request: Request) {
       timestamp
     });
 
-    // Async write to Supabase database (analytics_events) & local traffic ledger
-    try {
-      const { recordPageView, recordView } = await import('@/lib/adminDb');
-      const recorder = recordPageView || recordView;
-      if (recorder) recorder(cleanPath);
-    } catch {}
+    // Write to local traffic ledger if running in Node.js environment
+    if (typeof process !== 'undefined' && process.release?.name === 'node' && !process.env.NEXT_RUNTIME) {
+      try {
+        const { recordPageView, recordView } = await import('@/lib/adminDb');
+        const recorder = recordPageView || recordView;
+        if (recorder) recorder(cleanPath);
+      } catch {}
+    }
 
     try {
       await supabase.from('analytics_events').insert([{

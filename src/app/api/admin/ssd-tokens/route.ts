@@ -70,7 +70,7 @@ export async function POST(req: Request) {
         title: pushTitle,
         body: pushBody,
         url: '/darshan/ssd-token',
-        tag: 'ssd-status',
+        tag: `ssd-status-${Date.now()}`,
         category: 'High Priority'
       }).catch((err) => {
         console.error('[PushNotify] Error broadcasting SSD update:', err);

@@ -9,6 +9,7 @@ import {
   buildWeekendSuggestion,
   buildReEngagementNotification,
   buildWelcomeNotification,
+  buildGoodMorningNotification,
   type NotificationPayload,
 } from '@/lib/notifications';
 import { isAuthorizedAdmin } from '@/lib/authGuard';
@@ -38,6 +39,10 @@ function buildPayload(type: string, daysSince?: number, custom?: CustomPushData)
   }
 
   switch (type) {
+    case 'good_morning':
+    case 'morning_update':
+    case 'suprabhatam':
+      return buildGoodMorningNotification();
     case 'daily_spot':   return buildDailySpotNotification();
     case 'festival':     return buildFestivalReminder();
     case 'weekend':      return buildWeekendSuggestion();

@@ -73,7 +73,7 @@ export async function POST(req: Request) {
       title: 'Tirumala Darshan Timings Updated',
       body: `Live update: Wait time is ${wait}${crowd}. Plan your darshan visit accordingly.`,
       url: '/alerts',
-      tag: 'live-darshan-update',
+      tag: `live-darshan-${Date.now()}`,
       category: 'High Priority'
     }).catch((err: any) => {
       console.error('[PushNotify] Error broadcasting live updates:', err);

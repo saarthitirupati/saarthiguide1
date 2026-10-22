@@ -25,23 +25,51 @@ export async function POST(req: Request) {
     const before = await readStatus();
     const updated = await updateStatus(body);
 
-    // Guaranteed push notification to all devices on every admin Save
+    // Dynamic timestamp tag ensures mobile devices and browsers never collapse consecutive updates
+    const timestamp = Date.now();
+
+    // 1. Weather Override update notification
+    if (body.weather !== undefined && body.weather !== before.weather) {
+      await pushNotifyAll({
+        title: 'Tirumala Weather Advisory',
+        body: `Weather update: Current condition is ${updated.weather || body.weather}. Plan your travel accordingly.`,
+        url: '/alerts',
+        tag: `weather-update-${timestamp}`,
+        category: 'High Priority'
+      }).catch((err: any) => {
+        console.error('[PushNotify] Error broadcasting weather update:', err);
+      });
+    }
+
+    // 2. Guaranteed Live Status / Darshan update notification
     const wait = updated.waitTime || 'Current queue active';
     const crowd = updated.crowdLevel ? ` (${updated.crowdLevel} crowd)` : '';
     const notice = updated.notice?.trim() ? ` • ${updated.notice.trim()}` : '';
 
+    let title = 'Tirumala Live Status Updated';
+    if (body.notice && body.notice.trim() !== (before.notice || '').trim()) {
+      title = 'Tirumala Live Advisory';
+    } else if (body.waitTime && body.waitTime !== before.waitTime) {
+      title = 'Darshan Wait Time Updated';
+    } else if (body.crowdLevel && body.crowdLevel !== before.crowdLevel) {
+      title = 'Tirumala Crowd Level Updated';
+    }
+
     await pushNotifyAll({
-      title: 'Tirumala Live Status Updated',
+      title,
       body: `Live update: Wait time is ${wait}${crowd}.${notice} Tap for darshan guide.`,
       url: '/alerts',
-      tag: 'live-status-update',
+      tag: `live-status-${timestamp}`,
       category: 'High Priority'
     }).catch((err: any) => {
       console.error('[PushNotify] Error broadcasting guaranteed Live Status update:', err);
     });
 
-    // Guaranteed SSD push when SSD fields are saved from live-status admin
-    const hasSsdUpdate = body.ssdTokenStatus !== undefined || body.ssdNextTokenTime !== undefined || body.ssdTokenSlots !== undefined;
+    // 3. Guaranteed SSD push when SSD fields are changed
+    const hasSsdUpdate = (body.ssdTokenStatus !== undefined && body.ssdTokenStatus !== before.ssdTokenStatus) ||
+                         (body.ssdNextTokenTime !== undefined && body.ssdNextTokenTime !== before.ssdNextTokenTime) ||
+                         (body.ssdNotice !== undefined && body.ssdNotice.trim() !== (before.ssdNotice || '').trim());
+
     if (hasSsdUpdate) {
       const ssdTitle = updated.ssdTokenStatus === 'suspended'
         ? 'SSD Tokens Suspended (Brahmotsavam)'
@@ -61,7 +89,7 @@ export async function POST(req: Request) {
         title: ssdTitle,
         body: ssdBody,
         url: '/darshan/ssd-token',
-        tag: 'ssd-status',
+        tag: `ssd-status-${timestamp}`,
         category: 'High Priority'
       }).catch((err: any) => {
         console.error('[PushNotify] Error broadcasting SSD update from status route:', err);

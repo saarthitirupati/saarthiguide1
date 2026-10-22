@@ -13,20 +13,41 @@ on:
       type:
         description: 'Notification type to send manually'
         required: false
-        default: 'daily_spot'
+        default: 'good_morning'
         type: choice
-        options: [daily_spot, festival, weekend, reengagement, welcome]
+        options: [good_morning, daily_spot, festival, weekend, reengagement, welcome]
 
 jobs:
   morning:
-    name: Morning Notifications (Daily Spot + Festival)
-    if: github.event.schedule == '30 1 * * *' || (github.event_name == 'workflow_dispatch' && (github.event.inputs.type == 'daily_spot' || github.event.inputs.type == 'festival' || github.event.inputs.type == 'welcome'))
+    name: Morning Notifications (Suprabhatam + Spot + Festival)
+    if: github.event.schedule == '30 1 * * *' || (github.event_name == 'workflow_dispatch' && (github.event.inputs.type == 'good_morning' || github.event.inputs.type == 'daily_spot' || github.event.inputs.type == 'festival' || github.event.inputs.type == 'welcome'))
     runs-on: ubuntu-latest
     steps:
       - name: Validate CRON_SECRET configured
         run: |
           if [ -z "${{ secrets.CRON_SECRET }}" ]; then
             echo "::error::CRON_SECRET is not configured in GitHub repository secrets. Please add it under Settings -> Secrets and variables -> Actions."
+            exit 1
+          fi
+
+      - name: Send Good Morning Suprabhatam Notification
+        if: github.event.schedule == '30 1 * * *' || (github.event_name == 'workflow_dispatch' && github.event.inputs.type == 'good_morning')
+        run: |
+          response=$(curl -s -S -L -w "\nHTTP_STATUS:%{http_code}" -X POST https://www.saarthiguide.in/api/push/send \
+            -H "Content-Type: application/json" \
+            -H "x-cron-secret: ${{ secrets.CRON_SECRET }}" \
+            -d '{"type":"good_morning"}')
+          curl_exit=$?
+          if [ $curl_exit -ne 0 ]; then
+            echo "::error::curl failed with exit code $curl_exit"
+            exit $curl_exit
+          fi
+          http_code=$(echo "$response" | grep "HTTP_STATUS:" | cut -d':' -f2 | tr -d ' \r\n')
+          body=$(echo "$response" | sed '/HTTP_STATUS:/d')
+          echo "HTTP Status: $http_code"
+          echo "Response: $body"
+          if [ -z "$http_code" ] || [ "$http_code" -ge 400 ]; then
+            echo "::error::Good Morning dispatch failed with HTTP $http_code"
             exit 1
           fi
 

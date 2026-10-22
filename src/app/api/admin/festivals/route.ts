@@ -107,7 +107,7 @@ export async function POST(req: Request) {
       title: doc.name,
       body: doc.description || `Upcoming festival at Tirumala — ${doc.date}`,
       url: '/festivals',
-      tag: 'festival-new',
+      tag: `festival-${doc.slug}-${Date.now()}`,
       category: 'High Priority'
     }).catch(() => {});
 

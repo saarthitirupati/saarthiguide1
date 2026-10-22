@@ -86,30 +86,35 @@ export default function AdminLayout({
             <p className={styles.navLabel}>Core Modules</p>
             <Link 
               href="/saarthiadmin" 
+              prefetch={false}
               className={`${styles.navItem} ${isActive('/saarthiadmin') ? styles.navItemActive : ''}`}
             >
               <Home size={18} /> Dashboard
             </Link>
             <Link 
               href="/saarthiadmin/growth" 
+              prefetch={false}
               className={`${styles.navItem} ${isActive('/saarthiadmin/growth') ? styles.navItemActive : ''}`}
             >
               <TrendingUp size={18} /> Growth Hub &amp; QRs
             </Link>
             <Link 
               href="/saarthiadmin/places" 
+              prefetch={false}
               className={`${styles.navItem} ${isActive('/saarthiadmin/places') ? styles.navItemActive : ''}`}
             >
               <MapPin size={18} /> Places
             </Link>
             <Link 
               href="/saarthiadmin/ssd-tokens" 
+              prefetch={false}
               className={`${styles.navItem} ${isActive('/saarthiadmin/ssd-tokens') ? styles.navItemActive : ''}`}
             >
               <Ticket size={18} /> SSD Tokens
             </Link>
             <Link 
               href="/saarthiadmin/live" 
+              prefetch={false}
               className={`${styles.navItem} ${isActive('/saarthiadmin/live') ? styles.navItemActive : ''}`}
             >
               <Activity size={18} /> Live Updates
@@ -120,24 +125,28 @@ export default function AdminLayout({
             <p className={styles.navLabel}>Intelligence</p>
             <Link 
               href="/saarthiadmin/decision-engine" 
+              prefetch={false}
               className={`${styles.navItem} ${isActive('/saarthiadmin/decision-engine') ? styles.navItemActive : ''}`}
             >
               <Activity size={18} /> Decision Engine
             </Link>
             <Link 
               href="/saarthiadmin/fuel" 
+              prefetch={false}
               className={`${styles.navItem} ${isActive('/saarthiadmin/fuel') ? styles.navItemActive : ''}`}
             >
               <Coins size={18} /> Fuel &amp; Transport Tariffs
             </Link>
             <Link 
               href="/saarthiadmin/live-alerts" 
+              prefetch={false}
               className={`${styles.navItem} ${isActive('/saarthiadmin/live-alerts') ? styles.navItemActive : ''}`}
             >
               <AlertTriangle size={18} /> Alerts
             </Link>
             <Link 
               href="/saarthiadmin/festivals" 
+              prefetch={false}
               className={`${styles.navItem} ${isActive('/saarthiadmin/festivals') ? styles.navItemActive : ''}`}
             >
               <Calendar size={18} /> Festivals
@@ -148,12 +157,14 @@ export default function AdminLayout({
             <p className={styles.navLabel}>Analysis</p>
             <Link 
               href="/saarthiadmin/feedback" 
+              prefetch={false}
               className={`${styles.navItem} ${isActive('/saarthiadmin/feedback') ? styles.navItemActive : ''}`}
             >
               <MessageSquare size={18} /> Feedback
             </Link>
             <Link 
               href="/saarthiadmin/analytics" 
+              prefetch={false}
               className={`${styles.navItem} ${isActive('/saarthiadmin/analytics') ? styles.navItemActive : ''}`}
             >
               <BarChart2 size={18} /> Analytics
@@ -164,6 +175,7 @@ export default function AdminLayout({
         <div className={styles.sidebarFooter}>
           <Link 
             href="/saarthiadmin/settings" 
+            prefetch={false}
             className={`${styles.navItem} ${isActive('/saarthiadmin/settings') ? styles.navItemActive : ''}`}
           >
             <Settings size={18} /> Settings

@@ -105,3 +105,15 @@ export function buildWelcomeNotification(): NotificationPayload {
     url: '/',
   };
 }
+
+export function buildGoodMorningNotification(): NotificationPayload {
+  const p = getPanchangamData();
+  const dayStr = p.vaaramEn ? `${p.vaaramEn} (${p.tithiEn})` : 'today';
+  return {
+    title: '🌅 Suprabhatam • Good Morning from Tirumala',
+    body: `Om Namo Venkatesaya 🙏 Live queue wait times, SSD tokens & ${dayStr} status are updated. Have a blessed pilgrimage.`,
+    icon: '/icon-192.png',
+    tag: `good-morning-${Date.now()}`,
+    url: '/',
+  };
+}
