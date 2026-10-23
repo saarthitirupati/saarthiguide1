@@ -89,24 +89,24 @@ export async function executePushDispatch(payload: PushPayload) {
     }
   }
 
-  const allFcmTokens = Array.from(new Set([...fcmTokenToSubIds.keys(), ...fcmTokenToDevIds.keys()]));
+  // Prioritize active user devices (ordered by updated_at DESC) first so online/recent users receive alerts instantly
+  const allFcmTokens = Array.from(new Set([...fcmTokenToDevIds.keys(), ...fcmTokenToSubIds.keys()]));
   const deadSubIds: number[] = [];
   let webSuccessCount = 0;
   let fcmSuccessCount = 0;
   const deadFcmTokens: string[] = [];
 
-  // Cloudflare Free Worker constraints: max 50 subrequests per invocation & 30s wall-clock limit
-  // Capping to 35 total targets with 11s AbortController ensures waitUntil() completes cleanly without errors.
-  const MAX_PER_INVOCATION = 35;
-  const CHUNK_SIZE = 5;
+  // Cloudflare Paid Worker: up to 1,000 subrequests per invocation & 30s CPU/wall-clock limit.
+  // Dispatching all web subscriptions and up to 500 active FCM devices concurrently in chunks of 25.
+  const MAX_PER_INVOCATION = 500;
+  const CHUNK_SIZE = 25;
 
-  const halfQuota = Math.floor(MAX_PER_INVOCATION / 2);
-  const targetWebSubs = webSubs.slice(0, Math.min(webSubs.length, halfQuota + Math.max(0, halfQuota - allFcmTokens.length)));
+  const targetWebSubs = webSubs.slice(0, Math.min(webSubs.length, 50));
   const remainingQuota = Math.max(0, MAX_PER_INVOCATION - targetWebSubs.length);
   const targetFcmTokens = allFcmTokens.slice(0, remainingQuota);
 
   const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 11000);
+  const timeoutId = setTimeout(() => controller.abort(), 25000);
 
   // 3 & 4. Dispatch Web Push and Android FCM concurrently in bounded chunks
   const dispatchWeb = async () => {
