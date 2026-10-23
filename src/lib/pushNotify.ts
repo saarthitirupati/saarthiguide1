@@ -96,19 +96,33 @@ export async function executePushDispatch(payload: PushPayload) {
   let fcmSuccessCount = 0;
   const deadFcmTokens: string[] = [];
 
-  // 3 & 4. Dispatch Web Push and Android FCM concurrently in parallel for instant delivery
+  // Cloudflare Free Worker constraints: max 50 subrequests per invocation & 30s wall-clock limit
+  // Capping to 35 total targets with 11s AbortController ensures waitUntil() completes cleanly without errors.
+  const MAX_PER_INVOCATION = 35;
+  const CHUNK_SIZE = 5;
+
+  const halfQuota = Math.floor(MAX_PER_INVOCATION / 2);
+  const targetWebSubs = webSubs.slice(0, Math.min(webSubs.length, halfQuota + Math.max(0, halfQuota - allFcmTokens.length)));
+  const remainingQuota = Math.max(0, MAX_PER_INVOCATION - targetWebSubs.length);
+  const targetFcmTokens = allFcmTokens.slice(0, remainingQuota);
+
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 11000);
+
+  // 3 & 4. Dispatch Web Push and Android FCM concurrently in bounded chunks
   const dispatchWeb = async () => {
-    if (webSubs.length === 0) return;
+    if (targetWebSubs.length === 0 || controller.signal.aborted) return;
     if (!ensureVapid()) {
-      console.warn('[PushNotifyAll] VAPID keys not configured; skipped browser Web Push for', webSubs.length, 'subscriptions');
+      console.warn('[PushNotifyAll] VAPID keys not configured; skipped browser Web Push for', targetWebSubs.length, 'subscriptions');
       return;
     }
     const body = JSON.stringify(payload);
-    const chunkSize = 25;
-    for (let i = 0; i < webSubs.length; i += chunkSize) {
-      const chunk = webSubs.slice(i, i + chunkSize);
+    for (let i = 0; i < targetWebSubs.length; i += CHUNK_SIZE) {
+      if (controller.signal.aborted) break;
+      const chunk = targetWebSubs.slice(i, i + CHUNK_SIZE);
       const chunkResults = await Promise.allSettled(
         chunk.map(async (sub) => {
+          if (controller.signal.aborted) return { success: false, id: sub.id };
           try {
             await webpush.sendNotification(
               {
@@ -138,10 +152,10 @@ export async function executePushDispatch(payload: PushPayload) {
   };
 
   const dispatchFcm = async () => {
-    if (allFcmTokens.length === 0) return;
+    if (targetFcmTokens.length === 0 || controller.signal.aborted) return;
     const serviceAccount = getParsedServiceAccount();
     if (!serviceAccount) {
-      console.warn('[PushNotifyAll] FCM_SERVICE_ACCOUNT_KEY not configured or invalid; skipped FCM push for', allFcmTokens.length, 'devices');
+      console.warn('[PushNotifyAll] FCM_SERVICE_ACCOUNT_KEY not configured or invalid; skipped FCM push for', targetFcmTokens.length, 'devices');
       return;
     }
     const accessToken = await getFCMAccessToken(serviceAccount);
@@ -149,12 +163,13 @@ export async function executePushDispatch(payload: PushPayload) {
       console.error('[PushNotifyAll] Failed to obtain FCM OAuth2 access token');
       return;
     }
-    const chunkSize = 25;
-    for (let i = 0; i < allFcmTokens.length; i += chunkSize) {
-      const chunk = allFcmTokens.slice(i, i + chunkSize);
+    for (let i = 0; i < targetFcmTokens.length; i += CHUNK_SIZE) {
+      if (controller.signal.aborted) break;
+      const chunk = targetFcmTokens.slice(i, i + CHUNK_SIZE);
       const results = await Promise.allSettled(
-        chunk.map(token =>
-          sendFCMNotification(
+        chunk.map(token => {
+          if (controller.signal.aborted) return Promise.resolve({ token, success: false });
+          return sendFCMNotification(
             {
               token,
               title: payload.title,
@@ -167,8 +182,8 @@ export async function executePushDispatch(payload: PushPayload) {
             },
             accessToken,
             serviceAccount
-          ).then(res => ({ token, ...res }))
-        )
+          ).then(res => ({ token, ...res }));
+        })
       );
 
       for (const res of results) {
@@ -176,9 +191,9 @@ export async function executePushDispatch(payload: PushPayload) {
           if (res.value.success) {
             fcmSuccessCount++;
           } else {
-            const err = res.value.error || '';
+            const err = (res.value as any).error || '';
             if (err.includes('registration-token-not-registered') || err.includes('UNREGISTERED') || err.includes('404')) {
-              deadFcmTokens.push(res.value.token);
+              deadFcmTokens.push((res.value as any).token);
             }
           }
         }
@@ -187,6 +202,7 @@ export async function executePushDispatch(payload: PushPayload) {
   };
 
   await Promise.allSettled([dispatchWeb(), dispatchFcm()]);
+  clearTimeout(timeoutId);
 
   // 5. Clean up dead subscriptions/devices asynchronously
   try {
@@ -208,12 +224,12 @@ export async function executePushDispatch(payload: PushPayload) {
     console.warn('[PushNotifyAll] Error cleaning up dead tokens:', cleanErr);
   }
 
-  console.log(`[PushNotifyAll] Complete: ${fcmSuccessCount}/${allFcmTokens.length} FCM delivered, ${webSuccessCount}/${webSubs.length} Web delivered.`);
+  console.log(`[PushNotifyAll] Complete: ${fcmSuccessCount}/${targetFcmTokens.length} FCM delivered, ${webSuccessCount}/${targetWebSubs.length} Web delivered (Capped to ${MAX_PER_INVOCATION} for Cloudflare edge safety).`);
 
   return {
     success: true,
-    fcm: { delivered: fcmSuccessCount, total: allFcmTokens.length },
-    web: { delivered: webSuccessCount, total: webSubs.length },
+    fcm: { delivered: fcmSuccessCount, total: targetFcmTokens.length, totalAvailable: allFcmTokens.length },
+    web: { delivered: webSuccessCount, total: targetWebSubs.length, totalAvailable: webSubs.length },
   };
 }
 

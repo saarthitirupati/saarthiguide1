@@ -21,13 +21,39 @@ export interface LiveAlert {
   updated_at: string;
 }
 
-export function useRealtimeAlerts() {
-  const [alerts, setAlerts] = useState<LiveAlert[]>([]);
-  const [loading, setLoading] = useState(true);
+// Singleton tab-wide in-flight fetch and cache to prevent duplicate requests across components
+let activeAlertsFetch: Promise<LiveAlert[] | null> | null = null;
+let lastAlertsFetchTime = 0;
+let cachedAlertsData: LiveAlert[] = [];
 
-  const fetchAlerts = useCallback(async () => {
+export function useRealtimeAlerts() {
+  const [alerts, setAlerts] = useState<LiveAlert[]>(cachedAlertsData);
+  const [loading, setLoading] = useState(cachedAlertsData.length === 0);
+
+  const fetchAlerts = useCallback(async (force: boolean = false) => {
     try {
-      const data = await safeFetchJson<LiveAlert[]>('/api/v1/alerts?t=' + Date.now());
+      const now = Date.now();
+      // Reuse cached data if fetched less than 10 seconds ago and not forced
+      if (!force && cachedAlertsData.length > 0 && now - lastAlertsFetchTime < 10000) {
+        setAlerts(cachedAlertsData);
+        setLoading(false);
+        return;
+      }
+
+      // Deduplicate simultaneous component fetches into a single network call
+      if (!activeAlertsFetch) {
+        activeAlertsFetch = safeFetchJson<LiveAlert[]>('/api/v1/alerts').then(data => {
+          if (Array.isArray(data)) {
+            cachedAlertsData = data;
+            lastAlertsFetchTime = Date.now();
+          }
+          return data;
+        }).finally(() => {
+          activeAlertsFetch = null;
+        });
+      }
+
+      const data = await activeAlertsFetch;
       if (Array.isArray(data)) {
         setAlerts(prev => {
           if (prev.length === data.length && prev.every((p, i) => p.id === data[i].id && p.updated_at === data[i].updated_at)) {
@@ -47,15 +73,15 @@ export function useRealtimeAlerts() {
     // 1. Fetch initial active alerts
     fetchAlerts();
 
-    // 2. Poll fallback every 15 seconds (only when tab is visible)
+    // 2. Poll fallback every 30 seconds (only when tab is visible)
     const pollInterval = setInterval(() => {
       if (typeof document === 'undefined' || !document.hidden) {
         fetchAlerts();
       }
-    }, 15000);
+    }, 30000);
 
     // 3. Instant local & cross-tab admin event listeners
-    const handleCustomEvent = () => fetchAlerts();
+    const handleCustomEvent = () => fetchAlerts(true);
     window.addEventListener('saarthi:live_update', handleCustomEvent);
 
     let broadcastChannel: BroadcastChannel | null = null;

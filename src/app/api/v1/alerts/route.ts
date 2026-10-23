@@ -10,10 +10,19 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const showAll = searchParams.get('all') === 'true';
     const alerts = await fetchLiveAlerts(showAll);
-    return NextResponse.json(alerts);
+    return NextResponse.json(alerts, {
+      headers: {
+        'Cache-Control': 'public, s-maxage=10, stale-while-revalidate=30',
+        'CDN-Cache-Control': 'public, s-maxage=10',
+      },
+    });
   } catch (error: any) {
     console.error('API Error (/api/v1/alerts GET):', error);
-    return NextResponse.json([]);
+    return NextResponse.json([], {
+      headers: {
+        'Cache-Control': 'public, s-maxage=5',
+      },
+    });
   }
 }
 
