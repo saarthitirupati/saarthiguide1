@@ -42,6 +42,20 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
     const { data, error } = await supabase.from('festivals').update(cleanUpdates).eq('id', id).select();
     if (error) throw error;
 
+    // Guaranteed push notification for updated festival
+    if (data && data[0]) {
+      const { pushNotifyAll } = await import('@/lib/pushNotify');
+      await pushNotifyAll({
+        title: `🪔 ${data[0].name || 'Festival Update'}`,
+        body: data[0].visitor_notes || data[0].description || `Updated schedule for ${data[0].name} — ${data[0].date || ''}. Check live guidance.`,
+        url: `/festivals/${data[0].slug || ''}`,
+        tag: `festival-update-${Date.now()}`,
+        category: 'High Priority'
+      }).catch((err) => {
+        console.error('[PushNotify] Error broadcasting updated festival:', err);
+      });
+    }
+
     return NextResponse.json({ festival: data[0] });
   } catch (e: any) {
     return NextResponse.json({ error: e.message }, { status: 400 });

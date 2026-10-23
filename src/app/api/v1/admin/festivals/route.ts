@@ -36,6 +36,18 @@ export async function POST(req: Request) {
     const { data, error } = await supabase.from('festivals').insert([doc]).select();
     if (error) throw error;
 
+    // Guaranteed push notification for newly scheduled festival
+    const { pushNotifyAll } = await import('@/lib/pushNotify');
+    await pushNotifyAll({
+      title: `🪔 ${doc.name}`,
+      body: doc.visitor_notes || doc.description || `Upcoming festival at Tirumala — ${doc.date}. Check special rituals & crowd guidance.`,
+      url: `/festivals/${doc.slug}`,
+      tag: `festival-${doc.slug}-${Date.now()}`,
+      category: 'High Priority'
+    }).catch((err) => {
+      console.error('[PushNotify] Error broadcasting new festival:', err);
+    });
+
     return NextResponse.json({ festival: data[0] }, { status: 201 });
   } catch (e: any) {
     return NextResponse.json({ error: e.message }, { status: 400 });
