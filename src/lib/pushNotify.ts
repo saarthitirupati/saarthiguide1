@@ -1,7 +1,6 @@
 import webpush from 'web-push';
 import { supabase } from '@/lib/supabase';
 import { sendFCMNotification, getFCMAccessToken, getParsedServiceAccount } from '@/lib/fcmService';
-import { after } from 'next/server';
 
 let vapidConfigured = false;
 function ensureVapid(): boolean {
@@ -234,23 +233,15 @@ export async function executePushDispatch(payload: PushPayload) {
 }
 
 /**
- * Safely dispatches push notifications. When called inside a Next.js request handler,
- * schedules delivery in the background via Next.js after() / Cloudflare waitUntil()
- * so the HTTP response returns immediately without timing out or hitting subrequest limits.
+ * Safely dispatches push notifications across Web Push and Android FCM.
+ * Directly awaited so Cloudflare Workers delivers messages before the invocation context ends.
  */
 export async function pushNotifyAll(payload: PushPayload) {
   try {
-    after(async () => {
-      try {
-        await executePushDispatch(payload);
-      } catch (err) {
-        console.error('[PushNotifyAll] Background dispatch error:', err);
-      }
-    });
-    return { success: true, scheduled: true };
-  } catch (_e) {
-    // Outside request scope
-    return executePushDispatch(payload);
+    return await executePushDispatch(payload);
+  } catch (err: any) {
+    console.error('[PushNotifyAll] Dispatch error:', err);
+    return { success: false, error: err?.message || 'Dispatch failed' };
   }
 }
 

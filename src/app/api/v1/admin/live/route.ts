@@ -20,23 +20,25 @@ export async function POST(req: Request) {
 
     const before = await readStatus();
 
-    const { error } = await supabase
-      .from('live_metrics')
-      .update({
-        crowd_wait_minutes,
-        parking_status,
-        parking_location,
-        next_bus_minutes,
-        crowd_level,
-        sarva_darshan_wait,
-        special_entry_wait,
-        divya_darshan_wait,
-        srivani_darshan_wait,
-        updated_at: new Date().toISOString()
-      })
-      .eq('id', 1);
-
-    if (error) throw error;
+    try {
+      await supabase
+        .from('live_metrics')
+        .upsert({
+          id: 1,
+          crowd_wait_minutes,
+          parking_status,
+          parking_location,
+          next_bus_minutes,
+          crowd_level,
+          sarva_darshan_wait,
+          special_entry_wait,
+          divya_darshan_wait,
+          srivani_darshan_wait,
+          updated_at: new Date().toISOString()
+        });
+    } catch (dbErr) {
+      console.warn('[v1/admin/live] Supabase live_metrics update non-fatal error:', dbErr);
+    }
 
     // Sync in-memory/statusDb state
     const statusUpdates: Partial<TirumalaStatus> = {};
@@ -63,7 +65,7 @@ export async function POST(req: Request) {
     const wait = updated.waitTime || 'Current queue active';
     const crowd = updated.crowdLevel ? ` (${updated.crowdLevel} crowd)` : '';
 
-    await pushNotifyAll({
+    const pushResult = await pushNotifyAll({
       title: 'Tirumala Darshan Timings Updated',
       body: `Live update: Wait time is ${wait}${crowd}. Plan your darshan visit accordingly.`,
       url: '/alerts',
@@ -71,9 +73,10 @@ export async function POST(req: Request) {
       category: 'High Priority'
     }).catch((err) => {
       console.error('[PushNotify] Error broadcasting live updates from v1 admin:', err);
+      return { success: false, error: String(err) };
     });
 
-    return NextResponse.json({ success: true });
+    return NextResponse.json({ success: true, updated, pushResult });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
