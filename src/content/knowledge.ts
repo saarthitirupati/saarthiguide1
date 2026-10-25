@@ -246,29 +246,29 @@ export const KNOWLEDGE_ITEMS: KnowledgeItem[] = [
     category: 'Free Facilities',
     importance: 'must-know',
     tag: '100% FREE TTD',
-    status: 'Serving (8:30 AM – 10:30 PM)',
+    status: 'Serving (9:00 AM – 10:30 PM)',
     shortDescription: 'Hygienic, unlimited, traditional vegetarian meals served free to all pilgrims.',
-    description: 'Matrusri Tarigonda Vengamamba Annaprasadam Complex and VQC queue halls serve hot, pure satvik vegetarian meals (steamed rice, sambar, rasam, vegetable curry, chutney, buttermilk) to tens of thousands of pilgrims daily. 100% free of charge with zero tickets or tokens required.',
-    whyItMatters: 'Lord Venkateswara temple provides unlimited sacred meals as divine prasad. No pilgrim in Tirumala should remain hungry. No token, Aadhaar, or ticket is needed — walk in directly at meal timings, or receive hot food packets delivered directly to your queue seat inside VQC compartments.',
+    description: 'Matrusri Tarigonda Vengamamba Annaprasadam Complex, Tirumala provides 100% free Annaprasadam to all devotees with no ticket or payment required. Pure satvik menu includes morning Tiffin (Upma, Pongal, Semiya Upma, Chutney), full Lunch & Dinner (Rice, Curry, Sambar, Rasam, Chutney, Buttermilk, Sweet Pongal), and special Vada from approximately 11:00 AM to 10:00 PM.',
+    whyItMatters: 'Lord Venkateswara temple provides unlimited sacred meals as divine prasad. No pilgrim in Tirumala should remain hungry. 100% free Annaprasadam for devotees — no ticket, payment, token, or Aadhaar is required. Walk in directly at meal timings, or receive hot food packets delivered directly to your queue seat inside VQC compartments.',
     distance: '280 m',
     walkingTime: '4 min walk',
     image: '/images/places/img_3_Annaprasadam-4-copy_lyo86v.jpg',
-    location: 'Matrusri Tarigonda Vengamamba Complex (Near Temple) & VQC Compartments',
+    location: 'Matrusri Tarigonda Vengamamba Annaprasadam Complex, Tirumala',
     coordinates: { lat: 13.6841, lng: 79.3498 },
     iconName: 'utensils',
     searchAliases: [
       'food', 'meals', 'lunch', 'dinner', 'eating', 'veg', 'annaprasadam', 'rice',
-      'eat', 'hungry', 'breakfast', 'canteen', 'milk', 'free meals', 'vengamamba', 'tiffin'
+      'eat', 'hungry', 'breakfast', 'canteen', 'milk', 'free meals', 'vengamamba', 'tiffin', 'vada'
     ],
     highlights: [
       {
-        title: '100% Free TTD Service',
-        subtitle: 'Zero tokens, zero fees, open to all devotees without discrimination',
+        title: 'Free Annaprasadam for Devotees',
+        subtitle: '100% Free · No ticket or payment required for any pilgrim',
         iconName: 'shield-check'
       },
       {
-        title: 'Unlimited Satvik Meals',
-        subtitle: 'Steamed rice, sambar, rasam, vegetable curry, chutney & buttermilk',
+        title: 'Unlimited Satvik Meals & Tiffin',
+        subtitle: 'Tiffin (Upma, Pongal, Semiya Upma), Lunch & Dinner with Sweet Pongal & Vada',
         iconName: 'utensils'
       },
       {
@@ -285,27 +285,43 @@ export const KNOWLEDGE_ITEMS: KnowledgeItem[] = [
     itemCategories: [
       {
         title: 'Breakfast (Tiffin)',
-        tag: '8:30 AM – 10:30 AM',
-        desc: 'Hot rava upma, ven pongal, fresh coconut chutney and sambar served fresh in morning dining sessions.',
-        iconName: 'utensils',
-        whereToDeposit: 'Matrusri Tarigonda Vengamamba Complex (Ground Floor Dining Halls)',
-        whyNeeded: 'Gives pilgrims completing early morning head tonsure or walking the footpath an instant, wholesome breakfast before darshan.'
+        tag: '9:00 AM – 10:30 AM',
+        desc: 'Upma, Pongal, Semiya Upma, and Chutney served hot and fresh in morning dining sessions.',
+        iconName: 'coffee',
+        whereToDeposit: 'Matrusri Tarigonda Vengamamba Annaprasadam Complex, Tirumala',
+        whyNeeded: 'Wholesome morning energy for pilgrims completing tonsure or footpaths before entering darshan queue.'
       },
       {
         title: 'Traditional Lunch Feast',
         tag: '10:30 AM – 4:00 PM',
-        desc: 'Full traditional meal served on fresh banana leaf: unlimited steamed rice, flavourful sambar, rasam, freshly cooked vegetable curry, spicy chutney, and digestive buttermilk.',
+        desc: 'Full traditional meal served on banana leaf: unlimited Rice, Curry, Sambar, Rasam, Chutney, Buttermilk, and divine Sweet Pongal.',
         iconName: 'utensils',
-        whereToDeposit: 'Matrusri Tarigonda Vengamamba Mega Complex (All 4 Multi-floor Dining Halls)',
-        whyNeeded: 'Serves up to 4,000 devotees simultaneously every 30 minutes with hygienic hot food cooked in giant automated steam boilers.'
+        whereToDeposit: 'Matrusri Tarigonda Vengamamba Annaprasadam Complex, Tirumala (All Dining Halls)',
+        whyNeeded: 'Serves thousands of devotees simultaneously every 30 minutes with hygienic hot food cooked in giant automated steam boilers.'
+      },
+      {
+        title: 'Afternoon Break (Cleaning)',
+        tag: '4:00 PM – 5:00 PM',
+        desc: 'Dining halls are closed for scheduled deep cleaning, hygiene sanitation, and dinner preparations.',
+        iconName: 'clock',
+        whereToDeposit: 'Matrusri Tarigonda Vengamamba Annaprasadam Complex, Tirumala',
+        whyNeeded: 'TTD ensures strict cleanliness standards between lunch and dinner dining cycles.'
       },
       {
         title: 'Evening & Night Dinner',
         tag: '5:00 PM – 10:30 PM',
-        desc: 'Freshly prepared hot dinner with steamed rice, aromatic sambar, rasam, vegetable curry, and cooling curd/buttermilk served until 10:30 PM.',
-        iconName: 'clock',
-        whereToDeposit: 'Matrusri Tarigonda Vengamamba Mega Complex (Central Dining Halls)',
-        whyNeeded: 'Ensures devotees exiting the temple after evening and night darshan have access to hot, hygienic food without searching for hotels.'
+        desc: 'Hot sacred dinner: steamed Rice, Curry, Sambar, Rasam, Chutney, cooling Buttermilk, and Sweet Pongal served until 10:30 PM.',
+        iconName: 'utensils',
+        whereToDeposit: 'Matrusri Tarigonda Vengamamba Annaprasadam Complex, Tirumala',
+        whyNeeded: 'Ensures devotees exiting the temple after evening and night darshan receive hot sacred food without needing commercial restaurants.'
+      },
+      {
+        title: 'Special Annaprasadam Vada',
+        tag: '11:00 AM – 10:00 PM',
+        desc: 'Crispy satvik Vada available approximately from 11:00 AM to 10:00 PM according to official TTD announcement.',
+        iconName: 'sparkles',
+        whereToDeposit: 'Matrusri Tarigonda Vengamamba Annaprasadam Complex, Tirumala',
+        whyNeeded: 'Special TTD prasadam treat served alongside meal courses for visiting devotees.'
       },
       {
         title: 'In-Queue Compartment Food',

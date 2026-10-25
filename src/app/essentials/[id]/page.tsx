@@ -6,7 +6,8 @@ import {
   ArrowLeft, MapPin, Clock, ShieldAlert, Navigation, Info, Check, X,
   Lock, Utensils, Scissors, Bed, ShoppingBag, HelpCircle, FileText,
   Share2, AlertTriangle, CheckCircle2, ChevronDown, ChevronUp,
-  Briefcase, Smartphone, Footprints, Droplets, Bus, Sparkles, Luggage
+  Briefcase, Smartphone, Footprints, Droplets, Bus, Sparkles, Luggage,
+  Coffee, Sun
 } from 'lucide-react';
 import styles from '../Essentials.module.css';
 
@@ -31,7 +32,10 @@ const ICON_MAP: Record<string, React.ComponentType<any>> = {
   clock: Clock,
   'map-pin': MapPin,
   info: Info,
-  'alert-triangle': AlertTriangle
+  'alert-triangle': AlertTriangle,
+  coffee: Coffee,
+  sun: Sun,
+  sparkles: Sparkles
 };
 
 export default function EssentialDetailPage({ params }: { params: Promise<{ id: string }> }) {
@@ -58,8 +62,10 @@ export default function EssentialDetailPage({ params }: { params: Promise<{ id: 
   const initialDecisionId = useMemo(() => {
     if (id === 'secure-belongings') return 'phone';
     if (id === 'free-meals') {
+      if (currentHourIST >= 9 && currentHourIST < 10.5) return 'tiffin';
       if (currentHourIST >= 10.5 && currentHourIST < 16) return 'lunch';
-      if (currentHourIST >= 17 && currentHourIST < 23) return 'dinner';
+      if (currentHourIST >= 16 && currentHourIST < 17) return 'break';
+      if (currentHourIST >= 17 && currentHourIST < 22.5) return 'dinner';
       return 'lunch';
     }
     if (id === 'hair-offering') return 'main';
@@ -175,6 +181,12 @@ export default function EssentialDetailPage({ params }: { params: Promise<{ id: 
       };
     }
     if (item.id === 'free-meals') {
+      if (selectedDecisionId === 'tiffin') {
+        return {
+          title: lang === 'te' ? 'అల్పాహార శాలకు నావిగేట్ చేయండి' : 'Navigate to Annaprasadam Tiffin (9:00 - 10:30 AM)',
+          dest: 'Tarigonda Vengamamba Annaprasadam'
+        };
+      }
       if (selectedDecisionId === 'lunch') {
         return {
           title: lang === 'te' ? 'అన్నప్రసాద భోజన శాలకు నావిగేట్ చేయండి' : 'Navigate to Vengamamba Lunch Feast',
@@ -184,6 +196,12 @@ export default function EssentialDetailPage({ params }: { params: Promise<{ id: 
       if (selectedDecisionId === 'dinner') {
         return {
           title: lang === 'te' ? 'రాత్రి భోజన శాలకు నావిగేట్ చేయండి' : 'Navigate to Vengamamba Dinner',
+          dest: 'Tarigonda Vengamamba Annaprasadam'
+        };
+      }
+      if (selectedDecisionId === 'vada' || selectedDecisionId === 'break') {
+        return {
+          title: lang === 'te' ? 'అన్నప్రసాదం ప్రాంగణానికి నావిగేట్ చేయండి' : 'Navigate to Annaprasadam Complex',
           dest: 'Tarigonda Vengamamba Annaprasadam'
         };
       }
@@ -235,8 +253,10 @@ export default function EssentialDetailPage({ params }: { params: Promise<{ id: 
   })();
 
   // Meal live serving indicators
+  const isTiffinActive = currentHourIST >= 9 && currentHourIST < 10.5;
   const isLunchActive = currentHourIST >= 10.5 && currentHourIST < 16;
-  const isDinnerActive = currentHourIST >= 17 && currentHourIST < 23;
+  const isBreakActive = currentHourIST >= 16 && currentHourIST < 17;
+  const isDinnerActive = currentHourIST >= 17 && currentHourIST < 22.5;
 
   // Related FAQs
   const relatedFaqs = FAQ_ITEMS.filter(faq => 
@@ -302,7 +322,7 @@ export default function EssentialDetailPage({ params }: { params: Promise<{ id: 
                     ? (!isUserOnHill && liveDistance ? `తిరుమల కొండపై లాకర్లు · మీరు తిరుపతిలో ${liveDistance.label} దూరంలో ఉన్నారు` : 'VQC & PAC లాకర్ కౌంటర్లు · తిరుమల కొండ')
                     : (!isUserOnHill && liveDistance ? `Showing lockers ON Tirumala Hill · You are ${liveDistance.label} away in Tirupati` : 'VQC & PAC Lockers · Tirumala Hill'))
                 : item.id === 'free-meals'
-                ? (lang === 'te' ? 'తరిగొండ వెంగమాంబ & VQC హాళ్లు · తిరుమల కొండ' : 'Tarigonda Vengamamba Complex · Tirumala Hill')
+                ? (lang === 'te' ? 'మాతృశ్రీ తరిగొండ వెంగమాంబ అన్నప్రసాదం కాంప్లెక్స్, తిరుమల' : 'Matrusri Tarigonda Vengamamba Annaprasadam Complex, Tirumala')
                 : item.id === 'accommodation'
                 ? (lang === 'te' ? 'CRO కార్యాలయం & PAC హాళ్లు · తిరుమల కొండ' : 'CRO Office & PAC Halls · Tirumala Hill')
                 : item.location}
@@ -379,13 +399,128 @@ export default function EssentialDetailPage({ params }: { params: Promise<{ id: 
           </section>
         )}
 
+        {/* OFFICIAL ANNAPRASADAM DETAILS FOR FREE MEALS */}
+        {item.id === 'free-meals' && (
+          <section style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+            {/* Location & Free Entry Card */}
+            <div style={{
+              background: '#FFFFFF',
+              border: '1px solid rgba(30, 35, 45, 0.08)',
+              borderRadius: '16px',
+              padding: '14px 16px',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '10px',
+              boxShadow: '0 1px 3px rgba(0,0,0,0.03)'
+            }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '8px' }}>
+                <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
+                  <div style={{
+                    width: '32px',
+                    height: '32px',
+                    borderRadius: '8px',
+                    background: '#F0FDF4',
+                    color: '#0F5132',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexShrink: 0
+                  }}>
+                    <MapPin size={16} strokeWidth={2.2} />
+                  </div>
+                  <div>
+                    <div style={{ fontSize: '11px', fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', color: '#0F5132' }}>
+                      {lang === 'te' ? 'ప్రాంగణం' : 'LOCATION'}
+                    </div>
+                    <h3 style={{ fontSize: '14.5px', fontWeight: 700, color: '#1E232D', margin: '2px 0 0 0', lineHeight: 1.35 }}>
+                      Matrusri Tarigonda Vengamamba Annaprasadam Complex, Tirumala
+                    </h3>
+                  </div>
+                </div>
+              </div>
+
+              {/* Service Badges (Strictly Lucide Icons Only) */}
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', paddingTop: '8px', borderTop: '1px solid #F1F5F9' }}>
+                <span style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  background: '#ECFDF5',
+                  color: '#065F46',
+                  border: '1px solid #A7F3D0',
+                  borderRadius: '999px',
+                  padding: '4px 10px',
+                  fontSize: '12px',
+                  fontWeight: 600
+                }}>
+                  <CheckCircle2 size={13} color="#059669" />
+                  Free Annaprasadam for devotees
+                </span>
+                <span style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  background: '#ECFDF5',
+                  color: '#065F46',
+                  border: '1px solid #A7F3D0',
+                  borderRadius: '999px',
+                  padding: '4px 10px',
+                  fontSize: '12px',
+                  fontWeight: 600
+                }}>
+                  <CheckCircle2 size={13} color="#059669" />
+                  No ticket or payment required
+                </span>
+              </div>
+            </div>
+
+            {/* Special Vada Announcement Card */}
+            <div style={{
+              background: '#FFFBEB',
+              border: '1px solid #FDE68A',
+              borderRadius: '16px',
+              padding: '12px 14px',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '10px'
+            }}>
+              <div style={{
+                width: '32px',
+                height: '32px',
+                borderRadius: '8px',
+                background: '#FEF08A',
+                color: '#854D0E',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexShrink: 0
+              }}>
+                <Sparkles size={16} strokeWidth={2.2} />
+              </div>
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap' }}>
+                  <span style={{ fontSize: '13px', fontWeight: 700, color: '#854D0E' }}>
+                    Special Annaprasadam Vada
+                  </span>
+                  <span style={{ background: '#FEF9C3', color: '#713F12', border: '1px solid #FDE047', borderRadius: '4px', padding: '1px 6px', fontSize: '10px', fontWeight: 700 }}>
+                    11:00 AM – 10:00 PM
+                  </span>
+                </div>
+                <p style={{ margin: '2px 0 0 0', fontSize: '11.5px', color: '#713F12', lineHeight: 1.35 }}>
+                  Available approximately from 11:00 AM to 10:00 PM, according to official TTD announcement.
+                </p>
+              </div>
+            </div>
+          </section>
+        )}
+
         {/* DECISION CARDS (WHAT -> WHERE -> ACTION) */}
         <section style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
           <h3 className={styles.sectionTitle} style={{ fontSize: '14.5px', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.04em', margin: 0, color: '#0F172A' }}>
             {item.id === 'secure-belongings' 
               ? (lang === 'te' ? 'ఎక్కడికి వెళ్లాలి?' : 'Where Should I Go?')
               : item.id === 'free-meals'
-              ? (lang === 'te' ? 'ఎక్కడ భోజనం చేయవచ్చు?' : 'Where Can I Eat Now?')
+              ? (lang === 'te' ? 'అన్నప్రసాదం సమయాలు & వివరాలు' : 'Annaprasadam Timings & Food Details')
               : item.id === 'hair-offering'
               ? (lang === 'te' ? 'తలనీలాల కోసం ఎక్కడికి వెళ్లాలి?' : 'Where Should I Go for Tonsure?')
               : (lang === 'te' ? 'గది ఎక్కడ పొందవచ్చు?' : 'Where Can I Get a Room?')}
@@ -504,6 +639,55 @@ export default function EssentialDetailPage({ params }: { params: Promise<{ id: 
             {/* FREE MEALS MATRIX */}
             {item.id === 'free-meals' && (
               <>
+                {/* 1. Tiffin (9:00 AM – 10:30 AM) */}
+                <div 
+                  className={`${styles.utilityDecisionCard} ${selectedDecisionId === 'tiffin' ? styles.utilityDecisionCardActive : ''}`}
+                  onClick={() => setSelectedDecisionId('tiffin')}
+                >
+                  <div className={styles.utilityDecisionTop}>
+                    <div className={styles.utilityDecisionIconBox}>
+                      <Coffee size={16} />
+                    </div>
+                    <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                      <h4 className={styles.utilityDecisionName}>Tiffin</h4>
+                      {isTiffinActive && (
+                        <span style={{ background: '#DCFCE7', color: '#166534', border: '1px solid #BBF7D0', borderRadius: '999px', padding: '1px 8px', fontSize: '11px', fontWeight: 700 }}>
+                          Serving Now
+                        </span>
+                      )}
+                    </div>
+                  </div>
+                  <p className={styles.utilityDecisionWhere}>
+                    Matrusri Tarigonda Vengamamba Complex, Tirumala
+                  </p>
+                  <p className={styles.utilityDecisionMeta}>
+                    9:00 AM – 10:30 AM · Free Satvik Tiffin
+                  </p>
+                  
+                  {/* Food Details Box */}
+                  <div style={{ margin: '4px 0 4px 42px', padding: '8px 10px', background: '#F8FAFC', borderRadius: '8px', border: '1px solid #E2E8F0' }}>
+                    <div style={{ fontSize: '11px', fontWeight: 700, color: '#475569', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: '4px' }}>
+                      Food Details:
+                    </div>
+                    <div style={{ fontSize: '12.5px', color: '#1E293B', fontWeight: 500, display: 'flex', flexWrap: 'wrap', gap: '4px 10px' }}>
+                      <span>• Upma</span>
+                      <span>• Pongal</span>
+                      <span>• Semiya Upma</span>
+                      <span>• Chutney</span>
+                    </div>
+                  </div>
+
+                  <div className={styles.utilityDecisionActionRow}>
+                    <button 
+                      className={styles.utilityDecisionLink} 
+                      onClick={(e) => { e.stopPropagation(); setSelectedDecisionId('tiffin'); handleOpenMap('Tarigonda Vengamamba Annaprasadam'); }}
+                    >
+                      <span>Directions →</span>
+                    </button>
+                  </div>
+                </div>
+
+                {/* 2. Lunch Feast (10:30 AM – 4:00 PM) */}
                 <div 
                   className={`${styles.utilityDecisionCard} ${selectedDecisionId === 'lunch' ? styles.utilityDecisionCardActive : ''}`}
                   onClick={() => setSelectedDecisionId('lunch')}
@@ -512,14 +696,38 @@ export default function EssentialDetailPage({ params }: { params: Promise<{ id: 
                     <div className={styles.utilityDecisionIconBox}>
                       <Utensils size={16} />
                     </div>
-                    <h4 className={styles.utilityDecisionName}>Traditional Lunch Feast</h4>
+                    <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                      <h4 className={styles.utilityDecisionName}>Traditional Lunch Feast</h4>
+                      {isLunchActive && (
+                        <span style={{ background: '#DCFCE7', color: '#166534', border: '1px solid #BBF7D0', borderRadius: '999px', padding: '1px 8px', fontSize: '11px', fontWeight: 700 }}>
+                          Serving Now
+                        </span>
+                      )}
+                    </div>
                   </div>
                   <p className={styles.utilityDecisionWhere}>
-                    Tarigonda Vengamamba Complex
+                    Matrusri Tarigonda Vengamamba Complex, Tirumala
                   </p>
                   <p className={styles.utilityDecisionMeta}>
-                    10:30 AM – 4:00 PM · Free satvik meal
+                    10:30 AM – 4:00 PM · Free Satvik Feast
                   </p>
+
+                  {/* Food Details Box */}
+                  <div style={{ margin: '4px 0 4px 42px', padding: '8px 10px', background: '#F8FAFC', borderRadius: '8px', border: '1px solid #E2E8F0' }}>
+                    <div style={{ fontSize: '11px', fontWeight: 700, color: '#475569', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: '4px' }}>
+                      Food Details:
+                    </div>
+                    <div style={{ fontSize: '12.5px', color: '#1E293B', fontWeight: 500, display: 'flex', flexWrap: 'wrap', gap: '4px 10px' }}>
+                      <span>• Rice</span>
+                      <span>• Curry</span>
+                      <span>• Sambar</span>
+                      <span>• Rasam</span>
+                      <span>• Chutney</span>
+                      <span>• Buttermilk</span>
+                      <span>• Sweet Pongal</span>
+                    </div>
+                  </div>
+
                   <div className={styles.utilityDecisionActionRow}>
                     <button 
                       className={styles.utilityDecisionLink} 
@@ -530,6 +738,37 @@ export default function EssentialDetailPage({ params }: { params: Promise<{ id: 
                   </div>
                 </div>
 
+                {/* 3. Break (4:00 PM – 5:00 PM) */}
+                <div 
+                  className={`${styles.utilityDecisionCard} ${selectedDecisionId === 'break' ? styles.utilityDecisionCardActive : ''}`}
+                  onClick={() => setSelectedDecisionId('break')}
+                  style={{ background: isBreakActive ? '#FFFBEB' : '#FFFFFF', borderColor: isBreakActive ? '#F59E0B' : '#E2E8F0' }}
+                >
+                  <div className={styles.utilityDecisionTop}>
+                    <div className={styles.utilityDecisionIconBox} style={{ background: isBreakActive ? '#FEF3C7' : '#F1F5F9', color: isBreakActive ? '#B45309' : '#64748B' }}>
+                      <Clock size={16} />
+                    </div>
+                    <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                      <h4 className={styles.utilityDecisionName}>Sanitation & Preparation Break</h4>
+                      <span style={{ background: '#F1F5F9', color: '#64748B', borderRadius: '999px', padding: '1px 8px', fontSize: '11px', fontWeight: 600 }}>
+                        4:00 PM – 5:00 PM
+                      </span>
+                    </div>
+                  </div>
+                  <p className={styles.utilityDecisionWhere}>
+                    Matrusri Tarigonda Vengamamba Complex, Tirumala
+                  </p>
+                  <p className={styles.utilityDecisionMeta}>
+                    Dining halls closed for scheduled hygiene cleaning and dinner session preparation.
+                  </p>
+                  <div className={styles.utilityDecisionActionRow}>
+                    <span style={{ fontSize: '12px', color: '#B45309', fontWeight: 600 }}>
+                      Dinner session opens at 5:00 PM
+                    </span>
+                  </div>
+                </div>
+
+                {/* 4. Dinner Feast (5:00 PM – 10:30 PM) */}
                 <div 
                   className={`${styles.utilityDecisionCard} ${selectedDecisionId === 'dinner' ? styles.utilityDecisionCardActive : ''}`}
                   onClick={() => setSelectedDecisionId('dinner')}
@@ -538,14 +777,38 @@ export default function EssentialDetailPage({ params }: { params: Promise<{ id: 
                     <div className={styles.utilityDecisionIconBox}>
                       <Utensils size={16} />
                     </div>
-                    <h4 className={styles.utilityDecisionName}>Evening & Night Dinner</h4>
+                    <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                      <h4 className={styles.utilityDecisionName}>Evening & Night Dinner</h4>
+                      {isDinnerActive && (
+                        <span style={{ background: '#DCFCE7', color: '#166534', border: '1px solid #BBF7D0', borderRadius: '999px', padding: '1px 8px', fontSize: '11px', fontWeight: 700 }}>
+                          Serving Now
+                        </span>
+                      )}
+                    </div>
                   </div>
                   <p className={styles.utilityDecisionWhere}>
-                    Tarigonda Vengamamba Complex
+                    Matrusri Tarigonda Vengamamba Complex, Tirumala
                   </p>
                   <p className={styles.utilityDecisionMeta}>
-                    5:00 PM – 10:30 PM · Free satvik meal
+                    5:00 PM – 10:30 PM · Free Satvik Feast
                   </p>
+
+                  {/* Food Details Box */}
+                  <div style={{ margin: '4px 0 4px 42px', padding: '8px 10px', background: '#F8FAFC', borderRadius: '8px', border: '1px solid #E2E8F0' }}>
+                    <div style={{ fontSize: '11px', fontWeight: 700, color: '#475569', textTransform: 'uppercase', letterSpacing: '0.04em', marginBottom: '4px' }}>
+                      Food Details:
+                    </div>
+                    <div style={{ fontSize: '12.5px', color: '#1E293B', fontWeight: 500, display: 'flex', flexWrap: 'wrap', gap: '4px 10px' }}>
+                      <span>• Rice</span>
+                      <span>• Curry</span>
+                      <span>• Sambar</span>
+                      <span>• Rasam</span>
+                      <span>• Chutney</span>
+                      <span>• Buttermilk</span>
+                      <span>• Sweet Pongal</span>
+                    </div>
+                  </div>
+
                   <div className={styles.utilityDecisionActionRow}>
                     <button 
                       className={styles.utilityDecisionLink} 
@@ -556,6 +819,39 @@ export default function EssentialDetailPage({ params }: { params: Promise<{ id: 
                   </div>
                 </div>
 
+                {/* 5. Special Vada Card */}
+                <div 
+                  className={`${styles.utilityDecisionCard} ${selectedDecisionId === 'vada' ? styles.utilityDecisionCardActive : ''}`}
+                  onClick={() => setSelectedDecisionId('vada')}
+                >
+                  <div className={styles.utilityDecisionTop}>
+                    <div className={styles.utilityDecisionIconBox} style={{ background: '#FEF3C7', color: '#B45309' }}>
+                      <Sparkles size={16} />
+                    </div>
+                    <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                      <h4 className={styles.utilityDecisionName}>Special Annaprasadam Vada</h4>
+                      <span style={{ background: '#FEF9C3', color: '#854D0E', border: '1px solid #FDE047', borderRadius: '999px', padding: '1px 8px', fontSize: '11px', fontWeight: 700 }}>
+                        TTD Announcement
+                      </span>
+                    </div>
+                  </div>
+                  <p className={styles.utilityDecisionWhere}>
+                    Matrusri Tarigonda Vengamamba Complex, Tirumala
+                  </p>
+                  <p className={styles.utilityDecisionMeta}>
+                    Available approximately from 11:00 AM to 10:00 PM, according to official TTD announcement.
+                  </p>
+                  <div className={styles.utilityDecisionActionRow}>
+                    <button 
+                      className={styles.utilityDecisionLink} 
+                      onClick={(e) => { e.stopPropagation(); setSelectedDecisionId('vada'); handleOpenMap('Tarigonda Vengamamba Annaprasadam'); }}
+                    >
+                      <span>Directions →</span>
+                    </button>
+                  </div>
+                </div>
+
+                {/* 6. In-Queue Food & Milk */}
                 <div 
                   className={`${styles.utilityDecisionCard} ${selectedDecisionId === 'queue' ? styles.utilityDecisionCardActive : ''}`}
                   onClick={() => setSelectedDecisionId('queue')}
@@ -564,13 +860,13 @@ export default function EssentialDetailPage({ params }: { params: Promise<{ id: 
                     <div className={styles.utilityDecisionIconBox}>
                       <Droplets size={16} />
                     </div>
-                    <h4 className={styles.utilityDecisionName}>In-Queue Food & Milk</h4>
+                    <h4 className={styles.utilityDecisionName}>In-Queue Food & Infant Milk</h4>
                   </div>
                   <p className={styles.utilityDecisionWhere}>
                     Inside VQC Waiting Compartments
                   </p>
                   <p className={styles.utilityDecisionMeta}>
-                    Continuous 24/7 · Direct to seats
+                    Continuous 24/7 · Delivered direct to devotee seats inside queue lines
                   </p>
                   <div className={styles.utilityDecisionActionRow}>
                     <span style={{ fontSize: '12.5px', color: '#0F5132', fontWeight: 600 }}>Inside Queue Line</span>
