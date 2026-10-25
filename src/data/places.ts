@@ -2744,7 +2744,22 @@ export const PLACES: Place[] = [
     coordinates: { lat: 13.6619346, lng: 79.3372637 }, 
     tags: ['Trek', 'Steps', 'Sacred'], 
     bestTime: 'Early morning (crisp morning air, shade, and birdsong)', 
-    practicalInfo: { dressCode: 'Traditional Indian attire highly recommended', food: 'Limited options (mostly small base stalls)', parking: 'Available at base' }, 
+    travelByRTC: 'Free direct TTD bus service from Tirupati Railway Station to Srivari Mettu base. Departs every 45 mins: Morning (5:00 AM - 11:45 AM) & Afternoon (12:30 PM - 5:00 PM).',
+    practicalInfo: { 
+      dressCode: 'Traditional Indian attire highly recommended', 
+      food: 'Free Annaprasadam available at Tirumala summit; small stalls at base', 
+      parking: 'Available at base',
+      restrictions: [
+        'Gate timings: 6:00 AM – 5:30 PM',
+        'Children <12 yrs entry strictly closes at 2:00 PM',
+        'Free Bus from Tirupati Railway Station: 5:00 AM to 5:00 PM (every 45 mins)'
+      ]
+    }, 
+    visitorTips: {
+      dressCode: 'Traditional Indian attire recommended. Climb barefoot as per tradition.',
+      crowdNote: 'Divya Darshan tokens are distributed at Step 1,200. Free luggage transit van at the base transports bags directly to Tirumala.',
+      entryRule: 'Free TTD buses depart from Tirupati Railway Station to Srivari Mettu base every 45 mins: Morning (5:00, 5:45, 6:30, 7:15, 8:00, 8:45, 9:30, 10:15, 11:00, 11:45 AM) and Afternoon (12:30, 1:15, 2:00, 2:45, 3:30, 4:15, 5:00 PM).'
+    },
     travelEstimates: { 'tirupati': '20 mins' },
     relatedPlaces: ['srinivasa-mangapuram', 'kalyani-dam', 'chandragiri-fort']
   },
@@ -4029,12 +4044,13 @@ export const PLACES: Place[] = [
     openFrom: 11,
     openTo: 23,
     isMustVisit: true,
-    description: 'World\'s largest free holy dining hall serving continuous, hot, hygienic vegetarian meals to all pilgrims.',
-    whyVisit: 'Serves unlimited hot rice, dal, sambar, chutney, buttermilk, and rotis to tens of thousands of devotees daily completely free of cost.',
+    description: 'World\'s largest free holy dining hall serving continuous, hot, hygienic vegetarian meals and tiffin to all pilgrims without any token or ticket.',
+    whyVisit: 'Serves unlimited hot tiffin (Upma, Pongal, Semiya Upma, Chutney), wholesome lunch & dinner (Steamed Rice, Curry, Sambar, Rasam, Chutney, Buttermilk, Sweet Pongal), and special TTD Vada (approx. 11:00 AM - 10:00 PM).',
     history: 'Named in honor of saint poetess Matrusri Tarigonda Vengamamba, who pioneered the tradition of serving free meals (Annadanam) to Tirumala pilgrims in the 18th century.',
-    timings: '11:00 AM - 11:00 PM',
-    entryFee: 'Free (No ticket or token required)',
-    address: 'North-East of Srivari Temple, near Pushkarini, Tirumala',
+    timings: 'Tiffin: 9:00 AM – 10:30 AM | Lunch: 10:30 AM – 4:00 PM | Dinner: 5:00 PM – 10:30 PM (Break: 4:00 PM – 5:00 PM)',
+    breakTimings: [{ from: '16:00', to: '17:00' }],
+    entryFee: 'Free (100% Free for all devotees - No ticket or payment required)',
+    address: 'Matrusri Tarigonda Vengamamba Annaprasadam Complex, North-East of Srivari Temple, near Pushkarini, Tirumala',
     rating: 4.9,
     reviewCount: 95000,
     image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcw1i7JBnPL9NMl-LJO9DKPCntCSlsJd_r_5CFzzDkig&s=10',
@@ -4048,11 +4064,16 @@ export const PLACES: Place[] = [
     approxBikeCost: "Included in Tirumala toll",
     images: ["https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcw1i7JBnPL9NMl-LJO9DKPCntCSlsJd_r_5CFzzDkig&s=10"],
     tags: ['Annaprasadam', 'Free Meals', 'Food', 'Tirumala', 'Hygienic'],
-    bestTime: '11:00 AM to 3:00 PM (Lunch) & 6:00 PM to 10:00 PM (Dinner)',
-    practicalInfo: { dressCode: 'Clean modest wear', food: '100% Free Pure Veg', parking: 'Tirumala' },
+    bestTime: 'Tiffin (9:00 AM - 10:30 AM), Lunch (10:30 AM - 4:00 PM), Dinner (5:00 PM - 10:30 PM)',
+    practicalInfo: { 
+      dressCode: 'Clean modest wear', 
+      food: 'Tiffin: 9:00-10:30 AM | Lunch: 10:30 AM-4:00 PM | Dinner: 5:00-10:30 PM | Special Vada: ~11:00 AM-10:00 PM', 
+      parking: 'Tirumala Central Parking / CRO' 
+    },
     visitorTips: {
       dressCode: "Clean, modest attire. Footwear must be deposited outside at the designated free footwear counter before entering.",
-      crowdNote: "4 large halls seat 4,000 pilgrims simultaneously. Queue moves very fast. Meals are served continuously from 9:00 AM to 11:00 PM."
+      crowdNote: "4 large dining halls seat 4,000 pilgrims simultaneously. Queue moves very fast. Break time is 4:00 PM – 5:00 PM.",
+      entryRule: "100% Free Annaprasadam for devotees. No ticket, coupon, or payment required. Special TTD Vada is available approximately from 11:00 AM to 10:00 PM."
     },
     travelEstimates: { 'venkateswara': '5 mins walk' },
 

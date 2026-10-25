@@ -6,7 +6,7 @@ import {
   ArrowLeft, Footprints, Clock, AlertTriangle, ShieldCheck, 
   MapPin, Navigation, Baby, ExternalLink, Share2, Check,
   Sparkles, CheckCircle2, ChevronRight, Droplet, UtensilsCrossed, 
-  Hospital, Mountain
+  Hospital, Mountain, Bus, Sunrise, Sun, Coffee
 } from 'lucide-react';
 import { useLanguage } from '@/lib/useLanguage';
 
@@ -336,6 +336,96 @@ export default function FootpathsPage() {
               </span>
             </div>
 
+            {/* Free Bus Service: Tirupati Railway Station → Srivari Mettu */}
+            <div style={{
+              backgroundColor: '#F8FAFC',
+              border: '1.5px solid #E2E8F0',
+              borderRadius: '14px',
+              padding: '12px 14px',
+              marginBottom: '14px'
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '7px' }}>
+                  <Bus size={16} color="#0284C7" />
+                  <span style={{ fontSize: '13px', fontWeight: 800, color: '#0F172A' }}>
+                    {lang === 'te' ? 'ఉచిత బస్సు సర్వీస్' : 'Free Bus Service'}
+                  </span>
+                </div>
+                <span style={{
+                  fontSize: '10px',
+                  fontWeight: 700,
+                  color: '#0284C7',
+                  backgroundColor: '#E0F2FE',
+                  border: '1px solid #BAE6FD',
+                  padding: '2px 8px',
+                  borderRadius: '10px'
+                }}>
+                  {lang === 'te' ? 'ఉచిత ప్రయాణం' : '100% Free TTD Bus'}
+                </span>
+              </div>
+
+              <div style={{ display: 'flex', alignItems: 'center', gap: '5px', fontSize: '11.5px', color: '#475569', fontWeight: 600, marginBottom: '10px' }}>
+                <MapPin size={13} color="#0284C7" style={{ flexShrink: 0 }} />
+                <span>
+                  {lang === 'te'
+                    ? 'రూటు: తిరుపతి రైల్వే స్టేషన్ → శ్రీవారి మెట్టు'
+                    : 'Route: Tirupati Railway Station → Srivari Mettu'}
+                </span>
+              </div>
+
+              {/* Morning Schedule */}
+              <div style={{ marginBottom: '10px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '5px', fontSize: '11px', fontWeight: 700, color: '#B45309', marginBottom: '6px' }}>
+                  <Sunrise size={13} color="#D97706" />
+                  <span>{lang === 'te' ? 'ఉదయం బయలుదేరే వేళలు' : 'Morning Departures'}</span>
+                </div>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '5px' }}>
+                  {['5:00 AM', '5:45 AM', '6:30 AM', '7:15 AM', '8:00 AM', '8:45 AM', '9:30 AM', '10:15 AM', '11:00 AM', '11:45 AM'].map((time, idx) => (
+                    <span key={`m-${idx}`} style={{
+                      fontSize: '11px',
+                      fontWeight: 600,
+                      color: '#1E293B',
+                      backgroundColor: '#FFFFFF',
+                      border: '1px solid #CBD5E1',
+                      padding: '3px 7px',
+                      borderRadius: '6px'
+                    }}>
+                      {time}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              {/* Afternoon Schedule */}
+              <div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '5px', fontSize: '11px', fontWeight: 700, color: '#C2410C', marginBottom: '6px' }}>
+                  <Sun size={13} color="#EA580C" />
+                  <span>{lang === 'te' ? 'మధ్యాహ్నం బయలుదేరే వేళలు' : 'Afternoon Departures'}</span>
+                </div>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '5px' }}>
+                  {['12:30 PM', '1:15 PM', '2:00 PM', '2:45 PM', '3:30 PM', '4:15 PM', '5:00 PM'].map((time, idx) => (
+                    <span key={`a-${idx}`} style={{
+                      fontSize: '11px',
+                      fontWeight: 600,
+                      color: '#1E293B',
+                      backgroundColor: '#FFFFFF',
+                      border: '1px solid #CBD5E1',
+                      padding: '3px 7px',
+                      borderRadius: '6px'
+                    }}>
+                      {time}
+                    </span>
+                  ))}
+                </div>
+              </div>
+
+              <div style={{ fontSize: '10.5px', color: '#64748B', fontWeight: 500, marginTop: '8px' }}>
+                {lang === 'te'
+                  ? 'ప్రతి 45 నిమిషాలకు రైల్వే స్టేషన్ నుండి బస్సులు బయలుదేరుతాయి. శ్రీవారి మెట్టు బేస్ వద్ద నేరుగా దింపుతాయి.'
+                  : 'Buses depart every 45 minutes from Tirupati Railway Station directly to Srivari Mettu base arch.'}
+              </div>
+            </div>
+
             {/* GPS Navigation Action */}
             <a
               href="https://www.google.com/maps/dir/?api=1&destination=13.6267,79.3142"
@@ -468,6 +558,148 @@ export default function FootpathsPage() {
             </a>
           </section>
         )}
+
+        {/* ── CARD 3: TIRUMALA ANNAPRASADAM COMPLEX ── */}
+        <section style={{
+          backgroundColor: '#FFFFFF',
+          borderRadius: '18px',
+          border: '1.5px solid #FDE68A',
+          padding: '16px',
+          boxShadow: '0 4px 14px rgba(217, 119, 6, 0.06)'
+        }}>
+          {/* Header */}
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <div style={{
+                width: '32px',
+                height: '32px',
+                borderRadius: '8px',
+                backgroundColor: '#FEF3C7',
+                display: 'grid',
+                placeItems: 'center',
+                flexShrink: 0
+              }}>
+                <UtensilsCrossed size={16} color="#D97706" />
+              </div>
+              <div>
+                <h3 style={{ fontSize: '15px', fontWeight: 800, color: '#78350F', margin: 0 }}>
+                  {lang === 'te' ? 'మాతృశ్రీ తరిగొండ వెంగమాంబ అన్నప్రసాదం' : 'Matrusri Tarigonda Vengamamba Annaprasadam'}
+                </h3>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '11px', color: '#64748B', marginTop: '2px' }}>
+                  <MapPin size={11} color="#64748B" />
+                  <span>{lang === 'te' ? 'తిరుమల కొండపై' : 'Annaprasadam Complex, Tirumala'}</span>
+                </div>
+              </div>
+            </div>
+            <span style={{ fontSize: '10.5px', fontWeight: 700, color: '#166534', backgroundColor: '#DCFCE7', padding: '3px 8px', borderRadius: '12px', flexShrink: 0 }}>
+              {lang === 'te' ? 'ఉచితం' : '100% Free'}
+            </span>
+          </div>
+
+          {/* Guidelines Pills */}
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', margin: '10px 0 12px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '11px', fontWeight: 600, color: '#166534', backgroundColor: '#F0FDF4', border: '1px solid #BBF7D0', padding: '3px 8px', borderRadius: '6px' }}>
+              <CheckCircle2 size={12} color="#16A34A" />
+              <span>{lang === 'te' ? 'భక్తులకు ఉచిత అన్నప్రసాదం' : 'Free Annaprasadam for devotees'}</span>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '11px', fontWeight: 600, color: '#166534', backgroundColor: '#F0FDF4', border: '1px solid #BBF7D0', padding: '3px 8px', borderRadius: '6px' }}>
+              <CheckCircle2 size={12} color="#16A34A" />
+              <span>{lang === 'te' ? 'టిక్కెట్ లేదా చెల్లింపు అవసరం లేదు' : 'No ticket or payment required'}</span>
+            </div>
+          </div>
+
+          {/* Timings Grid */}
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: '1fr 1fr',
+            gap: '8px',
+            backgroundColor: '#FFFBEB',
+            border: '1px solid #FDE68A',
+            borderRadius: '12px',
+            padding: '10px 12px',
+            marginBottom: '12px'
+          }}>
+            <div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '10.5px', fontWeight: 700, color: '#B45309' }}>
+                <Coffee size={12} color="#D97706" />
+                <span>{lang === 'te' ? 'టిఫిన్ సమయం' : 'Tiffin'}</span>
+              </div>
+              <div style={{ fontSize: '12px', fontWeight: 800, color: '#92400E', marginTop: '2px' }}>
+                9:00 AM – 10:30 AM
+              </div>
+            </div>
+
+            <div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '10.5px', fontWeight: 700, color: '#B45309' }}>
+                <Sun size={12} color="#EA580C" />
+                <span>{lang === 'te' ? 'మధ్యాహ్న భోజనం' : 'Lunch'}</span>
+              </div>
+              <div style={{ fontSize: '12px', fontWeight: 800, color: '#92400E', marginTop: '2px' }}>
+                10:30 AM – 4:00 PM
+              </div>
+            </div>
+
+            <div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '10.5px', fontWeight: 700, color: '#64748B' }}>
+                <Clock size={12} color="#64748B" />
+                <span>{lang === 'te' ? 'విరామం (క్లోజ్)' : 'Break'}</span>
+              </div>
+              <div style={{ fontSize: '12px', fontWeight: 700, color: '#475569', marginTop: '2px' }}>
+                4:00 PM – 5:00 PM
+              </div>
+            </div>
+
+            <div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '10.5px', fontWeight: 700, color: '#B45309' }}>
+                <UtensilsCrossed size={12} color="#D97706" />
+                <span>{lang === 'te' ? 'రాత్రి భోజనం' : 'Dinner'}</span>
+              </div>
+              <div style={{ fontSize: '12px', fontWeight: 800, color: '#92400E', marginTop: '2px' }}>
+                5:00 PM – 10:30 PM
+              </div>
+            </div>
+          </div>
+
+          {/* Food Details */}
+          <div style={{
+            backgroundColor: '#F8FAFC',
+            border: '1px solid #E2E8F0',
+            borderRadius: '12px',
+            padding: '10px 12px',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '8px'
+          }}>
+            <div>
+              <div style={{ fontSize: '11px', fontWeight: 700, color: '#0F172A', marginBottom: '2px' }}>
+                {lang === 'te' ? 'టిఫిన్ మెనూ' : 'Tiffin Menu'}
+              </div>
+              <div style={{ fontSize: '11.5px', color: '#475569', lineHeight: 1.4 }}>
+                Upma, Pongal, Semiya Upma, Chutney
+              </div>
+            </div>
+
+            <div style={{ borderTop: '1px solid #E2E8F0', paddingTop: '6px' }}>
+              <div style={{ fontSize: '11px', fontWeight: 700, color: '#0F172A', marginBottom: '2px' }}>
+                {lang === 'te' ? 'భోజనం మెనూ (మధ్యాహ్నం & రాత్రి)' : 'Lunch & Dinner Menu'}
+              </div>
+              <div style={{ fontSize: '11.5px', color: '#475569', lineHeight: 1.4 }}>
+                Rice, Curry, Sambar, Rasam, Chutney, Buttermilk, Sweet Pongal
+              </div>
+            </div>
+
+            <div style={{ borderTop: '1px solid #E2E8F0', paddingTop: '6px' }}>
+              <div style={{ fontSize: '11px', fontWeight: 700, color: '#B45309', marginBottom: '2px' }}>
+                {lang === 'te' ? 'వడ ప్రసాదం' : 'Special Vada'}
+              </div>
+              <div style={{ fontSize: '11.5px', color: '#475569', lineHeight: 1.4 }}>
+                {lang === 'te'
+                  ? 'TTD ప్రకటన ప్రకారం సుమారు ఉదయం 11:00 నుండి రాత్రి 10:00 వరకు అందుబాటులో ఉంటుంది.'
+                  : 'Available approximately from 11:00 AM to 10:00 PM, according to TTD announcement.'}
+              </div>
+            </div>
+          </div>
+        </section>
 
       </main>
     </div>

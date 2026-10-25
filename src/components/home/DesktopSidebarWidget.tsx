@@ -46,8 +46,10 @@ export function DesktopSidebarWidget() {
             <div style={{ fontSize: '12.5px', fontWeight: 600, color: '#78350F', lineHeight: 1.2 }}>
               {isTe ? 'ఉచిత అన్నప్రసాదం' : 'Free Unlimited Meals'}
             </div>
-            <div style={{ fontSize: '10.5px', color: '#B45309', marginTop: '4px', fontWeight: 600 }}>
-              {isTe ? 'ఉదయం 9:00 - రాత్రి 11:00' : '9:00 AM – 11:00 PM'}
+            <div style={{ fontSize: '10px', color: '#B45309', marginTop: '4px', fontWeight: 600, lineHeight: 1.3 }}>
+              {isTe 
+                ? 'టిఫిన్ 9-10:30 | భోజనం 10:30-4 | రాత్రి 5-10:30' 
+                : 'Tiffin 9–10:30 AM | Lunch 10:30 AM–4 PM | Dinner 5–10:30 PM'}
             </div>
           </div>
 
