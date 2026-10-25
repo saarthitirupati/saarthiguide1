@@ -1435,7 +1435,7 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
     setOverrideScenario(list[nextIdx]);
   };
   return (
-    <div style={{ fontFamily: 'var(--font-body)', background: '#FAF8F4', width: '100%', maxWidth: '100%', overflowX: 'hidden', boxSizing: 'border-box' }}>
+    <div style={{ fontFamily: 'var(--font-body)', background: '#FAF8F4', width: '100%', maxWidth: '100%', boxSizing: 'border-box' }}>
 
       {/* ══════════ MODERN CLASSIC HEADER ══════════ */}
       {!hideHeader && (
@@ -1447,9 +1447,12 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
           boxShadow: '0 1px 0 rgba(212,175,55,0.15), 0 2px 12px rgba(0,0,0,0.04)',
           width: '100%',
           maxWidth: '100vw',
-          overflowX: 'hidden',
           boxSizing: 'border-box',
-          paddingTop: 'env(safe-area-inset-top, 0px)'
+          paddingTop: 'env(safe-area-inset-top, 0px)',
+          transform: 'translate3d(0, 0, 0)',
+          WebkitTransform: 'translate3d(0, 0, 0)',
+          backfaceVisibility: 'hidden',
+          WebkitBackfaceVisibility: 'hidden',
         }}>
           <div style={{
             maxWidth: '100%',

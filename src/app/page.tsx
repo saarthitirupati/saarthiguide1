@@ -106,7 +106,7 @@ export default function HomePage() {
       status: t.lockersStatus,
       statusColor: '#16A34A',
       icon: Lock,
-      image: 'https://res.cloudinary.com/kniegqlj/image/upload/f_auto,q_auto,w_400,c_fill/v1786968161/IMG_6992_cq6gls.jpg',
+      image: '/images/places/img_6_IMG_6992_cq6gls.jpg',
       link: '/essentials/secure-belongings'
     },
     {
@@ -116,7 +116,7 @@ export default function HomePage() {
       status: t.mealsStatus,
       statusColor: '#16A34A',
       icon: Utensils,
-      image: 'https://res.cloudinary.com/kniegqlj/image/upload/f_auto,q_auto,w_400,c_fill/v1786968272/Annaprasadam-4-copy_lyo86v.jpg',
+      image: '/images/places/img_7_Annaprasadam-4-copy_lyo86v.jpg',
       link: '/essentials/free-meals'
     },
     {
@@ -126,7 +126,7 @@ export default function HomePage() {
       status: t.tonsureStatus,
       statusColor: '#16A34A',
       icon: Scissors,
-      image: 'https://res.cloudinary.com/kniegqlj/image/upload/f_auto,q_auto,w_400,c_fill/v1786968353/painted-sign-board-of-kalyanakatta-balaji-temple-tirupati-andhra-pradesh-F5M0J1_p7hkr5.jpg',
+      image: '/images/places/img_8_painted-sign-board-of-kalyanakatta-balaji-temple-t.jpg',
       link: '/essentials/hair-offering'
     },
     {
@@ -136,7 +136,7 @@ export default function HomePage() {
       status: t.stayStatus,
       statusColor: '#D97706',
       icon: Bed,
-      image: 'https://res.cloudinary.com/kniegqlj/image/upload/f_auto,q_auto,w_400,c_fill/v1786968555/maxresdefault_fwmwke.jpg',
+      image: '/images/places/img_9_maxresdefault_fwmwke.jpg',
       link: '/essentials/accommodation'
     }
   ];

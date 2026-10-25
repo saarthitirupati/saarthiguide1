@@ -337,7 +337,7 @@ export const PLACES: Place[] = [
     address: "Near Chakra Theertham & Srivari Udyanavanam, Tirumala, Andhra Pradesh 517504",
     rating: 4.6,
     reviewCount: 9200,
-    image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1788278284/Natural_stone_arch_in_tirumala.JPG_dmf29w.jpg',
+    image: '/images/places/img_17_Natural_stone_arch_in_tirumala.JPG_dmf29w.jpg',
     coordinates: { lat: 13.68676, lng: 79.34066 },
     shortIntro: "Silathoranam is an ancient natural stone arch in Tirumala formed over 1.5 to 2.5 billion years ago during the Proterozoic era, officially declared a National Geo-Heritage Monument by India's Geological Survey.",
     whyVisit: "Marvel at a 1.5+ billion-year-old natural geological wonder set amidst serene rock gardens. Free and open during daylight hours, it is a key stop along the Tirumala nature circuit.",
@@ -350,7 +350,7 @@ export const PLACES: Place[] = [
     approxRTCFare: "Free (TTD Dharma Ratham)",
     approxCarCost: "Included in Tirumala toll",
     approxBikeCost: "Included in Tirumala toll",
-    images: ["https://res.cloudinary.com/kniegqlj/image/upload/v1788278284/Natural_stone_arch_in_tirumala.JPG_dmf29w.jpg"],
+    images: ["/images/places/img_17_Natural_stone_arch_in_tirumala.JPG_dmf29w.jpg"],
     tags: ['Silathoranam', 'Geo-Heritage Monument', 'Proterozoic Arch', 'Nature', 'Chakra Theertham'],
     bestTime: 'Morning (6:00 AM - 10:00 AM) or Late Afternoon (4:00 PM - 5:30 PM)',
     practicalInfo: { dressCode: 'Modest casual wear', food: 'Snack & tea stalls outside', parking: 'Available near entrance' },
@@ -382,8 +382,8 @@ export const PLACES: Place[] = [
     address: 'Opposite CRO Office, near Main Temple, Tirumala, Andhra Pradesh 517504',
     rating: 4.8,
     reviewCount: 4200,
-    image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1785912589/tirupati-Sri-Vari-Museum_k6h8yz.jpg',
-    images: ['https://res.cloudinary.com/kniegqlj/image/upload/v1785912589/tirupati-Sri-Vari-Museum_k6h8yz.jpg'],
+    image: '/images/places/img_18_tirupati-Sri-Vari-Museum_k6h8yz.jpg',
+    images: ['/images/places/img_18_tirupati-Sri-Vari-Museum_k6h8yz.jpg'],
     coordinates: { lat: 13.6840375, lng: 79.3432969 },
     shortIntro: "Located opposite CRO Tirumala, the grand newly modernized Srivari Museum officially reopened on September 16, 2026 as a world-class ₹125+ Cr digital heritage center.",
     whyVisit: "Discover centuries of temple heritage, interactive 3D digital galleries, ancient stone & bronze idols, traditional musical instruments, royal inscriptions from Chola & Vijayanagara dynasties, and historical armor.",
@@ -621,10 +621,10 @@ export const PLACES: Place[] = [
     address: 'Gandhi Road, Near Tirupati Railway Station, Tirupati, Andhra Pradesh 517501',
     rating: 4.8,
     reviewCount: 34000,
-    image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1786966916/960px-Tirupathi__286337140675_29.jpg_hez2ha.jpg',
+    image: '/images/places/img_12_960px-Tirupathi__286337140675_29.jpg_hez2ha.jpg',
     coordinates: { lat: 13.629941, lng: 79.4162996 },
     images: [
-      'https://res.cloudinary.com/kniegqlj/image/upload/v1786966916/960px-Tirupathi__286337140675_29.jpg_hez2ha.jpg',
+      '/images/places/img_12_960px-Tirupathi__286337140675_29.jpg_hez2ha.jpg',
       'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSU5eKvXj8945CaVtKytVG7j6dVXga2iXDgmERI_1YTMw&s=10'
     ],
     tags: ['Gopuram', 'Reclining Vishnu', 'Ramanuja', 'Celestial Treasurer', 'Heritage', 'Ancient Temple'],
@@ -748,7 +748,7 @@ export const PLACES: Place[] = [
     address: 'Tataiahgunta, Tirupati, Andhra Pradesh 517501',
     rating: 4.8,
     reviewCount: 28400,
-    image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1786898380/tirupati-gangamma-jathara-copy_vnxhrd.jpg',
+    image: '/images/places/img_19_tirupati-gangamma-jathara-copy_vnxhrd.jpg',
     coordinates: { lat: 13.6268, lng: 79.4182 },
     shortIntro: 'Sri Tataiahgunta Gangamma is the Grama Devatha of Tirupati and younger sister of Lord Venkateswara, celebrated with the vibrant 900-year-old Tirupati Ganga Jatara.',
     whyVisit: 'The guardian deity of Tirupati. Devotees visit to seek protection, health, and fulfillment of vows. During the annual Ganga Jatara in May, the town witnesses unique disguises and sacred traditions.',
@@ -761,7 +761,7 @@ export const PLACES: Place[] = [
     approxRTCFare: '₹10-₹20 local auto/bus fare',
     approxCarCost: '₹30-₹50 fuel estimate or ₹100 auto-rickshaw fare',
     approxBikeCost: '₹20 petrol estimate',
-    images: ['https://res.cloudinary.com/kniegqlj/image/upload/v1786898380/tirupati-gangamma-jathara-copy_vnxhrd.jpg'],
+    images: ['/images/places/img_19_tirupati-gangamma-jathara-copy_vnxhrd.jpg'],
     visitorTips: {
       dressCode: 'Decent traditional wear recommended.',
       crowdNote: 'Moderate on regular days. Extremely crowded during the annual Ganga Jatara in May and on Tuesdays and Fridays.',
@@ -1126,9 +1126,9 @@ export const PLACES: Place[] = [
     address: 'Hare Krishna Road, Tirupati',
     rating: 4.8,
     reviewCount: 35000,
-    image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1786967622/iskcon-temple-tirupati_wl7dd2.jpg',
+    image: '/images/places/img_11_iskcon-temple-tirupati_wl7dd2.jpg',
     gallery: [
-      'https://res.cloudinary.com/kniegqlj/image/upload/v1786967622/iskcon-temple-tirupati_wl7dd2.jpg',
+      '/images/places/img_11_iskcon-temple-tirupati_wl7dd2.jpg',
       '/assets/temples/iskcon.png'
     ],
     coordinates: { lat: 13.6469, lng: 79.4138 },
@@ -1425,7 +1425,7 @@ export const PLACES: Place[] = [
     address: 'SV Zoo Road, Tirupati outskirts',
     rating: 4.2,
     reviewCount: 16500,
-    image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1786980173/enterence-1_znty1n.png',
+    image: '/images/places/img_20_enterence-1_znty1n.png',
     coordinates: { lat: 13.6248524, lng: 79.3646486 },
     tags: ['Zoo', 'Safari', 'Conservation'],
     bestTime: 'Morning (10:00 AM - 12:00 PM) or Late Afternoon (3:00 PM - 4:30 PM)',
@@ -1506,7 +1506,7 @@ export const PLACES: Place[] = [
     address: 'Kannappa Hillock, Srikalahasti, Tirupati District, Andhra Pradesh - 517644',
     rating: 4.8,
     reviewCount: 18500,
-    image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1790765942/kannappa-temple_ngmekp.jpg',
+    image: '/images/places/img_21_kannappa-temple_ngmekp.jpg',
     coordinates: { lat: 13.7494797, lng: 79.6992368 },
     shortIntro: 'Bhakta Kannappa Temple is a legendary hilltop shrine in Srikalahasti celebrating the supreme sacrifice of Kannappa Nayanar, the hunter saint who offered his eyes to Lord Shiva.',
     whyVisit: 'Offers a profound spiritual message of pure, selfless devotion, alongside a panoramic view of the ancient Sri Kalahasteeswara Swamy Temple, the Swarnamukhi River, and surrounding sacred hills.',
@@ -1520,8 +1520,8 @@ export const PLACES: Place[] = [
     approxCarCost: '₹400 fuel round trip',
     approxBikeCost: '₹150 petrol round trip',
     images: [
-      'https://res.cloudinary.com/kniegqlj/image/upload/v1790765942/kannappa-temple_ngmekp.jpg',
-      'https://res.cloudinary.com/kniegqlj/image/upload/v1790765940/eyJidWNrZXQiOiJ1dGEtaW1hZ2VzIiwia2V5IjoicGxhY2VfaW1nLzAzZDY0MDJiYmY3YjQ1MTlhZGNlYzFkYmQ1ZjBlNTZiIiwiZWRpdHMiOnsicmVzaXplIjp7IndpZHRoIjo2NDAsImhlaWdodCI6NjQwLCJmaXQiOiJpbnNpZGUifSwicm90YXRlIjpudWxsLCJ0b0Zvcm1hdCI6ICJ3ZWJwIn19_wk2zxp.webp'
+      '/images/places/img_21_kannappa-temple_ngmekp.jpg',
+      '/images/places/img_22_eyJidWNrZXQiOiJ1dGEtaW1hZ2VzIiwia2V5IjoicGxhY2VfaW.webp'
     ],
     visitorTips: {
       dressCode: 'Modest / Traditional Indian attire recommended for temple entry.',
@@ -1590,7 +1590,7 @@ export const PLACES: Place[] = [
     address: 'Bharadwaja Tirtham, Bahadur Pet, Srikalahasti, Tirupati District, Andhra Pradesh - 517644',
     rating: 4.6,
     reviewCount: 3400,
-    image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1790766322/srikalahasti_P2533_i9a7zu.webp',
+    image: '/images/places/img_23_srikalahasti_P2533_i9a7zu.webp',
     coordinates: { lat: 13.7485, lng: 79.7022 },
     shortIntro: 'Bharadwaja Tirtham (Lo Bhavi) is an ancient sacred pushkarini in Srikalahasti nestled between 3 hills, famous for the Thapo Vinayaka idol in the water center and Panchamukheswara hill shrine.',
     whyVisit: 'Sanctified in Krutha Yuga by Sage Bharadwaja, featuring the striking Thapo Vinayaka in the pushkarini center, Panchamukheswara hill shrine, and peaceful green surroundings.',
@@ -1604,7 +1604,7 @@ export const PLACES: Place[] = [
     approxCarCost: '₹400 fuel round trip',
     approxBikeCost: '₹150 petrol round trip',
     images: [
-      'https://res.cloudinary.com/kniegqlj/image/upload/v1790766322/srikalahasti_P2533_i9a7zu.webp'
+      '/images/places/img_23_srikalahasti_P2533_i9a7zu.webp'
     ],
     visitorTips: {
       dressCode: 'Modest / Traditional attire expected as it is an extension of Srikalahasti Temple board.',
@@ -1673,7 +1673,7 @@ export const PLACES: Place[] = [
     address: 'Veyilingala Kona, off Srikalahasti - Masalapadu Road, Tirupati District, Andhra Pradesh - 517644',
     rating: 4.7,
     reviewCount: 2900,
-    image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1790766462/107081306_eiusff.jpg',
+    image: '/images/places/img_24_107081306_eiusff.jpg',
     coordinates: { lat: 13.6925, lng: 79.7112 },
     shortIntro: 'Sahasra Lingeshwara Swamy (Veyilingala Kona) is an ancient forest temple near Srikalahasti featuring a monolithic 1,000-micro-lingam statue and medicinal waterfalls.',
     whyVisit: 'A rustic forest trek through bamboo valleys to worship a single Shiva Lingam with 1,000 micro-carvings, linked to Bhakta Kannappa and healing medicinal waterfalls.',
@@ -1687,7 +1687,7 @@ export const PLACES: Place[] = [
     approxCarCost: '₹450 fuel round trip',
     approxBikeCost: '₹150 petrol round trip',
     images: [
-      'https://res.cloudinary.com/kniegqlj/image/upload/v1790766462/107081306_eiusff.jpg'
+      '/images/places/img_24_107081306_eiusff.jpg'
     ],
     visitorTips: {
       dressCode: 'Modest clothing suited for walking/trekking. Carry comfortable footwear.',
@@ -1756,7 +1756,7 @@ export const PLACES: Place[] = [
     address: 'Durgamma Konda, Kondamitta / Bahadur Pet, Srikalahasti, Tirupati District, Andhra Pradesh - 517644',
     rating: 4.9,
     reviewCount: 2300,
-    image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1790766738/IMG-20180106-WA0026_amybm5.jpg',
+    image: '/images/places/img_25_IMG-20180106-WA0026_amybm5.jpg',
     coordinates: { lat: 13.7481, lng: 79.7042 },
     shortIntro: 'Sri Durgamma Konda is a revered hill shrine in Srikalahasti famous for Goddess Durga\'s idol symbolically bound in sacred metal chains (Golusula Durgamma).',
     whyVisit: 'Witness the rare tradition of Goddess Durga bound with chains for town protection, combined with panoramic hilltop views of Srikalahasti and Swarnamukhi River.',
@@ -1770,7 +1770,7 @@ export const PLACES: Place[] = [
     approxCarCost: '₹400 fuel round trip',
     approxBikeCost: '₹150 petrol round trip',
     images: [
-      'https://res.cloudinary.com/kniegqlj/image/upload/v1790766738/IMG-20180106-WA0026_amybm5.jpg'
+      '/images/places/img_25_IMG-20180106-WA0026_amybm5.jpg'
     ],
     visitorTips: {
       dressCode: 'Modest / Traditional Indian attire expected for hill temple entry.',
@@ -1839,7 +1839,7 @@ export const PLACES: Place[] = [
     address: 'Subramanya Tippa, Bahadur Pet / Srikalahasti, Tirupati District, Andhra Pradesh - 517644',
     rating: 4.4,
     reviewCount: 1500,
-    image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1790767432/250px-View_of_Srikalahasti_temple.jpg_gndm2m.jpg',
+    image: '/images/places/img_26_250px-View_of_Srikalahasti_temple.jpg_gndm2m.jpg',
     coordinates: { lat: 13.7520619, lng: 79.7051812 },
     shortIntro: 'Sri Subrahmanya Swamy Temple (Subramanya Tippa) is a 150-step hill shrine in Srikalahasti dedicated to Lord Murugan with panoramic views.',
     whyVisit: 'Ascend 150 stone steps to worship Lord Murugan, experience grand Aadi Krithika celebrations, and enjoy scenic views of Srikalahasti.',
@@ -1853,7 +1853,7 @@ export const PLACES: Place[] = [
     approxCarCost: '₹400 fuel round trip',
     approxBikeCost: '₹150 petrol round trip',
     images: [
-      'https://res.cloudinary.com/kniegqlj/image/upload/v1790767432/250px-View_of_Srikalahasti_temple.jpg_gndm2m.jpg'
+      '/images/places/img_26_250px-View_of_Srikalahasti_temple.jpg_gndm2m.jpg'
     ],
     visitorTips: {
       dressCode: 'Modest / Traditional Indian attire recommended for hill shrine entry.',
@@ -1922,7 +1922,7 @@ export const PLACES: Place[] = [
     address: 'Sannidhi Street / Town Center, Srikalahasti, Tirupati District, Andhra Pradesh - 517644',
     rating: 4.8,
     reviewCount: 3100,
-    image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1790767586/chennai-sembakkam-jambulingeswarar-temple-1_p8hoi7.jpg',
+    image: '/images/places/img_27_chennai-sembakkam-jambulingeswarar-temple-1_p8hoi7.jpg',
     coordinates: { lat: 13.7491, lng: 79.6978 },
     shortIntro: 'Sri Draupadi Sametha Sri Dharmaraja Swamy Temple in Srikalahasti is a historic Pandava sub-temple famous for its July Agnigundam fire-walking festival.',
     whyVisit: 'Witness authentic Mahabharata folk heritage, the towering Arjununi Tapassu pole ritual, and the iconic July Agnigunda Mahotsavam fire-pit procession.',
@@ -1936,7 +1936,7 @@ export const PLACES: Place[] = [
     approxCarCost: '₹400 fuel round trip',
     approxBikeCost: '₹150 petrol round trip',
     images: [
-      'https://res.cloudinary.com/kniegqlj/image/upload/v1790767586/chennai-sembakkam-jambulingeswarar-temple-1_p8hoi7.jpg'
+      '/images/places/img_27_chennai-sembakkam-jambulingeswarar-temple-1_p8hoi7.jpg'
     ],
     visitorTips: {
       dressCode: 'Modest / Traditional Indian attire expected for temple entry.',
@@ -2005,7 +2005,7 @@ export const PLACES: Place[] = [
     address: 'Vedam Village, Srikalahasti Mandal, Tirupati District, Andhra Pradesh - 517641',
     rating: 4.8,
     reviewCount: 2200,
-    image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1790767714/sri-dakshina-kalika-devi-temple-chokkanahalli-bangalore-temples-0i4mtv0u2r_hfhiyg.jpg',
+    image: '/images/places/img_28_sri-dakshina-kalika-devi-temple-chokkanahalli-bang.jpg',
     coordinates: { lat: 13.7145, lng: 79.7125 },
     shortIntro: 'Sri Dakshina Kalika Devi Temple in Vedam Village (6 km from Srikalahasti) is an ancient Shakti shrine dedicated to Goddess Kali.',
     whyVisit: 'Ancient Kali shrine in Vedam village famous for Tuesday/Friday Abhishekam, fear removal prayers, and proximity to Sukhabrahma Ashramam.',
@@ -2019,7 +2019,7 @@ export const PLACES: Place[] = [
     approxCarCost: '₹420 fuel round trip',
     approxBikeCost: '₹150 petrol round trip',
     images: [
-      'https://res.cloudinary.com/kniegqlj/image/upload/v1790767714/sri-dakshina-kalika-devi-temple-chokkanahalli-bangalore-temples-0i4mtv0u2r_hfhiyg.jpg'
+      '/images/places/img_28_sri-dakshina-kalika-devi-temple-chokkanahalli-bang.jpg'
     ],
     visitorTips: {
       dressCode: 'Modest / Traditional Indian attire expected.',
@@ -2088,7 +2088,7 @@ export const PLACES: Place[] = [
     address: 'Gate 3, Sannidhi Street, Srikalahasti Temple Outer Precincts, Srikalahasti, Tirupati District, Andhra Pradesh - 517644',
     rating: 4.7,
     reviewCount: 2800,
-    image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1790768114/sddefault_vkfdlh.jpg',
+    image: '/images/places/img_29_sddefault_vkfdlh.jpg',
     coordinates: { lat: 13.7489, lng: 79.6971 },
     shortIntro: 'Sri Jalavinayaka Swamy Temple is a traditional street-level Ganesha shrine near Gate 3 on Sannidhi Street outside Srikalahasti Temple.',
     whyVisit: 'Traditional first-stop Ganesha shrine on Sannidhi Street to seek blessings for obstacle-free Rahu-Ketu pujas and main temple darshan.',
@@ -2102,7 +2102,7 @@ export const PLACES: Place[] = [
     approxCarCost: '₹400 fuel round trip',
     approxBikeCost: '₹150 petrol round trip',
     images: [
-      'https://res.cloudinary.com/kniegqlj/image/upload/v1790768114/sddefault_vkfdlh.jpg'
+      '/images/places/img_29_sddefault_vkfdlh.jpg'
     ],
     visitorTips: {
       dressCode: 'Traditional Indian attire expected for temple entry.',
@@ -2171,7 +2171,7 @@ export const PLACES: Place[] = [
     address: 'Vedam Village, Thottambedu Mandal, Srikalahasti, Tirupati District, Andhra Pradesh - 517641',
     rating: 4.7,
     reviewCount: 2600,
-    image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1790768455/08e8936d79f583937da42288d2643209_irnw0x.jpg',
+    image: '/images/places/img_30_08e8936d79f583937da42288d2643209_irnw0x.jpg',
     coordinates: { lat: 13.7142, lng: 79.7128 },
     shortIntro: 'Sri Kala Bhairava Swamy Temple (Vedam Bhairavakona) is an ancient Kshetrapalaka shrine dedicated to Lord Shiva in fierce guardian form.',
     whyVisit: 'Venerated Kshetrapalaka guardian shrine of Srikalahasti located in Vedam village, famous for Ashtami Tila Deepam and fear-relief prayers.',
@@ -2185,7 +2185,7 @@ export const PLACES: Place[] = [
     approxCarCost: '₹420 fuel round trip',
     approxBikeCost: '₹150 petrol round trip',
     images: [
-      'https://res.cloudinary.com/kniegqlj/image/upload/v1790768455/08e8936d79f583937da42288d2643209_irnw0x.jpg'
+      '/images/places/img_30_08e8936d79f583937da42288d2643209_irnw0x.jpg'
     ],
     visitorTips: {
       dressCode: 'Modest / Traditional Indian attire expected.',
@@ -2254,7 +2254,7 @@ export const PLACES: Place[] = [
     address: 'Battinayya Kona, Musilipedu Village, near Thondamanadu, Tirupati District, Andhra Pradesh - 517644',
     rating: 4.8,
     reviewCount: 1900,
-    image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1790768612/oar2_pwllcu.jpg',
+    image: '/images/places/img_31_oar2_pwllcu.jpg',
     coordinates: { lat: 13.6237941, lng: 79.6513604 },
     shortIntro: 'Battinayya Kona is a sacred forest cave shrine and waterfall near Musilipedu featuring a Swayambhu Shiva Lingam inside a rock cave.',
     whyVisit: 'Trek 2,000 stone hill steps to a natural cave shrine with a Swayambhu Shiva Lingam, Venkateswara Padam, and scenic mountain stream.',
@@ -2268,7 +2268,7 @@ export const PLACES: Place[] = [
     approxCarCost: '₹300 fuel round trip',
     approxBikeCost: '₹100 petrol round trip',
     images: [
-      'https://res.cloudinary.com/kniegqlj/image/upload/v1790768612/oar2_pwllcu.jpg'
+      '/images/places/img_31_oar2_pwllcu.jpg'
     ],
     visitorTips: {
       dressCode: 'Comfortable outdoor / trekking attire and sturdy walking shoes required for 2,000 steps.',
@@ -2337,7 +2337,7 @@ export const PLACES: Place[] = [
     address: 'Sri Prasanna Varadaraja Swamy Temple, Lakshmipuram, Bahadur Pet, Srikalahasti, Tirupati District, Andhra Pradesh - 517644',
     rating: 4.6,
     reviewCount: 1800,
-    image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1790765942/kannappa-temple_ngmekp.jpg',
+    image: '/images/places/img_21_kannappa-temple_ngmekp.jpg',
     coordinates: { lat: 13.7486, lng: 79.6991 },
     shortIntro: 'Sri Prasanna Varadaraja Swamy Temple is an ancient Lord Vishnu temple in Bahadur Pet, Srikalahasti, 500m from main temple.',
     whyVisit: 'Peaceful Chola-era Vishnu shrine 500m from Srikalahasti main temple offering unhurried darshan of Lord Varadaraja Swamy and Sridevi-Bhudevi.',
@@ -2351,7 +2351,7 @@ export const PLACES: Place[] = [
     approxCarCost: '₹400 fuel round trip',
     approxBikeCost: '₹150 petrol round trip',
     images: [
-      'https://res.cloudinary.com/kniegqlj/image/upload/v1790765942/kannappa-temple_ngmekp.jpg'
+      '/images/places/img_21_kannappa-temple_ngmekp.jpg'
     ],
     visitorTips: {
       dressCode: 'Modest / Traditional Indian attire expected.',
@@ -2420,7 +2420,7 @@ export const PLACES: Place[] = [
     address: 'Jetty Palem / Kondamitta, Srikalahasti, Tirupati District, Andhra Pradesh - 517644',
     rating: 4.7,
     reviewCount: 1600,
-    image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1790768979/sri-muthyalamma-temple-kothapet-srikalahasti-temples-PqFmxMdzmh_l3rhut.jpg',
+    image: '/images/places/img_32_sri-muthyalamma-temple-kothapet-srikalahasti-templ.jpg',
     coordinates: { lat: 13.7505, lng: 79.7008 },
     shortIntro: 'Sri Muthyalamma Temple (Jetty Palem) is a famous town guardian deity (Gramadevatha) shrine 1 km from main Srikalahasti Temple.',
     whyVisit: 'Authentic Gramadevatha folk goddess shrine in Jetty Palem visited for health protection, disease relief, and traditional Andhra Jathara celebrations.',
@@ -2434,7 +2434,7 @@ export const PLACES: Place[] = [
     approxCarCost: '₹400 fuel round trip',
     approxBikeCost: '₹150 petrol round trip',
     images: [
-      'https://res.cloudinary.com/kniegqlj/image/upload/v1790768979/sri-muthyalamma-temple-kothapet-srikalahasti-temples-PqFmxMdzmh_l3rhut.jpg'
+      '/images/places/img_32_sri-muthyalamma-temple-kothapet-srikalahasti-templ.jpg'
     ],
     visitorTips: {
       dressCode: 'Modest / Traditional Indian attire expected.',
@@ -2503,7 +2503,7 @@ export const PLACES: Place[] = [
     address: 'Northern Gopuram Entrance, Srikalahasti Temple, Srikalahasti, Tirupati District, Andhra Pradesh - 517644',
     rating: 4.8,
     reviewCount: 4200,
-    image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1790767863/ae0481424ea471d45813be23915f43cb_xlbmex.jpg',
+    image: '/images/places/img_33_ae0481424ea471d45813be23915f43cb_xlbmex.jpg',
     coordinates: { lat: 13.7494728, lng: 79.6974811 },
     shortIntro: 'Pathala Vinayaka Temple is a unique underground shrine located 35 feet below ground near the northern Rajagopuram of Srikalahasti Temple.',
     whyVisit: 'Descend 20 steep steps 35 feet underground into a cave shrine to offer self-performed camphor harati to Lord Ganesha.',
@@ -2517,7 +2517,7 @@ export const PLACES: Place[] = [
     approxCarCost: '₹400 fuel round trip',
     approxBikeCost: '₹150 petrol round trip',
     images: [
-      'https://res.cloudinary.com/kniegqlj/image/upload/v1790767863/ae0481424ea471d45813be23915f43cb_xlbmex.jpg'
+      '/images/places/img_33_ae0481424ea471d45813be23915f43cb_xlbmex.jpg'
     ],
     visitorTips: {
       dressCode: 'Traditional Indian attire expected for temple entry.',
@@ -2564,7 +2564,7 @@ export const PLACES: Place[] = [
     address: 'Kanipakam, Chittoor',
     rating: 4.7,
     reviewCount: 28000,
-    image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1785644411/Kanipakam-Temple_bz4lzw.jpg',
+    image: '/images/places/img_34_Kanipakam-Temple_bz4lzw.jpg',
     coordinates: { lat: 13.2769752, lng: 79.0338451 },
     tags: ['Ganesha', 'Miracle'],
     bestTime: 'Morning (highly recommended to avoid heavy crowds)',
@@ -2595,7 +2595,7 @@ export const PLACES: Place[] = [
     address: 'Ardhagiri Temple Road, Aragonda, Thavanampalle Mandal, Chittoor District, Andhra Pradesh 517129',
     rating: 4.8,
     reviewCount: 9400,
-    image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1792061507/temple_38jQnYRH_202601081752470_vv6pfc.webp',
+    image: '/images/places/img_35_temple_38jQnYRH_202601081752470_vv6pfc.webp',
     coordinates: { lat: 13.2946024, lng: 78.9512445 },
     tags: ['Hanuman', 'Sanjeevani', 'Holy Water', 'Ardhagiri', 'Aragonda', 'Miracle Pond', 'Pournami'],
     bestTime: 'Early morning (6:00 AM - 10:00 AM) or Pournami (Full Moon day) for Giripradakshina and holy water',
@@ -2705,7 +2705,7 @@ export const PLACES: Place[] = [
     address: 'Mogili, Chittoor (Chennai-Bangalore Highway)',
     rating: 4.4,
     reviewCount: 1200,
-    image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1785644167/mogili-shiva-hill-temple-chittoor-temples-fcvjtibn5n_iyg4fe.jpg',
+    image: '/images/places/img_36_mogili-shiva-hill-temple-chittoor-temples-fcvjtibn.jpg',
     coordinates: { lat: 13.18515, lng: 78.83696 },
     tags: ['Waterfall', 'Shiva', 'Highway Spot', 'hidden gem'],
     bestTime: 'Morning',
@@ -2763,9 +2763,9 @@ export const PLACES: Place[] = [
     travelEstimates: { 'tirupati': '20 mins' },
     relatedPlaces: ['srinivasa-mangapuram', 'kalyani-dam', 'chandragiri-fort']
   },
-  { id: 'nagala-falls', name: 'Nagalapuram Falls', category: 'Nature', placeType: 'water', location: 'Nagalapuram', distanceKms: 65, durationMins: 240, budgetLevel: 'medium', entryFeeNum: 0, interests: ['trekking', 'swimming'], openFrom: 6, openTo: 15, isMustVisit: false, description: 'Series of waterfalls with natural swimming pools.', history: 'Popular among adventure seekers.', timings: '6:00 AM - 3:00 PM', entryFee: 'Free', address: 'Nagalapuram Forest', rating: 4.5, reviewCount: 5200, image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1785646849/nagalapuram-eastside_q17qlo.jpg', coordinates: { lat: 13.4755334, lng: 79.7764549 }, tags: ['Trek', 'Adventure'], bestTime: 'Winter', practicalInfo: { dressCode: 'Sportswear', food: 'Carry own', parking: 'Base point' }, travelEstimates: { 'tirupati': '2 hours' } },
-  { id: 'kailasa-kona', name: 'Kailasa Kona Falls', category: 'Nature', placeType: 'water', location: 'Puttur', distanceKms: 45, durationMins: 120, budgetLevel: 'budget', entryFeeNum: 20, interests: ['nature', 'healing'], openFrom: 6, openTo: 18, isMustVisit: false, description: 'A beautiful mineral-rich waterfall with healing properties and a small Shiva temple near the base.', history: 'According to legend, Lord Shiva (Kailasanatheswara) came down to Earth to witness the wedding of Lord Venkateswara and Goddess Padmavathi at nearby Narayanavanam. Pleased by the serene beauty of this waterfall, Lord Shiva stayed here to meditate, which is why it is called Kailasakona.', timings: '6:00 AM - 6:00 PM', entryFee: '₹20', address: 'Puttur Road', rating: 4.1, reviewCount: 6900, image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1785646949/kailasakona-waterfalls_g3yvzv.jpg', coordinates: { lat: 13.3882826, lng: 79.6330908 }, tags: ['Waterfall', 'Medicinal', 'Shiva'], bestTime: 'Post-Monsoon', practicalInfo: { dressCode: 'Casual', food: 'Stalls', parking: 'Available' }, travelEstimates: { 'tirupati': '1 hour' } },
-  { id: 'horsley-hills', name: 'Horsley Hills', category: 'Day Trip', placeType: 'nature', location: 'Madanapalle', distanceKms: 140, durationMins: 360, budgetLevel: 'premium', entryFeeNum: 50, interests: ['hill-station', 'viewpoint'], openFrom: 6, openTo: 22, isMustVisit: true, description: 'Famous hill station known as Andhra\'s Ooty.', history: 'Named after W.D. Horsley, a British collector.', timings: '6:00 AM - 10:00 PM', entryFee: '₹50', address: 'Madanapalle, AP', rating: 4.4, reviewCount: 25000, image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1785643932/sddefault_qpjyxf.jpg', coordinates: { lat: 13.6511408, lng: 78.4028055 }, tags: ['Hills', 'Cool'], bestTime: 'Year round', practicalInfo: { dressCode: 'Woolens in winter', food: 'Resorts available', parking: 'Ample' }, travelEstimates: { 'tirupati': '3.5 hours' } },
+  { id: 'nagala-falls', name: 'Nagalapuram Falls', category: 'Nature', placeType: 'water', location: 'Nagalapuram', distanceKms: 65, durationMins: 240, budgetLevel: 'medium', entryFeeNum: 0, interests: ['trekking', 'swimming'], openFrom: 6, openTo: 15, isMustVisit: false, description: 'Series of waterfalls with natural swimming pools.', history: 'Popular among adventure seekers.', timings: '6:00 AM - 3:00 PM', entryFee: 'Free', address: 'Nagalapuram Forest', rating: 4.5, reviewCount: 5200, image: '/images/places/img_37_nagalapuram-eastside_q17qlo.jpg', coordinates: { lat: 13.4755334, lng: 79.7764549 }, tags: ['Trek', 'Adventure'], bestTime: 'Winter', practicalInfo: { dressCode: 'Sportswear', food: 'Carry own', parking: 'Base point' }, travelEstimates: { 'tirupati': '2 hours' } },
+  { id: 'kailasa-kona', name: 'Kailasa Kona Falls', category: 'Nature', placeType: 'water', location: 'Puttur', distanceKms: 45, durationMins: 120, budgetLevel: 'budget', entryFeeNum: 20, interests: ['nature', 'healing'], openFrom: 6, openTo: 18, isMustVisit: false, description: 'A beautiful mineral-rich waterfall with healing properties and a small Shiva temple near the base.', history: 'According to legend, Lord Shiva (Kailasanatheswara) came down to Earth to witness the wedding of Lord Venkateswara and Goddess Padmavathi at nearby Narayanavanam. Pleased by the serene beauty of this waterfall, Lord Shiva stayed here to meditate, which is why it is called Kailasakona.', timings: '6:00 AM - 6:00 PM', entryFee: '₹20', address: 'Puttur Road', rating: 4.1, reviewCount: 6900, image: '/images/places/img_38_kailasakona-waterfalls_g3yvzv.jpg', coordinates: { lat: 13.3882826, lng: 79.6330908 }, tags: ['Waterfall', 'Medicinal', 'Shiva'], bestTime: 'Post-Monsoon', practicalInfo: { dressCode: 'Casual', food: 'Stalls', parking: 'Available' }, travelEstimates: { 'tirupati': '1 hour' } },
+  { id: 'horsley-hills', name: 'Horsley Hills', category: 'Day Trip', placeType: 'nature', location: 'Madanapalle', distanceKms: 140, durationMins: 360, budgetLevel: 'premium', entryFeeNum: 50, interests: ['hill-station', 'viewpoint'], openFrom: 6, openTo: 22, isMustVisit: true, description: 'Famous hill station known as Andhra\'s Ooty.', history: 'Named after W.D. Horsley, a British collector.', timings: '6:00 AM - 10:00 PM', entryFee: '₹50', address: 'Madanapalle, AP', rating: 4.4, reviewCount: 25000, image: '/images/places/img_39_sddefault_qpjyxf.jpg', coordinates: { lat: 13.6511408, lng: 78.4028055 }, tags: ['Hills', 'Cool'], bestTime: 'Year round', practicalInfo: { dressCode: 'Woolens in winter', food: 'Resorts available', parking: 'Ample' }, travelEstimates: { 'tirupati': '3.5 hours' } },
   { 
     id: 'appalayagunta-temple', 
     name: 'Sri Prasanna Venkateswara Temple', 
@@ -2789,8 +2789,8 @@ export const PLACES: Place[] = [
     address: 'Sri Prasanna Venkateswara Swamy Temple, Appalayagunta, Vadamalapeta Mandal, Tirupati District, AP 517569', 
     rating: 4.7, 
     reviewCount: 6800, 
-    image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1785913180/appalayagunta2_ybksjq.jpg', 
-    images: ['https://res.cloudinary.com/kniegqlj/image/upload/v1785913180/appalayagunta2_ybksjq.jpg'], 
+    image: '/images/places/img_40_appalayagunta2_ybksjq.jpg', 
+    images: ['/images/places/img_40_appalayagunta2_ybksjq.jpg'], 
     coordinates: { lat: 13.5373701, lng: 79.4776129 }, 
     tags: ['Abhaya Hasta', 'Hanuman Shrine', 'TTD Temple', 'Post-Wedding Rest', 'Appalayagunta', 'Vadamalapeta'], 
     bestTime: 'Morning (6:00 AM - 11:00 AM)', 
@@ -2822,9 +2822,9 @@ export const PLACES: Place[] = [
     address: 'Sri Veda Narayana Swamy Temple, Nagalapuram, Tirupati District, Andhra Pradesh – 517589',
     rating: 4.8,
     reviewCount: 5600,
-    image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1788275358/temple_A4a0aldt_202601031832510_a0bgn0.webp',
+    image: '/images/places/img_41_temple_A4a0aldt_202601031832510_a0bgn0.webp',
     images: [
-      'https://res.cloudinary.com/kniegqlj/image/upload/v1788275358/temple_A4a0aldt_202601031832510_a0bgn0.webp'
+      '/images/places/img_41_temple_A4a0aldt_202601031832510_a0bgn0.webp'
     ],
     coordinates: { lat: 13.3876691, lng: 79.7965048 },
     tags: ['Matsya Avatar', 'Vedanarayana', 'Nagalapuram', 'Surya Puja', 'Sri Krishnadevaraya', 'Vijayanagara', 'TTD Temple', 'Prayoga Chakra'],
@@ -2902,8 +2902,8 @@ export const PLACES: Place[] = [
     address: 'MG87+P95, Karakambadi Rural, near Renigunta, Tirupati, Andhra Pradesh 517520',
     rating: 4.7,
     reviewCount: 3800,
-    image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1787057156/sddefault_ivnuoq.jpg',
-    images: ['https://res.cloudinary.com/kniegqlj/image/upload/v1787057156/sddefault_ivnuoq.jpg'],
+    image: '/images/places/img_42_sddefault_ivnuoq.jpg',
+    images: ['/images/places/img_42_sddefault_ivnuoq.jpg'],
     coordinates: { lat: 13.6667627, lng: 79.5135769 },
     shortIntro: 'A one-of-a-kind historic shrine in Karakambadi situated in an underground passage directly beneath an active running railway track.',
     whyVisit: 'Experience the unique spiritual atmosphere where railway trains pass directly overhead while prayers are performed in the underground shrine. Revered as the sacred keeper of truth (sathya pramanaalu).',
@@ -2963,8 +2963,8 @@ export const PLACES: Place[] = [
     address: 'Mangalam Main Road, Tirupati, Andhra Pradesh 517507',
     rating: 4.6,
     reviewCount: 1900,
-    image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1787057463/AHRPTWlaU5p1WUuIwK9avxMgrnQpbC0fHAJdvkig5IesypDPivsxru0CrGxh6aJAMllNXvr_K8Wkxwa1zC7Bz__NpSpzT8fcti95iyuSAwgM-9y3e1kxFL9xoGCH_ioBgDAfkDACk0GJL33qZtk_w408-h725-k-no_mjaez0.jpg',
-    images: ['https://res.cloudinary.com/kniegqlj/image/upload/v1787057463/AHRPTWlaU5p1WUuIwK9avxMgrnQpbC0fHAJdvkig5IesypDPivsxru0CrGxh6aJAMllNXvr_K8Wkxwa1zC7Bz__NpSpzT8fcti95iyuSAwgM-9y3e1kxFL9xoGCH_ioBgDAfkDACk0GJL33qZtk_w408-h725-k-no_mjaez0.jpg'],
+    image: '/images/places/img_43_AHRPTWlaU5p1WUuIwK9avxMgrnQpbC0fHAJdvkig5IesypDPiv.jpg',
+    images: ['/images/places/img_43_AHRPTWlaU5p1WUuIwK9avxMgrnQpbC0fHAJdvkig5IesypDPiv.jpg'],
     coordinates: { lat: 13.6621052, lng: 79.4678936 },
     openingTime: '5:30 AM',
     closingTime: '8:30 PM',
@@ -3048,8 +3048,8 @@ export const PLACES: Place[] = [
     address: 'Govindaraja Swamy Statue, Narasimha Theertham Road, Manchinellagunta, Tirupati, Andhra Pradesh 517501',
     rating: 4.8,
     reviewCount: 1450,
-    image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1787057778/481996827_656641993547622_2922518879072320805_n.jpg_xtzexs.jpg',
-    images: ['https://res.cloudinary.com/kniegqlj/image/upload/v1787057778/481996827_656641993547622_2922518879072320805_n.jpg_xtzexs.jpg'],
+    image: '/images/places/img_44_481996827_656641993547622_2922518879072320805_n.jp.jpg',
+    images: ['/images/places/img_44_481996827_656641993547622_2922518879072320805_n.jp.jpg'],
     coordinates: { lat: 13.6330302, lng: 79.4112725 },
     openingTime: '6:00 AM (Saturdays)',
     closingTime: '7:00 PM (Saturdays)',
@@ -3108,8 +3108,8 @@ export const PLACES: Place[] = [
     address: 'Venkateswara Temple, Tummalagunta, Tirupati Rural, Andhra Pradesh 517502',
     rating: 4.7,
     reviewCount: 2300,
-    image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1787057959/images_xzaqvs.jpg',
-    images: ['https://res.cloudinary.com/kniegqlj/image/upload/v1787057959/images_xzaqvs.jpg'],
+    image: '/images/places/img_45_images_xzaqvs.jpg',
+    images: ['/images/places/img_45_images_xzaqvs.jpg'],
     coordinates: { lat: 13.6132875, lng: 79.3883571 },
     openingTime: '6:00 AM',
     closingTime: '8:30 PM',
@@ -3168,8 +3168,8 @@ export const PLACES: Place[] = [
     address: 'Near Chandragiri Bus Station, Chandragiri, Chittoor District, Andhra Pradesh 517101',
     rating: 4.7,
     reviewCount: 3100,
-    image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1787066072/WhatsApp-Image-2023-07-21-at-10.25.07-AM-1-445x445_zz6hdv.jpg',
-    images: ['https://res.cloudinary.com/kniegqlj/image/upload/v1787066072/WhatsApp-Image-2023-07-21-at-10.25.07-AM-1-445x445_zz6hdv.jpg'],
+    image: '/images/places/img_46_WhatsApp-Image-2023-07-21-at-10.25.07-AM-1-445x445.jpg',
+    images: ['/images/places/img_46_WhatsApp-Image-2023-07-21-at-10.25.07-AM-1-445x445.jpg'],
     coordinates: { lat: 13.5843325, lng: 79.3158065 },
     openingTime: '6:00 AM',
     closingTime: '8:30 PM',
@@ -3228,8 +3228,8 @@ export const PLACES: Place[] = [
     address: 'Near Alipiri / SVIMS Road, Tirupati, Andhra Pradesh 517507',
     rating: 4.6,
     reviewCount: 2800,
-    image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1787066487/images_uv5iod.jpg',
-    images: ['https://res.cloudinary.com/kniegqlj/image/upload/v1787066487/images_uv5iod.jpg'],
+    image: '/images/places/img_47_images_uv5iod.jpg',
+    images: ['/images/places/img_47_images_uv5iod.jpg'],
     coordinates: { lat: 13.6418597, lng: 79.3997373 },
     openingTime: '6:00 AM',
     closingTime: '8:30 PM',
@@ -3268,7 +3268,7 @@ export const PLACES: Place[] = [
 
   // Parks and Leisure (Continuing category VI)
   { id: 'regional-science-centre', name: 'Regional Science Centre', category: 'Parks & Leisure', placeType: 'leisure', location: 'Tirupati', distanceKms: 4, durationMins: 120, budgetLevel: 'budget', entryFeeNum: 25, interests: ['science', 'family'], openFrom: 10, openTo: 18, isMustVisit: false, description: 'Features a prehistoric park and planetarium.', history: 'Educational hub for the region.', timings: '10:00 AM - 6:00 PM', entryFee: '₹25', address: 'Planetarium Road, Alipiri, Tirupati, AP 517507', rating: 4.4, reviewCount: 3200, image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqslfSFfVzjCdYpvolWX9LODWFHfbnzTRHRK-_ij0sEw&s=10', coordinates: { lat: 13.643158, lng: 79.397876 }, tags: ['Science', 'Kids'], bestTime: 'Morning', practicalInfo: { dressCode: 'Casual', food: 'Nearby', parking: 'Available' }, travelEstimates: { 'tirupati': '10 mins' } },
-  { id: 'kalyani-dam', name: 'Kalyani Dam', category: 'Nature', placeType: 'water', location: 'Rangampeta', distanceKms: 18, durationMins: 90, budgetLevel: 'budget', entryFeeNum: 0, interests: ['nature', 'scenic'], openFrom: 8, openTo: 18, isMustVisit: false, description: 'Large reservoir in a scenic valley.', history: 'Main water source for Tirupati.', timings: '8:00 AM - 6:00 PM', entryFee: 'Free', address: 'Rangampeta Forest', rating: 4.5, reviewCount: 4800, image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1785912451/8605110_orig_gwqben.jpg', images: ['https://res.cloudinary.com/kniegqlj/image/upload/v1785912451/8605110_orig_gwqben.jpg'], coordinates: { lat: 13.6576604, lng: 79.2692214 }, tags: ['Dam', 'Nature'], bestTime: 'Evening', practicalInfo: { dressCode: 'Casual', food: 'None', parking: 'Limited' }, travelEstimates: { 'tirupati': '30 mins' } },
+  { id: 'kalyani-dam', name: 'Kalyani Dam', category: 'Nature', placeType: 'water', location: 'Rangampeta', distanceKms: 18, durationMins: 90, budgetLevel: 'budget', entryFeeNum: 0, interests: ['nature', 'scenic'], openFrom: 8, openTo: 18, isMustVisit: false, description: 'Large reservoir in a scenic valley.', history: 'Main water source for Tirupati.', timings: '8:00 AM - 6:00 PM', entryFee: 'Free', address: 'Rangampeta Forest', rating: 4.5, reviewCount: 4800, image: '/images/places/img_48_8605110_orig_gwqben.jpg', images: ['/images/places/img_48_8605110_orig_gwqben.jpg'], coordinates: { lat: 13.6576604, lng: 79.2692214 }, tags: ['Dam', 'Nature'], bestTime: 'Evening', practicalInfo: { dressCode: 'Casual', food: 'None', parking: 'Limited' }, travelEstimates: { 'tirupati': '30 mins' } },
   {
     id: 'mallimadugu-dam',
     name: 'Mallimadugu Dam (Mallemadugu Reservoir)',
@@ -3292,8 +3292,8 @@ export const PLACES: Place[] = [
     address: 'Karakambadi Rural, Renigunta Mandal, Tirupati District, Andhra Pradesh 517520',
     rating: 4.5,
     reviewCount: 2100,
-    image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1787057256/mallimadugu-dam-karakambadi-tirupati-tourist-attraction-0y5ajnu8u0-250_wnvrhj.jpg',
-    images: ['https://res.cloudinary.com/kniegqlj/image/upload/v1787057256/mallimadugu-dam-karakambadi-tirupati-tourist-attraction-0y5ajnu8u0-250_wnvrhj.jpg'],
+    image: '/images/places/img_49_mallimadugu-dam-karakambadi-tirupati-tourist-attra.jpg',
+    images: ['/images/places/img_49_mallimadugu-dam-karakambadi-tirupati-tourist-attra.jpg'],
     coordinates: { lat: 13.6845, lng: 79.4925 },
     openingTime: '6:00 AM',
     closingTime: '6:00 PM',
@@ -3371,8 +3371,8 @@ export const PLACES: Place[] = [
     address: 'Narayanavanam, near Puttur, AP (36 km from Tirupati)', 
     rating: 4.8, 
     reviewCount: 9200,
-    image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1785912384/sri-laxmi-venkataramana_jo1cxb.jpg', 
-    images: ['https://res.cloudinary.com/kniegqlj/image/upload/v1785912384/sri-laxmi-venkataramana_jo1cxb.jpg'],
+    image: '/images/places/img_50_sri-laxmi-venkataramana_jo1cxb.jpg', 
+    images: ['/images/places/img_50_sri-laxmi-venkataramana_jo1cxb.jpg'],
     coordinates: { lat: 13.4246841, lng: 79.5888689 }, 
     tags: ['Divine Wedding Site', 'Vijayanagara Architecture', 'Kalyana Posture', 'TTD Temple'], 
     bestTime: 'Morning', 
@@ -3444,7 +3444,7 @@ export const PLACES: Place[] = [
     travelEstimates: { 'narayanavanam': '5 mins', 'tirupati': '45 mins' },
     relatedPlaces: ['narayanavanam', 'kailasa-kona']
   },
-  { id: 'gogarbham', name: 'Gogarbham (Pandava Theertham)', category: 'Tirumala Spot', placeType: 'water', location: 'Tirumala', distanceKms: 25, durationMins: 45, budgetLevel: 'budget', entryFeeNum: 0, interests: ['nature', 'spiritual'], openFrom: 6, openTo: 18, isMustVisit: false, description: 'Tranquil spot with a cave and waterfall.', history: 'Associated with the Pandavas\' stay in exile.', timings: '6:00 AM - 6:00 PM', entryFee: 'Free', address: 'Tirumala Hills', rating: 4.5, reviewCount: 2800, image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1785657888/GOGARBHA-DAM-04_tvbyh0.jpg', coordinates: { lat: 13.6909398, lng: 79.3540774 }, tags: ['Cave', 'Waterfall'], bestTime: 'Morning', practicalInfo: { dressCode: 'Casual', food: 'None', parking: 'Available' }, travelEstimates: { 'venkateswara': '15 mins' } },
+  { id: 'gogarbham', name: 'Gogarbham (Pandava Theertham)', category: 'Tirumala Spot', placeType: 'water', location: 'Tirumala', distanceKms: 25, durationMins: 45, budgetLevel: 'budget', entryFeeNum: 0, interests: ['nature', 'spiritual'], openFrom: 6, openTo: 18, isMustVisit: false, description: 'Tranquil spot with a cave and waterfall.', history: 'Associated with the Pandavas\' stay in exile.', timings: '6:00 AM - 6:00 PM', entryFee: 'Free', address: 'Tirumala Hills', rating: 4.5, reviewCount: 2800, image: '/images/places/img_51_GOGARBHA-DAM-04_tvbyh0.jpg', coordinates: { lat: 13.6909398, lng: 79.3540774 }, tags: ['Cave', 'Waterfall'], bestTime: 'Morning', practicalInfo: { dressCode: 'Casual', food: 'None', parking: 'Available' }, travelEstimates: { 'venkateswara': '15 mins' } },
   {
     id: 'srivari-udyanavanam',
     name: 'Srivari Udyanavanam (TTD Gardens)',
@@ -3893,8 +3893,8 @@ export const PLACES: Place[] = [
     address: 'Tondavada, Chandragiri Mandal',
     rating: 4.6,
     reviewCount: 1800,
-    image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1785912680/mukkoti-agastheeshwara-temple_rhtesq.jpg',
-    images: ['https://res.cloudinary.com/kniegqlj/image/upload/v1785912680/mukkoti-agastheeshwara-temple_rhtesq.jpg'],
+    image: '/images/places/img_52_mukkoti-agastheeshwara-temple_rhtesq.jpg',
+    images: ['/images/places/img_52_mukkoti-agastheeshwara-temple_rhtesq.jpg'],
     coordinates: { lat: 13.5968472, lng: 79.3410868 },
     tags: ['Shiva', 'Confluence', 'Ancient'],
     bestTime: 'Morning hours (recommended to experience the peaceful mist over the river confluence)',
@@ -3926,7 +3926,7 @@ export const PLACES: Place[] = [
     address: 'Tada Village, Chittoor District',
     rating: 4.5,
     reviewCount: 6200,
-    image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1785644618/photo6jpg_a5whqm.jpg',
+    image: '/images/places/img_53_photo6jpg_a5whqm.jpg',
     coordinates: { lat: 13.6140701, lng: 79.8432711 },
     tags: ['Waterfall', 'Trek', 'Adventure'],
     bestTime: 'Sep - Jan',
@@ -4149,8 +4149,8 @@ export const PLACES: Place[] = [
     address: 'R.C. Road, C. Ramapuram, Tirupati, AP 517561',
     rating: 4.7,
     reviewCount: 1200,
-    image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1785915198/Sri-Brahmeshwar-Parswanath-Swarna-Jain-Mandir-Tirupati_8309d1699656d0683273b45b1828322b_juq4b1.jpg',
-    images: ['https://res.cloudinary.com/kniegqlj/image/upload/v1785915198/Sri-Brahmeshwar-Parswanath-Swarna-Jain-Mandir-Tirupati_8309d1699656d0683273b45b1828322b_juq4b1.jpg'],
+    image: '/images/places/img_54_Sri-Brahmeshwar-Parswanath-Swarna-Jain-Mandir-Tiru.jpg',
+    images: ['/images/places/img_54_Sri-Brahmeshwar-Parswanath-Swarna-Jain-Mandir-Tiru.jpg'],
     coordinates: { lat: 13.5614963, lng: 79.400321 },
     tags: ['Jain Temple', 'Makrana Marble', 'Gold Dome', 'Lord Parshwanath', 'Gaushala'],
     bestTime: 'Morning (5:30 AM - 10:00 AM)',
@@ -4181,8 +4181,8 @@ export const PLACES: Place[] = [
     address: 'Veshalamma Temple Street, Near City Center, Tirupati, Andhra Pradesh 517501',
     rating: 4.7,
     reviewCount: 520,
-    image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1786964165/Veshalamma-Temple_097642e60049c7e3538c9fcfac560693_sevrdz.jpg',
-    images: ['https://res.cloudinary.com/kniegqlj/image/upload/v1786964165/Veshalamma-Temple_097642e60049c7e3538c9fcfac560693_sevrdz.jpg'],
+    image: '/images/places/img_55_Veshalamma-Temple_097642e60049c7e3538c9fcfac560693.jpg',
+    images: ['/images/places/img_55_Veshalamma-Temple_097642e60049c7e3538c9fcfac560693.jpg'],
     coordinates: { lat: 13.6296781, lng: 79.4130316 },
     tags: ['Goddess', 'Folk Deity', 'Grama Devata', 'Healing', 'Local Heritage', 'Tirupati'],
     bestTime: 'Morning (6:30 AM - 10:00 AM) & Tuesday / Friday evenings',
@@ -4227,8 +4227,8 @@ export const PLACES: Place[] = [
     address: 'Near Alipiri / SVETA Area, Tirupati, Andhra Pradesh 517501',
     rating: 4.8,
     reviewCount: 380,
-    image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1786964848/hq720_tiums7.jpg',
-    images: ['https://res.cloudinary.com/kniegqlj/image/upload/v1786964848/hq720_tiums7.jpg'],
+    image: '/images/places/img_56_hq720_tiums7.jpg',
+    images: ['/images/places/img_56_hq720_tiums7.jpg'],
     coordinates: { lat: 13.6349956, lng: 79.4041733 },
     tags: ['Jagannatha', 'Krishna', 'Balabhadra', 'Subhadra', 'Puri Tradition', 'Vaishnava', 'Tirupati'],
     bestTime: 'Morning (6:30 AM - 9:30 AM) & Evening Sandhya Arati (6:30 PM - 7:30 PM)',
@@ -4273,8 +4273,8 @@ export const PLACES: Place[] = [
     address: 'Akkarampalle, Tirupati, Andhra Pradesh 517507',
     rating: 4.7,
     reviewCount: 310,
-    image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1786987570/bonthalamma-talli-alayam-tirupati-ea9vspd6l4_a4n4fo.jpg',
-    images: ['https://res.cloudinary.com/kniegqlj/image/upload/v1786987570/bonthalamma-talli-alayam-tirupati-ea9vspd6l4_a4n4fo.jpg'],
+    image: '/images/places/img_57_bonthalamma-talli-alayam-tirupati-ea9vspd6l4_a4n4fo.jpg',
+    images: ['/images/places/img_57_bonthalamma-talli-alayam-tirupati-ea9vspd6l4_a4n4fo.jpg'],
     coordinates: { lat: 13.6459728, lng: 79.4403959 },
     tags: ['Goddess', 'Gramadevata', 'Bonthalamma', 'Folk Deity', 'Akkarampalle', 'Tirupati', 'Protection', 'Kumkumarchana'],
     bestTime: 'Morning Darshan (6:30 AM – 9:30 AM) & Evening Sandhya Aarti (6:30 PM)',
@@ -4320,8 +4320,8 @@ export const PLACES: Place[] = [
     address: 'Balaji Nagar, Tirupati, Andhra Pradesh 517501',
     rating: 4.8,
     reviewCount: 420,
-    image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1786987831/panchamukha-anjaneya-swami-temple-balaji-nagar-tirupati-temples-vXLHdB8jzc-250_gsc4ip.jpg',
-    images: ['https://res.cloudinary.com/kniegqlj/image/upload/v1786987831/panchamukha-anjaneya-swami-temple-balaji-nagar-tirupati-temples-vXLHdB8jzc-250_gsc4ip.jpg'],
+    image: '/images/places/img_58_panchamukha-anjaneya-swami-temple-balaji-nagar-tir.jpg',
+    images: ['/images/places/img_58_panchamukha-anjaneya-swami-temple-balaji-nagar-tir.jpg'],
     coordinates: { lat: 13.6311371, lng: 79.4148817 },
     tags: ['Hanuman', 'Pancha Mukha', 'Anjaneya', 'Balaji Nagar', 'Tirupati', 'Protection', 'Vadamala', 'Betel Leaf Puja'],
     bestTime: 'Saturdays & Tuesdays (Morning 6:00 AM – 10:00 AM or Evening Sandhya Aarti 7:00 PM)',
@@ -4367,8 +4367,8 @@ export const PLACES: Place[] = [
     address: 'Mangalam, Tirupati Rural, Andhra Pradesh 517507',
     rating: 4.6,
     reviewCount: 190,
-    image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1786988251/images_hnjqzi.jpg',
-    images: ['https://res.cloudinary.com/kniegqlj/image/upload/v1786988251/images_hnjqzi.jpg'],
+    image: '/images/places/img_59_images_hnjqzi.jpg',
+    images: ['/images/places/img_59_images_hnjqzi.jpg'],
     coordinates: { lat: 13.6581135, lng: 79.4291628 },
     tags: ['Shiva', 'Jeeva Lingeshwara', 'Mangalam', 'Tirupati', 'Rudrabhishekam', 'Dosha Nivarana', 'Pradosham'],
     bestTime: 'Mondays, Pradosham days, and Maha Shivaratri (Morning 6:30 AM – 9:00 AM or Evening 5:30 PM – 7:30 PM)',
@@ -4415,9 +4415,9 @@ export const PLACES: Place[] = [
     address: 'Anandagiri Hillock, Utlavaripalli, Pakala, Tirupati District, Andhra Pradesh – 517112',
     rating: 4.8,
     reviewCount: 380,
-    image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1788273681/oardefault_a2ej7b.jpg',
+    image: '/images/places/img_60_oardefault_a2ej7b.jpg',
     images: [
-      'https://res.cloudinary.com/kniegqlj/image/upload/v1788273681/oardefault_a2ej7b.jpg'
+      '/images/places/img_60_oardefault_a2ej7b.jpg'
     ],
     coordinates: { lat: 13.4452161, lng: 79.1008506 },
     tags: ['Subramanya Swamy', 'Pakala', 'Anandagiri', '54ft Murugan Statue', 'Kalyana Subramanya', 'Kuja Dosham', 'Naga Dosham', 'Hill Temple'],
@@ -4499,9 +4499,9 @@ export const PLACES: Place[] = [
     address: 'Penchalakona Village, Rapur Mandal, SPSR Nellore District, Andhra Pradesh – 524414',
     rating: 4.8,
     reviewCount: 520,
-    image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1788274171/https_3A_2F_2Fsubstack-post-media.s3.amazonaws.com_2Fpublic_2Fimages_2F8b6a30eb-0124-4d49-a4fd-13d0bb7629af_1134x638_gwix4m.jpg',
+    image: '/images/places/img_61_https_3A_2F_2Fsubstack-post-media.s3.amazonaws.com.jpg',
     images: [
-      'https://res.cloudinary.com/kniegqlj/image/upload/v1788274171/https_3A_2F_2Fsubstack-post-media.s3.amazonaws.com_2Fpublic_2Fimages_2F8b6a30eb-0124-4d49-a4fd-13d0bb7629af_1134x638_gwix4m.jpg'
+      '/images/places/img_61_https_3A_2F_2Fsubstack-post-media.s3.amazonaws.com.jpg'
     ],
     coordinates: { lat: 14.3364684, lng: 79.4103894 },
     tags: ['Penchalakona', 'Narasimha Swamy', 'Swayambhu', 'Nava Narasimha', 'Waterfalls', 'Kanva Maharshi', 'Chenchu Lakshmi', 'Eastern Ghats'],
@@ -4586,7 +4586,7 @@ export const PLACES: Place[] = [
     address: 'NH 716, Surutapalli Village, Nagalapuram Mandal, Tirupati District, Andhra Pradesh - 517589',
     rating: 4.8,
     reviewCount: 18500,
-    image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1789663650/suruttapalli1_copy_yraale.jpg',
+    image: '/images/places/img_62_suruttapalli1_copy_yraale.jpg',
     coordinates: { lat: 13.3344873, lng: 79.8746719 },
     tags: ['Shiva', 'Pradosham', 'Reclining Shiva', 'Vijayanagara', 'Surutapalli', 'Pallikondeswara', 'Tirupati'],
     searchIntelligence: {
@@ -4675,7 +4675,7 @@ export const PLACES: Place[] = [
     address: 'Alipiri-Kapila Theertham Road, Srinivasanagar / NGO Colony, Tirupati, Andhra Pradesh 517507',
     rating: 4.3,
     reviewCount: 2400,
-    image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1790324405/eyJidWNrZXQiOiJ1dGEtaW1hZ2VzIiwia2V5IjoicGxhY2VfaW1nL2Y3ZTM5YjgyODQ5NTQ1ZDBiNzBiNGJlNjM4ZDBmOTYxIiwiZWRpdHMiOnsicmVzaXplIjp7IndpZHRoIjo2NDAsImhlaWdodCI6NjQwLCJmaXQiOiJpbnNpZGUifSwicm90YXRlIjpudWxsLCJ0b0Zvcm1hdCI6ICJ3ZWJwIn19_tc5rnx.webp',
+    image: '/images/places/img_63_eyJidWNrZXQiOiJ1dGEtaW1hZ2VzIiwia2V5IjoicGxhY2VfaW.webp',
     coordinates: { lat: 13.6515, lng: 79.4120 },
     shortIntro: 'A peaceful urban forest park at the foothills of Tirumala with walking trails, native trees, children\'s play areas, and the seasonal Malwadigundam waterfall.',
     whyVisit: 'Ideal morning walk destination near Alipiri with 2.5 km forest trails, birdwatching, and stunning views of the Tirumala Hills. The Malwadigundam waterfall flows during monsoon season.',
@@ -4688,7 +4688,7 @@ export const PLACES: Place[] = [
     approxRTCFare: '₹10 per person city bus / ₹50 shared auto',
     approxCarCost: '₹40 fuel or ₹100 auto ride',
     approxBikeCost: '₹20 petrol',
-    images: ['https://res.cloudinary.com/kniegqlj/image/upload/v1790324405/eyJidWNrZXQiOiJ1dGEtaW1hZ2VzIiwia2V5IjoicGxhY2VfaW1nL2Y3ZTM5YjgyODQ5NTQ1ZDBiNzBiNGJlNjM4ZDBmOTYxIiwiZWRpdHMiOnsicmVzaXplIjp7IndpZHRoIjo2NDAsImhlaWdodCI6NjQwLCJmaXQiOiJpbnNpZGUifSwicm90YXRlIjpudWxsLCJ0b0Zvcm1hdCI6ICJ3ZWJwIn19_tc5rnx.webp'],
+    images: ['/images/places/img_63_eyJidWNrZXQiOiJ1dGEtaW1hZ2VzIiwia2V5IjoicGxhY2VfaW.webp'],
     tags: ['Nature Park', 'Walking Trail', 'Birdwatching', 'Waterfall', 'Family', 'Fitness'],
     bestTime: 'Early morning (6:00–8:00 AM). Waterfall best during monsoon (Aug–Nov).',
     idealFor: ['Families', 'Kids', 'Senior Citizens', 'Solo Travelers', 'Photographers'],
@@ -4801,7 +4801,7 @@ export const PLACES: Place[] = [
     address: 'Municipal Park, Near Bhavani Nagar / Korlagunta, Tirupati, Andhra Pradesh 517501',
     rating: 4.2,
     reviewCount: 3100,
-    image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1790326139/ATplDJZAqtZHnn4OpdSR46Xm95H2uP7qDzOwyRAtXPaihxdsm2togtsTUtIPrH9zeX8U7lFg5xPFDsJ7gLyl_wIzzAUttXXCEneUeQNE1pNURYBgMHtsAQDHsDerkPUvEzCKBnRbdNr30QWWWSWD-bLCsbLGSwybhgZnG0YH7v4BCfsrurE_ivukt2.jpg',
+    image: '/images/places/img_64_ATplDJZAqtZHnn4OpdSR46Xm95H2uP7qDzOwyRAtXPaihxdsm2.jpg',
     coordinates: { lat: 13.6473327, lng: 79.4263512 },
     shortIntro: 'A centrally located city park with manicured lawns, children\'s playground, and an evening musical fountain show.',
     whyVisit: 'Popular family leisure spot in Tirupati featuring a colorful musical fountain show every evening (7–8 PM), landscaped gardens, and kids\' play zone.',
@@ -4814,7 +4814,7 @@ export const PLACES: Place[] = [
     approxRTCFare: '₹10 city bus / ₹30–40 auto',
     approxCarCost: '₹30 fuel or ₹80 auto/cab',
     approxBikeCost: '₹15 petrol',
-    images: ['https://res.cloudinary.com/kniegqlj/image/upload/v1790326139/ATplDJZAqtZHnn4OpdSR46Xm95H2uP7qDzOwyRAtXPaihxdsm2togtsTUtIPrH9zeX8U7lFg5xPFDsJ7gLyl_wIzzAUttXXCEneUeQNE1pNURYBgMHtsAQDHsDerkPUvEzCKBnRbdNr30QWWWSWD-bLCsbLGSwybhgZnG0YH7v4BCfsrurE_ivukt2.jpg'],
+    images: ['/images/places/img_64_ATplDJZAqtZHnn4OpdSR46Xm95H2uP7qDzOwyRAtXPaihxdsm2.jpg'],
     tags: ['City Park', 'Musical Fountain', 'Kids Play Area', 'Evening Spot', 'Family Leisure'],
     bestTime: 'Evening (6:00 PM - 8:00 PM) for the musical fountain show and cooler weather.',
     idealFor: ['Families', 'Kids', 'Couples', 'Senior Citizens'],
@@ -4927,7 +4927,7 @@ export const PLACES: Place[] = [
     address: 'Vinayaka Sagar, Karakambadi Road, Near Mangalam, Tirupati, Andhra Pradesh 517507',
     rating: 4.3,
     reviewCount: 1950,
-    image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1790327880/images_zeu2bq.jpg',
+    image: '/images/places/img_65_images_zeu2bq.jpg',
     coordinates: { lat: 13.6459298, lng: 79.4410675 },
     shortIntro: 'A scenic waterfront lake on Karakambadi Road featuring jogging tracks, landscaped greens, and a public swimming pool.',
     whyVisit: 'Revamped lakefront with cool waterside walking paths, swimming pool, and peaceful sunset views on Karakambadi Road.',
@@ -4940,7 +4940,7 @@ export const PLACES: Place[] = [
     approxRTCFare: '₹15 per person by bus / ₹60 auto',
     approxCarCost: '₹50 fuel or ₹120 auto/cab',
     approxBikeCost: '₹25 petrol',
-    images: ['https://res.cloudinary.com/kniegqlj/image/upload/v1790327880/images_zeu2bq.jpg'],
+    images: ['/images/places/img_65_images_zeu2bq.jpg'],
     tags: ['Lake', 'Waterfront', 'Jogging Track', 'Swimming Pool', 'Sunset Point', 'Ganesh Immersion'],
     bestTime: 'Early morning (5:30–8:00 AM) or sunset (5:30–7:30 PM)',
     idealFor: ['Solo Travelers', 'Couples', 'Families', 'Photographers'],
@@ -5042,7 +5042,7 @@ export const PLACES: Place[] = [
     address: '6-8-905, KT Road, Srinivasa Nagar, A P Housing Board Colony, Tirupati, Andhra Pradesh 517507',
     rating: 4.1,
     reviewCount: 1150,
-    image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1790327167/ngo-colony-park-srinivasanagar-tirupati-parks-pBVqs1ZMew-250_klsx2e.jpg',
+    image: '/images/places/img_66_ngo-colony-park-srinivasanagar-tirupati-parks-pBVq.jpg',
     coordinates: { lat: 13.6519631, lng: 79.4190593 },
     shortIntro: 'A peaceful community park on KT Road with walking tracks, open gym, and children\'s play area near Alipiri.',
     whyVisit: 'Calm neighborhood green park with shaded walking tracks, children\'s playground, and open fitness equipment in Srinivasa Nagar.',
@@ -5055,7 +5055,7 @@ export const PLACES: Place[] = [
     approxRTCFare: '₹10 by bus / ₹30 shared auto',
     approxCarCost: '₹25 fuel or ₹60 auto',
     approxBikeCost: '₹15 petrol',
-    images: ['https://res.cloudinary.com/kniegqlj/image/upload/v1790327167/ngo-colony-park-srinivasanagar-tirupati-parks-pBVqs1ZMew-250_klsx2e.jpg'],
+    images: ['/images/places/img_66_ngo-colony-park-srinivasanagar-tirupati-parks-pBVq.jpg'],
     tags: ['Community Park', 'Walking Track', 'Open Gym', 'Kids Play Area', 'Morning Walk', 'KT Road'],
     bestTime: 'Morning (5:30 AM - 8:00 AM) or evening (5:00 PM - 7:30 PM)',
     idealFor: ['Senior Citizens', 'Families', 'Kids', 'Solo Travelers'],
@@ -5160,7 +5160,7 @@ export const PLACES: Place[] = [
     address: 'Sri Parasareswara Swamy & Kala Bhairava Temple, Yogimallavaram, Near Tiruchanoor, Tirupati District, Andhra Pradesh 517503',
     rating: 4.8,
     reviewCount: 3400,
-    image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1792067673/2-78-500x445_kbojqm.jpg',
+    image: '/images/places/img_67_2-78-500x445_kbojqm.jpg',
     coordinates: { lat: 13.6067802, lng: 79.4414611 },
     shortIntro: 'A 1,000-year-old Chola temple in Yogimallavaram near Tiruchanoor dedicated to Lord Shiva and Kala Bhairava, sanctified by Arjuna\'s Pasupatastra penance.',
     whyVisit: 'Historic 11th-century Chola Shiva-Bhairava temple where Arjuna was granted the Pasupatastra. Renowned for Kala Bhairava Ashtami rituals, Kubera Bhairava, and Chola granite architecture.',
@@ -5174,8 +5174,8 @@ export const PLACES: Place[] = [
     approxCarCost: '₹40 fuel or ₹120 auto/cab',
     approxBikeCost: '₹20 petrol',
     images: [
-      'https://res.cloudinary.com/kniegqlj/image/upload/v1792067673/2-78-500x445_kbojqm.jpg',
-      'https://res.cloudinary.com/kniegqlj/image/upload/v1790327596/sri-kamakshyamba-sametha-sri-parashareshwaraswami-temple-tirupati-ho-tirupati-temples-R2nuogw9vB-250_fk1qmc.jpg'
+      '/images/places/img_67_2-78-500x445_kbojqm.jpg',
+      '/images/places/img_68_sri-kamakshyamba-sametha-sri-parashareshwaraswami-.jpg'
     ],
     tags: ['Kala Bhairava', 'Parasareswara', 'Chola Temple', 'Shiva Temple', 'Yogimallavaram', 'Tiruchanur', 'Ashtami', 'Kubera Bhairava'],
     bestTime: 'Morning (6:30 AM - 10:00 AM) or evening (5:00 PM - 8:00 PM); monthly Ashtami and Pradosham',

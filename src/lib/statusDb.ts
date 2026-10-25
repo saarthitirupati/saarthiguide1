@@ -107,13 +107,12 @@ async function writeLocalStatus(status: TirumalaStatus) {
   } catch (e) {}
 }
 
-export async function readStatus(): Promise<TirumalaStatus> {
-  await ensureFileLoaded();
+let isRefreshingFromSupabase = false;
+
+async function refreshFromSupabase(): Promise<void> {
+  if (isRefreshingFromSupabase) return;
+  isRefreshingFromSupabase = true;
   const now = Date.now();
-  // Cache for 3 seconds to reduce Supabase queries while remaining hyper-responsive
-  if (now - lastFetchTime < 3000) {
-    return memoryStatus;
-  }
 
   try {
     const { data: metrics, error } = await supabase
@@ -122,17 +121,16 @@ export async function readStatus(): Promise<TirumalaStatus> {
       .eq('id', 1)
       .single();
 
+    lastFetchTime = now;
     if (error || !metrics) {
-      lastFetchTime = now;
-      return memoryStatus;
+      return;
     }
 
     // Check timestamp: don't let older db data overwrite fresher local/in-memory update
     const dbUpdatedAt = metrics.updated_at ? new Date(metrics.updated_at).getTime() : 0;
     const localUpdatedAt = memoryStatus.lastUpdated ? new Date(memoryStatus.lastUpdated).getTime() : 0;
     if (dbUpdatedAt > 0 && localUpdatedAt > 0 && dbUpdatedAt < localUpdatedAt) {
-      lastFetchTime = now;
-      return memoryStatus;
+      return;
     }
 
     // 1. If full_status_json is present in Supabase, parse it directly for 100% field fidelity
@@ -144,9 +142,8 @@ export async function readStatus(): Promise<TirumalaStatus> {
           ...parsed,
           lastUpdated: metrics.updated_at || parsed.lastUpdated || new Date().toISOString()
         };
-        lastFetchTime = now;
         await writeLocalStatus(memoryStatus);
-        return memoryStatus;
+        return;
       } catch (jsonErr) {
         console.warn("Failed to parse full_status_json from Supabase:", jsonErr);
       }
@@ -224,13 +221,32 @@ export async function readStatus(): Promise<TirumalaStatus> {
       lastUpdated: metrics.updated_at || memoryStatus.lastUpdated || new Date().toISOString(),
     };
     
-    lastFetchTime = now;
     await writeLocalStatus(memoryStatus);
-    return memoryStatus;
-  } catch {
+  } catch (err) {
     lastFetchTime = now;
+  } finally {
+    isRefreshingFromSupabase = false;
+  }
+}
+
+export async function readStatus(): Promise<TirumalaStatus> {
+  await ensureFileLoaded();
+  const now = Date.now();
+  
+  // 1. If memory cache is fresh (< 15 seconds), return immediately in 0ms
+  if (now - lastFetchTime < 15000) {
     return memoryStatus;
   }
+
+  // 2. If memory cache exists, return immediately in 0ms and revalidate in background
+  if (lastFetchTime > 0) {
+    refreshFromSupabase().catch(() => {});
+    return memoryStatus;
+  }
+
+  // 3. Initial cold boot first request only
+  await refreshFromSupabase();
+  return memoryStatus;
 }
 
 export async function updateStatus(updates: Partial<TirumalaStatus>): Promise<TirumalaStatus> {

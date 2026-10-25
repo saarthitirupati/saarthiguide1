@@ -8,7 +8,8 @@ export async function GET() {
     const status = await readStatus();
     return NextResponse.json(status, {
       headers: {
-        'Cache-Control': 'public, max-age=3, s-maxage=5, stale-while-revalidate=10',
+        'Cache-Control': 'public, max-age=5, s-maxage=15, stale-while-revalidate=60',
+        'CDN-Cache-Control': 'public, s-maxage=15',
       },
     });
   } catch (e: any) {

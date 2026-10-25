@@ -47,10 +47,10 @@ export const HOTELS: Hotel[] = [
     distanceSummary: '1.2 km to Kapila Theertham · 3 km to Alipiri Mettu · Near Srinivasam',
     distanceSummaryTe: 'కపిల తీర్థం నుండి 1.2 కి.మీ · అలిపిరి మెట్టు నుండి 3 కి.మీ',
     images: [
-      'https://res.cloudinary.com/kniegqlj/image/upload/v1792240797/ANWiy9SQiPv-2NOPnN-DzVnbD8b3C9RuUA8n-vaOApMNdzKYFynwR9wPRdqdb0wQY9Tjn6JMepGkRYt8spN3pjeh-dGsxdcCoRXetxzNIXRVU_YH4vWTyVZWYLDgD4bWpRksz1G2YKw_s680-w680-h510-rw_vxmorg.webp',
-      'https://res.cloudinary.com/kniegqlj/image/upload/v1792240780/AABkmLcpN_kDVbncV2kOClC-fm4v_YeWYOZiliEVf_a9Wzdwxmp1Ob-iPakLfDgOx-dTv7c-_mGnLsVd-4nC7t4xvGOlrzB_dpr90HxIBC0P-WJN_dh3K2lPrYC7_792fGrnJEuuJYr3Eg_w324-h312-n-k-no_pp0pmu.jpg',
-      'https://res.cloudinary.com/kniegqlj/image/upload/v1792240845/ANWiy9QRE2fPcf-WuLw3lgzPHBsqIZ2CUOst8P3KYLayfjLIktGc6rdDt0IQ5OaYCkmSGC3SzmtDk15DP9cXUoDlcEqxF4pwCat1UZBcKgRZJD9raQ_XsHcupc3ZHqEG318ZOAVQXjmh_s680-w680-h510-rw_og938i.webp',
-      'https://res.cloudinary.com/kniegqlj/image/upload/v1792240823/ANWiy9SD8253FSlIdhBi0hkjSAqLn2mlo4RZlQ6tO-e2Gy_9mfUPyJ36_FMr1ViSLtF8eUxtCGfPepq3sLSCD82HCUbmdiIAlkMsvw2-FI8O3twsSQA2e_XjZJRkygoQdtQDBRDLT2u__s680-w680-h510-rw_kztv6y.webp'
+      '/images/places/img_13_ANWiy9SQiPv-2NOPnN-DzVnbD8b3C9RuUA8n-vaOApMNdzKYFy.webp',
+      '/images/places/img_14_AABkmLcpN_kDVbncV2kOClC-fm4v_YeWYOZiliEVf_a9Wzdwxm.jpg',
+      '/images/places/img_15_ANWiy9QRE2fPcf-WuLw3lgzPHBsqIZ2CUOst8P3KYLayfjLIkt.webp',
+      '/images/places/img_16_ANWiy9SD8253FSlIdhBi0hkjSAqLn2mlo4RZlQ6tO-e2Gy_9mf.webp'
     ],
     features: [
       'Air Conditioning',

@@ -460,7 +460,7 @@ export default function PilgrimEssentialsPage() {
             >
               <div 
                 className={styles.featuredBanner}
-                style={{ backgroundImage: `url('https://res.cloudinary.com/kniegqlj/image/upload/v1786968161/IMG_6992_cq6gls.jpg')` }}
+                style={{ backgroundImage: `url('/images/places/img_2_IMG_6992_cq6gls.jpg')` }}
               >
                 <div className={styles.featuredBadge}>
                   <span className={styles.pulseDot} />
@@ -490,7 +490,7 @@ export default function PilgrimEssentialsPage() {
               >
                 <div 
                   className={styles.secondaryCardImage}
-                  style={{ backgroundImage: `url('https://res.cloudinary.com/kniegqlj/image/upload/v1786968272/Annaprasadam-4-copy_lyo86v.jpg')` }}
+                  style={{ backgroundImage: `url('/images/places/img_3_Annaprasadam-4-copy_lyo86v.jpg')` }}
                 />
                 <div className={styles.secondaryCardBody}>
                   <div>
@@ -510,7 +510,7 @@ export default function PilgrimEssentialsPage() {
               >
                 <div 
                   className={styles.secondaryCardImage}
-                  style={{ backgroundImage: `url('https://res.cloudinary.com/kniegqlj/image/upload/v1786968353/painted-sign-board-of-kalyanakatta-balaji-temple-tirupati-andhra-pradesh-F5M0J1_p7hkr5.jpg')` }}
+                  style={{ backgroundImage: `url('/images/places/img_4_painted-sign-board-of-kalyanakatta-balaji-temple-t.jpg')` }}
                 />
                 <div className={styles.secondaryCardBody}>
                   <div>
@@ -530,7 +530,7 @@ export default function PilgrimEssentialsPage() {
               >
                 <div 
                   className={styles.secondaryCardImage}
-                  style={{ backgroundImage: `url('https://res.cloudinary.com/kniegqlj/image/upload/v1786968555/maxresdefault_fwmwke.jpg')` }}
+                  style={{ backgroundImage: `url('/images/places/img_5_maxresdefault_fwmwke.jpg')` }}
                 />
                 <div className={styles.secondaryCardBody}>
                   <div>

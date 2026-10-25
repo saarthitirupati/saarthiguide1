@@ -20,6 +20,11 @@
   display: flex !important;
   justify-content: center !important;
   box-sizing: border-box !important;
+  transform: translate3d(0, 0, 0) !important;
+  -webkit-transform: translate3d(0, 0, 0) !important;
+  backface-visibility: hidden !important;
+  -webkit-backface-visibility: hidden !important;
+  will-change: transform;
 }
 
 @media (min-width: 768px) {

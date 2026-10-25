@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     siteName: 'Saarthi Guide',
     images: [
       {
-        url: 'https://res.cloudinary.com/kniegqlj/image/upload/v1791044338/passportsize_f7dyq3.jpg',
+        url: '/images/places/img_1_passportsize_f7dyq3.jpg',
         width: 800,
         height: 800,
         alt: 'Sunil Thatra - Founder of Saarthi Guide'
@@ -54,7 +54,7 @@ export default function AboutLayout({ children }: { children: React.ReactNode })
       url: baseUrl
     },
     url: `${baseUrl}/about`,
-    image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1791044338/passportsize_f7dyq3.jpg',
+    image: '/images/places/img_1_passportsize_f7dyq3.jpg',
     sameAs: [
       'https://www.linkedin.com/in/sunil-t-39a905315/'
     ],

@@ -67,6 +67,10 @@ export default function BottomNav() {
         backgroundColor: '#FFFFFF',
         zIndex: 1000,
         boxShadow: '0 -2px 10px rgba(0, 0, 0, 0.05)',
+        transform: 'translate3d(0, 0, 0)',
+        WebkitTransform: 'translate3d(0, 0, 0)',
+        backfaceVisibility: 'hidden',
+        WebkitBackfaceVisibility: 'hidden',
       }}
       suppressHydrationWarning
     >

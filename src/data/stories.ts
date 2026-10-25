@@ -118,7 +118,7 @@ export const STORIES: Story[] = [
     subtitle: 'The Divine Celestial Wedding Expense',
     category: 'mythology',
     readTime: '2.5 min read',
-    image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1785912384/sri-laxmi-venkataramana_jo1cxb.jpg',
+    image: '/images/places/img_50_sri-laxmi-venkataramana_jo1cxb.jpg',
     trustBadge: 'Verified by TTD + Temple Priests',
     quickSummary: 'To marry Goddess Padmavathi at Narayanavanam, Lord Srinivasa borrowed wealth from Kubera, the treasurer of the heavens. Devotees contribute to the Hundi to help repay the interest.',
     storyBlocks: [
@@ -286,7 +286,7 @@ export const STORIES: Story[] = [
     subtitle: 'Sri Tataiahgunta Gangamma: Guardian Deity & Sister of Lord Venkateswara',
     category: 'festival',
     readTime: '3 min read',
-    image: 'https://res.cloudinary.com/kniegqlj/image/upload/v1786898380/tirupati-gangamma-jathara-copy_vnxhrd.jpg',
+    image: '/images/places/img_19_tirupati-gangamma-jathara-copy_vnxhrd.jpg',
     trustBadge: 'Verified by State Cultural & Heritage Archives',
     quickSummary: 'Sri Tataiahgunta Gangamma is the revered Grama Devatha of Tirupati and younger sister of Lord Venkateswara. Every May, Tirupati erupts into a vibrant 900-year-old folk festival celebrating her victory over tyranny.',
     storyBlocks: [

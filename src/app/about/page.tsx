@@ -9,7 +9,7 @@ import {
 } from 'lucide-react';
 import { useLanguage } from '@/lib/useLanguage';
 
-const PASSPORT_PHOTO_URL = 'https://res.cloudinary.com/kniegqlj/image/upload/v1791044338/passportsize_f7dyq3.jpg';
+const PASSPORT_PHOTO_URL = '/images/places/img_1_passportsize_f7dyq3.jpg';
 
 const TEXTS = {
   en: {

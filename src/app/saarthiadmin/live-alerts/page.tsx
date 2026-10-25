@@ -490,11 +490,11 @@ export default function AdminAlertsPage() {
                 </div>
 
                 <div className={styles.formGroup}>
-                  <label className={styles.label}>Alert Image (Optional Cloudinary / Photo Link)</label>
+                  <label className={styles.label}>Alert Image (Optional Image URL)</label>
                   <input 
                     type="url" 
                     className={styles.input} 
-                    placeholder="e.g. https://res.cloudinary.com/kniegqlj/image/upload/..." 
+                    placeholder="e.g. /images/places/example.jpg or https://..." 
                     value={imageUrl} 
                     onChange={(e) => setImageUrl(e.target.value)}
                   />

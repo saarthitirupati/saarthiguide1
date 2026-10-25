@@ -205,13 +205,19 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
           }}
         />
         {/* End Google Tag Manager */}
-        {/* Preconnect and Load Crisp Google Fonts including Noto Serif Telugu and Cinzel */}
+        {/* Preconnect and Asynchronously Load Fonts without blocking First Contentful Paint */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        {/* eslint-disable-next-line @next/next/no-page-custom-font */}
-        <link
-          href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+Telugu:wght@400;500;600;700;800;900&family=Noto+Serif+Telugu:wght@500;600;700;800;900&family=Plus+Jakarta+Sans:wght@500;600;700;800;900&display=swap"
-          rel="stylesheet"
+        <script
+          id="async-fonts-loader"
+          dangerouslySetInnerHTML={{
+            __html: `(function(){
+              var l = document.createElement('link');
+              l.rel = 'stylesheet';
+              l.href = 'https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=Inter:wght@400;500;600;700;800;900&family=Noto+Sans+Telugu:wght@400;500;600;700;800;900&family=Noto+Serif+Telugu:wght@500;600;700;800;900&family=Plus+Jakarta+Sans:wght@500;600;700;800;900&display=swap';
+              document.head.appendChild(l);
+            })();`,
+          }}
         />
         <script
           type="application/ld+json"
