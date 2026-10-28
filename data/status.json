@@ -31,8 +31,8 @@
       "peakHours": "Daily 6 AM - 8 AM"
     }
   ],
-  "ssdTokenStatus": "closed-for-day",
-  "ssdNextTokenTime": "5:30 PM",
+  "ssdTokenStatus": "suspended",
+  "ssdNextTokenTime": "Not issuing tomorrow",
   "ssdTokenSlots": [
     {
       "slotTime": "5:00 AM - 7:00 AM",
@@ -65,8 +65,8 @@
       "tokensLeft": "Available"
     }
   ],
-  "ssdNotice": "⏰ 28th October – SSD Tokens ",
-  "ssdTimingsGuide": "*28th October – SSD 10K & DD 2K Tokens Issue Started @ 05:30 Pm*\n\n*SSD Tokens – Current Status*\n\n3700+ Tokens Available \n\n*Srivari Mettu Divya Darshan Tokens*\n\n1300+ Tokens Available",
+  "ssdNotice": "Offline SSD and DD tokens will NOT be issued tomorrow across all Tirupati counters.",
+  "ssdTimingsGuide": "Offline SSD tokens will NOT be issued tomorrow across all counters in Tirupati (Vishnu Nivasam, Srinivasam, Bhudevi). Pilgrims can proceed for direct walk-in Sarva Darshan at Vaikuntam Queue Complex, Tirumala.",
   "ssdCounters": [
     {
       "name": "Vishnu Nivasam Counter",

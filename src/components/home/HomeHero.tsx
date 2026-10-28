@@ -1956,11 +1956,11 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
             const issuingText = lang === 'te' ? 'జారీ అవుతున్నాయి' : lang === 'hi' ? 'जारी हैं' : lang === 'ta' ? 'வழங்கப்படுகிறது' : 'Issuing Now';
             const pausedText = lang === 'te' ? 'తాత్కాలికంగా ఆపబడింది' : lang === 'hi' ? 'రుకా ہوا ہے' : lang === 'ta' ? 'நிறுத்தப்பட்டுள்ளது' : 'Paused';
 
-            let ssdTheme = { bg: '#FEF2F2', border: '#FECDD3', badgeBg: '#FEE2E2', badgeText: '#991B1B', iconColor: '#DC2626', iconComp: <TicketX size={22} color="#DC2626" />, waitText: closedText };
+            let ssdTheme = { bg: '#FEF2F2', border: '#FECDD3', badgeBg: '#FEE2E2', badgeText: '#991B1B', iconColor: '#DC2626', iconComp: <TicketX size={22} color="#DC2626" />, waitText: ssdWait || '2–4 hrs' };
             if (isSsdIssuing) {
-              ssdTheme = { bg: '#F0FDF4', border: '#BBF7D0', badgeBg: '#DCFCE7', badgeText: '#166534', iconColor: '#059669', iconComp: <Ticket size={22} color="#059669" />, waitText: ssdWait !== '2–4 hrs' ? ssdWait : issuingText };
+              ssdTheme = { bg: '#F0FDF4', border: '#BBF7D0', badgeBg: '#DCFCE7', badgeText: '#166534', iconColor: '#059669', iconComp: <Ticket size={22} color="#059669" />, waitText: ssdWait || '2–4 hrs' };
             } else if (isSsdPaused) {
-              ssdTheme = { bg: '#FFFDF0', border: '#FDE68A', badgeBg: '#FEF3C7', badgeText: '#92400E', iconColor: '#D97706', iconComp: <Ticket size={22} color="#D97706" />, waitText: pausedText };
+              ssdTheme = { bg: '#FFFDF0', border: '#FDE68A', badgeBg: '#FEF3C7', badgeText: '#92400E', iconColor: '#D97706', iconComp: <Ticket size={22} color="#D97706" />, waitText: ssdWait || '2–4 hrs' };
             } else if (liveSSD !== 'Closed' && liveSSD !== 'Check Counter') {
               ssdTheme.waitText = liveSSD;
             }

@@ -29,7 +29,9 @@ export function useRealtimeStatus(initialStatus: TirumalaStatus | null = null) {
 
   const fetchStatus = async () => {
     try {
-      const data = await safeFetchJson<TirumalaStatus>('/api/v1/status');
+      const data = await safeFetchJson<TirumalaStatus>(`/api/v1/status?t=${Date.now()}`, {
+        cache: 'no-store'
+      });
       if (data) {
         setStatus(data);
       }

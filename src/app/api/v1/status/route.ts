@@ -8,8 +8,9 @@ export async function GET() {
     const status = await readStatus();
     return NextResponse.json(status, {
       headers: {
-        'Cache-Control': 'public, max-age=5, s-maxage=15, stale-while-revalidate=60',
-        'CDN-Cache-Control': 'public, s-maxage=15',
+        'Cache-Control': 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0',
+        'CDN-Cache-Control': 'no-store',
+        'Cloudflare-CDN-Cache-Control': 'no-store',
       },
     });
   } catch (e: any) {

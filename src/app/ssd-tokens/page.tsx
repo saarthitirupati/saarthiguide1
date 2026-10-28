@@ -67,7 +67,7 @@ export default function SsdTokensStandalonePage() {
   const fetchStatus = async (isManual = false) => {
     if (isManual) setRefreshing(true);
     try {
-      const res = await fetch('/api/v1/status', { cache: 'no-store' });
+      const res = await fetch(`/api/v1/status?t=${Date.now()}`, { cache: 'no-store' });
       if (res.ok) {
         const data: TirumalaStatus = await res.json();
         if (data.ssdTokenStatus) setSsdStatus(data.ssdTokenStatus);

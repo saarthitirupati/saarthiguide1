@@ -70,7 +70,7 @@ export default function DarshanDetailsPage() {
   const fetchStatus = async (isManual = false) => {
     if (isManual) setRefreshing(true);
     try {
-      const res = await fetch('/api/v1/status', { cache: 'no-store' });
+      const res = await fetch(`/api/v1/status?t=${Date.now()}`, { cache: 'no-store' });
       if (res.ok) {
         const statusData: TirumalaStatus = await res.json();
         
