@@ -7,14 +7,15 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { 
   ArrowLeft, Search, ClipboardCheck, Check, 
   ChevronRight, HelpCircle, ChevronDown, ChevronUp, X,
-  Lock, Utensils, Scissors, Bed, ShoppingBag, ShieldAlert, Phone, AlertTriangle, Bell, Info
+  Lock, Utensils, Scissors, Bed, ShoppingBag, ShieldAlert, Phone, AlertTriangle, Bell, Info,
+  Navigation, Compass,
+  LayoutGrid, SquareParking, Bus, BriefcaseMedical
 } from 'lucide-react';
 import styles from './Essentials.module.css';
 
 import { KNOWLEDGE_ITEMS, FAQ_ITEMS, CHECKLIST_ITEMS } from '@/content/knowledge';
 import { useRealtimeStatus } from '@/lib/useRealtimeStatus';
 import { useLanguage } from '@/lib/useLanguage';
-import { SrivariNamamVector } from '@/components/common/DevotionalSvgIcons';
 
 const TEXTS: Record<string, Record<string, string>> = {
   en: {
@@ -22,6 +23,7 @@ const TEXTS: Record<string, Record<string, string>> = {
     searchTitle: 'What are you looking for?',
     searchPlaceholder: 'Search lockers, food, rooms, tonsure...',
     todaysNotice: "Today's Notice",
+    allFacilitiesTitle: 'All facilities',
     readinessTitle: 'Pre-Darshan Readiness',
     hideChecklist: 'Hide Checklist',
     searchResults: 'Search Results',
@@ -30,6 +32,9 @@ const TEXTS: Record<string, Record<string, string>> = {
     viewDetails: 'View Details →',
     whatDoYouNeed: 'What do you need right now?',
     instantGuidance: 'Instant guidance before entering the temple',
+    darshanEntryTitle: 'Darshan Entry Points',
+    darshanEntrySub: '15 Active Gates · VQC-1, VQC-2, ₹300 SED, NRI, Seniors & Rush Lines with Google Maps directions.',
+    findGates: 'Find your gate & directions →',
     secureBelongingsTitle: 'Secure Belongings & Free Lockers',
     secureBelongingsSub: 'Deposit mobile phones, backpacks & shoes safely before entering queue scanners. 100% free with exit pickup.',
     findLocker: 'Find a locker →',
@@ -59,6 +64,7 @@ const TEXTS: Record<string, Record<string, string>> = {
     searchTitle: 'మీరు దేనికోసం వెతుకుతున్నారు?',
     searchPlaceholder: 'లాకర్లు, అన్నప్రసాదం, గదులు, కళ్యాణకట్ట శోధించండి...',
     todaysNotice: 'నేటి ముఖ్యాంశం',
+    allFacilitiesTitle: 'అన్ని సదుపాయాలు',
     readinessTitle: 'దర్శన సూచిక సరిచూసుకోండి',
     hideChecklist: 'జాబితా దాచు',
     searchResults: 'శోధన ఫలితాలు',
@@ -67,6 +73,9 @@ const TEXTS: Record<string, Record<string, string>> = {
     viewDetails: 'వివరాలు చూడండి →',
     whatDoYouNeed: 'మీకు ఇప్పుడు ఏమి కావాలో ఎంచుకోండి',
     instantGuidance: 'ఆలయంలోనికి వెళ్లేముందు అత్యవసర సమాచారం',
+    darshanEntryTitle: 'దర్శన ప్రవేశ ద్వారాలు',
+    darshanEntrySub: '15 ప్రవేశ గేట్లు · VQC-1, VQC-2, ₹300, ఎన్నారై, వృద్ధులు మరియు రద్దీ లైన్లు (గూగుల్ మ్యాప్స్ దారులు).',
+    findGates: 'మీ గేట్ & దారి చూడండి →',
     secureBelongingsTitle: 'వస్తువుల భద్రత & ఉచిత లాకర్లు',
     secureBelongingsSub: 'క్యూ కాంప్లెక్స్ వెళ్లేముందు ఫోన్లు, లగేజీ, చెప్పులు భద్రపరచండి. 100% ఉచిత సర్వీస్.',
     findLocker: 'లాకర్ కేంద్రాలు →',
@@ -96,6 +105,7 @@ const TEXTS: Record<string, Record<string, string>> = {
     searchTitle: 'आप क्या खोज रहे हैं?',
     searchPlaceholder: 'लॉकर, भोजन, कमरे, मुंडन खोजें...',
     todaysNotice: 'आज का नोटिस',
+    allFacilitiesTitle: 'सभी सुविधाएं',
     readinessTitle: 'दर्शन तैयारी चेकलिस्ट',
     hideChecklist: 'सूची छिपाएं',
     searchResults: 'खोज परिणाम',
@@ -104,6 +114,9 @@ const TEXTS: Record<string, Record<string, string>> = {
     viewDetails: 'विवरण देखें →',
     whatDoYouNeed: 'आपको अभी क्या चाहिए?',
     instantGuidance: 'मंदिर में प्रवेश करने से पहले त्वरित मार्गदर्शन',
+    darshanEntryTitle: 'दर्शन प्रवेश द्वार',
+    darshanEntrySub: '15 प्रवेश द्वार · VQC-1, VQC-2, ₹300, एनआरआई, वरिष्ठ नागरिक व रश लाइनें (गूगल मैप्स दिशा निर्देश)।',
+    findGates: 'गेट और दिशा देखें →',
     secureBelongingsTitle: 'सामान सुरक्षा और मुफ्त लॉकर',
     secureBelongingsSub: 'क्यू कॉम्प्लेक्स में प्रवेश से पहले फोन, बैग और जूते सुरक्षित जमा करें। 100% मुफ्त।',
     findLocker: 'लॉकर खोजें →',
@@ -133,6 +146,7 @@ const TEXTS: Record<string, Record<string, string>> = {
     searchTitle: 'நீங்கள் எதைத் தேடுகிறீர்கள்?',
     searchPlaceholder: 'லாக்கர், உணவு, அறைகள், மொட்டை தேடுக...',
     todaysNotice: 'இன்றைய அறிவிப்பு',
+    allFacilitiesTitle: 'அனைத்து வசதிகள்',
     readinessTitle: 'தரிசன தயாரிப்பு பட்டியல்',
     hideChecklist: 'பட்டியலை மறைக்க',
     searchResults: 'தேடல் முடிவுகள்',
@@ -141,6 +155,9 @@ const TEXTS: Record<string, Record<string, string>> = {
     viewDetails: 'விவரங்களை காண்க →',
     whatDoYouNeed: 'உங்களுக்கு இப்போது என்ன தேவை?',
     instantGuidance: 'கோவிலுக்குள் நுழைவதற்கு முன் உடனடி வழிகாட்டுதல்',
+    darshanEntryTitle: 'தரிசன நுழைவு வாயில்கள்',
+    darshanEntrySub: '15 நுழைவு வாயில்கள் · VQC-1, VQC-2, ₹300, என்ஆர்ஐ, முதியோர் மற்றும் நெரிசல் வரிசைகள்.',
+    findGates: 'நுழைவு வாயிலைக் காண்க →',
     secureBelongingsTitle: 'பொருட்கள் பாதுகாப்பு & இலவச லாக்கர்கள்',
     secureBelongingsSub: 'க்யூவில் நுழைவதற்கு முன் போன், பேக் மற்றும் காலணிகளை பாதுகாப்பாக வைக்கவும். 100% இலவசம்.',
     findLocker: 'லாக்கரை காண்க →',
@@ -166,6 +183,50 @@ const TEXTS: Record<string, Record<string, string>> = {
     faqTitle: 'அடிக்கடி கேட்கப்படும் கேள்விகள்'
   }
 };
+
+interface FacilityTileItem {
+  id: string;
+  name: { en: string; te: string; hi: string; ta: string };
+  count: number;
+  bg: string;
+  color: string;
+  border?: string;
+  icon: any;
+  action: { type: 'route'; path: string } | { type: 'filter'; query: string };
+}
+
+const ALL_FACILITIES_TILES: FacilityTileItem[] = [
+  {
+    id: 'parking',
+    name: { en: 'Parking', te: 'పార్కింగ్', hi: 'पार्किंग', ta: 'பார்க்கிங்' },
+    count: 13,
+    bg: '#F1F5F9',
+    color: '#475569',
+    border: '#E2E8F0',
+    icon: SquareParking,
+    action: { type: 'route', path: '/parking' }
+  },
+  {
+    id: 'free-bus-stations',
+    name: { en: 'Free bus & stations', te: 'ఉచిత బస్సు & స్టేషన్లు', hi: 'मुफ्त बस और स्टेशन', ta: 'இலவச பஸ் & நிலையங்கள்' },
+    count: 17,
+    bg: '#FFEDD5',
+    color: '#C2410C',
+    border: '#FED7AA',
+    icon: Bus,
+    action: { type: 'route', path: '/free-bus' }
+  },
+  {
+    id: 'medical',
+    name: { en: 'Medical', te: 'వైద్య సేవలు', hi: 'चिकित्सा', ta: 'மருத்துவம்' },
+    count: 3,
+    bg: '#FFE4E6',
+    color: '#E11D48',
+    border: '#FECDD3',
+    icon: BriefcaseMedical,
+    action: { type: 'route', path: '/medical' }
+  }
+];
 
 export default function PilgrimEssentialsPage() {
   const router = useRouter();
@@ -258,7 +319,32 @@ export default function PilgrimEssentialsPage() {
   }
 
   const handleCardClick = (id: string) => {
+    if (id === 'darshan-entry-points') {
+      router.push('/darshan/entry-points');
+      return;
+    }
+    if (id === 'free-bus' || id === 'free-bus-stations') {
+      router.push('/free-bus');
+      return;
+    }
+    if (id === 'parking') {
+      router.push('/parking');
+      return;
+    }
+    if (id === 'medical') {
+      router.push('/medical');
+      return;
+    }
     router.push(`/essentials/${id}`);
+  };
+
+  const handleFacilityClick = (facility: FacilityTileItem) => {
+    if (facility.action.type === 'route') {
+      router.push(facility.action.path);
+    } else {
+      setSearchQuery(facility.action.query);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
   };
 
   return (
@@ -268,9 +354,8 @@ export default function PilgrimEssentialsPage() {
         <button className={styles.backButton} onClick={() => router.push('/')} aria-label="Back">
           <ArrowLeft size={20} />
         </button>
-        <div className={styles.headerTitleContainer} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}>
-          <SrivariNamamVector size={24} />
-          <h1 style={{ margin: 0, fontFamily: "var(--font-sacred-serif), 'Cinzel', Georgia, serif" }}>
+        <div className={styles.headerTitleContainer}>
+          <h1 className={styles.headerTitle}>
             {t.headerTitle}
           </h1>
         </div>
@@ -442,15 +527,130 @@ export default function PilgrimEssentialsPage() {
             )}
           </section>
         ) : (
-          /* WHAT DO YOU NEED RIGHT NOW? (1 PRIMARY FEATURED + COMPACT SECONDARY CARDS) */
-          <section style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-            <div>
-              <h2 className={styles.sectionTitle} style={{ fontSize: '18px', margin: 0 }}>
-                {t.whatDoYouNeed}
-              </h2>
-              <p style={{ fontSize: '12.5px', color: '#64748B', margin: '2px 0 0 0', fontWeight: 500 }}>
-                {t.instantGuidance}
-              </p>
+          <>
+            {/* ALL FACILITIES (DARK THEME JEWEL GRID MATCHING SCREENSHOT 1) */}
+            <section className={styles.allFacilitiesContainer}>
+              <div className={styles.allFacilitiesHeader}>
+                <div className={styles.allFacilitiesHeaderIcon}>
+                  <LayoutGrid size={22} />
+                </div>
+                <h2 className={styles.allFacilitiesTitle}>
+                  {t.allFacilitiesTitle}
+                </h2>
+              </div>
+              <div className={styles.allFacilitiesGrid}>
+                {ALL_FACILITIES_TILES.map((fac) => {
+                  const IconComp = fac.icon;
+                  const label = fac.name[lang as 'en' | 'te' | 'hi' | 'ta'] || fac.name.en;
+                  return (
+                    <button
+                      key={fac.id}
+                      type="button"
+                      className={styles.facilityItem}
+                      onClick={() => handleFacilityClick(fac)}
+                      aria-label={`${label} (${fac.count})`}
+                    >
+                      <div 
+                        className={styles.facilityTile} 
+                        style={{ 
+                          backgroundColor: fac.bg, 
+                          border: `1px solid ${fac.border || '#E2E8F0'}` 
+                        }}
+                      >
+                        <span className={styles.facilityBadge}>{fac.count}</span>
+                        <IconComp size={25} color={fac.color} strokeWidth={2.2} />
+                      </div>
+                      <span className={styles.facilityLabel}>{label}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            </section>
+
+            {/* WHAT DO YOU NEED RIGHT NOW? (1 PRIMARY FEATURED + COMPACT SECONDARY CARDS) */}
+            <section style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              <div>
+                <h2 className={styles.sectionTitle} style={{ fontSize: '18px', margin: 0 }}>
+                  {t.whatDoYouNeed}
+                </h2>
+                <p style={{ fontSize: '12.5px', color: '#64748B', margin: '2px 0 0 0', fontWeight: 500 }}>
+                  {t.instantGuidance}
+                </p>
+              </div>
+
+            {/* FEATURED: DARSHAN ENTRY POINTS (ALL 15 GATES) */}
+            <div 
+              className={styles.featuredServiceCard}
+              style={{
+                border: '1.5px solid #BBF7D0',
+                background: 'linear-gradient(135deg, #FFFFFF 0%, #F0FDF4 100%)',
+                cursor: 'pointer'
+              }}
+              onClick={() => router.push('/darshan/entry-points')}
+            >
+              <div 
+                className={styles.featuredBanner}
+                style={{ 
+                  backgroundImage: `linear-gradient(180deg, rgba(15, 23, 42, 0.45) 0%, rgba(15, 23, 42, 0.7) 100%), url('/images/places/tirumala_temple_night.png')`,
+                  backgroundSize: 'cover',
+                  backgroundPosition: 'center 40%',
+                  height: '136px',
+                  display: 'flex',
+                  alignItems: 'flex-start',
+                  justifyContent: 'space-between',
+                  padding: '12px 14px'
+                }}
+              >
+                <div style={{ 
+                  display: 'flex', 
+                  alignItems: 'center', 
+                  gap: '6px', 
+                  color: '#FFFFFF',
+                  background: 'rgba(15, 23, 42, 0.72)',
+                  backdropFilter: 'blur(6px)',
+                  WebkitBackdropFilter: 'blur(6px)',
+                  padding: '5px 10px',
+                  borderRadius: '20px',
+                  border: '1px solid rgba(255, 255, 255, 0.18)'
+                }}>
+                  <Navigation size={13} color="#4ADE80" />
+                  <span style={{ fontSize: '12px', fontWeight: 700, letterSpacing: '0.2px' }}>
+                    Tirumala Hill Entry Gates
+                  </span>
+                </div>
+                <div 
+                  className={styles.featuredBadge} 
+                  style={{ 
+                    position: 'static',
+                    background: 'rgba(15, 23, 42, 0.72)',
+                    backdropFilter: 'blur(6px)',
+                    WebkitBackdropFilter: 'blur(6px)',
+                    border: '1px solid rgba(255, 255, 255, 0.18)'
+                  }}
+                >
+                  <span className={styles.pulseDot} />
+                  <span>15 Gates Active</span>
+                </div>
+              </div>
+              <div className={styles.featuredContent}>
+                <div>
+                  <h3 className={styles.featuredTitle}>{t.darshanEntryTitle}</h3>
+                  <p className={styles.featuredSub}>
+                    {t.darshanEntrySub}
+                  </p>
+                </div>
+                <button 
+                  className={styles.featuredActionBtn}
+                  style={{ background: '#0F5132', color: '#FFFFFF' }}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    router.push('/darshan/entry-points');
+                  }}
+                >
+                  <Compass size={15} />
+                  <span>{t.findGates}</span>
+                </button>
+              </div>
             </div>
 
             {/* PRIMARY FEATURED CARD: SECURE BELONGINGS */}
@@ -606,7 +806,8 @@ export default function PilgrimEssentialsPage() {
               </div>
             </div>
           </section>
-        )}
+        </>
+      )}
 
         {/* FREQUENTLY ASKED QUESTIONS (CLEAN PROGRESSIVE DISCLOSURE) */}
         <section className={styles.faqSection} style={{ marginTop: '8px' }}>

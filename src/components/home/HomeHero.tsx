@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Menu, Bell, MapPin, Sun, Sparkles, Ticket, TicketX, ShieldAlert, Car, Gift, CloudRain, Bus, Clock, Route, Users, Zap, Check, ChevronDown, Navigation, Flame, Moon, Languages, RotateCcw, Share2, X, Volume2, VolumeX, ChevronRight, Pause, Play, Building2, Calendar } from 'lucide-react';
+import { Menu, Bell, MapPin, Sun, Sparkles, Ticket, TicketX, ShieldAlert, Car, Gift, CloudRain, Bus, Clock, Route, Users, Zap, Check, ChevronDown, Navigation, Flame, Moon, Languages, RotateCcw, Share2, X, Volume2, VolumeX, ChevronRight, Pause, Play, Building2, Calendar, SquareParking, BriefcaseMedical } from 'lucide-react';
 import Link from 'next/link';
 import Logo from '@/components/Logo/Logo';
 import { useLanguage, setAppLanguage, AppLang } from '@/lib/useLanguage';
@@ -2083,6 +2083,133 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
           })()}
         </div>
 
+        {/* ── Hilltop Essentials Combined Banner ── */}
+        <div style={{
+          background: '#FFFFFF',
+          border: '1px solid #E2E8F0',
+          borderRadius: '12px',
+          padding: '10px 12px',
+          marginBottom: '14px',
+          boxShadow: '0 1px 3px rgba(15, 23, 42, 0.04)'
+        }}>
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            marginBottom: '8px',
+            paddingBottom: '6px',
+            borderBottom: '1px solid #F1F5F9'
+          }}>
+            <span style={{ fontSize: '11px', fontWeight: 700, color: '#475569', letterSpacing: '0.3px', textTransform: 'uppercase' }}>
+              {lang === 'te' ? 'కొండపై ముఖ్యమైన సేవలు' : 'Hilltop Essentials'}
+            </span>
+            <Link
+              href="/essentials"
+              style={{ fontSize: '11px', fontWeight: 600, color: '#0F5132', textDecoration: 'none' }}
+            >
+              {lang === 'te' ? 'అన్నీ చూడండి >' : 'View all >'}
+            </Link>
+          </div>
+
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(4, minmax(0, 1fr))',
+            gap: '6px'
+          }}>
+            {/* 1. Darshan Entry Points */}
+            <Link
+              href="/darshan/entry-points"
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                padding: '7px 4px',
+                borderRadius: '8px',
+                background: '#F0FDF4',
+                border: '1px solid #DCFCE7',
+                textDecoration: 'none',
+                textAlign: 'center',
+                transition: 'all 0.15s ease'
+              }}
+            >
+              <MapPin size={16} color="#059669" />
+              <span style={{ fontSize: '11px', fontWeight: 600, color: '#065F46', marginTop: '3px', whiteSpace: 'nowrap' }}>
+                {lang === 'te' ? 'గేట్లు' : 'Gates'}
+              </span>
+            </Link>
+
+            {/* 2. Free Bus */}
+            <Link
+              href="/free-bus"
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                padding: '7px 4px',
+                borderRadius: '8px',
+                background: '#FFFBEB',
+                border: '1px solid #FEF3C7',
+                textDecoration: 'none',
+                textAlign: 'center',
+                transition: 'all 0.15s ease'
+              }}
+            >
+              <Bus size={16} color="#D97706" />
+              <span style={{ fontSize: '11px', fontWeight: 600, color: '#92400E', marginTop: '3px', whiteSpace: 'nowrap' }}>
+                {lang === 'te' ? 'ఉచిత బస్సు' : 'Free Bus'}
+              </span>
+            </Link>
+
+            {/* 3. Parking */}
+            <Link
+              href="/parking"
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                padding: '7px 4px',
+                borderRadius: '8px',
+                background: '#EFF6FF',
+                border: '1px solid #DBEAFE',
+                textDecoration: 'none',
+                textAlign: 'center',
+                transition: 'all 0.15s ease'
+              }}
+            >
+              <SquareParking size={16} color="#2563EB" />
+              <span style={{ fontSize: '11px', fontWeight: 600, color: '#1E40AF', marginTop: '3px', whiteSpace: 'nowrap' }}>
+                {lang === 'te' ? 'పార్కింగ్' : 'Parking'}
+              </span>
+            </Link>
+
+            {/* 4. Medical */}
+            <Link
+              href="/medical"
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                padding: '7px 4px',
+                borderRadius: '8px',
+                background: '#FEF2F2',
+                border: '1px solid #FEE2E2',
+                textDecoration: 'none',
+                textAlign: 'center',
+                transition: 'all 0.15s ease'
+              }}
+            >
+              <BriefcaseMedical size={16} color="#DC2626" />
+              <span style={{ fontSize: '11px', fontWeight: 600, color: '#991B1B', marginTop: '3px', whiteSpace: 'nowrap' }}>
+                {lang === 'te' ? 'వైద్యం' : 'Medical'}
+              </span>
+            </Link>
+          </div>
+        </div>
+
         {/* ── DIVIDER ── */}
         <div style={{ height: '1px', backgroundColor: 'rgba(15, 23, 42, 0.12)', marginBottom: '12px' }} />
 
@@ -2236,11 +2363,11 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
           return (
             <div style={{
               background: '#FFFFFF',
-              border: '1.5px solid #E2E8F0',
-              borderRadius: '16px',
+              border: '1px solid #E2E8F0',
+              borderRadius: '14px',
               padding: '14px 16px',
               color: '#0F172A',
-              boxShadow: '0 4px 16px rgba(15, 23, 42, 0.04)',
+              boxShadow: '0 1px 3px rgba(15, 23, 42, 0.04)',
               marginTop: '12px'
             }}>
               {/* Header with Devotional Cue */}
@@ -2250,27 +2377,31 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                 justifyContent: 'space-between',
                 flexWrap: 'wrap',
                 gap: '6px',
-                marginBottom: '8px'
+                marginBottom: '10px'
               }}>
                 <div style={{
                   fontSize: '11px',
-                  fontWeight: 600,
+                  fontWeight: 700,
                   color: '#0F5132',
+                  background: '#F0FDF4',
+                  border: '1px solid #DCFCE7',
+                  padding: '3px 8px',
+                  borderRadius: '6px',
                   textTransform: lang === 'te' ? 'none' : 'uppercase',
-                  letterSpacing: lang === 'te' ? 'normal' : '0.6px',
+                  letterSpacing: lang === 'te' ? 'normal' : '0.4px',
                   display: 'flex',
                   alignItems: 'center',
                   gap: '5px',
                   flexShrink: 0
                 }}>
-                  <Sparkles size={14} color="#0F5132" />
+                  <Sparkles size={13} color="#059669" />
                   <span>{lang === 'te' ? 'సారథి మార్గదర్శనం' : 'SAARTHI GUIDANCE'}</span>
                 </div>
                 <span style={{
-                  fontSize: '11px',
-                  color: '#92400E',
-                  fontWeight: 700,
-                  fontStyle: lang === 'te' ? 'normal' : 'italic',
+                  fontSize: '11.5px',
+                  color: '#64748B',
+                  fontWeight: 600,
+                  fontStyle: 'italic',
                   textAlign: 'right'
                 }}>
                   {lang === 'te' ? '“శాంతితో శ్రీవారిని దర్శించండి”' : '“In calm faith, seek Srivari”'}
@@ -2289,7 +2420,7 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                 {guidanceHeadline}
               </div>
 
-              {/* VISUAL MICRO-CARDS GRID (Non-redundant, High Contrast) */}
+              {/* VISUAL MICRO-CARDS GRID (Non-redundant, Clean Light Theme) */}
               {(() => {
                 const getShortShrine = (en: string, te: string) => {
                   if (en.includes('Papavinasam')) return { en: 'Papavinasam', te: 'పాపవినాశనం' };
@@ -2309,51 +2440,78 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
 
                 const visualCards = isSsdClosed ? [
                   {
-                    icon: <Flame size={13} color="#D97706" />,
+                    icon: <Building2 size={13} color="#059669" />,
                     title: lang === 'te' ? 'నేటి విశేషం' : lang === 'hi' ? 'పవిత్ర క్షేత్రం' : lang === 'ta' ? 'புனித தலம்' : 'Sacred Shrine',
-                    value: lang === 'te' ? shortShrine.te : shortShrine.en
+                    value: lang === 'te' ? shortShrine.te : shortShrine.en,
+                    bg: '#F0FDF4',
+                    border: '#DCFCE7',
+                    valColor: '#065F46'
                   },
                   {
                     icon: <Navigation size={13} color="#2563EB" />,
                     title: lang === 'te' ? 'ఉత్తమ మార్గం' : lang === 'hi' ? 'उत्तम मार्ग' : lang === 'ta' ? 'சிறந்த வழி' : 'Best Route',
-                    value: lang === 'te' ? 'స్థానిక క్షేత్రాలు' : lang === 'hi' ? 'स्थानीय मंदिर' : lang === 'ta' ? 'உள்ளூர் தலங்கள்' : 'Local Shrines'
+                    value: lang === 'te' ? 'స్థానిక క్షేత్రాలు' : lang === 'hi' ? 'स्थानीय मंदिर' : lang === 'ta' ? 'உள்ளூர் தலங்கள்' : 'Local Shrines',
+                    bg: '#EFF6FF',
+                    border: '#DBEAFE',
+                    valColor: '#1E40AF'
                   },
                   {
-                    icon: <Clock size={13} color="#059669" />,
+                    icon: <Clock size={13} color="#D97706" />,
                     title: lang === 'te' ? 'అనుకూల సమయం' : lang === 'hi' ? 'अनुकूल समय' : lang === 'ta' ? 'உகந்த நேரம்' : 'Optimal Time',
-                    value: lang === 'te' ? 'ఉదయాన్నే' : lang === 'hi' ? 'प्रातः काल' : lang === 'ta' ? 'அதிகாலை' : 'Early Morning'
+                    value: lang === 'te' ? 'ఉదయాన్నే' : lang === 'hi' ? 'प्रातः काल' : lang === 'ta' ? 'அதிகாலை' : 'Early Morning',
+                    bg: '#FFFBEB',
+                    border: '#FEF3C7',
+                    valColor: '#92400E'
                   }
                 ] : (isSsdOpen ? [
                   {
-                    icon: <Ticket size={13} color="#16A34A" />,
+                    icon: <Ticket size={13} color="#059669" />,
                     title: lang === 'te' ? 'కౌంటర్లు' : lang === 'hi' ? 'एसएसडी स्थिति' : lang === 'ta' ? 'எஸ்எஸ்டி நிலை' : 'SSD Status',
-                    value: lang === 'te' ? 'జారీ అవుతున్నాయి' : lang === 'hi' ? 'जारी हो रहे हैं' : lang === 'ta' ? 'வழங்கப்படுகிறது' : 'Issuing Now'
+                    value: lang === 'te' ? 'జారీ అవుతున్నాయి' : lang === 'hi' ? 'जारी हो रहे हैं' : lang === 'ta' ? 'வழங்கப்படுகிறது' : 'Issuing Now',
+                    bg: '#F0FDF4',
+                    border: '#DCFCE7',
+                    valColor: '#065F46'
                   },
                   {
                     icon: <Clock size={13} color="#2563EB" />,
                     title: lang === 'te' ? 'సమయం ఆదా' : lang === 'hi' ? 'समय बचत' : lang === 'ta' ? 'நேர சேமிப்பு' : 'Time Saved',
-                    value: lang === 'te' ? '10+ గంటలు' : lang === 'hi' ? '10+ घंटे बचाएं' : lang === 'ta' ? '10+ மணிநேரம் சேமிப்பு' : 'Save 10+ Hrs'
+                    value: lang === 'te' ? '10+ గంటలు' : lang === 'hi' ? '10+ घंटे बचाएं' : lang === 'ta' ? '10+ மணிநேரம் சேமிப்பு' : 'Save 10+ Hrs',
+                    bg: '#EFF6FF',
+                    border: '#DBEAFE',
+                    valColor: '#1E40AF'
                   },
                   {
                     icon: <MapPin size={13} color="#D97706" />,
                     title: lang === 'te' ? 'కేంద్రాలు' : lang === 'hi' ? 'काउंटर' : lang === 'ta' ? 'மையங்கள்' : 'Counters',
-                    value: lang === 'te' ? 'అలిపిరి & శ్రీనివాసం' : lang === 'hi' ? 'अलिपिरी और श्रीनिवासम' : lang === 'ta' ? 'அலிபிரி & சீனிவாசம்' : 'Alipiri & Srinivasam'
+                    value: lang === 'te' ? 'అలిపిరి & శ్రీనివాసం' : lang === 'hi' ? 'अलिपिरी और श्रीनिवासम' : lang === 'ta' ? 'அலிபிரி & சீனிவாசம்' : 'Alipiri & Srinivasam',
+                    bg: '#FFFBEB',
+                    border: '#FEF3C7',
+                    valColor: '#92400E'
                   }
                 ] : [
                   {
-                    icon: <Users size={13} color="#D97706" />,
+                    icon: <Users size={13} color="#2563EB" />,
                     title: lang === 'te' ? 'క్యూ సమయం' : lang === 'hi' ? 'कतार प्रवाह' : lang === 'ta' ? 'வரிசை நேரம்' : 'Queue Flow',
-                    value: sarvaWait || (lang === 'te' ? 'సాధారణం' : lang === 'hi' ? 'सामान्य' : lang === 'ta' ? 'மிதமான' : 'Moderate')
+                    value: sarvaWait || (lang === 'te' ? 'సాధారణం' : lang === 'hi' ? 'सामान्य' : lang === 'ta' ? 'மிதமான' : 'Moderate'),
+                    bg: '#EFF6FF',
+                    border: '#DBEAFE',
+                    valColor: '#1E40AF'
                   },
                   {
-                    icon: <Flame size={13} color="#D97706" />,
+                    icon: <Building2 size={13} color="#059669" />,
                     title: lang === 'te' ? 'విశేష క్షేత్రం' : lang === 'hi' ? 'పవిత్ర క్షేత్రం' : lang === 'ta' ? 'புனித தலம்' : 'Sacred Shrine',
-                    value: lang === 'te' ? shortShrine.te : shortShrine.en
+                    value: lang === 'te' ? shortShrine.te : shortShrine.en,
+                    bg: '#F0FDF4',
+                    border: '#DCFCE7',
+                    valColor: '#065F46'
                   },
                   {
-                    icon: <Clock size={13} color="#0F5132" />,
+                    icon: <Clock size={13} color="#D97706" />,
                     title: lang === 'te' ? 'ఉత్తమ సమయం' : lang === 'hi' ? 'उत्तम समय' : lang === 'ta' ? 'சிறந்த நேரம்' : 'Best Time',
-                    value: lang === 'te' ? 'ఉదయాన్నే' : lang === 'hi' ? 'प्रातः काल' : lang === 'ta' ? 'அதிகாலை' : 'Early Morning'
+                    value: lang === 'te' ? 'ఉదయాన్నే' : lang === 'hi' ? 'प्रातः काल' : lang === 'ta' ? 'அதிகாலை' : 'Early Morning',
+                    bg: '#FFFBEB',
+                    border: '#FEF3C7',
+                    valColor: '#92400E'
                   }
                 ]);
 
@@ -2362,17 +2520,16 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                     display: 'grid',
                     gridTemplateColumns: 'repeat(3, minmax(0, 1fr))',
                     gap: '6px',
-                    marginBottom: '8px',
+                    marginBottom: '10px',
                     width: '100%'
                   }}>
-                    {visualCards.map((card, idx) => {
-                      const isPositive = /issuing|జారీ|जारी|வழங்க/i.test(card.value);
+                    {visualCards.map((card: any, idx: number) => {
                       return (
                         <div key={idx} style={{
-                          backgroundColor: '#F8FAFC',
-                          border: '1px solid rgba(15, 23, 42, 0.06)',
+                          backgroundColor: card.bg || '#F8FAFC',
+                          border: `1px solid ${card.border || '#E2E8F0'}`,
                           borderRadius: '10px',
-                          padding: '6px 5px',
+                          padding: '7px 6px',
                           display: 'flex',
                           flexDirection: 'column',
                           alignItems: 'center',
@@ -2385,27 +2542,27 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                             display: 'flex',
                             alignItems: 'center',
                             justifyContent: 'center',
-                            gap: '3px',
-                            marginBottom: '2px',
+                            gap: '4px',
+                            marginBottom: '3px',
                             minWidth: 0,
                             maxWidth: '100%'
                           }}>
                             {card.icon}
                             <span className="notranslate" style={{
-                              fontSize: '9px',
-                              fontWeight: 600,
+                              fontSize: '9.5px',
+                              fontWeight: 700,
                               color: '#64748B',
                               whiteSpace: 'nowrap',
-                              letterSpacing: '0.02em',
+                              letterSpacing: '0.03em',
                               textTransform: 'uppercase'
                             }}>
                               {card.title}
                             </span>
                           </div>
                           <div className="notranslate" style={{
-                            fontSize: '10.5px',
+                            fontSize: '11px',
                             fontWeight: 700,
-                            color: isPositive ? '#15803D' : '#0F172A',
+                            color: card.valColor || '#0F172A',
                             lineHeight: 1.25,
                             textAlign: 'center',
                             wordBreak: 'break-word',
@@ -2424,10 +2581,10 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                 );
               })()}
 
-              {/* Subtle Trust & Confidence Footer (No duplicate yellow banner!) */}
-              <div style={{ fontSize: '10.5px', color: '#64748B', fontWeight: 600, display: 'flex', alignItems: 'center', gap: '4px', marginTop: '4px' }}>
-                <Sparkles size={12} color="#0F5132" />
-                <span>{lang === 'te' ? 'లైవ్ క్యూ ఆధారంగా • ఇటీవల ధృవీకరించబడింది' : 'Based on live queue data • Verified recently'}</span>
+              {/* Subtle Trust & Confidence Footer */}
+              <div style={{ fontSize: '11px', color: '#64748B', fontWeight: 500, display: 'flex', alignItems: 'center', gap: '5px', marginTop: '4px' }}>
+                <Sparkles size={12} color="#059669" />
+                <span>{lang === 'te' ? 'లైవ్ క్యూ ఆధారంగా • ఇటీవల ధృవీకరించబడింది' : 'Based on live queue data · Verified recently'}</span>
               </div>
             </div>
           );

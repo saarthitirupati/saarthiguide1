@@ -350,22 +350,28 @@ export default function DarshanDetailsPage() {
                   </span>
                 </div>
 
-                <div style={{
-                  backgroundColor: '#EFF6FF',
-                  border: '1px solid #DBEAFE',
-                  borderRadius: '10px',
-                  padding: '8px 6px',
-                  textAlign: 'center',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  gap: '4px'
-                }}>
+                <Link 
+                  href="/darshan/entry-points"
+                  style={{
+                    textDecoration: 'none',
+                    backgroundColor: '#EFF6FF',
+                    border: '1px solid #DBEAFE',
+                    borderRadius: '10px',
+                    padding: '8px 6px',
+                    textAlign: 'center',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    gap: '4px',
+                    cursor: 'pointer'
+                  }}
+                  title="View all 15 Tirumala Darshan entry gates"
+                >
                   <MapPin size={15} color="#2563EB" />
                   <span style={{ fontSize: '11px', fontWeight: 700, color: '#1E40AF', lineHeight: 1.2 }}>
-                    {(data.entryGate || 'VQC-II').split(',')[0]}
+                    {(data.entryGate || 'VQC-II').split(',')[0]} ↗
                   </span>
-                </div>
+                </Link>
 
                 <div style={{
                   backgroundColor: '#FEF3C7',

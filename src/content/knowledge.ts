@@ -79,6 +79,40 @@ export interface ChecklistItem {
 
 export const KNOWLEDGE_ITEMS: KnowledgeItem[] = [
   {
+    id: 'darshan-entry-points',
+    name: 'Darshan Entry Points & Gate Navigation',
+    category: 'Free Facilities',
+    importance: 'must-know',
+    tag: 'ALL 15 GATES',
+    status: 'Open 24/7',
+    shortDescription: 'All 15 entry gates: VQC-1, VQC-2, ₹300 SED, NRI, Infants, Seniors & Rush Lines.',
+    description: 'Find your exact temple entry gate in Tirumala based on your ticket type. Step-by-step navigation, maps, rules, and helpline.',
+    whyItMatters: 'Each ticket type has its own dedicated entry point. Arriving at the wrong gate leads to entry refusal and long walks across Tirumala.',
+    distance: 'Direct Access',
+    walkingTime: 'Varies by Gate',
+    image: '/images/places/img_2_IMG_6992_cq6gls.jpg',
+    location: 'Tirumala Temple Approaches, Ring Road & Outer Circles',
+    coordinates: { lat: 13.6841, lng: 79.3458 },
+    iconName: 'navigation',
+    searchAliases: [
+      'entry', 'gate', 'gates', 'point', 'points', 'darshan entry', 'vqc', 'vqc1', 'vqc2',
+      'vaikuntam', '300 entry', 'sed entry', 'nri entry', 'infant entry', 'vip entry',
+      'senior entry', 'supadham', 'shankar road', 'gogarbham', 'silathoranam', 'krishna teja',
+      'circle', 'circles', 'main circles', 'parking', 'car parking', 'bus', 'free bus', 'bus station'
+    ],
+    highlights: [
+      { title: '15 Active Gates', subtitle: 'Turn-by-turn navigation for every ticket type', iconName: 'navigation' },
+      { title: '₹300 Shankar Road', subtitle: 'Dedicated entry near ATC Car Parking', iconName: 'ticket' },
+      { title: 'VQC-2 Free Sarva', subtitle: 'Main walk-in gate & outer rush lines', iconName: 'users' },
+      { title: '24/7 TTD Helpline', subtitle: 'Dial 155257 for instant gate guidance', iconName: 'phone' }
+    ],
+    tips: [
+      'Check the entry gate printed on your ticket voucher before leaving your cottage.',
+      'Deposit phones, bags, and footwear at free lockers before joining the queue.',
+      'On festival rush days, Sarva Darshan line starts from outer points like Gogarbham Circle.'
+    ]
+  },
+  {
     id: 'secure-belongings',
     intentId: 'secure-belongings',
     name: 'Secure Belongings & Free Lockers',

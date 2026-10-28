@@ -1,10 +1,10 @@
 {
-  "waitTime": "4-6 Hours",
+  "waitTime": "4-8 Hours",
   "bestTime": "",
-  "crowdLevel": "low",
+  "crowdLevel": "moderate",
   "sevaStatus": "All sevas open",
   "notice": "HIGH CROWD WARNING: Ghat road traffic slow. Exercise caution.",
-  "lastUpdated": "2026-10-22T12:54:38.904+00:00",
+  "lastUpdated": "2026-10-28T05:46:46.806+00:00",
   "darshanSpeed": "normal",
   "accommodationStatus": "available",
   "ladduAvailability": "available",
@@ -12,17 +12,17 @@
   "darshans": [
     {
       "name": "Sarva Darshan (Free)",
-      "waitTime": "4-6 Hours",
+      "waitTime": "4-8 Hours",
       "peakHours": "Daily 10 AM - 6 PM"
     },
     {
       "name": "Special Entry (₹300)",
-      "waitTime": "1-4 Hours ",
+      "waitTime": "2-4 Hours ",
       "peakHours": "Daily 9 AM - 3 PM"
     },
     {
       "name": "Divya Darshan (Footpath)",
-      "waitTime": "3-4 Hours",
+      "waitTime": "3-6 Hours",
       "peakHours": "Daily 8 AM - 4 PM"
     },
     {
@@ -31,56 +31,56 @@
       "peakHours": "Daily 6 AM - 8 AM"
     }
   ],
-  "ssdTokenStatus": "issuing",
-  "ssdNextTokenTime": "Started at 5:30 PM",
+  "ssdTokenStatus": "closed-for-day",
+  "ssdNextTokenTime": "5:30 PM",
   "ssdTokenSlots": [
     {
       "slotTime": "5:00 AM - 7:00 AM",
       "status": "closed",
-      "tokensLeft": "Suspended"
+      "tokensLeft": "Full"
     },
     {
       "slotTime": "7:00 AM - 9:00 AM",
       "status": "closed",
-      "tokensLeft": "Suspended"
+      "tokensLeft": "Full"
     },
     {
       "slotTime": "9:00 AM - 11:00 AM",
-      "status": "closed",
-      "tokensLeft": "Suspended"
+      "status": "filling",
+      "tokensLeft": "~200 remaining"
     },
     {
       "slotTime": "11:00 AM - 1:00 PM",
-      "status": "closed",
-      "tokensLeft": "Suspended"
+      "status": "available",
+      "tokensLeft": "Available"
     },
     {
       "slotTime": "2:00 PM - 4:00 PM",
-      "status": "closed",
-      "tokensLeft": "Suspended"
+      "status": "available",
+      "tokensLeft": "Available"
     },
     {
       "slotTime": "4:00 PM - 6:00 PM",
-      "status": "closed",
-      "tokensLeft": "Suspended"
+      "status": "available",
+      "tokensLeft": "Available"
     }
   ],
-  "ssdNotice": "*⏰ 23st October – SSD 8K & DD 2K Tokens Issue Started @ 5:30PM",
-  "ssdTimingsGuide": "🎟️ SSD & DD Tokens Issue Started @ *05:30 PM* for *23rd October*\n\n*SSD Tokens – Current Status:*\n\n• Available Tokens: *5017*\n\n*Srivari Mettu Divya Darshan Tokens:*\n\n• Available Tokens: *1565*",
+  "ssdNotice": "⏰ 28th October – SSD Tokens ",
+  "ssdTimingsGuide": "*28th October – SSD 10K & DD 2K Tokens Issue Started @ 05:30 Pm*\n\n*SSD Tokens – Current Status*\n\n3700+ Tokens Available \n\n*Srivari Mettu Divya Darshan Tokens*\n\n1300+ Tokens Available",
   "ssdCounters": [
     {
       "name": "Vishnu Nivasam Counter",
-      "description": "Located opposite Tirupati Railway Station (Highly convenient for train travelers)"
+      "description": "Opposite Tirupati Railway Station"
     },
     {
       "name": "Srinivasam Complex Counter",
-      "description": "Located opposite Tirupati RTC Central Bus Stand (Ideal for bus travelers)"
+      "description": "Opposite Tirupati RTC Central Bus Stand"
     },
     {
       "name": "Bhudevi Complex Counter",
-      "description": "Located near Alipiri Footpath Link Road (Ideal for pedestrian pilgrims)"
+      "description": "Near Alipiri Footpath Link Road"
     }
   ],
   "ssdAdvisoryTag": "",
-  "ssdModeBadge": "Open 24/7"
+  "ssdModeBadge": ""
 }

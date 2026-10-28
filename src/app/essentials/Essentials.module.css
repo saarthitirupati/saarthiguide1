@@ -1718,5 +1718,123 @@
   gap: 8px;
 }
 
+/* ALL FACILITIES GRID SECTION (Harmonized Light Surface Grid) */
+.allFacilitiesContainer {
+  background: #FFFFFF;
+  border-radius: 20px;
+  padding: 18px 16px 20px;
+  border: 1px solid #E2E8F0;
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.allFacilitiesHeader {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 4px;
+}
+
+.allFacilitiesHeaderIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #0F5132; /* Sacred Temple Emerald */
+}
+
+.allFacilitiesTitle {
+  font-size: 18px;
+  font-weight: 700;
+  color: #0F172A; /* Deep Slate Navy matching all headers */
+  letter-spacing: -0.2px;
+  margin: 0;
+  font-family: var(--font-sans), system-ui, sans-serif;
+}
+
+.allFacilitiesGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  column-gap: 8px;
+  row-gap: 18px;
+}
+
+@media (min-width: 640px) {
+  .allFacilitiesGrid {
+    grid-template-columns: repeat(6, 1fr);
+    column-gap: 16px;
+    row-gap: 20px;
+  }
+}
+
+.facilityItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  outline: none;
+  width: 100%;
+  transition: transform 0.15s ease;
+}
+
+.facilityItem:active {
+  transform: scale(0.92);
+}
+
+.facilityTile {
+  position: relative;
+  width: 100%;
+  max-width: 66px;
+  aspect-ratio: 1;
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04);
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease;
+}
+
+.facilityItem:hover .facilityTile {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(15, 23, 42, 0.08);
+}
+
+.facilityBadge {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background: #FFFFFF;
+  color: #475569;
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1;
+  padding: 2px 4.5px;
+  border-radius: 5px;
+  border: 1px solid #E2E8F0;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  letter-spacing: 0.2px;
+}
+
+.facilityLabel {
+  margin-top: 8px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #334155;
+  line-height: 1.25;
+  text-align: center;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  max-width: 78px;
+  letter-spacing: -0.1px;
+}
+
+
 
 
