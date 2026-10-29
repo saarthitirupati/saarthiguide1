@@ -11,7 +11,7 @@ export default function robots(): MetadataRoute.Robots {
         disallow: ['/api/', '/saarthiadmin/'],
       },
       {
-        userAgent: ['GPTBot', 'PerplexityBot', 'ClaudeBot', 'Google-Extended', 'Applebot', 'Cohere-AI', 'Diffbot'],
+        userAgent: ['GPTBot', 'OAI-SearchBot', 'PerplexityBot', 'ClaudeBot', 'Google-Extended', 'Applebot', 'Cohere-AI', 'Diffbot', 'meta-externalagent', 'Amazonbot'],
         allow: '/',
         disallow: ['/api/', '/saarthiadmin/'],
       },

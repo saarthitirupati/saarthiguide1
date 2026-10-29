@@ -24,10 +24,46 @@ export const metadata: Metadata = {
   },
 };
 
+const taxiServiceSchema = {
+  "@context": "https://schema.org",
+  "@type": "TaxiService",
+  "name": "Saarthi Tirupati Cab Booking",
+  "provider": {
+    "@type": "LocalBusiness",
+    "name": "Saarthi Guide",
+    "telephone": "+91-9398542837",
+    "priceRange": "₹₹",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Tirupati",
+      "addressRegion": "Andhra Pradesh",
+      "postalCode": "517501",
+      "addressCountry": "IN"
+    }
+  },
+  "areaServed": [
+    { "@type": "City", "name": "Tirupati" },
+    { "@type": "AdministrativeArea", "name": "Tirumala" },
+    { "@type": "Airport", "name": "Tirupati Airport (Renigunta)" },
+    { "@type": "Place", "name": "Srikalahasti" },
+    { "@type": "Place", "name": "Kanipakam" }
+  ],
+  "description": "Verified transparent fixed-rate cabs from Tirupati to Tirumala ghat road, Renigunta Airport, and pilgrimage circuits with zero commission.",
+  "url": `${baseUrl}/cab-booking`
+};
+
 export default function CabBookingLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return <>{children}</>;
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(taxiServiceSchema) }}
+      />
+      {children}
+    </>
+  );
 }

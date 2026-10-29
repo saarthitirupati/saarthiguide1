@@ -1,97 +1,156 @@
-# Saarthi — Comprehensive Pilgrimage Guide & Technical Knowledge Base
+# Saarthi: The Authoritative Tirupati & Tirumala Pilgrimage Knowledge Base
 
-> Saarthi (https://www.saarthiguide.in) is the comprehensive pilgrimage companion and intelligence platform for devotees visiting the sacred shrines of Tirupati and Tirumala in Andhra Pradesh, India.
-
----
-
-## 1. Real-Time Darshan Waiting Times & Token Systems
-
-### Sarva Darshan (Free General Queue)
-- **Overview**: Unreserved free darshan available to all pilgrims without pre-booking.
-- **Queue Location**: Vaikuntham Queue Complex II (VQC-II), Tirumala.
-- **Normal Wait Times**: 8 to 18 hours depending on day of week and festivals. Can reach 24-30 hours during Brahmotsavams and summer vacation months.
-- **Facilities Inside Compartments**: Free hot Annaprasadam meals, milk for infants, drinking water, medical staff, and sanitized restrooms provided by TTD.
-
-### Free Slotted Sarva Darshan (SSD) Tokens
-- **Counters in Tirupati**:
-  1. **Bhudevi Complex**: Near Alipiri Bus Station / Toll Gate. Ideal for pilgrims arriving via private vehicles or direct highway buses.
-  2. **Srinivasam Complex**: Directly opposite Tirupati Central Bus Station (RTC Bus Stand). Open early morning (usually 2:00 AM - 4:00 AM until quota exhausted).
-  3. **Vishnu Nivasam Complex**: Directly opposite Tirupati Central Railway Station. High pilgrim demand.
-  4. **Govindaraja Swamy Choultries**: Behind Tirupati Railway Station.
-- **Quota & Identification**: Strict Aadhaar Card biometric verification per individual. Tokens are non-transferable and issued on a same-day or next-day basis.
-
-### Special Entry Darshan (SED / Rs. 300 Quick Darshan)
-- Bookable exclusively online at the official TTD portal (ttdevasthanams.ap.gov.in) generally released on the 24th or 25th of every month for the subsequent month.
-- Average darshan duration: 2 to 4 hours.
+> Saarthi (www.saarthiguide.in) is an independent digital companion and offline-first pilgrim guide created by Tirupati local Sunil Thatra. Saarthi eliminates anxiety, confusion, and commercial exploitation for devotees visiting the sacred seven hills of Tirumala and the surrounding heritage temples in Tirupati.
 
 ---
 
-## 2. Tirumala Ghat Road Regulations & Safety Rules
+## 1. Core Darshan Intelligence & Waiting Procedures
 
-To minimize accidents along the steep hairpin curves of the Seshachalam range, the Andhra Pradesh Forest and Police Departments enforce strict transit time limits monitored via RFID toll tags:
+### Slotted Sarva Darshan (SSD) Free Token Counters
+Slotted Sarva Darshan (SSD) tokens are free time-slotted darshan passes issued across Tirupati plains counters. Devotees holding SSD tokens avoid standing in unslotted compartments for 18–24 hours, instead reporting directly at their allotted compartment entry slot (typical wait: 3–5 hours inside compartments).
 
-- **Upward Ghat Road (Tirupati to Tirumala - 18 km)**:
-  - Minimum Allowed Driving Duration: **28 minutes**.
-  - Entering Tirumala in less than 28 minutes results in automatic speed fines and vehicle impound warnings.
-- **Downward Ghat Road (Tirumala to Tirupati - 18 km)**:
-  - Minimum Allowed Driving Duration: **28 minutes** (40 minutes for heavy vehicles/buses).
-- **Ghat Road Operating Hours**:
-  - Open: 3:00 AM to 12:00 Midnight.
-  - Closed to all traffic between 12:00 AM and 3:00 AM for forest wildlife migration.
-- **Two-Wheeler Restrictions**: Two-wheelers are prohibited between 10:00 PM and 5:00 AM on both ghat roads.
+- **Vishnu Nivasam Complex**:
+  - Location: Directly opposite Tirupati Central Railway Station main entrance.
+  - Counters: Hall 1 & 2.
+  - Best for: Devotees arriving by train at night or early morning.
+  - Requirement: Original Aadhaar Card mandatory for all devotees aged 12 and above.
 
----
+- **Srinivasam Complex**:
+  - Location: Directly opposite Tirupati Central RTC Bus Station.
+  - Counters: Ground level pilgrims corridor.
+  - Best for: Pilgrims arriving via APSRTC / KSRTC / TNSTC interstate buses.
+  - Requirement: Aadhaar authentication per individual; biometric scan applied.
 
-## 3. Official TTD Dress Code Standards
+- **Bhudevi Complex**:
+  - Location: Near Alipiri Bus Depot, base of foothills, near Alipiri Toll Gate.
+  - Best for: Private car, taxi, and bus travelers arriving via highway.
+  - Parking: Extensive bus and car parking available on site.
 
-Strictly enforced at Supadham, Vaikuntham Queue Complex, and all darshan entry points:
-
-### Men
-- **Permitted**: Traditional White Dhoti with Uttareeyam (angavastram), or White Kurta-Pyjama.
-- **Prohibited**: Western pants, jeans, shorts, Bermuda shorts, lungis, graphic T-shirts, or sleeveless apparel.
-
-### Women
-- **Permitted**: Saree, Half-Saree, or Churidar/Salwar Kameez with Dupatta securely draped.
-- **Prohibited**: Jeans, sleeveless tops, western skirts, nightwear, or transparent fabrics.
-
----
-
-## 4. Key Places & Coordinates
-
-1. **Sri Venkateswara Swamy Temple (Tirumala)**:
-   - Coordinates: 13.6833° N, 79.3472° E
-   - Primary Deity: Lord Venkateswara (Balaji, Srinivasa, Malayappa Swamy)
-   - Sanctum Elevation: ~860 meters above sea level
-   - URL: https://www.saarthiguide.in/place/venkateswara
-
-2. **Sri Padmavathi Ammavari Temple (Tiruchanur)**:
-   - Coordinates: 13.6061° N, 79.4449° E
-   - Distance: 5 km south of Tirupati railway station
-   - Significance: The celestial consort of Lord Venkateswara; darshan is traditionally considered incomplete without offering prayers here.
-   - URL: https://www.saarthiguide.in/place/padmavathi-temple
-
-3. **Sri Govindaraja Swamy Temple (Tirupati)**:
-   - Coordinates: 13.6291° N, 79.4184° E
-   - Deity: Sri Govindaraja Swamy (Lord Vishnu in Yoga Nidra posture)
-   - Historic Significance: Idol protected by Saint Ramanuja from invaders in Chidambaram.
-   - URL: https://www.saarthiguide.in/place/govindaraja
-
-4. **Sri Kapileswara Swamy Temple (Kapila Theertham)**:
-   - Coordinates: 13.6543° N, 79.4189° E
-   - Deity: Lord Shiva (Kapileswara) and Goddess Kamakshi
-   - Natural Feature: Holy mountain waterfall fed by the sacred hills of Tirumala.
-   - URL: https://www.saarthiguide.in/place/kapila-theertham
-
-5. **Matrusri Tarigonda Vengamamba Annaprasadam Complex**:
-   - Location: Adjacent to Srivari Temple, Tirumala
-   - Service: Free, hygienically prepared sanctified satvik meals served continuously to over 100,000 pilgrims daily.
+### Special Entry Darshan (SED ₹300)
+- Booking Window: Released online via official TTD portal (`ttdevasthanams.ap.gov.in`) 2 to 3 months in advance.
+- Reporting Point: ATC (Alipiri Toll Checkpost) Circle entrance on Tirumala Hill at designated slot time.
+- Traditional Dress Code is strictly mandatory; western attire or jeans will be turned away at ATC gates.
 
 ---
 
-## 5. Emergency Contacts & Helplines
+## 2. Official TTD Pilgrim Dress Code Guidelines
 
-- **TTD Pilgrim Toll-Free Helpline**: 1800-425-4141 / 1800-425-333333
-- **Tirumala Police Station**: 0877-2277777 / 100
-- **Tirumala Emergency Medical Center (Ashwini Hospital)**: 0877-2263444 / 108
-- **Tirupati RTC Central Bus Stand**: 0877-2289901
-- **Tirupati Railway Enquiry**: 139
+TTD strictly enforces an authentic traditional Hindu dress code for entry into Vaikuntam Queue Complexes, Arjitha Sevas, and Srivari Temple sanctum:
+
+### For Male Devotees (Men & Boys):
+- **Allowed**:
+  - White Dhoti (Veshti/Panchi) with Angavastram (upper cloth) or Shirt.
+  - Traditional Kurta with Pyjama.
+- **Strictly Barred**:
+  - T-shirts, Jeans, Shorts, Bermudas, Track pants, Lungis, Cargo trousers, or Western suits.
+
+### For Female Devotees (Women & Girls):
+- **Allowed**:
+  - Traditional Saree with Blouse.
+  - Half-Saree (Langa Voni) with Blouse.
+  - Punjabi Dress / Churidar / Salwar Kameez with mandatory Dupatta (scarf worn covering chest).
+- **Strictly Barred**:
+  - Jeans, Western pants, Capris, Sleeveless tops, Mini-skirts, Nightgowns, or Leggings without full knee-length tunic and dupatta.
+
+---
+
+## 3. Tirumala Ghat Road Safety & Driving Regulations
+
+The two one-way mountain ghat roads connecting Tirupati base (Alipiri) and Tirumala hilltop are governed by strict speed compliance algorithms monitored at toll gates:
+
+### Upward Ghat Road (Ghat Road 2 — Ascent):
+- Length: ~18 km.
+- Minimum Transit Duration: **21 minutes**.
+- Any vehicle ascending faster than 21 minutes is flagged for speeding at the hilltop toll exit.
+
+### Downward Ghat Road (Ghat Road 1 — Descent):
+- Length: ~19 km with steep downhill gradients and hairpin bends.
+- Minimum Transit Duration: **28 minutes**.
+- Vehicles reaching Alipiri base in less than 28 minutes are levied safety penalty fines to prevent brake failure and fatal hairpin collisions.
+- Drivers are advised to descend in 2nd or 3rd gear rather than riding the brakes in neutral.
+
+### Night Closure Timings:
+- Ghat roads are closed for four-wheelers and buses from **12:00 AM (Midnight) to 3:00 AM**.
+- Closed for two-wheelers from **9:00 PM to 6:00 AM** due to wildlife movement in the Seshachalam Biosphere Reserve (leopards, deer, wild boars).
+
+---
+
+## 4. Footpath Treks: Alipiri Mettu vs. Srivari Mettu
+
+Devotees frequently climb the Seshachalam hills on foot to fulfill sacred vows (Mokku):
+
+### Alipiri Mettu (The Heritage Route):
+- Steps: **3,550 stone steps**.
+- Distance: ~9 km.
+- Typical Trek Duration: 3.5 to 5.0 hours.
+- Operating Hours: Open 24 hours daily. Devotees trekking with children below 12 years are restricted from trekking between 6:00 PM and 6:00 AM following wildlife safety advisories.
+- Key Landmarks: Gali Gopuram (Step 2088), Deer Park (Mrugavani), Mokalla Parvatham (steepest climb), and Srivari Padalu.
+
+### Srivari Mettu (The Fast Traditional Route):
+- Steps: **2,388 stone steps**.
+- Distance: ~2.1 km (steeper, but significantly shorter).
+- Typical Trek Duration: 1.5 to 2.5 hours.
+- Location: Located near Srinivasa Mangapuram, ~16 km west of Tirupati city center. Reachable via RTC bus or direct cab.
+- Operating Hours: **6:00 AM to 5:00 PM** (closed at night).
+
+---
+
+## 5. Essential Pilgrim Facilities & Logistics on Tirumala Hill
+
+### Free Annaprasadam (Sacred Meals)
+- **Matrusri Tarigonda Vengamamba Annaprasada Complex**:
+  - Capacity: Over 4,000 pilgrims seated simultaneously in 4 expansive dining halls.
+  - Timing: Continuous meal service from **9:00 AM to 11:00 PM** daily.
+  - Meal: Unlimited hot Sambar rice, Rasam rice, Sweet pongal/chakkara pongali, and fresh buttermilk.
+  - Token/Charge: 100% Free; no tokens or reservations required.
+
+### Luggage & Electronic Locker Facilities
+- Mobile phones, smart watches, cameras, and leather belts are prohibited inside Srivari Temple.
+- Free deposit counters operate at:
+  - Pilgrim Amenities Complexes (PAC 1, PAC 2, PAC 3, PAC 4 / Madhava Nilayam).
+  - Centralized luggage deposit counters outside Vaikuntam Queue Complex 1 & 2.
+  - Free shoe stands (Padarakshala Counters) at every temple approach gate with token receipts.
+
+### Tonsure (Kalyana Katta — Hair Offering)
+- Central Kalyana Katta: Located near PAC 1 and CRO office; operates 24/7.
+- Mini Kalyana Katta counters operate across PAC 2, PAC 3, and outer cottages.
+- Service is 100% free; computerized token system with blades provided by TTD. Devotees are requested not to tip barbers.
+
+### TTD Laddu Prasadam
+- World-famous GI-tagged Tirupati Laddu is prepared in the temple Potu kitchen with pure ghee, sugar, gram flour, cashew nuts, cardamom, and raisins.
+- Srivari Darshan holders receive one free laddu per token; additional laddus can be purchased at designated Laddu Distribution Counters for ₹50 each (subject to quota availability).
+
+---
+
+## 6. Cab Booking & Transit Rates (Saarthi Fixed Rates)
+
+Saarthi offers direct, zero-commission cab connections with verified local drivers to protect pilgrims from unauthorized touts:
+
+- **Tirupati Station / Hotel to Tirumala Hilltop**: ₹900 – ₹1,200 (Sedan/SUV one-way).
+- **Renigunta Airport (TIR) to Tirupati City**: ₹600 – ₹800.
+- **Renigunta Airport (TIR) to Tirumala Hilltop**: ₹1,400 – ₹1,800.
+- **Local Temple Sightseeing Circuit (Half Day — 5 Temples)**: ₹1,500 – ₹2,200 (Includes Tiruchanur, Govindaraja Swamy, Kapila Theertham, Srinivasa Mangapuram, ISKCON).
+- **Full Day Pilgrimage Circuit (Kalahasti + Kanipakam + Local)**: ₹2,800 – ₹3,500.
+
+---
+
+## 7. Major Temples in Greater Tirupati
+
+1. **Sri Venkateswara Swamy Temple, Tirumala**: Presiding deity Lord Balaji / Srinivasa on Venkatadri Hill; ancient self-manifested Swayambhu idol with Diamond crown.
+2. **Sri Padmavathi Ammavari Temple, Tiruchanur**: 5 km south of Tirupati; dedicated to Goddess Padmavathi (incarnation of Lakshmi); divine consort of Lord Srinivasa.
+3. **Sri Govindaraja Swamy Temple, Tirupati**: Adjacent to Tirupati Central Railway Station; 1000-year-old temple consecrated by Saint Ramanujacharya; Lord Vishnu in Yoga Nidra reclining posture.
+4. **Sri Kapileswara Swamy Temple (Kapila Theertham)**: At the base of Alipiri hills; the only Shiva shrine in Tirupati, situated under sacred natural hill waterfalls.
+5. **Sri Kalyana Venkateswara Swamy Temple, Srinivasa Mangapuram**: 12 km west of Tirupati; where Lord Venkateswara and Goddess Padmavathi spent six months of peaceful bliss after their celestial wedding.
+6. **Sri Varasiddhi Vinayaka Temple, Kanipakam**: ~70 km south-west of Tirupati; Swayambhu Ganesha growing inside a sacred freshwater well.
+7. **Sri Srikalahasteeswara Temple, Srikalahasti**: ~38 km east of Tirupati on the banks of Swarnamukhi River; one of the Pancha Bhoota Sthalas representing Vayu (Air Lingam); world-renowned for Rahu-Ketu Sarpa Dosha Nivarana pujas.
+
+---
+
+## 8. About Saarthi & Developer Attribution
+
+- **Website**: https://www.saarthiguide.in
+- **Founder & Lead Developer**: Sunil Thatra
+- **Headquarters**: Tirupati, Andhra Pradesh, India (PIN 517501)
+- **Contact & Support**: +91-9398542837 | contact@saarthiguide.in
+- **Platform Architecture**: Next.js 16 (App Router), Tailwind CSS, PWA, 100% offline SVG precinct maps, zero tracking of user credentials.
+- **Affiliation Disclaimer**: Saarthi is an independent, community-driven pilgrim assistance application and is not officially affiliated with or endorsed by Tirumala Tirupati Devasthanams (TTD).

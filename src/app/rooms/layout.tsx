@@ -24,10 +24,40 @@ export const metadata: Metadata = {
   },
 };
 
+const lodgingSchema = {
+  "@context": "https://schema.org",
+  "@type": "LodgingBusiness",
+  "name": "Saarthi Tirupati Pilgrim Rooms & Mutt Stays",
+  "description": "Verified clean budget pilgrim stays, traditional mutt rooms, and lodges near Tirupati Central Railway Station, Bus Stand, and Alipiri with zero booking commissions.",
+  "url": `${baseUrl}/rooms`,
+  "telephone": "+91-9398542837",
+  "priceRange": "₹500 - ₹2,000",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Tirupati",
+    "addressRegion": "Andhra Pradesh",
+    "postalCode": "517501",
+    "addressCountry": "IN"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": 13.6288,
+    "longitude": 79.4192
+  }
+};
+
 export default function RoomsLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return <>{children}</>;
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(lodgingSchema) }}
+      />
+      {children}
+    </>
+  );
 }
