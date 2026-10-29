@@ -204,10 +204,10 @@ export function detectCoordinates(
             console.warn("[LocationPipeline] Geolocation fallback triggered:", stdErr);
             fallbackToIP();
           },
-          { enableHighAccuracy: false, timeout: 5000, maximumAge: 300000 }
+          { enableHighAccuracy: false, timeout: 6000, maximumAge: 60000 }
         );
       },
-      { enableHighAccuracy: true, timeout: 6000, maximumAge: 0 }
+      { enableHighAccuracy: true, timeout: 12000, maximumAge: 15000 }
     );
   } else {
     fallbackToIP();

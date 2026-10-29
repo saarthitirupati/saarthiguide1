@@ -252,11 +252,11 @@ export const PRESET_LOCATIONS: LocationOption[] = [
 export function isCoordinateOnTirumalaHill(lat: number, lng: number): boolean {
   if (!isValidCoordinates(lat, lng)) return false;
   return (
-    lat >= 13.655 &&
-    lat <= 13.735 &&
-    lng >= 79.300 &&
-    lng <= 79.385 &&
-    calculateDistance(lat, lng, TIRUMALA_CENTER.lat, TIRUMALA_CENTER.lng) <= 7.5
+    lat >= 13.650 &&
+    lat <= 13.745 &&
+    lng >= 79.290 &&
+    lng <= 79.390 &&
+    calculateDistance(lat, lng, TIRUMALA_CENTER.lat, TIRUMALA_CENTER.lng) <= 8.5
   );
 }
 
@@ -293,17 +293,44 @@ export function resolveLocationName(lat: number, lng: number, fallbackCity?: str
     return fallbackCity || 'Tirupati';
   }
 
-  // 1. Direct hill check
+  // 1. Direct Tirumala Hill Check
   if (isCoordinateOnTirumalaHill(lat, lng)) {
     return 'Tirumala';
   }
 
-  // 2. Direct Alipiri check (within 1.8 km of Alipiri Gate / foothills)
+  // 2. Direct Alipiri Foothill Check (within 1.8 km of Alipiri Gate)
   if (calculateDistance(lat, lng, ALIPIRI_GATE.lat, ALIPIRI_GATE.lng) <= 1.8) {
     return 'Alipiri';
   }
 
-  // 3. Check closest preset location
+  // 3. Tirupati Urban Core vs. Outlying Suburbs
+  const distToTirupatiCenter = calculateDistance(lat, lng, TIRUPATI_CENTER.lat, TIRUPATI_CENTER.lng);
+
+  // Specific perimeter checks for outlying kshethrams/suburbs
+  const RENIGUNTA_COORDS = { lat: 13.6477, lng: 79.5167 };
+  const CHANDRAGIRI_COORDS = { lat: 13.5843, lng: 79.3158 };
+  const MANGAPURAM_COORDS = { lat: 13.6108, lng: 79.3277 };
+  const APPALAYAGUNTA_COORDS = { lat: 13.5374, lng: 79.4776 };
+
+  if (calculateDistance(lat, lng, RENIGUNTA_COORDS.lat, RENIGUNTA_COORDS.lng) <= 3.5) {
+    return 'Renigunta';
+  }
+  if (calculateDistance(lat, lng, CHANDRAGIRI_COORDS.lat, CHANDRAGIRI_COORDS.lng) <= 3.0) {
+    return 'Chandragiri';
+  }
+  if (calculateDistance(lat, lng, MANGAPURAM_COORDS.lat, MANGAPURAM_COORDS.lng) <= 2.0) {
+    return 'Srinivasa Mangapuram';
+  }
+  if (calculateDistance(lat, lng, APPALAYAGUNTA_COORDS.lat, APPALAYAGUNTA_COORDS.lng) <= 2.5) {
+    return 'Appalayagunta';
+  }
+
+  // If within the Tirupati urban basin (8.5 km), prioritize Tirupati
+  if (distToTirupatiCenter <= 8.5) {
+    return 'Tirupati';
+  }
+
+  // 4. Check other regional kshethrams or planning cities from PRESET_LOCATIONS
   let closestPreset: LocationOption | null = null;
   let minDistance = Infinity;
 
@@ -315,7 +342,7 @@ export function resolveLocationName(lat: number, lng: number, fallbackCity?: str
     }
   }
 
-  // If within 35 km of a specific known hub or city (Tirupati, Renigunta, Chandragiri, Chennai, Bengaluru, Hyderabad, etc.)
+  // If within 35 km of a specific known hub or city (Srikalahasti, Kanipakam, etc.)
   if (closestPreset && minDistance <= 35) {
     return closestPreset.shortName;
   }
@@ -331,7 +358,7 @@ export function resolveLocationName(lat: number, lng: number, fallbackCity?: str
   }
 
   // Default to Tirupati if within local 45 km radius
-  if (calculateDistance(lat, lng, TIRUPATI_CENTER.lat, TIRUPATI_CENTER.lng) <= 45) {
+  if (distToTirupatiCenter <= 45) {
     return 'Tirupati';
   }
 

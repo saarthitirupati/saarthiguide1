@@ -374,7 +374,7 @@ export default function PilgrimEssentialsPage() {
       </header>
 
       {/* Main Scroll Content */}
-      <div className={styles.scrollArea} style={{ paddingBottom: 'calc(88px + env(safe-area-inset-bottom, 16px))', gap: '20px' }}>
+      <div className={styles.scrollArea} style={{ paddingBottom: '16px', gap: '20px' }}>
         
         {/* Search Bar ("What are you looking for?") */}
         <div className={styles.searchContainer}>

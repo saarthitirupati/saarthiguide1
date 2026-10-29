@@ -1229,20 +1229,27 @@ export default function PlaceDetails() {
 
   // 10. HERITAGE / VISITOR ACCORDIONS
   const heritageAccordionsNode = (
-    <div>
-      <h2 style={{ fontSize: '16px', fontWeight: 600, color: '#0F172A', margin: '0 0 12px' }}>
+    <div style={{ marginTop: '4px' }}>
+      <h2 style={{ fontSize: '15.5px', fontWeight: 700, color: '#0F172A', margin: '0 0 10px', letterSpacing: '-0.015em' }}>
         {lang === 'te' ? (isTemple ? 'ఆలయ చరిత్ర & సంప్రదాయాలు' : 'చరిత్ర & సందర్శకుల సమాచారం') : (isTemple ? 'More Details & Heritage' : 'History & Visitor Highlights')}
       </h2>
 
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
         {/* Drawer 1: History & Overview */}
-        <div style={{ backgroundColor: '#FFFFFF', border: '1px solid rgba(15,23,42,0.06)', borderRadius: '16px', overflow: 'hidden' }}>
+        <div style={{
+          backgroundColor: '#FFFFFF',
+          border: openDrawer === 'legend' ? '1.5px solid #0F5132' : '1px solid rgba(15,23,42,0.08)',
+          borderRadius: '16px',
+          overflow: 'hidden',
+          boxShadow: openDrawer === 'legend' ? '0 4px 12px rgba(15,81,50,0.06)' : '0 1px 3px rgba(0,0,0,0.02)',
+          transition: 'border-color 0.2s ease, box-shadow 0.2s ease'
+        }}>
           <button
             onClick={() => toggleDrawer('legend')}
             style={{
               width: '100%',
-              padding: '14px 18px',
-              background: 'none',
+              padding: '12px 16px',
+              background: openDrawer === 'legend' ? 'linear-gradient(180deg, #F0FDF4 0%, #FFFFFF 100%)' : '#FFFFFF',
               border: 'none',
               display: 'flex',
               alignItems: 'center',
@@ -1250,18 +1257,47 @@ export default function PlaceDetails() {
               cursor: 'pointer',
               fontSize: '13.5px',
               fontWeight: 600,
-              color: '#0F172A'
+              color: '#0F172A',
+              transition: 'background 0.15s ease',
+              WebkitTapHighlightColor: 'transparent'
             }}
           >
-            <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <BookOpen size={16} color="#0F5132" />
-              <span>{lang === 'te' ? (isTemple ? 'స్థల పురాణం & పవిత్ర విశేషాలు' : 'చరిత్ర & విశేషాలు') : (isTemple ? 'Sthala Puranam & Sacred Legend' : 'History & Overview')}</span>
+            <span style={{ display: 'flex', alignItems: 'center', gap: '10px', textAlign: 'left' }}>
+              <div style={{
+                width: '32px',
+                height: '32px',
+                borderRadius: '9px',
+                backgroundColor: openDrawer === 'legend' ? '#DCFCE7' : '#F1F5F9',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexShrink: 0,
+                transition: 'background-color 0.2s ease'
+              }}>
+                <BookOpen size={16} color={openDrawer === 'legend' ? '#15803D' : '#0F5132'} />
+              </div>
+              <span style={{ fontSize: '13.5px', fontWeight: 600, color: '#0F172A', lineHeight: 1.35 }}>
+                {lang === 'te' ? (isTemple ? 'స్థల పురాణం & పవిత్ర విశేషాలు' : 'చరిత్ర & విశేషాలు') : (isTemple ? 'Sthala Puranam & Sacred Legend' : 'History & Overview')}
+              </span>
             </span>
-            {openDrawer === 'legend' ? <ChevronUp size={16} color="#0F5132" /> : <ChevronDown size={16} color="#94A3B8" />}
+            <div style={{
+              width: '26px',
+              height: '26px',
+              borderRadius: '50%',
+              backgroundColor: openDrawer === 'legend' ? '#DCFCE7' : '#F8FAFC',
+              border: openDrawer === 'legend' ? '1px solid #BBF7D0' : '1px solid #E2E8F0',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexShrink: 0,
+              marginLeft: '8px'
+            }}>
+              {openDrawer === 'legend' ? <ChevronUp size={14} color="#15803D" strokeWidth={2.5} /> : <ChevronDown size={14} color="#64748B" strokeWidth={2.2} />}
+            </div>
           </button>
           {openDrawer === 'legend' && (
-            <div style={{ padding: '0 18px 18px', fontSize: '13px', color: '#475569', lineHeight: 1.6, borderTop: '1px solid #F1F5F9' }}>
-              <p style={{ marginTop: '12px' }}>
+            <div style={{ padding: '4px 18px 16px 58px', fontSize: '13px', color: '#475569', lineHeight: 1.6, borderTop: '1px solid #F1F5F9', background: '#FAFAF9' }}>
+              <p style={{ marginTop: '10px', marginBottom: 0 }}>
                 {lang === 'te' 
                   ? (place.id === 'govindaraja'
                       ? 'స్థల పురాణం ప్రకారం, శ్రీవారి కల్యాణం కోసం కుబేరుడు ఇచ్చిన రుణాన్ని లెక్కించడానికి, నిర్వహించడానికి వేంకటేశ్వర స్వామి అన్నగారైన శ్రీ గోవిందరాజ స్వామి ఇక్కడ వెలిశారు. క్రీ.శ. 1130లో వైష్ణవాచార్యులు శ్రీ రామానుజాచార్యుల వారు చిదంబరం నుండి స్వామివారి మూలవిరాట్టును తెచ్చి ఈ పవిత్ర ఆలయంలో ప్రతిష్ఠించి, మందిరాన్ని స్థాపించారు. సంపద, ఐశ్వర్యం, రుణ విముక్తి కోసం భక్తులు స్వామివారిని దర్శించుకుంటారు.'
@@ -1273,13 +1309,20 @@ export default function PlaceDetails() {
         </div>
 
         {/* Drawer 2: Events / Season */}
-        <div style={{ backgroundColor: '#FFFFFF', border: '1px solid rgba(15,23,42,0.06)', borderRadius: '16px', overflow: 'hidden' }}>
+        <div style={{
+          backgroundColor: '#FFFFFF',
+          border: openDrawer === 'festivals' ? '1.5px solid #D97706' : '1px solid rgba(15,23,42,0.08)',
+          borderRadius: '16px',
+          overflow: 'hidden',
+          boxShadow: openDrawer === 'festivals' ? '0 4px 12px rgba(217,119,6,0.06)' : '0 1px 3px rgba(0,0,0,0.02)',
+          transition: 'border-color 0.2s ease, box-shadow 0.2s ease'
+        }}>
           <button
             onClick={() => toggleDrawer('festivals')}
             style={{
               width: '100%',
-              padding: '14px 18px',
-              background: 'none',
+              padding: '12px 16px',
+              background: openDrawer === 'festivals' ? 'linear-gradient(180deg, #FFFBEB 0%, #FFFFFF 100%)' : '#FFFFFF',
               border: 'none',
               display: 'flex',
               alignItems: 'center',
@@ -1287,18 +1330,47 @@ export default function PlaceDetails() {
               cursor: 'pointer',
               fontSize: '13.5px',
               fontWeight: 600,
-              color: '#0F172A'
+              color: '#0F172A',
+              transition: 'background 0.15s ease',
+              WebkitTapHighlightColor: 'transparent'
             }}
           >
-            <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <Flame size={16} color="#D97706" />
-              <span>{lang === 'te' ? (isTemple ? 'ఉత్సవాలు & వార్షిక వేడుకలు' : 'ప్రత్యేక సందర్భాలు & అనువైన కాలం') : (isTemple ? 'Festivals & Annual Celebrations' : 'Special Events & Best Season')}</span>
+            <span style={{ display: 'flex', alignItems: 'center', gap: '10px', textAlign: 'left' }}>
+              <div style={{
+                width: '32px',
+                height: '32px',
+                borderRadius: '9px',
+                backgroundColor: openDrawer === 'festivals' ? '#FEF3C7' : '#F1F5F9',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexShrink: 0,
+                transition: 'background-color 0.2s ease'
+              }}>
+                <Flame size={16} color={openDrawer === 'festivals' ? '#B45309' : '#D97706'} />
+              </div>
+              <span style={{ fontSize: '13.5px', fontWeight: 600, color: '#0F172A', lineHeight: 1.35 }}>
+                {lang === 'te' ? (isTemple ? 'ఉత్సవాలు & వార్షిక వేడుకలు' : 'ప్రత్యేక సందర్భాలు & అనువైన కాలం') : (isTemple ? 'Festivals & Annual Celebrations' : 'Special Events & Best Season')}
+              </span>
             </span>
-            {openDrawer === 'festivals' ? <ChevronUp size={16} color="#0F5132" /> : <ChevronDown size={16} color="#94A3B8" />}
+            <div style={{
+              width: '26px',
+              height: '26px',
+              borderRadius: '50%',
+              backgroundColor: openDrawer === 'festivals' ? '#FEF3C7' : '#F8FAFC',
+              border: openDrawer === 'festivals' ? '1px solid #FDE68A' : '1px solid #E2E8F0',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexShrink: 0,
+              marginLeft: '8px'
+            }}>
+              {openDrawer === 'festivals' ? <ChevronUp size={14} color="#B45309" strokeWidth={2.5} /> : <ChevronDown size={14} color="#64748B" strokeWidth={2.2} />}
+            </div>
           </button>
           {openDrawer === 'festivals' && (
-            <div style={{ padding: '0 18px 18px', fontSize: '13px', color: '#475569', lineHeight: 1.6, borderTop: '1px solid #F1F5F9' }}>
-              <p style={{ marginTop: '12px' }}>
+            <div style={{ padding: '4px 18px 16px 58px', fontSize: '13px', color: '#475569', lineHeight: 1.6, borderTop: '1px solid #F1F5F9', background: '#FAFAF9' }}>
+              <p style={{ marginTop: '10px', marginBottom: 0 }}>
                 {lang === 'te' 
                   ? (isTemple
                       ? 'వార్షిక బ్రహ్మోత్సవాలు, నవరాత్రి ఉత్సవాలు మరియు ప్రతినెలా పౌర్ణమి గరుడసేవ ఊరేగింపులు ఆలయ అర్చకులు మరియు భక్తుల సమక్షంలో అత్యంత వైభవంగా జరుగుతాయి.'
@@ -1312,13 +1384,20 @@ export default function PlaceDetails() {
         </div>
 
         {/* Drawer 3: Layout & Guidelines */}
-        <div style={{ backgroundColor: '#FFFFFF', border: '1px solid rgba(15,23,42,0.06)', borderRadius: '16px', overflow: 'hidden' }}>
+        <div style={{
+          backgroundColor: '#FFFFFF',
+          border: openDrawer === 'architecture' ? '1.5px solid #0F5132' : '1px solid rgba(15,23,42,0.08)',
+          borderRadius: '16px',
+          overflow: 'hidden',
+          boxShadow: openDrawer === 'architecture' ? '0 4px 12px rgba(15,81,50,0.06)' : '0 1px 3px rgba(0,0,0,0.02)',
+          transition: 'border-color 0.2s ease, box-shadow 0.2s ease'
+        }}>
           <button
             onClick={() => toggleDrawer('architecture')}
             style={{
               width: '100%',
-              padding: '14px 18px',
-              background: 'none',
+              padding: '12px 16px',
+              background: openDrawer === 'architecture' ? 'linear-gradient(180deg, #F0FDF4 0%, #FFFFFF 100%)' : '#FFFFFF',
               border: 'none',
               display: 'flex',
               alignItems: 'center',
@@ -1326,18 +1405,47 @@ export default function PlaceDetails() {
               cursor: 'pointer',
               fontSize: '13.5px',
               fontWeight: 600,
-              color: '#0F172A'
+              color: '#0F172A',
+              transition: 'background 0.15s ease',
+              WebkitTapHighlightColor: 'transparent'
             }}
           >
-            <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-              <Landmark size={16} color="#0F5132" />
-              <span>{lang === 'te' ? (isTemple ? 'ఆలయ శిల్పకళ & నియమావళి' : 'లేఅవుట్ & సందర్శకుల నియమావళి') : (isTemple ? 'Architecture & Temple Guidelines' : 'Layout, Safari & Guidelines')}</span>
+            <span style={{ display: 'flex', alignItems: 'center', gap: '10px', textAlign: 'left' }}>
+              <div style={{
+                width: '32px',
+                height: '32px',
+                borderRadius: '9px',
+                backgroundColor: openDrawer === 'architecture' ? '#DCFCE7' : '#F1F5F9',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexShrink: 0,
+                transition: 'background-color 0.2s ease'
+              }}>
+                <Landmark size={16} color={openDrawer === 'architecture' ? '#15803D' : '#0F5132'} />
+              </div>
+              <span style={{ fontSize: '13.5px', fontWeight: 600, color: '#0F172A', lineHeight: 1.35 }}>
+                {lang === 'te' ? (isTemple ? 'ఆలయ శిల్పకళ & నియమావళి' : 'లేఅవుట్ & సందర్శకుల నియమావళి') : (isTemple ? 'Architecture & Temple Guidelines' : 'Layout, Safari & Guidelines')}
+              </span>
             </span>
-            {openDrawer === 'architecture' ? <ChevronUp size={16} color="#0F5132" /> : <ChevronDown size={16} color="#94A3B8" />}
+            <div style={{
+              width: '26px',
+              height: '26px',
+              borderRadius: '50%',
+              backgroundColor: openDrawer === 'architecture' ? '#DCFCE7' : '#F8FAFC',
+              border: openDrawer === 'architecture' ? '1px solid #BBF7D0' : '1px solid #E2E8F0',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexShrink: 0,
+              marginLeft: '8px'
+            }}>
+              {openDrawer === 'architecture' ? <ChevronUp size={14} color="#15803D" strokeWidth={2.5} /> : <ChevronDown size={14} color="#64748B" strokeWidth={2.2} />}
+            </div>
           </button>
           {openDrawer === 'architecture' && (
-            <div style={{ padding: '0 18px 18px', fontSize: '13px', color: '#475569', lineHeight: 1.6, borderTop: '1px solid #F1F5F9' }}>
-              <p style={{ marginTop: '12px' }}>
+            <div style={{ padding: '4px 18px 16px 58px', fontSize: '13px', color: '#475569', lineHeight: 1.6, borderTop: '1px solid #F1F5F9', background: '#FAFAF9' }}>
+              <p style={{ marginTop: '10px', marginBottom: 0 }}>
                 {lang === 'te' 
                   ? (isTemple
                       ? 'దక్షిణ భారతీయ ద్రవిడ శైలిలో నిర్మించబడిన ఈ ఆలయం అద్భుతమైన రాతి స్తంభాలు, 7 అంతస్తుల రాజగోపురం మరియు ఆగమ శాస్త్రాల ప్రకారం రూపొందించిన గర్భగుడితో అలరారుతోంది.'
@@ -1363,7 +1471,7 @@ export default function PlaceDetails() {
   );
 
   return (
-    <main style={{ minHeight: '100vh', backgroundColor: 'var(--bg-canvas, #FAF8F5)', color: '#0F172A', paddingBottom: 'calc(88px + env(safe-area-inset-bottom, 16px))', width: '100%', maxWidth: '100vw', overflowX: 'hidden', boxSizing: 'border-box' }}>
+    <main style={{ minHeight: '100vh', backgroundColor: 'var(--bg-canvas, #FAF8F5)', color: '#0F172A', width: '100%', maxWidth: '100vw', overflowX: 'hidden', boxSizing: 'border-box' }}>
       <style>{`
         .place-hero-box {
           position: relative;
@@ -1375,7 +1483,7 @@ export default function PlaceDetails() {
           width: 100%;
           max-width: 640px;
           margin: 0 auto;
-          padding: 12px 12px calc(88px + env(safe-area-inset-bottom, 16px)) 12px;
+          padding: 12px 12px calc(24px + env(safe-area-inset-bottom, 16px)) 12px;
           display: flex;
           flex-direction: column;
           gap: 12px;
