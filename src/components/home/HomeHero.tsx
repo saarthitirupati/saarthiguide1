@@ -1566,14 +1566,6 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
             </div>
           </div>
 
-          {/* DYNAMIC REGION / STARTING LOCATION SELECTOR MODAL */}
-          <LocationPickerModal
-            isOpen={isLocationModalOpen}
-            onClose={() => setIsLocationModalOpen(false)}
-            selectedLocationName={selectedLocation}
-            onSelectLocation={(name) => setSelectedLocation(name)}
-          />
-
           {/* Refined golden accent line */}
           <div style={{
             height: '1px',
@@ -1582,6 +1574,14 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
           }} />
         </header>
       )}
+
+      {/* DYNAMIC REGION / STARTING LOCATION SELECTOR MODAL */}
+      <LocationPickerModal
+        isOpen={isLocationModalOpen}
+        onClose={() => setIsLocationModalOpen(false)}
+        selectedLocationName={selectedLocation}
+        onSelectLocation={(name) => setSelectedLocation(name)}
+      />
 
       {/* ══════════ SCROLLABLE CONTENT ══════════ */}
       <div style={{ padding: hideHeader ? '0' : '10px clamp(8px, 3vw, 12px) 16px', background: hideHeader ? 'transparent' : 'var(--bg-canvas, #FAF8F5)', width: '100%', maxWidth: '100%', boxSizing: 'border-box', overflowX: 'hidden' }}>

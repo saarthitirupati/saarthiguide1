@@ -1,6 +1,8 @@
 'use client';
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
+// @ts-expect-error - react-dom types not included in devDependencies
+import { createPortal } from 'react-dom';
 import { MapPin, Navigation, Search, X, Check, Compass, Building, Map, Sparkles, ChevronDown } from 'lucide-react';
 import { useTrip } from '@/components/TripContext';
 import { detectCoordinates, resolveLocationName, PRESET_LOCATIONS, type LocationOption } from '@/lib/location';
@@ -27,6 +29,21 @@ export function LocationPickerModal({
   const [activeTab, setActiveTab] = useState<'all' | 'local' | 'planning'>('all');
   const [isLocating, setIsLocating] = useState(false);
   const [statusMessage, setStatusMessage] = useState<string | null>(null);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (isOpen) {
+      const originalOverflow = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
+      return () => {
+        document.body.style.overflow = originalOverflow;
+      };
+    }
+  }, [isOpen]);
 
   const activeName = selectedLocationName || locationName || 'Tirupati';
 
@@ -90,9 +107,9 @@ export function LocationPickerModal({
     );
   };
 
-  if (!isOpen) return null;
+  if (!isOpen || !mounted) return null;
 
-  return (
+  return createPortal(
     <div 
       style={{
         position: 'fixed',
@@ -103,7 +120,9 @@ export function LocationPickerModal({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: '16px'
+        padding: '16px',
+        overscrollBehavior: 'contain',
+        touchAction: 'none'
       }}
       onClick={(e) => {
         if (e.target === e.currentTarget) onClose();
@@ -115,12 +134,13 @@ export function LocationPickerModal({
           borderRadius: '24px',
           width: '100%',
           maxWidth: '460px',
-          maxHeight: '90vh',
+          maxHeight: 'min(90vh, 650px)',
           display: 'flex',
           flexDirection: 'column',
           boxShadow: '0 24px 48px rgba(0,0,0,0.22)',
           overflow: 'hidden',
-          animation: 'fadeIn 0.2s ease-out'
+          animation: 'fadeIn 0.2s ease-out',
+          touchAction: 'auto'
         }}
       >
         {/* Modal Header */}
@@ -172,7 +192,13 @@ export function LocationPickerModal({
         </div>
 
         {/* Modal Body */}
-        <div style={{ padding: '16px 20px', overflowY: 'auto', flex: 1 }}>
+        <div style={{
+          padding: '16px 20px',
+          overflowY: 'auto',
+          flex: 1,
+          overscrollBehavior: 'contain',
+          WebkitOverflowScrolling: 'touch'
+        }}>
           
           {/* GPS Auto-Detect CTA Button */}
           <button
@@ -355,7 +381,8 @@ export function LocationPickerModal({
           </div>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }
 
