@@ -445,8 +445,8 @@ export function QuickChecklist(props: any) {
   const ddRawComp = cleanTime(ddDetails.completedTime || ddGuideMatch.comp?.[1]);
   const ddCompDisplay = ddRawComp ? `${ddRawComp} (${ist.todayShort})` : t.completed;
 
-  const ssdLeftCount = ssdDisplayRemaining;
-  const ddLeftCount = ddDisplayRemaining;
+  const ssdLeftCount = isSsdCompleted ? '0' : (hasVerifiedSsdLeft ? rawSsdLeftVal : '--');
+  const ddLeftCount = isDdNowCompleted ? '0' : (hasVerifiedDdLeft ? rawDdLeftVal : '--');
   const activeDateLabel = isIssuing ? t.tomorrowDarshanLabel : t.today;
   const activeTokenDate = isIssuing ? ist.tomorrow : ist.today;
 
@@ -584,8 +584,8 @@ export function QuickChecklist(props: any) {
         <span style={{
           fontSize: '11px',
           fontWeight: 700,
-          color: isIssuing ? '#166534' : isPaused ? '#B45309' : '#991B1B',
-          backgroundColor: isIssuing ? '#DCFCE7' : isPaused ? '#FEF3C7' : '#FEE2E2',
+          color: isSsdIssuing ? '#166534' : isSsdPaused ? '#B45309' : '#991B1B',
+              backgroundColor: isSsdIssuing ? '#DCFCE7' : isSsdPaused ? '#FEF3C7' : '#FEE2E2',
           border: `1px solid ${isIssuing ? '#BBF7D0' : isPaused ? '#FDE68A' : '#FECACA'}`,
           padding: '3px 10px',
           borderRadius: '999px',
@@ -733,9 +733,9 @@ export function QuickChecklist(props: any) {
                 width: '6px',
                 height: '6px',
                 borderRadius: '50%',
-                backgroundColor: isIssuing ? '#16A34A' : isPaused ? '#D97706' : '#DC2626'
+                backgroundColor: isSsdIssuing ? '#16A34A' : isSsdPaused ? '#D97706' : '#DC2626'
               }} />
-              {isIssuing ? t.issuingBadge : isPaused ? t.pausedBadge : t.completed}
+              {isSsdIssuing ? t.issuingBadge : isSsdPaused ? t.pausedBadge : t.completed}
             </span>
           </div>
 
@@ -844,8 +844,8 @@ export function QuickChecklist(props: any) {
             <span style={{
               fontSize: '10px',
               fontWeight: 700,
-              color: isDdIssuing ? '#166534' : '#991B1B',
-              backgroundColor: isDdIssuing ? '#DCFCE7' : '#FEE2E2',
+              color: isDdNowIssuing ? '#166534' : isDdNowPaused ? '#B45309' : '#991B1B',
+              backgroundColor: isDdNowIssuing ? '#DCFCE7' : isDdNowPaused ? '#FEF3C7' : '#FEE2E2',
               padding: '2px 7px',
               borderRadius: '6px',
               display: 'inline-flex',
@@ -856,9 +856,9 @@ export function QuickChecklist(props: any) {
                 width: '6px',
                 height: '6px',
                 borderRadius: '50%',
-                backgroundColor: isDdIssuing ? '#16A34A' : '#DC2626'
+                backgroundColor: isDdNowIssuing ? '#16A34A' : isDdNowPaused ? '#D97706' : '#DC2626'
               }} />
-              {isDdIssuing ? t.issuingBadge : t.completed}
+              {isDdNowIssuing ? t.issuingBadge : isDdNowPaused ? t.pausedBadge : t.completed}
             </span>
           </div>
 

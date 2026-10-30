@@ -270,11 +270,12 @@ export default function AdminSsdTokensPage() {
         ? (localStorage.getItem('saarthi_admin_token') || 'saarthi_admin_token_2026') 
         : 'saarthi_admin_token_2026';
 
+      const nowIso = new Date().toISOString();
       const payload = {
         ssdTokenStatus: globalStatus,
         ssdNextTokenTime: nextBatchTime,
         ssdNotice: liveNotice,
-        ssdTimingsGuide: `SSD Quota: ${ssdTotal} (Available: ${ssdLeft}, Started at ${ssdStartTime || 'N/A'}, Completed at ${ssdCompletedTime || 'N/A'}, Status: ${ssdStatus}), DD Quota: ${ddTotal} (Available: ${ddLeft}, Started at ${ddStartTime || 'N/A'}, Completed at ${ddCompletedTime || 'N/A'}, Status: ${ddStatus})`,
+        ssdTimingsGuide: `SSD Quota: ${ssdTotal} (Available: ${ssdLeft}, Started at ${ssdStartTime || 'N/A'}, Completed at ${ssdCompletedTime || 'N/A'}, Status: ${ssdStatus}, Verified at: ${nowIso}), DD Quota: ${ddTotal} (Available: ${ddLeft}, Started at ${ddStartTime || 'N/A'}, Completed at ${ddCompletedTime || 'N/A'}, Status: ${ddStatus}, Verified at: ${nowIso})`,
         ssdAdvisoryTag: advisoryBadge,
         ssdModeBadge: modeBadge,
         ssdTokenDetails: {
@@ -282,14 +283,16 @@ export default function AdminSsdTokensPage() {
           tokensLeft: ssdLeft,
           status: ssdStatus,
           startTime: ssdStartTime,
-          completedTime: ssdCompletedTime
+          completedTime: ssdCompletedTime,
+          lastVerifiedAt: nowIso
         },
         ddTokenDetails: {
           totalTokens: ddTotal,
           tokensLeft: ddLeft,
           status: ddStatus,
           startTime: ddStartTime,
-          completedTime: ddCompletedTime
+          completedTime: ddCompletedTime,
+          lastVerifiedAt: nowIso
         },
         sendSsdPush: withNotification ? sendSsdNotification : false,
         sendDdPush: withNotification ? sendDdNotification : false,
@@ -654,7 +657,7 @@ export default function AdminSsdTokensPage() {
                 </label>
                 <select
                   value={ssdStatus}
-                  onChange={(e) => setSsdStatus(e.target.value as any)}
+                  onChange={(e) => { const v = e.target.value as any; setSsdStatus(v); if (v === 'completed') setSsdLeft('0'); }}
                   style={{ width: '100%', padding: '7px 8px', borderRadius: '8px', border: '1px solid #CBD5E1', fontSize: '12.5px', fontWeight: 700, marginBottom: '10px', background: '#FFFFFF', color: '#0F172A', boxSizing: 'border-box' }}
                 >
                   <option value="completed">❌ Completed</option>
@@ -739,7 +742,7 @@ export default function AdminSsdTokensPage() {
                 </label>
                 <select
                   value={ddStatus}
-                  onChange={(e) => setDdStatus(e.target.value as any)}
+                  onChange={(e) => { const v = e.target.value as any; setDdStatus(v); if (v === 'completed') setDdLeft('0'); }}
                   style={{ width: '100%', padding: '7px 8px', borderRadius: '8px', border: '1px solid #CBD5E1', fontSize: '12.5px', fontWeight: 700, marginBottom: '10px', background: '#FFFFFF', color: '#0F172A', boxSizing: 'border-box' }}
                 >
                   <option value="completed">❌ Completed</option>
