@@ -89,11 +89,13 @@ export default function AdminSsdTokensPage() {
   const [ssdTotal, setSsdTotal] = useState<string>('10K');
   const [ssdLeft, setSsdLeft] = useState<string>('0');
   const [ssdStatus, setSsdStatus] = useState<'completed' | 'issuing' | 'paused' | 'suspended'>('completed');
+  const [ssdStartTime, setSsdStartTime] = useState<string>('');
   const [ssdCompletedTime, setSsdCompletedTime] = useState<string>('3:30 AM');
 
   const [ddTotal, setDdTotal] = useState<string>('2K');
   const [ddLeft, setDdLeft] = useState<string>('0');
   const [ddStatus, setDdStatus] = useState<'completed' | 'issuing' | 'paused' | 'suspended'>('completed');
+  const [ddStartTime, setDdStartTime] = useState<string>('');
   const [ddCompletedTime, setDdCompletedTime] = useState<string>('5:25 AM');
 
   // 4. Push Notification Controls (Independent & OFF by default)
@@ -131,6 +133,57 @@ export default function AdminSsdTokensPage() {
         if (data.ssdNotice !== undefined) setLiveNotice(data.ssdNotice);
         if (data.ssdAdvisoryTag !== undefined) setAdvisoryBadge(data.ssdAdvisoryTag);
         if (data.ssdModeBadge !== undefined) setModeBadge(data.ssdModeBadge);
+
+        // Load SSD token details if available
+        if (data.ssdTokenDetails) {
+          if (data.ssdTokenDetails.totalTokens) setSsdTotal(data.ssdTokenDetails.totalTokens);
+          if (data.ssdTokenDetails.tokensLeft !== undefined) setSsdLeft(data.ssdTokenDetails.tokensLeft);
+          if (data.ssdTokenDetails.status) setSsdStatus(data.ssdTokenDetails.status);
+          if (data.ssdTokenDetails.startTime) setSsdStartTime(data.ssdTokenDetails.startTime);
+          if (data.ssdTokenDetails.completedTime) setSsdCompletedTime(data.ssdTokenDetails.completedTime);
+        }
+        // Load DD token details if available
+        if (data.ddTokenDetails) {
+          if (data.ddTokenDetails.totalTokens) setDdTotal(data.ddTokenDetails.totalTokens);
+          if (data.ddTokenDetails.tokensLeft !== undefined) setDdLeft(data.ddTokenDetails.tokensLeft);
+          if (data.ddTokenDetails.status) setDdStatus(data.ddTokenDetails.status);
+          if (data.ddTokenDetails.startTime) setDdStartTime(data.ddTokenDetails.startTime);
+          if (data.ddTokenDetails.completedTime) setDdCompletedTime(data.ddTokenDetails.completedTime);
+        }
+
+        // Fallback parse ssdTimingsGuide string if details were not loaded
+        if (data.ssdTimingsGuide) {
+          const guide = data.ssdTimingsGuide;
+          const sTot = guide.match(/SSD Quota:\s*([^\s(,]+)/i);
+          if (sTot && (!data.ssdTokenDetails || !data.ssdTokenDetails.totalTokens)) setSsdTotal(sTot[1]);
+
+          const sLeft = guide.match(/SSD[^\n]*?Available:\s*([^\s,)]+)/i);
+          if (sLeft && (!data.ssdTokenDetails || data.ssdTokenDetails.tokensLeft === undefined)) setSsdLeft(sLeft[1]);
+
+          const sStart = guide.match(/SSD[^\n]*?Started at\s*([^\s,)]+(?:\s*(?:AM|PM|am|pm))?)/i);
+          if (sStart && (!data.ssdTokenDetails || !data.ssdTokenDetails.startTime)) setSsdStartTime(sStart[1]);
+
+          const sComp = guide.match(/SSD[^\n]*?Completed at\s*([^\s,)]+(?:\s*(?:AM|PM|am|pm))?)/i);
+          if (sComp && (!data.ssdTokenDetails || !data.ssdTokenDetails.completedTime)) setSsdCompletedTime(sComp[1]);
+
+          const sStat = guide.match(/SSD[^\n]*?Status:\s*([a-zA-Z-]+)/i);
+          if (sStat && (!data.ssdTokenDetails || !data.ssdTokenDetails.status)) setSsdStatus(sStat[1].toLowerCase() as any);
+
+          const dTot = guide.match(/DD Quota:\s*([^\s(,]+)/i);
+          if (dTot && (!data.ddTokenDetails || !data.ddTokenDetails.totalTokens)) setDdTotal(dTot[1]);
+
+          const dLeft = guide.match(/DD[^\n]*?Available:\s*([^\s,)]+)/i);
+          if (dLeft && (!data.ddTokenDetails || data.ddTokenDetails.tokensLeft === undefined)) setDdLeft(dLeft[1]);
+
+          const dStart = guide.match(/DD[^\n]*?Started at\s*([^\s,)]+(?:\s*(?:AM|PM|am|pm))?)/i);
+          if (dStart && (!data.ddTokenDetails || !data.ddTokenDetails.startTime)) setDdStartTime(dStart[1]);
+
+          const dComp = guide.match(/DD[^\n]*?Completed at\s*([^\s,)]+(?:\s*(?:AM|PM|am|pm))?)/i);
+          if (dComp && (!data.ddTokenDetails || !data.ddTokenDetails.completedTime)) setDdCompletedTime(dComp[1]);
+
+          const dStat = guide.match(/DD[^\n]*?Status:\s*([a-zA-Z-]+)/i);
+          if (dStat && (!data.ddTokenDetails || !data.ddTokenDetails.status)) setDdStatus(dStat[1].toLowerCase() as any);
+        }
 
         // Derive DD status from darshans
         const dd = data.darshans?.find((d: any) => d.name?.toLowerCase().includes('divya') || d.name?.toLowerCase().includes('footpath'));
@@ -221,17 +274,21 @@ export default function AdminSsdTokensPage() {
         ssdTokenStatus: globalStatus,
         ssdNextTokenTime: nextBatchTime,
         ssdNotice: liveNotice,
-        ssdTimingsGuide: `SSD Quota: ${ssdTotal} (Available: ${ssdLeft}, Completed at ${ssdCompletedTime}), DD Quota: ${ddTotal} (Available: ${ddLeft}, Completed at ${ddCompletedTime})`,
+        ssdTimingsGuide: `SSD Quota: ${ssdTotal} (Available: ${ssdLeft}, Started at ${ssdStartTime || 'N/A'}, Completed at ${ssdCompletedTime || 'N/A'}, Status: ${ssdStatus}), DD Quota: ${ddTotal} (Available: ${ddLeft}, Started at ${ddStartTime || 'N/A'}, Completed at ${ddCompletedTime || 'N/A'}, Status: ${ddStatus})`,
         ssdAdvisoryTag: advisoryBadge,
         ssdModeBadge: modeBadge,
         ssdTokenDetails: {
           totalTokens: ssdTotal,
+          tokensLeft: ssdLeft,
           status: ssdStatus,
+          startTime: ssdStartTime,
           completedTime: ssdCompletedTime
         },
         ddTokenDetails: {
           totalTokens: ddTotal,
+          tokensLeft: ddLeft,
           status: ddStatus,
+          startTime: ddStartTime,
           completedTime: ddCompletedTime
         },
         sendSsdPush: withNotification ? sendSsdNotification : false,
@@ -606,17 +663,37 @@ export default function AdminSsdTokensPage() {
                   <option value="suspended">⚠️ Suspended</option>
                 </select>
 
-                <label style={{ fontSize: '11px', fontWeight: 700, color: '#475569', display: 'block', marginBottom: '4px' }}>
-                  Completed Time
-                </label>
-                <div style={{ position: 'relative' }}>
-                  <input
-                    type="text"
-                    value={ssdCompletedTime}
-                    onChange={(e) => setSsdCompletedTime(e.target.value)}
-                    style={{ width: '100%', padding: '6px 28px 6px 10px', borderRadius: '8px', border: '1px solid #CBD5E1', fontSize: '13px', fontWeight: 600, boxSizing: 'border-box' }}
-                  />
-                  <Clock size={13} color="#64748B" style={{ position: 'absolute', right: '8px', top: '50%', transform: 'translateY(-50%)' }} />
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '8px' }}>
+                  <div>
+                    <label style={{ fontSize: '11px', fontWeight: 700, color: '#475569', display: 'block', marginBottom: '4px' }}>
+                      Started Time
+                    </label>
+                    <div style={{ position: 'relative' }}>
+                      <input
+                        type="text"
+                        placeholder="e.g. 5:00 PM"
+                        value={ssdStartTime}
+                        onChange={(e) => setSsdStartTime(e.target.value)}
+                        style={{ width: '100%', padding: '6px 28px 6px 10px', borderRadius: '8px', border: '1px solid #CBD5E1', fontSize: '13px', fontWeight: 600, boxSizing: 'border-box' }}
+                      />
+                      <Clock size={13} color="#64748B" style={{ position: 'absolute', right: '8px', top: '50%', transform: 'translateY(-50%)' }} />
+                    </div>
+                  </div>
+                  <div>
+                    <label style={{ fontSize: '11px', fontWeight: 700, color: '#475569', display: 'block', marginBottom: '4px' }}>
+                      Completed Time
+                    </label>
+                    <div style={{ position: 'relative' }}>
+                      <input
+                        type="text"
+                        placeholder="e.g. 3:30 AM"
+                        value={ssdCompletedTime}
+                        onChange={(e) => setSsdCompletedTime(e.target.value)}
+                        style={{ width: '100%', padding: '6px 28px 6px 10px', borderRadius: '8px', border: '1px solid #CBD5E1', fontSize: '13px', fontWeight: 600, boxSizing: 'border-box' }}
+                      />
+                      <Clock size={13} color="#64748B" style={{ position: 'absolute', right: '8px', top: '50%', transform: 'translateY(-50%)' }} />
+                    </div>
+                  </div>
                 </div>
               </div>
 
@@ -671,17 +748,37 @@ export default function AdminSsdTokensPage() {
                   <option value="suspended">⚠️ Suspended</option>
                 </select>
 
-                <label style={{ fontSize: '11px', fontWeight: 700, color: '#475569', display: 'block', marginBottom: '4px' }}>
-                  Completed Time
-                </label>
-                <div style={{ position: 'relative' }}>
-                  <input
-                    type="text"
-                    value={ddCompletedTime}
-                    onChange={(e) => setDdCompletedTime(e.target.value)}
-                    style={{ width: '100%', padding: '6px 28px 6px 10px', borderRadius: '8px', border: '1px solid #CBD5E1', fontSize: '13px', fontWeight: 600, boxSizing: 'border-box' }}
-                  />
-                  <Clock size={13} color="#64748B" style={{ position: 'absolute', right: '8px', top: '50%', transform: 'translateY(-50%)' }} />
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '8px' }}>
+                  <div>
+                    <label style={{ fontSize: '11px', fontWeight: 700, color: '#475569', display: 'block', marginBottom: '4px' }}>
+                      Started Time
+                    </label>
+                    <div style={{ position: 'relative' }}>
+                      <input
+                        type="text"
+                        placeholder="e.g. 6:00 AM"
+                        value={ddStartTime}
+                        onChange={(e) => setDdStartTime(e.target.value)}
+                        style={{ width: '100%', padding: '6px 28px 6px 10px', borderRadius: '8px', border: '1px solid #CBD5E1', fontSize: '13px', fontWeight: 600, boxSizing: 'border-box' }}
+                      />
+                      <Clock size={13} color="#64748B" style={{ position: 'absolute', right: '8px', top: '50%', transform: 'translateY(-50%)' }} />
+                    </div>
+                  </div>
+                  <div>
+                    <label style={{ fontSize: '11px', fontWeight: 700, color: '#475569', display: 'block', marginBottom: '4px' }}>
+                      Completed Time
+                    </label>
+                    <div style={{ position: 'relative' }}>
+                      <input
+                        type="text"
+                        placeholder="e.g. 5:25 AM"
+                        value={ddCompletedTime}
+                        onChange={(e) => setDdCompletedTime(e.target.value)}
+                        style={{ width: '100%', padding: '6px 28px 6px 10px', borderRadius: '8px', border: '1px solid #CBD5E1', fontSize: '13px', fontWeight: 600, boxSizing: 'border-box' }}
+                      />
+                      <Clock size={13} color="#64748B" style={{ position: 'absolute', right: '8px', top: '50%', transform: 'translateY(-50%)' }} />
+                    </div>
+                  </div>
                 </div>
               </div>
 
@@ -760,9 +857,17 @@ export default function AdminSsdTokensPage() {
                       {ssdStatus === 'issuing' ? 'Issuing' : 'Completed'}
                     </span>
                   </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                    <Clock size={13} color="#475569" />
-                    <span style={{ fontSize: '12.5px', fontWeight: 800, color: '#0F172A' }}>{ssdCompletedTime}</span>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '3px', marginTop: '6px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                      <span style={{ fontSize: '10.5px', color: '#64748B' }}>Started:</span>
+                      <span style={{ fontSize: '11px', fontWeight: 700, color: '#0F172A' }}>{ssdStartTime || 'Not Announced'}</span>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                      <span style={{ fontSize: '10.5px', color: '#64748B' }}>{ssdStatus === 'issuing' ? 'Remaining:' : 'Completed:'}</span>
+                      <span style={{ fontSize: '11px', fontWeight: 700, color: ssdStatus === 'issuing' ? '#15803D' : '#991B1B' }}>
+                        {ssdStatus === 'issuing' ? (ssdLeft ? `${ssdLeft} Left` : 'Actively Issuing') : (ssdCompletedTime || 'Completed')}
+                      </span>
+                    </div>
                   </div>
                 </div>
 
@@ -782,9 +887,17 @@ export default function AdminSsdTokensPage() {
                       {ddStatus === 'issuing' ? 'Issuing' : 'Completed'}
                     </span>
                   </div>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
-                    <Clock size={13} color="#475569" />
-                    <span style={{ fontSize: '12.5px', fontWeight: 800, color: '#0F172A' }}>{ddCompletedTime}</span>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '3px', marginTop: '6px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                      <span style={{ fontSize: '10.5px', color: '#64748B' }}>Started:</span>
+                      <span style={{ fontSize: '11px', fontWeight: 700, color: '#0F172A' }}>{ddStartTime || 'Not Announced'}</span>
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                      <span style={{ fontSize: '10.5px', color: '#64748B' }}>{ddStatus === 'issuing' ? 'Remaining:' : 'Completed:'}</span>
+                      <span style={{ fontSize: '11px', fontWeight: 700, color: ddStatus === 'issuing' ? '#15803D' : '#991B1B' }}>
+                        {ddStatus === 'issuing' ? (ddLeft ? `${ddLeft} Left` : 'Actively Issuing') : (ddCompletedTime || 'Completed')}
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>

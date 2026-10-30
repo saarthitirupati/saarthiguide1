@@ -66,7 +66,7 @@
     }
   ],
   "ssdNotice": "SSD 10K & DD 2K Tokens Quota completed ",
-  "ssdTimingsGuide": "SSD Quota: 10K (Available: 0, Completed at 3:30 AM), DD Quota: 2K (Available: 0, Completed at 5:25 AM)",
+  "ssdTimingsGuide": "SSD Quota: 10K (Available: 0, Started at 5:00 PM, Completed at 3:30 AM, Status: completed), DD Quota: 2K (Available: 0, Started at 6:00 AM, Completed at 5:25 AM, Status: completed)",
   "ssdCounters": [
     {
       "name": "Vishnu Nivasam Counter",
@@ -82,5 +82,19 @@
     }
   ],
   "ssdAdvisoryTag": "",
-  "ssdModeBadge": ""
+  "ssdModeBadge": "",
+  "ssdTokenDetails": {
+    "totalTokens": "10K",
+    "tokensLeft": "0",
+    "status": "completed",
+    "startTime": "5:00 PM",
+    "completedTime": "3:30 AM"
+  },
+  "ddTokenDetails": {
+    "totalTokens": "2K",
+    "tokensLeft": "0",
+    "status": "completed",
+    "startTime": "6:00 AM",
+    "completedTime": "5:25 AM"
+  }
 }

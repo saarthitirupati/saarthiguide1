@@ -18,6 +18,8 @@ export async function GET() {
       ssdTokenSlots: status.ssdTokenSlots || [],
       ssdNotice: status.ssdNotice || '',
       ssdTimingsGuide: status.ssdTimingsGuide || '',
+      ssdTokenDetails: (status as any).ssdTokenDetails || null,
+      ddTokenDetails: (status as any).ddTokenDetails || null,
       ssdCounters: status.ssdCounters || [],
       ssdAdvisoryTag: status.ssdAdvisoryTag || '',
       ssdModeBadge: status.ssdModeBadge || '',
@@ -61,6 +63,8 @@ export async function POST(req: Request) {
     if (ssdTimingsGuide !== undefined) updates.ssdTimingsGuide = ssdTimingsGuide;
     if (ssdAdvisoryTag !== undefined) updates.ssdAdvisoryTag = ssdAdvisoryTag;
     if (ssdModeBadge !== undefined) updates.ssdModeBadge = ssdModeBadge;
+    if (ssdTokenDetails !== undefined) updates.ssdTokenDetails = ssdTokenDetails;
+    if (ddTokenDetails !== undefined) updates.ddTokenDetails = ddTokenDetails;
 
     // Independent DD Token synchronization into darshans list
     const currentStatus = await readStatus();

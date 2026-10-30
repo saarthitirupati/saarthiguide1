@@ -25,13 +25,22 @@ const TEXTS = {
     paused: 'Paused',
     suspended: 'Suspended',
     today: 'Today',
+    tomorrowDarshanLabel: "Tomorrow's Darshan",
+    startedAt: 'Started at',
+    quotaCompletedAt: 'Quota completed at',
+    tokensRemaining: 'Tokens remaining',
+    tokensAvailable: 'Available',
+    temporarilyPaused: 'Temporarily paused',
+    activelyIssuing: 'Actively issuing',
+    notAnnounced: 'Not announced',
+    unavailable: 'Unavailable',
     status: 'Status',
     todayQuotaCompleted: "Today's quota completed",
     tokensIssuingNow: 'Tokens issuing now',
     tokensPaused: 'Issuance paused',
     tokensSuspended: 'Issuance suspended',
     tokensIssuedNote: (date: string) => `Tokens for ${date} have been fully issued.`,
-    tokensIssuingNote: (date: string) => `Tokens for ${date} are currently being issued at counters.`,
+    tokensIssuingNote: (date: string) => `Tokens for tomorrow's darshan (${date}) are currently being issued at counters.`,
     tokensPausedNote: (date: string) => `Token issuance for ${date} is temporarily paused.`,
     tokensSuspendedNote: (date: string) => `Token issuance for ${date} is suspended due to festival/rush.`,
     ssdTokens: 'SSD Tokens',
@@ -72,13 +81,22 @@ const TEXTS = {
     paused: 'నిలిపివేయబడింది',
     suspended: 'తాత్కాలిక నిలిపివేత',
     today: 'ఈరోజు',
+    tomorrowDarshanLabel: 'రేపటి దర్శనం',
+    startedAt: 'జారీ ప్రారంభం',
+    quotaCompletedAt: 'కోటా పూర్తయింది',
+    tokensRemaining: 'మిగిలిన టోకెన్లు',
+    tokensAvailable: 'అందుబాటులో ఉన్నాయి',
+    temporarilyPaused: 'తాత్కాలికంగా ఆపబడింది',
+    activelyIssuing: 'టోకెన్లు జారీ అవుతున్నాయి',
+    notAnnounced: 'ఇంకా ప్రకటించలేదు',
+    unavailable: 'అందుబాటులో లేదు',
     status: 'స్థితి',
     todayQuotaCompleted: 'నేటి కోటా పూర్తయింది',
     tokensIssuingNow: 'టోకెన్లు జారీ అవుతున్నాయి',
     tokensPaused: 'టోకెన్ జారీ నిలిపివేయబడింది',
     tokensSuspended: 'టోకెన్ జారీ నిలిపివేయబడింది',
     tokensIssuedNote: (date: string) => `${date} నాటి టోకెన్లు పూర్తిగా పూర్తయ్యాయి.`,
-    tokensIssuingNote: (date: string) => `${date} నాటి టోకెన్లు ప్రస్తుతం కౌంటర్లలో జారీ అవుతున్నాయి.`,
+    tokensIssuingNote: (date: string) => `రేపటి దర్శనం (${date}) నాటి టోకెన్లు ప్రస్తుతం కౌంటర్లలో జారీ అవుతున్నాయి.`,
     tokensPausedNote: (date: string) => `${date} నాటి టోకెన్ జారీ తాత్కాలికంగా ఆపబడింది.`,
     tokensSuspendedNote: (date: string) => `${date} నాటి టోకెన్ జారీ తాత్కాలికంగా నిలిపివేయబడింది.`,
     ssdTokens: 'SSD టోకెన్లు',
@@ -119,13 +137,22 @@ const TEXTS = {
     paused: 'रुका हुआ',
     suspended: 'स्थगित',
     today: 'आज',
+    tomorrowDarshanLabel: 'कल का दर्शन',
+    startedAt: 'जारी शुरू',
+    quotaCompletedAt: 'कोटा पूरा हुआ',
+    tokensRemaining: 'शेष टोकन',
+    tokensAvailable: 'उपलब्ध',
+    temporarilyPaused: 'अस्थायी रूप से रुका हुआ',
+    activelyIssuing: 'सक्रिय रूप से जारी',
+    notAnnounced: 'घोषित नहीं',
+    unavailable: 'अनुपलब्ध',
     status: 'स्थिति',
     todayQuotaCompleted: 'आज का कोटा पूरा हुआ',
     tokensIssuingNow: 'टोकन जारी किए जा रहे हैं',
     tokensPaused: 'टोकन वितरण रुका हुआ है',
     tokensSuspended: 'टोकन वितरण स्थगित है',
     tokensIssuedNote: (date: string) => `${date} के लिए टोकन पूरी तरह समाप्त हो चुके हैं।`,
-    tokensIssuingNote: (date: string) => `${date} के लिए टोकन काउंटरों पर जारी किए जा रहे हैं।`,
+    tokensIssuingNote: (date: string) => `कल के दर्शन (${date}) के लिए टोकन काउंटरों पर जारी किए जा रहे हैं।`,
     tokensPausedNote: (date: string) => `${date} के लिए टोकन वितरण अस्थायी रूप से रुका हुआ है।`,
     tokensSuspendedNote: (date: string) => `${date} के लिए टोकन वितरण स्थगित है।`,
     ssdTokens: 'एसएसडी टोकन',
@@ -166,13 +193,22 @@ const TEXTS = {
     paused: 'நிறுத்தப்பட்டது',
     suspended: 'நிறுத்தப்பட்டுள்ளது',
     today: 'இன்று',
+    tomorrowDarshanLabel: 'நாளை தரிசனம்',
+    startedAt: 'தொடங்கிய நேரம்',
+    quotaCompletedAt: 'ஒதுக்கீடு முடிந்தது',
+    tokensRemaining: 'மீதமுள்ள டோக்கன்கள்',
+    tokensAvailable: 'இருப்பில் உள்ளது',
+    temporarilyPaused: 'தற்காலிகமாக நிறுத்தப்பட்டது',
+    activelyIssuing: 'டோக்கன்கள் வழங்கப்படுகின்றன',
+    notAnnounced: 'அறிவிக்கப்படவில்லை',
+    unavailable: 'கிடைக்கவில்லை',
     status: 'நிலை',
     todayQuotaCompleted: 'இன்றைய ஒதுக்கீடு முடிந்தது',
     tokensIssuingNow: 'டோக்கன்கள் இப்போது வழங்கப்படுகின்றன',
     tokensPaused: 'டோக்கன் வழங்குவது தற்காலிகமாக நிறுத்தப்பட்டுள்ளது',
     tokensSuspended: 'டோக்கன் வழங்குவது நிறுத்தி வைக்கப்பட்டுள்ளது',
     tokensIssuedNote: (date: string) => `${date}க்கான டோக்கன்கள் முழுமையாக வழங்கப்பட்டுவிட்டன.`,
-    tokensIssuingNote: (date: string) => `${date}க்கான டோக்கன்கள் தற்போது கவுன்டர்களில் வழங்கப்படுகின்றன.`,
+    tokensIssuingNote: (date: string) => `நாளை தரிசனத்திற்கான (${date}) டோக்கன்கள் தற்போது கவுன்டர்களில் வழங்கப்படுகின்றன.`,
     tokensPausedNote: (date: string) => `${date}க்கான டோக்கன் வழங்குவது நிறுத்தப்பட்டுள்ளது.`,
     tokensSuspendedNote: (date: string) => `${date}க்கான டோக்கன் வழங்குவது நிறுத்தி வைக்கப்பட்டுள்ளது.`,
     ssdTokens: 'SSD டோக்கன்கள்',
@@ -335,53 +371,107 @@ export function QuickChecklist(props: any) {
   const isDdClosed = /closed|full|complete|suspend|stop/i.test(ddWait) || isCompleted;
   const isDdIssuing = !isDdClosed && /issuing|open|available/i.test(ddWait);
 
-  // 4. Quota Numbers & Available Tokens Left (e.g. "6534 / 10K" or "0 / 10K")
   const allText = `${cleanNotice} ${liveStatus.ssdTimingsGuide || ''}`;
-  
+
+  // 4. SSD Data Extraction (Independent)
+  const ssdDetails = (liveStatus as any).ssdTokenDetails || {};
+  const ssdGuideMatch = {
+    total: allText.match(/SSD Quota:\s*([^\s(,]+)/i) || allText.match(/SSD[^\d]*(\d[\d,]*(?:\s*[kK])?)/i) || allText.match(/(\d[\d,]*(?:\s*[kK])?)\s*(?:SSD|tokens|quota)/i),
+    left: allText.match(/SSD[^\n]*?Available:\s*([^\s,)]+)/i) || allText.match(/SSD[^\n]*?(?:Left|Remaining)[^\d]*(\d[\d,]*)/i),
+    start: allText.match(/SSD[^\n]*?Started at\s*([^\s,)]+(?:\s*(?:AM|PM|am|pm))?)/i),
+    comp: allText.match(/SSD[^\n]*?Completed at\s*([^\s,)]+(?:\s*(?:AM|PM|am|pm))?)/i),
+    status: allText.match(/SSD[^\n]*?Status:\s*([a-zA-Z-]+)/i),
+  };
+
+  const rawSsdStatus = String(ssdDetails.status || ssdGuideMatch.status?.[1] || rawStatus || '').toLowerCase();
+  const isSsdIssuing = !isSuspended && rawSsdStatus === 'issuing';
+  const isSsdPaused = !isSuspended && rawSsdStatus === 'paused';
+  const isSsdCompleted = !isSuspended && (rawSsdStatus === 'completed' || rawSsdStatus === 'closed' || rawSsdStatus === 'closed-for-day' || (!isSsdIssuing && !isSsdPaused));
+
   // SSD Total Quota
-  const ssdTotalMatch = allText.match(/SSD Quota:\s*([^\s(,]+)/i) || 
-    allText.match(/SSD[^\d]*(\d[\d,]*(?:\s*[kK])?)/i) || 
-    allText.match(/(\d[\d,]*(?:\s*[kK])?)\s*(?:SSD|tokens|quota)/i);
-  let ssdTotalCount = ssdTotalMatch ? ssdTotalMatch[1].trim() : '10K';
+  let ssdTotalCount = ssdDetails.totalTokens || (ssdGuideMatch.total ? ssdGuideMatch.total[1].trim() : '10K');
   if (/^\d{1,2}$/.test(ssdTotalCount)) ssdTotalCount += 'K';
 
-  // SSD Left / Available Tokens
-  const ssdLeftMatch = allText.match(/SSD[^\n]*?Available:\s*([^\s,)]+)/i) ||
-    allText.match(/SSD[^\n]*?(?:Left|Remaining)[^\d]*(\d[\d,]*)/i);
-  let ssdLeftCount = isCompleted ? '0' : (ssdLeftMatch ? ssdLeftMatch[1].trim() : (isIssuing ? ssdTotalCount : '0'));
+  // SSD Remaining Tokens: only show count when admin has provided a verified count
+  const rawSsdLeftVal = ssdDetails.tokensLeft !== undefined && ssdDetails.tokensLeft !== ''
+    ? String(ssdDetails.tokensLeft).trim()
+    : (ssdGuideMatch.left ? ssdGuideMatch.left[1].trim() : '');
+  const hasVerifiedSsdLeft = Boolean(rawSsdLeftVal && rawSsdLeftVal !== 'null' && rawSsdLeftVal !== 'undefined');
+  const ssdDisplayRemaining = hasVerifiedSsdLeft ? rawSsdLeftVal : (isSsdCompleted ? '0' : '');
+
+  // SSD Started Time: never hardcode fallback times
+  const ssdRawStart = cleanTime(ssdDetails.startTime || ssdGuideMatch.start?.[1]);
+  const ssdStartDisplay = ssdRawStart
+    ? `${ssdRawStart} (${isSsdCompleted ? ist.yesterdayShort : ist.todayShort})`
+    : t.notAnnounced;
+
+  // SSD Completed Time: strictly explicit completed time, never next release time
+  const ssdRawComp = cleanTime(ssdDetails.completedTime || ssdGuideMatch.comp?.[1]);
+  const ssdCompDisplay = ssdRawComp ? `${ssdRawComp} (${ist.todayShort})` : t.completed;
+
+  // 5. DD Data Extraction (Independent)
+  const ddDetails = (liveStatus as any).ddTokenDetails || {};
+  const ddGuideMatch = {
+    total: allText.match(/DD Quota:\s*([^\s(,]+)/i) || allText.match(/DD[^\d]*(\d[\d,]*(?:\s*[kK])?)/i) || allText.match(/(\d[\d,]*(?:\s*[kK])?)\s*(?:DD|divya)/i),
+    left: allText.match(/DD[^\n]*?Available:\s*([^\s,)]+)/i) || allText.match(/DD[^\n]*?(?:Left|Remaining)[^\d]*(\d[\d,]*)/i),
+    start: allText.match(/DD[^\n]*?Started at\s*([^\s,)]+(?:\s*(?:AM|PM|am|pm))?)/i),
+    comp: allText.match(/DD[^\n]*?Completed at\s*([^\s,)]+(?:\s*(?:AM|PM|am|pm))?)/i),
+    status: allText.match(/DD[^\n]*?Status:\s*([a-zA-Z-]+)/i),
+  };
+
+  const rawDdStatus = String(ddDetails.status || ddGuideMatch.status?.[1] || (isDdIssuing ? 'issuing' : isDdClosed ? 'completed' : '')).toLowerCase();
+  const isDdNowIssuing = !isSuspended && (rawDdStatus === 'issuing' || (!rawDdStatus && isDdIssuing));
+  const isDdNowPaused = !isSuspended && (rawDdStatus === 'paused' || /paused/i.test(ddWait));
+  const isDdNowCompleted = !isSuspended && (rawDdStatus === 'completed' || (!isDdNowIssuing && !isDdNowPaused));
 
   // DD Total Quota
-  const ddTotalMatch = allText.match(/DD Quota:\s*([^\s(,]+)/i) || 
-    allText.match(/DD[^\d]*(\d[\d,]*(?:\s*[kK])?)/i) || 
-    allText.match(/(\d[\d,]*(?:\s*[kK])?)\s*(?:DD|divya)/i);
-  let ddTotalCount = ddTotalMatch ? ddTotalMatch[1].trim() : '2K';
+  let ddTotalCount = ddDetails.totalTokens || (ddGuideMatch.total ? ddGuideMatch.total[1].trim() : '2K');
   if (/^\d{1,2}$/.test(ddTotalCount)) ddTotalCount += 'K';
 
-  // DD Left / Available Tokens
-  const ddLeftMatch = allText.match(/DD[^\n]*?Available:\s*([^\s,)]+)/i) ||
-    allText.match(/DD[^\n]*?(?:Left|Remaining)[^\d]*(\d[\d,]*)/i);
-  let ddLeftCount = isDdClosed ? '0' : (ddLeftMatch ? ddLeftMatch[1].trim() : (isDdIssuing ? ddTotalCount : '0'));
+  // DD Remaining Tokens: only show count when admin has provided a verified count
+  const rawDdLeftVal = ddDetails.tokensLeft !== undefined && ddDetails.tokensLeft !== ''
+    ? String(ddDetails.tokensLeft).trim()
+    : (ddGuideMatch.left ? ddGuideMatch.left[1].trim() : '');
+  const hasVerifiedDdLeft = Boolean(rawDdLeftVal && rawDdLeftVal !== 'null' && rawDdLeftVal !== 'undefined');
+  const ddDisplayRemaining = hasVerifiedDdLeft ? rawDdLeftVal : (isDdNowCompleted ? '0' : '');
 
-  // 5. Completion Times from Database/API
-  const timeRegex = /\b(\d{1,2}:\d{2}\s*(?:AM|PM|am|pm))\b/gi;
-  const timeMatches = [...allText.matchAll(timeRegex)].map(m => cleanTime(m[1]));
+  // DD Started Time: never hardcode fallback times
+  const ddRawStart = cleanTime(ddDetails.startTime || ddGuideMatch.start?.[1]);
+  const ddStartDisplay = ddRawStart
+    ? `${ddRawStart} (${isDdNowCompleted ? ist.yesterdayShort : ist.todayShort})`
+    : t.notAnnounced;
 
-  const ssdTime = timeMatches[0] || (isCompleted ? '3:30 AM' : cleanTime(liveStatus.ssdNextTokenTime) || '');
-  const ddTime = timeMatches[1] || (isDdClosed ? '5:25 AM' : '');
+  // DD Completed Time: strictly explicit completed time, never next release time
+  const ddRawComp = cleanTime(ddDetails.completedTime || ddGuideMatch.comp?.[1]);
+  const ddCompDisplay = ddRawComp ? `${ddRawComp} (${ist.todayShort})` : t.completed;
 
-  // 6. Complete Timeline Extraction (Issuing Started, Quota Completed - Single-Line Concise)
-  const startMatch = allText.match(/(?:started|began|opened|start)[^\d]*(\d{1,2}:\d{2}\s*(?:AM|PM|am|pm))/i);
-  const issuingStartTime = startMatch ? cleanTime(startMatch[1]) : (isCompleted ? '5:30 PM' : '5:00 AM');
-  const ssdStartTimestamp = isCompleted
-    ? `${issuingStartTime} (${ist.yesterdayShort})`
-    : `${issuingStartTime} (${ist.todayShort})`;
-  const ddStartTimestamp = isCompleted
-    ? `${issuingStartTime} (${ist.yesterdayShort})`
-    : `${issuingStartTime} (${ist.todayShort})`;
+  const ssdLeftCount = ssdDisplayRemaining;
+  const ddLeftCount = ddDisplayRemaining;
+  const activeDateLabel = isIssuing ? t.tomorrowDarshanLabel : t.today;
+  const activeTokenDate = isIssuing ? ist.tomorrow : ist.today;
 
-  // Quota completed timestamp
-  const ssdCompleteTimestamp = ssdTime ? `${ssdTime} (${ist.todayShort})` : (isIssuing ? t.issuingBadge : t.closed);
-  const ddCompleteTimestamp = ddTime ? `${ddTime} (${ist.todayShort})` : (isDdIssuing ? t.issuingBadge : t.closed);
+  // 6. Timeline display values per required behavior table
+  const ssdRow2Title = isSsdIssuing ? t.tokensRemaining : isSsdCompleted ? t.quotaCompletedAt : isSsdPaused ? t.status : t.status;
+  const ssdRow2Value = isSsdIssuing
+    ? (hasVerifiedSsdLeft ? `${Number(rawSsdLeftVal).toLocaleString('en-IN')} ${t.tokensAvailable}` : t.activelyIssuing)
+    : isSsdCompleted
+    ? ssdCompDisplay
+    : isSsdPaused
+    ? t.temporarilyPaused
+    : t.unavailable;
+  const ssdRow2Color = isSsdIssuing ? '#16A34A' : isSsdPaused ? '#D97706' : isSsdCompleted ? '#DC2626' : '#64748B';
+  const ssdRow2Bg = isSsdIssuing ? '#DCFCE7' : isSsdPaused ? '#FEF3C7' : isSsdCompleted ? '#FEE2E2' : '#F1F5F9';
+
+  const ddRow2Title = isDdNowIssuing ? t.tokensRemaining : isDdNowCompleted ? t.quotaCompletedAt : isDdNowPaused ? t.status : t.status;
+  const ddRow2Value = isDdNowIssuing
+    ? (hasVerifiedDdLeft ? `${Number(rawDdLeftVal).toLocaleString('en-IN')} ${t.tokensAvailable}` : t.activelyIssuing)
+    : isDdNowCompleted
+    ? ddCompDisplay
+    : isDdNowPaused
+    ? t.temporarilyPaused
+    : t.unavailable;
+  const ddRow2Color = isDdNowIssuing ? '#16A34A' : isDdNowPaused ? '#D97706' : isDdNowCompleted ? '#DC2626' : '#64748B';
+  const ddRow2Bg = isDdNowIssuing ? '#DCFCE7' : isDdNowPaused ? '#FEF3C7' : isDdNowCompleted ? '#FEE2E2' : '#F1F5F9';
 
   // 7. Next Expected Release (Strictly distinguish expected from confirmed)
   const rawNext = cleanTime(liveStatus.ssdNextTokenTime);
@@ -544,10 +634,10 @@ export function QuickChecklist(props: any) {
 
             <div style={{ minWidth: 0 }}>
               <span style={{ fontSize: '10px', color: '#64748B', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.03em', display: 'block', lineHeight: 1.1 }}>
-                {t.today}
+                {activeDateLabel}
               </span>
               <span style={{ fontSize: '14px', fontWeight: 800, color: '#0F172A', marginTop: '2px', display: 'block', letterSpacing: '-0.01em', lineHeight: 1.2 }}>
-                {ist.today}
+                {activeTokenDate}
               </span>
             </div>
           </div>
@@ -651,54 +741,54 @@ export function QuickChecklist(props: any) {
 
           {/* Vertical Timeline */}
           <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: '8px' }}>
-            {/* Timeline Item 1: Issuing Started */}
+            {/* Timeline Item 1: Started at */}
             <div style={{ display: 'flex', alignItems: 'flex-start', gap: '6px' }}>
               <div style={{
                 width: '14px',
                 height: '14px',
                 borderRadius: '50%',
-                backgroundColor: '#DCFCE7',
+                backgroundColor: ssdRawStart ? '#DCFCE7' : '#F1F5F9',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                color: '#16A34A',
+                color: ssdRawStart ? '#16A34A' : '#64748B',
                 flexShrink: 0,
                 marginTop: '1px'
               }}>
-                <Play size={7} fill="#16A34A" />
+                <Play size={7} fill={ssdRawStart ? '#16A34A' : '#64748B'} />
               </div>
               <div style={{ minWidth: 0, flex: 1 }}>
                 <span style={{ fontSize: '10px', color: '#64748B', fontWeight: 500, display: 'block', lineHeight: 1.2 }}>
-                  {t.issuingStarted}
+                  {t.startedAt}
                 </span>
                 <span style={{ fontSize: '11px', color: '#1E293B', fontWeight: 700, display: 'block', marginTop: '1px', whiteSpace: 'nowrap' }}>
-                  {ssdStartTimestamp}
+                  {ssdStartDisplay}
                 </span>
               </div>
             </div>
 
-            {/* Timeline Item 2: Quota Completed */}
+            {/* Timeline Item 2: Tokens remaining / Quota completed at / Status */}
             <div style={{ display: 'flex', alignItems: 'flex-start', gap: '6px' }}>
               <div style={{
                 width: '14px',
                 height: '14px',
                 borderRadius: '50%',
-                backgroundColor: isCompleted ? '#FEE2E2' : '#DCFCE7',
+                backgroundColor: ssdRow2Bg,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                color: isCompleted ? '#DC2626' : '#16A34A',
+                color: ssdRow2Color,
                 flexShrink: 0,
                 marginTop: '1px'
               }}>
-                <div style={{ width: '5px', height: '5px', borderRadius: '50%', backgroundColor: isCompleted ? '#DC2626' : '#16A34A' }} />
+                <div style={{ width: '5px', height: '5px', borderRadius: '50%', backgroundColor: ssdRow2Color }} />
               </div>
               <div style={{ minWidth: 0, flex: 1 }}>
                 <span style={{ fontSize: '10px', color: '#64748B', fontWeight: 500, display: 'block', lineHeight: 1.2 }}>
-                  {t.quotaCompleted}
+                  {ssdRow2Title}
                 </span>
                 <span style={{ fontSize: '11px', color: '#1E293B', fontWeight: 700, display: 'block', marginTop: '1px', whiteSpace: 'nowrap' }}>
-                  {ssdCompleteTimestamp}
+                  {ssdRow2Value}
                 </span>
               </div>
             </div>
@@ -774,54 +864,54 @@ export function QuickChecklist(props: any) {
 
           {/* Vertical Timeline */}
           <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: '8px' }}>
-            {/* Timeline Item 1: Issuing Started */}
+            {/* Timeline Item 1: Started at */}
             <div style={{ display: 'flex', alignItems: 'flex-start', gap: '6px' }}>
               <div style={{
                 width: '14px',
                 height: '14px',
                 borderRadius: '50%',
-                backgroundColor: '#DCFCE7',
+                backgroundColor: ddRawStart ? '#DCFCE7' : '#F1F5F9',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                color: '#16A34A',
+                color: ddRawStart ? '#16A34A' : '#64748B',
                 flexShrink: 0,
                 marginTop: '1px'
               }}>
-                <Play size={7} fill="#16A34A" />
+                <Play size={7} fill={ddRawStart ? '#16A34A' : '#64748B'} />
               </div>
               <div style={{ minWidth: 0, flex: 1 }}>
                 <span style={{ fontSize: '10px', color: '#64748B', fontWeight: 500, display: 'block', lineHeight: 1.2 }}>
-                  {t.issuingStarted}
+                  {t.startedAt}
                 </span>
                 <span style={{ fontSize: '10.5px', color: '#1E293B', fontWeight: 700, display: 'block', marginTop: '1px', whiteSpace: 'nowrap' }}>
-                  {ddStartTimestamp}
+                  {ddStartDisplay}
                 </span>
               </div>
             </div>
 
-            {/* Timeline Item 2: Quota Completed */}
+            {/* Timeline Item 2: Tokens remaining / Quota completed at / Status */}
             <div style={{ display: 'flex', alignItems: 'flex-start', gap: '6px' }}>
               <div style={{
                 width: '14px',
                 height: '14px',
                 borderRadius: '50%',
-                backgroundColor: isDdClosed ? '#FEE2E2' : '#DCFCE7',
+                backgroundColor: ddRow2Bg,
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                color: isDdClosed ? '#DC2626' : '#16A34A',
+                color: ddRow2Color,
                 flexShrink: 0,
                 marginTop: '1px'
               }}>
-                <div style={{ width: '5px', height: '5px', borderRadius: '50%', backgroundColor: isDdClosed ? '#DC2626' : '#16A34A' }} />
+                <div style={{ width: '5px', height: '5px', borderRadius: '50%', backgroundColor: ddRow2Color }} />
               </div>
               <div style={{ minWidth: 0, flex: 1 }}>
                 <span style={{ fontSize: '10px', color: '#64748B', fontWeight: 500, display: 'block', lineHeight: 1.2 }}>
-                  {t.quotaCompleted}
+                  {ddRow2Title}
                 </span>
                 <span style={{ fontSize: '10.5px', color: '#1E293B', fontWeight: 700, display: 'block', marginTop: '1px', whiteSpace: 'nowrap' }}>
-                  {ddCompleteTimestamp}
+                  {ddRow2Value}
                 </span>
               </div>
             </div>
