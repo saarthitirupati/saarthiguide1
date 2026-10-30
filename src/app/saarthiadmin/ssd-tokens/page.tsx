@@ -86,11 +86,13 @@ export default function AdminSsdTokensPage() {
   const [modeBadge, setModeBadge] = useState<string>('Tokens Not Available');
 
   // 3. Token Details (SSD & DD)
-  const [ssdTotal, setSsdTotal] = useState<string>('10000');
+  const [ssdTotal, setSsdTotal] = useState<string>('10K');
+  const [ssdLeft, setSsdLeft] = useState<string>('0');
   const [ssdStatus, setSsdStatus] = useState<'completed' | 'issuing' | 'paused' | 'suspended'>('completed');
   const [ssdCompletedTime, setSsdCompletedTime] = useState<string>('3:30 AM');
 
-  const [ddTotal, setDdTotal] = useState<string>('2000');
+  const [ddTotal, setDdTotal] = useState<string>('2K');
+  const [ddLeft, setDdLeft] = useState<string>('0');
   const [ddStatus, setDdStatus] = useState<'completed' | 'issuing' | 'paused' | 'suspended'>('completed');
   const [ddCompletedTime, setDdCompletedTime] = useState<string>('5:25 AM');
 
@@ -156,6 +158,8 @@ export default function AdminSsdTokensPage() {
     if (status === 'closed-for-day') {
       setSsdStatus('completed');
       setDdStatus('completed');
+      setSsdLeft('0');
+      setDdLeft('0');
       setLiveNotice('SSD 10K & DD 2K Tokens Quota completed');
       setAdvisoryBadge('Quota Completed');
       setModeBadge('Tokens Not Available');
@@ -217,7 +221,7 @@ export default function AdminSsdTokensPage() {
         ssdTokenStatus: globalStatus,
         ssdNextTokenTime: nextBatchTime,
         ssdNotice: liveNotice,
-        ssdTimingsGuide: `SSD Quota: ${ssdTotal} (Completed at ${ssdCompletedTime}), DD Quota: ${ddTotal} (Completed at ${ddCompletedTime})`,
+        ssdTimingsGuide: `SSD Quota: ${ssdTotal} (Available: ${ssdLeft}, Completed at ${ssdCompletedTime}), DD Quota: ${ddTotal} (Available: ${ddLeft}, Completed at ${ddCompletedTime})`,
         ssdAdvisoryTag: advisoryBadge,
         ssdModeBadge: modeBadge,
         ssdTokenDetails: {
@@ -561,15 +565,32 @@ export default function AdminSsdTokensPage() {
                   </div>
                 </div>
 
-                <label style={{ fontSize: '11px', fontWeight: 700, color: '#475569', display: 'block', marginBottom: '4px' }}>
-                  Total Tokens (per day)
-                </label>
-                <input
-                  type="text"
-                  value={ssdTotal}
-                  onChange={(e) => setSsdTotal(e.target.value)}
-                  style={{ width: '100%', padding: '6px 10px', borderRadius: '8px', border: '1px solid #CBD5E1', fontSize: '13px', fontWeight: 600, marginBottom: '10px', boxSizing: 'border-box' }}
-                />
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '8px', marginBottom: '10px' }}>
+                  <div>
+                    <label style={{ fontSize: '11px', fontWeight: 700, color: '#475569', display: 'block', marginBottom: '4px' }}>
+                      Tokens Left (Available)
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="e.g. 6534 or 0"
+                      value={ssdLeft}
+                      onChange={(e) => setSsdLeft(e.target.value)}
+                      style={{ width: '100%', padding: '6px 10px', borderRadius: '8px', border: '1px solid #CBD5E1', fontSize: '13px', fontWeight: 700, color: '#16A34A', boxSizing: 'border-box' }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ fontSize: '11px', fontWeight: 700, color: '#475569', display: 'block', marginBottom: '4px' }}>
+                      Total Quota
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="e.g. 10K"
+                      value={ssdTotal}
+                      onChange={(e) => setSsdTotal(e.target.value)}
+                      style={{ width: '100%', padding: '6px 10px', borderRadius: '8px', border: '1px solid #CBD5E1', fontSize: '13px', fontWeight: 600, boxSizing: 'border-box' }}
+                    />
+                  </div>
+                </div>
 
                 <label style={{ fontSize: '11px', fontWeight: 700, color: '#475569', display: 'block', marginBottom: '4px' }}>
                   Status
@@ -609,15 +630,32 @@ export default function AdminSsdTokensPage() {
                   </div>
                 </div>
 
-                <label style={{ fontSize: '11px', fontWeight: 700, color: '#475569', display: 'block', marginBottom: '4px' }}>
-                  Total Tokens (per day)
-                </label>
-                <input
-                  type="text"
-                  value={ddTotal}
-                  onChange={(e) => setDdTotal(e.target.value)}
-                  style={{ width: '100%', padding: '6px 10px', borderRadius: '8px', border: '1px solid #CBD5E1', fontSize: '13px', fontWeight: 600, marginBottom: '10px', boxSizing: 'border-box' }}
-                />
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '8px', marginBottom: '10px' }}>
+                  <div>
+                    <label style={{ fontSize: '11px', fontWeight: 700, color: '#475569', display: 'block', marginBottom: '4px' }}>
+                      Tokens Left (Available)
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="e.g. 1898 or 0"
+                      value={ddLeft}
+                      onChange={(e) => setDdLeft(e.target.value)}
+                      style={{ width: '100%', padding: '6px 10px', borderRadius: '8px', border: '1px solid #CBD5E1', fontSize: '13px', fontWeight: 700, color: '#16A34A', boxSizing: 'border-box' }}
+                    />
+                  </div>
+                  <div>
+                    <label style={{ fontSize: '11px', fontWeight: 700, color: '#475569', display: 'block', marginBottom: '4px' }}>
+                      Total Quota
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="e.g. 2K"
+                      value={ddTotal}
+                      onChange={(e) => setDdTotal(e.target.value)}
+                      style={{ width: '100%', padding: '6px 10px', borderRadius: '8px', border: '1px solid #CBD5E1', fontSize: '13px', fontWeight: 600, boxSizing: 'border-box' }}
+                    />
+                  </div>
+                </div>
 
                 <label style={{ fontSize: '11px', fontWeight: 700, color: '#475569', display: 'block', marginBottom: '4px' }}>
                   Status

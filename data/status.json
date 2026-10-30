@@ -66,7 +66,7 @@
     }
   ],
   "ssdNotice": "SSD 10K & DD 2K Tokens Quota completed ",
-  "ssdTimingsGuide": "SSD Quota: 10000K (Completed at 3:30 AM), DD Quota: 2000K (Completed at 5:25 AM)",
+  "ssdTimingsGuide": "SSD Quota: 10K (Available: 0, Completed at 3:30 AM), DD Quota: 2K (Available: 0, Completed at 5:25 AM)",
   "ssdCounters": [
     {
       "name": "Vishnu Nivasam Counter",

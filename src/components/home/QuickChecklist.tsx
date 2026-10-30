@@ -335,15 +335,32 @@ export function QuickChecklist(props: any) {
   const isDdClosed = /closed|full|complete|suspend|stop/i.test(ddWait) || isCompleted;
   const isDdIssuing = !isDdClosed && /issuing|open|available/i.test(ddWait);
 
-  // 4. Quota Numbers (Dynamic extraction preserving 'K' units)
+  // 4. Quota Numbers & Available Tokens Left (e.g. "6534 / 10K" or "0 / 10K")
   const allText = `${cleanNotice} ${liveStatus.ssdTimingsGuide || ''}`;
-  const ssdMatch = allText.match(/SSD[^\d]*(\d[\d,]*(?:\s*[kK])?)/i) || allText.match(/(\d[\d,]*(?:\s*[kK])?)\s*(?:SSD|tokens|quota)/i);
-  let ssdQuotaCount = ssdMatch ? ssdMatch[1].trim() : '10K';
-  if (/^\d{1,2}$/.test(ssdQuotaCount)) ssdQuotaCount += 'K';
+  
+  // SSD Total Quota
+  const ssdTotalMatch = allText.match(/SSD Quota:\s*([^\s(,]+)/i) || 
+    allText.match(/SSD[^\d]*(\d[\d,]*(?:\s*[kK])?)/i) || 
+    allText.match(/(\d[\d,]*(?:\s*[kK])?)\s*(?:SSD|tokens|quota)/i);
+  let ssdTotalCount = ssdTotalMatch ? ssdTotalMatch[1].trim() : '10K';
+  if (/^\d{1,2}$/.test(ssdTotalCount)) ssdTotalCount += 'K';
 
-  const ddMatch = allText.match(/DD[^\d]*(\d[\d,]*(?:\s*[kK])?)/i) || allText.match(/(\d[\d,]*(?:\s*[kK])?)\s*(?:DD|divya)/i);
-  let ddQuotaCount = ddMatch ? ddMatch[1].trim() : '2K';
-  if (/^\d{1,2}$/.test(ddQuotaCount)) ddQuotaCount += 'K';
+  // SSD Left / Available Tokens
+  const ssdLeftMatch = allText.match(/SSD[^\n]*?Available:\s*([^\s,)]+)/i) ||
+    allText.match(/SSD[^\n]*?(?:Left|Remaining)[^\d]*(\d[\d,]*)/i);
+  let ssdLeftCount = isCompleted ? '0' : (ssdLeftMatch ? ssdLeftMatch[1].trim() : (isIssuing ? ssdTotalCount : '0'));
+
+  // DD Total Quota
+  const ddTotalMatch = allText.match(/DD Quota:\s*([^\s(,]+)/i) || 
+    allText.match(/DD[^\d]*(\d[\d,]*(?:\s*[kK])?)/i) || 
+    allText.match(/(\d[\d,]*(?:\s*[kK])?)\s*(?:DD|divya)/i);
+  let ddTotalCount = ddTotalMatch ? ddTotalMatch[1].trim() : '2K';
+  if (/^\d{1,2}$/.test(ddTotalCount)) ddTotalCount += 'K';
+
+  // DD Left / Available Tokens
+  const ddLeftMatch = allText.match(/DD[^\n]*?Available:\s*([^\s,)]+)/i) ||
+    allText.match(/DD[^\n]*?(?:Left|Remaining)[^\d]*(\d[\d,]*)/i);
+  let ddLeftCount = isDdClosed ? '0' : (ddLeftMatch ? ddLeftMatch[1].trim() : (isDdIssuing ? ddTotalCount : '0'));
 
   // 5. Completion Times from Database/API
   const timeRegex = /\b(\d{1,2}:\d{2}\s*(?:AM|PM|am|pm))\b/gi;
@@ -375,7 +392,7 @@ export function QuickChecklist(props: any) {
   );
 
   const isNextConfirmed = hasConfirmedTime && !/tentative|expected|subject/i.test(rawNext);
-  const nextReleaseTitle = isNextConfirmed ? t.nextConfirmedRelease : t.nextExpectedRelease;
+  const nextReleaseTitle = t.nextExpectedRelease;
   const nextReleaseDisplay = hasConfirmedTime ? rawNext : t.notAnnouncedYet;
   const nextReleaseDateLabel = hasConfirmedTime
     ? (isCompleted ? `${ist.tomorrow} (${t.tomorrow})` : `${ist.today} (${t.todayLabel})`)
@@ -599,13 +616,13 @@ export function QuickChecklist(props: any) {
             </h4>
           </div>
 
-          {/* Quota Number */}
-          <div style={{ margin: '2px 0 6px 0' }}>
+          {/* Quota Number: [Left] / [Total] */}
+          <div style={{ margin: '2px 0 6px 0', display: 'flex', alignItems: 'baseline', gap: '3px' }}>
             <span style={{ fontSize: '18px', fontWeight: 800, color: '#0F172A', letterSpacing: '-0.02em' }}>
-              {ssdQuotaCount}
+              {ssdLeftCount}
             </span>
-            <span style={{ fontSize: '11px', color: '#64748B', fontWeight: 500, marginLeft: '4px' }}>
-              {t.perDay}
+            <span style={{ fontSize: '12px', color: '#64748B', fontWeight: 600 }}>
+              / {ssdTotalCount}
             </span>
           </div>
 
@@ -722,13 +739,13 @@ export function QuickChecklist(props: any) {
             </h4>
           </div>
 
-          {/* Quota Number */}
-          <div style={{ margin: '2px 0 6px 0' }}>
+          {/* Quota Number: [Left] / [Total] */}
+          <div style={{ margin: '2px 0 6px 0', display: 'flex', alignItems: 'baseline', gap: '3px' }}>
             <span style={{ fontSize: '18px', fontWeight: 800, color: '#0F172A', letterSpacing: '-0.02em' }}>
-              {ddQuotaCount}
+              {ddLeftCount}
             </span>
-            <span style={{ fontSize: '11px', color: '#64748B', fontWeight: 500, marginLeft: '4px' }}>
-              {t.perDay}
+            <span style={{ fontSize: '12px', color: '#64748B', fontWeight: 600 }}>
+              / {ddTotalCount}
             </span>
           </div>
 
