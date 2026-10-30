@@ -566,7 +566,13 @@ export function QuickChecklist(props: any) {
         marginBottom: '10px'
       }}>
         {/* ── 3A: SSD TOKENS CARD ── */}
-        <div style={{
+        <div 
+          onClick={(e) => {
+            e.stopPropagation();
+            router.push('/ssd-tokens');
+          }}
+          style={{
+            cursor: 'pointer',
           backgroundColor: '#F8FAFC',
           border: '1px solid #E2E8F0',
           borderRadius: '16px',
@@ -683,7 +689,13 @@ export function QuickChecklist(props: any) {
         </div>
 
         {/* ── 3B: DD TOKENS CARD ── */}
-        <div style={{
+        <div 
+          onClick={(e) => {
+            e.stopPropagation();
+            router.push('/dd-tokens');
+          }}
+          style={{
+            cursor: 'pointer',
           backgroundColor: '#F8FAFC',
           border: '1px solid #E2E8F0',
           borderRadius: '16px',
