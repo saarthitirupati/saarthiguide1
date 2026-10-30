@@ -335,6 +335,16 @@ function TempleIcon({ color = '#2563EB' }: { color?: string }) {
   );
 }
 
+function formatQuotaNumber(raw: string, fallback: string): string {
+  if (!raw) return fallback;
+  const num = parseInt(raw.replace(/[^\d]/g, ''), 10);
+  if (!isNaN(num)) {
+    if (raw.toLowerCase().includes('k')) return (num * 1000).toLocaleString('en-IN');
+    return num.toLocaleString('en-IN');
+  }
+  return fallback;
+}
+
 export function QuickChecklist(props: any) {
   const { liveStatus } = props;
   const router = useRouter();
@@ -707,12 +717,15 @@ export function QuickChecklist(props: any) {
           </div>
 
           {/* Quota Number: [Left] / [Total] */}
-          <div style={{ margin: '2px 0 6px 0', display: 'flex', alignItems: 'baseline', gap: '3px' }}>
-            <span style={{ fontSize: '18px', fontWeight: 800, color: '#0F172A', letterSpacing: '-0.02em' }}>
-              {ssdLeftCount}
+          <div style={{ margin: '2px 0 6px 0', display: 'flex', alignItems: 'baseline', gap: '4px', flexWrap: 'wrap' }}>
+            <span style={{ fontSize: '16px', fontWeight: 800, color: '#0F172A', letterSpacing: '-0.02em', lineHeight: 1.1 }}>
+              {isSsdCompleted ? '0' : (hasVerifiedSsdLeft ? Number(rawSsdLeftVal).toLocaleString('en-IN') : '--')}
+            </span>
+            <span style={{ fontSize: '11px', color: isSsdCompleted ? '#DC2626' : '#16A34A', fontWeight: 700 }}>
+              {t.tokensAvailable}
             </span>
             <span style={{ fontSize: '12px', color: '#64748B', fontWeight: 600 }}>
-              / {ssdTotalCount}
+              / {formatQuotaNumber(ssdTotalCount, '10,000')}
             </span>
           </div>
 
@@ -767,31 +780,33 @@ export function QuickChecklist(props: any) {
               </div>
             </div>
 
-            {/* Timeline Item 2: Tokens remaining / Quota completed at / Status */}
-            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '6px' }}>
-              <div style={{
-                width: '14px',
-                height: '14px',
-                borderRadius: '50%',
-                backgroundColor: ssdRow2Bg,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: ssdRow2Color,
-                flexShrink: 0,
-                marginTop: '1px'
-              }}>
-                <div style={{ width: '5px', height: '5px', borderRadius: '50%', backgroundColor: ssdRow2Color }} />
+            {/* Timeline Item 2: Quota completed at / Status (hidden when issuing to avoid duplicate count) */}
+            {!isSsdIssuing && (
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '6px' }}>
+                <div style={{
+                  width: '14px',
+                  height: '14px',
+                  borderRadius: '50%',
+                  backgroundColor: ssdRow2Bg,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: ssdRow2Color,
+                  flexShrink: 0,
+                  marginTop: '1px'
+                }}>
+                  <div style={{ width: '5px', height: '5px', borderRadius: '50%', backgroundColor: ssdRow2Color }} />
+                </div>
+                <div style={{ minWidth: 0, flex: 1 }}>
+                  <span style={{ fontSize: '10px', color: '#64748B', fontWeight: 500, display: 'block', lineHeight: 1.2 }}>
+                    {ssdRow2Title}
+                  </span>
+                  <span style={{ fontSize: '11px', color: '#1E293B', fontWeight: 700, display: 'block', marginTop: '1px', whiteSpace: 'nowrap' }}>
+                    {ssdRow2Value}
+                  </span>
+                </div>
               </div>
-              <div style={{ minWidth: 0, flex: 1 }}>
-                <span style={{ fontSize: '10px', color: '#64748B', fontWeight: 500, display: 'block', lineHeight: 1.2 }}>
-                  {ssdRow2Title}
-                </span>
-                <span style={{ fontSize: '11px', color: '#1E293B', fontWeight: 700, display: 'block', marginTop: '1px', whiteSpace: 'nowrap' }}>
-                  {ssdRow2Value}
-                </span>
-              </div>
-            </div>
+            )}
           </div>
         </div>
 
@@ -830,12 +845,15 @@ export function QuickChecklist(props: any) {
           </div>
 
           {/* Quota Number: [Left] / [Total] */}
-          <div style={{ margin: '2px 0 6px 0', display: 'flex', alignItems: 'baseline', gap: '3px' }}>
-            <span style={{ fontSize: '18px', fontWeight: 800, color: '#0F172A', letterSpacing: '-0.02em' }}>
-              {ddLeftCount}
+          <div style={{ margin: '2px 0 6px 0', display: 'flex', alignItems: 'baseline', gap: '4px', flexWrap: 'wrap' }}>
+            <span style={{ fontSize: '16px', fontWeight: 800, color: '#0F172A', letterSpacing: '-0.02em', lineHeight: 1.1 }}>
+              {isDdNowCompleted ? '0' : (hasVerifiedDdLeft ? Number(rawDdLeftVal).toLocaleString('en-IN') : '--')}
+            </span>
+            <span style={{ fontSize: '11px', color: isDdNowCompleted ? '#DC2626' : '#16A34A', fontWeight: 700 }}>
+              {t.tokensAvailable}
             </span>
             <span style={{ fontSize: '12px', color: '#64748B', fontWeight: 600 }}>
-              / {ddTotalCount}
+              / {formatQuotaNumber(ddTotalCount, '2,000')}
             </span>
           </div>
 
@@ -890,31 +908,33 @@ export function QuickChecklist(props: any) {
               </div>
             </div>
 
-            {/* Timeline Item 2: Tokens remaining / Quota completed at / Status */}
-            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '6px' }}>
-              <div style={{
-                width: '14px',
-                height: '14px',
-                borderRadius: '50%',
-                backgroundColor: ddRow2Bg,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: ddRow2Color,
-                flexShrink: 0,
-                marginTop: '1px'
-              }}>
-                <div style={{ width: '5px', height: '5px', borderRadius: '50%', backgroundColor: ddRow2Color }} />
+            {/* Timeline Item 2: Quota completed at / Status (hidden when issuing to avoid duplicate count) */}
+            {!isDdNowIssuing && (
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '6px' }}>
+                <div style={{
+                  width: '14px',
+                  height: '14px',
+                  borderRadius: '50%',
+                  backgroundColor: ddRow2Bg,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  color: ddRow2Color,
+                  flexShrink: 0,
+                  marginTop: '1px'
+                }}>
+                  <div style={{ width: '5px', height: '5px', borderRadius: '50%', backgroundColor: ddRow2Color }} />
+                </div>
+                <div style={{ minWidth: 0, flex: 1 }}>
+                  <span style={{ fontSize: '10px', color: '#64748B', fontWeight: 500, display: 'block', lineHeight: 1.2 }}>
+                    {ddRow2Title}
+                  </span>
+                  <span style={{ fontSize: '10.5px', color: '#1E293B', fontWeight: 700, display: 'block', marginTop: '1px', whiteSpace: 'nowrap' }}>
+                    {ddRow2Value}
+                  </span>
+                </div>
               </div>
-              <div style={{ minWidth: 0, flex: 1 }}>
-                <span style={{ fontSize: '10px', color: '#64748B', fontWeight: 500, display: 'block', lineHeight: 1.2 }}>
-                  {ddRow2Title}
-                </span>
-                <span style={{ fontSize: '10.5px', color: '#1E293B', fontWeight: 700, display: 'block', marginTop: '1px', whiteSpace: 'nowrap' }}>
-                  {ddRow2Value}
-                </span>
-              </div>
-            </div>
+            )}
           </div>
         </div>
       </div>
