@@ -414,7 +414,7 @@ export function QuickChecklist(props: any) {
   const todayStatusText = isSuspended
     ? t.tokensSuspended
     : isIssuing
-    ? t.todayQuotaCompleted
+    ? t.tokensIssuingNow
     : isPaused
     ? t.tokensPaused
     : t.todayQuotaCompleted;
