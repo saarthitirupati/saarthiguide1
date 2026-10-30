@@ -14,6 +14,23 @@ import {
 } from '@/lib/notifications';
 import { isAuthorizedAdmin } from '@/lib/authGuard';
 
+function getISTHourMinute(): { hour: number; minute: number; timeStr: string } {
+  const parts = new Intl.DateTimeFormat('en-US', {
+    timeZone: 'Asia/Kolkata',
+    hour: 'numeric',
+    minute: 'numeric',
+    hour12: false
+  }).formatToParts(new Date());
+
+  const hour = parseInt(parts.find(p => p.type === 'hour')?.value || '0', 10);
+  const minute = parseInt(parts.find(p => p.type === 'minute')?.value || '0', 10);
+  return {
+    hour,
+    minute,
+    timeStr: String(hour).padStart(2, '0') + ':' + String(minute).padStart(2, '0') + ' IST'
+  };
+}
+
 interface CustomPushData {
   title?: string;
   body?: string;
@@ -53,6 +70,23 @@ function buildPayload(type: string, daysSince?: number, custom?: CustomPushData)
 }
 
 async function handlePushDispatch(type: string, endpoint?: string, daysSince?: number, custom?: CustomPushData) {
+  // Strict Time-of-Day Guard:
+  // Good Morning / Suprabhatam push notifications must strictly fire during morning hours (5:00 AM – 9:30 AM IST).
+  // Prevents sending morning greetings in the afternoon due to delayed cloud cron queues.
+  if (['good_morning', 'morning_update', 'suprabhatam'].includes(type)) {
+    const { hour, minute, timeStr } = getISTHourMinute();
+    const isMorning = hour >= 5 && (hour < 9 || (hour === 9 && minute <= 30));
+    if (!isMorning) {
+      console.warn('[PushSend] Suppressing ' + type + ' push: restricted to morning hours (5:00 AM – 9:30 AM IST). Current time is ' + timeStr);
+      return NextResponse.json({
+        ok: true,
+        sent: 0,
+        skipped: true,
+        reason: 'Good Morning / Suprabhatam push is restricted to morning hours (5:00 AM – 9:30 AM IST). Current time is ' + timeStr + '.'
+      });
+    }
+  }
+
   const pub = process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY;
   const priv = process.env.VAPID_PRIVATE_KEY;
 

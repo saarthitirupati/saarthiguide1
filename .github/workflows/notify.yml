@@ -2,8 +2,8 @@ name: Saarthi Push Notifications
 
 on:
   schedule:
-    # 7:00 AM IST daily (UTC 01:30) — Daily Spot + Festival Reminder
-    - cron: '30 1 * * *'
+    # 6:00 AM IST daily (UTC 00:30) — Morning Suprabhatam, Daily Spot & Festival
+    - cron: '30 0 * * *'
     # Friday 6:00 PM IST (UTC 12:30) — Weekend Suggestion
     - cron: '30 12 * * 5'
     # 8:30 AM IST daily (UTC 03:00) — Re-engagement (separate from morning content)
@@ -20,7 +20,7 @@ on:
 jobs:
   morning:
     name: Morning Notifications (Suprabhatam + Spot + Festival)
-    if: github.event.schedule == '30 1 * * *' || (github.event_name == 'workflow_dispatch' && (github.event.inputs.type == 'good_morning' || github.event.inputs.type == 'daily_spot' || github.event.inputs.type == 'festival' || github.event.inputs.type == 'welcome'))
+    if: github.event.schedule == '30 0 * * *' || (github.event_name == 'workflow_dispatch' && (github.event.inputs.type == 'good_morning' || github.event.inputs.type == 'daily_spot' || github.event.inputs.type == 'festival' || github.event.inputs.type == 'welcome'))
     runs-on: ubuntu-latest
     steps:
       - name: Validate CRON_SECRET configured
@@ -31,8 +31,15 @@ jobs:
           fi
 
       - name: Send Good Morning Suprabhatam Notification
-        if: github.event.schedule == '30 1 * * *' || (github.event_name == 'workflow_dispatch' && github.event.inputs.type == 'good_morning')
+        if: github.event.schedule == '30 0 * * *' || (github.event_name == 'workflow_dispatch' && github.event.inputs.type == 'good_morning')
         run: |
+          IST_HOUR=$(TZ='Asia/Kolkata' date +%H)
+          IST_MIN=$(TZ='Asia/Kolkata' date +%M)
+          echo "Current IST time: $IST_HOUR:$IST_MIN"
+          if [ "$IST_HOUR" -lt 5 ] || [ "$IST_HOUR" -gt 9 ] || ([ "$IST_HOUR" -eq 9 ] && [ "$IST_MIN" -gt 30 ]); then
+            echo "Skipping Good Morning notification: IST time ($IST_HOUR:$IST_MIN) is outside morning window (05:00 - 09:30 IST)."
+            exit 0
+          fi
           response=$(curl -s -S -L -w "\nHTTP_STATUS:%{http_code}" -X POST https://www.saarthiguide.in/api/push/send \
             -H "Content-Type: application/json" \
             -H "x-cron-secret: ${{ secrets.CRON_SECRET }}" \
@@ -52,7 +59,7 @@ jobs:
           fi
 
       - name: Send Daily Spot of the Day
-        if: github.event.schedule == '30 1 * * *' || (github.event_name == 'workflow_dispatch' && github.event.inputs.type == 'daily_spot')
+        if: github.event.schedule == '30 0 * * *' || (github.event_name == 'workflow_dispatch' && github.event.inputs.type == 'daily_spot')
         run: |
           response=$(curl -s -S -L -w "\nHTTP_STATUS:%{http_code}" -X POST https://www.saarthiguide.in/api/push/send \
             -H "Content-Type: application/json" \
@@ -73,7 +80,7 @@ jobs:
           fi
 
       - name: Send Festival Reminder (if any in 7/3/1/0 days)
-        if: github.event.schedule == '30 1 * * *' || (github.event_name == 'workflow_dispatch' && github.event.inputs.type == 'festival')
+        if: github.event.schedule == '30 0 * * *' || (github.event_name == 'workflow_dispatch' && github.event.inputs.type == 'festival')
         run: |
           response=$(curl -s -S -L -w "\nHTTP_STATUS:%{http_code}" -X POST https://www.saarthiguide.in/api/push/send \
             -H "Content-Type: application/json" \
