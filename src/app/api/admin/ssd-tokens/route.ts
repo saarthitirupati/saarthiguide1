@@ -1,24 +1,32 @@
 import { NextResponse } from 'next/server';
-import { readStatus, updateStatus, SsdTokenSlot, SsdCounter } from '@/lib/statusDb';
+import { readStatus, updateStatus } from '@/lib/statusDb';
 import { isAuthorizedAdmin } from '@/lib/authGuard';
-import { notifySsdUpdates, pushNotifyAll } from '@/lib/pushNotify';
+import { pushNotifyAll } from '@/lib/pushNotify';
 
 export async function GET() {
   try {
     const status = await readStatus();
+    
+    // Find Divya Darshan (DD) entry if present
+    const ddDarshan = status.darshans?.find(
+      (d: any) => d.name?.toLowerCase().includes('divya') || d.name?.toLowerCase().includes('footpath')
+    );
+
     return NextResponse.json({
-      ssdTokenStatus: status.ssdTokenStatus,
-      ssdNextTokenTime: status.ssdNextTokenTime,
-      ssdTokenSlots: status.ssdTokenSlots,
-      ssdNotice: status.ssdNotice,
-      ssdTimingsGuide: status.ssdTimingsGuide,
-      ssdCounters: status.ssdCounters,
-      ssdAdvisoryTag: status.ssdAdvisoryTag,
-      ssdModeBadge: status.ssdModeBadge,
-      lastUpdated: status.lastUpdated
+      ssdTokenStatus: status.ssdTokenStatus || 'closed-for-day',
+      ssdNextTokenTime: status.ssdNextTokenTime || '',
+      ssdTokenSlots: status.ssdTokenSlots || [],
+      ssdNotice: status.ssdNotice || '',
+      ssdTimingsGuide: status.ssdTimingsGuide || '',
+      ssdCounters: status.ssdCounters || [],
+      ssdAdvisoryTag: status.ssdAdvisoryTag || '',
+      ssdModeBadge: status.ssdModeBadge || '',
+      lastUpdated: status.lastUpdated,
+      ddWaitTime: ddDarshan?.waitTime || '8-10 hours',
+      darshans: status.darshans || []
     });
   } catch (error: any) {
-    return NextResponse.json({ error: error.message || 'Failed to fetch SSD token status' }, { status: 500 });
+    return NextResponse.json({ error: error.message || 'Failed to fetch SSD/DD token status' }, { status: 500 });
   }
 }
 
@@ -30,71 +38,124 @@ export async function POST(req: Request) {
     }
 
     const body = await req.json();
-    
-    const updates: any = {};
-    if (body.ssdTokenStatus !== undefined) updates.ssdTokenStatus = body.ssdTokenStatus;
-    if (body.ssdNextTokenTime !== undefined) updates.ssdNextTokenTime = body.ssdNextTokenTime;
-    if (body.ssdTokenSlots !== undefined) updates.ssdTokenSlots = body.ssdTokenSlots;
-    if (body.ssdNotice !== undefined) updates.ssdNotice = body.ssdNotice;
-    if (body.ssdTimingsGuide !== undefined) updates.ssdTimingsGuide = body.ssdTimingsGuide;
-    if (body.ssdCounters !== undefined) updates.ssdCounters = body.ssdCounters;
-    if (body.ssdAdvisoryTag !== undefined) updates.ssdAdvisoryTag = body.ssdAdvisoryTag;
-    if (body.ssdModeBadge !== undefined) updates.ssdModeBadge = body.ssdModeBadge;
+    const {
+      ssdTokenStatus,
+      ssdNextTokenTime,
+      ssdNotice,
+      ssdTimingsGuide,
+      ssdAdvisoryTag,
+      ssdModeBadge,
+      ssdTokenDetails,
+      ddTokenDetails,
+      sendSsdPush = false,
+      sendDdPush = false,
+      sendToAll = true,
+      scheduledAt,
+      customNotification
+    } = body;
 
-    // Read current state before update to detect changes
-    const before = await readStatus();
+    const updates: any = {};
+    if (ssdTokenStatus !== undefined) updates.ssdTokenStatus = ssdTokenStatus;
+    if (ssdNextTokenTime !== undefined) updates.ssdNextTokenTime = ssdNextTokenTime;
+    if (ssdNotice !== undefined) updates.ssdNotice = ssdNotice;
+    if (ssdTimingsGuide !== undefined) updates.ssdTimingsGuide = ssdTimingsGuide;
+    if (ssdAdvisoryTag !== undefined) updates.ssdAdvisoryTag = ssdAdvisoryTag;
+    if (ssdModeBadge !== undefined) updates.ssdModeBadge = ssdModeBadge;
+
+    // Independent DD Token synchronization into darshans list
+    const currentStatus = await readStatus();
+    if (ddTokenDetails?.status) {
+      const ddWaitTime = ddTokenDetails.status === 'completed'
+        ? (ddTokenDetails.completedTime ? `Completed at ${ddTokenDetails.completedTime}` : 'Completed')
+        : ddTokenDetails.status === 'issuing'
+        ? 'Issuing Now'
+        : ddTokenDetails.status === 'paused'
+        ? 'Paused'
+        : 'Suspended';
+
+      let updatedDarshans = [...(currentStatus.darshans || [])];
+      const ddIndex = updatedDarshans.findIndex(
+        d => d.name?.toLowerCase().includes('divya') || d.name?.toLowerCase().includes('footpath')
+      );
+
+      if (ddIndex >= 0) {
+        updatedDarshans[ddIndex] = {
+          ...updatedDarshans[ddIndex],
+          waitTime: ddWaitTime
+        };
+      } else {
+        updatedDarshans.push({
+          name: 'Divya Darshan (Footpath)',
+          waitTime: ddWaitTime,
+          peakHours: 'Daily 8 AM - 4 PM'
+        });
+      }
+      updates.darshans = updatedDarshans;
+    }
+
     const updated = await updateStatus(updates);
 
-    // Automatic push notification matching the live preview
-    const shouldSendPush = body.sendPush !== false;
+    // Notification System Control
+    let pushResultData: any = null;
+    const shouldSendPush = Boolean(sendSsdPush || sendDdPush);
+
     if (shouldSendPush) {
-      const pushTitle = updated.ssdTokenStatus === 'suspended'
-        ? 'SSD Tokens Suspended (Brahmotsavam)'
-        : updated.ssdTokenStatus === 'closed-for-day'
-        ? 'Today’s SSD Token Quota Closed'
-        : (updated.ssdTokenStatus === 'paused'
-            ? 'SSD Offline Tokens Paused'
-            : (updated.ssdTokenStatus === 'issuing'
-                ? 'Free SSD Tokens Issuing Now'
-                : `Free SSD Counters Opening at ${updated.ssdNextTokenTime || '5:00 AM'}`));
+      let pushType = 'SSD + DD';
+      if (sendSsdPush && !sendDdPush) pushType = 'SSD';
+      else if (!sendSsdPush && sendDdPush) pushType = 'DD';
 
-      const pushBody = updated.ssdTokenStatus === 'suspended'
-        ? (updated.ssdNotice?.trim() || 'SSD tokens suspended for festival. Direct walk-in Sarva Darshan open at Vaikuntam Queue Complex.')
-        : updated.ssdTokenStatus === 'closed-for-day'
-        ? (updated.ssdNotice?.trim() || 'Offline SSD token quota for today is complete. Next issuance tomorrow morning.')
-        : (updated.ssdTokenStatus === 'paused'
-            ? (updated.ssdNotice?.trim() || 'Offline SSD counter issue paused temporarily.')
-            : (updated.ssdNotice?.trim() || `Offline token counters active at Vishnu Nivasam & Srinivasam. Bring original Aadhaar cards.${updated.ssdNextTokenTime ? ` Next release: ${updated.ssdNextTokenTime}.` : ''}`));
+      const defaultTitle = customNotification?.title?.trim() || (
+        ssdTokenStatus === 'closed-for-day'
+          ? `Today's ${pushType} Token Quota Completed`
+          : ssdTokenStatus === 'issuing'
+          ? `${pushType} Tokens Issuing Now`
+          : ssdTokenStatus === 'paused'
+          ? `${pushType} Tokens Issuance Paused`
+          : `${pushType} Tokens Suspended`
+      );
 
-      await pushNotifyAll({
-        title: pushTitle,
-        body: pushBody,
+      const defaultBody = customNotification?.body?.trim() || (
+        ssdNotice?.trim() || `${pushType} token status has been updated. Next release: ${ssdNextTokenTime || 'Not Announced Yet'}.`
+      );
+
+      const dispatchResult = await pushNotifyAll({
+        title: defaultTitle,
+        body: defaultBody,
         url: '/darshan/ssd-token',
-        tag: `ssd-status-${Date.now()}`,
+        tag: `ssd-dd-status-${Date.now()}`,
         category: 'High Priority'
-      }).catch((err) => {
-        console.error('[PushNotify] Error broadcasting SSD update:', err);
       });
-    } else {
-      await notifySsdUpdates(before, updated).catch((err) => {
-        console.error('[PushNotify] Error broadcasting SSD update:', err);
-      });
+
+      const hasDelivered = Boolean(
+        dispatchResult &&
+        dispatchResult.success &&
+        'fcm' in dispatchResult &&
+        (((dispatchResult.fcm?.delivered ?? 0) > 0) || ((dispatchResult.web?.delivered ?? 0) > 0) || ((dispatchResult.web?.total ?? 0) > 0))
+      );
+
+      pushResultData = {
+        status: hasDelivered ? 'Sent' : (dispatchResult?.success ? 'Sent' : 'Failed'),
+        type: pushType,
+        message: defaultTitle,
+        sentTo: sendToAll ? 'All Users' : 'Subscribers',
+        timestamp: new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata', dateStyle: 'medium', timeStyle: 'short' }),
+        details: dispatchResult
+      };
     }
 
     return NextResponse.json({
       success: true,
       pushSent: shouldSendPush,
+      notification: pushResultData,
       ssdTokenStatus: updated.ssdTokenStatus,
       ssdNextTokenTime: updated.ssdNextTokenTime,
-      ssdTokenSlots: updated.ssdTokenSlots,
       ssdNotice: updated.ssdNotice,
       ssdTimingsGuide: updated.ssdTimingsGuide,
-      ssdCounters: updated.ssdCounters,
       ssdAdvisoryTag: updated.ssdAdvisoryTag,
       ssdModeBadge: updated.ssdModeBadge,
       lastUpdated: updated.lastUpdated
     });
   } catch (error: any) {
-    return NextResponse.json({ error: error.message || 'Failed to update SSD tokens' }, { status: 400 });
+    return NextResponse.json({ error: error.message || 'Failed to update SSD/DD token status' }, { status: 400 });
   }
 }

@@ -1408,5 +1408,180 @@
     "date": "2026-10-21",
     "path": "/hotel",
     "count": 1
+  },
+  {
+    "date": "2026-10-24",
+    "path": "/",
+    "count": 107
+  },
+  {
+    "date": "2026-10-24",
+    "path": "/explore",
+    "count": 63
+  },
+  {
+    "date": "2026-10-24",
+    "path": "/planner",
+    "count": 69
+  },
+  {
+    "date": "2026-10-24",
+    "path": "/plans",
+    "count": 57
+  },
+  {
+    "date": "2026-10-24",
+    "path": "/generating",
+    "count": 46
+  },
+  {
+    "date": "2026-10-25",
+    "path": "/",
+    "count": 85
+  },
+  {
+    "date": "2026-10-25",
+    "path": "/explore",
+    "count": 79
+  },
+  {
+    "date": "2026-10-25",
+    "path": "/planner",
+    "count": 36
+  },
+  {
+    "date": "2026-10-25",
+    "path": "/plans",
+    "count": 41
+  },
+  {
+    "date": "2026-10-25",
+    "path": "/generating",
+    "count": 62
+  },
+  {
+    "date": "2026-10-26",
+    "path": "/",
+    "count": 99
+  },
+  {
+    "date": "2026-10-26",
+    "path": "/explore",
+    "count": 82
+  },
+  {
+    "date": "2026-10-26",
+    "path": "/planner",
+    "count": 42
+  },
+  {
+    "date": "2026-10-26",
+    "path": "/plans",
+    "count": 31
+  },
+  {
+    "date": "2026-10-26",
+    "path": "/generating",
+    "count": 68
+  },
+  {
+    "date": "2026-10-27",
+    "path": "/",
+    "count": 104
+  },
+  {
+    "date": "2026-10-27",
+    "path": "/explore",
+    "count": 57
+  },
+  {
+    "date": "2026-10-27",
+    "path": "/planner",
+    "count": 65
+  },
+  {
+    "date": "2026-10-27",
+    "path": "/plans",
+    "count": 45
+  },
+  {
+    "date": "2026-10-27",
+    "path": "/generating",
+    "count": 50
+  },
+  {
+    "date": "2026-10-28",
+    "path": "/",
+    "count": 112
+  },
+  {
+    "date": "2026-10-28",
+    "path": "/explore",
+    "count": 75
+  },
+  {
+    "date": "2026-10-28",
+    "path": "/planner",
+    "count": 64
+  },
+  {
+    "date": "2026-10-28",
+    "path": "/plans",
+    "count": 38
+  },
+  {
+    "date": "2026-10-28",
+    "path": "/generating",
+    "count": 30
+  },
+  {
+    "date": "2026-10-29",
+    "path": "/",
+    "count": 89
+  },
+  {
+    "date": "2026-10-29",
+    "path": "/explore",
+    "count": 62
+  },
+  {
+    "date": "2026-10-29",
+    "path": "/planner",
+    "count": 66
+  },
+  {
+    "date": "2026-10-29",
+    "path": "/plans",
+    "count": 66
+  },
+  {
+    "date": "2026-10-29",
+    "path": "/generating",
+    "count": 33
+  },
+  {
+    "date": "2026-10-30",
+    "path": "/",
+    "count": 80
+  },
+  {
+    "date": "2026-10-30",
+    "path": "/explore",
+    "count": 70
+  },
+  {
+    "date": "2026-10-30",
+    "path": "/planner",
+    "count": 55
+  },
+  {
+    "date": "2026-10-30",
+    "path": "/plans",
+    "count": 53
+  },
+  {
+    "date": "2026-10-30",
+    "path": "/generating",
+    "count": 34
   }
 ]

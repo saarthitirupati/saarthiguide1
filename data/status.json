@@ -1,10 +1,10 @@
 {
-  "waitTime": "4-8 Hours",
+  "waitTime": "3-6 Hours",
   "bestTime": "",
-  "crowdLevel": "moderate",
+  "crowdLevel": "low",
   "sevaStatus": "All sevas open",
   "notice": "HIGH CROWD WARNING: Ghat road traffic slow. Exercise caution.",
-  "lastUpdated": "2026-10-28T05:46:46.806+00:00",
+  "lastUpdated": "2026-10-30T08:45:36.907+00:00",
   "darshanSpeed": "normal",
   "accommodationStatus": "available",
   "ladduAvailability": "available",
@@ -12,12 +12,12 @@
   "darshans": [
     {
       "name": "Sarva Darshan (Free)",
-      "waitTime": "4-8 Hours",
+      "waitTime": "3-6 Hours",
       "peakHours": "Daily 10 AM - 6 PM"
     },
     {
       "name": "Special Entry (₹300)",
-      "waitTime": "2-4 Hours ",
+      "waitTime": "1-2 Hours ",
       "peakHours": "Daily 9 AM - 3 PM"
     },
     {
@@ -31,42 +31,42 @@
       "peakHours": "Daily 6 AM - 8 AM"
     }
   ],
-  "ssdTokenStatus": "suspended",
-  "ssdNextTokenTime": "Not issuing tomorrow",
+  "ssdTokenStatus": "closed-for-day",
+  "ssdNextTokenTime": "5:30 PM ",
   "ssdTokenSlots": [
     {
       "slotTime": "5:00 AM - 7:00 AM",
       "status": "closed",
-      "tokensLeft": "Full"
+      "tokensLeft": "Not Issuing"
     },
     {
       "slotTime": "7:00 AM - 9:00 AM",
       "status": "closed",
-      "tokensLeft": "Full"
+      "tokensLeft": "Not Issuing"
     },
     {
       "slotTime": "9:00 AM - 11:00 AM",
-      "status": "filling",
-      "tokensLeft": "~200 remaining"
+      "status": "closed",
+      "tokensLeft": "Not Issuing"
     },
     {
       "slotTime": "11:00 AM - 1:00 PM",
-      "status": "available",
-      "tokensLeft": "Available"
+      "status": "closed",
+      "tokensLeft": "Not Issuing"
     },
     {
       "slotTime": "2:00 PM - 4:00 PM",
-      "status": "available",
-      "tokensLeft": "Available"
+      "status": "closed",
+      "tokensLeft": "Not Issuing"
     },
     {
       "slotTime": "4:00 PM - 6:00 PM",
-      "status": "available",
-      "tokensLeft": "Available"
+      "status": "closed",
+      "tokensLeft": "Not Issuing"
     }
   ],
-  "ssdNotice": "Offline SSD and DD tokens will NOT be issued tomorrow across all Tirupati counters.",
-  "ssdTimingsGuide": "Offline SSD tokens will NOT be issued tomorrow across all counters in Tirupati (Vishnu Nivasam, Srinivasam, Bhudevi). Pilgrims can proceed for direct walk-in Sarva Darshan at Vaikuntam Queue Complex, Tirumala.",
+  "ssdNotice": "SSD 10K & DD 2K Tokens Quota completed ",
+  "ssdTimingsGuide": "SSD Quota: 10000K (Completed at 3:30 AM), DD Quota: 2000K (Completed at 5:25 AM)",
   "ssdCounters": [
     {
       "name": "Vishnu Nivasam Counter",
