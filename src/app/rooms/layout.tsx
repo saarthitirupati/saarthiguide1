@@ -3,20 +3,20 @@ import type { Metadata } from 'next';
 const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.saarthiguide.in';
 
 export const metadata: Metadata = {
-  title: 'Tirupati Rooms & Mutt Stays | Verified Near Station & TTD',
-  description: 'Find clean, budget pilgrim rooms in Tirupati near Railway Station, Bus Stand, and Alipiri. Verified phone numbers for mutt stays, lodges, and dharamshalas with zero commission.',
+  title: 'Tirumala Accommodation & Free PAC Halls | Saarthi Guide',
+  description: 'Find free PAC halls, TTD room allotment counters (CRO), sub-enquiry offices, and rest houses in Tirumala. Direct map directions and verified pilgrim guidelines.',
   keywords: [
-    'tirupati rooms', 'rooms in tirupati', 'rooms near tirupati station',
-    'tirupati stay', 'pilgrim stays tirupati', 'mutt rooms tirupati',
-    'budget rooms tirupati', 'srinivasam complex rooms', 'alipiri rooms',
-    'dharamshala tirupati', 'rooms near bus stand tirupati', 'ttd room booking help'
+    'tirumala accommodation', 'tirumala free rooms', 'tirumala pac halls',
+    'cro tirumala room allotment', 'tirumala rest houses', 'madhava nilayam pac 2',
+    'venkatadri nilayam pac 5', 'ttd rooms tirumala', 'tirumala cottage allotment',
+    'tirumala pilgrim amenities complex', 'arp counter tirumala'
   ],
   alternates: {
     canonical: `${baseUrl}/rooms`,
   },
   openGraph: {
-    title: 'Tirupati Rooms & Mutt Stays | Verified Near Station & TTD',
-    description: 'Find clean, budget pilgrim rooms in Tirupati near Railway Station, Bus Stand, and Alipiri with direct verified contacts.',
+    title: 'Tirumala Accommodation & Free PAC Halls | Saarthi Guide',
+    description: 'Find free PAC halls, TTD room allotment counters (CRO), sub-enquiry offices, and rest houses in Tirumala. Direct map directions and verified pilgrim guidelines.',
     url: `${baseUrl}/rooms`,
     siteName: 'Saarthi Guide',
     locale: 'en_IN',
@@ -27,22 +27,22 @@ export const metadata: Metadata = {
 const lodgingSchema = {
   "@context": "https://schema.org",
   "@type": "LodgingBusiness",
-  "name": "Saarthi Tirupati Pilgrim Rooms & Mutt Stays",
-  "description": "Verified clean budget pilgrim stays, traditional mutt rooms, and lodges near Tirupati Central Railway Station, Bus Stand, and Alipiri with zero booking commissions.",
+  "name": "Saarthi Tirumala Accommodation & Free PAC Guide",
+  "description": "Verified directory of free TTD Pilgrim Amenities Complexes (PAC 1-5), Central Reception Office room allotment counters, and rest houses on Tirumala hilltop.",
   "url": `${baseUrl}/rooms`,
-  "telephone": "+91-9398542837",
-  "priceRange": "₹500 - ₹2,000",
+  "telephone": "155257",
+  "priceRange": "Free - ₹1,000",
   "address": {
     "@type": "PostalAddress",
-    "addressLocality": "Tirupati",
+    "addressLocality": "Tirumala",
     "addressRegion": "Andhra Pradesh",
-    "postalCode": "517501",
+    "postalCode": "517504",
     "addressCountry": "IN"
   },
   "geo": {
     "@type": "GeoCoordinates",
-    "latitude": 13.6288,
-    "longitude": 79.4192
+    "latitude": 13.6828,
+    "longitude": 79.3501
   }
 };
 

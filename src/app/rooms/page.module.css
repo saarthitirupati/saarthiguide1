@@ -1,0 +1,824 @@
+/* Modern, Clean & High-Density UI for Tirumala Accommodation */
+
+.pageWrapper {
+  min-height: 100vh;
+  background-color: #F8FAFC;
+  color: #0F172A;
+  font-family: var(--font-sans), 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  padding-bottom: calc(72px + env(safe-area-inset-bottom, 24px));
+  position: relative;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+.container {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 16px 14px;
+}
+
+/* 1. Header */
+.headerRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.backBtn {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #334155;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  flex-shrink: 0;
+  text-decoration: none;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.05);
+}
+
+.backBtn:hover {
+  background: #F1F5F9;
+  color: #0F172A;
+}
+
+.iconBadge {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: #ECFDF5;
+  border: 1px solid #A7F3D0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #047857;
+  flex-shrink: 0;
+}
+
+.headerTitleGroup {
+  flex: 1;
+  min-width: 0;
+}
+
+.pageTitle {
+  font-size: 20px;
+  font-weight: 800;
+  color: #0F172A;
+  margin: 0;
+  letter-spacing: -0.3px;
+  line-height: 1.25;
+}
+
+.headerCountBadge {
+  font-size: 11.5px;
+  font-weight: 700;
+  color: #047857;
+  background: #ECFDF5;
+  border: 1px solid #A7F3D0;
+  padding: 4px 9px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+
+/* 2. TWO VISUAL ENTRY POINTS */
+.entryGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-bottom: 16px;
+}
+
+@media (max-width: 480px) {
+  .entryGrid {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+}
+
+.entryCard {
+  border-radius: 14px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: left;
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  position: relative;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.05);
+}
+
+.entryCard:active {
+  transform: scale(0.985);
+}
+
+.entryCardFree {
+  background: #FFFFFF;
+  border: 1.5px solid #A7F3D0;
+  border-left: 4px solid #059669;
+}
+
+.entryCardAllotment {
+  background: #FFFFFF;
+  border: 1.5px solid #FDE68A;
+  border-left: 4px solid #D97706;
+}
+
+.entryHeader {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.entryIconWrapFree {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  background: #ECFDF5;
+  color: #059669;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.entryIconWrapAllotment {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  background: #FFFBEB;
+  color: #D97706;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.entryTitle {
+  font-size: 14.5px;
+  font-weight: 800;
+  color: #0F172A;
+  margin: 0;
+}
+
+.entrySub {
+  font-size: 12px;
+  color: #64748B;
+  margin: 0 0 12px 0;
+  line-height: 1.35;
+}
+
+.entryActionBtnFree {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: #059669;
+  color: #FFFFFF;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  box-shadow: 0 1px 3px rgba(5, 150, 105, 0.25);
+}
+
+.entryActionBtnAllotment {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  background: #D97706;
+  color: #FFFFFF;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 8px 12px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  box-shadow: 0 1px 3px rgba(217, 119, 6, 0.25);
+}
+
+/* 3. Search Bar */
+.searchWrapper {
+  position: relative;
+  margin-bottom: 12px;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #64748B;
+  pointer-events: none;
+}
+
+.searchInput {
+  width: 100%;
+  padding: 11px 36px 11px 40px;
+  border-radius: 12px;
+  border: 1px solid #CBD5E1;
+  background: #FFFFFF;
+  font-size: 13.5px;
+  color: #0F172A;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
+  box-sizing: border-box;
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+
+.searchInput:focus {
+  border-color: #0F5132;
+}
+
+.clearSearchBtn {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #94A3B8;
+  padding: 4px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+/* 4. Category Filter Pills */
+.filterPillsRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+  margin-bottom: 14px;
+  scrollbar-width: none;
+}
+
+.filterPillsRow::-webkit-scrollbar {
+  display: none;
+}
+
+.filterPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12.5px;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 20px;
+  border: 1px solid #E2E8F0;
+  background: #FFFFFF;
+  color: #475569;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.03);
+}
+
+.filterPillActive {
+  background: #0F172A;
+  border-color: #0F172A;
+  color: #FFFFFF;
+  font-weight: 700;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.2);
+}
+
+.dotGreen {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #10B981;
+}
+
+.dotAmber {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #F59E0B;
+}
+
+.dotPurple {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #8B5CF6;
+}
+
+.dotBlue {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #3B82F6;
+}
+
+/* 5. Segmented Switch (List / Map) */
+.viewToggleRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.toggleGroup {
+  display: inline-flex;
+  background: #E2E8F0;
+  padding: 3px;
+  border-radius: 10px;
+  gap: 2px;
+}
+
+.toggleBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12.5px;
+  font-weight: 700;
+  padding: 6px 14px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  background: transparent;
+  color: #64748B;
+}
+
+.toggleBtnActive {
+  background: #FFFFFF;
+  color: #0F172A;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.12);
+}
+
+.resultsCount {
+  font-size: 12px;
+  font-weight: 600;
+  color: #64748B;
+}
+
+/* 6. VISUAL FACILITY CARDS (Clean, dense, icons & short labels, no paragraphs) */
+.cardsList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 24px;
+}
+
+.cardItem {
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 14px;
+  padding: 13px 14px;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.cardItem:hover {
+  border-color: #CBD5E1;
+  box-shadow: 0 3px 8px rgba(15, 23, 42, 0.06);
+}
+
+.cardHeaderRow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.cardLeft {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  min-width: 0;
+  flex: 1;
+}
+
+.cardIconSquare {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.iconSquareFreePac {
+  background: #ECFDF5;
+  border: 1px solid #A7F3D0;
+  color: #047857;
+}
+
+.iconSquareAllotment {
+  background: #FFFBEB;
+  border: 1px solid #FDE68A;
+  color: #B45309;
+}
+
+.iconSquareSubEnquiry {
+  background: #F5F3FF;
+  border: 1px solid #DDD6FE;
+  color: #7C3AED;
+}
+
+.iconSquareRestHouse {
+  background: #EFF6FF;
+  border: 1px solid #DBEAFE;
+  color: #1E40AF;
+}
+
+.cardTitleBlock {
+  min-width: 0;
+  flex: 1;
+}
+
+.cardTitle {
+  font-size: 15px;
+  font-weight: 700;
+  color: #0F172A;
+  margin: 0;
+  line-height: 1.25;
+}
+
+.cardLandmark {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  color: #64748B;
+  margin-top: 2px;
+}
+
+.cardActions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.callButton {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #475569;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.15s ease;
+}
+
+.callButton:hover {
+  background: #F1F5F9;
+  color: #0F172A;
+}
+
+.navButton {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: #0F5132;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #FFFFFF;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  box-shadow: 0 2px 6px rgba(15, 81, 50, 0.25);
+}
+
+.navButton:hover {
+  background: #15803D;
+  transform: scale(1.04);
+}
+
+/* Visual chips row: short labels with small icons instead of paragraphs */
+.cardChipRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  margin-top: 10px;
+}
+
+.chipItem {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 7px;
+  border-radius: 6px;
+  background: #F1F5F9;
+  color: #475569;
+  border: 1px solid #E2E8F0;
+}
+
+.chipItemEmerald {
+  background: #ECFDF5;
+  color: #065F46;
+  border-color: #A7F3D0;
+}
+
+.chipItemAmber {
+  background: #FFFBEB;
+  color: #92400E;
+  border-color: #FDE68A;
+}
+
+.chipItemPurple {
+  background: #F5F3FF;
+  color: #5B21B6;
+  border-color: #DDD6FE;
+}
+
+.chipItemBlue {
+  background: #EFF6FF;
+  color: #1E40AF;
+  border-color: #BFDBFE;
+}
+
+/* Expandable drawer for extra details */
+.expandButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 11.5px;
+  font-weight: 600;
+  color: #64748B;
+  background: none;
+  border: none;
+  padding: 8px 0 0;
+  margin-top: 8px;
+  cursor: pointer;
+  border-top: 1px solid #F1F5F9;
+  width: 100%;
+}
+
+.expandButton:hover {
+  color: #0F5132;
+}
+
+.expandedDrawer {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #F1F5F9;
+}
+
+.detailsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+@media (max-width: 480px) {
+  .detailsGrid {
+    grid-template-columns: 1fr;
+    gap: 6px;
+  }
+}
+
+.detailCard {
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: 8px;
+  padding: 8px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.detailCardFull {
+  grid-column: 1 / -1;
+}
+
+.detailCardHeader {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10.5px;
+  font-weight: 700;
+  color: #64748B;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.detailCardBody {
+  font-size: 12px;
+  font-weight: 600;
+  color: #0F172A;
+  line-height: 1.35;
+}
+
+/* 7. INTERACTIVE MAP SECTION */
+.mapContainerWrapper {
+  margin-bottom: 24px;
+}
+
+.mapLegendRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 8px 12px;
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #475569;
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.mapList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.mapItemRow {
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 12px;
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  transition: all 0.15s ease;
+}
+
+.mapItemRow:hover {
+  border-color: #CBD5E1;
+}
+
+/* 8. CRO PROCESS TIMELINE (3 Simple Verified Steps) */
+.timelineSection {
+  background: #FFFFFF;
+  border: 1.5px solid #FDE68A;
+  border-radius: 14px;
+  padding: 16px;
+  margin-bottom: 16px;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+}
+
+.timelineHeader {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.timelineTitle {
+  font-size: 14.5px;
+  font-weight: 800;
+  color: #0F172A;
+  margin: 0;
+}
+
+.timelineSteps {
+  display: flex;
+  flex-direction: column;
+}
+
+.timelineStep {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.timelineStepNum {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #0F172A;
+  color: #FFFFFF;
+  font-size: 12px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.timelineStepContent {
+  flex: 1;
+}
+
+.timelineStepTitle {
+  font-size: 13px;
+  font-weight: 700;
+  color: #0F172A;
+  margin: 0 0 2px 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.timelineStepDesc {
+  font-size: 11.5px;
+  color: #475569;
+  margin: 0;
+  line-height: 1.35;
+}
+
+.timelineConnector {
+  width: 2px;
+  height: 14px;
+  background: #CBD5E1;
+  margin-left: 12px;
+  margin-top: 2px;
+  margin-bottom: 2px;
+}
+
+.timelineFootnote {
+  font-size: 10.5px;
+  color: #64748B;
+  font-style: italic;
+  margin-top: 12px;
+  padding-top: 10px;
+  border-top: 1px dashed #E2E8F0;
+}
+
+/* 9. Helpline Section */
+.helplineCard {
+  background: #F0FDF4;
+  border: 1.5px solid #BBF7D0;
+  border-radius: 14px;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.helplineLeft {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.helplineIconWrap {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: #DCFCE7;
+  color: #15803D;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.helplineTitle {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #064E3B;
+  margin: 0;
+}
+
+.helplineSub {
+  font-size: 11.5px;
+  color: #047857;
+  margin: 0;
+}
+
+.helplineBtn {
+  background: #0F5132;
+  color: #FFFFFF;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(15, 81, 50, 0.2);
+}

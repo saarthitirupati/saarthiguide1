@@ -8,7 +8,7 @@ import {
   ArrowLeft, Search, ClipboardCheck, Check, 
   ChevronRight, HelpCircle, ChevronDown, ChevronUp, X,
   Lock, Utensils, Scissors, Bed, ShoppingBag, ShieldAlert, Phone, AlertTriangle, Bell, Info,
-  Navigation, Compass,
+  Navigation, Compass, Ticket,
   LayoutGrid, SquareParking, Bus, BriefcaseMedical
 } from 'lucide-react';
 import styles from './Essentials.module.css';
@@ -225,6 +225,26 @@ const ALL_FACILITIES_TILES: FacilityTileItem[] = [
     border: '#FECDD3',
     icon: BriefcaseMedical,
     action: { type: 'route', path: '/medical' }
+  },
+  {
+    id: 'free-pac',
+    name: { en: 'Free PACs', te: 'ఉచిత పిఎసి', hi: 'मुफ्त पीएसी', ta: 'இலவச பிஏசி' },
+    count: 5,
+    bg: '#ECFDF5',
+    color: '#047857',
+    border: '#A7F3D0',
+    icon: Bed,
+    action: { type: 'route', path: '/rooms?category=free_pac' }
+  },
+  {
+    id: 'room-allotment',
+    name: { en: 'Room Allotment', te: 'గదుల కేటాయింపు', hi: 'कमरा आवंटन', ta: 'அறை ஒதுக்கீடு' },
+    count: 19,
+    bg: '#FFFBEB',
+    color: '#B45309',
+    border: '#FDE68A',
+    icon: Ticket,
+    action: { type: 'route', path: '/rooms?category=allotment_counter' }
   }
 ];
 
@@ -333,6 +353,18 @@ export default function PilgrimEssentialsPage() {
     }
     if (id === 'medical') {
       router.push('/medical');
+      return;
+    }
+    if (id === 'accommodation') {
+      router.push('/rooms');
+      return;
+    }
+    if (id === 'free-pac') {
+      router.push('/rooms?category=free_pac');
+      return;
+    }
+    if (id === 'room-allotment') {
+      router.push('/rooms?category=allotment_counter');
       return;
     }
     router.push(`/essentials/${id}`);

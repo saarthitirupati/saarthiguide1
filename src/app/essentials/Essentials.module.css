@@ -886,7 +886,7 @@
 
 @media (min-width: 640px) {
   .highlightsGrid {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
@@ -1103,7 +1103,7 @@
 
 @media (min-width: 640px) {
   .heroSpecBar {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
@@ -1755,7 +1755,7 @@
 
 .allFacilitiesGrid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   column-gap: 8px;
   row-gap: 18px;
 }
@@ -1831,10 +1831,6 @@
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  max-width: 78px;
+  max-width: 90px;
   letter-spacing: -0.1px;
 }
-
-
-
-

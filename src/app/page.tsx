@@ -137,7 +137,7 @@ export default function HomePage() {
       statusColor: '#D97706',
       icon: Bed,
       image: '/images/places/img_9_maxresdefault_fwmwke.jpg',
-      link: '/essentials/accommodation'
+      link: '/rooms'
     }
   ];
 

@@ -1,28 +1,28 @@
 {
-  "waitTime": "6 Hours",
+  "waitTime": "2-3 hours",
   "bestTime": "",
-  "crowdLevel": "low",
+  "crowdLevel": "moderate",
   "sevaStatus": "All sevas open",
-  "notice": "HIGH CROWD WARNING: Ghat road traffic slow. Exercise caution.",
-  "lastUpdated": "2026-10-31T08:39:44.972+00:00",
+  "notice": "",
+  "lastUpdated": "2026-10-31T16:33:09.81+00:00",
   "darshanSpeed": "normal",
   "accommodationStatus": "available",
   "ladduAvailability": "available",
-  "weather": "Auto (API)",
+  "weather": "Pleasant, 24°C",
   "darshans": [
     {
       "name": "Sarva Darshan (Free)",
-      "waitTime": "6 Hours",
+      "waitTime": "12-15 hours",
       "peakHours": "Daily 10 AM - 6 PM"
     },
     {
       "name": "Special Entry (₹300)",
-      "waitTime": "1-2 Hours",
+      "waitTime": "3-4 hours",
       "peakHours": "Daily 9 AM - 3 PM"
     },
     {
       "name": "Divya Darshan (Footpath)",
-      "waitTime": "2-5 Hours",
+      "waitTime": "8-10 hours",
       "peakHours": "Daily 8 AM - 4 PM"
     },
     {
@@ -31,72 +31,72 @@
       "peakHours": "Daily 6 AM - 8 AM"
     }
   ],
-  "ssdTokenStatus": "closed-for-day",
+  "ssdTokenStatus": "issuing",
   "ssdNextTokenTime": "5:30 PM ",
   "ssdTokenSlots": [
     {
       "slotTime": "5:00 AM - 7:00 AM",
       "status": "closed",
-      "tokensLeft": "Not Issuing"
+      "tokensLeft": "Full"
     },
     {
       "slotTime": "7:00 AM - 9:00 AM",
       "status": "closed",
-      "tokensLeft": "Not Issuing"
+      "tokensLeft": "Full"
     },
     {
       "slotTime": "9:00 AM - 11:00 AM",
-      "status": "closed",
-      "tokensLeft": "Not Issuing"
+      "status": "filling",
+      "tokensLeft": "~200 remaining"
     },
     {
       "slotTime": "11:00 AM - 1:00 PM",
-      "status": "closed",
-      "tokensLeft": "Not Issuing"
+      "status": "available",
+      "tokensLeft": "Available"
     },
     {
       "slotTime": "2:00 PM - 4:00 PM",
-      "status": "closed",
-      "tokensLeft": "Not Issuing"
+      "status": "available",
+      "tokensLeft": "Available"
     },
     {
       "slotTime": "4:00 PM - 6:00 PM",
-      "status": "closed",
-      "tokensLeft": "Not Issuing"
+      "status": "available",
+      "tokensLeft": "Available"
     }
   ],
-  "ssdNotice": "SSD 10K & DD 2K Tokens Quota completed",
-  "ssdTimingsGuide": "SSD Quota: 10K (Available: 0, Started at 5:30 PM, Completed at 12:44 AM, Status: completed, Verified at: 2026-10-30T22:35:08.094Z), DD Quota: 2K (Available: 0, Started at 5:30 PM , Completed at 2:00 AM, Status: completed, Verified at: 2026-10-30T22:35:08.094Z)",
+  "ssdNotice": "SSD 10K & DD 2K Tokens Quota issuing now ",
+  "ssdTimingsGuide": "SSD Quota: 10,000 (Available: 1202, Started at 5:30 PM, Completed at 12:44 AM, Status: issuing, Verified at: 2026-10-31T16:33:09.189Z), DD Quota: 2,000 (Available: 647, Started at 5:30 PM , Completed at 2:00 AM, Status: issuing, Verified at: 2026-10-31T16:33:09.189Z)",
   "ssdCounters": [
     {
       "name": "Vishnu Nivasam Counter",
-      "description": "Opposite Tirupati Railway Station"
+      "description": "Located opposite Tirupati Railway Station (Highly convenient for train travelers)"
     },
     {
       "name": "Srinivasam Complex Counter",
-      "description": "Opposite Tirupati RTC Central Bus Stand"
+      "description": "Located opposite Tirupati RTC Central Bus Stand (Ideal for bus travelers)"
     },
     {
       "name": "Bhudevi Complex Counter",
-      "description": "Near Alipiri Footpath Link Road"
+      "description": "Located near Alipiri Footpath Link Road (Ideal for pedestrian pilgrims)"
     }
   ],
-  "ssdAdvisoryTag": "Quota Completed",
-  "ssdModeBadge": "Tokens Not Available",
+  "ssdAdvisoryTag": "",
+  "ssdModeBadge": "Open 24/7",
   "ssdTokenDetails": {
-    "totalTokens": "10K",
-    "tokensLeft": "0",
-    "status": "completed",
+    "totalTokens": "10,000",
+    "tokensLeft": "1202",
+    "status": "issuing",
     "startTime": "5:30 PM",
     "completedTime": "12:44 AM",
-    "lastVerifiedAt": "2026-10-30T22:35:08.094Z"
+    "lastVerifiedAt": "2026-10-31T16:33:09.189Z"
   },
   "ddTokenDetails": {
-    "totalTokens": "2K",
-    "tokensLeft": "0",
-    "status": "completed",
+    "totalTokens": "2,000",
+    "tokensLeft": "647",
+    "status": "issuing",
     "startTime": "5:30 PM ",
     "completedTime": "2:00 AM",
-    "lastVerifiedAt": "2026-10-30T22:35:08.094Z"
+    "lastVerifiedAt": "2026-10-31T16:33:09.189Z"
   }
 }
