@@ -1,10 +1,10 @@
 {
-  "waitTime": "3-6 Hours",
+  "waitTime": "6 Hours",
   "bestTime": "",
   "crowdLevel": "low",
   "sevaStatus": "All sevas open",
   "notice": "HIGH CROWD WARNING: Ghat road traffic slow. Exercise caution.",
-  "lastUpdated": "2026-10-30T08:45:36.907+00:00",
+  "lastUpdated": "2026-10-31T08:39:44.972+00:00",
   "darshanSpeed": "normal",
   "accommodationStatus": "available",
   "ladduAvailability": "available",
@@ -12,17 +12,17 @@
   "darshans": [
     {
       "name": "Sarva Darshan (Free)",
-      "waitTime": "3-6 Hours",
+      "waitTime": "6 Hours",
       "peakHours": "Daily 10 AM - 6 PM"
     },
     {
       "name": "Special Entry (₹300)",
-      "waitTime": "1-2 Hours ",
+      "waitTime": "1-2 Hours",
       "peakHours": "Daily 9 AM - 3 PM"
     },
     {
       "name": "Divya Darshan (Footpath)",
-      "waitTime": "3-6 Hours",
+      "waitTime": "2-5 Hours",
       "peakHours": "Daily 8 AM - 4 PM"
     },
     {
@@ -65,8 +65,8 @@
       "tokensLeft": "Not Issuing"
     }
   ],
-  "ssdNotice": "SSD 10K & DD 2K Tokens Quota completed ",
-  "ssdTimingsGuide": "SSD Quota: 10K (Available: 0, Started at 5:00 PM, Completed at 3:30 AM, Status: completed), DD Quota: 2K (Available: 0, Started at 6:00 AM, Completed at 5:25 AM, Status: completed)",
+  "ssdNotice": "SSD 10K & DD 2K Tokens Quota completed",
+  "ssdTimingsGuide": "SSD Quota: 10K (Available: 0, Started at 5:30 PM, Completed at 12:44 AM, Status: completed, Verified at: 2026-10-30T22:35:08.094Z), DD Quota: 2K (Available: 0, Started at 5:30 PM , Completed at 2:00 AM, Status: completed, Verified at: 2026-10-30T22:35:08.094Z)",
   "ssdCounters": [
     {
       "name": "Vishnu Nivasam Counter",
@@ -81,20 +81,22 @@
       "description": "Near Alipiri Footpath Link Road"
     }
   ],
-  "ssdAdvisoryTag": "",
-  "ssdModeBadge": "",
+  "ssdAdvisoryTag": "Quota Completed",
+  "ssdModeBadge": "Tokens Not Available",
   "ssdTokenDetails": {
     "totalTokens": "10K",
     "tokensLeft": "0",
     "status": "completed",
-    "startTime": "5:00 PM",
-    "completedTime": "3:30 AM"
+    "startTime": "5:30 PM",
+    "completedTime": "12:44 AM",
+    "lastVerifiedAt": "2026-10-30T22:35:08.094Z"
   },
   "ddTokenDetails": {
     "totalTokens": "2K",
     "tokensLeft": "0",
     "status": "completed",
-    "startTime": "6:00 AM",
-    "completedTime": "5:25 AM"
+    "startTime": "5:30 PM ",
+    "completedTime": "2:00 AM",
+    "lastVerifiedAt": "2026-10-30T22:35:08.094Z"
   }
 }

@@ -66,37 +66,6 @@ export async function POST(req: Request) {
     if (ssdTokenDetails !== undefined) updates.ssdTokenDetails = ssdTokenDetails;
     if (ddTokenDetails !== undefined) updates.ddTokenDetails = ddTokenDetails;
 
-    // Independent DD Token synchronization into darshans list
-    const currentStatus = await readStatus();
-    if (ddTokenDetails?.status) {
-      const ddWaitTime = ddTokenDetails.status === 'completed'
-        ? (ddTokenDetails.completedTime ? `Completed at ${ddTokenDetails.completedTime}` : 'Completed')
-        : ddTokenDetails.status === 'issuing'
-        ? 'Issuing Now'
-        : ddTokenDetails.status === 'paused'
-        ? 'Paused'
-        : 'Suspended';
-
-      let updatedDarshans = [...(currentStatus.darshans || [])];
-      const ddIndex = updatedDarshans.findIndex(
-        d => d.name?.toLowerCase().includes('divya') || d.name?.toLowerCase().includes('footpath')
-      );
-
-      if (ddIndex >= 0) {
-        updatedDarshans[ddIndex] = {
-          ...updatedDarshans[ddIndex],
-          waitTime: ddWaitTime
-        };
-      } else {
-        updatedDarshans.push({
-          name: 'Divya Darshan (Footpath)',
-          waitTime: ddWaitTime,
-          peakHours: 'Daily 8 AM - 4 PM'
-        });
-      }
-      updates.darshans = updatedDarshans;
-    }
-
     const updated = await updateStatus(updates);
 
     // Notification System Control

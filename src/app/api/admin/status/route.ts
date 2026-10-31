@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { readStatus, updateStatus } from '@/lib/statusDb';
 import { isAuthorizedAdmin } from '@/lib/authGuard';
-import { notifyLiveStatusUpdates, notifySsdUpdates, pushNotifyAll } from '@/lib/pushNotify';
+import { pushNotifyAll } from '@/lib/pushNotify';
 
 export const dynamic = 'force-dynamic';
 
@@ -22,77 +22,46 @@ export async function POST(req: Request) {
     }
 
     const body = await req.json();
+    const { sendPush, pushTitle, pushBody, pushUrl, pushCategory, ...statusUpdates } = body;
     const before = await readStatus();
-    const updated = await updateStatus(body);
+    const updated = await updateStatus(statusUpdates);
 
-    // Dynamic timestamp tag ensures mobile devices and browsers never collapse consecutive updates
     const timestamp = Date.now();
 
-    // 1. Weather Override update notification
-    if (body.weather !== undefined && body.weather !== before.weather) {
-      await pushNotifyAll({
-        title: 'Tirumala Weather Advisory',
-        body: `Weather update: Current condition is ${updated.weather || body.weather}. Plan your travel accordingly.`,
-        url: '/alerts',
-        tag: `weather-update-${timestamp}`,
-        category: 'High Priority'
-      }).catch((err: any) => {
-        console.error('[PushNotify] Error broadcasting weather update:', err);
-      });
-    }
+    // Strict Notification Opt-In Guard: Every push dispatch requires body.sendPush === true
+    if (sendPush === true) {
+      const wait = updated.waitTime || 'Current queue active';
+      const crowd = updated.crowdLevel ? ` (${updated.crowdLevel} crowd)` : '';
+      const notice = updated.notice?.trim() ? ` • ${updated.notice.trim()}` : '';
 
-    // 2. Guaranteed Live Status / Darshan update notification
-    const wait = updated.waitTime || 'Current queue active';
-    const crowd = updated.crowdLevel ? ` (${updated.crowdLevel} crowd)` : '';
-    const notice = updated.notice?.trim() ? ` • ${updated.notice.trim()}` : '';
+      let defaultTitle = 'Tirumala Live Status Updated';
+      if (body.notice && body.notice.trim() !== (before.notice || '').trim()) {
+        defaultTitle = 'Tirumala Live Advisory';
+      } else if (body.waitTime && body.waitTime !== before.waitTime) {
+        defaultTitle = 'Darshan Wait Time Updated';
+      } else if (body.crowdLevel && body.crowdLevel !== before.crowdLevel) {
+        defaultTitle = 'Tirumala Crowd Level Updated';
+      }
 
-    let title = 'Tirumala Live Status Updated';
-    if (body.notice && body.notice.trim() !== (before.notice || '').trim()) {
-      title = 'Tirumala Live Advisory';
-    } else if (body.waitTime && body.waitTime !== before.waitTime) {
-      title = 'Darshan Wait Time Updated';
-    } else if (body.crowdLevel && body.crowdLevel !== before.crowdLevel) {
-      title = 'Tirumala Crowd Level Updated';
-    }
-
-    await pushNotifyAll({
-      title,
-      body: `Live update: Wait time is ${wait}${crowd}.${notice} Tap for darshan guide.`,
-      url: '/alerts',
-      tag: `live-status-${timestamp}`,
-      category: 'High Priority'
-    }).catch((err: any) => {
-      console.error('[PushNotify] Error broadcasting guaranteed Live Status update:', err);
-    });
-
-    // 3. Guaranteed SSD push when SSD fields are changed
-    const hasSsdUpdate = (body.ssdTokenStatus !== undefined && body.ssdTokenStatus !== before.ssdTokenStatus) ||
-                         (body.ssdNextTokenTime !== undefined && body.ssdNextTokenTime !== before.ssdNextTokenTime) ||
-                         (body.ssdNotice !== undefined && body.ssdNotice.trim() !== (before.ssdNotice || '').trim());
-
-    if (hasSsdUpdate) {
-      const ssdTitle = updated.ssdTokenStatus === 'suspended'
-        ? 'SSD Tokens Suspended (Brahmotsavam)'
-        : updated.ssdTokenStatus === 'closed-for-day'
-        ? 'Today’s SSD Token Quota Closed'
-        : (updated.ssdTokenStatus === 'paused'
-            ? 'SSD Offline Tokens Paused'
-            : (updated.ssdTokenStatus === 'issuing'
-                ? 'Free SSD Tokens Issuing Now'
-                : `SSD Token Counters: Next at ${updated.ssdNextTokenTime || 'morning'}`));
-
-      const ssdBody = updated.ssdNotice?.trim() || (updated.ssdTokenStatus === 'closed-for-day'
-        ? `Offline SSD quota complete for today. Next token issuance: ${updated.ssdNextTokenTime || 'tomorrow morning'}.`
-        : `Tirupati offline SSD counters updated. Next release: ${updated.ssdNextTokenTime || 'active'}.`);
+      const title = (typeof pushTitle === 'string' && pushTitle.trim())
+        ? pushTitle.trim()
+        : defaultTitle;
+      const messageBody = (typeof pushBody === 'string' && pushBody.trim())
+        ? pushBody.trim()
+        : `Live update: Wait time is ${wait}${crowd}.${notice} Tap for darshan guide.`;
+      const url = (typeof pushUrl === 'string' && (pushUrl.startsWith('/') || pushUrl.startsWith('https://')))
+        ? pushUrl
+        : '/alerts';
+      const category = pushCategory || 'High Priority';
 
       await pushNotifyAll({
-        title: ssdTitle,
-        body: ssdBody,
-        url: '/darshan/ssd-token',
-        tag: `ssd-status-${timestamp}`,
-        category: 'High Priority'
+        title,
+        body: messageBody,
+        url,
+        tag: `live-status-${timestamp}`,
+        category
       }).catch((err: any) => {
-        console.error('[PushNotify] Error broadcasting SSD update from status route:', err);
+        console.error('[PushNotify] Error broadcasting Live Status update:', err);
       });
     }
 
@@ -101,4 +70,3 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: e.message }, { status: 400 });
   }
 }
-

@@ -2,7 +2,28 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import styles from './LiveUpdates.module.css';
-import { Activity, Clock, Zap, AlertTriangle, RefreshCw, CheckCircle2, Users, Ticket, Bell, Send, X } from 'lucide-react';
+import { 
+  Activity, 
+  Clock, 
+  Zap, 
+  AlertTriangle, 
+  RefreshCw, 
+  CheckCircle2, 
+  Users, 
+  Ticket, 
+  Bell, 
+  Send, 
+  X,
+  Car,
+  Bus,
+  Footprints,
+  Star,
+  Save,
+  Eye,
+  ChevronDown,
+  Building2,
+  Info
+} from 'lucide-react';
 import { notifyRealtimeUpdate } from '@/lib/useRealtimeStatus';
 import { safeFetchJson } from '@/lib/safeFetch';
 
@@ -15,67 +36,19 @@ export default function AdminLiveUpdates() {
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [placeUpdateStatus, setPlaceUpdateStatus] = useState<Record<string, string>>({});
 
-  // Push Notification Controls (OFF by default)
+  // Tirumala Specific State & Controls
+  const [actionChoice, setActionChoice] = useState<'update_only' | 'update_and_notify'>('update_only');
+  const [showPreview, setShowPreview] = useState<boolean>(false);
+  const [templePushTitle, setTemplePushTitle] = useState<string>('Tirumala Live Darshan Update');
+  const [templePushBody, setTemplePushBody] = useState<string>('');
+
+  // Global Push Modal State (Header Action)
   const [showPushModal, setShowPushModal] = useState<boolean>(false);
   const [pushTitle, setPushTitle] = useState<string>('Tirumala Live Crowd Update');
   const [pushBody, setPushBody] = useState<string>('');
   const [pushUrl, setPushUrl] = useState<string>('/');
   const [pushCategory, setPushCategory] = useState<'Operational' | 'High Priority' | 'Emergency'>('Operational');
   const [isSendingPush, setIsSendingPush] = useState<boolean>(false);
-  const [notifyOnTempleUpdate, setNotifyOnTempleUpdate] = useState<boolean>(false);
-
-  // Reusable Push Notification Dispatcher via /api/push/send
-  const sendPushNotification = async (payload: { title: string; body: string; url?: string; category?: string }) => {
-    const trimmedTitle = (payload.title || '').trim();
-    const trimmedBody = (payload.body || '').trim();
-    let targetUrl = (payload.url || '/').trim();
-
-    // Validation
-    if (!trimmedTitle || !trimmedBody) {
-      showToast('Validation Error: Notification title and message cannot be empty.');
-      return false;
-    }
-
-    if (!targetUrl.startsWith('/') && !targetUrl.startsWith('https://')) {
-      showToast('Validation Error: Target URL must begin with "/" or "https://".');
-      return false;
-    }
-
-    setIsSendingPush(true);
-    try {
-      const headers = { ...getAdminHeaders(), 'Content-Type': 'application/json' };
-      const res = await safeFetchJson<any>('/api/push/send', {
-        method: 'POST',
-        headers,
-        credentials: 'include',
-        body: JSON.stringify({
-          title: trimmedTitle,
-          body: trimmedBody,
-          url: targetUrl,
-          category: payload.category || 'Operational',
-          tag: `live-ops-${Date.now()}`
-        })
-      });
-
-      if (res && res.error) {
-        showToast(`Push dispatch failed: ${res.error}`);
-        return false;
-      }
-
-      if (res && (res.ok || res.broadcast || res.scheduled)) {
-        showToast('Push notification broadcasted successfully to all subscribers!');
-        return true;
-      }
-
-      showToast('Notification request completed.');
-      return true;
-    } catch (err: any) {
-      showToast(`Error dispatching push: ${err.message || 'Network error'}`);
-      return false;
-    } finally {
-      setIsSendingPush(false);
-    }
-  };
 
   const showToast = (msg: string) => {
     setToastMessage(msg);
@@ -135,6 +108,58 @@ export default function AdminLiveUpdates() {
     };
   }, [fetchLiveData]);
 
+  // Push Notification Dispatcher via /api/push/send
+  const sendPushNotification = async (payload: { title: string; body: string; url?: string; category?: string }) => {
+    const trimmedTitle = (payload.title || '').trim();
+    const trimmedBody = (payload.body || '').trim();
+    let targetUrl = (payload.url || '/').trim();
+
+    if (!trimmedTitle || !trimmedBody) {
+      showToast('Validation Error: Notification title and message cannot be empty.');
+      return false;
+    }
+
+    if (!targetUrl.startsWith('/') && !targetUrl.startsWith('https://')) {
+      showToast('Validation Error: Target URL must begin with "/" or "https://".');
+      return false;
+    }
+
+    setIsSendingPush(true);
+    try {
+      const headers = { ...getAdminHeaders(), 'Content-Type': 'application/json' };
+      const res = await safeFetchJson<any>('/api/push/send', {
+        method: 'POST',
+        headers,
+        credentials: 'include',
+        body: JSON.stringify({
+          title: trimmedTitle,
+          body: trimmedBody,
+          url: targetUrl,
+          category: payload.category || 'Operational',
+          tag: `live-ops-${Date.now()}`
+        })
+      });
+
+      if (res && res.error) {
+        showToast(`Push dispatch failed: ${res.error}`);
+        return false;
+      }
+
+      if (res && (res.ok || res.broadcast || res.scheduled)) {
+        showToast('Push notification broadcasted successfully to all subscribers!');
+        return true;
+      }
+
+      showToast('Notification request completed.');
+      return true;
+    } catch (err: any) {
+      showToast(`Error dispatching push: ${err.message || 'Network error'}`);
+      return false;
+    } finally {
+      setIsSendingPush(false);
+    }
+  };
+
   const handleWeatherOverride = async (weather: string) => {
     setWeatherState(weather);
     try {
@@ -152,11 +177,8 @@ export default function AdminLiveUpdates() {
   };
 
   const handleEmergencyAlert = async () => {
-    const alertMsg = prompt('Enter Emergency Alert Notice to broadcast to all visitors:', 'HIGH CROWD WARNING: Ghat road traffic slow. Exercise caution.');
+    const alertMsg = prompt('Enter Emergency Alert Notice to publish on the website:', 'HIGH CROWD WARNING: Ghat road traffic slow. Exercise caution.');
     if (!alertMsg) return;
-
-    // Optional confirmation step to dispatch push notification
-    const alsoSendPush = confirm('Emergency alert text confirmed.\n\nDo you ALSO want to broadcast a Push Notification to all active subscribers?');
 
     try {
       const headers = { 'Content-Type': 'application/json', ...getAdminHeaders() };
@@ -176,11 +198,13 @@ export default function AdminLiveUpdates() {
         method: 'POST',
         headers,
         credentials: 'include',
-        body: JSON.stringify({ notice: alertMsg })
+        body: JSON.stringify({ notice: alertMsg, sendPush: false })
       });
       notifyRealtimeUpdate();
-      showToast('Emergency Alert Broadcasted Live to all visitors!');
+      showToast('Emergency Alert published to website!');
+      fetchLiveData();
 
+      const alsoSendPush = confirm('Emergency alert is now live on the website.\n\nDo you ALSO want to dispatch a Push Notification to all active subscribers?');
       if (alsoSendPush) {
         await sendPushNotification({
           title: 'Emergency Operational Alert',
@@ -189,14 +213,117 @@ export default function AdminLiveUpdates() {
           category: 'Emergency'
         });
       }
-
-      fetchLiveData();
     } catch (e) {
-      showToast('Failed to send emergency broadcast');
+      showToast('Failed to publish emergency alert');
     }
   };
 
-  const handlePlaceUpdate = async (id: string, updates: any) => {
+  // Submit Handler for Tirumala Venkateswara Temple
+  const handleTirumalaUpdate = async () => {
+    const tirumalaCard = document.getElementById('tirumala-operational-card');
+    if (!tirumalaCard) return;
+
+    const crowd = (tirumalaCard.querySelector('[name="crowd"]') as HTMLSelectElement)?.value || 'LOW';
+    const parking = (tirumalaCard.querySelector('[name="parking"]') as HTMLSelectElement)?.value || 'AVAILABLE';
+    const rtc = (tirumalaCard.querySelector('[name="rtc"]') as HTMLSelectElement)?.value || 'NORMAL';
+    const sarva = (tirumalaCard.querySelector('[name="sarva"]') as HTMLInputElement)?.value?.trim() || '4-8 Hours';
+    const divya = (tirumalaCard.querySelector('[name="divya"]') as HTMLInputElement)?.value?.trim() || '2-5 Hours';
+    const special = (tirumalaCard.querySelector('[name="special"]') as HTMLInputElement)?.value?.trim() || '1-2 Hours';
+
+    // Build default push message if not customized
+    const dynamicMessage = templePushBody.trim() || `Sarva Darshan Wait: ${sarva}. Crowd: ${crowd.charAt(0) + crowd.slice(1).toLowerCase()}. Parking: ${parking.charAt(0) + parking.slice(1).toLowerCase()}.`;
+    const notificationTitle = templePushTitle.trim() || 'Tirumala Live Darshan Update';
+
+    let sendPushApproved = false;
+    if (actionChoice === 'update_and_notify') {
+      sendPushApproved = confirm(
+        `Dispatch Push Notification to all subscribers for this live status update?\n\nTitle: ${notificationTitle}\nMessage: ${dynamicMessage}`
+      );
+      if (!sendPushApproved) {
+        return; // Admin cancelled push dispatch, abort
+      }
+    }
+
+    setPlaceUpdateStatus(prev => ({ ...prev, 'uuid-1': 'Updating...' }));
+
+    try {
+      const headers = { ...getAdminHeaders(), 'Content-Type': 'application/json' };
+
+      // 1. Update live places entry for Tirumala
+      await safeFetchJson<any>('/api/admin/live-places', {
+        method: 'POST',
+        headers,
+        credentials: 'include',
+        body: JSON.stringify({
+          id: 'uuid-1',
+          updates: {
+            time: sarva,
+            crowd,
+            parking,
+            rtc,
+            sarva,
+            divya,
+            special
+          }
+        })
+      });
+
+      // 2. Update global Tirumala status in statusDb
+      const globalStatusUpdates: any = {
+        waitTime: sarva,
+        crowdLevel: crowd === 'LOW' ? 'low' : crowd === 'MEDIUM' ? 'moderate' : crowd === 'HIGH' ? 'high' : 'very-high',
+        accommodationStatus: parking === 'FULL' ? 'full' : 'available',
+        sendPush: sendPushApproved,
+        pushTitle: sendPushApproved ? notificationTitle : undefined,
+        pushBody: sendPushApproved ? dynamicMessage : undefined,
+        pushUrl: sendPushApproved ? '/' : undefined,
+        pushCategory: sendPushApproved ? 'Operational' : undefined
+      };
+
+      // Update the 3 distinct darshan queues independently
+      const existingDarshans = statusData?.darshans || [
+        { name: 'Sarva Darshan (Free)', waitTime: sarva, peakHours: 'Daily 10 AM - 6 PM' },
+        { name: 'Special Entry (₹300)', waitTime: special, peakHours: 'Daily 9 AM - 3 PM' },
+        { name: 'Divya Darshan (Footpath)', waitTime: divya, peakHours: 'Daily 8 AM - 4 PM' },
+        { name: 'VIP / Srivani Break', waitTime: '1.5 hours', peakHours: 'Daily 6 AM - 8 AM' }
+      ];
+
+      globalStatusUpdates.darshans = existingDarshans.map((d: any) => {
+        const nameLower = (d.name || '').toLowerCase();
+        if (nameLower.includes('sarva') || nameLower.includes('free')) {
+          return { ...d, waitTime: sarva };
+        }
+        if (nameLower.includes('divya') || nameLower.includes('footpath')) {
+          return { ...d, waitTime: divya };
+        }
+        if (nameLower.includes('300') || nameLower.includes('special')) {
+          return { ...d, waitTime: special };
+        }
+        return d;
+      });
+
+      await fetch('/api/admin/status', {
+        method: 'POST',
+        headers,
+        credentials: 'include',
+        body: JSON.stringify(globalStatusUpdates)
+      });
+
+      notifyRealtimeUpdate();
+      fetchLiveData();
+      setPlaceUpdateStatus(prev => ({ ...prev, 'uuid-1': '✓ Updated!' }));
+      showToast(sendPushApproved ? 'Live status updated & push notification sent!' : 'Live Temple Status updated successfully!');
+      setTimeout(() => {
+        setPlaceUpdateStatus(prev => ({ ...prev, 'uuid-1': '' }));
+      }, 2500);
+    } catch (e: any) {
+      setPlaceUpdateStatus(prev => ({ ...prev, 'uuid-1': 'Failed' }));
+      showToast(`Update error: ${e.message || 'Network error'}`);
+    }
+  };
+
+  // Generic Place Update Handler for secondary regional hubs
+  const handleGenericPlaceUpdate = async (id: string, updates: any) => {
     setPlaceUpdateStatus(prev => ({ ...prev, [id]: 'Updating...' }));
     try {
       const headers = { ...getAdminHeaders(), 'Content-Type': 'application/json' };
@@ -209,73 +336,10 @@ export default function AdminLiveUpdates() {
 
       if (data && data.places) {
         setLivePlaces(data.places);
-        
-        if (id === 'uuid-1' || id.includes('1') || id === 'tirumala') {
-          const globalStatusUpdates: any = {};
-          if (updates.time) globalStatusUpdates.waitTime = updates.time;
-          if (updates.crowd) {
-            const c = updates.crowd.toUpperCase();
-            if (c === 'LOW') globalStatusUpdates.crowdLevel = 'low';
-            else if (c === 'MEDIUM') globalStatusUpdates.crowdLevel = 'moderate';
-            else if (c === 'HIGH') globalStatusUpdates.crowdLevel = 'high';
-            else if (c === 'EXTREME') globalStatusUpdates.crowdLevel = 'very-high';
-            else globalStatusUpdates.crowdLevel = updates.crowd.toLowerCase();
-          }
-          if (updates.parking) globalStatusUpdates.accommodationStatus = updates.parking === 'FULL' ? 'full' : 'available';
-
-          // Update individual Darshan Category wait times
-          if (updates.sarva || updates.ssd || updates.special || updates.time) {
-            const list = statusData?.darshans || [
-              { name: 'Sarva Darshan (Free)', waitTime: '12-15 hours', peakHours: 'Daily 10 AM - 6 PM' },
-              { name: 'Special Entry (₹300)', waitTime: '3-4 hours', peakHours: 'Daily 9 AM - 3 PM' },
-              { name: 'Divya Darshan (Footpath)', waitTime: '8-10 hours', peakHours: 'Daily 8 AM - 4 PM' },
-              { name: 'VIP / Srivani Break', waitTime: '1.5 hours', peakHours: 'Daily 6 AM - 8 AM' }
-            ];
-            globalStatusUpdates.darshans = list.map((d: any) => {
-              const nameLower = (d.name || '').toLowerCase();
-              if ((updates.sarva || updates.time) && (nameLower.includes('sarva') || nameLower.includes('free'))) {
-                return { ...d, waitTime: updates.sarva || updates.time };
-              }
-              if (updates.ssd && (nameLower.includes('divya') || nameLower.includes('footpath') || nameLower.includes('ssd'))) {
-                return { ...d, waitTime: updates.ssd };
-              }
-              if (updates.special && (nameLower.includes('300') || nameLower.includes('special'))) {
-                return { ...d, waitTime: updates.special };
-              }
-              return d;
-            });
-            if (updates.sarva) {
-              globalStatusUpdates.waitTime = updates.sarva;
-            }
-          }
-          
-          await fetch('/api/admin/status', {
-            method: 'POST',
-            headers,
-            credentials: 'include',
-            body: JSON.stringify(globalStatusUpdates)
-          });
-        }
-        
         notifyRealtimeUpdate();
         fetchLiveData();
         setPlaceUpdateStatus(prev => ({ ...prev, [id]: '✓ Updated!' }));
-        showToast('Live Temple Status updated and broadcasted live!');
-
-        // Optional Push notification dispatch if admin enabled it
-        if (notifyOnTempleUpdate && (id === 'uuid-1' || id.includes('1') || id === 'tirumala')) {
-          const confirmed = confirm(
-            `Dispatch Push Notification for this live update?\n\nSarva Wait: ${updates.sarva || updates.time || 'Normal'}\nCrowd: ${updates.crowd || 'Normal'}\nParking: ${updates.parking || 'Available'}`
-          );
-          if (confirmed) {
-            await sendPushNotification({
-              title: 'Tirumala Live Darshan Update',
-              body: `Sarva Darshan Wait: ${updates.sarva || updates.time || 'Updated'}. Crowd: ${updates.crowd || 'Normal'}. Parking: ${updates.parking || 'Available'}.`,
-              url: '/',
-              category: 'Operational'
-            });
-          }
-        }
+        showToast('Place status updated successfully!');
         setTimeout(() => {
           setPlaceUpdateStatus(prev => ({ ...prev, [id]: '' }));
         }, 2500);
@@ -284,6 +348,22 @@ export default function AdminLiveUpdates() {
       setPlaceUpdateStatus(prev => ({ ...prev, [id]: 'Failed' }));
     }
   };
+
+  const tirumalaPlace = livePlaces.find(p => p.id === 'uuid-1' || p.name?.toLowerCase().includes('tirumala')) || {
+    id: 'uuid-1',
+    name: 'Tirumala Venkateswara Temple',
+    time: statusData?.darshans?.find((d: any) => d.name?.toLowerCase().includes('sarva') || d.name?.toLowerCase().includes('free'))?.waitTime || '4-8 Hours',
+    crowd: statusData?.crowdLevel ? (statusData.crowdLevel === 'very-high' ? 'EXTREME' : statusData.crowdLevel.toUpperCase()) : 'LOW',
+    parking: statusData?.accommodationStatus === 'full' ? 'FULL' : 'AVAILABLE',
+    rtc: 'NORMAL',
+    updated: '2 mins ago'
+  };
+
+  const otherPlaces = livePlaces.filter(p => !(p.id === 'uuid-1' || p.name?.toLowerCase().includes('tirumala')));
+
+  const sarvaDefault = statusData?.darshans?.find((d: any) => d.name?.toLowerCase().includes('sarva') || d.name?.toLowerCase().includes('free'))?.waitTime || '4-8 Hours';
+  const divyaDefault = statusData?.darshans?.find((d: any) => d.name?.toLowerCase().includes('divya') || d.name?.toLowerCase().includes('footpath'))?.waitTime || '2-5 Hours';
+  const specialDefault = statusData?.darshans?.find((d: any) => d.name?.includes('300') || d.name?.toLowerCase().includes('special'))?.waitTime || '1-2 Hours';
 
   return (
     <div className={styles.container}>
@@ -310,12 +390,13 @@ export default function AdminLiveUpdates() {
         </div>
       )}
 
+      {/* ── HEADER ── */}
       <div className={styles.header}>
         <div>
           <h1 className={styles.title}>Live Operations</h1>
           <p className={styles.subtitle}>Manage real-time crowd, parking, and transit status across all key hubs</p>
         </div>
-        <div className={styles.quickActions} style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+        <div className={styles.quickActions} style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
           <span style={{
             fontSize: '11.5px',
             fontWeight: 800,
@@ -383,13 +464,17 @@ export default function AdminLiveUpdates() {
         </div>
       </div>
 
+      {/* ── WEATHER OVERRIDE ── */}
       <div className={styles.globalOverride}>
         <div className={styles.overrideHeader}>
           <Zap size={18} color="#d97706" />
           <h3>Global Weather Override</h3>
+          <span style={{ fontSize: '11px', color: '#B45309', marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '4px' }}>
+            <Info size={13} /> Temporary override (manual)
+          </span>
         </div>
         <p className={styles.overrideDesc}>Forces the recommendation engine and live status banner to display this active weather condition.</p>
-        <div className={styles.weatherToggles}>
+        <div className={styles.weatherToggles} style={{ flexWrap: 'wrap' }}>
           {['Auto (API)', 'Clear Sky, 26°C', 'Pleasant, 24°C', 'Heavy Rain, 22°C', 'Extreme Heat, 38°C'].map(w => (
             <button 
               key={w}
@@ -402,148 +487,426 @@ export default function AdminLiveUpdates() {
         </div>
       </div>
 
-      <div className={styles.grid}>
-        {livePlaces.map(place => (
-          <div key={place.id} className={styles.liveCard}>
-            <div className={styles.cardHeader}>
-              <div>
-                <h3 className={styles.placeName}>{place.name}</h3>
-                {placeUpdateStatus[place.id] && (
-                  <span style={{ fontSize: '11px', fontWeight: 800, color: placeUpdateStatus[place.id].includes('✓') ? '#16A34A' : '#2563EB' }}>
-                    {placeUpdateStatus[place.id]}
-                  </span>
-                )}
-              </div>
-              <span className={styles.lastUpdated}><Clock size={12}/> {place.updated}</span>
+      {/* ── PRIMARY FEATURED CARD: TIRUMALA VENKATESWARA TEMPLE ── */}
+      <div 
+        id="tirumala-operational-card"
+        style={{
+          backgroundColor: '#FFFFFF',
+          border: '1px solid #E2E8F0',
+          borderRadius: '16px',
+          padding: '24px',
+          marginBottom: '28px',
+          boxShadow: '0 1px 4px rgba(15, 23, 42, 0.05)'
+        }}
+      >
+        {/* Card Header */}
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          marginBottom: '22px',
+          paddingBottom: '16px',
+          borderBottom: '1px solid #F1F5F9',
+          flexWrap: 'wrap',
+          gap: '10px'
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <div style={{ width: '38px', height: '38px', borderRadius: '10px', background: '#EFF6FF', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <Building2 size={22} color="#2563EB" />
             </div>
-            
-            <div className={styles.controls} id={`controls-${place.id}`}>
-              <div className={styles.controlGroup}>
-                <label>Wait Time (Hrs / Mins)</label>
-                <input name="time" type="text" className={styles.input} defaultValue={place.time} placeholder="e.g. 2-3 hours" />
-              </div>
+            <div>
+              <h2 style={{ fontSize: '18px', fontWeight: 800, color: '#0F172A', margin: 0, letterSpacing: '-0.01em' }}>
+                Tirumala Venkateswara Temple
+              </h2>
+            </div>
+            {placeUpdateStatus['uuid-1'] && (
+              <span style={{ fontSize: '11.5px', fontWeight: 800, color: placeUpdateStatus['uuid-1'].includes('✓') ? '#16A34A' : '#2563EB', background: placeUpdateStatus['uuid-1'].includes('✓') ? '#DCFCE7' : '#EFF6FF', padding: '3px 10px', borderRadius: '999px' }}>
+                {placeUpdateStatus['uuid-1']}
+              </span>
+            )}
+          </div>
+          <span style={{ fontSize: '12px', color: '#64748B', display: 'flex', alignItems: 'center', gap: '5px', fontWeight: 500 }}>
+            <Clock size={13} /> Last updated: {lastUpdated || tirumalaPlace.updated || '2 mins ago'}
+          </span>
+        </div>
 
-              <div className={styles.controlGroup}>
-                <label>Crowd Level</label>
-                <select name="crowd" className={styles.select} defaultValue={place.crowd}>
-                  <option value="LOW">Low</option>
-                  <option value="MEDIUM">Medium</option>
-                  <option value="HIGH">High</option>
-                  <option value="EXTREME">Extreme</option>
-                </select>
-              </div>
-
-              <div className={styles.controlGroup}>
-                <label>Parking Status</label>
-                <select name="parking" className={styles.select} defaultValue={place.parking}>
-                  <option value="AVAILABLE">Available</option>
-                  <option value="FULL">Full</option>
-                </select>
-              </div>
-              
-              <div className={styles.controlGroup}>
-                <label>RTC Status</label>
-                <select name="rtc" className={styles.select} defaultValue={place.rtc || 'NORMAL'}>
-                  <option value="NORMAL">Normal</option>
-                  <option value="DELAYED">Delayed</option>
-                  <option value="SUSPENDED">Suspended</option>
-                </select>
-              </div>
-
-              {(place.id === 'uuid-1' || place.name.includes('Tirumala')) && (
-                <>
-                  <div className={styles.controlGroup} style={{ borderTop: '1px solid #E2E8F0', paddingTop: '10px', marginTop: '6px' }}>
-                    <label style={{ color: '#D97706', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '4px' }}>
-                      <Users size={13} /> Sarva Darshan Wait
-                    </label>
-                    <input 
-                      name="sarva" 
-                      type="text" 
-                      className={styles.input} 
-                      defaultValue={
-                        statusData?.darshans?.find((d: any) => d.name?.toLowerCase().includes('sarva') || d.name?.toLowerCase().includes('free'))?.waitTime || '12-15 hours'
-                      } 
-                      placeholder="e.g. 10-12 hours" 
-                    />
-                  </div>
-                  <div className={styles.controlGroup}>
-                    <label style={{ color: '#0284C7', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '4px' }}>
-                      <Ticket size={13} /> SSD / DD Wait
-                    </label>
-                    <input 
-                      name="ssd" 
-                      type="text" 
-                      className={styles.input} 
-                      defaultValue={
-                        statusData?.darshans?.find((d: any) => d.name?.toLowerCase().includes('divya') || d.name?.toLowerCase().includes('footpath') || d.name?.toLowerCase().includes('ssd'))?.waitTime || '8-10 hours'
-                      } 
-                      placeholder="e.g. 4-6 hours" 
-                    />
-                  </div>
-                  <div className={styles.controlGroup}>
-                    <label style={{ color: '#CA8A04', fontWeight: 800, display: 'flex', alignItems: 'center', gap: '4px' }}>
-                      <Zap size={13} /> ₹300 Special Entry Wait
-                    </label>
-                    <input 
-                      name="special" 
-                      type="text" 
-                      className={styles.input} 
-                      defaultValue={
-                        statusData?.darshans?.find((d: any) => d.name?.includes('300') || d.name?.toLowerCase().includes('special'))?.waitTime || '3-4 hours'
-                      } 
-                      placeholder="e.g. 3-5 hours" 
-                    />
-                  </div>
-                </>
-              )}
-              {(place.id === 'uuid-1' || place.name.includes('Tirumala')) && (
-                <div style={{ marginTop: '10px', paddingTop: '10px', borderTop: '1px solid #E2E8F0' }}>
-                  <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', fontSize: '12px', fontWeight: 700, color: '#334155' }}>
-                    <input
-                      type="checkbox"
-                      checked={notifyOnTempleUpdate}
-                      onChange={(e) => setNotifyOnTempleUpdate(e.target.checked)}
-                      style={{ width: '15px', height: '15px', accentColor: '#2563EB', cursor: 'pointer' }}
-                    />
-                    <span>Also notify subscribers about this status change</span>
-                  </label>
-                  <span style={{ fontSize: '10.5px', color: '#64748B', display: 'block', marginTop: '2px', marginLeft: '23px' }}>
-                    Sends a push notification to subscribers on update (OFF by default)
-                  </span>
-                </div>
-              )}
+        {/* 1. Operational Status */}
+        <div style={{ marginBottom: '22px' }}>
+          <h3 style={{ fontSize: '14px', fontWeight: 800, color: '#0F172A', margin: '0 0 12px 0' }}>
+            Operational Status
+          </h3>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '14px' }}>
+            {/* Overall Crowd Level */}
+            <div>
+              <label style={{ fontSize: '12px', fontWeight: 700, color: '#334155', display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '6px' }}>
+                <Users size={15} color="#16A34A" /> Overall Crowd Level
+              </label>
+              <select 
+                name="crowd" 
+                defaultValue={statusData?.crowdLevel ? (statusData.crowdLevel === 'very-high' ? 'EXTREME' : statusData.crowdLevel.toUpperCase()) : (tirumalaPlace.crowd || 'LOW')}
+                style={{ width: '100%', padding: '9px 12px', borderRadius: '8px', border: '1px solid #CBD5E1', fontSize: '13.5px', fontWeight: 600, color: '#0F172A', background: '#FFFFFF', boxSizing: 'border-box' }}
+              >
+                <option value="LOW">Low</option>
+                <option value="MEDIUM">Medium</option>
+                <option value="HIGH">High</option>
+                <option value="EXTREME">Extreme</option>
+              </select>
             </div>
 
-            <button 
-              className={styles.updateButton} 
-              onClick={() => {
-                const controls = document.getElementById(`controls-${place.id}`);
-                if (!controls) return;
-                const time = (controls.querySelector('[name="time"]') as HTMLInputElement).value;
-                const crowd = (controls.querySelector('[name="crowd"]') as HTMLSelectElement).value;
-                const parking = (controls.querySelector('[name="parking"]') as HTMLSelectElement).value;
-                const rtc = (controls.querySelector('[name="rtc"]') as HTMLSelectElement).value;
+            {/* Parking Status */}
+            <div>
+              <label style={{ fontSize: '12px', fontWeight: 700, color: '#334155', display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '6px' }}>
+                <Car size={15} color="#16A34A" /> Parking Status
+              </label>
+              <select 
+                name="parking" 
+                defaultValue={statusData?.accommodationStatus === 'full' ? 'FULL' : (tirumalaPlace.parking || 'AVAILABLE')}
+                style={{ width: '100%', padding: '9px 12px', borderRadius: '8px', border: '1px solid #CBD5E1', fontSize: '13.5px', fontWeight: 600, color: '#0F172A', background: '#FFFFFF', boxSizing: 'border-box' }}
+              >
+                <option value="AVAILABLE">Available</option>
+                <option value="FULL">Full</option>
+              </select>
+            </div>
 
-                const sarvaEl = controls.querySelector('[name="sarva"]') as HTMLInputElement | null;
-                const ssdEl = controls.querySelector('[name="ssd"]') as HTMLInputElement | null;
-                const specialEl = controls.querySelector('[name="special"]') as HTMLInputElement | null;
+            {/* RTC Status */}
+            <div>
+              <label style={{ fontSize: '12px', fontWeight: 700, color: '#334155', display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '6px' }}>
+                <Bus size={15} color="#16A34A" /> RTC Status
+              </label>
+              <select 
+                name="rtc" 
+                defaultValue={tirumalaPlace.rtc || 'NORMAL'}
+                style={{ width: '100%', padding: '9px 12px', borderRadius: '8px', border: '1px solid #CBD5E1', fontSize: '13.5px', fontWeight: 600, color: '#0F172A', background: '#FFFFFF', boxSizing: 'border-box' }}
+              >
+                <option value="NORMAL">Normal</option>
+                <option value="DELAYED">Delayed</option>
+                <option value="SUSPENDED">Suspended</option>
+              </select>
+            </div>
+          </div>
+        </div>
 
-                const sarva = sarvaEl?.value;
-                const ssd = ssdEl?.value;
-                const special = specialEl?.value;
+        {/* 2. Darshan Queue Waiting Times */}
+        <div style={{ marginBottom: '22px' }}>
+          <h3 style={{ fontSize: '14px', fontWeight: 800, color: '#0F172A', margin: '0 0 3px 0' }}>
+            Darshan Queue Waiting Times
+          </h3>
+          <p style={{ fontSize: '11.5px', color: '#64748B', margin: '0 0 12px 0', display: 'flex', alignItems: 'center', gap: '4px' }}>
+            <Info size={13} color="#94A3B8" /> These are estimated queue waiting times for devotees already at the temple.
+          </p>
 
-                handlePlaceUpdate(place.id, { time, crowd, parking, rtc, sarva, ssd, special });
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '14px' }}>
+            {/* Sarva Darshan (SSD) Queue Wait */}
+            <div style={{ background: '#F8FAFC', border: '1px solid #E2E8F0', borderRadius: '12px', padding: '12px 14px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#C2410C', fontWeight: 800, fontSize: '13px', marginBottom: '8px' }}>
+                <Users size={16} color="#EA580C" />
+                <span>Sarva Darshan (SSD) Queue Wait</span>
+              </div>
+              <input 
+                name="sarva" 
+                type="text" 
+                defaultValue={sarvaDefault}
+                placeholder="4-8 Hours" 
+                style={{ width: '100%', padding: '9px 12px', borderRadius: '8px', border: '1px solid #CBD5E1', fontSize: '14px', fontWeight: 700, color: '#0F172A', background: '#FFFFFF', boxSizing: 'border-box' }}
+              />
+              <span style={{ fontSize: '11px', color: '#64748B', display: 'block', marginTop: '6px' }}>
+                General darshan queue waiting time inside Tirumala.
+              </span>
+            </div>
+
+            {/* Divya Darshan (Footpath) Queue Wait */}
+            <div style={{ background: '#F8FAFC', border: '1px solid #E2E8F0', borderRadius: '12px', padding: '12px 14px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#0284C7', fontWeight: 800, fontSize: '13px', marginBottom: '8px' }}>
+                <Footprints size={16} color="#0284C7" />
+                <span>Divya Darshan (Footpath) Queue Wait</span>
+              </div>
+              <input 
+                name="divya" 
+                type="text" 
+                defaultValue={divyaDefault}
+                placeholder="2-5 Hours" 
+                style={{ width: '100%', padding: '9px 12px', borderRadius: '8px', border: '1px solid #CBD5E1', fontSize: '14px', fontWeight: 700, color: '#0F172A', background: '#FFFFFF', boxSizing: 'border-box' }}
+              />
+              <span style={{ fontSize: '11px', color: '#64748B', display: 'block', marginTop: '6px' }}>
+                Footpath (Divya Darshan) queue waiting time.
+              </span>
+            </div>
+
+            {/* Special Entry Darshan (₹300) Wait */}
+            <div style={{ background: '#F8FAFC', border: '1px solid #E2E8F0', borderRadius: '12px', padding: '12px 14px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#B45309', fontWeight: 800, fontSize: '13px', marginBottom: '8px' }}>
+                <Star size={16} color="#D97706" />
+                <span>Special Entry Darshan (₹300) Wait</span>
+              </div>
+              <input 
+                name="special" 
+                type="text" 
+                defaultValue={specialDefault}
+                placeholder="1-2 Hours" 
+                style={{ width: '100%', padding: '9px 12px', borderRadius: '8px', border: '1px solid #CBD5E1', fontSize: '14px', fontWeight: 700, color: '#0F172A', background: '#FFFFFF', boxSizing: 'border-box' }}
+              />
+              <span style={{ fontSize: '11px', color: '#64748B', display: 'block', marginTop: '6px' }}>
+                Special entry darshan queue waiting time.
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* 3. What do you want to do? (Notification choice) */}
+        <div style={{
+          background: '#FFF1F2',
+          border: '1px solid #FFE4E6',
+          borderRadius: '14px',
+          padding: '16px 18px',
+          marginBottom: '20px'
+        }}>
+          <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', marginBottom: '14px' }}>
+            <Bell size={18} color="#E11D48" style={{ marginTop: '2px', flexShrink: 0 }} />
+            <div>
+              <h4 style={{ fontSize: '14px', fontWeight: 800, color: '#9F1239', margin: '0 0 2px 0' }}>
+                What do you want to do?
+              </h4>
+              <p style={{ fontSize: '12px', color: '#64748B', margin: 0 }}>
+                Choose whether to just update the status or also send a push notification to all subscribers.
+              </p>
+            </div>
+          </div>
+
+          {/* 2 Radio Options */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '12px', marginBottom: '12px' }}>
+            {/* Option A: Update only (Default) */}
+            <div 
+              onClick={() => setActionChoice('update_only')}
+              style={{
+                border: actionChoice === 'update_only' ? '2px solid #16A34A' : '1px solid #E2E8F0',
+                background: actionChoice === 'update_only' ? '#F0FDF4' : '#FFFFFF',
+                padding: '12px 14px',
+                borderRadius: '12px',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'flex-start',
+                gap: '10px',
+                transition: 'all 0.15s ease'
               }}
             >
-              Update Live Status
-            </button>
+              <div style={{
+                width: '16px',
+                height: '16px',
+                borderRadius: '50%',
+                border: actionChoice === 'update_only' ? '5px solid #16A34A' : '2px solid #CBD5E1',
+                marginTop: '2px',
+                flexShrink: 0,
+                background: '#FFFFFF',
+                boxSizing: 'border-box'
+              }} />
+              <div>
+                <span style={{ fontSize: '13.5px', fontWeight: 800, color: '#0F172A', display: 'block' }}>Update only</span>
+                <span style={{ fontSize: '11.5px', color: '#64748B', display: 'block', marginTop: '2px' }}>
+                  Update the live status. No notification will be sent.
+                </span>
+              </div>
+            </div>
+
+            {/* Option B: Update and send notification */}
+            <div 
+              onClick={() => setActionChoice('update_and_notify')}
+              style={{
+                border: actionChoice === 'update_and_notify' ? '2px solid #2563EB' : '1px solid #E2E8F0',
+                background: actionChoice === 'update_and_notify' ? '#EFF6FF' : '#FFFFFF',
+                padding: '12px 14px',
+                borderRadius: '12px',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'flex-start',
+                gap: '10px',
+                transition: 'all 0.15s ease'
+              }}
+            >
+              <div style={{
+                width: '16px',
+                height: '16px',
+                borderRadius: '50%',
+                border: actionChoice === 'update_and_notify' ? '5px solid #2563EB' : '2px solid #CBD5E1',
+                marginTop: '2px',
+                flexShrink: 0,
+                background: '#FFFFFF',
+                boxSizing: 'border-box'
+              }} />
+              <div>
+                <span style={{ fontSize: '13.5px', fontWeight: 800, color: '#0F172A', display: 'block' }}>Update and send notification</span>
+                <span style={{ fontSize: '11.5px', color: '#64748B', display: 'block', marginTop: '2px' }}>
+                  Update the live status and send a push notification to all subscribers.
+                </span>
+              </div>
+            </div>
           </div>
-        ))}
+
+          {/* Collapsible Notification Preview */}
+          <div style={{
+            background: '#FFFFFF',
+            border: '1px solid #E2E8F0',
+            borderRadius: '10px',
+            padding: '10px 14px'
+          }}>
+            <div 
+              onClick={() => setShowPreview(!showPreview)} 
+              style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', cursor: 'pointer' }}
+            >
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <Eye size={15} color="#2563EB" />
+                <span style={{ fontSize: '13px', fontWeight: 700, color: '#0F172A' }}>
+                  Notification Preview (optional)
+                </span>
+              </div>
+              <ChevronDown 
+                size={16} 
+                color="#64748B" 
+                style={{ transform: showPreview ? 'rotate(180deg)' : 'none', transition: 'transform 0.2s ease' }} 
+              />
+            </div>
+            <p style={{ fontSize: '11px', color: '#64748B', margin: '3px 0 0 23px' }}>
+              This will be used only if you select &apos;Update and send notification&apos;.
+            </p>
+
+            {showPreview && (
+              <div style={{ marginTop: '12px', paddingTop: '12px', borderTop: '1px solid #F1F5F9', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                <div>
+                  <label style={{ fontSize: '11.5px', fontWeight: 700, color: '#475569', display: 'block', marginBottom: '4px' }}>
+                    Notification Title
+                  </label>
+                  <input 
+                    type="text"
+                    value={templePushTitle}
+                    onChange={(e) => setTemplePushTitle(e.target.value)}
+                    placeholder="Tirumala Live Darshan Update"
+                    style={{ width: '100%', padding: '7px 10px', borderRadius: '6px', border: '1px solid #CBD5E1', fontSize: '12.5px', fontWeight: 600, boxSizing: 'border-box' }}
+                  />
+                </div>
+                <div>
+                  <label style={{ fontSize: '11.5px', fontWeight: 700, color: '#475569', display: 'block', marginBottom: '4px' }}>
+                    Notification Message
+                  </label>
+                  <textarea 
+                    rows={2}
+                    value={templePushBody}
+                    onChange={(e) => setTemplePushBody(e.target.value)}
+                    placeholder={`e.g. Sarva Darshan Wait: ${sarvaDefault}. Crowd: Low. Parking: Available.`}
+                    style={{ width: '100%', padding: '7px 10px', borderRadius: '6px', border: '1px solid #CBD5E1', fontSize: '12.5px', boxSizing: 'border-box', resize: 'vertical' }}
+                  />
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* 4. Action Footer Bar */}
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '14px', paddingTop: '4px' }}>
+          <button 
+            type="button"
+            onClick={handleTirumalaUpdate}
+            style={{
+              backgroundColor: '#0F766E',
+              color: '#FFFFFF',
+              border: 'none',
+              borderRadius: '10px',
+              padding: '11px 24px',
+              fontWeight: 800,
+              fontSize: '14px',
+              cursor: 'pointer',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '8px',
+              boxShadow: '0 2px 6px rgba(15, 118, 110, 0.25)',
+              transition: 'background-color 0.15s ease'
+            }}
+          >
+            <Save size={16} /> Update Live Status
+          </button>
+
+          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '11.5px', color: '#475569' }}>
+            <Info size={14} color="#64748B" />
+            <span><strong>Notification is OFF by default</strong> · You can choose to send a notification only when needed.</span>
+          </div>
+        </div>
       </div>
 
-      {/* ═══════════════════════════════════════════════════════
-          SEND LIVE PUSH MODAL (Admin Controlled)
-          ═══════════════════════════════════════════════════════ */}
+      {/* ── SECONDARY REGIONAL HUBS (IF ANY) ── */}
+      {otherPlaces.length > 0 && (
+        <div style={{ marginTop: '20px' }}>
+          <h3 style={{ fontSize: '16px', fontWeight: 800, color: '#0F172A', marginBottom: '16px' }}>
+            Regional Transit & Pilgrim Hubs
+          </h3>
+          <div className={styles.grid}>
+            {otherPlaces.map(place => (
+              <div key={place.id} className={styles.liveCard}>
+                <div className={styles.cardHeader}>
+                  <div>
+                    <h3 className={styles.placeName}>{place.name}</h3>
+                    {placeUpdateStatus[place.id] && (
+                      <span style={{ fontSize: '11px', fontWeight: 800, color: placeUpdateStatus[place.id].includes('✓') ? '#16A34A' : '#2563EB' }}>
+                        {placeUpdateStatus[place.id]}
+                      </span>
+                    )}
+                  </div>
+                  <span className={styles.lastUpdated}><Clock size={12}/> {place.updated}</span>
+                </div>
+                
+                <div className={styles.controls} id={`controls-${place.id}`}>
+                  <div className={styles.controlGroup}>
+                    <label>Wait Time (Hrs / Mins)</label>
+                    <input name="time" type="text" className={styles.input} defaultValue={place.time} placeholder="e.g. 2-3 hours" />
+                  </div>
+
+                  <div className={styles.controlGroup}>
+                    <label>Crowd Level</label>
+                    <select name="crowd" className={styles.select} defaultValue={place.crowd}>
+                      <option value="LOW">Low</option>
+                      <option value="MEDIUM">Medium</option>
+                      <option value="HIGH">High</option>
+                      <option value="EXTREME">Extreme</option>
+                    </select>
+                  </div>
+
+                  <div className={styles.controlGroup}>
+                    <label>Parking Status</label>
+                    <select name="parking" className={styles.select} defaultValue={place.parking}>
+                      <option value="AVAILABLE">Available</option>
+                      <option value="FULL">Full</option>
+                    </select>
+                  </div>
+                  
+                  <div className={styles.controlGroup}>
+                    <label>RTC Status</label>
+                    <select name="rtc" className={styles.select} defaultValue={place.rtc || 'NORMAL'}>
+                      <option value="NORMAL">Normal</option>
+                      <option value="DELAYED">Delayed</option>
+                      <option value="SUSPENDED">Suspended</option>
+                    </select>
+                  </div>
+                </div>
+
+                <button 
+                  className={styles.updateButton} 
+                  onClick={() => {
+                    const controls = document.getElementById(`controls-${place.id}`);
+                    if (!controls) return;
+                    const time = (controls.querySelector('[name="time"]') as HTMLInputElement).value;
+                    const crowd = (controls.querySelector('[name="crowd"]') as HTMLSelectElement).value;
+                    const parking = (controls.querySelector('[name="parking"]') as HTMLSelectElement).value;
+                    const rtc = (controls.querySelector('[name="rtc"]') as HTMLSelectElement).value;
+
+                    handleGenericPlaceUpdate(place.id, { time, crowd, parking, rtc });
+                  }}
+                >
+                  Update Live Status
+                </button>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* ── BROADCAST LIVE PUSH MODAL (Top Action Button) ── */}
       {showPushModal && (
         <div style={{
           position: 'fixed',
@@ -568,7 +931,6 @@ export default function AdminLiveUpdates() {
             boxShadow: '0 20px 40px rgba(0,0,0,0.2)',
             boxSizing: 'border-box'
           }}>
-            {/* Modal Header */}
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '16px' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <div style={{ width: '32px', height: '32px', borderRadius: '8px', backgroundColor: '#EFF6FF', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#2563EB' }}>
@@ -589,7 +951,6 @@ export default function AdminLiveUpdates() {
               </button>
             </div>
 
-            {/* Modal Form */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
               <div>
                 <label style={{ fontSize: '11.5px', fontWeight: 700, color: '#475569', display: 'block', marginBottom: '4px' }}>
@@ -646,12 +1007,10 @@ export default function AdminLiveUpdates() {
                 </div>
               </div>
 
-              {/* Confirmation Notice */}
               <div style={{ background: '#F8FAFC', border: '1px solid #E2E8F0', borderRadius: '8px', padding: '10px 12px', fontSize: '11.5px', color: '#64748B' }}>
                 ⚠️ <strong>Confirmation Required:</strong> Clicking broadcast will prompt for confirmation before sending to all subscribed devices.
               </div>
 
-              {/* Modal Actions */}
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '10px', marginTop: '6px' }}>
                 <button
                   type="button"
