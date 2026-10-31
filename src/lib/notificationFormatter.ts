@@ -1,4 +1,4 @@
-import { getISTDateInfo } from '@/components/home/QuickChecklist';
+import { getISTDateInfo } from '@/lib/istDate';
 
 export interface SsdNotificationParams {
   status: 'issuing' | 'paused' | 'closed-for-day' | 'suspended';

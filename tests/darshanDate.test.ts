@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert';
-import { getISTDateInfo } from '../src/components/home/QuickChecklist';
+import { getISTDateInfo } from '../src/lib/istDate';
 
 test('Darshan Date Synchronization and Asia/Kolkata timezone accuracy', async (t) => {
   await t.test('Date transition test: 31 Oct 2026 -> 1 Nov 2026 in Asia/Kolkata', () => {
