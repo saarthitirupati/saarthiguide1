@@ -255,9 +255,7 @@ function cleanTime(timeStr?: string): string {
 /**
  * Dynamic Asia/Kolkata date and time helper
  */
-function getISTDateInfo(lastUpdatedStr?: string) {
-  const now = new Date();
-
+export function getISTDateInfo(lastUpdatedStr?: string, refDate: Date = new Date()) {
   const istDateFmt = new Intl.DateTimeFormat('en-IN', {
     timeZone: 'Asia/Kolkata',
     day: 'numeric',
@@ -278,16 +276,28 @@ function getISTDateInfo(lastUpdatedStr?: string) {
     hour12: true
   });
 
-  const todayStr = istDateFmt.format(now);
-  const todayShortStr = istShortDateFmt.format(now);
+  // Extract calendar day/month/year strictly in Asia/Kolkata
+  const kolkataParts = new Intl.DateTimeFormat('en-US', {
+    timeZone: 'Asia/Kolkata',
+    year: 'numeric',
+    month: 'numeric',
+    day: 'numeric'
+  }).formatToParts(refDate);
 
-  // Yesterday in IST
-  const yesterdayDate = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+  const getP = (type: string) => parseInt(kolkataParts.find(p => p.type === type)?.value || '0', 10);
+  const y = getP('year');
+  const m = getP('month'); // 1-12
+  const d = getP('day');   // 1-31
+
+  // Anchor to 12:00 UTC on the target calendar day so UTC+5:30 (17:30 IST) never shifts date
+  const todayDate = new Date(Date.UTC(y, m - 1, d, 12, 0, 0));
+  const yesterdayDate = new Date(Date.UTC(y, m - 1, d - 1, 12, 0, 0));
+  const tomorrowDate = new Date(Date.UTC(y, m - 1, d + 1, 12, 0, 0));
+
+  const todayStr = istDateFmt.format(todayDate);
+  const todayShortStr = istShortDateFmt.format(todayDate);
   const yesterdayStr = istDateFmt.format(yesterdayDate);
   const yesterdayShortStr = istShortDateFmt.format(yesterdayDate);
-
-  // Tomorrow in IST
-  const tomorrowDate = new Date(now.getTime() + 24 * 60 * 60 * 1000);
   const tomorrowStr = istDateFmt.format(tomorrowDate);
 
   // Last Updated formatted
@@ -303,7 +313,7 @@ function getISTDateInfo(lastUpdatedStr?: string) {
     }
   }
   if (!updatedDisplay) {
-    updatedDisplay = `${todayStr}, ${istTimeFmt.format(now)}`;
+    updatedDisplay = `${todayStr}, ${istTimeFmt.format(refDate)}`;
   }
 
   return {
@@ -409,15 +419,19 @@ export function QuickChecklist(props: any) {
   const hasVerifiedSsdLeft = Boolean(rawSsdLeftVal && rawSsdLeftVal !== 'null' && rawSsdLeftVal !== 'undefined');
   const ssdDisplayRemaining = hasVerifiedSsdLeft ? rawSsdLeftVal : (isSsdCompleted ? '0' : '');
 
+  const hasEmbeddedDate = (str: string) => /[a-zA-Z]{3}|\d{4}/.test(str);
+
   // SSD Started Time: never hardcode fallback times
   const ssdRawStart = cleanTime(ssdDetails.startTime || ssdGuideMatch.start?.[1]);
   const ssdStartDisplay = ssdRawStart
-    ? `${ssdRawStart} (${isSsdCompleted ? ist.yesterdayShort : ist.todayShort})`
+    ? (hasEmbeddedDate(ssdRawStart) ? ssdRawStart : `${ssdRawStart} (${isSsdCompleted ? ist.yesterdayShort : ist.todayShort})`)
     : t.notAnnounced;
 
   // SSD Completed Time: strictly explicit completed time, never next release time
   const ssdRawComp = cleanTime(ssdDetails.completedTime || ssdGuideMatch.comp?.[1]);
-  const ssdCompDisplay = ssdRawComp ? `${ssdRawComp} (${ist.todayShort})` : t.completed;
+  const ssdCompDisplay = ssdRawComp 
+    ? (hasEmbeddedDate(ssdRawComp) ? ssdRawComp : `${ssdRawComp} (${ist.todayShort})`) 
+    : t.completed;
 
   // 5. DD Data Extraction (Independent)
   const ddDetails = (liveStatus as any).ddTokenDetails || {};
@@ -448,17 +462,31 @@ export function QuickChecklist(props: any) {
   // DD Started Time: never hardcode fallback times
   const ddRawStart = cleanTime(ddDetails.startTime || ddGuideMatch.start?.[1]);
   const ddStartDisplay = ddRawStart
-    ? `${ddRawStart} (${isDdNowCompleted ? ist.yesterdayShort : ist.todayShort})`
+    ? (hasEmbeddedDate(ddRawStart) ? ddRawStart : `${ddRawStart} (${isDdNowCompleted ? ist.yesterdayShort : ist.todayShort})`)
     : t.notAnnounced;
 
   // DD Completed Time: strictly explicit completed time, never next release time
   const ddRawComp = cleanTime(ddDetails.completedTime || ddGuideMatch.comp?.[1]);
-  const ddCompDisplay = ddRawComp ? `${ddRawComp} (${ist.todayShort})` : t.completed;
+  const ddCompDisplay = ddRawComp 
+    ? (hasEmbeddedDate(ddRawComp) ? ddRawComp : `${ddRawComp} (${ist.todayShort})`) 
+    : t.completed;
 
   const ssdLeftCount = isSsdCompleted ? '0' : (hasVerifiedSsdLeft ? rawSsdLeftVal : '--');
   const ddLeftCount = isDdNowCompleted ? '0' : (hasVerifiedDdLeft ? rawDdLeftVal : '--');
+
+  // Single Canonical Target Darshan Date (Asia/Kolkata timezone)
+  // Respect explicit admin override if provided; otherwise:
+  // When tokens are actively issuing, they are for tomorrow's darshan.
+  // When closed/paused/suspended, they apply to today's darshan quota.
+  const explicitTargetDate = (liveStatus as any).targetDarshanDate || (liveStatus as any).darshanDate;
+  const canonicalTargetDate = explicitTargetDate
+    ? (typeof explicitTargetDate === 'string' && !isNaN(new Date(explicitTargetDate).getTime())
+        ? new Intl.DateTimeFormat('en-IN', { timeZone: 'Asia/Kolkata', day: 'numeric', month: 'short', year: 'numeric' }).format(new Date(explicitTargetDate))
+        : String(explicitTargetDate).trim())
+    : (isIssuing ? ist.tomorrow : ist.today);
+
   const activeDateLabel = isIssuing ? t.tomorrowDarshanLabel : t.today;
-  const activeTokenDate = isIssuing ? ist.tomorrow : ist.today;
+  const activeTokenDate = canonicalTargetDate;
 
   // 6. Timeline display values per required behavior table
   const ssdRow2Title = isSsdIssuing ? t.tokensRemaining : isSsdCompleted ? t.quotaCompletedAt : isSsdPaused ? t.status : t.status;
@@ -537,12 +565,12 @@ export function QuickChecklist(props: any) {
     : t.todayQuotaCompleted;
 
   const todayNoteText = isSuspended
-    ? t.tokensSuspendedNote(ist.today)
+    ? t.tokensSuspendedNote(canonicalTargetDate)
     : isIssuing
-    ? t.tokensIssuingNote(ist.today)
+    ? t.tokensIssuingNote(canonicalTargetDate)
     : isPaused
-    ? t.tokensPausedNote(ist.today)
-    : t.tokensIssuedNote(ist.today);
+    ? t.tokensPausedNote(canonicalTargetDate)
+    : t.tokensIssuedNote(canonicalTargetDate);
 
   return (
     <div
