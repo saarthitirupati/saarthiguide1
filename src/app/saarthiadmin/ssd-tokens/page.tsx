@@ -26,6 +26,7 @@ import {
 } from 'lucide-react';
 import { notifyRealtimeUpdate } from '@/lib/useRealtimeStatus';
 import { safeFetchJson } from '@/lib/safeFetch';
+import { formatSsdTokenNotification } from '@/lib/notificationFormatter';
 
 /**
  * Temple Gopuram Icon with custom color
@@ -219,18 +220,20 @@ export default function AdminSsdTokensPage() {
     }
   };
 
-  // Dynamic default preview title based on statuses
-  const defaultAutoTitle = (
-    ssdStatus === 'completed' && ddStatus === 'completed'
-      ? "Today's SSD & DD Token Quota Completed"
-      : ssdStatus === 'issuing' || ddStatus === 'issuing'
-      ? 'SSD & DD Tokens Issuing Now'
-      : ssdStatus === 'paused' || ddStatus === 'paused'
-      ? 'SSD / DD Token Issuance Paused'
-      : 'SSD & DD Tokens Update'
-  );
+  // Dynamic default preview title and front-loaded body based on canonical rules
+  const autoFormatted = formatSsdTokenNotification({
+    status: globalStatus,
+    ssdStatus,
+    ddStatus,
+    ssdAvailable,
+    ddAvailable,
+    nextBatchTime,
+    customNotice: liveNotice,
+    language: 'en'
+  });
 
-  const defaultAutoBody = liveNotice.trim() || `SSD ${ssdAvailable} & DD ${ddAvailable} tokens available.`;
+  const defaultAutoTitle = autoFormatted.title;
+  const defaultAutoBody = autoFormatted.body;
 
   const previewTitle = customTitle.trim() || defaultAutoTitle;
   const previewBody = customBody.trim() || defaultAutoBody;
@@ -1109,6 +1112,103 @@ export default function AdminSsdTokensPage() {
                 flexDirection: 'column',
                 gap: '12px'
               }}>
+                {/* Quick Optimization Presets */}
+                <div>
+                  <span style={{ fontSize: '11px', fontWeight: 700, color: '#475569', display: 'block', marginBottom: '6px' }}>
+                    Quick Optimization Presets:
+                  </span>
+                  <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const t = formatSsdTokenNotification({
+                          status: globalStatus,
+                          ssdStatus,
+                          ddStatus,
+                          ssdAvailable,
+                          ddAvailable,
+                          nextBatchTime,
+                          customNotice: liveNotice,
+                          language: 'en'
+                        });
+                        setCustomTitle(t.title);
+                        setCustomBody(t.body);
+                      }}
+                      style={{
+                        fontSize: '11px',
+                        fontWeight: 700,
+                        padding: '4px 9px',
+                        borderRadius: '6px',
+                        background: '#EFF6FF',
+                        border: '1px solid #BFDBFE',
+                        color: '#1D4ED8',
+                        cursor: 'pointer'
+                      }}
+                    >
+                      🇬🇧 English
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const t = formatSsdTokenNotification({
+                          status: globalStatus,
+                          ssdStatus,
+                          ddStatus,
+                          ssdAvailable,
+                          ddAvailable,
+                          nextBatchTime,
+                          customNotice: liveNotice,
+                          language: 'te'
+                        });
+                        setCustomTitle(t.title);
+                        setCustomBody(t.body);
+                      }}
+                      style={{
+                        fontSize: '11px',
+                        fontWeight: 700,
+                        padding: '4px 9px',
+                        borderRadius: '6px',
+                        background: '#FEF3C7',
+                        border: '1px solid #FDE68A',
+                        color: '#B45309',
+                        cursor: 'pointer'
+                      }}
+                    >
+                      🇮🇳 తెలుగు (Telugu)
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const t = formatSsdTokenNotification({
+                          status: globalStatus,
+                          ssdStatus,
+                          ddStatus,
+                          ssdAvailable,
+                          ddAvailable,
+                          nextBatchTime,
+                          customNotice: liveNotice,
+                          language: 'bilingual'
+                        });
+                        setCustomTitle(t.title);
+                        setCustomBody(t.body);
+                      }}
+                      style={{
+                        fontSize: '11px',
+                        fontWeight: 700,
+                        padding: '4px 9px',
+                        borderRadius: '6px',
+                        background: '#F1F5F9',
+                        border: '1px solid #CBD5E1',
+                        color: '#334155',
+                        cursor: 'pointer'
+                      }}
+                    >
+                      🌐 Bilingual
+                    </button>
+                  </div>
+                </div>
                 <div>
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '4px' }}>
                     <label style={{ fontSize: '11.5px', fontWeight: 700, color: '#334155' }}>

@@ -1,6 +1,7 @@
 import webpush from 'web-push';
 import { supabase } from '@/lib/supabase';
 import { sendFCMNotification, getFCMAccessToken, getParsedServiceAccount } from '@/lib/fcmService';
+import { formatSsdTokenNotification } from '@/lib/notificationFormatter';
 
 let vapidConfigured = false;
 function ensureVapid(): boolean {
@@ -272,21 +273,21 @@ export async function notifySsdUpdates(
   if (updated.ssdTokenStatus && updated.ssdTokenStatus !== prev.ssdTokenStatus) {
     if (updated.ssdTokenStatus === 'issuing') {
       await pushNotifyAll({
-        title: 'SSD Tokens are LIVE!',
-        body: 'Srivari Seva Darshanam offline tokens are being issued now at Tirumala & Tirupati counters.',
+        title: '🎟️ SSD & DD Tokens Issuing Now',
+        body: `SSD: ${(updated as any).ssdTokenDetails?.tokensLeft || '10,000'} left · DD: ${(updated as any).ddTokenDetails?.tokensLeft || '2,000'} left. Offline tokens issuing at Tirupati counters.`,
         url: '/darshan/ssd-token',
         tag: 'ssd-status',
       }).catch(() => {});
     } else if (updated.ssdTokenStatus === 'paused') {
       await pushNotifyAll({
-        title: 'SSD Tokens Paused',
+        title: '⏸️ SSD & DD Tokens Paused',
         body: (updated.ssdNotice || '').trim() || 'Token issuing has been temporarily paused. Please check back shortly.',
         url: '/darshan/ssd-token',
         tag: 'ssd-status',
       }).catch(() => {});
     } else if (updated.ssdTokenStatus === 'closed-for-day') {
       await pushNotifyAll({
-        title: 'Today’s SSD Quota Closed',
+        title: "⚠️ Today's SSD & DD Quota Closed",
         body: (updated.ssdNotice || '').trim() || `Today's offline SSD token quota is complete. Next issuance: ${updated.ssdNextTokenTime || 'tomorrow morning'}.`,
         url: '/darshan/ssd-token',
         tag: 'ssd-status',
@@ -294,7 +295,7 @@ export async function notifySsdUpdates(
       }).catch(() => {});
     } else if (updated.ssdTokenStatus === 'suspended') {
       await pushNotifyAll({
-        title: 'SSD Tokens Suspended (Brahmotsavam)',
+        title: '🚫 SSD & DD Tokens Suspended',
         body: (updated.ssdNotice || '').trim() || 'SSD tokens are temporarily suspended. Direct walk-in Sarva Darshan open at Vaikuntam complexes.',
         url: '/darshan/ssd-token',
         tag: 'ssd-status',

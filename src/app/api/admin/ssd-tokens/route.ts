@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import { readStatus, updateStatus } from '@/lib/statusDb';
 import { isAuthorizedAdmin } from '@/lib/authGuard';
 import { pushNotifyAll } from '@/lib/pushNotify';
+import { formatSsdTokenNotification } from '@/lib/notificationFormatter';
 
 export async function GET() {
   try {
@@ -68,32 +69,34 @@ export async function POST(req: Request) {
 
     const updated = await updateStatus(updates);
 
-    // Notification System Control
+    // Strict Notification Opt-In Guard: accept strictly boolean literal `true`
     let pushResultData: any = null;
-    const shouldSendPush = Boolean(sendSsdPush || sendDdPush);
+    const isSsdPush = sendSsdPush === true;
+    const isDdPush = sendDdPush === true;
+    const shouldSendPush = isSsdPush || isDdPush;
 
     if (shouldSendPush) {
       let pushType = 'SSD + DD';
-      if (sendSsdPush && !sendDdPush) pushType = 'SSD';
-      else if (!sendSsdPush && sendDdPush) pushType = 'DD';
+      if (isSsdPush && !isDdPush) pushType = 'SSD';
+      else if (!isSsdPush && isDdPush) pushType = 'DD';
 
-      const defaultTitle = customNotification?.title?.trim() || (
-        ssdTokenStatus === 'closed-for-day'
-          ? `Today's ${pushType} Token Quota Completed`
-          : ssdTokenStatus === 'issuing'
-          ? `${pushType} Tokens Issuing Now`
-          : ssdTokenStatus === 'paused'
-          ? `${pushType} Tokens Issuance Paused`
-          : `${pushType} Tokens Suspended`
-      );
+      const fallback = formatSsdTokenNotification({
+        status: (ssdTokenStatus || 'closed-for-day') as any,
+        ssdStatus: ssdTokenDetails?.status,
+        ddStatus: ddTokenDetails?.status,
+        ssdAvailable: ssdTokenDetails?.tokensLeft || '0',
+        ddAvailable: ddTokenDetails?.tokensLeft || '0',
+        nextBatchTime: ssdNextTokenTime,
+        customNotice: ssdNotice,
+        language: 'en'
+      });
 
-      const defaultBody = customNotification?.body?.trim() || (
-        ssdNotice?.trim() || `${pushType} token status has been updated. Next release: ${ssdNextTokenTime || 'Not Announced Yet'}.`
-      );
+      const finalTitle = customNotification?.title?.trim() || fallback.title;
+      const finalBody = customNotification?.body?.trim() || fallback.body;
 
       const dispatchResult = await pushNotifyAll({
-        title: defaultTitle,
-        body: defaultBody,
+        title: finalTitle,
+        body: finalBody,
         url: '/darshan/ssd-token',
         tag: `ssd-dd-status-${Date.now()}`,
         category: 'High Priority'
@@ -109,7 +112,7 @@ export async function POST(req: Request) {
       pushResultData = {
         status: hasDelivered ? 'Sent' : (dispatchResult?.success ? 'Sent' : 'Failed'),
         type: pushType,
-        message: defaultTitle,
+        message: finalTitle,
         sentTo: sendToAll ? 'All Users' : 'Subscribers',
         timestamp: new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata', dateStyle: 'medium', timeStyle: 'short' }),
         details: dispatchResult
