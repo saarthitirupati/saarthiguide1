@@ -22,6 +22,7 @@ import {
 import { getDayTempleGuidance } from '@/lib/dailyGuidance';
 import { getGovindaNamaForBead } from '@/data/govindaNamas';
 import { LocationPickerModal, LocationPill } from '@/components/common/LocationPickerModal';
+import { LanguagePickerModal } from '@/components/common/LanguagePickerModal';
 import { 
   generateTodayInTirumalaCard, 
   generateJapaCard, 
@@ -459,6 +460,7 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
   const [selectedLocation, setSelectedLocation] = useState<string>(locationName || 'Tirupati');
   const [isLocating, setIsLocating] = useState<boolean>(false);
   const [isLocationModalOpen, setIsLocationModalOpen] = useState<boolean>(false);
+  const [isLanguageModalOpen, setIsLanguageModalOpen] = useState<boolean>(false);
   const [isVideoPlaying, setIsVideoPlaying] = useState<boolean>(false);
   const [apiWeatherCode, setApiWeatherCode] = useState<number | null>(null);
   const [testRainMode, setTestRainMode] = useState<boolean | null>(null);
@@ -1500,18 +1502,15 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
               {/* Multi-Language Switcher (EN, TE, HI, TA) */}
               <button
                 type="button"
-                onClick={() => {
-                  const langs: AppLang[] = ['en', 'te', 'hi', 'ta'];
-                  const currentIndex = langs.indexOf(lang);
-                  const nextLang = langs[(currentIndex + 1) % langs.length];
-                  setAppLanguage(nextLang);
-                }}
+                onClick={() => setIsLanguageModalOpen(true)}
                 aria-label="Change Language (English, తెలుగు, हिंदी, தமிழ்)"
+                aria-haspopup="dialog"
+                aria-expanded={isLanguageModalOpen}
                 title={
-                  lang === 'en' ? 'Switch to Telugu / Hindi / Tamil' :
-                  lang === 'te' ? 'Switch to Hindi / Tamil / English' :
-                  lang === 'hi' ? 'Switch to Tamil / English / Telugu' :
-                  'Switch to English / Telugu / Hindi'
+                  lang === 'en' ? 'Choose Language' :
+                  lang === 'te' ? 'భాషను ఎంచుకోండి' :
+                  lang === 'hi' ? 'भाषा चुनें' :
+                  'மொழியைத் தேர்ந்தெடுக்கவும்'
                 }
                 style={{
                   display: 'inline-flex',
@@ -1581,6 +1580,12 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
         onClose={() => setIsLocationModalOpen(false)}
         selectedLocationName={selectedLocation}
         onSelectLocation={(name) => setSelectedLocation(name)}
+      />
+
+      {/* GLOBAL APP LANGUAGE PICKER MODAL */}
+      <LanguagePickerModal
+        isOpen={isLanguageModalOpen}
+        onClose={() => setIsLanguageModalOpen(false)}
       />
 
       {/* ══════════ SCROLLABLE CONTENT ══════════ */}
