@@ -37,7 +37,7 @@ export async function POST(request: Request) {
     const createdAlert = await saveLiveAlert(body);
 
     const shouldSendPush = body.sendPush !== false;
-    if (shouldSendPush && createdAlert && createdAlert.status !== 'Draft') {
+    if (shouldSendPush && createdAlert && createdAlert.status === 'Published') {
       try {
         await pushNotifyAll({
           title: createdAlert.title ? createdAlert.title : 'Tirumala Operational Alert',
@@ -75,7 +75,7 @@ export async function PUT(request: Request) {
     const updatedAlert = await saveLiveAlert(body);
 
     const shouldSendPush = body.sendPush !== false;
-    if (shouldSendPush && updatedAlert && updatedAlert.status !== 'Draft') {
+    if (shouldSendPush && updatedAlert && updatedAlert.status === 'Published') {
       try {
         await pushNotifyAll({
           title: updatedAlert.title ? updatedAlert.title : 'Tirumala Operational Alert',

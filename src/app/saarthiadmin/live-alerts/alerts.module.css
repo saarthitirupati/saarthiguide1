@@ -366,6 +366,12 @@
   color: #475569;
 }
 
+.statusScheduled {
+  background-color: #FEF3C7;
+  color: #B45309;
+  border: 1px solid #FDE68A;
+}
+
 /* Action button in item */
 .expireBtn {
   background-color: transparent;

@@ -12,7 +12,7 @@ export interface LiveAlert {
   severity: 'Low' | 'Medium' | 'High' | 'Critical';
   popup_type: 'Banner' | 'Popup' | 'Fullscreen';
   cta: 'Open Queue' | 'Open Essentials' | 'Open Maps' | 'Open Parking' | 'None';
-  status: 'Draft' | 'Published' | 'Expired' | 'Archived';
+  status: 'Draft' | 'Published' | 'Expired' | 'Archived' | 'Scheduled';
   target_location: 'All Users' | 'Tirumala' | 'Tirupati' | 'Alipiri' | 'Nearby';
   start_time: string;
   expiry_time: string;
@@ -88,7 +88,16 @@ export async function fetchLiveAlerts(showAll = false): Promise<LiveAlert[]> {
     if (!a) return false;
     if (DELETED_ALERT_IDS.has(a.id)) return false;
     if (showAll) return true;
-    if (a.status !== 'Published') return false;
+
+    // Filter out future scheduled alerts from public pilgrims
+    if (a.start_time) {
+      const startTimeMs = new Date(a.start_time).getTime();
+      if (!isNaN(startTimeMs) && startTimeMs > now) {
+        return false;
+      }
+    }
+
+    if (a.status !== 'Published' && a.status !== 'Scheduled') return false;
     if (!a.expiry_time) return true;
     const exp = new Date(a.expiry_time).getTime();
     return !isNaN(exp) && exp > now;
@@ -112,10 +121,16 @@ export async function fetchLiveAlerts(showAll = false): Promise<LiveAlert[]> {
 }
 
 export async function saveLiveAlert(alertData: Partial<LiveAlert>): Promise<LiveAlert> {
-  const now = new Date().toISOString();
+  const now = new Date();
+  const nowIso = now.toISOString();
   const id = alertData.id || Math.random().toString(36).substring(2) + Math.random().toString(36).substring(2);
 
   const existingAlert = IN_MEMORY_ALERTS.find(a => a.id === id);
+  const startTime = alertData.start_time || existingAlert?.start_time || nowIso;
+  const isFutureScheduled = new Date(startTime).getTime() > (now.getTime() + 60000);
+  const calculatedStatus = alertData.status === 'Draft'
+    ? 'Draft'
+    : (isFutureScheduled ? 'Scheduled' : (alertData.status || 'Published'));
 
   const newAlert: LiveAlert = {
     id,
@@ -124,14 +139,14 @@ export async function saveLiveAlert(alertData: Partial<LiveAlert>): Promise<Live
     image: alertData.image || '',
     category: alertData.category || 'Advisory',
     severity: alertData.severity || 'Medium',
-    popup_type: alertData.popup_type || 'Banner',
+    popup_type: alertData.popup_type || 'Popup',
     cta: alertData.cta || 'None',
-    status: alertData.status || 'Published',
+    status: calculatedStatus,
     target_location: alertData.target_location || 'All Users',
-    start_time: alertData.start_time || existingAlert?.start_time || now,
-    expiry_time: alertData.expiry_time || existingAlert?.expiry_time || new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
-    created_at: alertData.created_at || existingAlert?.created_at || now,
-    updated_at: now
+    start_time: startTime,
+    expiry_time: alertData.expiry_time || existingAlert?.expiry_time || new Date(now.getTime() + 24 * 60 * 60 * 1000).toISOString(),
+    created_at: alertData.created_at || existingAlert?.created_at || nowIso,
+    updated_at: nowIso
   };
 
   // Remove from deleted set if re-created or updated

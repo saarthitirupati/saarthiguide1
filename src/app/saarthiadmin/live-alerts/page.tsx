@@ -20,7 +20,7 @@ interface LiveAlert {
   severity: 'Low' | 'Medium' | 'High' | 'Critical';
   popup_type: 'Banner' | 'Popup' | 'Fullscreen';
   cta: 'Open Queue' | 'Open Essentials' | 'Open Maps' | 'Open Parking' | 'None';
-  status: 'Draft' | 'Published' | 'Expired' | 'Archived';
+  status: 'Draft' | 'Published' | 'Expired' | 'Archived' | 'Scheduled';
   target_location: 'All Users' | 'Tirumala' | 'Tirupati' | 'Alipiri' | 'Nearby';
   start_time: string;
   expiry_time: string;
@@ -36,7 +36,7 @@ const ALERT_TEMPLATES = [
     description: 'Moderate to heavy rainfall reported across Tirumala hills. Please maintain safe driving distance and avoid slippery footpath stairs during heavy spells.',
     category: 'Advisory' as const,
     severity: 'Medium' as const,
-    popup_type: 'Banner' as const,
+    popup_type: 'Popup' as const,
     cta: 'Open Maps' as const,
     target_location: 'All Users' as const,
     expiry_hours: 4
@@ -48,7 +48,7 @@ const ALERT_TEMPLATES = [
     description: 'Thick mist and heavy fog near Mokalla Mitta curves. Drive with fog lights on and adhere strictly to the 28-minute minimum transit time between toll gates.',
     category: 'Emergency' as const,
     severity: 'High' as const,
-    popup_type: 'Banner' as const,
+    popup_type: 'Popup' as const,
     cta: 'Open Maps' as const,
     target_location: 'All Users' as const,
     expiry_hours: 3
@@ -84,7 +84,7 @@ const ALERT_TEMPLATES = [
     description: 'General queue movement progressing at adjusted pace during designated ceremonial sevas. Regular rapid throughput resumes promptly.',
     category: 'High Priority' as const,
     severity: 'Medium' as const,
-    popup_type: 'Banner' as const,
+    popup_type: 'Popup' as const,
     cta: 'Open Queue' as const,
     target_location: 'Tirumala' as const,
     expiry_hours: 2
@@ -96,7 +96,7 @@ const ALERT_TEMPLATES = [
     description: 'Tarigonda Vengamamba complex and mobile food distribution points serving hot meals, baby milk, and pure drinking water continuously along queue lines.',
     category: 'Information' as const,
     severity: 'Low' as const,
-    popup_type: 'Banner' as const,
+    popup_type: 'Popup' as const,
     cta: 'Open Essentials' as const,
     target_location: 'Tirumala' as const,
     expiry_hours: 12
@@ -126,11 +126,13 @@ export default function AdminAlertsPage() {
   const [imageUrl, setImageUrl] = useState('');
   const [category, setCategory] = useState<'Emergency' | 'High Priority' | 'Advisory' | 'Information'>('Advisory');
   const [severity, setSeverity] = useState<'Low' | 'Medium' | 'High' | 'Critical'>('Medium');
-  const [popupType, setPopupType] = useState<'Banner' | 'Popup' | 'Fullscreen'>('Banner');
+  const [popupType, setPopupType] = useState<'Popup' | 'Fullscreen' | 'Banner'>('Popup');
   const [cta, setCta] = useState<'Open Queue' | 'Open Essentials' | 'Open Maps' | 'Open Parking' | 'None'>('None');
   const [targetLocation, setTargetLocation] = useState<'All Users' | 'Tirumala' | 'Tirupati' | 'Alipiri' | 'Nearby'>('All Users');
   const [expiryHours, setExpiryHours] = useState<number>(24); // Default 24 hours (1 day)
   const [sendPushNotification, setSendPushNotification] = useState<boolean>(true);
+  const [publishTiming, setPublishTiming] = useState<'immediate' | 'scheduled'>('immediate');
+  const [scheduledDateTime, setScheduledDateTime] = useState<string>('');
 
   const getAdminHeaders = () => {
     const token = typeof window !== 'undefined'
@@ -222,10 +224,12 @@ export default function AdminAlertsPage() {
     setImageUrl('');
     setCategory('Advisory');
     setSeverity('Medium');
-    setPopupType('Banner');
+    setPopupType('Popup');
     setCta('None');
     setTargetLocation('All Users');
     setExpiryHours(24);
+    setPublishTiming('immediate');
+    setScheduledDateTime('');
     setEditingAlertId(null);
     setShowCreateForm(false);
   };
@@ -237,12 +241,27 @@ export default function AdminAlertsPage() {
     setImageUrl(alertItem.image || '');
     setCategory(alertItem.category || 'Advisory');
     setSeverity(alertItem.severity || 'Medium');
-    setPopupType(alertItem.popup_type || 'Banner');
+    setPopupType(alertItem.popup_type === 'Fullscreen' ? 'Fullscreen' : 'Popup');
     setCta(alertItem.cta || 'None');
     setTargetLocation(alertItem.target_location || 'All Users');
 
+    if (alertItem.start_time && new Date(alertItem.start_time).getTime() > Date.now()) {
+      setPublishTiming('scheduled');
+      try {
+        const d = new Date(alertItem.start_time);
+        const pad = (n: number) => n.toString().padStart(2, '0');
+        setScheduledDateTime(`${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`);
+      } catch {
+        setScheduledDateTime('');
+      }
+    } else {
+      setPublishTiming('immediate');
+      setScheduledDateTime('');
+    }
+
     if (alertItem.expiry_time) {
-      const remainingMs = new Date(alertItem.expiry_time).getTime() - Date.now();
+      const baseMs = alertItem.start_time ? new Date(alertItem.start_time).getTime() : Date.now();
+      const remainingMs = new Date(alertItem.expiry_time).getTime() - baseMs;
       const remainingHours = Math.max(0.5, Math.round((remainingMs / (1000 * 60 * 60)) * 2) / 2);
       setExpiryHours(remainingHours);
     } else {
@@ -262,6 +281,8 @@ export default function AdminAlertsPage() {
     setCta(tmpl.cta);
     setTargetLocation(tmpl.target_location);
     setExpiryHours(tmpl.expiry_hours);
+    setPublishTiming('immediate');
+    setScheduledDateTime('');
   };
 
   const handleCreateAlert = async (e: React.FormEvent, isDraft = false) => {
@@ -271,8 +292,29 @@ export default function AdminAlertsPage() {
       return;
     }
 
+    if (publishTiming === 'scheduled' && !isDraft) {
+      if (!scheduledDateTime) {
+        alert('Please pick a scheduled start date and time.');
+        return;
+      }
+      if (new Date(scheduledDateTime).getTime() <= Date.now()) {
+        alert('Scheduled date and time must be in the future.');
+        return;
+      }
+    }
+
     const now = new Date();
-    const expiryTime = new Date(now.getTime() + expiryHours * 60 * 60 * 1000).toISOString();
+    const startTime = (publishTiming === 'scheduled' && scheduledDateTime)
+      ? new Date(scheduledDateTime).toISOString()
+      : now.toISOString();
+
+    const startMs = new Date(startTime).getTime();
+    const expiryTime = new Date(startMs + expiryHours * 60 * 60 * 1000).toISOString();
+    const isFuture = startMs > (now.getTime() + 60000);
+    const alertStatus: LiveAlert['status'] = isDraft 
+      ? 'Draft' 
+      : (isFuture ? 'Scheduled' : 'Published');
+
     const isEditing = Boolean(editingAlertId);
     const method = isEditing ? 'PUT' : 'POST';
 
@@ -285,11 +327,11 @@ export default function AdminAlertsPage() {
       severity,
       popup_type: popupType,
       cta,
-      status: isDraft ? 'Draft' : 'Published',
+      status: alertStatus,
       target_location: targetLocation,
-      start_time: now.toISOString(),
+      start_time: startTime,
       expiry_time: expiryTime,
-      sendPush: sendPushNotification
+      sendPush: sendPushNotification && alertStatus === 'Published'
     };
 
     try {
@@ -546,9 +588,8 @@ export default function AdminAlertsPage() {
                       value={popupType} 
                       onChange={(e: any) => setPopupType(e.target.value)}
                     >
-                      <option value="Banner">Floating Notification (Toast Pill)</option>
-                      <option value="Popup">Centered Popup (High Priority)</option>
-                      <option value="Fullscreen">Fullscreen Overlay (Emergency)</option>
+                      <option value="Popup">Centered Popup Dialog (Priority Notice)</option>
+                      <option value="Fullscreen">Fullscreen Overlay (Critical Emergency)</option>
                     </select>
                   </div>
                 </div>
@@ -618,7 +659,78 @@ export default function AdminAlertsPage() {
                 </div>
 
                 <div className={styles.formGroup}>
-                  <label className={styles.label}>Expiry Timer</label>
+                  <label className={styles.label}>Publish Timing</label>
+                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', marginBottom: '10px' }}>
+                    <button
+                      type="button"
+                      onClick={() => setPublishTiming('immediate')}
+                      style={{
+                        padding: '10px 14px',
+                        borderRadius: '10px',
+                        border: publishTiming === 'immediate' ? '2px solid #E9801D' : '1px solid #CBD5E1',
+                        background: publishTiming === 'immediate' ? '#FFFBEB' : '#FFFFFF',
+                        color: publishTiming === 'immediate' ? '#92400E' : '#475569',
+                        fontWeight: 700,
+                        fontSize: '13px',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: '6px'
+                      }}
+                    >
+                      <Send size={14} /> Publish Immediately
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setPublishTiming('scheduled');
+                        if (!scheduledDateTime) {
+                          const d = new Date(Date.now() + 2 * 60 * 60 * 1000);
+                          const pad = (n: number) => n.toString().padStart(2, '0');
+                          setScheduledDateTime(`${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`);
+                        }
+                      }}
+                      style={{
+                        padding: '10px 14px',
+                        borderRadius: '10px',
+                        border: publishTiming === 'scheduled' ? '2px solid #E9801D' : '1px solid #CBD5E1',
+                        background: publishTiming === 'scheduled' ? '#FFFBEB' : '#FFFFFF',
+                        color: publishTiming === 'scheduled' ? '#92400E' : '#475569',
+                        fontWeight: 700,
+                        fontSize: '13px',
+                        cursor: 'pointer',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: '6px'
+                      }}
+                    >
+                      <Clock size={14} /> Schedule for Later
+                    </button>
+                  </div>
+
+                  {publishTiming === 'scheduled' && (
+                    <div style={{ background: '#F8FAFC', border: '1px solid #E2E8F0', borderRadius: '12px', padding: '12px 14px' }}>
+                      <label style={{ display: 'block', fontSize: '12px', fontWeight: 700, color: '#1E293B', marginBottom: '6px' }}>
+                        Scheduled Start Date &amp; Time (Asia/Kolkata IST)
+                      </label>
+                      <input
+                        type="datetime-local"
+                        className={styles.input}
+                        value={scheduledDateTime}
+                        onChange={(e) => setScheduledDateTime(e.target.value)}
+                        required={publishTiming === 'scheduled'}
+                      />
+                      <span style={{ fontSize: '11px', color: '#64748B', display: 'block', marginTop: '6px' }}>
+                        🕒 Alert will automatically activate at this scheduled time and remain hidden from pilgrims until then.
+                      </span>
+                    </div>
+                  )}
+                </div>
+
+                <div className={styles.formGroup}>
+                  <label className={styles.label}>Active Duration (After Activation)</label>
                   <div className={styles.expiryGroup}>
                     {[
                       { hours: 0.5, label: '30 Mins' },
@@ -675,7 +787,7 @@ export default function AdminAlertsPage() {
                     className={`${styles.btn} ${styles.btnPrimary}`}
                   >
                     <Send size={14} style={{ marginRight: '6px', verticalAlign: 'middle' }} />
-                    {editingAlertId ? 'Update & Publish Alert' : 'Publish Alert'}
+                    {editingAlertId ? 'Update Alert' : (publishTiming === 'scheduled' ? 'Schedule Alert' : 'Publish Alert')}
                   </button>
                 </div>
               </form>
@@ -712,8 +824,8 @@ export default function AdminAlertsPage() {
                           <span className={styles.statusBadge}>
                             {alert.severity}
                           </span>
-                          <span className={`${styles.statusBadge} ${alert.status === 'Published' ? styles.statusActive : styles.statusDraft}`}>
-                            {alert.status}
+                          <span className={`${styles.statusBadge} ${alert.status === 'Published' ? styles.statusActive : (alert.status === 'Scheduled' ? styles.statusScheduled : styles.statusDraft)}`}>
+                            {alert.status === 'Scheduled' ? '🕒 Scheduled' : alert.status}
                           </span>
                           <h3 className={styles.alertTitleText}>{alert.title}</h3>
                         </div>
@@ -723,10 +835,16 @@ export default function AdminAlertsPage() {
                           <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
                             <MapPin size={12} color="#64748B" /> {alert.target_location}
                           </span>
-                          <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-                            <Clock size={12} color="#64748B" /> {new Date(alert.expiry_time).toLocaleTimeString()}
-                          </span>
-                          <span>Style: {alert.popup_type === 'Banner' ? 'Floating Pill' : alert.popup_type}</span>
+                          {alert.status === 'Scheduled' && alert.start_time ? (
+                            <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', color: '#B45309', fontWeight: 700 }}>
+                              <Clock size={12} color="#B45309" /> Starts: {new Date(alert.start_time).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata', dateStyle: 'short', timeStyle: 'short' })}
+                            </span>
+                          ) : (
+                            <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                              <Clock size={12} color="#64748B" /> Expires: {new Date(alert.expiry_time).toLocaleTimeString()}
+                            </span>
+                          )}
+                          <span>Style: {alert.popup_type === 'Fullscreen' ? 'Fullscreen Emergency' : 'Centered Popup'}</span>
                         </div>
                       </div>
                       <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', flexShrink: 0 }}>
@@ -797,70 +915,8 @@ export default function AdminAlertsPage() {
               {/* Dynamic Preview Elements based on form values */}
               {title && description ? (
                 <div style={{ padding: '8px 12px' }}>
-                  {/* Floating Notification Pill Preview (replaces old top banner) */}
-                  {popupType === 'Banner' && (
-                    <div style={{
-                      position: 'absolute',
-                      top: '32px',
-                      left: '8px',
-                      right: '8px',
-                      background: 'rgba(255, 255, 255, 0.98)',
-                      backdropFilter: 'blur(10px)',
-                      border: `1.5px solid ${category === 'Emergency' ? '#DC2626' : category === 'High Priority' ? '#EA580C' : category === 'Advisory' ? '#F59E0B' : '#10B981'}`,
-                      borderRadius: '14px',
-                      padding: '8px 10px',
-                      textAlign: 'left',
-                      boxShadow: '0 8px 24px rgba(15,23,42,0.18)',
-                      zIndex: 100
-                    }}>
-                      <div style={{ display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
-                        <div style={{
-                          width: '24px',
-                          height: '24px',
-                          borderRadius: '7px',
-                          backgroundColor: category === 'Emergency' ? '#FEE2E2' : category === 'High Priority' ? '#FFEDD5' : category === 'Advisory' ? '#FEF3C7' : '#DCFCE7',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          flexShrink: 0,
-                          marginTop: '1px'
-                        }}>
-                          {category === 'Emergency' ? <AlertTriangle size={13} color="#DC2626" /> : (category === 'High Priority' ? <AlertCircle size={13} color="#EA580C" /> : <Bell size={13} color="#D97706" />)}
-                        </div>
-                        <div style={{ flex: 1, minWidth: 0 }}>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '4px', marginBottom: '2px' }}>
-                            <span style={{ fontSize: '9px', fontWeight: 800, textTransform: 'uppercase', color: category === 'Emergency' ? '#DC2626' : category === 'High Priority' ? '#EA580C' : category === 'Advisory' ? '#D97706' : '#10B981' }}>
-                              {category}
-                            </span>
-                            <span style={{ fontSize: '8px', color: '#94A3B8' }}>•</span>
-                            <span style={{ fontSize: '8.5px', color: '#64748B', fontWeight: 600 }}>
-                              {targetLocation}
-                            </span>
-                          </div>
-                          <h4 style={{ fontSize: '11px', fontWeight: 800, margin: '0 0 2px 0', color: '#0F172A', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{title}</h4>
-                          <p style={{ fontSize: '9.5px', color: '#475569', margin: '0 0 6px 0', lineHeight: 1.3, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>{description}</p>
-                          {imageUrl && (
-                            <img 
-                              src={imageUrl} 
-                              alt="Alert preview" 
-                              style={{ width: '100%', height: '55px', objectFit: 'cover', borderRadius: '6px', marginBottom: '6px' }} 
-                            />
-                          )}
-                          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '6px' }}>
-                            {cta !== 'None' ? (
-                              <button style={{ background: '#0F172A', color: '#FFFFFF', border: 'none', borderRadius: '6px', padding: '3px 8px', fontSize: '8.5px', fontWeight: 700 }}>
-                                {cta}
-                              </button>
-                            ) : <span />}
-                            <span style={{ fontSize: '8.5px', color: '#94A3B8', fontWeight: 600 }}>✕ Dismiss</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  )}
-
                   {/* Next Best Action Placeholder */}
-                  <div style={{ background: '#052e16', borderRadius: '12px', padding: '10px', color: '#fff', fontSize: '10px', textAlign: 'left', opacity: popupType === 'Fullscreen' ? 0.15 : (popupType === 'Popup' ? 0.35 : 0.85), marginTop: popupType === 'Banner' ? '70px' : '0' }}>
+                  <div style={{ background: '#052e16', borderRadius: '12px', padding: '10px', color: '#fff', fontSize: '10px', textAlign: 'left', opacity: popupType === 'Fullscreen' ? 0.15 : 0.35, marginTop: '0' }}>
                     <strong>NEXT ACTION</strong>
                     <p style={{ margin: '2px 0 0 0' }}>Queue is 2 hours. Proceed now.</p>
                   </div>
