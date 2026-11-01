@@ -3378,7 +3378,7 @@ export const PLACES: Place[] = [
     bestTime: 'Morning', 
     practicalInfo: { dressCode: 'Traditional Indian attire mandatory', food: 'Local vegetarian eateries available', parking: 'Available at temple entrance' }, 
     travelEstimates: { 'tirupati': '45 mins' },
-    relatedPlaces: ['sorakayala-swamy', 'narayanavanam-falls', 'appalayagunta-temple', 'padmavathi', 'kailasa-kona']
+    relatedPlaces: ['sorakayala-swamy', 'avanakshamma-temple', 'narayanavanam-falls', 'appalayagunta-temple', 'padmavathi', 'kailasa-kona']
   },
   {
     id: 'sorakayala-swamy',
@@ -3410,7 +3410,78 @@ export const PLACES: Place[] = [
     bestTime: 'Morning',
     practicalInfo: { dressCode: 'Traditional Indian attire', food: 'Local options nearby', parking: 'Available near temple' },
     travelEstimates: { 'narayanavanam': '5 mins', 'tirupati': '45 mins' },
-    relatedPlaces: ['narayanavanam', 'kailasa-kona']
+    relatedPlaces: ['narayanavanam', 'kailasa-kona', 'avanakshamma-temple']
+  },
+  {
+    id: 'avanakshamma-temple',
+    name: 'Sri Avanakshamma Temple',
+    nameTe: 'శ్రీ అవనాక్షమ్మ వారి దేవాలయము',
+    nameHi: 'श्री अवनाक्षम्मा मंदिर',
+    nameTa: 'ஸ்ரீ அவனாக்ஷம்மா அம்மன் கோவில்',
+    teluguName: 'శ్రీ అవనాక్షమ్మ వారి దేవాలయము',
+    teluguTitle: 'ఆకాశరాజు కులదేవత - పద్మావతి అమ్మవారి గౌరీ వ్రత క్షేత్రం',
+    category: 'Historical',
+    placeType: 'spiritual',
+    location: 'Narayanavanam',
+    distanceKms: 40,
+    durationMins: 45,
+    budgetLevel: 'budget',
+    entryFeeNum: 0,
+    interests: ['spiritual', 'history', 'wedding'],
+    openFrom: 8,
+    openTo: 19,
+    isMustVisit: true,
+    description: 'Ancient 3000-year-old TTD-administered temple of Goddess Avanakshamma, the family deity of King Akasa Raja and the sacred venue where Goddess Padmavathi performed Gowri Vratam before her celestial wedding.',
+    descriptionTe: 'ఆకాశ మహారాజు కులదేవతగా విరాజిల్లుతున్న 3000 సంవత్సరాల ప్రాచీన టీటీడీ ఆలయం. శ్రీ పద్మావతి అమ్మవారు జన్మించి, శ్రీనివాసుని వివాహం చేసుకోవడానికి ముందు గౌరీ వ్రతం ఆచరించిన పరమ పవిత్ర క్షేత్రం.',
+    shortIntro: 'Sri Avanakshamma Temple in Narayanavanam is an ancient TTD shrine dedicated to Goddess Avanakshamma (Amnayaksi), the family deity of Akasa Maharaja and the sacred site of Padmavathi Devi’s pre-marital Gowri Vratam.',
+    history: 'According to Sthala Puranam, Goddess Adi Parasakthi vanquished demon Somakasura to recover the Vedas stolen from Lord Brahma, manifesting swayambhu on the banks of River Aruni. Sage Agasthya consecrated her as Amnayaksi (She whose eyes are the Vedas), which evolved to Avanakshamma. King Akasa Raja revered her as his kula devatha. Goddess Padmavathi Devi worshipped here since childhood, prayed for Lord Venkateswara as her consort, and performed the sacred Gowri Vratam here prior to the divine wedding at Narayanavanam. The temple has been administered by TTD since 1967.',
+    historyTe: 'పురాణాల ప్రకారం సోమకాసురుడు బ్రహ్మ నుండి వేదాలను అపహరించగా, ఆదిపరాశక్తి రాక్షసుడిని సంహరించి వేదాలను రక్షించి అరుణి నదీ తీరాన స్వయంభువుగా వెలసింది. అగస్త్య మహర్షి వేదాలే నేత్రాలుగా గల దేవిగా కొలిచి "ఆమ్నాయాక్షి" అని నామకరణం చేయగా, కాలక్రమేణా అవనాక్షమ్మగా మారింది. ఆకాశరాజు ఈ తల్లిని తన కులదేవతగా ఆరాధించారు. పద్మావతి దేవి శ్రీనివాసుని భర్తగా పొందాలని ఇక్కడే ప్రార్థించి, వివాహానికి ముందు గౌరీ వ్రతం ఆచరించారు. 1967 నుండి ఈ ఆలయం టీటీడీ ఆధ్వర్యంలో నిర్వహించబడుతోంది.',
+    whyVisit: 'Famed for granting marital alliances (Kalyana Yogam) within a year; sacred venue of Goddess Padmavathi’s pre-marital worship and Akasa Raja’s royal kula devatha shrine.',
+    oneReasonToVisit: 'Revered 3000-year-old TTD temple where Goddess Padmavathi performed pre-marital Gowri Vratam, granting marriage blessings within a year.',
+    significance: {
+      traditionType: 'temple',
+      whyVisitTe: 'ఆకాశ మహారాజు కులదేవత అయిన శ్రీ అవనాక్షమ్మ అమ్మవారిని దర్శిస్తే అవివాహితులకు ఏడాదిలోపు వివాహ యోగం కలుగుతుందని భక్తుల ప్రగాఢ విశ్వాసం. శ్రీ పద్మావతి అమ్మవారు శ్రీనివాసుని భర్తగా పొందడానికి వివాహానికి ముందు ఇక్కడే గౌరీ వ్రతం ఆచరించారు.',
+      whyVisitEn: 'Devotees visit to pray for blessed marriage alliances (Kalyana Yogam); revered as the sacred venue where Goddess Padmavathi performed Gowri Vratam before marrying Lord Venkateswara.',
+      actionsTe: [
+        'స్వయంభువు మరియు శంకరీ దేవి స్వరూపమైన అవనాక్షమ్మ అమ్మవారి దివ్య దర్శనం చేసుకోవడం',
+        'వివాహ యోగం & సంతాన ప్రాప్తి కొరకు ప్రత్యేక పూజలు మరియు ప్రార్థనలు సమర్పించడం',
+        'ఆదివారం, మంగళవారం, శుక్రవారాల్లో ఉదయం 8:30 గంటలకు జరిగే అభిషేక సేవలో పాల్గొనడం'
+      ],
+      actionsEn: [
+        'Have darshan of Goddess Avanakshamma in the sanctum sanctorum',
+        'Offer special prayers and sankalpam for marital alliances, family harmony, and progeny',
+        'Attend morning Abhishekam (at 8:30 AM on Sundays, Tuesdays, and Fridays)'
+      ],
+      culturalMeaningTe: 'వేదాలను రక్షించిన ఆదిపరాశక్తి స్వరూపమైన ఆమ్నాయాక్షి దేవి అవనాక్షమ్మగా ఖ్యాతి గాంచింది. శ్రీనివాస-పద్మావతుల దివ్య కల్యాణ గాథతో ముడిపడిన ఈ ఆలయం నారాయణవనం చరిత్రలో అగ్రస్థానం వహిస్తుంది.',
+      culturalMeaningEn: 'Revered as Amnayaksi (Goddess with Vedas as eyes), she represents divine motherly grace deeply intertwined with the celestial wedding lore of Lord Srinivasa and Goddess Padmavathi.',
+      saarthiTipTe: 'నారాయణవనం శ్రీ కల్యాణ వేంకటేశ్వర స్వామి ఆలయం (దివ్య కల్యాణ వేదిక) మరియు సోరకాయల స్వామి ఆశ్రమంతో పాటు ఈ ఆలయాన్ని దర్శించుకోవడం ప్రశస్తం.',
+      saarthiTipEn: 'Visit alongside Sri Kalyana Venkateswara Swamy Temple (the divine wedding venue) and Sri Sorakayala Swamy Temple in Narayanavanam.'
+    },
+    timings: 'Morning: 8:00 AM - 11:00 AM (Sarvadarsanam 9:00 - 10:45 AM) | Evening: 4:00 PM - 7:00 PM (Sarvadarsanam 4:00 - 6:45 PM). Abhishekam at 8:30 AM (Sun, Tue, Fri)',
+    entryFee: 'Free',
+    address: 'Narayanavanam, near River Aruni, Chittoor District, AP 517581 (40 km from Tirupati, 5 km from Puttur)',
+    rating: 4.8,
+    reviewCount: 1650,
+    image: '/images/places/avanakshamma-temple.jpg',
+    images: ['/images/places/avanakshamma-temple.jpg'],
+    coordinates: { lat: 13.4103943, lng: 79.5925623 },
+    mapUrl: 'https://www.google.com/maps/place/Avanakshamma+Temple/@13.4103943,79.5925623,17z',
+    tags: ['TTD Temple', 'Kula Devatha', 'Padmavathi Birthplace', 'Gowri Vratam', 'Marriage Blessings', 'Narayanavanam'],
+    bestTime: 'Morning (8:00 AM - 10:45 AM)',
+    practicalInfo: {
+      dressCode: 'Traditional Indian attire mandatory',
+      food: 'Available in Narayanavanam town & Puttur',
+      parking: 'Available at temple entrance'
+    },
+    verification: {
+      status: 'Verified',
+      source: 'TTD',
+      verifiedBy: 'TTD Signboard & Official Temple Documentation',
+      verifiedDate: '2026-11-01',
+      confidenceScore: 100
+    },
+    travelEstimates: { 'narayanavanam': '5 mins', 'tirupati': '50 mins', 'puttur': '10 mins' },
+    relatedPlaces: ['narayanavanam', 'sorakayala-swamy', 'kailasa-kona', 'padmavathi']
   },
   {
     id: 'narayanavanam-falls',

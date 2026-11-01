@@ -997,34 +997,36 @@ export function QuickChecklist(props: any) {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: '8px' }}>
           {[
             {
+              id: 'vishnu-nivasam',
               name: t.vishnuNivasam,
               sub: t.oppRailway,
               icon: <Train size={14} color="#2563EB" />,
               iconBg: '#EFF6FF',
-              q: 'Vishnu Nivasam Tirupati'
+              url: 'https://www.google.com/maps/place/Vishnu+Nivasam/@13.6292776,79.4215889,17z/data=!3m1!4b1!4m6!3m5!1s0x3a4d4bbbe2ad2eff:0x6b655eee58504269!8m2!3d13.6292776!4d79.4215889!16s%2Fg%2F11g1q7vspv'
             },
             {
+              id: 'srinivasam',
               name: t.srinivasam,
               sub: t.oppBusStand,
               icon: <Bus size={14} color="#16A34A" />,
               iconBg: '#F0FDF4',
-              q: 'Srinivasam Complex Tirupati'
+              url: 'https://www.google.com/maps/place/Srinivasam/@13.6315627,79.4288389,17z/data=!3m1!4b1!4m6!3m5!1s0x3a4d4b1372b4101d:0x5da265ff8e42d9fa!8m2!3d13.6315627!4d79.4288389!16s%2Fg%2F1pyqs92yw'
             },
             {
+              id: 'bhudevi',
               name: t.bhudevi,
               sub: t.nearAlipiri,
               icon: <Mountain size={14} color="#D97706" />,
               iconBg: '#FFFBEB',
-              q: 'Bhudevi Complex Tirupati'
+              url: 'https://www.google.com/maps/place/Tirupati+Temple+Ticket+Booking/@13.6472334,79.4096899,18z/data=!3m1!4b1!4m6!3m5!1s0x3a4d4bca25aa01fd:0x2800c58e092405dc!8m2!3d13.6472334!4d79.4096899!16s%2Fg%2F11nrvw17f7'
             }
           ].map(c => (
-            <button
-              key={c.q}
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation();
-                window.open(`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(c.q)}`, '_blank', 'noopener,noreferrer');
-              }}
+            <a
+              key={c.id}
+              href={c.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={(e) => e.stopPropagation()}
               style={{
                 display: 'flex',
                 flexDirection: 'column',
@@ -1034,6 +1036,7 @@ export function QuickChecklist(props: any) {
                 borderRadius: '12px',
                 background: '#F8FAFC',
                 border: '1px solid #E2E8F0',
+                textDecoration: 'none',
                 cursor: 'pointer',
                 transition: 'background 0.15s ease, border-color 0.15s ease',
                 boxSizing: 'border-box'
@@ -1051,7 +1054,7 @@ export function QuickChecklist(props: any) {
               <span style={{ marginTop: '6px', fontSize: '9px', fontWeight: 600, color: '#0F5132', background: '#F0FDF4', border: '1px solid #BBF7D0', padding: '2px 6px', borderRadius: '999px', display: 'inline-flex', alignItems: 'center', gap: '2px' }}>
                 {t.navigate}
               </span>
-            </button>
+            </a>
           ))}
         </div>
       </div>
