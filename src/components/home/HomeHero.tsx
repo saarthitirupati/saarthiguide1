@@ -2096,7 +2096,7 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
             borderBottom: '1px solid #F1F5F9'
           }}>
             <span style={{ fontSize: '11px', fontWeight: 700, color: '#475569', letterSpacing: '0.3px', textTransform: 'uppercase' }}>
-              {lang === 'te' ? 'కొండపై ముఖ్యమైన సేవలు' : 'Hilltop Essentials'}
+              {lang === 'te' ? 'తిరుమలలో ముఖ్యమైన సౌకర్యాలు' : 'Hilltop Essentials'}
             </span>
             <Link
               href="/essentials"
@@ -2119,7 +2119,7 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                 flexDirection: 'column',
                 alignItems: 'center',
                 justifyContent: 'center',
-                padding: '7px 4px',
+                padding: '7px 2px',
                 borderRadius: '8px',
                 background: '#F0FDF4',
                 border: '1px solid #DCFCE7',
@@ -2129,8 +2129,15 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
               }}
             >
               <MapPin size={16} color="#059669" />
-              <span style={{ fontSize: '11px', fontWeight: 600, color: '#065F46', marginTop: '3px', whiteSpace: 'nowrap' }}>
-                {lang === 'te' ? 'గేట్లు' : 'Gates'}
+              <span style={{ 
+                fontSize: lang === 'te' ? '9.5px' : '11px', 
+                fontWeight: 600, 
+                color: '#065F46', 
+                marginTop: '3px', 
+                whiteSpace: 'nowrap',
+                letterSpacing: lang === 'te' ? '-0.2px' : 'normal'
+              }}>
+                {lang === 'te' ? 'ప్రవేశ ద్వారాలు' : 'Gates'}
               </span>
             </Link>
 
@@ -2142,7 +2149,7 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                 flexDirection: 'column',
                 alignItems: 'center',
                 justifyContent: 'center',
-                padding: '7px 4px',
+                padding: '7px 2px',
                 borderRadius: '8px',
                 background: '#FFFBEB',
                 border: '1px solid #FEF3C7',
@@ -2165,7 +2172,7 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                 flexDirection: 'column',
                 alignItems: 'center',
                 justifyContent: 'center',
-                padding: '7px 4px',
+                padding: '7px 2px',
                 borderRadius: '8px',
                 background: '#EFF6FF',
                 border: '1px solid #DBEAFE',
@@ -2188,7 +2195,7 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                 flexDirection: 'column',
                 alignItems: 'center',
                 justifyContent: 'center',
-                padding: '7px 4px',
+                padding: '7px 2px',
                 borderRadius: '8px',
                 background: '#FEF2F2',
                 border: '1px solid #FEE2E2',
@@ -2198,8 +2205,15 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
               }}
             >
               <BriefcaseMedical size={16} color="#DC2626" />
-              <span style={{ fontSize: '11px', fontWeight: 600, color: '#991B1B', marginTop: '3px', whiteSpace: 'nowrap' }}>
-                {lang === 'te' ? 'వైద్యం' : 'Medical'}
+              <span style={{ 
+                fontSize: lang === 'te' ? '10px' : '11px', 
+                fontWeight: 600, 
+                color: '#991B1B', 
+                marginTop: '3px', 
+                whiteSpace: 'nowrap',
+                letterSpacing: lang === 'te' ? '-0.2px' : 'normal'
+              }}>
+                {lang === 'te' ? 'వైద్య సహాయం' : 'Medical'}
               </span>
             </Link>
           </div>
