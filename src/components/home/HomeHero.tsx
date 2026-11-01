@@ -2079,14 +2079,18 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
         </div>
 
         {/* ── Hilltop Essentials Combined Banner ── */}
-        <div style={{
-          background: '#FFFFFF',
-          border: '1px solid #E2E8F0',
-          borderRadius: '12px',
-          padding: '10px 12px',
-          marginBottom: '14px',
-          boxShadow: '0 1px 3px rgba(15, 23, 42, 0.04)'
-        }}>
+        <div 
+          className="notranslate"
+          translate="no"
+          style={{
+            background: '#FFFFFF',
+            border: '1px solid #E2E8F0',
+            borderRadius: '12px',
+            padding: '10px 12px',
+            marginBottom: '14px',
+            boxShadow: '0 1px 3px rgba(15, 23, 42, 0.04)'
+          }}
+        >
           <div style={{
             display: 'flex',
             alignItems: 'center',
@@ -2095,11 +2099,17 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
             paddingBottom: '6px',
             borderBottom: '1px solid #F1F5F9'
           }}>
-            <span style={{ fontSize: '11px', fontWeight: 700, color: '#475569', letterSpacing: '0.3px', textTransform: 'uppercase' }}>
+            <span 
+              className="notranslate"
+              translate="no"
+              style={{ fontSize: '11px', fontWeight: 700, color: '#475569', letterSpacing: '0.3px', textTransform: 'uppercase' }}
+            >
               {lang === 'te' ? 'తిరుమలలో ముఖ్యమైన సౌకర్యాలు' : 'Hilltop Essentials'}
             </span>
             <Link
               href="/essentials"
+              className="notranslate"
+              translate="no"
               style={{ fontSize: '11px', fontWeight: 600, color: '#0F5132', textDecoration: 'none' }}
             >
               {lang === 'te' ? 'అన్నీ చూడండి >' : 'View all >'}
@@ -2114,6 +2124,8 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
             {/* 1. Darshan Entry Points */}
             <Link
               href="/darshan/entry-points"
+              className="notranslate"
+              translate="no"
               style={{
                 display: 'flex',
                 flexDirection: 'column',
@@ -2129,14 +2141,18 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
               }}
             >
               <MapPin size={16} color="#059669" />
-              <span style={{ 
-                fontSize: lang === 'te' ? '9.5px' : '11px', 
-                fontWeight: 600, 
-                color: '#065F46', 
-                marginTop: '3px', 
-                whiteSpace: 'nowrap',
-                letterSpacing: lang === 'te' ? '-0.2px' : 'normal'
-              }}>
+              <span 
+                className="notranslate"
+                translate="no"
+                style={{ 
+                  fontSize: lang === 'te' ? '9.5px' : '11px', 
+                  fontWeight: 600, 
+                  color: '#065F46', 
+                  marginTop: '3px', 
+                  whiteSpace: 'nowrap',
+                  letterSpacing: lang === 'te' ? '-0.2px' : 'normal'
+                }}
+              >
                 {lang === 'te' ? 'ప్రవేశ ద్వారాలు' : 'Gates'}
               </span>
             </Link>
@@ -2144,6 +2160,8 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
             {/* 2. Free Bus */}
             <Link
               href="/free-bus"
+              className="notranslate"
+              translate="no"
               style={{
                 display: 'flex',
                 flexDirection: 'column',
@@ -2159,7 +2177,11 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
               }}
             >
               <Bus size={16} color="#D97706" />
-              <span style={{ fontSize: '11px', fontWeight: 600, color: '#92400E', marginTop: '3px', whiteSpace: 'nowrap' }}>
+              <span 
+                className="notranslate"
+                translate="no"
+                style={{ fontSize: '11px', fontWeight: 600, color: '#92400E', marginTop: '3px', whiteSpace: 'nowrap' }}
+              >
                 {lang === 'te' ? 'ఉచిత బస్సు' : 'Free Bus'}
               </span>
             </Link>
@@ -2167,6 +2189,8 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
             {/* 3. Parking */}
             <Link
               href="/parking"
+              className="notranslate"
+              translate="no"
               style={{
                 display: 'flex',
                 flexDirection: 'column',
@@ -2182,7 +2206,11 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
               }}
             >
               <SquareParking size={16} color="#2563EB" />
-              <span style={{ fontSize: '11px', fontWeight: 600, color: '#1E40AF', marginTop: '3px', whiteSpace: 'nowrap' }}>
+              <span 
+                className="notranslate"
+                translate="no"
+                style={{ fontSize: '11px', fontWeight: 600, color: '#1E40AF', marginTop: '3px', whiteSpace: 'nowrap' }}
+              >
                 {lang === 'te' ? 'పార్కింగ్' : 'Parking'}
               </span>
             </Link>
@@ -2190,6 +2218,8 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
             {/* 4. Medical */}
             <Link
               href="/medical"
+              className="notranslate"
+              translate="no"
               style={{
                 display: 'flex',
                 flexDirection: 'column',
@@ -2205,14 +2235,18 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
               }}
             >
               <BriefcaseMedical size={16} color="#DC2626" />
-              <span style={{ 
-                fontSize: lang === 'te' ? '10px' : '11px', 
-                fontWeight: 600, 
-                color: '#991B1B', 
-                marginTop: '3px', 
-                whiteSpace: 'nowrap',
-                letterSpacing: lang === 'te' ? '-0.2px' : 'normal'
-              }}>
+              <span 
+                className="notranslate"
+                translate="no"
+                style={{ 
+                  fontSize: lang === 'te' ? '10px' : '11px', 
+                  fontWeight: 600, 
+                  color: '#991B1B', 
+                  marginTop: '3px', 
+                  whiteSpace: 'nowrap',
+                  letterSpacing: lang === 'te' ? '-0.2px' : 'normal'
+                }}
+              >
                 {lang === 'te' ? 'వైద్య సహాయం' : 'Medical'}
               </span>
             </Link>
