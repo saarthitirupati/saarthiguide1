@@ -184,6 +184,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   const gtmId = process.env.NEXT_PUBLIC_GTM_ID || 'GTM-NFJVHVBK';
+  const gaMeasurementId = process.env.NEXT_PUBLIC_GA_ID || 'G-EX5VPTL5MC';
 
   return (
     <html lang="en" suppressHydrationWarning style={{ backgroundColor: '#FAF8F5' }} className={`${dmSerifDisplay.variable} ${plusJakartaSans.variable} ${inter.variable} ${notoSansTelugu.variable}`}>
@@ -193,6 +194,24 @@ export default function RootLayout({
         <link rel="icon" type="image/png" sizes="96x96" href="/icon-96.png" />
         <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png" />
         <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+        {/* Google Tag (gtag.js) for GA4 */}
+        <script
+          async
+          src={`https://www.googletagmanager.com/gtag/js?id=${gaMeasurementId}`}
+        />
+        <script
+          id="google-analytics-init"
+          dangerouslySetInnerHTML={{
+            __html: `
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', '${gaMeasurementId}', {
+                page_path: window.location.pathname,
+              });
+            `,
+          }}
+        />
         {/* Google Tag Manager */}
         <script
           id="gtm-script"
