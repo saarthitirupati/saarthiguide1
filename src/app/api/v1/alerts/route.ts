@@ -36,7 +36,7 @@ export async function POST(request: Request) {
     const body = await request.json();
     const createdAlert = await saveLiveAlert(body);
 
-    const shouldSendPush = body.sendPush !== false;
+    const shouldSendPush = body.sendPush === true;
     if (shouldSendPush && createdAlert && createdAlert.status === 'Published') {
       try {
         await pushNotifyAll({
@@ -74,7 +74,7 @@ export async function PUT(request: Request) {
 
     const updatedAlert = await saveLiveAlert(body);
 
-    const shouldSendPush = body.sendPush !== false;
+    const shouldSendPush = body.sendPush === true;
     if (shouldSendPush && updatedAlert && updatedAlert.status === 'Published') {
       try {
         await pushNotifyAll({

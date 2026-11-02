@@ -13,6 +13,7 @@ import {
   type NotificationPayload,
 } from '@/lib/notifications';
 import { isAuthorizedAdmin } from '@/lib/authGuard';
+import { fetchLiveAlerts } from '@/lib/alertsStore';
 
 function getISTHourMinute(): { hour: number; minute: number; timeStr: string } {
   const parts = new Intl.DateTimeFormat('en-US', {
@@ -204,7 +205,23 @@ export async function GET(req: Request) {
 
 export async function POST(req: Request) {
   const bodyData = await req.json().catch(() => ({}));
-  const { type = 'daily_spot', endpoint, fcmToken, daysSince, title, body, url, image, tag, target_location, category, delay } = bodyData;
+  const { type = 'daily_spot', endpoint, fcmToken, daysSince, title, body, url, image, tag, target_location, category, delay, alert_id } = bodyData;
+
+  // Strict Draft Guard: Reject push broadcast if the target alert is in Draft status
+  const alertIdToCheck = alert_id || (tag && typeof tag === 'string' && tag.startsWith('alert-') ? tag.replace('alert-', '') : null);
+  if (alertIdToCheck && alertIdToCheck !== 'live') {
+    try {
+      const allAlerts = await fetchLiveAlerts(true);
+      const targetAlert = allAlerts.find(a => a.id === alertIdToCheck);
+      if (targetAlert && targetAlert.status === 'Draft') {
+        return NextResponse.json({
+          error: 'Push dispatch rejected: Alert is currently saved as Draft. Only Published alerts can be broadcast to users.'
+        }, { status: 400 });
+      }
+    } catch (err) {
+      console.warn('[PushSend] Could not verify alert status:', err);
+    }
+  }
 
   // Allow self-targeted device test pushes, otherwise enforce admin/cron auth for broadcasts
   const isSelfTargetedTest = Boolean(

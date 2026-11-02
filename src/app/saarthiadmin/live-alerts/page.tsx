@@ -115,6 +115,7 @@ export default function AdminAlertsPage() {
   const [pushStatus, setPushStatus] = useState<string>('');
   const [broadcastingId, setBroadcastingId] = useState<string | null>(null);
   const [editingAlertId, setEditingAlertId] = useState<string | null>(null);
+  const [publishingId, setPublishingId] = useState<string | null>(null);
   const [mobileTab, setMobileTab] = useState<'form' | 'preview'>('form');
 
   // Realtime updates
@@ -187,6 +188,10 @@ export default function AdminAlertsPage() {
   };
 
   const handleBroadcastPush = async (alertItem: LiveAlert) => {
+    if (alertItem.status === 'Draft') {
+      alert('Cannot broadcast push notification for a Draft alert. Please publish it first.');
+      return;
+    }
     if (!confirm(`Broadcast push notification for "${alertItem.title}" to all subscribers?`)) return;
     setBroadcastingId(alertItem.id);
     try {
@@ -198,6 +203,7 @@ export default function AdminAlertsPage() {
         },
         body: JSON.stringify({
           type: 'custom',
+          alert_id: alertItem.id,
           title: alertItem.title,
           body: alertItem.description,
           url: '/alerts',
@@ -352,7 +358,14 @@ export default function AdminAlertsPage() {
         } else {
           setAlerts(prev => [resultAlert, ...prev.filter(a => a.id !== resultAlert.id)]);
         }
-        resetForm();
+
+        if (isDraft) {
+          // Capture ID so subsequent saves update this exact record instead of creating duplicates
+          setEditingAlertId(resultAlert.id);
+          alert('Draft saved! You can continue editing or publish when ready.');
+        } else {
+          resetForm();
+        }
       } else {
         alert(`Failed to ${isEditing ? 'update' : 'publish'} alert.`);
       }
@@ -362,26 +375,96 @@ export default function AdminAlertsPage() {
     }
   };
 
-  const handleExpireAlert = async (id: string) => {
-    if (!confirm('Are you sure you want to expire this alert immediately?')) return;
-    
+  const handlePublishDraft = async (alertItem: LiveAlert) => {
+    if (!confirm(`Publish draft "${alertItem.title}" to the public feed?\n\nNote: This makes the alert live on the public feed without sending a push notification.`)) {
+      return;
+    }
+    setPublishingId(alertItem.id);
+    try {
+      const now = new Date().toISOString();
+      const res = await safeFetchJson<LiveAlert>('/api/v1/alerts', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          ...getAdminHeaders()
+        },
+        body: JSON.stringify({
+          id: alertItem.id,
+          status: 'Published',
+          start_time: now,
+          sendPush: false
+        })
+      });
+
+      if (res && res.id) {
+        notifyRealtimeUpdate();
+        setAlerts(prev => prev.map(a => a.id === alertItem.id ? res : a));
+      } else {
+        alert('Failed to publish draft.');
+        fetchAlerts();
+      }
+    } catch (err) {
+      console.error('Error publishing draft:', err);
+      alert('Failed to publish draft.');
+      fetchAlerts();
+    } finally {
+      setPublishingId(null);
+    }
+  };
+
+  const handleExpireAlert = async (alertItem: LiveAlert) => {
+    if (!confirm(`Are you sure you want to expire "${alertItem.title}" immediately?`)) return;
+
+    try {
+      const res = await safeFetchJson<LiveAlert>('/api/v1/alerts', {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          ...getAdminHeaders()
+        },
+        body: JSON.stringify({
+          id: alertItem.id,
+          status: 'Expired',
+          expiry_time: new Date().toISOString(),
+          sendPush: false
+        })
+      });
+
+      if (res && res.id) {
+        notifyRealtimeUpdate();
+        setAlerts(prev => prev.map(a => a.id === alertItem.id ? res : a));
+      } else {
+        alert('Failed to expire alert.');
+        fetchAlerts();
+      }
+    } catch (err) {
+      console.error('Error expiring alert:', err);
+      alert('Failed to expire alert.');
+      fetchAlerts();
+    }
+  };
+
+  const handleDeleteAlert = async (id: string, title?: string) => {
+    if (!confirm(`Permanently delete "${title || 'this alert'}"? This cannot be undone.`)) return;
+
     // Optimistic UI update
     setAlerts(prev => prev.filter(a => a.id !== id));
 
     try {
-      const res = await safeFetchJson(`/api/v1/alerts?id=${encodeURIComponent(id)}`, {
+      const res = await safeFetchJson<{ success?: boolean }>(`/api/v1/alerts?id=${encodeURIComponent(id)}`, {
         method: 'DELETE',
         headers: getAdminHeaders()
       });
       if (res && res.success) {
         notifyRealtimeUpdate();
       } else {
-        alert('Failed to expire alert.');
-        fetchAlerts(); // Revert on failure
+        alert('Failed to delete alert.');
+        fetchAlerts();
       }
     } catch (err) {
-      console.error('Error expiring alert:', err);
-      fetchAlerts(); // Revert on failure
+      console.error('Error deleting alert:', err);
+      alert('Failed to delete alert.');
+      fetchAlerts();
     }
   };
 
@@ -807,7 +890,11 @@ export default function AdminAlertsPage() {
               ) : (
                 <div className={styles.alertList}>
                   {alerts.map((alert) => (
-                    <div key={alert.id} className={styles.alertItem} style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
+                    <div 
+                      key={alert.id} 
+                      className={`${styles.alertItem} ${alert.status === 'Draft' ? styles.alertItemDraft : (alert.status === 'Expired' ? styles.alertItemExpired : '')}`} 
+                      style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}
+                    >
                       {alert.image && (
                         <img 
                           src={alert.image} 
@@ -824,8 +911,8 @@ export default function AdminAlertsPage() {
                           <span className={styles.statusBadge}>
                             {alert.severity}
                           </span>
-                          <span className={`${styles.statusBadge} ${alert.status === 'Published' ? styles.statusActive : (alert.status === 'Scheduled' ? styles.statusScheduled : styles.statusDraft)}`}>
-                            {alert.status === 'Scheduled' ? '🕒 Scheduled' : alert.status}
+                          <span className={`${styles.statusBadge} ${alert.status === 'Published' ? styles.statusActive : (alert.status === 'Scheduled' ? styles.statusScheduled : (alert.status === 'Expired' ? styles.statusExpired : styles.statusDraft))}`}>
+                            {alert.status === 'Scheduled' ? '🕒 Scheduled' : (alert.status === 'Draft' ? '📝 Draft (Unpublished)' : (alert.status === 'Expired' ? '⏹️ Expired' : alert.status))}
                           </span>
                           <h3 className={styles.alertTitleText}>{alert.title}</h3>
                         </div>
@@ -848,27 +935,74 @@ export default function AdminAlertsPage() {
                         </div>
                       </div>
                       <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', flexShrink: 0 }}>
-                        <button 
-                          className={styles.editBtn}
-                          onClick={() => handleStartEdit(alert)}
-                          title="Edit this alert in-place"
-                        >
-                          <Edit3 size={11} /> Edit
-                        </button>
-                        <button 
-                          className={styles.broadcastBtn}
-                          disabled={broadcastingId === alert.id}
-                          onClick={() => handleBroadcastPush(alert)}
-                          title="Broadcast push notification for this alert now"
-                        >
-                          <Bell size={11} /> {broadcastingId === alert.id ? 'Sending...' : 'Broadcast Push'}
-                        </button>
-                        <button 
-                          className={styles.expireBtn}
-                          onClick={() => handleExpireAlert(alert.id)}
-                        >
-                          Expire
-                        </button>
+                        {alert.status === 'Draft' ? (
+                          <>
+                            <button 
+                              className={styles.editBtn}
+                              onClick={() => handleStartEdit(alert)}
+                              title="Edit draft in form"
+                            >
+                              <Edit3 size={11} /> Edit
+                            </button>
+                            <button 
+                              className={styles.publishNowBtn}
+                              disabled={publishingId === alert.id}
+                              onClick={() => handlePublishDraft(alert)}
+                              title="Publish this draft to public feed (no push notification)"
+                            >
+                              <Send size={11} /> {publishingId === alert.id ? 'Publishing...' : 'Publish Now'}
+                            </button>
+                            <button 
+                              className={styles.deleteBtn}
+                              onClick={() => handleDeleteAlert(alert.id, alert.title)}
+                              title="Permanently delete this draft"
+                            >
+                              <Trash2 size={11} /> Delete
+                            </button>
+                          </>
+                        ) : alert.status === 'Expired' ? (
+                          <>
+                            <button 
+                              className={styles.editBtn}
+                              onClick={() => handleStartEdit(alert)}
+                              title="Re-activate or edit alert"
+                            >
+                              <Edit3 size={11} /> Edit / Re-activate
+                            </button>
+                            <button 
+                              className={styles.deleteBtn}
+                              onClick={() => handleDeleteAlert(alert.id, alert.title)}
+                              title="Permanently delete this alert"
+                            >
+                              <Trash2 size={11} /> Delete
+                            </button>
+                          </>
+                        ) : (
+                          <>
+                            <button 
+                              className={styles.editBtn}
+                              onClick={() => handleStartEdit(alert)}
+                              title="Edit this alert in-place"
+                            >
+                              <Edit3 size={11} /> Edit
+                            </button>
+                            <button 
+                              className={styles.broadcastBtn}
+                              disabled={broadcastingId === alert.id}
+                              onClick={() => handleBroadcastPush(alert)}
+                              title="Broadcast push notification for this alert now"
+                            >
+                              <Bell size={11} /> {broadcastingId === alert.id ? 'Sending...' : 'Broadcast Push'}
+                            </button>
+                            <button 
+                              className={styles.expireBtn}
+                              onClick={() => handleExpireAlert(alert)}
+                              title="Expire this alert immediately"
+                            >
+                              Expire
+                            </button>
+                          </>
+                        )}
                       </div>
                     </div>
                   ))}

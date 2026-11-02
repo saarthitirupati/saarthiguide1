@@ -293,6 +293,17 @@
   gap: 16px;
   background-color: #FFFFFF;
   box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+  transition: all 0.2s ease;
+}
+
+.alertItemDraft {
+  border: 1.5px dashed #94A3B8;
+  background-color: #F8FAFC;
+}
+
+.alertItemExpired {
+  opacity: 0.78;
+  background-color: #FAFAFA;
 }
 
 .alertInfo {
@@ -362,8 +373,15 @@
 }
 
 .statusDraft {
-  background-color: #E2E8F0;
+  background-color: #F1F5F9;
   color: #475569;
+  border: 1px solid #CBD5E1;
+}
+
+.statusExpired {
+  background-color: #FEE2E2;
+  color: #991B1B;
+  border: 1px solid #FCA5A5;
 }
 
 .statusScheduled {
@@ -389,6 +407,52 @@
   background-color: #FEE2E2;
   color: #991B1B;
   border-color: #FCA5A5;
+}
+
+.publishNowBtn {
+  background-color: #0284C7;
+  color: #FFFFFF;
+  border: 1px solid #0369A1;
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.publishNowBtn:hover {
+  background-color: #0369A1;
+}
+
+.publishNowBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.deleteBtn {
+  background-color: transparent;
+  color: #DC2626;
+  border: 1px solid #FECACA;
+  border-radius: 6px;
+  padding: 6px 10px;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.deleteBtn:hover {
+  background-color: #FEE2E2;
+  border-color: #F87171;
 }
 
 /* Live Preview Box */

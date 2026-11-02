@@ -30,9 +30,9 @@ async function readLocalAlerts(): Promise<LiveAlert[]> {
   try {
     const content = await fs.readFile(LOCAL_ALERTS_FILE, 'utf-8');
     const parsed = JSON.parse(content);
-    return Array.isArray(parsed) && parsed.length > 0 ? parsed : (defaultAlertsData as LiveAlert[]);
+    return Array.isArray(parsed) ? parsed : [];
   } catch {
-    return (defaultAlertsData as LiveAlert[]) || [];
+    return [];
   }
 }
 
@@ -66,11 +66,8 @@ export async function fetchLiveAlerts(showAll = false): Promise<LiveAlert[]> {
     console.warn('Supabase live_updates fetch warning:', err);
   }
 
-  // 2. Fetch local fallback if Supabase not available or empty
-  let baseAlerts = (dbAlerts !== null && dbAlerts.length > 0) ? dbAlerts : await readLocalAlerts();
-  if (baseAlerts.length === 0) {
-    baseAlerts = await readLocalAlerts();
-  }
+  // 2. Fetch local fallback ONLY if Supabase has never been set (null)
+  const baseAlerts: LiveAlert[] = dbAlerts !== null ? dbAlerts : await readLocalAlerts();
 
   // 3. Combine with in-memory created alerts, excluding deleted IDs
   const combinedMap = new Map<string, LiveAlert>();
@@ -109,14 +106,7 @@ export async function fetchLiveAlerts(showAll = false): Promise<LiveAlert[]> {
     return tB - tA;
   });
 
-  if (sorted.length === 0) {
-    const local = await readLocalAlerts();
-    if (local.length > 0) {
-      return local;
-    }
-    return (defaultAlertsData as LiveAlert[]) || [];
-  }
-
+  // Empty feed remains empty! Prevent seed/mock fallback alerts from resurfacing.
   return sorted;
 }
 
@@ -128,9 +118,19 @@ export async function saveLiveAlert(alertData: Partial<LiveAlert>): Promise<Live
   const existingAlert = IN_MEMORY_ALERTS.find(a => a.id === id);
   const startTime = alertData.start_time || existingAlert?.start_time || nowIso;
   const isFutureScheduled = new Date(startTime).getTime() > (now.getTime() + 60000);
-  const calculatedStatus = alertData.status === 'Draft'
-    ? 'Draft'
-    : (isFutureScheduled ? 'Scheduled' : (alertData.status || 'Published'));
+  
+  let calculatedStatus: LiveAlert['status'] = 'Published';
+  if (alertData.status === 'Draft') {
+    calculatedStatus = 'Draft';
+  } else if (alertData.status === 'Expired') {
+    calculatedStatus = 'Expired';
+  } else if (alertData.status === 'Archived') {
+    calculatedStatus = 'Archived';
+  } else if (isFutureScheduled) {
+    calculatedStatus = 'Scheduled';
+  } else {
+    calculatedStatus = alertData.status || 'Published';
+  }
 
   const newAlert: LiveAlert = {
     id,
