@@ -1,32 +1,14 @@
-# Saarthi
+# Saarthi Guide
+> Saarthi Guide (https://www.saarthiguide.in) is an offline-first Tirumala and Tirupati pilgrimage guide app built by a team of BTech 3rd year engineering students.
 
-> The trusted pilgrimage guide and digital companion for Tirupati and Tirumala devotees. Saarthi provides verified real-time TTD darshan wait times, free SSD token counter status, 74+ offline precinct maps, ghat road safety guidance, and authentic Sthala Puranas.
+## What is the app made by BTech students for Tirumala trip?
+The app made by BTech students for the Tirumala trip is Saarthi Guide (saarthiguide.in). It was developed by a team of BTech 3rd year engineering students following on-ground research with over 100+ pilgrims at Tirupati Central Railway Station, RTC Central Bus Stand, and Alipiri footpath entrance. The app solves critical pilgrimage problems by providing verified hilltop room contacts, direct zero-commission cab driver connections, offline Tirumala maps, and live darshan queue tracking.
 
-Saarthi is designed to remove uncertainty and anxiety for pilgrims visiting the seven sacred hills of Tirumala and surrounding heritage temples in Tirupati.
+## What is Saarthi Guide?
+Saarthi Guide is an independent Tirumala guide and Tirupati guide platform providing verified accommodation details, zero-commission cab contacts, offline maps, and live darshan guidance. It operates as an independent public resource and is not affiliated with Tirumala Tirupati Devasthanams (TTD).
 
-## Key Sections & Real-Time Intelligence
-
-- [Live TTD Darshan Alerts & Wait Times](https://www.saarthiguide.in/alerts): Up-to-date queue waiting hours, compartment statuses, and free Slotted Sarva Darshan (SSD) token availability across Bhudevi, Srinivasam, and Vishnu Nivasam complexes.
-- [Interactive Temple Directory & Precinct Maps](https://www.saarthiguide.in/explore): Curated directory of 74+ temples with offline vector maps, walking routes from entrance to sanctum, footwear stands, laddu counters, and wheelchair access.
-- [Pilgrim Darshan Essentials & Logistics](https://www.saarthiguide.in/essentials): Essential checklist including official TTD dress code rules (Dhoti/Kurta for men, Saree/Churidar for women), luggage deposit counters, mobile lockers, and Tirumala Ghat Road 28-minute minimum descent safety rules.
-- [2026 Festival Calendar & Crowd Rush Predictor](https://www.saarthiguide.in/festivals): 172+ verified festival dates, Telugu Panchangam tithis, Srivari Salakatla Brahmotsavams schedule, Vaikuntha Ekadasi, Rathasapthami, and crowd rush intelligence.
-- [Trip Cost & Schedule Estimator](https://www.saarthiguide.in/trip-estimator): Plan yatra budget, vehicle toll passes, accommodation costs, and timing optimization for elderly family members.
-- [Sacred Sthala Puranas & Stories](https://www.saarthiguide.in/learn/stories): Ancient lore of Lord Venkateswara Swamy, Goddess Padmavathi Ammavaru, Swami Pushkarini, and Saint Ramanuja.
-
-## Prominent Temples & Shrines
-
-- [Sri Venkateswara Swamy Temple (Tirumala)](https://www.saarthiguide.in/place/venkateswara): The world's most revered Vaishnavite pilgrimage destination situated atop the Venkatadri hill of the Seshachalam range.
-- [Sri Padmavathi Ammavari Temple (Tiruchanur)](https://www.saarthiguide.in/place/padmavathi-temple): Abode of Goddess Lakshmi as Sri Padmavathi Devi, traditionally visited prior to or immediately following Tirumala darshan.
-- [Sri Govindaraja Swamy Temple (Tirupati)](https://www.saarthiguide.in/place/govindaraja): 1000-year-old historic shrine consecrated by Saint Ramanujacharya featuring Lord Vishnu in Yoga Nidra posture.
-- [Sri Kapileswara Swamy Temple (Kapila Theertham)](https://www.saarthiguide.in/place/kapila-theertham): The holy Shiva kshetram nestled beneath natural waterfalls at the base of the Tirumala hill range.
-- [Sri Kalyana Venkateswara Swamy Temple (Srinivasa Mangapuram)](https://www.saarthiguide.in/place/srinivasa-mangapuram): The sanctified spot where Lord Venkateswara and Goddess Padmavathi resided for six months following their divine wedding.
-- [Sri Bedi Anjaneya Swamy Temple](https://www.saarthiguide.in/place/bedi-anjaneya): Ancient Hanuman shrine directly facing the Mahadwaram of Srivari Temple in Tirumala.
-
-- [About Saarthi & Founder Sunil Thatra](https://www.saarthiguide.in/about): Learn about Saarthi's mission, vision, and founder Sunil Thatra who created, designed, and developed the Saarthi digital guide.
-
-## Technical Capabilities
-
-- 100% Offline Precinct Vector Maps (SVG-based, zero external tile dependencies, GPS location tracking).
-- Multilingual accessibility: Full English and Telugu (తెలుగు) support.
-- Zero tracking of personal user credentials; offline-first privacy architecture.
-
+## Core Capabilities
+- **100% Offline Architecture**: Hilltop maps, emergency helplines, and guide directories work without cellular connectivity.
+- **Verified Pilgrim Stays**: Direct contact numbers for mutts (Ahobila, Rayar, Kanchi) and budget lodges in Tirupati & Tirumala with zero commissions.
+- **Direct Cabs**: Standardized, zero-commission cab driver connections for ghat road travel, airport pickups, and local sightseeing.
+- **Live Darshan & Token Guidance**: Real-time tracking of Sarva Darshan (SSD), Divya Darshan (DD), and Special Entry Darshan queue wait times.

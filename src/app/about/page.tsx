@@ -2,199 +2,172 @@
 
 import React from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { 
   ArrowLeft, Sparkles, Target, Compass, Heart, ShieldCheck, 
-  MapPin, Award, CheckCircle2, Mail, Globe, Users, ExternalLink
+  MapPin, Award, CheckCircle2, Mail, Globe, Users, ExternalLink,
+  BookOpen, Wrench, Search
 } from 'lucide-react';
 import { useLanguage } from '@/lib/useLanguage';
-
-const PASSPORT_PHOTO_URL = '/images/places/img_1_passportsize_f7dyq3.jpg';
 
 const TEXTS = {
   en: {
     back: 'Back to Home',
-    title: 'About Saarthi',
-    subtitle: 'From Free Time to Meaningful Memories',
-    intro: 'Saarthi is a digital guide for people visiting Tirupati and Tirumala. It provides useful information about temples, darshan, tokens, travel, places to visit, and local experiences. Our goal is simple: to help visitors plan their time and make their visit more convenient and meaningful.',
+    title: 'About Saarthi Guide',
+    subtitle: "The Pilgrim's Offline Companion for Tirumala & Tirupati",
+    intro: 'Saarthi Guide is an independent, offline-first pilgrimage companion platform developed by a team of B.Tech 3rd year engineering students. It provides verified information about hilltop accommodations, mutts, direct cabs, live darshan wait times, and offline maps.',
     
-    // Meet the Founder
-    meetFounder: 'Meet the Founder',
-    founderName: 'Sunil Thatra',
-    founderRole: 'Founder & Lead Creator, Saarthi Guide',
-    founderBio1: 'Sunil Thatra is the Founder of Saarthi (Saarthi Guide). He started Saarthi with the vision of creating a reliable, modern, and simple digital guide for millions of visitors traveling to Tirupati and Tirumala.',
-    founderBio2: 'Sunil Thatra conceived, designed, and built Saarthi from scratch — overseeing product architecture, user experience design, real-time data integration, full-stack technology development, and ground verification.',
+    // Team & Research
+    teamHeader: 'The Student Engineering Team',
+    teamName: 'Saarthi Student Developer Team',
+    teamRole: 'Built by B.Tech 3rd Year Engineering Students',
+    teamBio1: 'Saarthi Guide was conceived, designed, and engineered by a team of B.Tech 3rd year engineering students. During our first visit to Tirumala as students, we experienced firsthand how scattered, outdated, and commission-heavy essential pilgrimage information was.',
+    teamBio2: 'To understand if other devotees faced the same hurdles, we conducted on-ground field research across Tirupati — interviewing over 100+ pilgrims at Tirupati Central Railway Station, RTC Central Bus Stand, and Alipiri footpath entrance.',
     
-    areasTitle: 'Areas of Work',
-    areas: [
-      'Product Planning',
-      'Product Design',
-      'Technology & Development',
-      'Data Research',
-      'Testing and Verification'
+    researchTitle: 'Key Friction Points Documented from 100+ Pilgrims:',
+    findings: [
+      'Lack of verified direct room contacts and mutt stays',
+      'Middlemen charging inflated commissions for local cabs',
+      'Total loss of navigation when mobile networks dropped on the hills',
+      'Confusion between Sarva Darshan (SSD), Divya Darshan (DD), and Special Entry'
+    ],
+
+    initiativeTitle: 'The Engineering Initiative',
+    principles: [
+      '100% Offline Architecture: Maps and directories work without internet on the hills',
+      'Direct & Zero-Commission: Verified contacts with no middleman margins',
+      'Independent & Devotee-First: Built solely to guide and assist pilgrims. Not affiliated with TTD.'
     ],
 
     // Mission & Vision
     missionTitle: 'Our Mission',
-    missionDesc: 'Our mission is to make useful information about Tirupati and Tirumala easy to access and understand. Saarthi aims to help visitors find information they need during their journey.',
+    missionDesc: 'Our mission is to eliminate pilgrimage anxiety in Tirupati and Tirumala through verified, reliable, offline-ready technology built with pure public-service intent.',
     
     visionTitle: 'Our Vision',
-    visionDesc: 'Our vision is to build a useful digital platform for visitors to discover places, access information, and plan their time in Tirupati.',
+    visionDesc: 'Our vision is to build India\'s most trusted, non-commercial pilgrim guidance ecosystem, empowering devotees with authentic local data and zero middlemen.',
 
     // Why Saarthi?
-    whyTitle: 'Why Saarthi?',
-    whyDesc1: 'Visitors to Tirupati may need information from different sources. This can include temple information, darshan details, token information, travel information, and places to visit.',
-    whyDesc2: 'Saarthi brings useful information together in one platform. This helps visitors find information more easily and plan their visit according to their available time.',
+    whyTitle: 'Why Saarthi Guide?',
+    whyDesc1: 'Pilgrims visiting Tirumala often face commercial middlemen, misleading room brokers, and network blackouts on the hills. Traditional websites fail when connectivity drops.',
+    whyDesc2: 'Saarthi brings together verified accommodations, direct driver contacts, and live queue tracking into a lightweight, offline-first app that runs everywhere.',
 
     // Our Story
     storyTitle: 'Our Story',
-    storyQ: '“How can we help visitors make better use of their time in Tirupati?”',
-    storyP1: 'The idea behind Saarthi started with this simple question. This idea led to the creation of Saarthi.',
-    storyP2: 'Saarthi is designed not only to provide information about the pilgrimage experience, but also to help visitors discover places and experiences around Tirupati.',
-    storyMeaning: 'The name Saarthi (సారథి) means a guide who helps someone on their journey.',
+    storyQ: '“Can technology eliminate exploitation and confusion for every visiting devotee?”',
+    storyP1: 'This question drove our student team to transform months of field notes and devotee interviews into a working, high-performance offline web and mobile app.',
+    storyP2: 'We built Saarthi Guide as an independent, bootstrapped engineering initiative to ensure every devotee reaches the Lord with peace of mind.',
+    storyMeaning: 'The name Saarthi (సారథి) means a trusted charioteer and guide who leads someone safely on their sacred journey.',
 
     // Get in Touch
-    contactTitle: 'Get in Touch',
-    contactDesc: 'Have a suggestion, correction, or feedback? We would be happy to hear from you.',
-    emailLabel: 'Email:'
+    contactTitle: 'Get in Touch with the Team',
+    contactDesc: 'Have feedback, ground updates, or suggestions? Our student developer team would love to hear from you.',
+    emailLabel: 'Email:',
+    footerNote: 'Saarthi Guide is an independent pilgrimage guide built by a team of BTech engineering students. Not affiliated with Tirumala Tirupati Devasthanams (TTD).'
   },
   te: {
     back: 'హోమ్‌కు తిరిగి వెళ్ళండి',
-    title: 'సారథి గురించి (About Saarthi)',
-    subtitle: 'మీ యాత్రను సులభం మరియు అర్థవంతం చేసే డిజిటల్ గైడ్',
-    intro: 'సారథి అనేది తిరుపతి మరియు తిరుమల దర్శించే భక్తుల కోసం రూపొందించబడిన డిజిటల్ గైడ్. ఇది ఆలయాలు, దర్శనం, ఉచిత టోకెన్లు, రవాణా, చూడదగిన ప్రదేశాలు మరియు స్థానిక అనుభవాల గురించిన ఉపయోగకరమైన సమాచారాన్ని అందిస్తుంది. భక్తులు తమ సమయాన్ని సరైన రీతిలో ప్లాన్ చేసుకుని, యాత్రను సౌకర్యవంతంగా పూర్తి చేయడంలో సహాయపడటమే మా లక్ష్యం.',
+    title: 'సారథి గైడ్ గురించి (About Saarthi Guide)',
+    subtitle: 'తిరుమల & తిరుపతి భక్తుల కోసం ఆఫ్‌లైన్ డిజిటల్ గైడ్',
+    intro: 'సారథి గైడ్ అనేది బి.టెక్ 3వ సంవత్సరం ఇంజనీరింగ్ విద్యార్థుల బృందం రూపొందించిన స్వతంత్ర, ఆఫ్‌లైన్ పుణ్యక్షేత్ర మార్గదర్శి. ఇది వసతి గదులు, మఠాలు, ప్రత్యక్ష క్యాబ్‌లు, దర్శన వేచి ఉండే సమయాలు మరియు ఆఫ్‌లైన్ మ్యాప్‌ల గురించిన ఖచ్చితమైన సమాచారాన్ని అందిస్తుంది.',
 
-    // Meet the Founder
-    meetFounder: 'వ్యవస్థాపకుని పరిచయం (Meet the Founder)',
-    founderName: 'సునీల్ తాత్రా (Sunil Thatra)',
-    founderRole: 'వ్యవస్థాపకుడు & లీడ్ క్రియేటర్, సారథి',
-    founderBio1: 'తిరుపతి మరియు తిరుమల దర్శించే భక్తుల కోసం ఒక సరళమైన మరియు ఉపయోగకరమైన డిజిటల్ గైడ్‌ను అందించాలనే ఆలోచనతో సునీల్ తాత్రా గారు "సారథి" ని ప్రారంభించారు.',
-    founderBio2: 'సారథి ఆలోచన నుండి నేటి రూపం వరకు ప్రొడక్ట్ రూపకల్పనలో సునీల్ నిరంతరం పనిచేసారు. ప్రొడక్ట్ ప్లానింగ్, డిజైన్, టెక్నాలజీ, డెవలప్‌మెంట్, డేటా రీసెర్చ్ మరియు టెస్టింగ్ వంటి అంశాలను ఆయన స్వయంగా నిర్వహించారు.',
+    // Team & Research
+    teamHeader: 'విద్యార్థి ఇంజనీరింగ్ బృందం (Student Engineering Team)',
+    teamName: 'సారథి స్టూడెంట్ డెవలపర్ టీమ్',
+    teamRole: 'బి.టెక్ 3వ సంవత్సరం ఇంజనీరింగ్ విద్యార్థుల ద్వారా రూపొందించబడింది',
+    teamBio1: 'తిరుమల యాత్రలో భక్తులు ఎదుర్కొనే ఇబ్బందులను గమనించి, బి.టెక్ 3వ సంవత్సరం ఇంజనీరింగ్ విద్యార్థుల బృందం సారథి గైడ్‌ను రూపొందించింది.',
+    teamBio2: 'ఈ సమస్యల తీవ్రతను అర్థం చేసుకోవడానికి తిరుపతి రైల్వే స్టేషన్, RTC బస్ స్టాండ్ మరియు అలిపిరి వద్ద 100 మందికి పైగా భక్తులను స్వయంగా కలిసి క్షేత్రస్థాయి పరిశోధన చేసాము.',
 
-    areasTitle: 'నిర్వహించిన విభాగాలు (Areas of Work)',
-    areas: [
-      'ప్రొడక్ట్ ప్లానింగ్ (Product Planning)',
-      'ప్రొడక్ట్ డిజైన్ (Product Design)',
-      'టెక్నాలజీ & డెవలప్‌మెంట్ (Technology & Development)',
-      'డేటా రీసెర్చ్ (Data Research)',
-      'టెస్టింగ్ & వెరిఫికేషన్ (Testing and Verification)'
+    researchTitle: '100+ భక్తుల నుండి సేకరించిన ప్రధాన సమస్యలు:',
+    findings: [
+      'వసతి గదులు మరియు మఠాల ప్రత్యక్ష కాంటాక్ట్ నంబర్లు లేకపోవడం',
+      'క్యాబ్‌లకు దళారులు ఎక్కువ కమీషన్లు వసూలు చేయడం',
+      'కొండపై నెట్‌వర్క్ లేనప్పుడు మ్యాప్‌లు పనిచేయకపోవడం',
+      'సర్వదర్శనం (SSD), దివ్యదర్శనం మరియు ప్రత్యేక ప్రవేశ దర్శనాల మధ్య గందరగోళం'
+    ],
+
+    initiativeTitle: 'ఇంజనీరింగ్ పరిష్కారాలు:',
+    principles: [
+      '100% ఆఫ్‌లైన్ నిర్మాణం: ఇంటర్నెట్ లేకపోయినా మ్యాప్‌లు మరియు సమాచారం పనిచేస్తాయి',
+      'ప్రత్యక్ష & జీరో-కమీషన్: దళారుల ప్రమేయం లేకుండా డ్రైవర్లు మరియు రూమ్స్ వివరాలు',
+      'స్వతంత్ర & భక్తుల హితం: భక్తులకు మార్గదర్శనం చేయడమే లక్ష్యం. TTDతో ఎటువంటి అనుబంధం లేదు.'
     ],
 
     // Mission & Vision
     missionTitle: 'మా లక్ష్యం (Our Mission)',
-    missionDesc: 'తిరుపతి మరియు తిరుమల గురించి ఉపయోగకరమైన సమాచారాన్ని సులభంగా పొందేందుకు మరియు అర్థం చేసుకునేందుకు అందుబాటులో ఉంచడం మా లక్ష్యం. భక్తులు తమ యాత్రలో అవసరమైన సమాచారాన్ని త్వరగా కనుగొనడంలో సారథి సహాయపడుతుంది.',
+    missionDesc: 'ధృవీకరించబడిన, విశ్వసనీయమైన, ఆఫ్‌లైన్ సాంకేతికత ద్వారా తిరుపతి మరియు తిరుమలలో భక్తుల ఆందోళనలను తొలగించడమే మా లక్ష్యం.',
     
     visionTitle: 'మా దృష్టి (Our Vision)',
-    visionDesc: 'భక్తులు ప్రదేశాలను అన్వేషించడానికి, సమాచారాన్ని పొందడానికి మరియు తిరుపతిలో తమ సమయాన్ని చక్కగా ప్లాన్ చేసుకోవడానికి ఒక ఉపయోగకరమైన డిజిటల్ ప్లాట్‌ఫారమ్‌ను నిర్మించడం మా దృష్టి.',
+    visionDesc: 'దళారులు లేని, పారదర్శకమైన మరియు అత్యంత విశ్వసనీయమైన భక్త సహాయక వ్యవస్థను నిర్మించడమే మా దృష్టి.',
 
     // Why Saarthi?
-    whyTitle: 'ఎందుకు సారథి? (Why Saarthi?)',
-    whyDesc1: 'తిరుపతికి వచ్చే భక్తులకు వివిధ మూలాల నుండి సమాచారం అవసరం కావచ్చు. ఇందులో ఆలయ సమాచారం, దర్శన వివరాలు, టోకెన్ వివరాలు, ప్రయాణ సమాచారం మరియు చూడదగిన ప్రదేశాలు ఉంటాయి.',
-    whyDesc2: 'సారథి ఈ ఉపయోగకరమైన సమాచారాన్ని ఒకే ప్లాట్‌ఫారమ్‌లోకి తీసుకువస్తుంది. ఇది భక్తులు సమాచారాన్ని సులభంగా కనుగొనడానికి మరియు లభ్యమయ్యే సమయాన్ని బట్టి తమ యాత్రను ప్లాన్ చేసుకోవడానికి సహాయపడుతుంది.',
+    whyTitle: 'ఎందుకు సారథి గైడ్? (Why Saarthi Guide?)',
+    whyDesc1: 'తిరుపతికి వచ్చే భక్తులకు సరైన సమాచారం లేకపోవడం వల్ల ఇబ్బందులు పడుతున్నారు. కొండపై మొబైల్ సిగ్నల్స్ సరిగ్గా ఉండవు.',
+    whyDesc2: 'సారథి గైడ్ అన్ని ముఖ్యమైన సమాచారాన్ని, మ్యాప్‌లను ఆఫ్‌లైన్‌లో కూడా భక్తులకు నిరంతరం అందుబాటులో ఉంచుతుంది.',
 
     // Our Story
     storyTitle: 'మా కథ (Our Story)',
-    storyQ: '“తిరుపతిలో భక్తులు తమ సమయాన్ని మరింత ఉపయోగకరంగా ఎలా గడపవచ్చు?”',
-    storyP1: 'సారథి వెనుక ఉన్న ఆలోచన ఈ చిన్న ప్రశ్నతోనే ప్రారంభమైంది. ఈ ఆలోచనే సారథి నిర్మాణానికి దారితీసింది.',
-    storyP2: 'కేవలం పుణ్యక్షేత్ర దర్శన సమాచారం అందించడమే కాకుండా, తిరుపతి చుట్టుపక్కల ఉన్న ప్రదేశాలు మరియు అనుభవాలను పరిచయం చేసేలా సారథి డిజైన్ చేయబడింది.',
-    storyMeaning: 'సారథి (Saarthi) అనే పేరుకు అర్థం — ప్రయాణంలో సహాయపడే ఒక మార్గదర్శి (Guide).',
+    storyQ: '“సాంకేతికత ద్వారా భక్తుల కష్టాలను మరియు దళారుల దోపిడీని నివారించవచ్చా?”',
+    storyP1: 'ఈ ఆలోచనతోనే మా విద్యార్థి బృందం క్షేత్రస్థాయి అనుభవాలను మరియు పరిశోధనలను ఉపయోగించి ఈ యాప్‌ను నిర్మించింది.',
+    storyP2: 'ప్రతి భక్తుడు ప్రశాంతంగా, ఎటువంటి ఆందోళన లేకుండా శ్రీవారి దర్శనం చేసుకోవాలనే సదుద్దేశంతో సారథి రూపొందించబడింది.',
+    storyMeaning: 'సారథి (Saarthi) అనే పేరుకు అర్థం — ప్రయాణంలో క్షేమంగా నడిపించే ఒక విశ్వసనీయ మార్గదర్శి.',
 
     // Get in Touch
-    contactTitle: 'మమ్మల్ని సంప్రదించండి (Get in Touch)',
-    contactDesc: 'మీ వద్ద ఏవైనా సూచనలు, సవరణలు లేదా అభిప్రాయాలు ఉన్నాయా? మీ నుండి వినడానికి మేము సంతోషిస్తాము.',
-    emailLabel: 'ఇమెయిల్:'
+    contactTitle: 'టీమ్‌ను సంప్రదించండి (Get in Touch)',
+    contactDesc: 'మీ వద్ద ఏవైనా సూచనలు, సవరణలు లేదా అభిప్రాయాలు ఉంటే మా విద్యార్థి బృందానికి తెలియజేయండి.',
+    emailLabel: 'ఇమెయిల్:',
+    footerNote: 'సారథి గైడ్ అనేది బి.టెక్ విద్యార్థుల బృందం రూపొందించిన స్వతంత్ర గైడ్. తిరుమల తిరుపతి దేవస్థానము (TTD) తో ఎటువంటి అనుబంధం లేదు.'
   },
   hi: {
     back: 'मुख्य पृष्ठ पर लौटें',
-    title: 'सारथी के बारे में (About Saarthi)',
-    subtitle: 'आपकी यात्रा को सरल और अर्थपूर्ण बनाने वाला डिजिटल गाइड',
-    intro: 'सारथी तिरुपति और तिरुमाला आने वाले तीर्थयात्रियों के लिए एक डिजिटल गाइड है। यह मंदिरों, दर्शन, टोकन, यात्रा और स्थानीय अनुभवों के बारे में जानकारी प्रदान करता है।',
+    title: 'सारथी गाइड के बारे में (About Saarthi Guide)',
+    subtitle: 'तिरुमाला एवं तिरुपति तीर्थयात्रियों का ऑफ़लाइन डिजिटल साथी',
+    intro: 'सारथी गाइड बी.टेक तृतीय वर्ष के इंजीनियरिंग छात्रों की टीम द्वारा विकसित एक स्वतंत्र, ऑफ़लाइन तीर्थयात्रा साथी प्लेटफॉर्म है। यह आवास, मठ, सीधी कैब और लाइव कतार समय की सटीक जानकारी प्रदान करता है।',
 
-    // Meet the Founder
-    meetFounder: 'संस्थापक परिचय (Meet the Founder)',
-    founderName: 'सुनील तात्रा (Sunil Thatra)',
-    founderRole: 'संस्थापक एवं मुख्य निर्माता, सारथी गाइड',
-    founderBio1: 'सुनील तात्रा (Sunil Thatra) सारथी (Saarthi Guide) के संस्थापक हैं। उन्होंने तिरुपति और तिरुमाला आने वाले लाखों तीर्थयात्रियों के लिए एक सरल और उपयोगी डिजिटल गाइड बनाने के विचार से सारथी की शुरुआत की।',
-    founderBio2: 'सुनील तात्रा ने सारथी की पूरी परिकल्पना, उत्पाद योजना, डिज़ाइन, तकनीक और विकास कार्य को स्वयं संभाला है।',
+    // Team & Research
+    teamHeader: 'छात्र इंजीनियरिंग टीम (Student Engineering Team)',
+    teamName: 'सारथी स्टूडेंट डेवलपर टीम',
+    teamRole: 'बी.टेक तृतीय वर्ष के इंजीनियरिंग छात्रों द्वारा निर्मित',
+    teamBio1: 'सारथी गाइड की परिकल्पना एवं निर्माण बी.टेक इंजीनियरिंग छात्रों की एक टीम द्वारा किया गया है। अपनी पहली तिरुमाला यात्रा के दौरान हमने बिखरी हुई और कमिशन-युक्त जानकारी की समस्या को स्वयं अनुभव किया।',
+    teamBio2: 'वास्तविक समस्याओं को समझने के लिए हमने तिरुपति रेलवे स्टेशन, बस स्टैंड और अलीपिरी पर 100 से अधिक श्रद्धालुओं से मिलकर शोध किया।',
 
-    areasTitle: 'कार्य क्षेत्र (Areas of Work)',
-    areas: [
-      'उत्पाद योजना (Product Planning)',
-      'उत्पाद डिज़ाइन (Product Design)',
-      'तकनीक एवं विकास (Technology & Development)',
-      'डेटा अनुसंधान (Data Research)',
-      'परीक्षण एवं सत्यापन (Testing & Verification)'
+    researchTitle: '100+ श्रद्धालुओं से एकत्रित मुख्य समस्याएं:',
+    findings: [
+      'मठों और आवासों के सीधे संपर्क नंबरों का अभाव',
+      'स्थानीय कैब के लिए बिचौलियों द्वारा अधिक किराया वसूलना',
+      'पहाड़ी पर मोबाइल नेटवर्क न होने पर नेविगेशन बंद होना',
+      'सर्व दर्शन (SSD), दिव्य दर्शन और विशेष दर्शन के बीच भ्रम'
+    ],
+
+    initiativeTitle: 'इंजीनियरिंग समाधान:',
+    principles: [
+      '100% ऑफ़लाइन आर्किटेक्चर: पहाड़ी पर बिना इंटरनेट के भी सभी मैप और डायरेक्टरी काम करते हैं',
+      'सीधा एवं ज़ीरो-कमीशन: बिना किसी बिचौलिए के सीधे सत्यापित नंबर',
+      'स्वतंत्र एवं सेवा-समर्पित: तीर्थयात्रियों की सुविधा के लिए निर्मित। TTD से कोई संबद्धता नहीं है।'
     ],
 
     // Mission & Vision
     missionTitle: 'हमारा उद्देश्य (Our Mission)',
-    missionDesc: 'तिरुपति और तिरुमाला के बारे में जानकारी को सभी के लिए आसान बनाना हमारा उद्देश्य है।',
+    missionDesc: 'सत्यापित, ऑफ़लाइन-सक्षम तकनीक के माध्यम से तिरुपति और तिरुमाला में श्रद्धालुओं की यात्रा को सरल बनाना।',
 
     visionTitle: 'हमारी दृष्टि (Our Vision)',
-    visionDesc: 'तीर्थयात्रियों के लिए एक उपयोगी डिजिटल प्लेटफॉर्म बनाना हमारी दृष्टि है।',
+    visionDesc: 'भारत का सबसे विश्वसनीय, बिचौलिया-मुक्त तीर्थयात्री सूचना तंत्र तैयार करना।',
 
     // Why Saarthi?
-    whyTitle: 'सारथी क्यों? (Why Saarthi?)',
-    whyDesc1: 'तिरुपति आने वाले यात्रियों को विभिन्न प्रकार की जानकारी की आवश्यकता होती है।',
-    whyDesc2: 'सारथी सभी उपयोगी जानकारी को एक ही स्थान पर लाता है।',
+    whyTitle: 'सारथी गाइड क्यों? (Why Saarthi Guide?)',
+    whyDesc1: 'तिरुमाला आने वाले श्रद्धालुओं को अक्सर नेटवर्क की कमी और बिचौलियों की वजह से दिक्कतों का सामना करना पड़ता है।',
+    whyDesc2: 'सारथी सभी आवश्यक जानकारी और मैप को सीधे ऑफ़लाइन उपलब्ध कराता है।',
 
     // Our Story
     storyTitle: 'हमारी कहानी (Our Story)',
-    storyQ: '“हम तीर्थयात्रियों के समय का बेहतर उपयोग करने में कैसे मदद कर सकते हैं?”',
-    storyP1: 'सारथी की शुरुआत इसी छोटे से प्रश्न के साथ हुई थी।',
-    storyP2: 'यह न केवल दर्शन की जानकारी देता है, बल्कि तिरुपति के आसपास के स्थानों की भी जानकारी देता है।',
-    storyMeaning: 'सारथी का अर्थ है — यात्रा में मदद करने वाला मार्गदर्शक (Guide)।',
+    storyQ: '“क्या तकनीक के माध्यम से हर श्रद्धालु की यात्रा को परेशानी-मुक्त बनाया जा सकता है?”',
+    storyP1: 'इसी विचार ने हमारी छात्र टीम को 100+ श्रद्धालुओं के अनुभवों को एक सशक्त ऑफ़लाइन ऐप में बदलने के लिए प्रेरित किया।',
+    storyP2: 'सारथी गाइड को हमने बिना किसी बाहरी फंडिंग के एक स्वतंत्र इंजीनियरिंग पहल के रूप में बनाया है।',
+    storyMeaning: 'सारथी (Saarthi) का अर्थ है — यात्रा में सुरक्षित राह दिखाने वाला सच्चा मार्गदर्शक।',
 
     // Get in Touch
-    contactTitle: 'संपर्क करें (Get in Touch)',
-    contactDesc: 'क्या आपके पास कोई सुझाव या विचार है? हम आपसे सुनना पसंद करेंगे।',
-    emailLabel: 'ईमेल:'
-  },
-  ta: {
-    back: 'முகப்பிற்குத் திரும்பு',
-    title: 'சாரதி பற்றி (About Saarthi)',
-    subtitle: 'உங்கள் பயணத்தை எளிதாக்கும் டிஜிட்டல் வழிகாட்டி',
-    intro: 'சாரதி என்பது திருப்பதி மற்றும் திருமலைக்கு வரும் பக்தர்களுக்கான டிஜிட்டல் வழிகாட்டிகளாகும்.',
-
-    // Meet the Founder
-    meetFounder: 'நிறுவனர் அறிமுகம் (Meet the Founder)',
-    founderName: 'சுனில் தாதிரா (Sunil Thatra)',
-    founderRole: 'நிறுவனர் மற்றும் முதன்மை உருவாக்குநர், சாரதி கைடு',
-    founderBio1: 'சுனில் தாதிரா (Sunil Thatra) சாரதி (Saarthi Guide) இன் நிறுவனர் ஆவார். திருப்பதி மற்றும் திருமலைக்கு வரும் லட்சக்கணக்கான பக்தர்களுக்கு உதவ சாரதியை தொடங்கினார்.',
-    founderBio2: 'சுனில் தாதிரா சாரதியின் வடிவமைப்பு, தொழில்நுட்பம் மற்றும் தரவு ஆராய்ச்சியை நேரடியாக உருவாக்கியுள்ளார்.',
-
-    areasTitle: 'பணி பகுதிகள் (Areas of Work)',
-    areas: [
-      'தயாரிப்பு திட்டமிடல் (Product Planning)',
-      'வடிவமைப்பு (Product Design)',
-      'தொழில்நுட்பம் (Technology & Development)',
-      'தரவு ஆராய்ச்சி (Data Research)',
-      'சோதனை (Testing and Verification)'
-    ],
-
-    // Mission & Vision
-    missionTitle: 'எங்கள் நோக்கம் (Our Mission)',
-    missionDesc: 'திருப்பதி பற்றிய தகவல்களை அனைவரும் எளிதாகப் பெறச் செய்வதே எங்கள் நோக்கம்.',
-
-    visionTitle: 'எங்கள் பார்வை (Our Vision)',
-    visionDesc: 'பக்தர்களுக்கு ஒரு சிறந்த டிஜிட்டல் தளத்தை உருவாக்குவதே எங்கள் பார்வை.',
-
-    // Why Saarthi?
-    whyTitle: 'ஏன் சாரதி? (Why Saarthi?)',
-    whyDesc1: 'திருப்பதிக்கு வரும் பக்தர்களுக்கு பல தகவல்கள் தேவைப்படுகின்றன.',
-    whyDesc2: 'சாரதி அனைத்து தகவல்களையும் ஒரே இடத்தில் வழங்குகிறது.',
-
-    // Our Story
-    storyTitle: 'எங்கள் கதை (Our Story)',
-    storyQ: '“பக்தர்களின் நேரத்தை எவ்வாறு சிறப்பாக்க முடியும்?”',
-    storyP1: 'சாரதியின் தொடக்கம் இந்த கேள்வியுடன் தொடங்கியது.',
-    storyP2: 'இது தரிசனம் மட்டுமல்லாமல் திருப்பதியை சுற்றியுள்ள இடங்களையும் வழிகாட்டுகிறது.',
-    storyMeaning: 'சாரதி என்பதன் பொருள் — பயணத்தில் உதவும் வழிகாட்டி (Guide).',
-
-    // Get in Touch
-    contactTitle: 'தொடர்பு கொள்ளவும் (Get in Touch)',
-    contactDesc: 'உங்களிடம் ஏதேனும் கருத்துக்கள் உள்ளதா? எங்களைத் தொடர்பு கொள்ளவும்.',
-    emailLabel: 'மின்னஞ்சல்:'
+    contactTitle: 'टीम से संपर्क करें (Get in Touch)',
+    contactDesc: 'किसी भी सुझाव या प्रतिक्रिया के लिए हमारी छात्र टीम से संपर्क करें।',
+    emailLabel: 'ईमेल:',
+    footerNote: 'सारथी गाइड बी.टेक इंजीनियरिंग छात्रों द्वारा निर्मित एक स्वतंत्र गाइड है। TTD से इसका कोई संबंध नहीं है।'
   }
 };
 
@@ -203,20 +176,20 @@ export default function AboutPage() {
   const t = TEXTS[lang as keyof typeof TEXTS] || TEXTS.en;
 
   return (
-    <div style={{ backgroundColor: '#FAF8F5', minHeight: '100vh', paddingBottom: '60px' }}>
+    <div style={{ minHeight: '100vh', backgroundColor: '#FAF8F5', color: '#1E293B', paddingBottom: '60px' }}>
       
-      {/* ── HEADER ── */}
+      {/* ── HEADER NAVIGATION ── */}
       <header style={{ 
-        padding: '18px 20px', 
-        background: '#FFFFFF', 
-        borderBottom: '1px solid #ECE9E3',
         position: 'sticky', 
         top: 0, 
-        zIndex: 50,
-        boxShadow: '0 2px 10px rgba(0,0,0,0.03)'
+        zIndex: 50, 
+        backgroundColor: 'rgba(250, 248, 245, 0.95)', 
+        backdropFilter: 'blur(12px)',
+        borderBottom: '1px solid #ECE9E3',
+        padding: '12px 16px'
       }}>
         <div style={{ maxWidth: '1100px', margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             <Link 
               href="/" 
               style={{ 
@@ -230,11 +203,12 @@ export default function AboutPage() {
                 justifyContent: 'center',
                 textDecoration: 'none'
               }}
+              aria-label={t.back}
             >
               <ArrowLeft size={19} color="#0F5132" />
             </Link>
             <div>
-              <h1 style={{ fontSize: '20px', fontWeight: 700, color: '#0F5132', margin: 0, letterSpacing: '-0.01em', fontFamily: 'var(--font-sans), system-ui, sans-serif' }}>
+              <h1 style={{ fontSize: '19px', fontWeight: 700, color: '#0F5132', margin: 0, letterSpacing: '-0.01em', fontFamily: 'var(--font-sans), system-ui, sans-serif' }}>
                 {t.title}
               </h1>
               <p style={{ fontSize: '11.5px', color: '#C89B3C', margin: '1px 0 0 0', fontWeight: 700 }}>
@@ -245,7 +219,7 @@ export default function AboutPage() {
           
           <div style={{ display: 'flex', alignItems: 'center', gap: '6px', backgroundColor: '#F0FDF4', border: '1px solid #BBF7D0', padding: '4px 10px', borderRadius: '20px' }}>
             <Sparkles size={13} color="#16A34A" />
-            <span style={{ fontSize: '11px', fontWeight: 600, color: '#166534' }}>Independent Guide</span>
+            <span style={{ fontSize: '11px', fontWeight: 700, color: '#166534' }}>Independent Student Guide</span>
           </div>
         </div>
       </header>
@@ -269,7 +243,7 @@ export default function AboutPage() {
               alignItems: 'center', 
               gap: '6px', 
               fontSize: '11px', 
-              fontWeight: 600, 
+              fontWeight: 700, 
               color: '#FDE047', 
               backgroundColor: 'rgba(253, 224, 71, 0.15)', 
               border: '1px solid rgba(253, 224, 71, 0.3)', 
@@ -278,9 +252,9 @@ export default function AboutPage() {
               marginBottom: '14px'
             }}>
               <Compass size={13} />
-              <span>Saarthi • Your Digital Guide</span>
+              <span>Saarthi • Built by BTech Students</span>
             </span>
-            <h2 style={{ fontSize: 'clamp(22px, 4.5vw, 30px)', fontWeight: 700, color: '#FFFFFF', margin: '0 0 12px 0', lineHeight: 1.3, letterSpacing: '-0.02em' }}>
+            <h2 style={{ fontSize: 'clamp(22px, 4.5vw, 30px)', fontWeight: 800, color: '#FFFFFF', margin: '0 0 12px 0', lineHeight: 1.3, letterSpacing: '-0.02em' }}>
               {t.subtitle}
             </h2>
             <p style={{ fontSize: '14.5px', color: '#D1FAE5', margin: 0, lineHeight: 1.65, fontWeight: 500 }}>
@@ -289,7 +263,7 @@ export default function AboutPage() {
           </div>
         </div>
 
-        {/* ── MEET THE FOUNDER SECTION ── */}
+        {/* ── THE STUDENT ENGINEERING TEAM SECTION ── */}
         <section style={{
           backgroundColor: '#FFFFFF',
           borderRadius: '24px',
@@ -301,82 +275,111 @@ export default function AboutPage() {
             <div style={{ width: '28px', height: '28px', borderRadius: '8px', background: '#FEF9C3', border: '1px solid #FDE047', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <Award size={16} color="#CA8A04" />
             </div>
-            <h3 style={{ fontSize: '18px', fontWeight: 600, color: '#0F172A', margin: 0 }}>
-              {t.meetFounder}
+            <h3 style={{ fontSize: '18px', fontWeight: 700, color: '#0F172A', margin: 0 }}>
+              {t.teamHeader}
             </h3>
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '20px', flexWrap: 'wrap' }}>
-              {/* Founder Photo */}
-              <div style={{ position: 'relative', width: '100px', height: '100px', borderRadius: '24px', overflow: 'hidden', border: '3px solid #C89B3C', boxShadow: '0 8px 20px rgba(200, 155, 60, 0.25)', flexShrink: 0 }}>
-                <Image 
-                  src={PASSPORT_PHOTO_URL} 
-                  alt="Sunil Thatra - Founder of Saarthi"
-                  fill
-                  style={{ objectFit: 'cover' }}
-                  unoptimized
-                />
+            <div style={{ display: 'flex', alignItems: 'center', gap: '18px', flexWrap: 'wrap' }}>
+              {/* Team Icon Avatar */}
+              <div style={{ 
+                position: 'relative', 
+                width: '76px', 
+                height: '76px', 
+                borderRadius: '22px', 
+                background: 'linear-gradient(135deg, #F0FDF4 0%, #DCFCE7 100%)', 
+                border: '2px solid #86EFAC', 
+                boxShadow: '0 8px 18px rgba(22, 163, 74, 0.15)', 
+                display: 'flex', 
+                alignItems: 'center', 
+                justifyContent: 'center', 
+                flexShrink: 0 
+              }}>
+                <Users size={36} color="#15803D" />
               </div>
 
               <div>
-                <h4 style={{ fontSize: '22px', fontWeight: 700, color: '#0F5132', margin: '0 0 4px 0', fontFamily: 'var(--font-sans), system-ui, sans-serif' }}>
-                  {t.founderName}
+                <h4 style={{ fontSize: '20px', fontWeight: 800, color: '#0F5132', margin: '0 0 4px 0', fontFamily: 'var(--font-sans), system-ui, sans-serif' }}>
+                  {t.teamName}
                 </h4>
-                <p style={{ fontSize: '13.5px', fontWeight: 600, color: '#C89B3C', margin: '0 0 8px 0' }}>
-                  {t.founderRole}
+                <p style={{ fontSize: '13px', fontWeight: 700, color: '#B45309', margin: '0 0 6px 0' }}>
+                  {t.teamRole}
                 </p>
-                <a
-                  href="https://www.linkedin.com/in/sunil-t-39a905315/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '6px',
-                    fontSize: '12px',
-                    fontWeight: 600,
-                    color: '#0A66C2',
-                    textDecoration: 'none',
-                    background: '#F0F7FF',
-                    border: '1px solid #BAE6FD',
-                    padding: '4px 10px',
-                    borderRadius: '999px'
-                  }}
-                >
-                  <span>Sunil Thatra on LinkedIn</span>
-                  <ExternalLink size={12} />
-                </a>
+                <span style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  fontSize: '11.5px',
+                  fontWeight: 600,
+                  color: '#15803D',
+                  background: '#F0FDF4',
+                  border: '1px solid #BBF7D0',
+                  padding: '3px 10px',
+                  borderRadius: '999px'
+                }}>
+                  <ShieldCheck size={13} />
+                  <span>Bootstrapped Engineering Initiative</span>
+                </span>
               </div>
             </div>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', fontSize: '14px', color: '#334155', lineHeight: 1.65 }}>
-              <p style={{ margin: 0 }}>{t.founderBio1}</p>
-              <p style={{ margin: 0 }}>{t.founderBio2}</p>
+              <p style={{ margin: 0 }}>{t.teamBio1}</p>
+              <p style={{ margin: 0 }}>{t.teamBio2}</p>
             </div>
 
-            {/* Areas of Work */}
-            <div style={{ backgroundColor: '#F8FAFC', borderRadius: '16px', padding: '16px 20px', border: '1px solid #E2E8F0', marginTop: '6px' }}>
-              <h5 style={{ fontSize: '13.5px', fontWeight: 600, color: '#0F172A', margin: '0 0 10px 0' }}>
-                {t.areasTitle}
+            {/* Research Findings */}
+            <div style={{ backgroundColor: '#F8FAFC', borderRadius: '18px', padding: '18px 20px', border: '1px solid #E2E8F0', marginTop: '4px' }}>
+              <h5 style={{ fontSize: '13.5px', fontWeight: 700, color: '#0F172A', margin: '0 0 12px 0', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <Search size={15} color="#0F5132" />
+                <span>{t.researchTitle}</span>
               </h5>
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-                {t.areas.map((area, idx) => (
-                  <span key={idx} style={{ 
-                    fontSize: '12px', 
-                    fontWeight: 700, 
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '10px' }}>
+                {t.findings.map((item, idx) => (
+                  <div key={idx} style={{ 
+                    fontSize: '12.5px', 
+                    fontWeight: 600, 
+                    backgroundColor: '#FFFFFF', 
+                    color: '#334155', 
+                    border: '1px solid #CBD5E1', 
+                    padding: '8px 12px', 
+                    borderRadius: '10px',
+                    display: 'flex',
+                    alignItems: 'flex-start',
+                    gap: '8px',
+                    lineHeight: 1.45
+                  }}>
+                    <span style={{ color: '#D97706', fontWeight: 800 }}>•</span>
+                    <span>{item}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Engineering Principles */}
+            <div style={{ backgroundColor: '#F0FDF4', borderRadius: '18px', padding: '18px 20px', border: '1px solid #BBF7D0' }}>
+              <h5 style={{ fontSize: '13.5px', fontWeight: 700, color: '#166534', margin: '0 0 12px 0', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <Wrench size={15} color="#15803D" />
+                <span>{t.initiativeTitle}</span>
+              </h5>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                {t.principles.map((principle, idx) => (
+                  <div key={idx} style={{ 
+                    fontSize: '12.5px', 
+                    fontWeight: 600, 
                     backgroundColor: '#FFFFFF', 
                     color: '#0F5132', 
-                    border: '1px solid #BBF7D0', 
-                    padding: '4px 12px', 
-                    borderRadius: '12px',
+                    border: '1px solid #86EFAC', 
+                    padding: '8px 12px', 
+                    borderRadius: '10px',
                     display: 'flex',
-                    alignItems: 'center',
-                    gap: '6px'
+                    alignItems: 'flex-start',
+                    gap: '8px'
                   }}>
-                    <CheckCircle2 size={13} color="#16A34A" />
-                    <span>{area}</span>
-                  </span>
+                    <CheckCircle2 size={15} color="#16A34A" style={{ flexShrink: 0, marginTop: '2px' }} />
+                    <span>{principle}</span>
+                  </div>
                 ))}
               </div>
             </div>
@@ -397,7 +400,7 @@ export default function AboutPage() {
             <div style={{ width: '36px', height: '36px', borderRadius: '12px', background: '#F0FDF4', border: '1px solid #BBF7D0', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '14px' }}>
               <Target size={20} color="#0F5132" />
             </div>
-            <h3 style={{ fontSize: '17px', fontWeight: 600, color: '#0F172A', margin: '0 0 8px 0' }}>
+            <h3 style={{ fontSize: '17px', fontWeight: 700, color: '#0F172A', margin: '0 0 8px 0' }}>
               {t.missionTitle}
             </h3>
             <p style={{ fontSize: '13.5px', color: '#475569', margin: 0, lineHeight: 1.65 }}>
@@ -416,7 +419,7 @@ export default function AboutPage() {
             <div style={{ width: '36px', height: '36px', borderRadius: '12px', background: '#FFFBEB', border: '1px solid #FDE68A', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '14px' }}>
               <Sparkles size={20} color="#CA8A04" />
             </div>
-            <h3 style={{ fontSize: '17px', fontWeight: 600, color: '#0F172A', margin: '0 0 8px 0' }}>
+            <h3 style={{ fontSize: '17px', fontWeight: 700, color: '#0F172A', margin: '0 0 8px 0' }}>
               {t.visionTitle}
             </h3>
             <p style={{ fontSize: '13.5px', color: '#475569', margin: 0, lineHeight: 1.65 }}>
@@ -435,14 +438,14 @@ export default function AboutPage() {
           boxShadow: '0 6px 20px -4px rgba(15, 23, 42, 0.04)'
         }}>
           <div style={{ marginBottom: '16px' }}>
-            <h3 style={{ fontSize: '20px', fontWeight: 600, color: '#0F172A', margin: '0 0 6px 0' }}>
+            <h3 style={{ fontSize: '19px', fontWeight: 700, color: '#0F172A', margin: '0 0 6px 0' }}>
               {t.whyTitle}
             </h3>
           </div>
 
           <div style={{ fontSize: '14px', color: '#334155', lineHeight: 1.65, display: 'flex', flexDirection: 'column', gap: '12px' }}>
             <p style={{ margin: 0 }}>{t.whyDesc1}</p>
-            <p style={{ margin: 0, fontWeight: 600, color: '#0F5132' }}>{t.whyDesc2}</p>
+            <p style={{ margin: 0, fontWeight: 700, color: '#0F5132' }}>{t.whyDesc2}</p>
           </div>
         </section>
 
@@ -456,7 +459,7 @@ export default function AboutPage() {
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
             <Heart size={18} color="#D97706" />
-            <h3 style={{ fontSize: '18px', fontWeight: 600, color: '#78350F', margin: 0 }}>
+            <h3 style={{ fontSize: '18px', fontWeight: 700, color: '#78350F', margin: 0 }}>
               {t.storyTitle}
             </h3>
           </div>
@@ -482,8 +485,8 @@ export default function AboutPage() {
               padding: '10px 14px', 
               backgroundColor: '#FEF3C7', 
               borderRadius: '12px', 
-              border: '1px solid #FDE68A',
-              fontWeight: 700,
+              border: '1px solid #FDE68A', 
+              fontWeight: 700, 
               color: '#78350F',
               fontSize: '13px'
             }}>
@@ -504,7 +507,7 @@ export default function AboutPage() {
           alignItems: 'center',
           gap: '12px'
         }}>
-          <h4 style={{ fontSize: '17px', fontWeight: 600, color: '#0F172A', margin: 0 }}>
+          <h4 style={{ fontSize: '17px', fontWeight: 700, color: '#0F172A', margin: 0 }}>
             {t.contactTitle}
           </h4>
           <p style={{ fontSize: '13.5px', color: '#64748B', margin: 0 }}>
@@ -530,7 +533,7 @@ export default function AboutPage() {
             <span>{t.emailLabel} saarthiguide0@gmail.com</span>
           </a>
           <p style={{ marginTop: '14px', fontSize: '11.5px', color: '#94A3B8', fontWeight: 500, margin: 0 }}>
-            Saarthi is an independent guide founded by Sunil Thatra. Not affiliated with Tirumala Tirupati Devasthanams.
+            {t.footerNote}
           </p>
         </footer>
 
