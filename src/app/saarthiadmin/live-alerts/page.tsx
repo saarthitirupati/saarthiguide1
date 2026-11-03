@@ -5,11 +5,14 @@ import {
   AlertCircle, Plus, Trash2, ShieldCheck, 
   Send, Users, Eye, HelpCircle, X, CheckCircle,
   Bell, Wifi, Battery, Settings, Clock, MapPin, AlertTriangle,
-  Edit3, Sparkles, Search, Filter, History, RotateCcw, Smartphone, RefreshCw
+  Edit3, Sparkles, Search, Filter, History, RotateCcw, Smartphone, RefreshCw,
+  Zap, Activity
 } from 'lucide-react';
 import styles from './alerts.module.css';
 import { notifyRealtimeUpdate } from '@/lib/useRealtimeStatus';
 import { sendTestNotification } from '@/lib/pushClient';
+import { supabase } from '@/lib/supabase';
+import type { TirumalaStatus } from '@/lib/statusDb';
 
 interface LiveAlert {
   id: string;
@@ -132,6 +135,24 @@ export default function AdminAlertsPage() {
 
   // Realtime updates
   const { isConnected } = useLiveRefresh('alerts');
+  const [isRealtimeActive, setIsRealtimeActive] = useState(false);
+
+  // Live ticking clock (ticks every 1000ms for live countdowns)
+  const [currentTime, setCurrentTime] = useState<number>(Date.now());
+  useEffect(() => {
+    const timer = setInterval(() => setCurrentTime(Date.now()), 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  // Live Tirumala status data
+  const [liveStatus, setLiveStatus] = useState<TirumalaStatus | null>(null);
+
+  const fetchLiveTirumalaStatus = async () => {
+    try {
+      const data = await safeFetchJson<TirumalaStatus>('/api/v1/status?t=' + Date.now());
+      if (data) setLiveStatus(data);
+    } catch {}
+  };
 
   // Form states
   const [title, setTitle] = useState('');
@@ -186,7 +207,65 @@ export default function AdminAlertsPage() {
   useEffect(() => {
     fetchAlerts();
     fetchSubscribers();
-  }, [isConnected]); // Refetch if connection establishes/drops as a safety measure
+    fetchLiveTirumalaStatus();
+
+    // 1. Dynamic 15-second background polling
+    const pollInterval = setInterval(() => {
+      if (typeof document === 'undefined' || !document.hidden) {
+        fetchAlerts();
+        fetchSubscribers();
+        fetchLiveTirumalaStatus();
+      }
+    }, 15000);
+
+    // 2. Cross-tab & local window event listeners
+    const handleLiveEvent = () => {
+      fetchAlerts();
+      fetchSubscribers();
+    };
+    window.addEventListener('saarthi:live_update', handleLiveEvent);
+
+    const handleStorage = (e: StorageEvent) => {
+      if (e.key === 'saarthi_last_live_update') {
+        fetchAlerts();
+      }
+    };
+    window.addEventListener('storage', handleStorage);
+
+    let bc: BroadcastChannel | null = null;
+    try {
+      bc = new BroadcastChannel('saarthi_admin_channel');
+      bc.onmessage = () => {
+        fetchAlerts();
+      };
+    } catch {}
+
+    // 3. Supabase Realtime channel on live_updates table
+    const channel = supabase
+      .channel('realtime:live_alerts_admin')
+      .on(
+        'postgres_changes',
+        { event: '*', schema: 'public', table: 'live_updates' },
+        () => {
+          fetchAlerts();
+        }
+      )
+      .subscribe((status) => {
+        if (status === 'SUBSCRIBED') {
+          setIsRealtimeActive(true);
+        } else if (status === 'CHANNEL_ERROR' || status === 'CLOSED') {
+          setIsRealtimeActive(false);
+        }
+      });
+
+    return () => {
+      clearInterval(pollInterval);
+      window.removeEventListener('saarthi:live_update', handleLiveEvent);
+      window.removeEventListener('storage', handleStorage);
+      if (bc) bc.close();
+      supabase.removeChannel(channel);
+    };
+  }, []);
 
   const handleTestPush = async () => {
     setPushStatus('Sending test notification...');
@@ -508,23 +587,32 @@ export default function AdminAlertsPage() {
     setMobileTab('form');
   };
 
-  const nowMs = Date.now();
+  function formatCountdown(targetMs: number, nowMs: number): string {
+    const diff = Math.max(0, targetMs - nowMs);
+    const totalSeconds = Math.floor(diff / 1000);
+    const hours = Math.floor(totalSeconds / 3600);
+    const minutes = Math.floor((totalSeconds % 3600) / 60);
+    const seconds = totalSeconds % 60;
+    const pad = (n: number) => String(n).padStart(2, '0');
+    return `${pad(hours)}h ${pad(minutes)}m ${pad(seconds)}s`;
+  }
+
   const isHistoryAlert = (a: LiveAlert) => {
     if (a.status === 'Expired' || a.status === 'Archived') return true;
-    if (a.expiry_time && new Date(a.expiry_time).getTime() <= nowMs) return true;
+    if (a.expiry_time && new Date(a.expiry_time).getTime() <= currentTime) return true;
     return false;
   };
 
   const isLiveAlert = (a: LiveAlert) => {
     if (a.status !== 'Published') return false;
-    if (a.start_time && new Date(a.start_time).getTime() > nowMs) return false;
-    if (a.expiry_time && new Date(a.expiry_time).getTime() <= nowMs) return false;
+    if (a.start_time && new Date(a.start_time).getTime() > currentTime) return false;
+    if (a.expiry_time && new Date(a.expiry_time).getTime() <= currentTime) return false;
     return true;
   };
 
   const isScheduledAlert = (a: LiveAlert) => {
     if (a.status === 'Scheduled') return true;
-    if (a.start_time && new Date(a.start_time).getTime() > nowMs && a.status !== 'Draft') return true;
+    if (a.start_time && new Date(a.start_time).getTime() > currentTime && a.status !== 'Draft') return true;
     return false;
   };
 
@@ -558,11 +646,11 @@ export default function AdminAlertsPage() {
   });
 
   const getRelativeTimeBadge = (alertItem: LiveAlert) => {
-    const now = Date.now();
     if (isHistoryAlert(alertItem)) {
       const exp = alertItem.expiry_time ? new Date(alertItem.expiry_time).getTime() : 0;
-      if (exp && exp <= now) {
-        const diffMins = Math.round((now - exp) / 60000);
+      if (exp && exp <= currentTime) {
+        const diffMins = Math.round((currentTime - exp) / 60000);
+        if (diffMins < 1) return { text: 'Expired just now', className: styles.relativeTimeExpired };
         if (diffMins < 60) return { text: `Expired ${diffMins}m ago`, className: styles.relativeTimeExpired };
         const diffHours = Math.round(diffMins / 60);
         if (diffHours < 24) return { text: `Expired ${diffHours}h ago`, className: styles.relativeTimeExpired };
@@ -572,21 +660,24 @@ export default function AdminAlertsPage() {
     }
     if (isScheduledAlert(alertItem)) {
       const start = alertItem.start_time ? new Date(alertItem.start_time).getTime() : 0;
-      if (start > now) {
-        const diffMins = Math.round((start - now) / 60000);
-        if (diffMins < 60) return { text: `Starts in ${diffMins}m`, className: styles.relativeTimeUrgent };
-        const diffHours = Math.round(diffMins / 60);
-        return { text: `Starts in ${diffHours}h`, className: styles.relativeTimeUrgent };
+      if (start > currentTime) {
+        const diffMs = start - currentTime;
+        return { 
+          text: `Starts in ${formatCountdown(start, currentTime)}`, 
+          className: diffMs < 1800000 ? styles.countdownUrgent : styles.liveCountdownBadge 
+        };
       }
     }
     if (alertItem.expiry_time) {
       const exp = new Date(alertItem.expiry_time).getTime();
-      if (exp > now) {
-        const diffMins = Math.round((exp - now) / 60000);
-        if (diffMins < 60) return { text: `Expires in ${diffMins}m`, className: styles.relativeTimeUrgent };
-        const diffHours = Math.round(diffMins / 60);
-        if (diffHours < 4) return { text: `Expires in ${diffHours}h`, className: styles.relativeTimeUrgent };
-        return { text: `Expires in ${diffHours}h`, className: styles.relativeTimeBadge };
+      if (exp > currentTime) {
+        const diffMs = exp - currentTime;
+        const isCritical = diffMs < 900000; // < 15 mins
+        const isUrgent = diffMs < 3600000;   // < 1 hour
+        return { 
+          text: `Expires in ${formatCountdown(exp, currentTime)}`, 
+          className: `${styles.liveCountdownBadge} ${isCritical ? styles.countdownCritical : (isUrgent ? styles.countdownUrgent : '')}` 
+        };
       }
     }
     return null;
@@ -628,14 +719,14 @@ export default function AdminAlertsPage() {
               fontWeight: 700, 
               padding: '3px 8px', 
               borderRadius: '12px', 
-              backgroundColor: isConnected ? '#DCFCE7' : '#FEF3C7', 
-              color: isConnected ? '#15803D' : '#B45309',
+              backgroundColor: isRealtimeActive ? '#DCFCE7' : '#FEF3C7', 
+              color: isRealtimeActive ? '#15803D' : '#B45309',
               display: 'inline-flex',
               alignItems: 'center',
-              gap: '5px'
+              gap: '6px'
             }}>
-              <span style={{ width: '7px', height: '7px', borderRadius: '50%', backgroundColor: isConnected ? '#16A34A' : '#D97706', display: 'inline-block' }} />
-              {isConnected ? 'Live Sync Active' : 'Connecting...'}
+              <span className={isRealtimeActive ? styles.liveDot : ''} style={!isRealtimeActive ? { width: '7px', height: '7px', borderRadius: '50%', backgroundColor: '#D97706', display: 'inline-block' } : undefined} />
+              {isRealtimeActive ? 'Real-Time Sync Active' : 'Polling Active (15s)'}
             </span>
           </div>
           <p className={styles.subtitle}>Admin Controlled Emergency &amp; Important Pilgrim Notifications</p>
@@ -746,6 +837,86 @@ export default function AdminAlertsPage() {
                   ))}
                 </div>
               </div>
+
+              {/* ⚡ Live Tirumala Data Injector (1-Click) */}
+              {liveStatus && (
+                <div className={styles.liveDataContainer}>
+                  <div className={styles.liveDataHeader}>
+                    <span className={styles.liveDataTitle}>
+                      <Zap size={13} /> Live Tirumala Data Injector
+                    </span>
+                    <span style={{ fontSize: '10.5px', color: '#1E40AF', fontWeight: 600 }}>1-Click Insert to Alert</span>
+                  </div>
+                  <div className={styles.liveDataGrid}>
+                    <button
+                      type="button"
+                      className={styles.liveDataChip}
+                      onClick={() => {
+                        const snippet = `Current Darshan wait time: ${liveStatus.waitTime}.`;
+                        setDescription(prev => prev ? `${prev} ${snippet}` : snippet);
+                      }}
+                      title="Insert wait time to description"
+                    >
+                      <span className={styles.liveDataChipIcon}>⏱️</span>
+                      <span>Wait Time: <strong>{liveStatus.waitTime}</strong></span>
+                    </button>
+
+                    <button
+                      type="button"
+                      className={styles.liveDataChip}
+                      onClick={() => {
+                        const snippet = `Tirumala crowd level is currently ${liveStatus.crowdLevel.toUpperCase()}.`;
+                        setDescription(prev => prev ? `${prev} ${snippet}` : snippet);
+                      }}
+                      title="Insert crowd level to description"
+                    >
+                      <span className={styles.liveDataChipIcon}>👥</span>
+                      <span>Crowd: <strong style={{ textTransform: 'capitalize' }}>{liveStatus.crowdLevel}</strong></span>
+                    </button>
+
+                    <button
+                      type="button"
+                      className={styles.liveDataChip}
+                      onClick={() => {
+                        const snippet = `SSD Token counters are currently ${liveStatus.ssdTokenStatus}.`;
+                        setDescription(prev => prev ? `${prev} ${snippet}` : snippet);
+                      }}
+                      title="Insert SSD token status to description"
+                    >
+                      <span className={styles.liveDataChipIcon}>🎟️</span>
+                      <span>SSD Tokens: <strong style={{ textTransform: 'capitalize' }}>{liveStatus.ssdTokenStatus}</strong></span>
+                    </button>
+
+                    <button
+                      type="button"
+                      className={styles.liveDataChip}
+                      onClick={() => {
+                        const snippet = `Hilltop accommodation availability is ${liveStatus.accommodationStatus}.`;
+                        setDescription(prev => prev ? `${prev} ${snippet}` : snippet);
+                      }}
+                      title="Insert accommodation status to description"
+                    >
+                      <span className={styles.liveDataChipIcon}>🏨</span>
+                      <span>Rooms: <strong style={{ textTransform: 'capitalize' }}>{liveStatus.accommodationStatus}</strong></span>
+                    </button>
+
+                    {liveStatus.weather && (
+                      <button
+                        type="button"
+                        className={styles.liveDataChip}
+                        onClick={() => {
+                          const snippet = `Weather at Tirumala hills: ${liveStatus.weather}.`;
+                          setDescription(prev => prev ? `${prev} ${snippet}` : snippet);
+                        }}
+                        title="Insert weather report to description"
+                      >
+                        <span className={styles.liveDataChipIcon}>⛅</span>
+                        <span>Weather: <strong>{liveStatus.weather}</strong></span>
+                      </button>
+                    )}
+                  </div>
+                </div>
+              )}
               
               <form onSubmit={(e) => handleCreateAlert(e, false)}>
                 <div className={styles.formGroup}>
