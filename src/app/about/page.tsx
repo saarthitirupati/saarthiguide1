@@ -2,12 +2,15 @@
 
 import React from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { 
   ArrowLeft, Sparkles, Target, Compass, Heart, ShieldCheck, 
   MapPin, Award, CheckCircle2, Mail, Globe, Users, ExternalLink,
   BookOpen, Wrench, Search, User
 } from 'lucide-react';
 import { useLanguage } from '@/lib/useLanguage';
+
+const PASSPORT_PHOTO_URL = '/images/places/img_1_passportsize_f7dyq3.jpg';
 
 const TEXTS = {
   en: {
@@ -282,21 +285,24 @@ export default function AboutPage() {
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '18px', flexWrap: 'wrap' }}>
-              {/* Founder Avatar Icon */}
+              {/* Founder Photo */}
               <div style={{ 
                 position: 'relative', 
-                width: '76px', 
-                height: '76px', 
+                width: '92px', 
+                height: '92px', 
                 borderRadius: '22px', 
-                background: 'linear-gradient(135deg, #F0FDF4 0%, #DCFCE7 100%)', 
-                border: '2px solid #86EFAC', 
-                boxShadow: '0 8px 18px rgba(22, 163, 74, 0.15)', 
-                display: 'flex', 
-                alignItems: 'center', 
-                justifyContent: 'center', 
+                overflow: 'hidden', 
+                border: '3px solid #C89B3C', 
+                boxShadow: '0 8px 20px rgba(200, 155, 60, 0.25)', 
                 flexShrink: 0 
               }}>
-                <User size={36} color="#15803D" />
+                <Image 
+                  src={PASSPORT_PHOTO_URL} 
+                  alt="Sunil Thatra - Founder & Lead Creator, Saarthi Guide"
+                  fill
+                  style={{ objectFit: 'cover' }}
+                  unoptimized
+                />
               </div>
 
               <div>
