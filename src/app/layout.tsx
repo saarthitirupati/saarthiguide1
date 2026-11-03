@@ -13,15 +13,15 @@ const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.saarthiguide.in
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
   title: {
-    default: "Saarthi Guide - Offline Tirumala Guide & Tirupati Guide App by Engineering Students",
+    default: "Saarthi Guide - Offline Tirumala Guide & Tirupati Guide App",
     template: "%s | Saarthi Guide"
   },
-  description: "Saarthi Guide is an independent offline Tirumala & Tirupati pilgrimage guide built by a team of BTech engineering students. Verified pilgrim rooms, direct zero-commission cabs, live darshan wait times & offline maps.",
-  authors: [{ name: "BTech Engineering Students Team" }],
-  creator: "BTech Engineering Students Team",
+  description: "Saarthi Guide is an independent offline Tirumala & Tirupati pilgrimage guide built by Sunil Thatra. Verified pilgrim rooms, direct zero-commission cabs, live darshan wait times & offline maps.",
+  authors: [{ name: "Sunil Thatra", url: "https://www.linkedin.com/in/sunil-t-39a905315/" }],
+  creator: "Sunil Thatra",
   keywords: [
     "saarthi guide", "saarthi", "sarthi guide", "sarthi", "saarthiguide.in",
-    "tirumala guide", "tirupati guide", "offline tirumala guide app", "app made by btech students for tirumala trip", "tirumala trip app", "sarva darshan", "ssd token",
+    "tirumala guide", "tirupati guide", "offline tirumala guide app", "tirumala trip app", "sunil thatra", "saarthi founder sunil thatra", "sarva darshan", "ssd token",
     "tirupati guide", "tirumala guide", "tirupati travel guide",
     "tirupati rooms", "rooms in tirupati", "rooms near tirupati station", "tirupati stay", "pilgrim stays tirupati", "mutt rooms tirupati",
     "tirupati cab", "tirupati car rental", "tirupati to tirumala cab", "tirupati airport cab", "tirumala taxi",
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
   ],
   openGraph: {
     title: "Saarthi Guide - Offline Tirumala & Tirupati Guide App",
-    description: "The independent, offline-first companion for Tirumala Tirupati pilgrims. Built by BTech engineering students.",
+    description: "The independent, offline-first companion for Tirumala Tirupati pilgrims founded by Sunil Thatra.",
     type: "website",
     url: baseUrl,
     siteName: "Saarthi Guide",
@@ -47,7 +47,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     title: "Saarthi Guide - Offline Tirumala & Tirupati Guide App",
-    description: "The independent, offline-first companion for Tirumala Tirupati pilgrims. Built by BTech engineering students.",
+    description: "The independent, offline-first companion for Tirumala Tirupati pilgrims founded by Sunil Thatra.",
     images: [`${baseUrl}/twitter-image`],
   },
   verification: {
@@ -103,9 +103,9 @@ const jsonLdSchema = {
       "@id": `${baseUrl}/#organization`,
       "name": "Saarthi Guide",
       "alternateName": ["Saarthi", "Sarthi", "Saarthi App", "Saarthi Tirupati Guide"],
-      "description": "Saarthi is an independent offline guide for Tirumala Tirupati pilgrims built by a team of BTech engineering students.",
+      "description": "Saarthi is an independent offline guide for Tirumala Tirupati pilgrims founded by Sunil Thatra.",
       "url": baseUrl,
-      "founder": { "@type": "Organization", "name": "BTech Engineering Students Team" },
+      "founder": { "@type": "Person", "name": "Sunil Thatra", "url": "https://www.linkedin.com/in/sunil-t-39a905315/" },
       "foundingDate": "2024"
     },
     {
@@ -113,7 +113,7 @@ const jsonLdSchema = {
       "@id": `${baseUrl}/#localbusiness`,
       "name": "Saarthi Guide - Tirupati Rooms, Cabs & Pilgrim Guide",
       "alternateName": ["Saarthi", "Sarthi", "Saarthi Guide"],
-      "description": "Verified pilgrim stays, mutt rooms, zero-commission cab booking, offline maps and live darshan guide for Tirumala and Tirupati built by a team of BTech engineering students.",
+      "description": "Verified pilgrim stays, mutt rooms, zero-commission cab booking, offline maps and live darshan guide for Tirumala and Tirupati founded by Sunil Thatra.",
       "url": baseUrl,
       "telephone": "+91-9398542837",
       "priceRange": "₹₹",
@@ -142,26 +142,30 @@ const jsonLdSchema = {
       "name": "Saarthi Guide",
       "applicationCategory": "TravelApplication",
       "operatingSystem": "Android, Web",
-      "description": "Offline Tirumala & Tirupati pilgrimage guide app built by BTech 3rd year engineering students.",
+      "description": "Offline Tirumala & Tirupati pilgrimage guide app founded by Sunil Thatra.",
       "url": baseUrl
+    },
+    {
+      "@type": "Person",
+      "@id": `${baseUrl}/about/#founder`,
+      "name": "Sunil Thatra",
+      "jobTitle": "Founder & Lead Creator",
+      "description": "Founder & Lead Creator of Saarthi Guide",
+      "url": `${baseUrl}/about`,
+      "sameAs": ["https://www.linkedin.com/in/sunil-t-39a905315/"]
     },
     {
       "@type": "FAQPage",
       "mainEntity": [
         {
           "@type": "Question",
-          "name": "What is the app made by BTech students for Tirumala trip?",
-          "acceptedAnswer": { "@type": "Answer", "text": "The app made by BTech students for the Tirumala trip is Saarthi Guide (saarthiguide.in). Developed by a team of BTech 3rd year engineering students based on field research with 100+ pilgrims in Tirupati, it provides offline maps, verified room contacts, direct cab bookings, and live darshan updates. It is an independent guide not affiliated with TTD." }
-        },
-        {
-          "@type": "Question",
           "name": "What is Saarthi Guide (Sarthi)?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Saarthi Guide (also known as Sarthi) is an independent offline companion for Tirumala Tirupati pilgrims built by a team of BTech engineering students. It provides verified pilgrim room options, direct cab contacts, offline maps, and live darshan guidance." }
+          "acceptedAnswer": { "@type": "Answer", "text": "Saarthi Guide (also known as Sarthi) is an independent offline companion for Tirumala Tirupati pilgrims founded by Sunil Thatra. It provides verified pilgrim room options, direct cab contacts, offline maps, and live darshan guidance." }
         },
         {
           "@type": "Question",
-          "name": "Who made Saarthi Guide?",
-          "acceptedAnswer": { "@type": "Answer", "text": "Saarthi Guide was developed by a team of BTech 3rd year engineering students following on-ground research with over 100+ pilgrims at Tirupati Railway Station, Bus Stand, and Alipiri to solve problems with rooms, cabs, offline maps, and darshan queues." }
+          "name": "Who founded Saarthi Guide?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Saarthi Guide was founded by Sunil Thatra following on-ground field research with over 100+ pilgrims across Tirupati and Tirumala to eliminate middleman commissions and solve offline hill navigation." }
         },
         {
           "@type": "Question",

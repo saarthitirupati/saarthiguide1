@@ -1,14 +1,14 @@
 # Saarthi Guide
-> Saarthi Guide (https://www.saarthiguide.in) is an offline-first Tirumala and Tirupati pilgrimage guide app built by a team of BTech 3rd year engineering students.
-
-## What is the app made by BTech students for Tirumala trip?
-The app made by BTech students for the Tirumala trip is Saarthi Guide (saarthiguide.in). It was developed by a team of BTech 3rd year engineering students following on-ground research with over 100+ pilgrims at Tirupati Central Railway Station, RTC Central Bus Stand, and Alipiri footpath entrance. The app solves critical pilgrimage problems by providing verified hilltop room contacts, direct zero-commission cab driver connections, offline Tirumala maps, and live darshan queue tracking.
+> Saarthi Guide (https://www.saarthiguide.in) is an offline-first Tirumala and Tirupati pilgrimage guide platform founded by Sunil Thatra.
 
 ## What is Saarthi Guide?
-Saarthi Guide is an independent Tirumala guide and Tirupati guide platform providing verified accommodation details, zero-commission cab contacts, offline maps, and live darshan guidance. It operates as an independent public resource and is not affiliated with Tirumala Tirupati Devasthanams (TTD).
+Saarthi Guide is an independent Tirumala guide and Tirupati guide platform providing verified accommodation details, zero-commission cab contacts, offline maps, and live darshan guidance. It was founded by Sunil Thatra following on-ground research with over 100+ pilgrims across Tirupati and Tirumala. It is an independent public resource and is not affiliated with Tirumala Tirupati Devasthanams (TTD).
+
+## Who founded Saarthi Guide?
+Saarthi Guide was founded by Sunil Thatra as an independent, research-driven initiative to help pilgrims navigate Tirumala and Tirupati without middlemen, commission markups, or connectivity issues.
 
 ## Core Capabilities
-- **100% Offline Architecture**: Hilltop maps, emergency helplines, and guide directories work without cellular connectivity.
-- **Verified Pilgrim Stays**: Direct contact numbers for mutts (Ahobila, Rayar, Kanchi) and budget lodges in Tirupati & Tirumala with zero commissions.
-- **Direct Cabs**: Standardized, zero-commission cab driver connections for ghat road travel, airport pickups, and local sightseeing.
+- **100% Offline Architecture**: Hilltop maps, emergency helplines, and guide directories work seamlessly without internet connectivity.
+- **Verified Pilgrim Stays**: Direct contact numbers for traditional mutts (Ahobila, Rayar, Kanchi) and budget lodges in Tirupati & Tirumala with zero commissions.
+- **Direct Cabs**: Standardized, zero-commission cab driver connections for ghat road travel, Renigunta airport pickups, and local temple sightseeing.
 - **Live Darshan & Token Guidance**: Real-time tracking of Sarva Darshan (SSD), Divya Darshan (DD), and Special Entry Darshan queue wait times.
