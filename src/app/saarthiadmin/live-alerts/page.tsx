@@ -5,7 +5,7 @@ import {
   AlertCircle, Plus, Trash2, ShieldCheck, 
   Send, Users, Eye, HelpCircle, X, CheckCircle,
   Bell, Wifi, Battery, Settings, Clock, MapPin, AlertTriangle,
-  Edit3, Sparkles
+  Edit3, Sparkles, Search, Filter, History, RotateCcw, Smartphone, RefreshCw
 } from 'lucide-react';
 import styles from './alerts.module.css';
 import { notifyRealtimeUpdate } from '@/lib/useRealtimeStatus';
@@ -117,6 +117,18 @@ export default function AdminAlertsPage() {
   const [editingAlertId, setEditingAlertId] = useState<string | null>(null);
   const [publishingId, setPublishingId] = useState<string | null>(null);
   const [mobileTab, setMobileTab] = useState<'form' | 'preview'>('form');
+
+  // Dynamic Tab & Filter states
+  type FilterTab = 'all' | 'live' | 'draft' | 'scheduled' | 'history';
+  const [activeTab, setActiveTab] = useState<FilterTab>('all');
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
+  const [selectedLocation, setSelectedLocation] = useState<string>('all');
+
+  // Dynamic Device Mockup Preview states
+  const [selectedAlertForPreview, setSelectedAlertForPreview] = useState<LiveAlert | null>(null);
+  type PreviewMode = 'inapp' | 'lockscreen' | 'fullscreen';
+  const [previewMode, setPreviewMode] = useState<PreviewMode>('inapp');
 
   // Realtime updates
   const { isConnected } = useLiveRefresh('alerts');
@@ -479,6 +491,129 @@ export default function AdminAlertsPage() {
     }
   };
 
+  const handleReactivateAlert = (alertItem: LiveAlert) => {
+    setTitle(alertItem.title || '');
+    setDescription(alertItem.description || '');
+    setImageUrl(alertItem.image || '');
+    setCategory(alertItem.category || 'Advisory');
+    setSeverity(alertItem.severity || 'Medium');
+    setPopupType(alertItem.popup_type === 'Fullscreen' ? 'Fullscreen' : 'Popup');
+    setCta(alertItem.cta || 'None');
+    setTargetLocation(alertItem.target_location || 'All Users');
+    setExpiryHours(24);
+    setPublishTiming('immediate');
+    setScheduledDateTime('');
+    setEditingAlertId(null);
+    setShowCreateForm(true);
+    setMobileTab('form');
+  };
+
+  const nowMs = Date.now();
+  const isHistoryAlert = (a: LiveAlert) => {
+    if (a.status === 'Expired' || a.status === 'Archived') return true;
+    if (a.expiry_time && new Date(a.expiry_time).getTime() <= nowMs) return true;
+    return false;
+  };
+
+  const isLiveAlert = (a: LiveAlert) => {
+    if (a.status !== 'Published') return false;
+    if (a.start_time && new Date(a.start_time).getTime() > nowMs) return false;
+    if (a.expiry_time && new Date(a.expiry_time).getTime() <= nowMs) return false;
+    return true;
+  };
+
+  const isScheduledAlert = (a: LiveAlert) => {
+    if (a.status === 'Scheduled') return true;
+    if (a.start_time && new Date(a.start_time).getTime() > nowMs && a.status !== 'Draft') return true;
+    return false;
+  };
+
+  const isDraftAlert = (a: LiveAlert) => {
+    return a.status === 'Draft';
+  };
+
+  const liveCount = alerts.filter(isLiveAlert).length;
+  const draftCount = alerts.filter(isDraftAlert).length;
+  const scheduledCount = alerts.filter(isScheduledAlert).length;
+  const historyCount = alerts.filter(isHistoryAlert).length;
+
+  const filteredAlerts = alerts.filter(a => {
+    if (activeTab === 'live' && !isLiveAlert(a)) return false;
+    if (activeTab === 'draft' && !isDraftAlert(a)) return false;
+    if (activeTab === 'scheduled' && !isScheduledAlert(a)) return false;
+    if (activeTab === 'history' && !isHistoryAlert(a)) return false;
+
+    if (searchQuery.trim()) {
+      const q = searchQuery.toLowerCase();
+      const matchTitle = a.title?.toLowerCase().includes(q);
+      const matchDesc = a.description?.toLowerCase().includes(q);
+      const matchLoc = a.target_location?.toLowerCase().includes(q);
+      if (!matchTitle && !matchDesc && !matchLoc) return false;
+    }
+
+    if (selectedCategory !== 'all' && a.category !== selectedCategory) return false;
+    if (selectedLocation !== 'all' && a.target_location !== selectedLocation) return false;
+
+    return true;
+  });
+
+  const getRelativeTimeBadge = (alertItem: LiveAlert) => {
+    const now = Date.now();
+    if (isHistoryAlert(alertItem)) {
+      const exp = alertItem.expiry_time ? new Date(alertItem.expiry_time).getTime() : 0;
+      if (exp && exp <= now) {
+        const diffMins = Math.round((now - exp) / 60000);
+        if (diffMins < 60) return { text: `Expired ${diffMins}m ago`, className: styles.relativeTimeExpired };
+        const diffHours = Math.round(diffMins / 60);
+        if (diffHours < 24) return { text: `Expired ${diffHours}h ago`, className: styles.relativeTimeExpired };
+        return { text: `Expired on ${new Date(exp).toLocaleDateString('en-IN')}`, className: styles.relativeTimeExpired };
+      }
+      return { text: 'Expired', className: styles.relativeTimeExpired };
+    }
+    if (isScheduledAlert(alertItem)) {
+      const start = alertItem.start_time ? new Date(alertItem.start_time).getTime() : 0;
+      if (start > now) {
+        const diffMins = Math.round((start - now) / 60000);
+        if (diffMins < 60) return { text: `Starts in ${diffMins}m`, className: styles.relativeTimeUrgent };
+        const diffHours = Math.round(diffMins / 60);
+        return { text: `Starts in ${diffHours}h`, className: styles.relativeTimeUrgent };
+      }
+    }
+    if (alertItem.expiry_time) {
+      const exp = new Date(alertItem.expiry_time).getTime();
+      if (exp > now) {
+        const diffMins = Math.round((exp - now) / 60000);
+        if (diffMins < 60) return { text: `Expires in ${diffMins}m`, className: styles.relativeTimeUrgent };
+        const diffHours = Math.round(diffMins / 60);
+        if (diffHours < 4) return { text: `Expires in ${diffHours}h`, className: styles.relativeTimeUrgent };
+        return { text: `Expires in ${diffHours}h`, className: styles.relativeTimeBadge };
+      }
+    }
+    return null;
+  };
+
+  const titleLen = title.length;
+  const descLen = description.length;
+
+  const activePreviewAlert = showCreateForm
+    ? (title.trim() ? {
+        id: editingAlertId || 'form-preview',
+        title,
+        description,
+        image: imageUrl.trim(),
+        category,
+        severity,
+        popup_type: popupType,
+        cta,
+        target_location: targetLocation,
+        status: (editingAlertId ? 'Draft' : 'Published') as LiveAlert['status'],
+        start_time: new Date().toISOString(),
+        expiry_time: new Date(Date.now() + expiryHours * 3600000).toISOString(),
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString()
+      } : null)
+    : (selectedAlertForPreview || filteredAlerts[0] || alerts[0] || null);
+
   return (
     <div className={styles.container}>
       <header className={styles.header}>
@@ -488,6 +623,20 @@ export default function AdminAlertsPage() {
             <span className={styles.subscribersBadge}>
               <Users size={13} /> {subscriberCount} Push Subscribers
             </span>
+            <span style={{ 
+              fontSize: '11px', 
+              fontWeight: 700, 
+              padding: '3px 8px', 
+              borderRadius: '12px', 
+              backgroundColor: isConnected ? '#DCFCE7' : '#FEF3C7', 
+              color: isConnected ? '#15803D' : '#B45309',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '5px'
+            }}>
+              <span style={{ width: '7px', height: '7px', borderRadius: '50%', backgroundColor: isConnected ? '#16A34A' : '#D97706', display: 'inline-block' }} />
+              {isConnected ? 'Live Sync Active' : 'Connecting...'}
+            </span>
           </div>
           <p className={styles.subtitle}>Admin Controlled Emergency &amp; Important Pilgrim Notifications</p>
           {pushStatus && (
@@ -496,14 +645,22 @@ export default function AdminAlertsPage() {
             </div>
           )}
         </div>
-        <div style={{ display: 'flex', gap: '10px' }}>
+        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+          <button
+            type="button"
+            className={styles.testPushBtn}
+            onClick={() => fetchAlerts()}
+            title="Refresh alerts data from server"
+          >
+            <RefreshCw size={13} /> Refresh
+          </button>
           <button
             type="button"
             className={styles.testPushBtn}
             onClick={handleTestPush}
             title="Trigger a test push notification on this browser"
           >
-            <Bell size={14} /> Test Push on Device
+            <Bell size={13} /> Test Push
           </button>
           <button 
             className={styles.createBtn} 
@@ -515,7 +672,7 @@ export default function AdminAlertsPage() {
               }
             }}
           >
-            {showCreateForm ? <X size={16} /> : <Plus size={16} />}
+            {showCreateForm ? <X size={15} /> : <Plus size={15} />}
             {showCreateForm ? (editingAlertId ? 'Cancel Edit' : 'Close Form') : 'Create Alert'}
           </button>
         </div>
@@ -592,7 +749,12 @@ export default function AdminAlertsPage() {
               
               <form onSubmit={(e) => handleCreateAlert(e, false)}>
                 <div className={styles.formGroup}>
-                  <label className={styles.label}>Alert Title</label>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <label className={styles.label}>Alert Title</label>
+                    <span className={titleLen <= 50 ? styles.charOk : (titleLen <= 65 ? styles.charWarn : styles.charAlert)} style={{ fontSize: '11px', fontWeight: 700 }}>
+                      {titleLen}/65
+                    </span>
+                  </div>
                   <input 
                     type="text" 
                     className={styles.input} 
@@ -601,10 +763,19 @@ export default function AdminAlertsPage() {
                     onChange={(e) => setTitle(e.target.value)}
                     required
                   />
+                  <div className={styles.charCounter}>
+                    <span>Recommended for mobile lockscreens: &le; 65 chars</span>
+                    {titleLen > 65 && <span className={styles.charAlert}>May truncate on mobile lockscreen</span>}
+                  </div>
                 </div>
 
                 <div className={styles.formGroup}>
-                  <label className={styles.label}>Alert Description</label>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <label className={styles.label}>Alert Description</label>
+                    <span className={descLen <= 110 ? styles.charOk : (descLen <= 140 ? styles.charWarn : styles.charAlert)} style={{ fontSize: '11px', fontWeight: 700 }}>
+                      {descLen}/140
+                    </span>
+                  </div>
                   <textarea 
                     className={styles.textarea} 
                     placeholder="e.g. Heavy rainfall reported around Papavinasam. Carry umbrellas and avoid hill walking routes." 
@@ -612,6 +783,10 @@ export default function AdminAlertsPage() {
                     onChange={(e) => setDescription(e.target.value)}
                     required
                   />
+                  <div className={styles.charCounter}>
+                    <span>Recommended body length: &le; 140 chars</span>
+                    {descLen > 140 && <span className={styles.charAlert}>Requires user to expand on mobile</span>}
+                  </div>
                 </div>
 
                 <div className={styles.formGroup}>
@@ -877,153 +1052,406 @@ export default function AdminAlertsPage() {
             </div>
           ) : (
             <div className={styles.card}>
-              <h2 style={{ fontSize: '18px', fontWeight: 800, margin: '0 0 16px 0', color: '#1E293B' }}>
-                Active &amp; Live Alerts
-              </h2>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '14px', flexWrap: 'wrap', gap: '8px' }}>
+                <h2 style={{ fontSize: '18px', fontWeight: 800, margin: 0, color: '#1E293B', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  Alerts Control &amp; History
+                </h2>
+                <span style={{ fontSize: '12px', color: '#64748B', fontWeight: 600 }}>
+                  Showing {filteredAlerts.length} of {alerts.length} alerts
+                </span>
+              </div>
+
+              {/* Dynamic Filter Tabs */}
+              <div className={styles.filterTabsContainer}>
+                <button
+                  type="button"
+                  className={`${styles.filterTabBtn} ${activeTab === 'all' ? styles.filterTabBtnActive : ''}`}
+                  onClick={() => setActiveTab('all')}
+                >
+                  <span>All</span>
+                  <span className={styles.filterCountBadge}>{alerts.length}</span>
+                </button>
+                <button
+                  type="button"
+                  className={`${styles.filterTabBtn} ${activeTab === 'live' ? styles.filterTabBtnActive : ''}`}
+                  onClick={() => setActiveTab('live')}
+                >
+                  <span>🟢 Active / Live</span>
+                  <span className={styles.filterCountBadge}>{liveCount}</span>
+                </button>
+                <button
+                  type="button"
+                  className={`${styles.filterTabBtn} ${activeTab === 'draft' ? styles.filterTabBtnActive : ''}`}
+                  onClick={() => setActiveTab('draft')}
+                >
+                  <span>📝 Drafts</span>
+                  <span className={styles.filterCountBadge}>{draftCount}</span>
+                </button>
+                <button
+                  type="button"
+                  className={`${styles.filterTabBtn} ${activeTab === 'scheduled' ? styles.filterTabBtnActive : ''}`}
+                  onClick={() => setActiveTab('scheduled')}
+                >
+                  <span>🕒 Scheduled</span>
+                  <span className={styles.filterCountBadge}>{scheduledCount}</span>
+                </button>
+                <button
+                  type="button"
+                  className={`${styles.filterTabBtn} ${activeTab === 'history' ? styles.filterTabBtnActive : ''}`}
+                  onClick={() => setActiveTab('history')}
+                >
+                  <History size={12} />
+                  <span>Past History</span>
+                  <span className={styles.filterCountBadge}>{historyCount}</span>
+                </button>
+              </div>
+
+              {/* Dynamic Search & Category Filter Bar */}
+              <div className={styles.searchFilterBar}>
+                <div className={styles.searchInputWrapper}>
+                  <Search size={14} className={styles.searchIcon} />
+                  <input
+                    type="text"
+                    className={styles.searchInput}
+                    placeholder="Search by title, description or location..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                  />
+                  {searchQuery && (
+                    <button
+                      type="button"
+                      onClick={() => setSearchQuery('')}
+                      style={{ position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)', background: 'none', border: 'none', color: '#94A3B8', cursor: 'pointer' }}
+                    >
+                      <X size={13} />
+                    </button>
+                  )}
+                </div>
+                <select
+                  className={styles.filterSelect}
+                  value={selectedCategory}
+                  onChange={(e) => setSelectedCategory(e.target.value)}
+                >
+                  <option value="all">All Categories</option>
+                  <option value="Emergency">🚨 Emergency</option>
+                  <option value="High Priority">⚠️ High Priority</option>
+                  <option value="Advisory">📢 Advisory</option>
+                  <option value="Information">ℹ️ Information</option>
+                </select>
+                <select
+                  className={styles.filterSelect}
+                  value={selectedLocation}
+                  onChange={(e) => setSelectedLocation(e.target.value)}
+                >
+                  <option value="all">All Audiences</option>
+                  <option value="All Users">All Connected Pilgrims</option>
+                  <option value="Tirumala">Tirumala Only</option>
+                  <option value="Tirupati">Tirupati Only</option>
+                  <option value="Alipiri">Alipiri Footpath</option>
+                  <option value="Nearby">Nearby (5km)</option>
+                </select>
+                {(searchQuery || selectedCategory !== 'all' || selectedLocation !== 'all') && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSearchQuery('');
+                      setSelectedCategory('all');
+                      setSelectedLocation('all');
+                    }}
+                    style={{ background: 'none', border: 'none', color: '#DC2626', fontSize: '11px', fontWeight: 700, cursor: 'pointer', padding: '0 6px' }}
+                  >
+                    Reset
+                  </button>
+                )}
+              </div>
 
               {loading ? (
-                <div style={{ padding: '40px', textAlign: 'center', color: '#64748B' }}>Loading alerts...</div>
-              ) : alerts.length === 0 ? (
-                <div style={{ padding: '40px', textAlign: 'center', color: '#94A3B8', fontSize: '13px' }}>
-                  No active live alerts currently running.
+                <div style={{ padding: '40px', textAlign: 'center', color: '#64748B' }}>
+                  <RefreshCw size={20} className={styles.spin} style={{ marginBottom: '8px' }} />
+                  <div>Loading live alerts...</div>
+                </div>
+              ) : filteredAlerts.length === 0 ? (
+                <div style={{ padding: '40px', textAlign: 'center', color: '#94A3B8', fontSize: '13px', background: '#F8FAFC', borderRadius: '12px', border: '1px dashed #CBD5E1' }}>
+                  <AlertCircle size={28} style={{ color: '#94A3B8', marginBottom: '8px' }} />
+                  <div>No alerts found matching the selected filter criteria.</div>
+                  {(searchQuery || selectedCategory !== 'all' || selectedLocation !== 'all' || activeTab !== 'all') && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setActiveTab('all');
+                        setSearchQuery('');
+                        setSelectedCategory('all');
+                        setSelectedLocation('all');
+                      }}
+                      style={{ marginTop: '10px', background: '#FFFFFF', border: '1px solid #CBD5E1', padding: '6px 12px', borderRadius: '6px', fontSize: '12px', fontWeight: 700, cursor: 'pointer', color: '#1E293B' }}
+                    >
+                      Show All Alerts
+                    </button>
+                  )}
                 </div>
               ) : (
                 <div className={styles.alertList}>
-                  {alerts.map((alert) => (
-                    <div 
-                      key={alert.id} 
-                      className={`${styles.alertItem} ${alert.status === 'Draft' ? styles.alertItemDraft : (alert.status === 'Expired' ? styles.alertItemExpired : '')}`} 
-                      style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}
-                    >
-                      {alert.image && (
-                        <img 
-                          src={alert.image} 
-                          alt={alert.title} 
-                          style={{ width: '64px', height: '52px', objectFit: 'cover', borderRadius: '8px', border: '1px solid #CBD5E1', flexShrink: 0, marginTop: '2px' }} 
-                          onError={(e) => { (e.target as HTMLElement).style.display = 'none'; }}
-                        />
-                      )}
-                      <div className={styles.alertInfo} style={{ flex: 1 }}>
-                        <div className={styles.alertHeader}>
-                          <span className={`${styles.tag} ${getCategoryClass(alert.category)}`}>
-                            {alert.category}
-                          </span>
-                          <span className={styles.statusBadge}>
-                            {alert.severity}
-                          </span>
-                          <span className={`${styles.statusBadge} ${alert.status === 'Published' ? styles.statusActive : (alert.status === 'Scheduled' ? styles.statusScheduled : (alert.status === 'Expired' ? styles.statusExpired : styles.statusDraft))}`}>
-                            {alert.status === 'Scheduled' ? '🕒 Scheduled' : (alert.status === 'Draft' ? '📝 Draft (Unpublished)' : (alert.status === 'Expired' ? '⏹️ Expired' : alert.status))}
-                          </span>
-                          <h3 className={styles.alertTitleText}>{alert.title}</h3>
-                        </div>
-                        <p className={styles.alertDescText}>{alert.description}</p>
-                        
-                        <div className={styles.alertMetaRow}>
-                          <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-                            <MapPin size={12} color="#64748B" /> {alert.target_location}
-                          </span>
-                          {alert.status === 'Scheduled' && alert.start_time ? (
-                            <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', color: '#B45309', fontWeight: 700 }}>
-                              <Clock size={12} color="#B45309" /> Starts: {new Date(alert.start_time).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata', dateStyle: 'short', timeStyle: 'short' })}
-                            </span>
-                          ) : (
-                            <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-                              <Clock size={12} color="#64748B" /> Expires: {new Date(alert.expiry_time).toLocaleTimeString()}
-                            </span>
-                          )}
-                          <span>Style: {alert.popup_type === 'Fullscreen' ? 'Fullscreen Emergency' : 'Centered Popup'}</span>
-                        </div>
-                      </div>
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', flexShrink: 0 }}>
-                        {alert.status === 'Draft' ? (
-                          <>
-                            <button 
-                              className={styles.editBtn}
-                              onClick={() => handleStartEdit(alert)}
-                              title="Edit draft in form"
-                            >
-                              <Edit3 size={11} /> Edit
-                            </button>
-                            <button 
-                              className={styles.publishNowBtn}
-                              disabled={publishingId === alert.id}
-                              onClick={() => handlePublishDraft(alert)}
-                              title="Publish this draft to public feed (no push notification)"
-                            >
-                              <Send size={11} /> {publishingId === alert.id ? 'Publishing...' : 'Publish Now'}
-                            </button>
-                            <button 
-                              className={styles.deleteBtn}
-                              onClick={() => handleDeleteAlert(alert.id, alert.title)}
-                              title="Permanently delete this draft"
-                            >
-                              <Trash2 size={11} /> Delete
-                            </button>
-                          </>
-                        ) : alert.status === 'Expired' ? (
-                          <>
-                            <button 
-                              className={styles.editBtn}
-                              onClick={() => handleStartEdit(alert)}
-                              title="Re-activate or edit alert"
-                            >
-                              <Edit3 size={11} /> Edit / Re-activate
-                            </button>
-                            <button 
-                              className={styles.deleteBtn}
-                              onClick={() => handleDeleteAlert(alert.id, alert.title)}
-                              title="Permanently delete this alert"
-                            >
-                              <Trash2 size={11} /> Delete
-                            </button>
-                          </>
-                        ) : (
-                          <>
-                            <button 
-                              className={styles.editBtn}
-                              onClick={() => handleStartEdit(alert)}
-                              title="Edit this alert in-place"
-                            >
-                              <Edit3 size={11} /> Edit
-                            </button>
-                            <button 
-                              className={styles.broadcastBtn}
-                              disabled={broadcastingId === alert.id}
-                              onClick={() => handleBroadcastPush(alert)}
-                              title="Broadcast push notification for this alert now"
-                            >
-                              <Bell size={11} /> {broadcastingId === alert.id ? 'Sending...' : 'Broadcast Push'}
-                            </button>
-                            <button 
-                              className={styles.expireBtn}
-                              onClick={() => handleExpireAlert(alert)}
-                              title="Expire this alert immediately"
-                            >
-                              Expire
-                            </button>
-                          </>
+                  {filteredAlerts.map((alert) => {
+                    const isHistory = isHistoryAlert(alert);
+                    const isSelected = selectedAlertForPreview?.id === alert.id;
+                    const relativeBadge = getRelativeTimeBadge(alert);
+
+                    return (
+                      <div 
+                        key={alert.id} 
+                        className={`${styles.alertItem} ${alert.status === 'Draft' ? styles.alertItemDraft : (isHistory ? styles.alertItemExpired : '')} ${isSelected ? styles.alertCardSelected : ''}`} 
+                        style={{ display: 'flex', alignItems: 'flex-start', gap: '12px', cursor: 'pointer' }}
+                        onClick={() => setSelectedAlertForPreview(alert)}
+                      >
+                        {alert.image && (
+                          <img 
+                            src={alert.image} 
+                            alt={alert.title} 
+                            style={{ width: '64px', height: '52px', objectFit: 'cover', borderRadius: '8px', border: '1px solid #CBD5E1', flexShrink: 0, marginTop: '2px' }} 
+                            onError={(e) => { (e.target as HTMLElement).style.display = 'none'; }}
+                          />
                         )}
+                        <div className={styles.alertInfo} style={{ flex: 1 }}>
+                          <div className={styles.alertHeader}>
+                            <span className={`${styles.tag} ${getCategoryClass(alert.category)}`}>
+                              {alert.category}
+                            </span>
+                            <span className={styles.statusBadge}>
+                              {alert.severity}
+                            </span>
+                            <span className={`${styles.statusBadge} ${alert.status === 'Published' && !isHistory ? styles.statusActive : (alert.status === 'Scheduled' ? styles.statusScheduled : (isHistory ? styles.statusExpired : styles.statusDraft))}`}>
+                              {alert.status === 'Scheduled' ? '🕒 Scheduled' : (alert.status === 'Draft' ? '📝 Draft (Unpublished)' : (isHistory ? '📜 History / Expired' : '🟢 Live'))}
+                            </span>
+                            {relativeBadge && (
+                              <span className={relativeBadge.className}>
+                                <Clock size={10} /> {relativeBadge.text}
+                              </span>
+                            )}
+                            <h3 className={styles.alertTitleText}>{alert.title}</h3>
+                          </div>
+                          <p className={styles.alertDescText}>{alert.description}</p>
+                          
+                          <div className={styles.alertMetaRow}>
+                            <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                              <MapPin size={12} color="#64748B" /> {alert.target_location}
+                            </span>
+                            {alert.status === 'Scheduled' && alert.start_time ? (
+                              <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px', color: '#B45309', fontWeight: 700 }}>
+                                <Clock size={12} color="#B45309" /> Starts: {new Date(alert.start_time).toLocaleString('en-IN', { timeZone: 'Asia/Kolkata', dateStyle: 'short', timeStyle: 'short' })}
+                              </span>
+                            ) : (
+                              <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
+                                <Clock size={12} color="#64748B" /> {isHistory ? 'Ended: ' : 'Expires: '}{new Date(alert.expiry_time).toLocaleTimeString()}
+                              </span>
+                            )}
+                            <span>Style: {alert.popup_type === 'Fullscreen' ? 'Fullscreen Emergency' : 'Centered Popup'}</span>
+                          </div>
+                        </div>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', flexShrink: 0 }} onClick={(e) => e.stopPropagation()}>
+                          {alert.status === 'Draft' ? (
+                            <>
+                              <button 
+                                className={styles.editBtn}
+                                onClick={() => handleStartEdit(alert)}
+                                title="Edit draft in form"
+                              >
+                                <Edit3 size={11} /> Edit
+                              </button>
+                              <button 
+                                className={styles.publishNowBtn}
+                                disabled={publishingId === alert.id}
+                                onClick={() => handlePublishDraft(alert)}
+                                title="Publish this draft to public feed (no push notification)"
+                              >
+                                <Send size={11} /> {publishingId === alert.id ? 'Publishing...' : 'Publish Now'}
+                              </button>
+                              <button 
+                                className={styles.testPushBtn}
+                                style={{ padding: '5px 8px', fontSize: '11px' }}
+                                onClick={() => {
+                                  setSelectedAlertForPreview(alert);
+                                  setMobileTab('preview');
+                                }}
+                                title="Preview this alert on the phone mockup"
+                              >
+                                <Smartphone size={11} /> Preview
+                              </button>
+                              <button 
+                                className={styles.deleteBtn}
+                                onClick={() => handleDeleteAlert(alert.id, alert.title)}
+                                title="Permanently delete this draft"
+                              >
+                                <Trash2 size={11} /> Delete
+                              </button>
+                            </>
+                          ) : isHistory ? (
+                            <>
+                              <button 
+                                className={styles.reactivateBtn}
+                                onClick={() => handleReactivateAlert(alert)}
+                                title="Clone and re-issue this past alert with refreshed timing"
+                              >
+                                <RotateCcw size={11} /> Re-issue Alert
+                              </button>
+                              <button 
+                                className={styles.editBtn}
+                                onClick={() => handleStartEdit(alert)}
+                                title="Edit past alert"
+                              >
+                                <Edit3 size={11} /> Edit
+                              </button>
+                              <button 
+                                className={styles.testPushBtn}
+                                style={{ padding: '5px 8px', fontSize: '11px' }}
+                                onClick={() => {
+                                  setSelectedAlertForPreview(alert);
+                                  setMobileTab('preview');
+                                }}
+                                title="Preview this past alert on the phone mockup"
+                              >
+                                <Smartphone size={11} /> Preview
+                              </button>
+                              <button 
+                                className={styles.deleteBtn}
+                                onClick={() => handleDeleteAlert(alert.id, alert.title)}
+                                title="Permanently delete this alert from history"
+                              >
+                                <Trash2 size={11} /> Delete
+                              </button>
+                            </>
+                          ) : alert.status === 'Scheduled' ? (
+                            <>
+                              <button 
+                                className={styles.editBtn}
+                                onClick={() => handleStartEdit(alert)}
+                                title="Edit scheduled alert"
+                              >
+                                <Edit3 size={11} /> Edit
+                              </button>
+                              <button 
+                                className={styles.publishNowBtn}
+                                disabled={publishingId === alert.id}
+                                onClick={() => handlePublishDraft(alert)}
+                                title="Activate scheduled alert immediately now"
+                              >
+                                <Send size={11} /> Go Live Now
+                              </button>
+                              <button 
+                                className={styles.testPushBtn}
+                                style={{ padding: '5px 8px', fontSize: '11px' }}
+                                onClick={() => {
+                                  setSelectedAlertForPreview(alert);
+                                  setMobileTab('preview');
+                                }}
+                                title="Preview on phone mockup"
+                              >
+                                <Smartphone size={11} /> Preview
+                              </button>
+                              <button 
+                                className={styles.deleteBtn}
+                                onClick={() => handleDeleteAlert(alert.id, alert.title)}
+                                title="Delete scheduled alert"
+                              >
+                                <Trash2 size={11} /> Delete
+                              </button>
+                            </>
+                          ) : (
+                            <>
+                              <button 
+                                className={styles.editBtn}
+                                onClick={() => handleStartEdit(alert)}
+                                title="Edit this alert in-place"
+                              >
+                                <Edit3 size={11} /> Edit
+                              </button>
+                              <button 
+                                className={styles.broadcastBtn}
+                                disabled={broadcastingId === alert.id}
+                                onClick={() => handleBroadcastPush(alert)}
+                                title="Broadcast push notification for this alert now"
+                              >
+                                <Bell size={11} /> {broadcastingId === alert.id ? 'Sending...' : 'Broadcast Push'}
+                              </button>
+                              <button 
+                                className={styles.testPushBtn}
+                                style={{ padding: '5px 8px', fontSize: '11px' }}
+                                onClick={() => {
+                                  setSelectedAlertForPreview(alert);
+                                  setMobileTab('preview');
+                                }}
+                                title="Inspect on device mockup"
+                              >
+                                <Smartphone size={11} /> Preview
+                              </button>
+                              <button 
+                                className={styles.expireBtn}
+                                onClick={() => handleExpireAlert(alert)}
+                                title="Move this alert to History immediately"
+                              >
+                                Move to History
+                              </button>
+                            </>
+                          )}
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    );
+                  })}
                 </div>
               )}
             </div>
           )}
         </div>
 
-        {/* Right Column: Live Mockup Preview */}
+        {/* Right Column: Dynamic Mockup Preview */}
         <div className={`${styles.rightColumn} ${mobileTab === 'form' ? styles.rightColumnHiddenMobile : ''}`}>
           <div className={styles.card} style={{ textAlign: 'center' }}>
-            <h2 style={{ fontSize: '16px', fontWeight: 800, margin: '0 0 16px 0', color: '#1E293B' }}>
-              Client Live Preview
-            </h2>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
+              <h2 style={{ fontSize: '15px', fontWeight: 800, margin: 0, color: '#1E293B', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <Smartphone size={16} color="#E9801D" /> Dynamic Device Preview
+              </h2>
+              <span style={{ fontSize: '10px', background: '#F1F5F9', color: '#475569', padding: '2px 8px', borderRadius: '10px', fontWeight: 700 }}>
+                Live Responsive
+              </span>
+            </div>
+
+            {/* Preview Mode Switcher */}
+            <div className={styles.previewModeBar}>
+              <button
+                type="button"
+                className={`${styles.previewModeBtn} ${previewMode === 'inapp' ? styles.previewModeBtnActive : ''}`}
+                onClick={() => setPreviewMode('inapp')}
+              >
+                In-App Popup
+              </button>
+              <button
+                type="button"
+                className={`${styles.previewModeBtn} ${previewMode === 'lockscreen' ? styles.previewModeBtnActive : ''}`}
+                onClick={() => setPreviewMode('lockscreen')}
+              >
+                Lockscreen Push
+              </button>
+              <button
+                type="button"
+                className={`${styles.previewModeBtn} ${previewMode === 'fullscreen' ? styles.previewModeBtnActive : ''}`}
+                onClick={() => setPreviewMode('fullscreen')}
+              >
+                Fullscreen Alert
+              </button>
+            </div>
+
+            {/* Inspecting selection banner */}
+            {!showCreateForm && activePreviewAlert && (
+              <div className={styles.inspectingBanner}>
+                <span>Inspecting: <strong>{activePreviewAlert.title.slice(0, 26)}{activePreviewAlert.title.length > 26 ? '...' : ''}</strong></span>
+                <span style={{ fontSize: '10px', opacity: 0.85 }}>({activePreviewAlert.category})</span>
+              </div>
+            )}
             
             {/* iPhone Mockup Frame */}
             <div style={{ 
               width: '280px', 
               height: '500px', 
-              background: '#FFF8EB', 
+              background: previewMode === 'lockscreen' ? 'linear-gradient(180deg, #1E293B 0%, #0F172A 100%)' : '#FFF8EB', 
               border: '8px solid #1E293B', 
               borderRadius: '30px', 
               margin: '0 auto', 
@@ -1032,7 +1460,7 @@ export default function AdminAlertsPage() {
               boxShadow: '0 10px 30px rgba(0,0,0,0.1)'
             }}>
               {/* iPhone Status Bar */}
-              <div style={{ height: '24px', background: '#0F172A', display: 'flex', justifyContent: 'space-between', padding: '0 16px', alignItems: 'center', color: '#fff', fontSize: '10px' }}>
+              <div style={{ height: '24px', background: previewMode === 'lockscreen' ? 'transparent' : '#0F172A', display: 'flex', justifyContent: 'space-between', padding: '0 16px', alignItems: 'center', color: '#fff', fontSize: '10px' }}>
                 <span>9:41</span>
                 <span style={{ display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
                   <Wifi size={11} />
@@ -1040,128 +1468,161 @@ export default function AdminAlertsPage() {
                 </span>
               </div>
 
-              {/* Mockup Home Header */}
-              <div style={{ padding: '12px 16px 4px 16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <span style={{ fontSize: '12px', fontWeight: 800, color: '#0F172A' }}>Namaste, Pilgrim</span>
-                <Settings size={12} color="#64748B" />
-              </div>
-
-              {/* Dynamic Preview Elements based on form values */}
-              {title && description ? (
-                <div style={{ padding: '8px 12px' }}>
-                  {/* Next Best Action Placeholder */}
-                  <div style={{ background: '#052e16', borderRadius: '12px', padding: '10px', color: '#fff', fontSize: '10px', textAlign: 'left', opacity: popupType === 'Fullscreen' ? 0.15 : 0.35, marginTop: '0' }}>
-                    <strong>NEXT ACTION</strong>
-                    <p style={{ margin: '2px 0 0 0' }}>Queue is 2 hours. Proceed now.</p>
+              {previewMode === 'lockscreen' ? (
+                /* Lockscreen Push Notification Style */
+                <div style={{ padding: '30px 14px 10px 14px', height: '100%', boxSizing: 'border-box' }}>
+                  <div style={{ textAlign: 'center', color: '#FFFFFF', marginBottom: '28px' }}>
+                    <div style={{ fontSize: '38px', fontWeight: 300, fontFamily: 'sans-serif' }}>09:41</div>
+                    <div style={{ fontSize: '12px', opacity: 0.8, fontWeight: 500 }}>Tuesday, November 3</div>
                   </div>
 
-                  {/* Centered Popup Style Preview */}
-                  {popupType === 'Popup' && (
-                    <div style={{
-                      position: 'absolute',
-                      top: '100px',
-                      left: '16px',
-                      right: '16px',
-                      background: '#FFFFFF',
-                      border: '2px solid #F59E0B',
-                      borderRadius: '16px',
-                      padding: '16px',
-                      zIndex: 100,
-                      boxShadow: '0 10px 25px rgba(0,0,0,0.2)',
-                      textAlign: 'left'
-                    }}>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '6px' }}>
-                        <AlertCircle size={13} color="#D97706" />
-                        <span style={{ fontSize: '10px', fontWeight: 800, color: '#D97706', textTransform: 'uppercase' }}>
-                          Live Advisory Alert
-                        </span>
+                  {activePreviewAlert ? (
+                    <div className={styles.lockscreenBox}>
+                      <div className={styles.lockscreenHeader}>
+                        <div className={styles.lockscreenAppName}>
+                          <div className={styles.lockscreenAppIcon}>🕉️</div>
+                          <span>SAARTHI</span>
+                        </div>
+                        <span className={styles.lockscreenTime}>now</span>
                       </div>
-                      <h4 style={{ fontSize: '13px', fontWeight: 800, color: '#0F172A', margin: '0 0 4px 0' }}>{title}</h4>
-                      <p style={{ fontSize: '10.5px', color: '#4B5563', margin: '0 0 8px 0', lineHeight: 1.4 }}>{description}</p>
-                      {imageUrl && (
-                        <img 
-                          src={imageUrl} 
-                          alt="Alert preview" 
-                          style={{ width: '100%', height: '90px', objectFit: 'cover', borderRadius: '8px', marginBottom: '10px' }} 
-                        />
-                      )}
-                      <div style={{ display: 'flex', gap: '8px' }}>
-                        {cta !== 'None' && (
-                          <button style={{ flex: 1, background: '#E9801D', color: '#fff', border: 'none', borderRadius: '8px', padding: '6px', fontSize: '10px', fontWeight: 700 }}>
-                            {cta}
-                          </button>
-                        )}
-                        <button style={{ flex: 1, background: '#F1F5F9', color: '#475569', border: '1px solid #E2E8F0', borderRadius: '8px', padding: '6px', fontSize: '10px', fontWeight: 700 }}>
-                          Dismiss
-                        </button>
-                      </div>
+                      <h4 className={styles.lockscreenTitle}>{activePreviewAlert.title}</h4>
+                      <p className={styles.lockscreenBody}>{activePreviewAlert.description}</p>
+                    </div>
+                  ) : (
+                    <div style={{ color: '#94A3B8', fontSize: '11px', textAlign: 'center', padding: '20px' }}>
+                      Select an alert to view its lockscreen notification layout.
                     </div>
                   )}
 
-                  {/* Fullscreen Overlay Style Preview */}
-                  {popupType === 'Fullscreen' && (
-                    <div style={{
-                      position: 'absolute',
-                      inset: '24px 0 0 0',
-                      background: '#0F172A',
-                      zIndex: 200,
-                      color: '#FFFFFF',
-                      padding: '24px 16px',
-                      textAlign: 'center',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      justifyContent: 'center',
-                      alignItems: 'center'
-                    }}>
-                      <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'rgba(239, 68, 68, 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#EF4444', marginBottom: '10px' }}>
-                        <AlertTriangle size={20} color="#EF4444" />
-                      </div>
-                      <span style={{ fontSize: '10px', fontWeight: 800, color: '#EF4444', letterSpacing: '1px', textTransform: 'uppercase', marginBottom: '6px' }}>
-                        CRITICAL EMERGENCY ALERT
-                      </span>
-                      <h3 style={{ fontSize: '15px', fontWeight: 800, margin: '0 0 6px 0', fontFamily: 'Georgia, serif' }}>{title}</h3>
-                      <p style={{ fontSize: '11px', color: '#94A3B8', margin: '0 0 12px 0', lineHeight: 1.4 }}>{description}</p>
-                      {imageUrl && (
-                        <img 
-                          src={imageUrl} 
-                          alt="Alert preview" 
-                          style={{ width: '100%', height: '100px', objectFit: 'cover', borderRadius: '8px', marginBottom: '16px', border: '1px solid rgba(255,255,255,0.2)' }} 
-                        />
-                      )}
-                      
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', width: '100%' }}>
-                        {cta !== 'None' && (
-                          <button style={{ background: '#EF4444', color: '#fff', border: 'none', borderRadius: '8px', padding: '10px', fontSize: '11px', fontWeight: 800 }}>
-                            {cta}
-                          </button>
-                        )}
-                        <button style={{ background: 'rgba(255,255,255,0.08)', color: '#FFFFFF', border: '1px solid rgba(255,255,255,0.15)', borderRadius: '8px', padding: '10px', fontSize: '11px', fontWeight: 700 }}>
-                          Acknowledge
-                        </button>
-                      </div>
-                    </div>
-                  )}
-
+                  <div style={{ position: 'absolute', bottom: '16px', left: 0, right: 0, textAlign: 'center', color: '#64748B', fontSize: '10px' }}>
+                    Swipe up to open Saarthi
+                  </div>
                 </div>
               ) : (
-                <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '80%', color: '#94A3B8', padding: '20px' }}>
-                  <AlertCircle size={32} style={{ marginBottom: '12px', color: '#CBD5E1' }} />
-                  <span style={{ fontSize: '11px', fontWeight: 600 }}>Fill out the form on the left to see a live mockup preview.</span>
-                </div>
+                /* In-App Views */
+                <>
+                  {/* Mockup Home Header */}
+                  <div style={{ padding: '12px 16px 4px 16px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <span style={{ fontSize: '12px', fontWeight: 800, color: '#0F172A' }}>Namaste, Pilgrim</span>
+                    <Settings size={12} color="#64748B" />
+                  </div>
+
+                  {activePreviewAlert ? (
+                    <div style={{ padding: '8px 12px' }}>
+                      {/* Next Best Action Placeholder */}
+                      <div style={{ background: '#052e16', borderRadius: '12px', padding: '10px', color: '#fff', fontSize: '10px', textAlign: 'left', opacity: (previewMode === 'fullscreen' || activePreviewAlert.popup_type === 'Fullscreen') ? 0.15 : 0.35, marginTop: '0' }}>
+                        <strong>NEXT ACTION</strong>
+                        <p style={{ margin: '2px 0 0 0' }}>Queue is 2 hours. Proceed now.</p>
+                      </div>
+
+                      {/* Centered Popup Style Preview */}
+                      {(previewMode === 'inapp' && activePreviewAlert.popup_type !== 'Fullscreen') && (
+                        <div style={{
+                          position: 'absolute',
+                          top: '100px',
+                          left: '16px',
+                          right: '16px',
+                          background: '#FFFFFF',
+                          border: '2px solid #F59E0B',
+                          borderRadius: '16px',
+                          padding: '16px',
+                          zIndex: 100,
+                          boxShadow: '0 10px 25px rgba(0,0,0,0.2)',
+                          textAlign: 'left'
+                        }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '6px' }}>
+                            <AlertCircle size={13} color="#D97706" />
+                            <span style={{ fontSize: '10px', fontWeight: 800, color: '#D97706', textTransform: 'uppercase' }}>
+                              {activePreviewAlert.category} Alert
+                            </span>
+                          </div>
+                          <h4 style={{ fontSize: '13px', fontWeight: 800, color: '#0F172A', margin: '0 0 4px 0' }}>{activePreviewAlert.title}</h4>
+                          <p style={{ fontSize: '10.5px', color: '#4B5563', margin: '0 0 8px 0', lineHeight: 1.4 }}>{activePreviewAlert.description}</p>
+                          {activePreviewAlert.image && (
+                            <img 
+                              src={activePreviewAlert.image} 
+                              alt="Alert preview" 
+                              style={{ width: '100%', height: '90px', objectFit: 'cover', borderRadius: '8px', marginBottom: '10px' }} 
+                            />
+                          )}
+                          <div style={{ display: 'flex', gap: '8px' }}>
+                            {activePreviewAlert.cta && activePreviewAlert.cta !== 'None' && (
+                              <button style={{ flex: 1, background: '#E9801D', color: '#fff', border: 'none', borderRadius: '8px', padding: '6px', fontSize: '10px', fontWeight: 700 }}>
+                                {activePreviewAlert.cta}
+                              </button>
+                            )}
+                            <button style={{ flex: 1, background: '#F1F5F9', color: '#475569', border: '1px solid #E2E8F0', borderRadius: '8px', padding: '6px', fontSize: '10px', fontWeight: 700 }}>
+                              Dismiss
+                            </button>
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Fullscreen Overlay Style Preview */}
+                      {(previewMode === 'fullscreen' || activePreviewAlert.popup_type === 'Fullscreen') && (
+                        <div style={{
+                          position: 'absolute',
+                          inset: '24px 0 0 0',
+                          background: '#0F172A',
+                          zIndex: 200,
+                          color: '#FFFFFF',
+                          padding: '24px 16px',
+                          textAlign: 'center',
+                          display: 'flex',
+                          flexDirection: 'column',
+                          justifyContent: 'center',
+                          alignItems: 'center'
+                        }}>
+                          <div style={{ width: '40px', height: '40px', borderRadius: '50%', background: 'rgba(239, 68, 68, 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#EF4444', marginBottom: '10px' }}>
+                            <AlertTriangle size={20} color="#EF4444" />
+                          </div>
+                          <span style={{ fontSize: '10px', fontWeight: 800, color: '#EF4444', letterSpacing: '1px', textTransform: 'uppercase', marginBottom: '6px' }}>
+                            CRITICAL EMERGENCY ALERT
+                          </span>
+                          <h3 style={{ fontSize: '15px', fontWeight: 800, margin: '0 0 6px 0', fontFamily: 'Georgia, serif' }}>{activePreviewAlert.title}</h3>
+                          <p style={{ fontSize: '11px', color: '#94A3B8', margin: '0 0 12px 0', lineHeight: 1.4 }}>{activePreviewAlert.description}</p>
+                          {activePreviewAlert.image && (
+                            <img 
+                              src={activePreviewAlert.image} 
+                              alt="Alert preview" 
+                              style={{ width: '100%', height: '100px', objectFit: 'cover', borderRadius: '8px', marginBottom: '16px', border: '1px solid rgba(255,255,255,0.2)' }} 
+                            />
+                          )}
+                          
+                          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', width: '100%' }}>
+                            {activePreviewAlert.cta && activePreviewAlert.cta !== 'None' && (
+                              <button style={{ background: '#EF4444', color: '#fff', border: 'none', borderRadius: '8px', padding: '10px', fontSize: '11px', fontWeight: 800 }}>
+                                {activePreviewAlert.cta}
+                              </button>
+                            )}
+                            <button style={{ background: 'rgba(255,255,255,0.08)', color: '#FFFFFF', border: '1px solid rgba(255,255,255,0.15)', borderRadius: '8px', padding: '10px', fontSize: '11px', fontWeight: 700 }}>
+                              Acknowledge
+                            </button>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  ) : (
+                    <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '80%', color: '#94A3B8', padding: '20px' }}>
+                      <AlertCircle size={32} style={{ marginBottom: '12px', color: '#CBD5E1' }} />
+                      <span style={{ fontSize: '11px', fontWeight: 600 }}>Select an alert from the list to preview on device.</span>
+                    </div>
+                  )}
+                </>
               )}
 
               {/* iPhone Home Indicator */}
-              <div style={{ position: 'absolute', bottom: '6px', left: '50%', transform: 'translateX(-50%)', width: '90px', height: '3px', backgroundColor: '#000', borderRadius: '2px' }} />
+              <div style={{ position: 'absolute', bottom: '6px', left: '50%', transform: 'translateX(-50%)', width: '90px', height: '3px', backgroundColor: previewMode === 'lockscreen' ? '#fff' : '#000', borderRadius: '2px', opacity: 0.6 }} />
             </div>
 
             <div className={styles.previewBox}>
               <div className={styles.previewTitle}>Distribution Parameters</div>
               <p style={{ fontSize: '11px', margin: 0, color: '#475569', lineHeight: 1.4 }}>
-                • <strong>Audience:</strong> {targetLocation}
+                • <strong>Audience:</strong> {activePreviewAlert ? activePreviewAlert.target_location : targetLocation}
                 <br />
-                • <strong>Interval:</strong> Published now, expires in {expiryHours} hours.
+                • <strong>Priority:</strong> Severity {activePreviewAlert ? activePreviewAlert.severity : severity}
                 <br />
-                • <strong>Priority:</strong> severity level {severity}.
+                • <strong>Category:</strong> {activePreviewAlert ? activePreviewAlert.category : category}
               </p>
             </div>
           </div>
