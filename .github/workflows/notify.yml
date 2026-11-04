@@ -20,7 +20,7 @@ on:
 jobs:
   morning:
     name: Morning Notifications (Suprabhatam + Spot + Festival)
-    if: github.event.schedule == '30 0 * * *' || (github.event_name == 'workflow_dispatch' && (github.event.inputs.type == 'good_morning' || github.event.inputs.type == 'daily_spot' || github.event.inputs.type == 'festival' || github.event.inputs.type == 'welcome'))
+    if: github.repository == 'saarthitirupati/saarthiguide1' && (github.event.schedule == '30 0 * * *' || (github.event_name == 'workflow_dispatch' && (github.event.inputs.type == 'good_morning' || github.event.inputs.type == 'daily_spot' || github.event.inputs.type == 'festival' || github.event.inputs.type == 'welcome')))
     runs-on: ubuntu-latest
     steps:
       - name: Validate CRON_SECRET configured
@@ -123,7 +123,7 @@ jobs:
 
   weekend:
     name: Weekend Suggestion (Friday evening)
-    if: github.event.schedule == '30 12 * * 5' || (github.event_name == 'workflow_dispatch' && github.event.inputs.type == 'weekend')
+    if: github.repository == 'saarthitirupati/saarthiguide1' && (github.event.schedule == '30 12 * * 5' || (github.event_name == 'workflow_dispatch' && github.event.inputs.type == 'weekend'))
     runs-on: ubuntu-latest
     steps:
       - name: Validate CRON_SECRET configured
@@ -155,7 +155,7 @@ jobs:
 
   reengagement:
     name: Re-engagement (inactive users)
-    if: github.event.schedule == '0 3 * * *' || (github.event_name == 'workflow_dispatch' && github.event.inputs.type == 'reengagement')
+    if: github.repository == 'saarthitirupati/saarthiguide1' && (github.event.schedule == '0 3 * * *' || (github.event_name == 'workflow_dispatch' && github.event.inputs.type == 'reengagement'))
     runs-on: ubuntu-latest
     steps:
       - name: Validate CRON_SECRET configured
