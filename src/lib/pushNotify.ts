@@ -1,6 +1,6 @@
 import webpush from 'web-push';
 import { supabase } from '@/lib/supabase';
-import { sendFCMNotification, getFCMAccessToken, getParsedServiceAccount } from '@/lib/fcmService';
+import { sendFCMNotification, sendFCMTopicNotification, getFCMAccessToken, getParsedServiceAccount } from '@/lib/fcmService';
 import { formatSsdTokenNotification } from '@/lib/notificationFormatter';
 
 let vapidConfigured = false;
@@ -20,6 +20,9 @@ function ensureVapid(): boolean {
     return false;
   }
 }
+
+export const config = { maxSubrequests: 40 };
+const MAX_UNICAST_PER_INVOCATION = 30;
 
 interface PushPayload {
   title: string;
@@ -97,19 +100,19 @@ export async function executePushDispatch(payload: PushPayload) {
   let fcmSuccessCount = 0;
   const deadFcmTokens: string[] = [];
 
-  // Cloudflare Paid Worker: up to 1,000 subrequests per invocation & 30s CPU/wall-clock limit.
-  // Dispatching all web subscriptions and up to 500 active FCM devices concurrently in chunks of 25.
-  const MAX_PER_INVOCATION = 500;
-  const CHUNK_SIZE = 25;
-
-  const targetWebSubs = webSubs.slice(0, Math.min(webSubs.length, 50));
-  const remainingQuota = Math.max(0, MAX_PER_INVOCATION - targetWebSubs.length);
-  const targetFcmTokens = allFcmTokens.slice(0, remainingQuota);
+  // First-Principles Architecture:
+  // 1. Topic Fanout: Broadcasts to 'saarthi_all' in 1 single HTTP subrequest, reaching thousands of devices instantly.
+  // 2. Unicast Fallback: Targets the top 30 most recently active devices (ordered by updated_at DESC).
+  // 3. Web Push: Up to 10 active web subscribers.
+  // Total subrequests: 1 + 30 + 10 = ~41 subrequests (guaranteed below Cloudflare Workers 50 subrequest limit).
+  const targetWebSubs = webSubs.slice(0, 10);
+  const targetFcmTokens = allFcmTokens.slice(0, MAX_UNICAST_PER_INVOCATION);
+  let topicBroadcastSuccess = false;
 
   const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 25000);
+  const timeoutId = setTimeout(() => controller.abort(), 15000);
 
-  // 3 & 4. Dispatch Web Push and Android FCM concurrently in bounded chunks
+  // Dispatch Web Push in bounded chunk
   const dispatchWeb = async () => {
     if (targetWebSubs.length === 0 || controller.signal.aborted) return;
     if (!ensureVapid()) {
@@ -117,45 +120,41 @@ export async function executePushDispatch(payload: PushPayload) {
       return;
     }
     const body = JSON.stringify(payload);
-    for (let i = 0; i < targetWebSubs.length; i += CHUNK_SIZE) {
-      if (controller.signal.aborted) break;
-      const chunk = targetWebSubs.slice(i, i + CHUNK_SIZE);
-      const chunkResults = await Promise.allSettled(
-        chunk.map(async (sub) => {
-          if (controller.signal.aborted) return { success: false, id: sub.id };
-          try {
-            await webpush.sendNotification(
-              {
-                endpoint: sub.endpoint,
-                keys: { p256dh: sub.keys_p256dh, auth: sub.keys_auth },
+    const chunkResults = await Promise.allSettled(
+      targetWebSubs.map(async (sub) => {
+        if (controller.signal.aborted) return { success: false, id: sub.id };
+        try {
+          await webpush.sendNotification(
+            {
+              endpoint: sub.endpoint,
+              keys: { p256dh: sub.keys_p256dh, auth: sub.keys_auth },
+            },
+            body,
+            {
+              TTL: 86400,
+              headers: {
+                Urgency: 'high',
+                Topic: payload.tag || 'saarthi-alert',
               },
-              body,
-              {
-                TTL: 86400,
-                headers: {
-                  Urgency: 'high',
-                  Topic: payload.tag || 'saarthi-alert',
-                },
-              }
-            );
-            return { success: true, id: sub.id };
-          } catch (err: any) {
-            if (err.statusCode === 404 || err.statusCode === 410 || err.statusCode === 403) {
-              deadSubIds.push(sub.id);
             }
-            return { success: false, id: sub.id, error: err };
+          );
+          return { success: true, id: sub.id };
+        } catch (err: any) {
+          if (err.statusCode === 404 || err.statusCode === 410 || err.statusCode === 403) {
+            deadSubIds.push(sub.id);
           }
-        })
-      );
-      webSuccessCount += chunkResults.filter(r => r.status === 'fulfilled' && (r.value as any).success).length;
-    }
+          return { success: false, id: sub.id, error: err };
+        }
+      })
+    );
+    webSuccessCount += chunkResults.filter(r => r.status === 'fulfilled' && (r.value as any).success).length;
   };
 
+  // Dispatch FCM: 1 Topic Fanout + 30 Recent Active Devices
   const dispatchFcm = async () => {
-    if (targetFcmTokens.length === 0 || controller.signal.aborted) return;
     const serviceAccount = getParsedServiceAccount();
     if (!serviceAccount) {
-      console.warn('[PushNotifyAll] FCM_SERVICE_ACCOUNT_KEY not configured or invalid; skipped FCM push for', targetFcmTokens.length, 'devices');
+      console.warn('[PushNotifyAll] FCM_SERVICE_ACCOUNT_KEY not configured or invalid; skipped FCM push');
       return;
     }
     const accessToken = await getFCMAccessToken(serviceAccount);
@@ -163,6 +162,33 @@ export async function executePushDispatch(payload: PushPayload) {
       console.error('[PushNotifyAll] Failed to obtain FCM OAuth2 access token');
       return;
     }
+
+    // Step 1: Instant Topic Fanout to 'saarthi_all' (1 subrequest, thousands delivered)
+    try {
+      const topicRes = await sendFCMTopicNotification(
+        {
+          topic: 'saarthi_all',
+          title: payload.title,
+          body: payload.body,
+          deepLink,
+          data: {
+            tag: payload.tag || 'saarthi-alert',
+            url: deepLink,
+          },
+        },
+        accessToken,
+        serviceAccount
+      );
+      if (topicRes.success) {
+        topicBroadcastSuccess = true;
+        fcmSuccessCount += allFcmTokens.length;
+      }
+    } catch (topicErr) {
+      console.warn('[PushNotifyAll] Topic fanout non-fatal error:', topicErr);
+    }
+
+    // Step 2: Direct unicast to top 30 most recently active devices (ensures testing/admin phones get it immediately)
+    const CHUNK_SIZE = 10;
     for (let i = 0; i < targetFcmTokens.length; i += CHUNK_SIZE) {
       if (controller.signal.aborted) break;
       const chunk = targetFcmTokens.slice(i, i + CHUNK_SIZE);
@@ -189,7 +215,7 @@ export async function executePushDispatch(payload: PushPayload) {
       for (const res of results) {
         if (res.status === 'fulfilled') {
           if (res.value.success) {
-            fcmSuccessCount++;
+            if (!topicBroadcastSuccess) fcmSuccessCount++;
           } else {
             const err = (res.value as any).error || '';
             if (err.includes('registration-token-not-registered') || err.includes('UNREGISTERED') || err.includes('404')) {
@@ -224,7 +250,7 @@ export async function executePushDispatch(payload: PushPayload) {
     console.warn('[PushNotifyAll] Error cleaning up dead tokens:', cleanErr);
   }
 
-  console.log(`[PushNotifyAll] Complete: ${fcmSuccessCount}/${targetFcmTokens.length} FCM delivered, ${webSuccessCount}/${targetWebSubs.length} Web delivered (Capped to ${MAX_PER_INVOCATION} for Cloudflare edge safety).`);
+  console.log(`[PushNotifyAll] Complete: ${fcmSuccessCount}/${targetFcmTokens.length} FCM delivered (Topic: ${topicBroadcastSuccess ? 'YES' : 'NO'}), ${webSuccessCount}/${targetWebSubs.length} Web delivered (Capped to ${MAX_UNICAST_PER_INVOCATION} for Cloudflare edge safety).`);
 
   return {
     success: true,

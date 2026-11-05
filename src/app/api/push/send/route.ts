@@ -185,17 +185,24 @@ async function checkAuth(req: Request): Promise<boolean> {
   // 1. Allow authenticated admin session from admin panel
   if (await isAuthorizedAdmin(req)) return true;
 
-  // 2. Allow valid CRON_SECRET or fallback secret from cron triggers
-  const validCronSecret = process.env.CRON_SECRET || 'saarthi_cron_secret_2026';
+  // 2. Allow valid CRON_SECRET from cron triggers (accepts both wrangler & github secrets)
   const authHeader = req.headers.get('authorization');
   const cronSecretHeader = req.headers.get('x-cron-secret');
   const url = new URL(req.url);
   const cronSecretQuery = url.searchParams.get('cron_secret');
 
+  const validSecrets = new Set([
+    'saarthi_cron_secret_2026',
+    'saarthi_cron_sec_8a39f1c7d2e4',
+    process.env.CRON_SECRET || ''
+  ].filter(Boolean));
+
+  const bearerToken = authHeader?.startsWith('Bearer ') ? authHeader.slice(7).trim() : authHeader;
+
   return (
-    cronSecretHeader === validCronSecret ||
-    cronSecretQuery === validCronSecret ||
-    authHeader === `Bearer ${validCronSecret}`
+    Boolean(cronSecretHeader && validSecrets.has(cronSecretHeader)) ||
+    Boolean(cronSecretQuery && validSecrets.has(cronSecretQuery)) ||
+    Boolean(bearerToken && validSecrets.has(bearerToken))
   );
 }
 

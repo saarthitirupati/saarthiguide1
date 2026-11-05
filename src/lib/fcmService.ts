@@ -170,3 +170,86 @@ export async function sendFCMNotification(
     return { success: false, error: err?.message || 'Network error' };
   }
 }
+
+interface FCMTopicPayload {
+  topic: string;
+  title: string;
+  body: string;
+  deepLink?: string;
+  data?: Record<string, string>;
+}
+
+/**
+ * Broadcasts an FCM push notification to a topic (e.g. 'saarthi_all') in a single subrequest.
+ * Delivers to thousands of subscribed Android devices concurrently via Google Cloud fanout.
+ */
+export async function sendFCMTopicNotification(
+  payload: FCMTopicPayload,
+  preloadedToken?: string,
+  preloadedServiceAccount?: any
+): Promise<{ success: boolean; messageId?: string; error?: string }> {
+  const serviceAccount = preloadedServiceAccount || getParsedServiceAccount();
+  if (!serviceAccount) {
+    return { success: false, error: 'FCM_SERVICE_ACCOUNT_KEY not configured in server environment' };
+  }
+
+  const accessToken = preloadedToken || (await getFCMAccessToken(serviceAccount));
+  if (!accessToken) {
+    return { success: false, error: 'Failed to authenticate with Google FCM OAuth2' };
+  }
+
+  const projectId = serviceAccount.project_id || 'saarthi-b5ab7';
+  const url = `https://fcm.googleapis.com/v1/projects/${projectId}/messages:send`;
+  const cleanTopic = payload.topic.replace(/^\/topics\//, '');
+
+  const fcmPayload = {
+    message: {
+      topic: cleanTopic,
+      notification: {
+        title: payload.title,
+        body: payload.body,
+      },
+      data: {
+        title: payload.title,
+        body: payload.body,
+        deepLink: payload.deepLink || 'https://www.saarthiguide.in',
+        ...(payload.data || {}),
+      },
+      android: {
+        priority: 'HIGH',
+        notification: {
+          channel_id: 'saarthi_live_alerts_v4',
+          sound: 'om_notification',
+          default_sound: false,
+          default_vibrate_timings: true,
+          visibility: 'PUBLIC',
+          notification_priority: 'PRIORITY_MAX',
+          icon: 'ic_maskable',
+        },
+      },
+    },
+  };
+
+  try {
+    const res = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(fcmPayload),
+    });
+
+    if (!res.ok) {
+      const errText = await res.text();
+      console.error(`[FCM Topic] Send failed HTTP ${res.status}:`, errText);
+      return { success: false, error: `HTTP ${res.status}: ${errText}` };
+    }
+
+    const data = await res.json();
+    return { success: true, messageId: data.name };
+  } catch (err: any) {
+    console.error('[FCM Topic] Fetch error:', err);
+    return { success: false, error: err?.message || 'Network error' };
+  }
+}

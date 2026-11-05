@@ -25,6 +25,11 @@ class SaarthiFirebaseService : FirebaseMessagingService() {
             .putString("fcm_token", token)
             .apply()
 
+        // Subscribe to global topic for instant zero-subrequest fanout
+        try {
+            com.google.firebase.messaging.FirebaseMessaging.getInstance().subscribeToTopic("saarthi_all")
+        } catch (_: Exception) {}
+
         // Sync with Saarthi backend
         registerTokenWithBackend(this, token)
     }

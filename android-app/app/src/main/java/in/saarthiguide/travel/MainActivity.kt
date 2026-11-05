@@ -96,6 +96,9 @@ class MainActivity : AppCompatActivity() {
                             .edit()
                             .putString("fcm_token", token)
                             .apply()
+                        try {
+                            FirebaseMessaging.getInstance().subscribeToTopic("saarthi_all")
+                        } catch (_: Exception) {}
                         SaarthiFirebaseService.registerTokenWithBackend(this, token)
                         runOnUiThread {
                             try {
