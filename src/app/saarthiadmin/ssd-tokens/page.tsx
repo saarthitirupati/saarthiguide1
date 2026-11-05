@@ -316,8 +316,12 @@ export default function AdminSsdTokensPage() {
             ...prev
           ]);
 
+          const fcmCount = data?.notification?.details?.fcm?.delivered ?? 0;
+          const webCount = data?.notification?.details?.web?.delivered ?? 0;
+          const totalDelivered = fcmCount + webCount;
+          const countMsg = totalDelivered > 0 ? ` (${totalDelivered} devices reached)` : '';
           setMessage({
-            text: 'Live status updated & push notification broadcasted successfully!',
+            text: `Live status updated & push notification broadcasted successfully${countMsg}!`,
             type: 'success'
           });
         } else {

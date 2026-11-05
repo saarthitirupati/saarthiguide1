@@ -132,6 +132,7 @@ export default function AdminLiveUpdates() {
         headers,
         credentials: 'include',
         body: JSON.stringify({
+          type: 'custom',
           title: trimmedTitle,
           body: trimmedBody,
           url: targetUrl,
@@ -146,7 +147,8 @@ export default function AdminLiveUpdates() {
       }
 
       if (res && (res.ok || res.broadcast || res.scheduled)) {
-        showToast('Push notification broadcasted successfully to all subscribers!');
+        const countMsg = typeof res.sent === 'number' && res.sent > 0 ? ` (${res.sent} devices reached)` : '';
+        showToast(`Push notification broadcasted successfully${countMsg}!`);
         return true;
       }
 

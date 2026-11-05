@@ -305,8 +305,11 @@ export default function AdminAlertsPage() {
       });
       if (res && res.error) {
         alert('Push broadcast failed: ' + res.error);
+      } else if (res && (res.ok || typeof res.sent === 'number')) {
+        const countMsg = typeof res.sent === 'number' && res.sent > 0 ? ` to ${res.sent} active devices` : '';
+        alert(`✓ Push broadcast sent successfully${countMsg}!`);
       } else {
-        alert(`Broadcast sent successfully${res && typeof res.sent === 'number' ? ` to ${res.sent} subscribers` : ''}!`);
+        alert('Unable to confirm push delivery status. Please check connection and login.');
       }
     } catch (err) {
       alert('Error broadcasting push notification');

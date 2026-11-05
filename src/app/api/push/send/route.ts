@@ -108,8 +108,22 @@ async function handlePushDispatch(type: string, endpoint?: string, daysSince?: n
 
   // If broadcasting to all users (no specific web endpoint, not re-engagement), notify both Web Push and Native Android FCM
   if (!endpoint && type !== 'reengagement') {
-    await pushNotifyAll(payload);
-    return NextResponse.json({ ok: true, status: 'scheduled', scheduled: true, broadcast: true });
+    const dispatchResult: any = await pushNotifyAll(payload);
+    const fcmSent = dispatchResult?.fcm?.delivered ?? 0;
+    const webSent = dispatchResult?.web?.delivered ?? 0;
+    const totalDelivered = fcmSent + webSent;
+    const totalTargets = (dispatchResult?.fcm?.total ?? 0) + (dispatchResult?.web?.total ?? 0);
+
+    return NextResponse.json({
+      ok: true,
+      sent: totalDelivered > 0 ? totalDelivered : totalTargets,
+      delivered: totalDelivered,
+      targets: totalTargets,
+      status: 'scheduled',
+      scheduled: true,
+      broadcast: true,
+      details: dispatchResult
+    });
   }
 
   // Fetch subscriptions — specific endpoint or all; re-engagement filters by inactivity
