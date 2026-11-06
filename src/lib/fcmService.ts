@@ -123,28 +123,17 @@ export async function sendFCMNotification(
   const fcmPayload = {
     message: {
       token: payload.token,
-      notification: {
-        title: payload.title,
-        body: payload.body,
-      },
       data: {
         title: payload.title,
         body: payload.body,
-        deepLink: payload.deepLink || 'https://www.saarthiguide.in',
+        deepLink: payload.deepLink || payload.data?.url || 'https://www.saarthiguide.in',
+        url: payload.deepLink || payload.data?.url || 'https://www.saarthiguide.in',
+        tag: payload.data?.tag || 'saarthi-alert',
+        timestamp: Date.now().toString(),
         ...(payload.data || {}),
       },
       android: {
-        collapse_key: payload.data?.tag || 'saarthi-alert',
         priority: 'HIGH',
-        notification: {
-          channel_id: 'saarthi_live_alerts_v3',
-          sound: 'default',
-          default_sound: true,
-          default_vibrate_timings: true,
-          visibility: 'PUBLIC',
-          notification_priority: 'PRIORITY_MAX',
-          tag: payload.data?.tag || 'saarthi-alert',
-        },
       },
     },
   };
@@ -226,28 +215,17 @@ export async function sendFCMTopicNotification(
   const fcmPayload = {
     message: {
       topic: cleanTopic,
-      notification: {
-        title: payload.title,
-        body: payload.body,
-      },
       data: {
         title: payload.title,
         body: payload.body,
-        deepLink: payload.deepLink || 'https://www.saarthiguide.in',
+        deepLink: payload.deepLink || payload.data?.url || 'https://www.saarthiguide.in',
+        url: payload.deepLink || payload.data?.url || 'https://www.saarthiguide.in',
+        tag: payload.data?.tag || 'saarthi-alert',
+        timestamp: Date.now().toString(),
         ...(payload.data || {}),
       },
       android: {
-        collapse_key: payload.data?.tag || 'saarthi-alert',
         priority: 'HIGH',
-        notification: {
-          channel_id: 'saarthi_live_alerts_v3',
-          sound: 'default',
-          default_sound: true,
-          default_vibrate_timings: true,
-          visibility: 'PUBLIC',
-          notification_priority: 'PRIORITY_MAX',
-          tag: payload.data?.tag || 'saarthi-alert',
-        },
       },
     },
   };
