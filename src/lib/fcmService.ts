@@ -257,3 +257,60 @@ export async function sendFCMTopicNotification(
     return { success: false, error: err?.message || 'Network error' };
   }
 }
+
+/**
+ * Subscribes FCM registration tokens to a topic via Google IID API.
+ * Supports up to 1,000 tokens per call.
+ */
+export async function addTokensToTopic(
+  tokens: string[],
+  topic: string = 'saarthi_all'
+): Promise<{ success: boolean; count?: number; error?: any }> {
+  if (!tokens || tokens.length === 0) return { success: true, count: 0 };
+  const validTokens = tokens
+    .map(t => (typeof t === 'string' ? t.trim() : ''))
+    .filter(t => t.length > 20);
+  if (validTokens.length === 0) return { success: true, count: 0 };
+
+  try {
+    const serviceAccount = getParsedServiceAccount();
+    const accessToken = await getFCMAccessToken(serviceAccount);
+    const headers: Record<string, string> = {
+      'Content-Type': 'application/json',
+    };
+
+    if (process.env.FCM_SERVER_KEY) {
+      headers['Authorization'] = `key=${process.env.FCM_SERVER_KEY}`;
+    } else if (accessToken) {
+      headers['Authorization'] = `Bearer ${accessToken}`;
+      headers['access_token_auth'] = 'true';
+    } else {
+      console.warn('[FCM] Cannot enroll tokens to topic: No FCM credentials available');
+      return { success: false, error: 'No FCM credentials' };
+    }
+
+    const cleanTopic = topic.replace(/^\/topics\//, '');
+    const res = await fetch('https://iid.googleapis.com/iid/v1:batchAdd', {
+      method: 'POST',
+      headers,
+      body: JSON.stringify({
+        to: `/topics/${cleanTopic}`,
+        registration_tokens: validTokens,
+      }),
+    });
+
+    if (!res.ok) {
+      const errText = await res.text();
+      console.warn(`[FCM IID] batchAdd returned HTTP ${res.status}:`, errText);
+      return { success: false, error: errText };
+    }
+
+    const json = (await res.json()) as { results?: Array<{ error?: string }> };
+    const successCount = (json.results || []).filter(r => !r.error).length;
+    return { success: true, count: successCount };
+  } catch (err: any) {
+    console.warn('[FCM IID] batchAdd exception:', err?.message || err);
+    return { success: false, error: err?.message || 'Network exception' };
+  }
+}
+

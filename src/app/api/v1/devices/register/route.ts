@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase';
+import { addTokensToTopic } from '@/lib/fcmService';
 
 export async function POST(req: Request) {
   try {
@@ -14,10 +15,16 @@ export async function POST(req: Request) {
 
     // 1. Dual Registration: Register into push_subscriptions so native app receives broadcasts immediately
     if (fcmToken && typeof fcmToken === 'string' && fcmToken.trim().length > 20) {
+      const cleanToken = fcmToken.trim();
+      // Auto-enroll device token into 'saarthi_all' topic in background
+      addTokensToTopic([cleanToken], 'saarthi_all').catch(err => {
+        console.warn('[DeviceRegistration] Topic enrollment error:', err);
+      });
+
       try {
         const { error: subErr } = await supabase.from('push_subscriptions').upsert(
           {
-            endpoint: `https://fcm.googleapis.com/fcm/native/${fcmToken.trim()}`,
+            endpoint: `https://fcm.googleapis.com/fcm/native/${cleanToken}`,
             keys_p256dh: 'native_android_fcm',
             keys_auth: 'native_android_fcm',
             subscribed_at: now,

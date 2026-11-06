@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { supabase } from '@/lib/supabase';
+import { addTokensToTopic } from '@/lib/fcmService';
 import { isAuthorizedAdmin } from '@/lib/authGuard';
 
 export async function GET(req: Request) {
@@ -48,6 +49,15 @@ export async function POST(req: Request) {
     }
 
     const now = new Date().toISOString();
+
+    if (typeof sub.endpoint === 'string' && sub.endpoint.startsWith('https://fcm.googleapis.com/fcm/native/')) {
+      const token = sub.endpoint.replace('https://fcm.googleapis.com/fcm/native/', '').trim();
+      if (token.length > 20) {
+        addTokensToTopic([token], 'saarthi_all').catch(err => {
+          console.warn('[PushSubscribe] Topic enroll error:', err);
+        });
+      }
+    }
 
     // Check if this is a new subscriber before upsert
     const { data: existing } = await supabase
