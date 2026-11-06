@@ -67,22 +67,24 @@ export async function POST(req: Request) {
     const updated = await updateStatus(statusUpdates);
 
     // Strict Notification Opt-In Guard
+    let broadcastTag: string | null = null;
     if (sendPush === true) {
       const wait = updated.waitTime || 'Current queue active';
       const crowd = updated.crowdLevel ? ` (${updated.crowdLevel} crowd)` : '';
+      broadcastTag = `live-darshan-${Date.now()}`;
 
       await pushNotifyAll({
         title: 'Tirumala Darshan Timings Updated',
         body: `Live update: Wait time is ${wait}${crowd}. Plan your darshan visit accordingly.`,
         url: '/alerts',
-        tag: `live-darshan-${Date.now()}`,
+        tag: broadcastTag,
         category: 'High Priority'
       }).catch((err: any) => {
         console.error('[PushNotify] Error broadcasting live updates:', err);
       });
     }
 
-    return NextResponse.json({ success: true });
+    return NextResponse.json({ success: true, tag: broadcastTag });
   } catch (error: any) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }

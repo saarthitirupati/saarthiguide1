@@ -94,11 +94,12 @@ export async function POST(req: Request) {
       const finalTitle = customNotification?.title?.trim() || fallback.title;
       const finalBody = customNotification?.body?.trim() || fallback.body;
 
+      const broadcastTag = `ssd-dd-status-${Date.now()}`;
       const dispatchResult = await pushNotifyAll({
         title: finalTitle,
         body: finalBody,
         url: '/darshan/ssd-token',
-        tag: `ssd-dd-status-${Date.now()}`,
+        tag: broadcastTag,
         category: 'High Priority'
       });
 
@@ -113,6 +114,7 @@ export async function POST(req: Request) {
         status: hasDelivered ? 'Sent' : (dispatchResult?.success ? 'Sent' : 'Failed'),
         type: pushType,
         message: finalTitle,
+        tag: broadcastTag,
         sentTo: sendToAll ? 'All Users' : 'Subscribers',
         timestamp: new Date().toLocaleString('en-IN', { timeZone: 'Asia/Kolkata', dateStyle: 'medium', timeStyle: 'short' }),
         details: dispatchResult
@@ -122,6 +124,7 @@ export async function POST(req: Request) {
     return NextResponse.json({
       success: true,
       pushSent: shouldSendPush,
+      tag: pushResultData?.tag || null,
       notification: pushResultData,
       ssdTokenStatus: updated.ssdTokenStatus,
       ssdNextTokenTime: updated.ssdNextTokenTime,

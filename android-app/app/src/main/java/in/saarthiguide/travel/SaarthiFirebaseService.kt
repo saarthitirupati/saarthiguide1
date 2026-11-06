@@ -91,6 +91,35 @@ class SaarthiFirebaseService : FirebaseMessagingService() {
             ?: "saarthi-alert"
 
         showLockScreenNotification(title, body, deepLink, tag)
+        postDeliveryAck(tag, BuildConfig.VERSION_NAME)
+    }
+
+    private fun postDeliveryAck(tag: String, version: String) {
+        kotlin.concurrent.thread {
+            try {
+                val androidId = android.provider.Settings.Secure.getString(
+                    contentResolver,
+                    android.provider.Settings.Secure.ANDROID_ID
+                ) ?: "unknown"
+                val url = java.net.URL("https://www.saarthiguide.in/api/v1/telemetry/push-ack")
+                val conn = url.openConnection() as java.net.HttpURLConnection
+                conn.requestMethod = "POST"
+                conn.setRequestProperty("Content-Type", "application/json")
+                conn.doOutput = true
+                conn.connectTimeout = 4000
+                conn.readTimeout = 4000
+                val body = org.json.JSONObject().apply {
+                    put("tag", tag)
+                    put("appVersion", version)
+                    put("deviceId", androidId)
+                }
+                conn.outputStream.use { os ->
+                    os.write(body.toString().toByteArray(Charsets.UTF_8))
+                }
+                conn.responseCode
+                conn.disconnect()
+            } catch (_: Exception) {}
+        }
     }
 
     private fun showLockScreenNotification(title: String, body: String, targetUrl: String, notifTag: String = "saarthi-alert") {

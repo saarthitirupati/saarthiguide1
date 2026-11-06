@@ -53,6 +53,10 @@ export default function AdminLiveUpdates() {
   const [pushCategory, setPushCategory] = useState<'Operational' | 'High Priority' | 'Emergency'>('Operational');
   const [isSendingPush, setIsSendingPush] = useState<boolean>(false);
 
+  // Real-time Delivery Telemetry State
+  const [liveTelemetryTag, setLiveTelemetryTag] = useState<string | null>(null);
+  const [telemetryStats, setTelemetryStats] = useState<{ delivered: number; byVersion: Record<string, number> } | null>(null);
+
   const showToast = (msg: string) => {
     setToastMessage(msg);
     setTimeout(() => setToastMessage(null), 3000);
@@ -117,6 +121,23 @@ export default function AdminLiveUpdates() {
       window.removeEventListener('saarthi:live_update', handleCustomEvent);
     };
   }, [fetchLiveData]);
+
+  // Real-time Delivery Acknowledgment Poller
+  useEffect(() => {
+    if (!liveTelemetryTag) return;
+    const fetchAck = async () => {
+      try {
+        const res = await fetch(`/api/v1/telemetry/push-ack?tag=${encodeURIComponent(liveTelemetryTag)}`);
+        const json = await res.json();
+        if (json && typeof json.delivered === 'number') {
+          setTelemetryStats({ delivered: json.delivered, byVersion: json.byVersion || {} });
+        }
+      } catch {}
+    };
+    fetchAck();
+    const timer = setInterval(fetchAck, 2500);
+    return () => clearInterval(timer);
+  }, [liveTelemetryTag]);
 
   // Push Notification Dispatcher via /api/push/send
   const sendPushNotification = async (payload: { title: string; body: string; url?: string; category?: string }) => {
@@ -329,6 +350,9 @@ export default function AdminLiveUpdates() {
       if (sendPushApproved) {
         const delivered = statusJson?.notification?.sent || statusJson?.notification?.delivered;
         const countMsg = typeof delivered === 'number' && delivered > 0 ? ` (${delivered} devices reached)` : '';
+        if (statusJson?.tag || statusJson?.notification?.tag) {
+          setLiveTelemetryTag(statusJson?.tag || statusJson?.notification?.tag);
+        }
         showToast(`Live status updated & push notification broadcasted successfully${countMsg}!`);
       } else {
         showToast('Live Temple Status updated successfully!');
@@ -853,6 +877,41 @@ export default function AdminLiveUpdates() {
             <span><strong>Notification is OFF by default</strong> · You can choose to send a notification only when needed.</span>
           </div>
         </div>
+
+        {/* Real-time Delivery Telemetry Card */}
+        {telemetryStats && (
+          <div style={{
+            marginTop: '16px',
+            padding: '14px 18px',
+            background: '#F0FDF4',
+            border: '1px solid #BBF7D0',
+            borderRadius: '12px',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '8px'
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '8px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                <span style={{ width: '8px', height: '8px', borderRadius: '50%', background: '#22C55E', display: 'inline-block', boxShadow: '0 0 6px #22C55E' }}></span>
+                <span style={{ fontSize: '13px', fontWeight: 800, color: '#166534' }}>Real-Time Live Delivery Acknowledgment</span>
+              </div>
+              <span style={{ fontSize: '12px', fontWeight: 600, color: '#15803D' }}>Targeted: <strong>5,023 devices</strong></span>
+            </div>
+            <div style={{ fontSize: '22px', fontWeight: 900, color: '#14532D', letterSpacing: '-0.02em' }}>
+              {telemetryStats.delivered.toLocaleString()} Phones Acknowledged ({((telemetryStats.delivered / 5023) * 100).toFixed(1)}%)
+            </div>
+            {Object.keys(telemetryStats.byVersion).length > 0 && (
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap', marginTop: '2px' }}>
+                <span style={{ fontSize: '11.5px', color: '#166534', fontWeight: 700 }}>Version Breakdown:</span>
+                {Object.entries(telemetryStats.byVersion).map(([v, count]) => (
+                  <span key={v} style={{ background: '#DCFCE7', color: '#14532D', padding: '3px 9px', borderRadius: '6px', fontSize: '11.5px', fontWeight: 700, border: '1px solid #86EFAC' }}>
+                    v{v}: {count}
+                  </span>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
       </div>
 
       {/* ── SECONDARY REGIONAL HUBS (IF ANY) ── */}

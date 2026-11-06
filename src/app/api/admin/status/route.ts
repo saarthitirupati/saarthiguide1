@@ -54,11 +54,12 @@ export async function POST(req: Request) {
         : '/alerts';
       const category = pushCategory || 'High Priority';
 
+      const broadcastTag = `live-status-${timestamp}`;
       const dispatchResult: any = await pushNotifyAll({
         title,
         body: messageBody,
         url,
-        tag: `live-status-${timestamp}`,
+        tag: broadcastTag,
         category
       }).catch((err: any) => {
         console.error('[PushNotify] Error broadcasting Live Status update:', err);
@@ -73,10 +74,12 @@ export async function POST(req: Request) {
       return NextResponse.json({
         ...updated,
         pushSent: true,
+        tag: broadcastTag,
         notification: {
           sent: totalDelivered > 0 ? totalDelivered : totalTargets,
           delivered: totalDelivered,
           targets: totalTargets,
+          tag: broadcastTag,
           status: dispatchResult?.success ? 'Sent' : 'Failed',
           details: dispatchResult
         }
