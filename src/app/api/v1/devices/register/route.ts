@@ -13,16 +13,21 @@ export async function POST(req: Request) {
 
     const now = new Date().toISOString();
 
-    // 1. Dual Registration: Register into push_subscriptions so native app receives broadcasts immediately
+    // 1. Dual Registration: Register into push_subscriptions and auto-enroll topic in background
     if (fcmToken && typeof fcmToken === 'string' && fcmToken.trim().length > 20) {
       const cleanToken = fcmToken.trim();
-      // Auto-enroll device token into 'saarthi_all' topic in background
-      addTokensToTopic([cleanToken], 'saarthi_all').catch(err => {
-        console.warn('[DeviceRegistration] Topic enrollment error:', err);
-      });
+      const waitUntil = (globalThis as any).waitUntil || ((p: Promise<any>) => { p.catch(() => {}); });
 
-      try {
-        const { error: subErr } = await supabase.from('push_subscriptions').upsert(
+      // Non-blocking background auto-enroll into 'saarthi_all'
+      waitUntil(
+        addTokensToTopic([cleanToken], 'saarthi_all').catch(err => {
+          console.warn('[DeviceRegistration] Topic enrollment error:', err);
+        })
+      );
+
+      // Non-blocking push_subscriptions mirror
+      waitUntil(
+        supabase.from('push_subscriptions').upsert(
           {
             endpoint: `https://fcm.googleapis.com/fcm/native/${cleanToken}`,
             keys_p256dh: 'native_android_fcm',
@@ -31,13 +36,8 @@ export async function POST(req: Request) {
             last_seen_at: now,
           },
           { onConflict: 'endpoint' }
-        );
-        if (subErr) {
-          console.warn('[DeviceRegistration] push_subscriptions fallback error:', subErr.message);
-        }
-      } catch (err: any) {
-        console.warn('[DeviceRegistration] push_subscriptions fallback exception:', err?.message);
-      }
+        ).then()
+      );
     }
 
     // 2. Upsert Device Entry into user_devices (if table exists)

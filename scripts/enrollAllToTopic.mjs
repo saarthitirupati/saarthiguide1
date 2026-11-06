@@ -201,3 +201,4 @@ main().catch(err => {
   console.error('Fatal error running enrollment:', err);
   process.exit(1);
 });
+

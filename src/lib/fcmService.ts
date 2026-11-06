@@ -184,12 +184,32 @@ interface FCMTopicPayload {
 /**
  * Broadcasts an FCM push notification to a topic (e.g. 'saarthi_all') in a single subrequest.
  * Delivers to thousands of subscribed Android devices concurrently via Google Cloud fanout.
+ * Supports both object payload and (topic, title, body, data) signatures.
  */
 export async function sendFCMTopicNotification(
-  payload: FCMTopicPayload,
-  preloadedToken?: string,
-  preloadedServiceAccount?: any
+  topicOrPayload: string | FCMTopicPayload,
+  titleOrToken?: string,
+  bodyOrServiceAccount?: string | any,
+  dataRecord?: Record<string, string>
 ): Promise<{ success: boolean; messageId?: string; error?: string }> {
+  let payload: FCMTopicPayload;
+  let preloadedToken: string | undefined;
+  let preloadedServiceAccount: any | undefined;
+
+  if (typeof topicOrPayload === 'string') {
+    payload = {
+      topic: topicOrPayload,
+      title: titleOrToken || '',
+      body: typeof bodyOrServiceAccount === 'string' ? bodyOrServiceAccount : '',
+      deepLink: dataRecord?.url || dataRecord?.deepLink || 'https://www.saarthiguide.in',
+      data: dataRecord,
+    };
+  } else {
+    payload = topicOrPayload;
+    preloadedToken = titleOrToken;
+    preloadedServiceAccount = bodyOrServiceAccount;
+  }
+
   const serviceAccount = preloadedServiceAccount || getParsedServiceAccount();
   if (!serviceAccount) {
     return { success: false, error: 'FCM_SERVICE_ACCOUNT_KEY not configured in server environment' };
@@ -261,16 +281,17 @@ export async function sendFCMTopicNotification(
 /**
  * Subscribes FCM registration tokens to a topic via Google IID API.
  * Supports up to 1,000 tokens per call.
+ * Automatically cleans up stale / uninstalled tokens from user_devices asynchronously.
  */
 export async function addTokensToTopic(
   tokens: string[],
   topic: string = 'saarthi_all'
-): Promise<{ success: boolean; count?: number; error?: any }> {
-  if (!tokens || tokens.length === 0) return { success: true, count: 0 };
+): Promise<{ success: boolean; count?: number; results?: Array<{ error?: string }>; error?: any }> {
+  if (!tokens || tokens.length === 0) return { success: true, count: 0, results: [] };
   const validTokens = tokens
     .map(t => (typeof t === 'string' ? t.trim() : ''))
     .filter(t => t.length > 20);
-  if (validTokens.length === 0) return { success: true, count: 0 };
+  if (validTokens.length === 0) return { success: true, count: 0, results: [] };
 
   try {
     const serviceAccount = getParsedServiceAccount();
@@ -286,7 +307,7 @@ export async function addTokensToTopic(
       headers['access_token_auth'] = 'true';
     } else {
       console.warn('[FCM] Cannot enroll tokens to topic: No FCM credentials available');
-      return { success: false, error: 'No FCM credentials' };
+      return { success: false, error: 'No FCM credentials', results: [] };
     }
 
     const cleanTopic = topic.replace(/^\/topics\//, '');
@@ -302,15 +323,35 @@ export async function addTokensToTopic(
     if (!res.ok) {
       const errText = await res.text();
       console.warn(`[FCM IID] batchAdd returned HTTP ${res.status}:`, errText);
-      return { success: false, error: errText };
+      return { success: false, error: errText, results: [] };
     }
 
     const json = (await res.json()) as { results?: Array<{ error?: string }> };
-    const successCount = (json.results || []).filter(r => !r.error).length;
-    return { success: true, count: successCount };
+    const results = json.results || [];
+    const successCount = results.filter(r => !r.error).length;
+
+    // AUTO CLEANUP STALE TOKENS - non-blocking in background
+    const stale: string[] = [];
+    results.forEach((r, i) => {
+      if (r.error === 'NOT_FOUND' || r.error === 'INVALID_ARGUMENT') {
+        stale.push(validTokens[i]);
+      }
+    });
+
+    if (stale.length > 0) {
+      import('@/lib/supabase').then(({ supabase }) => {
+        Promise.resolve(supabase.from('user_devices').delete().in('fcm_token', stale))
+          .then(() => {
+            console.log(`[FCM] Cleaned ${stale.length} stale tokens from user_devices`);
+          })
+          .catch(() => {});
+      }).catch(() => {});
+    }
+
+    return { success: true, count: successCount, results };
   } catch (err: any) {
     console.warn('[FCM IID] batchAdd exception:', err?.message || err);
-    return { success: false, error: err?.message || 'Network exception' };
+    return { success: false, error: err?.message || 'Network exception', results: [] };
   }
 }
 
