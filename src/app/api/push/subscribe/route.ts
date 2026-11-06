@@ -8,10 +8,33 @@ export async function GET(req: Request) {
     if (!isAuthed) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
-    const { count, error } = await supabase
-      .from('push_subscriptions')
-      .select('*', { count: 'exact', head: true });
-    return NextResponse.json({ count: count || 0 });
+    const [subsRes, devRes] = await Promise.allSettled([
+      supabase.from('push_subscriptions').select('endpoint'),
+      supabase.from('user_devices').select('device_id, fcm_token').eq('is_active', true).not('fcm_token', 'is', null)
+    ]);
+
+    const subs = subsRes.status === 'fulfilled' && subsRes.value.data ? subsRes.value.data : [];
+    const devices = devRes.status === 'fulfilled' && devRes.value.data ? devRes.value.data : [];
+
+    const uniqueFcm = new Set<string>();
+    let webCount = 0;
+
+    for (const s of subs) {
+      if (s.endpoint.startsWith('https://fcm.googleapis.com/fcm/native/')) {
+        const token = s.endpoint.replace('https://fcm.googleapis.com/fcm/native/', '').trim();
+        if (token.length > 20) uniqueFcm.add(token);
+      } else {
+        webCount++;
+      }
+    }
+
+    for (const d of devices) {
+      const token = d.fcm_token?.trim();
+      if (token && token.length > 20) uniqueFcm.add(token);
+    }
+
+    const totalCount = webCount + uniqueFcm.size;
+    return NextResponse.json({ count: totalCount, web: webCount, android: uniqueFcm.size });
   } catch (err: any) {
     return NextResponse.json({ count: 0 });
   }

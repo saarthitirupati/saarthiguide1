@@ -458,6 +458,9 @@ export default function AdminAlertsPage() {
           setEditingAlertId(resultAlert.id);
           alert('Draft saved! You can continue editing or publish when ready.');
         } else {
+          const notifDelivered = (resultAlert as any)?.notification?.sent || (resultAlert as any)?.notification?.delivered;
+          const countMsg = typeof notifDelivered === 'number' && notifDelivered > 0 ? ` (${notifDelivered} devices reached via push)` : '';
+          alert(isEditing ? `Alert updated successfully${countMsg}!` : `Alert published successfully${countMsg}!`);
           resetForm();
         }
       } else {

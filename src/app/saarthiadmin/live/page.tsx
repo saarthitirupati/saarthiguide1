@@ -26,6 +26,7 @@ import {
 } from 'lucide-react';
 import { notifyRealtimeUpdate } from '@/lib/useRealtimeStatus';
 import { safeFetchJson } from '@/lib/safeFetch';
+import { formatRelativeTime, formatISTTime } from '@/lib/istDate';
 
 export default function AdminLiveUpdates() {
   const [weatherState, setWeatherState] = useState<string>('Auto (API)');
@@ -33,6 +34,8 @@ export default function AdminLiveUpdates() {
   const [statusData, setStatusData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [lastUpdated, setLastUpdated] = useState<string>('');
+  const [lastSyncTime, setLastSyncTime] = useState<number>(Date.now());
+  const [currentTime, setCurrentTime] = useState<number>(Date.now());
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [placeUpdateStatus, setPlaceUpdateStatus] = useState<Record<string, string>>({});
 
@@ -84,11 +87,18 @@ export default function AdminLiveUpdates() {
       }
 
       setLastUpdated(new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit' }));
+      setLastSyncTime(Date.now());
     } catch (e) {
       console.error('Failed to fetch live operations data:', e);
     } finally {
       setLoading(false);
     }
+  }, []);
+
+  // Real-time ticking clock for dynamic relative timestamps
+  useEffect(() => {
+    const ticker = setInterval(() => setCurrentTime(Date.now()), 2000);
+    return () => clearInterval(ticker);
   }, []);
 
   useEffect(() => {
@@ -304,17 +314,25 @@ export default function AdminLiveUpdates() {
         return d;
       });
 
-      await fetch('/api/admin/status', {
+      const statusRes = await fetch('/api/admin/status', {
         method: 'POST',
         headers,
         credentials: 'include',
         body: JSON.stringify(globalStatusUpdates)
       });
+      const statusJson = await statusRes.json().catch(() => ({}));
 
       notifyRealtimeUpdate();
       fetchLiveData();
       setPlaceUpdateStatus(prev => ({ ...prev, 'uuid-1': '✓ Updated!' }));
-      showToast(sendPushApproved ? 'Live status updated & push notification sent!' : 'Live Temple Status updated successfully!');
+
+      if (sendPushApproved) {
+        const delivered = statusJson?.notification?.sent || statusJson?.notification?.delivered;
+        const countMsg = typeof delivered === 'number' && delivered > 0 ? ` (${delivered} devices reached)` : '';
+        showToast(`Live status updated & push notification broadcasted successfully${countMsg}!`);
+      } else {
+        showToast('Live Temple Status updated successfully!');
+      }
       setTimeout(() => {
         setPlaceUpdateStatus(prev => ({ ...prev, 'uuid-1': '' }));
       }, 2500);
@@ -412,7 +430,7 @@ export default function AdminLiveUpdates() {
             gap: '6px'
           }}>
             <span style={{ width: '7px', height: '7px', borderRadius: '50%', background: '#16A34A', display: 'inline-block' }} />
-            Live Sync (5s) {lastUpdated && `· ${lastUpdated}`}
+            Live Sync (10s) · Synced {formatRelativeTime(lastSyncTime, currentTime)}
           </span>
           <button 
             onClick={fetchLiveData} 
@@ -528,7 +546,7 @@ export default function AdminLiveUpdates() {
             )}
           </div>
           <span style={{ fontSize: '12px', color: '#64748B', display: 'flex', alignItems: 'center', gap: '5px', fontWeight: 500 }}>
-            <Clock size={13} /> Last updated: {lastUpdated || tirumalaPlace.updated || '2 mins ago'}
+            <Clock size={13} /> Last updated: <strong style={{ color: '#0F172A', fontWeight: 700 }}>{formatRelativeTime(statusData?.lastUpdated || tirumalaPlace.updated, currentTime)}</strong> {statusData?.lastUpdated && `(${formatISTTime(statusData.lastUpdated)})`}
           </span>
         </div>
 
@@ -807,7 +825,7 @@ export default function AdminLiveUpdates() {
             type="button"
             onClick={handleTirumalaUpdate}
             style={{
-              backgroundColor: '#0F766E',
+              backgroundColor: actionChoice === 'update_and_notify' ? '#2563EB' : '#0F766E',
               color: '#FFFFFF',
               border: 'none',
               borderRadius: '10px',
@@ -818,11 +836,16 @@ export default function AdminLiveUpdates() {
               display: 'inline-flex',
               alignItems: 'center',
               gap: '8px',
-              boxShadow: '0 2px 6px rgba(15, 118, 110, 0.25)',
-              transition: 'background-color 0.15s ease'
+              boxShadow: actionChoice === 'update_and_notify' 
+                ? '0 4px 14px rgba(37, 99, 235, 0.35)' 
+                : '0 2px 6px rgba(15, 118, 110, 0.25)',
+              transition: 'all 0.15s ease'
             }}
           >
-            <Save size={16} /> Update Live Status
+            {actionChoice === 'update_and_notify' ? <Send size={16} /> : <Save size={16} />}
+            <span>
+              {actionChoice === 'update_and_notify' ? 'Update & Broadcast Push Notification' : 'Update Website Status Only'}
+            </span>
           </button>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '11.5px', color: '#475569' }}>
@@ -850,7 +873,7 @@ export default function AdminLiveUpdates() {
                       </span>
                     )}
                   </div>
-                  <span className={styles.lastUpdated}><Clock size={12}/> {place.updated}</span>
+                  <span className={styles.lastUpdated}><Clock size={12}/> {formatRelativeTime(place.updated, currentTime)}</span>
                 </div>
                 
                 <div className={styles.controls} id={`controls-${place.id}`}>

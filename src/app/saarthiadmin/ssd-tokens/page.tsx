@@ -27,6 +27,7 @@ import {
 import { notifyRealtimeUpdate } from '@/lib/useRealtimeStatus';
 import { safeFetchJson } from '@/lib/safeFetch';
 import { formatSsdTokenNotification } from '@/lib/notificationFormatter';
+import { formatRelativeTime, formatISTTime } from '@/lib/istDate';
 
 /**
  * Temple Gopuram Icon with custom color
@@ -121,31 +122,43 @@ export default function AdminSsdTokensPage() {
   const [customTitle, setCustomTitle] = useState<string>('');
   const [customBody, setCustomBody] = useState<string>('');
   const [isCustomizing, setIsCustomizing] = useState<boolean>(false);
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
 
-  // 7. Notification History
-  const [notificationHistory, setNotificationHistory] = useState<NotificationHistoryItem[]>([
-    {
-      id: 'h-1',
-      dateTime: '30 Oct 2026, 5:30 PM',
-      type: 'SSD + DD',
-      message: 'Quota completed',
-      status: 'Sent'
-    },
-    {
-      id: 'h-2',
-      dateTime: '29 Oct 2026, 6:00 PM',
-      type: 'DD Tokens',
-      message: 'Issuing started',
-      status: 'Sent'
-    },
-    {
-      id: 'h-3',
-      dateTime: '28 Oct 2026, 8:15 PM',
-      type: 'SSD Tokens',
-      message: 'Paused temporarily',
-      status: 'Sent'
+  const showToast = (msg: string) => {
+    setToastMessage(msg);
+    setTimeout(() => setToastMessage(null), 4000);
+  };
+
+  // 7. Notification History (Persisted)
+  const [notificationHistory, setNotificationHistory] = useState<NotificationHistoryItem[]>(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const saved = localStorage.getItem('saarthi_ssd_notif_history');
+        if (saved) {
+          const parsed = JSON.parse(saved);
+          if (Array.isArray(parsed) && parsed.length > 0) return parsed;
+        }
+      } catch {}
     }
-  ]);
+    return [
+      {
+        id: 'h-today',
+        dateTime: 'Today',
+        type: 'SSD + DD',
+        message: 'Tokens issuing according to operational schedule',
+        status: 'Sent'
+      }
+    ];
+  });
+
+  const [lastUpdated, setLastUpdated] = useState<string>('');
+  const [currentTime, setCurrentTime] = useState<number>(Date.now());
+
+  // Real-time ticking clock for dynamic relative timestamps
+  useEffect(() => {
+    const ticker = setInterval(() => setCurrentTime(Date.now()), 2000);
+    return () => clearInterval(ticker);
+  }, []);
 
   // Load initial live status from API
   const loadInitialData = async () => {
@@ -153,6 +166,7 @@ export default function AdminSsdTokensPage() {
       setLoading(true);
       const data = await safeFetchJson<any>('/api/admin/ssd-tokens');
       if (data) {
+        if (data.lastUpdated) setLastUpdated(data.lastUpdated);
         if (data.ssdTokenStatus) setGlobalStatus(data.ssdTokenStatus);
         if (data.ssdNotice !== undefined && data.ssdNotice.trim() !== '') setLiveNotice(data.ssdNotice);
         if (data.ssdNextTokenTime) setNextBatchTime(data.ssdNextTokenTime);
@@ -245,9 +259,13 @@ export default function AdminSsdTokensPage() {
 
     let sendPushApproved = false;
     if (publishChoice === 'website_and_push') {
-      sendPushApproved = window.confirm(
-        `Dispatch Push Notification to all subscribers?\n\nTitle: ${previewTitle}\nMessage: ${previewBody}`
-      );
+      try {
+        sendPushApproved = typeof window !== 'undefined' && typeof window.confirm === 'function'
+          ? window.confirm(`Dispatch Push Notification to all subscribers?\n\nTitle: ${previewTitle}\nMessage: ${previewBody}`)
+          : true;
+      } catch {
+        sendPushApproved = true;
+      }
       if (!sendPushApproved) {
         setSaving(false);
         return; // Admin cancelled push dispatch
@@ -302,45 +320,58 @@ export default function AdminSsdTokensPage() {
       const data = await res.json();
 
       if (res.ok && data.success) {
+        setLastUpdated(nowIso);
         notifyRealtimeUpdate();
 
         if (sendPushApproved) {
-          setNotificationHistory(prev => [
-            {
-              id: `notif-${Date.now()}`,
-              dateTime: formatKolkata(new Date().toISOString()),
-              type: 'SSD + DD',
-              message: liveNotice.trim() || 'Quota and token status updated',
-              status: 'Sent'
-            },
-            ...prev
-          ]);
+          const newItem: NotificationHistoryItem = {
+            id: `notif-${Date.now()}`,
+            dateTime: formatKolkata(new Date().toISOString()),
+            type: 'SSD + DD',
+            message: previewTitle || liveNotice.trim() || 'Quota and token status updated',
+            status: 'Sent'
+          };
+          setNotificationHistory(prev => {
+            const next = [newItem, ...prev.filter(item => item.id !== 'h-today')].slice(0, 20);
+            try {
+              localStorage.setItem('saarthi_ssd_notif_history', JSON.stringify(next));
+            } catch {}
+            return next;
+          });
 
           const fcmCount = data?.notification?.details?.fcm?.delivered ?? 0;
           const webCount = data?.notification?.details?.web?.delivered ?? 0;
           const totalDelivered = fcmCount + webCount;
           const countMsg = totalDelivered > 0 ? ` (${totalDelivered} devices reached)` : '';
+          const successMsg = `Live status updated & push notification broadcasted successfully${countMsg}!`;
           setMessage({
-            text: `Live status updated & push notification broadcasted successfully${countMsg}!`,
+            text: successMsg,
             type: 'success'
           });
+          showToast(successMsg);
         } else {
+          const successMsg = 'Website SSD & DD token updates published live (No notification sent).';
           setMessage({
-            text: 'Website SSD & DD token updates published live (No notification sent).',
+            text: successMsg,
             type: 'success'
           });
+          showToast(successMsg);
         }
       } else {
+        const errMsg = 'Failed to publish: ' + (data?.error || 'Authentication error. Please re-login.');
         setMessage({
-          text: 'Failed to publish: ' + (data?.error || 'Authentication error. Please re-login.'),
+          text: errMsg,
           type: 'error'
         });
+        showToast(errMsg);
       }
     } catch (err: any) {
+      const errMsg = 'Error saving token updates: ' + (err?.message || 'Network error');
       setMessage({
-        text: 'Error saving token updates: ' + (err?.message || 'Network error'),
+        text: errMsg,
         type: 'error'
       });
+      showToast(errMsg);
     } finally {
       setSaving(false);
     }
@@ -350,7 +381,7 @@ export default function AdminSsdTokensPage() {
     <div style={{ maxWidth: '1160px', margin: '0 auto', padding: '24px 20px 80px 20px', fontFamily: 'var(--font-sans), system-ui, -apple-system, sans-serif' }}>
       
       {/* ── TOP HEADER ── */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '22px' }}>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '22px', flexWrap: 'wrap', gap: '14px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
           <div style={{ width: '40px', height: '40px', borderRadius: '10px', background: '#EFF6FF', border: '1px solid #BFDBFE', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <TempleIcon color="#2563EB" size={24} />
@@ -363,6 +394,45 @@ export default function AdminSsdTokensPage() {
               Manage Sarva Darshan (SSD) and Divya Darshan (DD) token issuance details for Tirumala.
             </p>
           </div>
+        </div>
+
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <span style={{
+            fontSize: '11.5px',
+            fontWeight: 800,
+            color: '#16A34A',
+            background: '#DCFCE7',
+            border: '1px solid #86EFAC',
+            padding: '5px 12px',
+            borderRadius: '20px',
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '6px'
+          }}>
+            <span style={{ width: '7px', height: '7px', borderRadius: '50%', background: '#16A34A', display: 'inline-block' }} />
+            Live Sync · Updated {formatRelativeTime(lastUpdated, currentTime)} {lastUpdated && `(${formatISTTime(lastUpdated)})`}
+          </span>
+          <button 
+            type="button"
+            onClick={loadInitialData}
+            title="Refresh Token Status"
+            style={{
+              backgroundColor: '#FFFFFF',
+              color: '#0F172A',
+              border: '1px solid #CBD5E1',
+              borderRadius: '8px',
+              padding: '6px 12px',
+              fontWeight: 700,
+              fontSize: '12px',
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px'
+            }}
+          >
+            <RefreshCw size={13} className={loading ? 'animate-spin' : ''} />
+            Refresh
+          </button>
         </div>
       </div>
 
@@ -962,7 +1032,7 @@ export default function AdminSsdTokensPage() {
                 padding: '13px 20px',
                 borderRadius: '12px',
                 border: 'none',
-                background: '#15803D',
+                background: publishChoice === 'website_and_push' ? '#2563EB' : '#15803D',
                 color: '#FFFFFF',
                 fontSize: '14px',
                 fontWeight: 700,
@@ -971,19 +1041,41 @@ export default function AdminSsdTokensPage() {
                 alignItems: 'center',
                 justifyContent: 'center',
                 gap: '8px',
-                boxShadow: '0 2px 8px rgba(21, 128, 61, 0.25)',
-                transition: 'opacity 0.15s ease'
+                boxShadow: publishChoice === 'website_and_push' 
+                  ? '0 4px 14px rgba(37, 99, 235, 0.35)' 
+                  : '0 2px 8px rgba(21, 128, 61, 0.25)',
+                transition: 'all 0.15s ease'
               }}
             >
-              <Save size={16} />
+              {publishChoice === 'website_and_push' ? <Send size={16} /> : <Save size={16} />}
               <span>
                 {saving 
-                  ? 'Saving changes...' 
+                  ? (publishChoice === 'website_and_push' ? 'Broadcasting Push Notification...' : 'Saving changes...') 
                   : publishChoice === 'website_only' 
                   ? 'Publish Update Only' 
                   : 'Publish Update & Send Notification'}
               </span>
             </button>
+
+            {/* Inline Confirmation Feedback directly under button */}
+            {message && (
+              <div style={{
+                marginTop: '12px',
+                padding: '10px 14px',
+                borderRadius: '10px',
+                fontSize: '12.5px',
+                fontWeight: 700,
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                background: message.type === 'success' ? '#DCFCE7' : '#FEE2E2',
+                color: message.type === 'success' ? '#15803D' : '#B91C1C',
+                border: `1px solid ${message.type === 'success' ? '#86EFAC' : '#FCA5A5'}`
+              }}>
+                {message.type === 'success' ? <CheckCircle2 size={16} color="#15803D" /> : <AlertTriangle size={16} color="#B91C1C" />}
+                <span>{message.text}</span>
+              </div>
+            )}
           </div>
 
         </div>
@@ -1364,6 +1456,31 @@ export default function AdminSsdTokensPage() {
         </div>
 
       </div>
+
+      {/* ── FLOATING TOAST POPUP ── */}
+      {toastMessage && (
+        <div style={{
+          position: 'fixed',
+          bottom: '24px',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          backgroundColor: '#0F172A',
+          color: '#FFFFFF',
+          padding: '12px 22px',
+          borderRadius: '999px',
+          fontSize: '13.5px',
+          fontWeight: 700,
+          boxShadow: '0 10px 25px -5px rgba(0, 0, 0, 0.3)',
+          zIndex: 9999,
+          display: 'flex',
+          alignItems: 'center',
+          gap: '10px',
+          border: '1px solid rgba(255,255,255,0.15)'
+        }}>
+          <span style={{ color: '#4ADE80', fontWeight: 800 }}>✓</span>
+          <span>{toastMessage}</span>
+        </div>
+      )}
 
     </div>
   );

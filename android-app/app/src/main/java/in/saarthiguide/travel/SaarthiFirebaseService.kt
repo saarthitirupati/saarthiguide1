@@ -86,10 +86,14 @@ class SaarthiFirebaseService : FirebaseMessagingService() {
         val deepLink = remoteMessage.data["deepLink"] 
             ?: "https://www.saarthiguide.in"
 
-        showLockScreenNotification(title, body, deepLink)
+        val tag = remoteMessage.data["tag"]
+            ?: remoteMessage.notification?.tag
+            ?: "saarthi-alert"
+
+        showLockScreenNotification(title, body, deepLink, tag)
     }
 
-    private fun showLockScreenNotification(title: String, body: String, targetUrl: String) {
+    private fun showLockScreenNotification(title: String, body: String, targetUrl: String, notifTag: String = "saarthi-alert") {
         val channelId = "saarthi_live_alerts_v4"
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val soundUri = Uri.parse("android.resource://" + packageName + "/" + R.raw.om_notification)
@@ -139,6 +143,7 @@ class SaarthiFirebaseService : FirebaseMessagingService() {
             .setContentIntent(pendingIntent)
             .build()
 
-        notificationManager.notify(System.currentTimeMillis().toInt(), notification)
+        val notifId = (notifTag.hashCode() and 0x7FFFFFFF)
+        notificationManager.notify(notifTag, notifId, notification)
     }
 }

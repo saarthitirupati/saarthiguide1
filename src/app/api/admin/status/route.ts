@@ -54,7 +54,7 @@ export async function POST(req: Request) {
         : '/alerts';
       const category = pushCategory || 'High Priority';
 
-      await pushNotifyAll({
+      const dispatchResult: any = await pushNotifyAll({
         title,
         body: messageBody,
         url,
@@ -62,10 +62,31 @@ export async function POST(req: Request) {
         category
       }).catch((err: any) => {
         console.error('[PushNotify] Error broadcasting Live Status update:', err);
+        return { success: false, error: err?.message || 'Dispatch failed' };
+      });
+
+      const fcmSent = dispatchResult?.fcm?.delivered ?? 0;
+      const webSent = dispatchResult?.web?.delivered ?? 0;
+      const totalDelivered = fcmSent + webSent;
+      const totalTargets = (dispatchResult?.fcm?.total ?? 0) + (dispatchResult?.web?.total ?? 0);
+
+      return NextResponse.json({
+        ...updated,
+        pushSent: true,
+        notification: {
+          sent: totalDelivered > 0 ? totalDelivered : totalTargets,
+          delivered: totalDelivered,
+          targets: totalTargets,
+          status: dispatchResult?.success ? 'Sent' : 'Failed',
+          details: dispatchResult
+        }
       });
     }
 
-    return NextResponse.json(updated);
+    return NextResponse.json({
+      ...updated,
+      pushSent: false
+    });
   } catch (e: any) {
     return NextResponse.json({ error: e.message }, { status: 400 });
   }

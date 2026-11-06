@@ -33,6 +33,7 @@ import {
 import { PLACES } from '@/data/places';
 import { Place } from '@/types/place';
 import { safeFetchJson } from '@/lib/safeFetch';
+import { formatRelativeTime } from '@/lib/istDate';
 import { supabase } from '@/lib/supabase';
 
 interface LiveGroundSnapshot {
@@ -72,6 +73,14 @@ export default function AdminDashboard() {
   const [launchInterest, setLaunchInterest] = useState<LaunchInterestStats | null>(null);
   const [loading, setLoading] = useState(true);
   const [lastSyncTime, setLastSyncTime] = useState<string>('Just now');
+  const [lastSyncTimestamp, setLastSyncTimestamp] = useState<number>(Date.now());
+  const [currentTime, setCurrentTime] = useState<number>(Date.now());
+
+  // Dynamic ticking clock for live relative timestamps
+  useEffect(() => {
+    const ticker = setInterval(() => setCurrentTime(Date.now()), 2000);
+    return () => clearInterval(ticker);
+  }, []);
 
   const getAdminHeaders = () => {
     const token = typeof window !== 'undefined'
@@ -134,6 +143,7 @@ export default function AdminDashboard() {
       }
 
       setLastSyncTime(new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }));
+      setLastSyncTimestamp(Date.now());
     } catch (e) {
       console.error('Failed to load dashboard metrics:', e);
     } finally {
@@ -312,7 +322,7 @@ export default function AdminDashboard() {
           className={styles.refreshBtn}
         >
           <RefreshCw size={14} className={loading ? styles.spin : ''} />
-          <span>{loading ? 'Refreshing...' : `Refresh (${lastSyncTime})`}</span>
+          <span>{loading ? 'Refreshing...' : `Refresh (${formatRelativeTime(lastSyncTimestamp, currentTime)})`}</span>
         </button>
       </div>
 
@@ -325,7 +335,7 @@ export default function AdminDashboard() {
               LIVE GROUND PULSE
             </span>
             <span style={{ fontSize: '12px', color: '#94A3B8' }}>
-              Real-time pilgrim guidance metrics
+              Real-time pilgrim guidance metrics · Synced {formatRelativeTime(lastSyncTimestamp, currentTime)}
             </span>
           </div>
 

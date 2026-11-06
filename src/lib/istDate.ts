@@ -73,3 +73,50 @@ export function getISTDateInfo(lastUpdatedStr?: string, refDate: Date = new Date
     updatedDisplay
   };
 }
+
+/**
+ * Format relative time dynamically (e.g. "Just now", "45s ago", "2m ago", "1h ago", "Yesterday")
+ */
+export function formatRelativeTime(dateInput?: string | number | null, now: number = Date.now()): string {
+  if (!dateInput) return 'Just now';
+  const timestamp = typeof dateInput === 'number' ? dateInput : new Date(dateInput).getTime();
+  if (isNaN(timestamp) || timestamp <= 0) return typeof dateInput === 'string' ? dateInput : 'Just now';
+
+  const diffMs = now - timestamp;
+  if (diffMs < 0) return 'Just now';
+
+  const diffSecs = Math.floor(diffMs / 1000);
+  if (diffSecs < 15) return 'Just now';
+  if (diffSecs < 60) return `${diffSecs}s ago`;
+
+  const diffMins = Math.floor(diffSecs / 60);
+  if (diffMins < 60) return `${diffMins}m ago`;
+
+  const diffHours = Math.floor(diffMins / 60);
+  if (diffHours < 24) return `${diffHours}h ago`;
+
+  const diffDays = Math.floor(diffHours / 24);
+  if (diffDays === 1) return 'Yesterday';
+  if (diffDays < 7) return `${diffDays}d ago`;
+
+  return new Intl.DateTimeFormat('en-IN', {
+    timeZone: 'Asia/Kolkata',
+    month: 'short',
+    day: 'numeric'
+  }).format(new Date(timestamp));
+}
+
+/**
+ * Format exact time in Asia/Kolkata (IST)
+ */
+export function formatISTTime(dateInput?: string | number | null): string {
+  if (!dateInput) return '';
+  const timestamp = typeof dateInput === 'number' ? dateInput : new Date(dateInput).getTime();
+  if (isNaN(timestamp) || timestamp <= 0) return '';
+  return new Intl.DateTimeFormat('en-IN', {
+    timeZone: 'Asia/Kolkata',
+    hour: 'numeric',
+    minute: '2-digit',
+    hour12: true
+  }).format(new Date(timestamp)) + ' IST';
+}

@@ -21,7 +21,8 @@ export async function POST(req: Request) {
       sarva_darshan_wait,
       special_entry_wait,
       divya_darshan_wait,
-      srivani_darshan_wait
+      srivani_darshan_wait,
+      sendPush = false
     } = body;
 
     const before = await readStatus();
@@ -65,19 +66,21 @@ export async function POST(req: Request) {
     }
     const updated = await updateStatus(statusUpdates);
 
-    // Guaranteed push notification to all devices on every live queue update
-    const wait = updated.waitTime || 'Current queue active';
-    const crowd = updated.crowdLevel ? ` (${updated.crowdLevel} crowd)` : '';
+    // Strict Notification Opt-In Guard
+    if (sendPush === true) {
+      const wait = updated.waitTime || 'Current queue active';
+      const crowd = updated.crowdLevel ? ` (${updated.crowdLevel} crowd)` : '';
 
-    await pushNotifyAll({
-      title: 'Tirumala Darshan Timings Updated',
-      body: `Live update: Wait time is ${wait}${crowd}. Plan your darshan visit accordingly.`,
-      url: '/alerts',
-      tag: `live-darshan-${Date.now()}`,
-      category: 'High Priority'
-    }).catch((err: any) => {
-      console.error('[PushNotify] Error broadcasting live updates:', err);
-    });
+      await pushNotifyAll({
+        title: 'Tirumala Darshan Timings Updated',
+        body: `Live update: Wait time is ${wait}${crowd}. Plan your darshan visit accordingly.`,
+        url: '/alerts',
+        tag: `live-darshan-${Date.now()}`,
+        category: 'High Priority'
+      }).catch((err: any) => {
+        console.error('[PushNotify] Error broadcasting live updates:', err);
+      });
+    }
 
     return NextResponse.json({ success: true });
   } catch (error: any) {

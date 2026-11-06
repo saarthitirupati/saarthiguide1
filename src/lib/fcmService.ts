@@ -134,6 +134,7 @@ export async function sendFCMNotification(
         ...(payload.data || {}),
       },
       android: {
+        collapse_key: payload.data?.tag || 'saarthi-alert',
         priority: 'HIGH',
         notification: {
           channel_id: 'saarthi_live_alerts_v4',
@@ -143,6 +144,7 @@ export async function sendFCMNotification(
           visibility: 'PUBLIC',
           notification_priority: 'PRIORITY_MAX',
           icon: 'ic_maskable',
+          tag: payload.data?.tag || 'saarthi-alert',
         },
       },
     },
@@ -216,6 +218,7 @@ export async function sendFCMTopicNotification(
         ...(payload.data || {}),
       },
       android: {
+        collapse_key: payload.data?.tag || 'saarthi-alert',
         priority: 'HIGH',
         notification: {
           channel_id: 'saarthi_live_alerts_v4',
@@ -225,6 +228,7 @@ export async function sendFCMTopicNotification(
           visibility: 'PUBLIC',
           notification_priority: 'PRIORITY_MAX',
           icon: 'ic_maskable',
+          tag: payload.data?.tag || 'saarthi-alert',
         },
       },
     },

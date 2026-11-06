@@ -37,9 +37,10 @@ export async function POST(request: Request) {
     const createdAlert = await saveLiveAlert(body);
 
     const shouldSendPush = body.sendPush === true;
+    let pushResultData: any = null;
     if (shouldSendPush && createdAlert && createdAlert.status === 'Published') {
       try {
-        await pushNotifyAll({
+        const dispatchResult: any = await pushNotifyAll({
           title: createdAlert.title ? createdAlert.title : 'Tirumala Operational Alert',
           body: createdAlert.description || (createdAlert as any).message || '',
           url: '/alerts',
@@ -48,12 +49,30 @@ export async function POST(request: Request) {
           category: createdAlert.category || 'High Priority',
           image: createdAlert.image || undefined
         });
-      } catch (err) {
+
+        const fcmSent = dispatchResult?.fcm?.delivered ?? 0;
+        const webSent = dispatchResult?.web?.delivered ?? 0;
+        const totalDelivered = fcmSent + webSent;
+        const totalTargets = (dispatchResult?.fcm?.total ?? 0) + (dispatchResult?.web?.total ?? 0);
+
+        pushResultData = {
+          sent: totalDelivered > 0 ? totalDelivered : totalTargets,
+          delivered: totalDelivered,
+          targets: totalTargets,
+          status: dispatchResult?.success ? 'Sent' : 'Failed',
+          details: dispatchResult
+        };
+      } catch (err: any) {
         console.error('[PushNotify] Error broadcasting live alert:', err);
+        pushResultData = { status: 'Failed', error: err?.message };
       }
     }
 
-    return NextResponse.json(createdAlert, { status: 201 });
+    return NextResponse.json({
+      ...createdAlert,
+      pushSent: shouldSendPush,
+      notification: pushResultData
+    }, { status: 201 });
   } catch (error: any) {
     console.error('API Error (/api/v1/alerts POST):', error);
     return NextResponse.json({ error: error?.message || 'Failed to create alert' }, { status: 400 });
@@ -75,9 +94,10 @@ export async function PUT(request: Request) {
     const updatedAlert = await saveLiveAlert(body);
 
     const shouldSendPush = body.sendPush === true;
+    let pushResultData: any = null;
     if (shouldSendPush && updatedAlert && updatedAlert.status === 'Published') {
       try {
-        await pushNotifyAll({
+        const dispatchResult: any = await pushNotifyAll({
           title: updatedAlert.title ? updatedAlert.title : 'Tirumala Operational Alert',
           body: updatedAlert.description || (updatedAlert as any).message || '',
           url: '/alerts',
@@ -86,12 +106,30 @@ export async function PUT(request: Request) {
           category: updatedAlert.category || 'High Priority',
           image: updatedAlert.image || undefined
         });
-      } catch (err) {
+
+        const fcmSent = dispatchResult?.fcm?.delivered ?? 0;
+        const webSent = dispatchResult?.web?.delivered ?? 0;
+        const totalDelivered = fcmSent + webSent;
+        const totalTargets = (dispatchResult?.fcm?.total ?? 0) + (dispatchResult?.web?.total ?? 0);
+
+        pushResultData = {
+          sent: totalDelivered > 0 ? totalDelivered : totalTargets,
+          delivered: totalDelivered,
+          targets: totalTargets,
+          status: dispatchResult?.success ? 'Sent' : 'Failed',
+          details: dispatchResult
+        };
+      } catch (err: any) {
         console.error('[PushNotify] Error broadcasting updated alert:', err);
+        pushResultData = { status: 'Failed', error: err?.message };
       }
     }
 
-    return NextResponse.json(updatedAlert, { status: 200 });
+    return NextResponse.json({
+      ...updatedAlert,
+      pushSent: shouldSendPush,
+      notification: pushResultData
+    }, { status: 200 });
   } catch (error: any) {
     console.error('API Error (/api/v1/alerts PUT):', error);
     return NextResponse.json({ error: error?.message || 'Failed to update alert' }, { status: 400 });

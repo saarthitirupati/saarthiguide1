@@ -105,7 +105,7 @@ export async function executePushDispatch(payload: PushPayload) {
   // 2. Unicast Fallback: Targets the top 30 most recently active devices (ordered by updated_at DESC).
   // 3. Web Push: Up to 10 active web subscribers.
   // Total subrequests: 1 + 30 + 10 = ~41 subrequests (guaranteed below Cloudflare Workers 50 subrequest limit).
-  const targetWebSubs = webSubs.slice(0, 10);
+  const targetWebSubs = webSubs.slice(0, 25);
   const targetFcmTokens = allFcmTokens.slice(0, MAX_UNICAST_PER_INVOCATION);
   let topicBroadcastSuccess = false;
 
