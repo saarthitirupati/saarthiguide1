@@ -1973,8 +1973,8 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
               }
               if (isSsdClosed) {
                 if (liveStatus?.ssdNextTokenTime && liveStatus.ssdNextTokenTime.trim()) {
-                  const cleanNext = liveStatus.ssdNextTokenTime.trim();
-                  return cleanNext.toLowerCase().startsWith('open') ? cleanNext : `Opens ${cleanNext}`;
+                  const cleanNext = liveStatus.ssdNextTokenTime.trim().replace(/^opens?\s+/i, '');
+                  return cleanNext;
                 }
                 if (liveStatus?.ssdAdvisoryTag && liveStatus.ssdAdvisoryTag.trim()) {
                   return liveStatus.ssdAdvisoryTag.trim();
