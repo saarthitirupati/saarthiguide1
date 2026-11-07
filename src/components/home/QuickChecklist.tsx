@@ -254,6 +254,17 @@ function cleanTime(timeStr?: string): string {
     .trim();
 }
 
+function formatDisplayDateTime(str?: string): string {
+  if (!str) return '';
+  // Strip redundant current year e.g. ", 2026", " 2026," or " 2026"
+  let clean = str.replace(/,?\s*\b20\d{2}\b,?\s*/g, ' ').replace(/\s+/g, ' ').trim();
+  // Ensure comma between month and time e.g. "5 Nov 5:30 PM" -> "5 Nov, 5:30 PM"
+  clean = clean.replace(/([a-zA-Z]{3})\s+(\d)/g, '$1, $2');
+  // Ensure uppercase AM/PM
+  clean = clean.replace(/\bam\b/gi, 'AM').replace(/\bpm\b/gi, 'PM');
+  return clean;
+}
+
 // getISTDateInfo is imported and re-exported from '@/lib/istDate' above
 
 /**
@@ -637,7 +648,7 @@ export function QuickChecklist(props: any) {
       <div style={{
         display: 'grid',
         gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
-        gap: '10px',
+        gap: '8px',
         marginBottom: '10px'
       }}>
         {/* ── 3A: SSD TOKENS CARD ── */}
@@ -651,9 +662,10 @@ export function QuickChecklist(props: any) {
           backgroundColor: '#F8FAFC',
           border: '1px solid #E2E8F0',
           borderRadius: '16px',
-          padding: '12px 10px',
+          padding: '12px 12px',
           display: 'flex',
-          flexDirection: 'column'
+          flexDirection: 'column',
+          minWidth: 0
         }}>
           {/* Top Row: Icon + Title */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
@@ -675,14 +687,14 @@ export function QuickChecklist(props: any) {
           </div>
 
           {/* Quota Number: [Left] / [Total] */}
-          <div style={{ margin: '2px 0 6px 0', display: 'flex', alignItems: 'baseline', gap: '4px', flexWrap: 'wrap' }}>
+          <div style={{ margin: '2px 0 6px 0', display: 'flex', alignItems: 'baseline', gap: '3px', flexWrap: 'wrap' }}>
             <span style={{ fontSize: '16px', fontWeight: 800, color: '#0F172A', letterSpacing: '-0.02em', lineHeight: 1.1 }}>
               {isSsdCompleted ? '0' : (hasVerifiedSsdLeft ? Number(rawSsdLeftVal).toLocaleString('en-IN') : '--')}
             </span>
             <span style={{ fontSize: '11px', color: isSsdCompleted ? '#DC2626' : '#16A34A', fontWeight: 700 }}>
               {t.tokensAvailable}
             </span>
-            <span style={{ fontSize: '12px', color: '#64748B', fontWeight: 600 }}>
+            <span style={{ fontSize: '11.5px', color: '#64748B', fontWeight: 600 }}>
               / {formatQuotaNumber(ssdTotalCount, '10,000')}
             </span>
           </div>
@@ -732,8 +744,8 @@ export function QuickChecklist(props: any) {
                 <span style={{ fontSize: '10px', color: '#64748B', fontWeight: 500, display: 'block', lineHeight: 1.2 }}>
                   {t.startedAt}
                 </span>
-                <span style={{ fontSize: '11px', color: '#1E293B', fontWeight: 700, display: 'block', marginTop: '1px', whiteSpace: 'nowrap' }}>
-                  {ssdStartDisplay}
+                <span style={{ fontSize: '11px', color: '#1E293B', fontWeight: 700, display: 'block', marginTop: '1px', lineHeight: 1.25, wordBreak: 'normal' }}>
+                  {formatDisplayDateTime(ssdStartDisplay)}
                 </span>
               </div>
             </div>
@@ -759,8 +771,8 @@ export function QuickChecklist(props: any) {
                   <span style={{ fontSize: '10px', color: '#64748B', fontWeight: 500, display: 'block', lineHeight: 1.2 }}>
                     {ssdRow2Title}
                   </span>
-                  <span style={{ fontSize: '11px', color: '#1E293B', fontWeight: 700, display: 'block', marginTop: '1px', whiteSpace: 'nowrap' }}>
-                    {ssdRow2Value}
+                  <span style={{ fontSize: '11px', color: '#1E293B', fontWeight: 700, display: 'block', marginTop: '1px', lineHeight: 1.25, wordBreak: 'normal' }}>
+                    {formatDisplayDateTime(ssdRow2Value)}
                   </span>
                 </div>
               </div>
@@ -779,9 +791,10 @@ export function QuickChecklist(props: any) {
           backgroundColor: '#F8FAFC',
           border: '1px solid #E2E8F0',
           borderRadius: '16px',
-          padding: '12px 10px',
+          padding: '12px 12px',
           display: 'flex',
-          flexDirection: 'column'
+          flexDirection: 'column',
+          minWidth: 0
         }}>
           {/* Top Row: Icon + Title */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
@@ -803,14 +816,14 @@ export function QuickChecklist(props: any) {
           </div>
 
           {/* Quota Number: [Left] / [Total] */}
-          <div style={{ margin: '2px 0 6px 0', display: 'flex', alignItems: 'baseline', gap: '4px', flexWrap: 'wrap' }}>
+          <div style={{ margin: '2px 0 6px 0', display: 'flex', alignItems: 'baseline', gap: '3px', flexWrap: 'wrap' }}>
             <span style={{ fontSize: '16px', fontWeight: 800, color: '#0F172A', letterSpacing: '-0.02em', lineHeight: 1.1 }}>
               {isDdNowCompleted ? '0' : (hasVerifiedDdLeft ? Number(rawDdLeftVal).toLocaleString('en-IN') : '--')}
             </span>
             <span style={{ fontSize: '11px', color: isDdNowCompleted ? '#DC2626' : '#16A34A', fontWeight: 700 }}>
               {t.tokensAvailable}
             </span>
-            <span style={{ fontSize: '12px', color: '#64748B', fontWeight: 600 }}>
+            <span style={{ fontSize: '11.5px', color: '#64748B', fontWeight: 600 }}>
               / {formatQuotaNumber(ddTotalCount, '2,000')}
             </span>
           </div>
@@ -860,8 +873,8 @@ export function QuickChecklist(props: any) {
                 <span style={{ fontSize: '10px', color: '#64748B', fontWeight: 500, display: 'block', lineHeight: 1.2 }}>
                   {t.startedAt}
                 </span>
-                <span style={{ fontSize: '10.5px', color: '#1E293B', fontWeight: 700, display: 'block', marginTop: '1px', whiteSpace: 'nowrap' }}>
-                  {ddStartDisplay}
+                <span style={{ fontSize: '11px', color: '#1E293B', fontWeight: 700, display: 'block', marginTop: '1px', lineHeight: 1.25, wordBreak: 'normal' }}>
+                  {formatDisplayDateTime(ddStartDisplay)}
                 </span>
               </div>
             </div>
@@ -887,8 +900,8 @@ export function QuickChecklist(props: any) {
                   <span style={{ fontSize: '10px', color: '#64748B', fontWeight: 500, display: 'block', lineHeight: 1.2 }}>
                     {ddRow2Title}
                   </span>
-                  <span style={{ fontSize: '10.5px', color: '#1E293B', fontWeight: 700, display: 'block', marginTop: '1px', whiteSpace: 'nowrap' }}>
-                    {ddRow2Value}
+                  <span style={{ fontSize: '11px', color: '#1E293B', fontWeight: 700, display: 'block', marginTop: '1px', lineHeight: 1.25, wordBreak: 'normal' }}>
+                    {formatDisplayDateTime(ddRow2Value)}
                   </span>
                 </div>
               </div>
