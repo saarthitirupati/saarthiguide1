@@ -341,7 +341,7 @@ export default function AdminLiveUpdates() {
         if (nameLower.includes('sarva') || nameLower.includes('free')) {
           return { ...d, waitTime: sarva };
         }
-        if (nameLower.includes('divya') || nameLower.includes('footpath')) {
+        if (nameLower.includes('divya') || nameLower.includes('footpath') || nameLower.includes('ssd')) {
           return { ...d, waitTime: divya };
         }
         if (nameLower.includes('300') || nameLower.includes('special')) {
@@ -678,7 +678,7 @@ export default function AdminLiveUpdates() {
             <div style={{ background: '#F8FAFC', border: '1px solid #E2E8F0', borderRadius: '12px', padding: '12px 14px' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#0284C7', fontWeight: 800, fontSize: '13px', marginBottom: '8px' }}>
                 <Footprints size={16} color="#0284C7" />
-                <span>Divya Darshan (Footpath) Queue Wait</span>
+                <span>SSD Tokens / Footpath Queue Wait</span>
               </div>
               <input 
                 name="divya" 
@@ -689,7 +689,7 @@ export default function AdminLiveUpdates() {
                 style={{ width: '100%', padding: '9px 12px', borderRadius: '8px', border: '1px solid #CBD5E1', fontSize: '14px', fontWeight: 700, color: '#0F172A', background: '#FFFFFF', boxSizing: 'border-box' }}
               />
               <span style={{ fontSize: '11px', color: '#64748B', display: 'block', marginTop: '6px' }}>
-                Footpath (Divya Darshan) queue waiting time.
+                SSD Tokens and Footpath (Divya Darshan) queue waiting time.
               </span>
             </div>
 

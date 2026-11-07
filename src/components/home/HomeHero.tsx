@@ -651,7 +651,8 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
       return d?.waitTime || '—';
     }
     if (key === 'ssd') {
-      return liveSSD || '—';
+      const d = list.find((d: any) => d.name?.toLowerCase().includes('ssd') || d.name?.toLowerCase().includes('divya') || d.name?.toLowerCase().includes('footpath') || d.name?.toLowerCase().includes('slotted'));
+      return d?.waitTime || '—';
     }
     return '—';
   };
@@ -1955,43 +1956,13 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
               ? { bg: '#FFFDF0', border: '#FDE68A', badgeBg: '#FEF3C7', badgeText: '#92400E', iconColor: '#D97706' }
               : { bg: '#F0FDF4', border: '#BBF7D0', badgeBg: '#DCFCE7', badgeText: '#166534', iconColor: '#059669' };
 
-            // 3. Dynamic SSD Tokens Card (Connect directly to admin's live SSD Token issuance status from /saarthiadmin/ssd-tokens)
-            const isSsdClosed = 
-              ssdTokenStatus === 'closed-for-day' || 
-              ssdTokenStatus === 'completed' || 
-              ssdTokenStatus === 'suspended' || 
-              ssdTokenStatus === 'closed' ||
-              liveStatus?.ssdAdvisoryTag?.toLowerCase().includes('quota completed') ||
-              liveStatus?.ssdAdvisoryTag?.toLowerCase().includes('completed') ||
-              liveStatus?.ssdTokenDetails?.status === 'completed';
-
-            const isSsdIssuing = ssdTokenStatus === 'issuing' || liveStatus?.ssdTokenDetails?.status === 'issuing';
-
-            const ssdDisplayBadge: string = (() => {
-              if (isSsdIssuing) {
-                return lang === 'te' ? 'ఇష్యూ అవుతున్నాయి' : 'Issuing Now';
-              }
-              if (isSsdClosed) {
-                if (liveStatus?.ssdNextTokenTime && liveStatus.ssdNextTokenTime.trim()) {
-                  const cleanNext = liveStatus.ssdNextTokenTime.trim().replace(/^opens?\s+/i, '');
-                  return cleanNext;
-                }
-                if (liveStatus?.ssdAdvisoryTag && liveStatus.ssdAdvisoryTag.trim()) {
-                  return liveStatus.ssdAdvisoryTag.trim();
-                }
-                return lang === 'te' ? 'కోటా పూర్తయింది' : 'Quota Completed';
-              }
-              if (ssdTokenStatus === 'paused') {
-                return lang === 'te' ? 'నిలిపివేయబడింది' : 'Paused';
-              }
-              return lang === 'te' ? 'కోటా పూర్తయింది' : 'Quota Completed';
-            })();
-
-            const ssdTheme = isSsdIssuing
-              ? { bg: '#F0FDF4', border: '#BBF7D0', badgeBg: '#DCFCE7', badgeText: '#166534', iconColor: '#059669' }
-              : isSsdClosed
+            // 3. Dynamic SSD Tokens Card Styling (Queue wait time directly from admin panel)
+            const ssdHrs = getMaxHours(ssdWait);
+            const ssdTheme = ssdHrs > 5
+              ? { bg: '#FEF2F2', border: '#FECDD3', badgeBg: '#FEE2E2', badgeText: '#991B1B', iconColor: '#DC2626' }
+              : ssdHrs >= 3
               ? { bg: '#FFFDF0', border: '#FDE68A', badgeBg: '#FEF3C7', badgeText: '#92400E', iconColor: '#D97706' }
-              : { bg: '#FEF2F2', border: '#FECDD3', badgeBg: '#FEE2E2', badgeText: '#991B1B', iconColor: '#DC2626' };
+              : { bg: '#F0FDF4', border: '#BBF7D0', badgeBg: '#DCFCE7', badgeText: '#166534', iconColor: '#059669' };
 
             const queueCards = [
               {
@@ -2021,7 +1992,7 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                 href: '/darshan/ssd-token',
                 icon: <Ticket size={22} color={ssdTheme.iconColor} />,
                 title: lang === 'te' ? 'SSD టోకెన్లు' : lang === 'hi' ? 'SSD टोकन' : lang === 'ta' ? 'SSD டோக்கன்' : 'SSD Tokens',
-                wait: ssdDisplayBadge,
+                wait: ssdWait || '—',
                 bg: ssdTheme.bg,
                 border: ssdTheme.border,
                 badgeBg: ssdTheme.badgeBg,
