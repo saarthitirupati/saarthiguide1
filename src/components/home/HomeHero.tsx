@@ -590,7 +590,11 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
     (apiWeatherCode >= 80 && apiWeatherCode <= 82) ||
     (apiWeatherCode >= 95 && apiWeatherCode <= 99)
   );
-  const detectedRain = isApiRain || weatherStr.includes('rain') || weatherStr.includes('shower') || weatherStr.includes('storm') || weatherStr.includes('thunder') || weatherStr.includes('drizzle');
+  // If admin explicitly set non-rain weather (e.g. "Pleasant", "Clear Sky"), honor admin strictly over external API
+  const isExplicitAdminNonRain = weatherStr && !weatherStr.includes('auto') && !weatherStr.includes('rain') && !weatherStr.includes('shower') && !weatherStr.includes('storm') && !weatherStr.includes('thunder') && !weatherStr.includes('drizzle');
+  const detectedRain = isExplicitAdminNonRain
+    ? false
+    : (weatherStr.includes('rain') || weatherStr.includes('shower') || weatherStr.includes('storm') || weatherStr.includes('thunder') || weatherStr.includes('drizzle') || isApiRain);
   const isRainy = testRainMode !== null ? testRainMode : detectedRain;
   const ssdTokenStatus = (liveStatus?.ssdTokenStatus || '').toLowerCase(); // fixed: was reading wrong field
   const istHr = getISTDate().getHours();
@@ -635,20 +639,19 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
     return cond || 'Pleasant';
   })();
 
-  // ── Darshan wait times from live data ─────────────────────────────────────
-  const getDarshanWait = (key: 'sarva' | 'ssd' | 'special'): string => {
+  // ── Darshan wait times from live data (strictly from admin, zero hardcoded fallbacks) ──
+  const getDarshanWait = (key: 'sarva' | 'special' | 'ssd'): string => {
     const list = liveStatus?.darshans || [];
     if (key === 'sarva') {
       const d = list.find((d: any) => d.name?.toLowerCase().includes('sarva') || d.name?.toLowerCase().includes('free'));
-      return d?.waitTime || '10–12 h';
-    }
-    if (key === 'ssd') {
-      const d = list.find((d: any) => d.name?.toLowerCase().includes('ssd') || d.name?.toLowerCase().includes('slotted') || d.name?.toLowerCase().includes('divya') || d.name?.toLowerCase().includes('footpath'));
-      return d?.waitTime || '2–4 hrs';
+      return d?.waitTime || (liveStatus?.waitTime && !liveStatus.waitTime.toLowerCase().includes('ssd') ? liveStatus.waitTime : '') || '—';
     }
     if (key === 'special') {
       const d = list.find((d: any) => d.name?.includes('300') || d.name?.toLowerCase().includes('special'));
-      return d?.waitTime || '3–5 hrs';
+      return d?.waitTime || '—';
+    }
+    if (key === 'ssd') {
+      return liveSSD || '—';
     }
     return '—';
   };
@@ -1952,13 +1955,43 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
               ? { bg: '#FFFDF0', border: '#FDE68A', badgeBg: '#FEF3C7', badgeText: '#92400E', iconColor: '#D97706' }
               : { bg: '#F0FDF4', border: '#BBF7D0', badgeBg: '#DCFCE7', badgeText: '#166534', iconColor: '#059669' };
 
-            // 3. Dynamic SSD Tokens Card Styling (Queue wait time, independent of token quota issuance)
-            const ssdHrs = getMaxHours(ssdWait);
-            const ssdTheme = ssdHrs > 5
-              ? { bg: '#FEF2F2', border: '#FECDD3', badgeBg: '#FEE2E2', badgeText: '#991B1B', iconColor: '#DC2626' }
-              : ssdHrs >= 3
+            // 3. Dynamic SSD Tokens Card (Connect directly to admin's live SSD Token issuance status from /saarthiadmin/ssd-tokens)
+            const isSsdClosed = 
+              ssdTokenStatus === 'closed-for-day' || 
+              ssdTokenStatus === 'completed' || 
+              ssdTokenStatus === 'suspended' || 
+              ssdTokenStatus === 'closed' ||
+              liveStatus?.ssdAdvisoryTag?.toLowerCase().includes('quota completed') ||
+              liveStatus?.ssdAdvisoryTag?.toLowerCase().includes('completed') ||
+              liveStatus?.ssdTokenDetails?.status === 'completed';
+
+            const isSsdIssuing = ssdTokenStatus === 'issuing' || liveStatus?.ssdTokenDetails?.status === 'issuing';
+
+            const ssdDisplayBadge: string = (() => {
+              if (isSsdIssuing) {
+                return lang === 'te' ? 'ఇష్యూ అవుతున్నాయి' : 'Issuing Now';
+              }
+              if (isSsdClosed) {
+                if (liveStatus?.ssdNextTokenTime && liveStatus.ssdNextTokenTime.trim()) {
+                  const cleanNext = liveStatus.ssdNextTokenTime.trim();
+                  return cleanNext.toLowerCase().startsWith('open') ? cleanNext : `Opens ${cleanNext}`;
+                }
+                if (liveStatus?.ssdAdvisoryTag && liveStatus.ssdAdvisoryTag.trim()) {
+                  return liveStatus.ssdAdvisoryTag.trim();
+                }
+                return lang === 'te' ? 'కోటా పూర్తయింది' : 'Quota Completed';
+              }
+              if (ssdTokenStatus === 'paused') {
+                return lang === 'te' ? 'నిలిపివేయబడింది' : 'Paused';
+              }
+              return lang === 'te' ? 'కోటా పూర్తయింది' : 'Quota Completed';
+            })();
+
+            const ssdTheme = isSsdIssuing
+              ? { bg: '#F0FDF4', border: '#BBF7D0', badgeBg: '#DCFCE7', badgeText: '#166534', iconColor: '#059669' }
+              : isSsdClosed
               ? { bg: '#FFFDF0', border: '#FDE68A', badgeBg: '#FEF3C7', badgeText: '#92400E', iconColor: '#D97706' }
-              : { bg: '#F0FDF4', border: '#BBF7D0', badgeBg: '#DCFCE7', badgeText: '#166534', iconColor: '#059669' };
+              : { bg: '#FEF2F2', border: '#FECDD3', badgeBg: '#FEE2E2', badgeText: '#991B1B', iconColor: '#DC2626' };
 
             const queueCards = [
               {
@@ -1988,7 +2021,7 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                 href: '/darshan/ssd-token',
                 icon: <Ticket size={22} color={ssdTheme.iconColor} />,
                 title: lang === 'te' ? 'SSD టోకెన్లు' : lang === 'hi' ? 'SSD टोकन' : lang === 'ta' ? 'SSD டோக்கன்' : 'SSD Tokens',
-                wait: ssdWait || '2–4 hrs',
+                wait: ssdDisplayBadge,
                 bg: ssdTheme.bg,
                 border: ssdTheme.border,
                 badgeBg: ssdTheme.badgeBg,

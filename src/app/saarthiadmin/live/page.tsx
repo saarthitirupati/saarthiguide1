@@ -57,6 +57,12 @@ export default function AdminLiveUpdates() {
   const [liveTelemetryTag, setLiveTelemetryTag] = useState<string | null>(null);
   const [telemetryStats, setTelemetryStats] = useState<{ delivered: number; byVersion: Record<string, number> } | null>(null);
 
+  // Controlled Darshan Queue Wait Time inputs
+  const [sarvaInput, setSarvaInput] = useState<string>('');
+  const [divyaInput, setDivyaInput] = useState<string>('');
+  const [specialInput, setSpecialInput] = useState<string>('');
+  const [inputsInitialized, setInputsInitialized] = useState<boolean>(false);
+
   const showToast = (msg: string) => {
     setToastMessage(msg);
     setTimeout(() => setToastMessage(null), 3000);
@@ -83,6 +89,15 @@ export default function AdminLiveUpdates() {
         setStatusData(fetchedStatus);
         if (fetchedStatus.weather) {
           setWeatherState(fetchedStatus.weather);
+        }
+        if (fetchedStatus.darshans && !inputsInitialized) {
+          const s = fetchedStatus.darshans.find((d: any) => d.name?.toLowerCase().includes('sarva') || d.name?.toLowerCase().includes('free'))?.waitTime || fetchedStatus.waitTime || '';
+          const d = fetchedStatus.darshans.find((d: any) => d.name?.toLowerCase().includes('divya') || d.name?.toLowerCase().includes('footpath'))?.waitTime || '';
+          const sp = fetchedStatus.darshans.find((d: any) => d.name?.includes('300') || d.name?.toLowerCase().includes('special'))?.waitTime || '';
+          setSarvaInput(s);
+          setDivyaInput(d);
+          setSpecialInput(sp);
+          setInputsInitialized(true);
         }
       }
 
@@ -259,9 +274,9 @@ export default function AdminLiveUpdates() {
     const crowd = (tirumalaCard.querySelector('[name="crowd"]') as HTMLSelectElement)?.value || 'LOW';
     const parking = (tirumalaCard.querySelector('[name="parking"]') as HTMLSelectElement)?.value || 'AVAILABLE';
     const rtc = (tirumalaCard.querySelector('[name="rtc"]') as HTMLSelectElement)?.value || 'NORMAL';
-    const sarva = (tirumalaCard.querySelector('[name="sarva"]') as HTMLInputElement)?.value?.trim() || '4-8 Hours';
-    const divya = (tirumalaCard.querySelector('[name="divya"]') as HTMLInputElement)?.value?.trim() || '2-5 Hours';
-    const special = (tirumalaCard.querySelector('[name="special"]') as HTMLInputElement)?.value?.trim() || '1-2 Hours';
+    const sarva = sarvaInput.trim() || '2-3 hours';
+    const divya = divyaInput.trim() || '1-2 hours';
+    const special = specialInput.trim() || '1-2 hours';
 
     // Build default push message if not customized
     const dynamicMessage = templePushBody.trim() || `Sarva Darshan Wait: ${sarva}. Crowd: ${crowd.charAt(0) + crowd.slice(1).toLowerCase()}. Parking: ${parking.charAt(0) + parking.slice(1).toLowerCase()}.`;
@@ -405,9 +420,9 @@ export default function AdminLiveUpdates() {
 
   const otherPlaces = livePlaces.filter(p => !(p.id === 'uuid-1' || p.name?.toLowerCase().includes('tirumala')));
 
-  const sarvaDefault = statusData?.darshans?.find((d: any) => d.name?.toLowerCase().includes('sarva') || d.name?.toLowerCase().includes('free'))?.waitTime || '4-8 Hours';
-  const divyaDefault = statusData?.darshans?.find((d: any) => d.name?.toLowerCase().includes('divya') || d.name?.toLowerCase().includes('footpath'))?.waitTime || '2-5 Hours';
-  const specialDefault = statusData?.darshans?.find((d: any) => d.name?.includes('300') || d.name?.toLowerCase().includes('special'))?.waitTime || '1-2 Hours';
+  const sarvaDefault = sarvaInput || statusData?.darshans?.find((d: any) => d.name?.toLowerCase().includes('sarva') || d.name?.toLowerCase().includes('free'))?.waitTime || '';
+  const divyaDefault = divyaInput || statusData?.darshans?.find((d: any) => d.name?.toLowerCase().includes('divya') || d.name?.toLowerCase().includes('footpath'))?.waitTime || '';
+  const specialDefault = specialInput || statusData?.darshans?.find((d: any) => d.name?.includes('300') || d.name?.toLowerCase().includes('special'))?.waitTime || '';
 
   return (
     <div className={styles.container}>
@@ -640,21 +655,22 @@ export default function AdminLiveUpdates() {
           </p>
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '14px' }}>
-            {/* Sarva Darshan (SSD) Queue Wait */}
+            {/* Sarva Darshan (Free) Queue Wait */}
             <div style={{ background: '#F8FAFC', border: '1px solid #E2E8F0', borderRadius: '12px', padding: '12px 14px' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#C2410C', fontWeight: 800, fontSize: '13px', marginBottom: '8px' }}>
                 <Users size={16} color="#EA580C" />
-                <span>Sarva Darshan (SSD) Queue Wait</span>
+                <span>Sarva Darshan (Free) Queue Wait</span>
               </div>
               <input 
                 name="sarva" 
                 type="text" 
-                defaultValue={sarvaDefault}
-                placeholder="4-8 Hours" 
+                value={sarvaInput}
+                onChange={e => setSarvaInput(e.target.value)}
+                placeholder="e.g. 2-3 hours" 
                 style={{ width: '100%', padding: '9px 12px', borderRadius: '8px', border: '1px solid #CBD5E1', fontSize: '14px', fontWeight: 700, color: '#0F172A', background: '#FFFFFF', boxSizing: 'border-box' }}
               />
               <span style={{ fontSize: '11px', color: '#64748B', display: 'block', marginTop: '6px' }}>
-                General darshan queue waiting time inside Tirumala.
+                General free darshan queue waiting time inside Tirumala.
               </span>
             </div>
 
@@ -667,8 +683,9 @@ export default function AdminLiveUpdates() {
               <input 
                 name="divya" 
                 type="text" 
-                defaultValue={divyaDefault}
-                placeholder="2-5 Hours" 
+                value={divyaInput}
+                onChange={e => setDivyaInput(e.target.value)}
+                placeholder="e.g. 1-2 hours" 
                 style={{ width: '100%', padding: '9px 12px', borderRadius: '8px', border: '1px solid #CBD5E1', fontSize: '14px', fontWeight: 700, color: '#0F172A', background: '#FFFFFF', boxSizing: 'border-box' }}
               />
               <span style={{ fontSize: '11px', color: '#64748B', display: 'block', marginTop: '6px' }}>
@@ -685,8 +702,9 @@ export default function AdminLiveUpdates() {
               <input 
                 name="special" 
                 type="text" 
-                defaultValue={specialDefault}
-                placeholder="1-2 Hours" 
+                value={specialInput}
+                onChange={e => setSpecialInput(e.target.value)}
+                placeholder="e.g. 1-1.5 hours" 
                 style={{ width: '100%', padding: '9px 12px', borderRadius: '8px', border: '1px solid #CBD5E1', fontSize: '14px', fontWeight: 700, color: '#0F172A', background: '#FFFFFF', boxSizing: 'border-box' }}
               />
               <span style={{ fontSize: '11px', color: '#64748B', display: 'block', marginTop: '6px' }}>

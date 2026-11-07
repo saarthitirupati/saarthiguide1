@@ -2,38 +2,22 @@ import { useState, useEffect, useMemo } from 'react';
 import { useRealtimeStatus } from '@/lib/useRealtimeStatus';
 
 const FALLBACK_STATUS = {
-  waitTime: '2-3 hours',
+  waitTime: '',
   crowdLevel: 'moderate' as const,
   sevaStatus: 'All sevas open',
   notice: '',
-  lastUpdated: new Date().toISOString(),
+  lastUpdated: '',
   darshanSpeed: 'normal' as const,
   accommodationStatus: 'available' as const,
   ladduAvailability: 'available' as const,
   weather: 'Pleasant, 24°C',
-  darshans: [
-    { name: 'Sarva Darshan (Free)', waitTime: '12-15 hours', peakHours: 'Daily 10 AM - 6 PM' },
-    { name: 'Special Entry (₹300)', waitTime: '3-4 hours', peakHours: 'Daily 9 AM - 3 PM' },
-    { name: 'Divya Darshan (Footpath)', waitTime: '8-10 hours', peakHours: 'Daily 8 AM - 4 PM' },
-    { name: 'VIP / Srivani Break', waitTime: '1.5 hours', peakHours: 'Daily 6 AM - 8 AM' }
-  ],
-  ssdTokenStatus: 'issuing' as const,
-  ssdNextTokenTime: '2:00 PM',
-  ssdTokenSlots: [
-    { slotTime: '5:00 AM - 7:00 AM', status: 'closed' as const, tokensLeft: 'Full' },
-    { slotTime: '7:00 AM - 9:00 AM', status: 'closed' as const, tokensLeft: 'Full' },
-    { slotTime: '9:00 AM - 11:00 AM', status: 'filling' as const, tokensLeft: '~200 remaining' },
-    { slotTime: '11:00 AM - 1:00 PM', status: 'available' as const, tokensLeft: 'Available' },
-    { slotTime: '2:00 PM - 4:00 PM', status: 'available' as const, tokensLeft: 'Available' },
-    { slotTime: '4:00 PM - 6:00 PM', status: 'available' as const, tokensLeft: 'Available' },
-  ],
+  darshans: [],
+  ssdTokenStatus: 'closed-for-day' as const,
+  ssdNextTokenTime: '',
+  ssdTokenSlots: [],
   ssdNotice: '',
-  ssdTimingsGuide: 'Offline free SSD tokens are released daily starting at 3:00 AM / 4:00 AM. Batches are allocated hourly for that day\'s Darshan. Counters close as soon as the daily quota runs out (~15,000 - 20,000 tokens).',
-  ssdCounters: [
-    { name: 'Vishnu Nivasam Counter', description: 'Located opposite Tirupati Railway Station' },
-    { name: 'Srinivasam Complex Counter', description: 'Located opposite Tirupati RTC Central Bus Stand' },
-    { name: 'Bhudevi Complex Counter', description: 'Located near Alipiri Footpath Link Road' },
-  ]
+  ssdTimingsGuide: '',
+  ssdCounters: []
 };
 
 export function useLiveStatus() {

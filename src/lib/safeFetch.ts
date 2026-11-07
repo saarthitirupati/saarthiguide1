@@ -13,6 +13,10 @@ function cleanCacheKey(url: string): string {
 
 function getOfflineFallback<T>(cacheKey: string, urlString: string): T | null {
   if (typeof window === 'undefined') return null;
+  // Real-time operational status must never return stale cached offline data
+  if (urlString.includes('/api/v1/status')) {
+    return null;
+  }
   try {
     const cached = localStorage.getItem(cacheKey);
     if (cached) {
@@ -75,7 +79,7 @@ export async function safeFetchJson<T = any>(input: RequestInfo | URL, init?: Re
     }
 
     if (parsedData !== null) {
-      if (!isServer && isGet) {
+      if (!isServer && isGet && !urlString.includes('/api/v1/status')) {
         try {
           localStorage.setItem(cacheKey, JSON.stringify(parsedData));
         } catch {

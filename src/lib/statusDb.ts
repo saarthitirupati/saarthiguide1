@@ -126,13 +126,6 @@ async function refreshFromSupabase(): Promise<void> {
       return;
     }
 
-    // Check timestamp: don't let older db data overwrite fresher local/in-memory update
-    const dbUpdatedAt = metrics.updated_at ? new Date(metrics.updated_at).getTime() : 0;
-    const localUpdatedAt = memoryStatus.lastUpdated ? new Date(memoryStatus.lastUpdated).getTime() : 0;
-    if (dbUpdatedAt > 0 && localUpdatedAt > 0 && dbUpdatedAt < localUpdatedAt) {
-      return;
-    }
-
     // 1. If full_status_json is present in Supabase, parse it directly for 100% field fidelity
     if (metrics.full_status_json) {
       try {
@@ -233,18 +226,12 @@ export async function readStatus(): Promise<TirumalaStatus> {
   await ensureFileLoaded();
   const now = Date.now();
   
-  // 1. If memory cache is fresh (< 15 seconds), return immediately in 0ms
-  if (now - lastFetchTime < 15000) {
+  // 1. Micro-cache (< 2 seconds) to avoid database hammering during burst traffic
+  if (now - lastFetchTime < 2000) {
     return memoryStatus;
   }
 
-  // 2. If memory cache exists, return immediately in 0ms and revalidate in background
-  if (lastFetchTime > 0) {
-    refreshFromSupabase().catch(() => {});
-    return memoryStatus;
-  }
-
-  // 3. Initial cold boot first request only
+  // 2. Fetch fresh live metrics directly from Supabase with zero stale delay
   await refreshFromSupabase();
   return memoryStatus;
 }
