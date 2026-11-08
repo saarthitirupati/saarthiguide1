@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import styles from './LiveUpdates.module.css';
 import { 
   Activity, 
@@ -27,6 +27,20 @@ import {
 import { notifyRealtimeUpdate } from '@/lib/useRealtimeStatus';
 import { safeFetchJson } from '@/lib/safeFetch';
 import { formatRelativeTime, formatISTTime } from '@/lib/istDate';
+
+const SARVA_PRESETS = ['2-4 hours', '4-6 hours', '6-8 hours', '8-12 hours', '12-18 hours', '18-24 hours'];
+const SSD_PRESETS = ['1-2 hours', '2-4 hours', '4-6 hours', '6-8 hours', '8-10 hours', '10-14 hours'];
+const SPECIAL_PRESETS = ['1-2 hours', '2-3 hours', '3-4 hours', '4-6 hours', '6-8 hours'];
+
+function normalizeCrowd(level: string | undefined): 'LOW' | 'MEDIUM' | 'HIGH' | 'EXTREME' {
+  if (!level) return 'MEDIUM';
+  const norm = level.toLowerCase().trim();
+  if (norm === 'low') return 'LOW';
+  if (norm === 'medium' || norm === 'moderate') return 'MEDIUM';
+  if (norm === 'high') return 'HIGH';
+  if (norm === 'extreme' || norm === 'very-high' || norm === 'very_high') return 'EXTREME';
+  return 'MEDIUM';
+}
 
 export default function AdminLiveUpdates() {
   const [weatherState, setWeatherState] = useState<string>('Auto (API)');
@@ -57,11 +71,20 @@ export default function AdminLiveUpdates() {
   const [liveTelemetryTag, setLiveTelemetryTag] = useState<string | null>(null);
   const [telemetryStats, setTelemetryStats] = useState<{ delivered: number; byVersion: Record<string, number> } | null>(null);
 
+  // Controlled Dropdowns for Tirumala Card
+  const [crowdState, setCrowdState] = useState<'LOW' | 'MEDIUM' | 'HIGH' | 'EXTREME'>('MEDIUM');
+  const [parkingState, setParkingState] = useState<'AVAILABLE' | 'FULL'>('AVAILABLE');
+  const [rtcState, setRtcState] = useState<'NORMAL' | 'DELAYED' | 'SUSPENDED'>('NORMAL');
+
   // Controlled Darshan Queue Wait Time inputs
   const [sarvaInput, setSarvaInput] = useState<string>('');
   const [divyaInput, setDivyaInput] = useState<string>('');
   const [specialInput, setSpecialInput] = useState<string>('');
-  const [inputsInitialized, setInputsInitialized] = useState<boolean>(false);
+
+  // Editing lock to prevent background poll clobbering active keystrokes
+  const [isEditing, setIsEditing] = useState<boolean>(false);
+  const isEditingRef = useRef<boolean>(false);
+  const inputsInitializedRef = useRef<boolean>(false);
 
   const showToast = (msg: string) => {
     setToastMessage(msg);
@@ -77,7 +100,7 @@ export default function AdminLiveUpdates() {
     };
   };
 
-  const fetchLiveData = useCallback(async () => {
+  const fetchLiveData = useCallback(async (force = false) => {
     try {
       const headers = getAdminHeaders();
       const [fetchedStatus, placesData] = await Promise.all([
@@ -90,14 +113,29 @@ export default function AdminLiveUpdates() {
         if (fetchedStatus.weather) {
           setWeatherState(fetchedStatus.weather);
         }
-        if (fetchedStatus.darshans && !inputsInitialized) {
-          const s = fetchedStatus.darshans.find((d: any) => d.name?.toLowerCase().includes('sarva') || d.name?.toLowerCase().includes('free'))?.waitTime || fetchedStatus.waitTime || '';
-          const d = fetchedStatus.darshans.find((d: any) => d.name?.toLowerCase().includes('divya') || d.name?.toLowerCase().includes('footpath'))?.waitTime || '';
-          const sp = fetchedStatus.darshans.find((d: any) => d.name?.includes('300') || d.name?.toLowerCase().includes('special'))?.waitTime || '';
-          setSarvaInput(s);
-          setDivyaInput(d);
-          setSpecialInput(sp);
-          setInputsInitialized(true);
+
+        // Only populate inputs on initial mount or when operator explicitly clicks Refresh (force = true)
+        // Never overwrite if user is actively editing
+        if (!isEditingRef.current && (!inputsInitializedRef.current || force)) {
+          if (fetchedStatus.darshans) {
+            const s = fetchedStatus.darshans.find((d: any) => d.name?.toLowerCase().includes('sarva') || d.name?.toLowerCase().includes('free'))?.waitTime || fetchedStatus.waitTime || '';
+            const d = fetchedStatus.darshans.find((d: any) => d.name?.toLowerCase().includes('divya') || d.name?.toLowerCase().includes('footpath') || d.name?.toLowerCase().includes('ssd'))?.waitTime || '';
+            const sp = fetchedStatus.darshans.find((d: any) => d.name?.includes('300') || d.name?.toLowerCase().includes('special'))?.waitTime || '';
+            setSarvaInput(s);
+            setDivyaInput(d);
+            setSpecialInput(sp);
+          } else if (fetchedStatus.waitTime) {
+            setSarvaInput(fetchedStatus.waitTime);
+          }
+
+          if (fetchedStatus.crowdLevel) {
+            setCrowdState(normalizeCrowd(fetchedStatus.crowdLevel));
+          }
+          if (fetchedStatus.accommodationStatus) {
+            setParkingState(fetchedStatus.accommodationStatus === 'full' ? 'FULL' : 'AVAILABLE');
+          }
+
+          inputsInitializedRef.current = true;
         }
       }
 
@@ -121,14 +159,16 @@ export default function AdminLiveUpdates() {
   }, []);
 
   useEffect(() => {
-    fetchLiveData();
+    fetchLiveData(false);
     const interval = setInterval(() => {
-      if (typeof document === 'undefined' || !document.hidden) {
-        fetchLiveData();
-      }
+      if (typeof document === 'undefined' || document.hidden) return;
+      if (isEditingRef.current) return; // Do not fetch in background while operator is actively typing
+      fetchLiveData(false);
     }, 10000);
 
-    const handleCustomEvent = () => fetchLiveData();
+    const handleCustomEvent = () => {
+      if (!isEditingRef.current) fetchLiveData(false);
+    };
     window.addEventListener('saarthi:live_update', handleCustomEvent);
 
     return () => {
@@ -268,12 +308,9 @@ export default function AdminLiveUpdates() {
 
   // Submit Handler for Tirumala Venkateswara Temple
   const handleTirumalaUpdate = async () => {
-    const tirumalaCard = document.getElementById('tirumala-operational-card');
-    if (!tirumalaCard) return;
-
-    const crowd = (tirumalaCard.querySelector('[name="crowd"]') as HTMLSelectElement)?.value || 'LOW';
-    const parking = (tirumalaCard.querySelector('[name="parking"]') as HTMLSelectElement)?.value || 'AVAILABLE';
-    const rtc = (tirumalaCard.querySelector('[name="rtc"]') as HTMLSelectElement)?.value || 'NORMAL';
+    const crowd = crowdState;
+    const parking = parkingState;
+    const rtc = rtcState;
     const sarva = sarvaInput.trim() || '2-3 hours';
     const divya = divyaInput.trim() || '1-2 hours';
     const special = specialInput.trim() || '1-2 hours';
@@ -317,9 +354,10 @@ export default function AdminLiveUpdates() {
       });
 
       // 2. Update global Tirumala status in statusDb
+      const crowdDb = crowd === 'LOW' ? 'low' : crowd === 'MEDIUM' ? 'moderate' : crowd === 'HIGH' ? 'high' : 'very-high';
       const globalStatusUpdates: any = {
         waitTime: sarva,
-        crowdLevel: crowd === 'LOW' ? 'low' : crowd === 'MEDIUM' ? 'moderate' : crowd === 'HIGH' ? 'high' : 'very-high',
+        crowdLevel: crowdDb,
         accommodationStatus: parking === 'FULL' ? 'full' : 'available',
         sendPush: sendPushApproved,
         pushTitle: sendPushApproved ? notificationTitle : undefined,
@@ -359,7 +397,7 @@ export default function AdminLiveUpdates() {
       const statusJson = await statusRes.json().catch(() => ({}));
 
       notifyRealtimeUpdate();
-      fetchLiveData();
+      fetchLiveData(true);
       setPlaceUpdateStatus(prev => ({ ...prev, 'uuid-1': '✓ Updated!' }));
 
       if (sendPushApproved) {
@@ -412,7 +450,7 @@ export default function AdminLiveUpdates() {
     id: 'uuid-1',
     name: 'Tirumala Venkateswara Temple',
     time: statusData?.darshans?.find((d: any) => d.name?.toLowerCase().includes('sarva') || d.name?.toLowerCase().includes('free'))?.waitTime || '4-8 Hours',
-    crowd: statusData?.crowdLevel ? (statusData.crowdLevel === 'very-high' ? 'EXTREME' : statusData.crowdLevel.toUpperCase()) : 'LOW',
+    crowd: normalizeCrowd(statusData?.crowdLevel),
     parking: statusData?.accommodationStatus === 'full' ? 'FULL' : 'AVAILABLE',
     rtc: 'NORMAL',
     updated: '2 mins ago'
@@ -421,7 +459,7 @@ export default function AdminLiveUpdates() {
   const otherPlaces = livePlaces.filter(p => !(p.id === 'uuid-1' || p.name?.toLowerCase().includes('tirumala')));
 
   const sarvaDefault = sarvaInput || statusData?.darshans?.find((d: any) => d.name?.toLowerCase().includes('sarva') || d.name?.toLowerCase().includes('free'))?.waitTime || '';
-  const divyaDefault = divyaInput || statusData?.darshans?.find((d: any) => d.name?.toLowerCase().includes('divya') || d.name?.toLowerCase().includes('footpath'))?.waitTime || '';
+  const divyaDefault = divyaInput || statusData?.darshans?.find((d: any) => d.name?.toLowerCase().includes('divya') || d.name?.toLowerCase().includes('footpath') || d.name?.toLowerCase().includes('ssd'))?.waitTime || '';
   const specialDefault = specialInput || statusData?.darshans?.find((d: any) => d.name?.includes('300') || d.name?.toLowerCase().includes('special'))?.waitTime || '';
 
   return (
@@ -472,7 +510,7 @@ export default function AdminLiveUpdates() {
             Live Sync (10s) · Synced {formatRelativeTime(lastSyncTime, currentTime)}
           </span>
           <button 
-            onClick={fetchLiveData} 
+            onClick={() => fetchLiveData(true)} 
             title="Refresh Live Operations"
             style={{
               backgroundColor: '#FFFFFF',
@@ -602,7 +640,8 @@ export default function AdminLiveUpdates() {
               </label>
               <select 
                 name="crowd" 
-                defaultValue={statusData?.crowdLevel ? (statusData.crowdLevel === 'very-high' ? 'EXTREME' : statusData.crowdLevel.toUpperCase()) : (tirumalaPlace.crowd || 'LOW')}
+                value={crowdState}
+                onChange={e => setCrowdState(e.target.value as any)}
                 style={{ width: '100%', padding: '9px 12px', borderRadius: '8px', border: '1px solid #CBD5E1', fontSize: '13.5px', fontWeight: 600, color: '#0F172A', background: '#FFFFFF', boxSizing: 'border-box' }}
               >
                 <option value="LOW">Low</option>
@@ -619,7 +658,8 @@ export default function AdminLiveUpdates() {
               </label>
               <select 
                 name="parking" 
-                defaultValue={statusData?.accommodationStatus === 'full' ? 'FULL' : (tirumalaPlace.parking || 'AVAILABLE')}
+                value={parkingState}
+                onChange={e => setParkingState(e.target.value as any)}
                 style={{ width: '100%', padding: '9px 12px', borderRadius: '8px', border: '1px solid #CBD5E1', fontSize: '13.5px', fontWeight: 600, color: '#0F172A', background: '#FFFFFF', boxSizing: 'border-box' }}
               >
                 <option value="AVAILABLE">Available</option>
@@ -634,7 +674,8 @@ export default function AdminLiveUpdates() {
               </label>
               <select 
                 name="rtc" 
-                defaultValue={tirumalaPlace.rtc || 'NORMAL'}
+                value={rtcState}
+                onChange={e => setRtcState(e.target.value as any)}
                 style={{ width: '100%', padding: '9px 12px', borderRadius: '8px', border: '1px solid #CBD5E1', fontSize: '13.5px', fontWeight: 600, color: '#0F172A', background: '#FFFFFF', boxSizing: 'border-box' }}
               >
                 <option value="NORMAL">Normal</option>
@@ -651,10 +692,10 @@ export default function AdminLiveUpdates() {
             Darshan Queue Waiting Times
           </h3>
           <p style={{ fontSize: '11.5px', color: '#64748B', margin: '0 0 12px 0', display: 'flex', alignItems: 'center', gap: '4px' }}>
-            <Info size={13} color="#94A3B8" /> These are estimated queue waiting times for devotees already at the temple.
+            <Info size={13} color="#94A3B8" /> Tap any preset button or type custom hours. Changes are saved when you click Update.
           </p>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '14px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '14px' }}>
             {/* Sarva Darshan (Free) Queue Wait */}
             <div style={{ background: '#F8FAFC', border: '1px solid #E2E8F0', borderRadius: '12px', padding: '12px 14px' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#C2410C', fontWeight: 800, fontSize: '13px', marginBottom: '8px' }}>
@@ -666,15 +707,54 @@ export default function AdminLiveUpdates() {
                 type="text" 
                 value={sarvaInput}
                 onChange={e => setSarvaInput(e.target.value)}
-                placeholder="e.g. 2-3 hours" 
+                onFocus={() => {
+                  setIsEditing(true);
+                  isEditingRef.current = true;
+                }}
+                onBlur={() => {
+                  setTimeout(() => {
+                    setIsEditing(false);
+                    isEditingRef.current = false;
+                  }, 200);
+                }}
+                inputMode="text"
+                autoComplete="off"
+                autoCorrect="off"
+                placeholder="e.g. 18 hours or custom" 
                 style={{ width: '100%', padding: '9px 12px', borderRadius: '8px', border: '1px solid #CBD5E1', fontSize: '14px', fontWeight: 700, color: '#0F172A', background: '#FFFFFF', boxSizing: 'border-box' }}
               />
+              {/* Quick Select Preset Chips */}
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginTop: '8px' }}>
+                {SARVA_PRESETS.map(opt => {
+                  const isSelected = sarvaInput.trim().toLowerCase() === opt.toLowerCase();
+                  return (
+                    <button
+                      key={opt}
+                      type="button"
+                      onClick={() => setSarvaInput(opt)}
+                      style={{
+                        backgroundColor: isSelected ? '#EA580C' : '#FFFFFF',
+                        color: isSelected ? '#FFFFFF' : '#334155',
+                        border: isSelected ? '1px solid #EA580C' : '1px solid #CBD5E1',
+                        borderRadius: '14px',
+                        padding: '3px 9px',
+                        fontSize: '11px',
+                        fontWeight: isSelected ? 800 : 600,
+                        cursor: 'pointer',
+                        transition: 'all 0.15s ease'
+                      }}
+                    >
+                      {opt}
+                    </button>
+                  );
+                })}
+              </div>
               <span style={{ fontSize: '11px', color: '#64748B', display: 'block', marginTop: '6px' }}>
                 General free darshan queue waiting time inside Tirumala.
               </span>
             </div>
 
-            {/* Divya Darshan (Footpath) Queue Wait */}
+            {/* Divya Darshan (Footpath) / SSD Queue Wait */}
             <div style={{ background: '#F8FAFC', border: '1px solid #E2E8F0', borderRadius: '12px', padding: '12px 14px' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#0284C7', fontWeight: 800, fontSize: '13px', marginBottom: '8px' }}>
                 <Footprints size={16} color="#0284C7" />
@@ -685,9 +765,48 @@ export default function AdminLiveUpdates() {
                 type="text" 
                 value={divyaInput}
                 onChange={e => setDivyaInput(e.target.value)}
-                placeholder="e.g. 1-2 hours" 
+                onFocus={() => {
+                  setIsEditing(true);
+                  isEditingRef.current = true;
+                }}
+                onBlur={() => {
+                  setTimeout(() => {
+                    setIsEditing(false);
+                    isEditingRef.current = false;
+                  }, 200);
+                }}
+                inputMode="text"
+                autoComplete="off"
+                autoCorrect="off"
+                placeholder="e.g. 8-10 hours or custom" 
                 style={{ width: '100%', padding: '9px 12px', borderRadius: '8px', border: '1px solid #CBD5E1', fontSize: '14px', fontWeight: 700, color: '#0F172A', background: '#FFFFFF', boxSizing: 'border-box' }}
               />
+              {/* Quick Select Preset Chips */}
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginTop: '8px' }}>
+                {SSD_PRESETS.map(opt => {
+                  const isSelected = divyaInput.trim().toLowerCase() === opt.toLowerCase();
+                  return (
+                    <button
+                      key={opt}
+                      type="button"
+                      onClick={() => setDivyaInput(opt)}
+                      style={{
+                        backgroundColor: isSelected ? '#0284C7' : '#FFFFFF',
+                        color: isSelected ? '#FFFFFF' : '#334155',
+                        border: isSelected ? '1px solid #0284C7' : '1px solid #CBD5E1',
+                        borderRadius: '14px',
+                        padding: '3px 9px',
+                        fontSize: '11px',
+                        fontWeight: isSelected ? 800 : 600,
+                        cursor: 'pointer',
+                        transition: 'all 0.15s ease'
+                      }}
+                    >
+                      {opt}
+                    </button>
+                  );
+                })}
+              </div>
               <span style={{ fontSize: '11px', color: '#64748B', display: 'block', marginTop: '6px' }}>
                 SSD Tokens and Footpath (Divya Darshan) queue waiting time.
               </span>
@@ -704,9 +823,48 @@ export default function AdminLiveUpdates() {
                 type="text" 
                 value={specialInput}
                 onChange={e => setSpecialInput(e.target.value)}
-                placeholder="e.g. 1-1.5 hours" 
+                onFocus={() => {
+                  setIsEditing(true);
+                  isEditingRef.current = true;
+                }}
+                onBlur={() => {
+                  setTimeout(() => {
+                    setIsEditing(false);
+                    isEditingRef.current = false;
+                  }, 200);
+                }}
+                inputMode="text"
+                autoComplete="off"
+                autoCorrect="off"
+                placeholder="e.g. 2-4 hours or custom" 
                 style={{ width: '100%', padding: '9px 12px', borderRadius: '8px', border: '1px solid #CBD5E1', fontSize: '14px', fontWeight: 700, color: '#0F172A', background: '#FFFFFF', boxSizing: 'border-box' }}
               />
+              {/* Quick Select Preset Chips */}
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginTop: '8px' }}>
+                {SPECIAL_PRESETS.map(opt => {
+                  const isSelected = specialInput.trim().toLowerCase() === opt.toLowerCase();
+                  return (
+                    <button
+                      key={opt}
+                      type="button"
+                      onClick={() => setSpecialInput(opt)}
+                      style={{
+                        backgroundColor: isSelected ? '#D97706' : '#FFFFFF',
+                        color: isSelected ? '#FFFFFF' : '#334155',
+                        border: isSelected ? '1px solid #D97706' : '1px solid #CBD5E1',
+                        borderRadius: '14px',
+                        padding: '3px 9px',
+                        fontSize: '11px',
+                        fontWeight: isSelected ? 800 : 600,
+                        cursor: 'pointer',
+                        transition: 'all 0.15s ease'
+                      }}
+                    >
+                      {opt}
+                    </button>
+                  );
+                })}
+              </div>
               <span style={{ fontSize: '11px', color: '#64748B', display: 'block', marginTop: '6px' }}>
                 Special entry darshan queue waiting time.
               </span>
