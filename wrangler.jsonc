@@ -15,11 +15,6 @@
     "VAPID_PRIVATE_KEY": "tdwjaJ5ZfrrPFNPyzsni4CZGLWwmftF7nl0LfUYAkDg",
     "CRON_SECRET": "saarthi_cron_secret_2026"
   },
-  "triggers": {
-    "crons": [
-      "30 0 * * *"
-    ]
-  },
   "observability": {
     "logs": {
       "enabled": true,

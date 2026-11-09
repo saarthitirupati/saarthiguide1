@@ -10,7 +10,9 @@ const TRAFFIC_FILE = path.join(DATA_DIR, 'traffic.json');
 const STATUS_FILE  = path.join(DATA_DIR, 'status.json');
 
 function ensureDir() {
-  if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
+  try {
+    if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
+  } catch {}
 }
 
 // ── Dynamic Places ────────────────────────────────────────────────────────────
@@ -19,13 +21,22 @@ export type DynamicPlace = Place & { _dynamic: true; _createdAt: string };
 
 export function readDynamicPlaces(): DynamicPlace[] {
   ensureDir();
-  if (!fs.existsSync(PLACES_FILE)) { fs.writeFileSync(PLACES_FILE, '[]'); return []; }
-  try { return JSON.parse(fs.readFileSync(PLACES_FILE, 'utf-8')); } catch { return []; }
+  try {
+    if (!fs.existsSync(PLACES_FILE)) { 
+      try { fs.writeFileSync(PLACES_FILE, '[]'); } catch {}
+      return []; 
+    }
+    return JSON.parse(fs.readFileSync(PLACES_FILE, 'utf-8')); 
+  } catch { 
+    return []; 
+  }
 }
 
 function writePlaces(p: DynamicPlace[]) {
-  ensureDir();
-  fs.writeFileSync(PLACES_FILE, JSON.stringify(p, null, 2));
+  try {
+    ensureDir();
+    fs.writeFileSync(PLACES_FILE, JSON.stringify(p, null, 2));
+  } catch {}
 }
 
 export function addPlace(data: Omit<Place, 'travelEstimates'> & { travelEstimates?: Record<string, string> }): DynamicPlace {

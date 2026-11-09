@@ -1,7 +1,5 @@
 import { ImageResponse } from 'next/og';
 
-export const runtime = 'edge';
-
 export const alt = 'Saarthi - Tirupati & Tirumala Pilgrim Guide | Live Darshan & Offline Maps';
 export const size = {
   width: 1200,
