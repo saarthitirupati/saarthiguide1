@@ -464,166 +464,7 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
   const [isVideoPlaying, setIsVideoPlaying] = useState<boolean>(false);
   const [apiWeatherCode, setApiWeatherCode] = useState<number | null>(null);
   const [testRainMode, setTestRainMode] = useState<boolean | null>(null);
-  const [showDiwali, setShowDiwali] = useState<boolean>(true);
-  const [activeBannerSlide, setActiveBannerSlide] = useState<0 | 1>(0);
-  const touchStartXRef = React.useRef<number | null>(null);
-
-  React.useEffect(() => {
-    if (!showDiwali) return;
-    const slideTimer = setTimeout(() => {
-      setActiveBannerSlide(1);
-    }, 5500);
-    return () => clearTimeout(slideTimer);
-  }, [showDiwali]);
-
-  const handleBannerTouchStart = (e: React.TouchEvent) => {
-    touchStartXRef.current = e.touches[0].clientX;
-  };
-
-  const handleBannerTouchEnd = (e: React.TouchEvent) => {
-    if (touchStartXRef.current === null) return;
-    const deltaX = e.changedTouches[0].clientX - touchStartXRef.current;
-    if (deltaX < -35) {
-      setActiveBannerSlide(1);
-    } else if (deltaX > 35) {
-      setActiveBannerSlide(0);
-    }
-    touchStartXRef.current = null;
-  };
   const bannerVideoRef = React.useRef<HTMLVideoElement>(null);
-  const diwaliCanvasRef = React.useRef<HTMLCanvasElement>(null);
-  const crackerParticlesRef = React.useRef<Array<{
-    x: number;
-    y: number;
-    vx: number;
-    vy: number;
-    size: number;
-    color: string;
-    alpha: number;
-    decay: number;
-  }>>([]);
-  const crackerAnimFrameRef = React.useRef<number | null>(null);
-
-  const triggerCrackerBurst = React.useCallback((originXRatio?: number, originYRatio?: number, count = 55) => {
-    const canvas = diwaliCanvasRef.current;
-    if (!canvas) return;
-    const w = window.innerWidth || 360;
-    const h = window.innerHeight || 640;
-
-    if (canvas.width !== w || canvas.height !== h) {
-      canvas.width = w;
-      canvas.height = h;
-    }
-
-    const ox = (originXRatio !== undefined ? originXRatio : 0.5) * w;
-    const oy = (originYRatio !== undefined ? originYRatio : 0.3) * h;
-
-    const colors = ['#F59E0B', '#FDE047', '#EF4444', '#10B981', '#FFFFFF', '#F97316', '#38BDF8', '#E11D48'];
-
-    for (let i = 0; i < count; i++) {
-      const angle = (Math.PI * 2 * i) / count + (Math.random() - 0.5) * 0.45;
-      const speed = 3.2 + Math.random() * 5.8;
-      crackerParticlesRef.current.push({
-        x: ox,
-        y: oy,
-        vx: Math.cos(angle) * speed,
-        vy: Math.sin(angle) * speed,
-        size: 1.6 + Math.random() * 2.4,
-        color: colors[Math.floor(Math.random() * colors.length)],
-        alpha: 1,
-        decay: 0.013 + Math.random() * 0.014
-      });
-    }
-
-    if (!crackerAnimFrameRef.current) {
-      const loop = () => {
-        const cvs = diwaliCanvasRef.current;
-        if (!cvs) return;
-        const ctx = cvs.getContext('2d');
-        if (!ctx) return;
-
-        ctx.clearRect(0, 0, cvs.width, cvs.height);
-
-        const particles = crackerParticlesRef.current;
-        for (let i = particles.length - 1; i >= 0; i--) {
-          const p = particles[i];
-          p.x += p.vx;
-          p.y += p.vy;
-          p.vy += 0.08;
-          p.vx *= 0.96;
-          p.vy *= 0.96;
-          p.alpha -= p.decay;
-
-          if (p.alpha <= 0) {
-            particles.splice(i, 1);
-            continue;
-          }
-
-          ctx.save();
-          ctx.globalAlpha = Math.max(0, p.alpha);
-          ctx.fillStyle = p.color;
-          ctx.shadowBlur = 10;
-          ctx.shadowColor = p.color;
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-          ctx.fill();
-          ctx.restore();
-        }
-
-        if (particles.length > 0) {
-          crackerAnimFrameRef.current = requestAnimationFrame(loop);
-        } else {
-          ctx.clearRect(0, 0, cvs.width, cvs.height);
-          crackerAnimFrameRef.current = null;
-        }
-      };
-      crackerAnimFrameRef.current = requestAnimationFrame(loop);
-    }
-  }, []);
-
-  const playDiyaBell = (side: 'left' | 'right' = 'left') => {
-    try {
-      triggerBeadHaptic();
-      playBeadComplete();
-      const bell = new Audio('/audio/om-notification.mp3');
-      bell.volume = 0.5;
-      bell.play().catch(() => {});
-    } catch {}
-    triggerCrackerBurst(side === 'left' ? 0.15 : 0.85, 0.28, 60);
-  };
-
-  React.useEffect(() => {
-    // Opening celebratory crackers sequence on app launch
-    try {
-      const chime = new Audio('/audio/om-notification.mp3');
-      chime.volume = 0.35;
-      chime.play().catch(() => {});
-    } catch {}
-
-    const timer1 = setTimeout(() => {
-      triggerCrackerBurst(0.24, 0.26, 55); // Left rocket burst
-    }, 250);
-    const timer2 = setTimeout(() => {
-      triggerCrackerBurst(0.76, 0.22, 55); // Right burst over Gopuram
-    }, 700);
-    const timer3 = setTimeout(() => {
-      triggerCrackerBurst(0.50, 0.16, 65); // Center royal sky burst
-    }, 1200);
-    const timer4 = setTimeout(() => {
-      triggerCrackerBurst(0.35, 0.24, 45); // Grand finale left
-      triggerCrackerBurst(0.65, 0.24, 45); // Grand finale right
-    }, 1750);
-
-    return () => {
-      clearTimeout(timer1);
-      clearTimeout(timer2);
-      clearTimeout(timer3);
-      clearTimeout(timer4);
-      if (crackerAnimFrameRef.current) {
-        cancelAnimationFrame(crackerAnimFrameRef.current);
-      }
-    };
-  }, [triggerCrackerBurst]);
 
   React.useEffect(() => {
     // Check real-time weather API for Tirumala rain status
@@ -1767,399 +1608,150 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
           </>
         )}
 
-      {/* ── DIWALI SPECIAL ENVIRONMENT (PURE CSS, NO EMOJIS, LIGHTWEIGHT) ── */}
-      <style>{`
-        .diwali-hero-wrap {
-          position: relative;
-          width: 100%;
-          margin-bottom: 14px;
-        }
-        .diwali-pill {
-          background: linear-gradient(90deg, #FFF8E7, #FEF3C7);
-          border: 1px solid rgba(245, 158, 11, 0.35);
-          color: #0A1F33;
-          padding: 8px 14px;
-          border-radius: 999px;
-          font-size: 13px;
-          font-weight: 600;
-          text-align: center;
-          margin: 4px 0 10px 0;
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          gap: 12px;
-          box-shadow: 0 2px 10px rgba(217, 119, 6, 0.1);
-          cursor: pointer;
-        }
-        .diwali-pill button {
-          background: none;
-          border: none;
-          color: #92400E;
-          font-size: 13px;
-          font-weight: 700;
-          cursor: pointer;
-          padding: 0 4px;
-          line-height: 1;
-        }
-        .diya {
-          position: absolute;
-          top: -12px;
-          z-index: 10;
-          width: 36px;
-          height: 34px;
-          background: none;
-          border: none;
-          cursor: pointer;
-          padding: 0;
-          outline: none;
-        }
-        .diya-left { left: 8px; }
-        .diya-right { right: 8px; }
-        .diya-halo {
-          position: absolute;
-          top: -10px;
-          left: 50%;
-          transform: translateX(-50%);
-          width: 48px;
-          height: 48px;
-          border-radius: 50%;
-          background: radial-gradient(circle, rgba(245, 158, 11, 0.45) 0%, rgba(245, 158, 11, 0) 70%);
-          pointer-events: none;
-          animation: diya-halo-pulse 2s ease-in-out infinite;
-        }
-        @keyframes diya-halo-pulse {
-          0%, 100% { transform: translateX(-50%) scale(0.9); opacity: 0.65; }
-          50% { transform: translateX(-50%) scale(1.3); opacity: 0.95; }
-        }
-        .diya-bowl {
-          position: absolute;
-          bottom: 2px;
-          left: 50%;
-          transform: translateX(-50%);
-          width: 30px;
-          height: 12px;
-          background: linear-gradient(180deg, #D97706 0%, #78350F 100%);
-          border-radius: 0 0 16px 16px;
-          box-shadow: 0 3px 6px rgba(120, 53, 15, 0.5);
-          border-top: 1.5px solid #FDE047;
-        }
-        .diya-flame {
-          position: absolute;
-          top: 1px;
-          left: 50%;
-          width: 10px;
-          height: 16px;
-          background: radial-gradient(circle at 50% 80%, #FFFFFF 0%, #FEF08A 25%, #F59E0B 65%, #EA580C 100%);
-          border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
-          box-shadow: 0 0 14px 5px rgba(245, 158, 11, 0.75), 0 0 24px 8px rgba(234, 88, 12, 0.35);
-          animation: diya-flicker 1.1s ease-in-out infinite;
-        }
-        @keyframes diya-flicker {
-          0%, 100% { transform: translateX(-50%) scale(1) rotate(-2deg); opacity: 1; }
-          50% { transform: translateX(-50%) scale(1.18) rotate(2deg); opacity: 0.88; }
-        }
-        .diwali-canvas {
-          position: fixed;
-          top: 0;
-          left: 0;
-          width: 100vw;
-          height: 100vh;
-          pointer-events: none;
-          z-index: 99999;
-        }
-        .diwali-sparkle {
-          position: absolute;
-          width: 5px;
-          height: 5px;
-          background: #F59E0B;
-          border-radius: 50%;
-          opacity: 0;
-          pointer-events: none;
-          animation: diwali-floatUp 4s ease-in-out infinite;
-          z-index: 6;
-        }
-        .diwali-sparkle.s1 { left: 15%; top: 20%; animation-delay: 0s; }
-        .diwali-sparkle.s2 { left: 35%; top: 30%; animation-delay: 1.2s; width: 6px; height: 6px; background: #FBBF24; }
-        .diwali-sparkle.s3 { left: 55%; top: 15%; animation-delay: 2.1s; }
-        .diwali-sparkle.s4 { left: 75%; top: 25%; animation-delay: 0.7s; width: 4px; height: 4px; }
-        .diwali-sparkle.s5 { left: 25%; top: 60%; animation-delay: 2.8s; }
-        .diwali-sparkle.s6 { left: 85%; top: 50%; animation-delay: 1.7s; width: 6px; height: 6px; background: #FDE047; }
-        @keyframes diwali-floatUp {
-          0% { transform: translateY(10px); opacity: 0; }
-          50% { opacity: 0.85; }
-          100% { transform: translateY(-20px); opacity: 0; }
-        }
-        @media (prefers-reduced-motion: reduce) {
-          .diya-flame, .diya-halo, .diwali-sparkle, .diwali-canvas { animation: none !important; }
-        }
-      `}</style>
-
-      {/* Diwali Greeting - lightweight, dismissable, no emoji */}
-      {showDiwali && (
-        <div className="diwali-pill" onClick={() => playDiyaBell('left')} role="button" tabIndex={0}>
-          <span>
-            {lang === 'te'
-              ? 'Shubha Deepavali - Tirumala Srivari Divya Deepavali Aseessulu'
-              : 'Shubh Deepavali - May Lord Venkateswara illuminate your path'}
-          </span>
-          <button onClick={(e) => { e.stopPropagation(); setShowDiwali(false); }} aria-label="Dismiss">✕</button>
-        </div>
-      )}
-
-      {/* 🎬 HIGH-FIDELITY SAARTHI HERO ANIMATED BANNER (WITH DIWALI ENVIRONMENT) */}
-      <div className="diwali-hero-wrap">
-        {/* Cracker Blast Firework Canvas (non-blocking) */}
-        <canvas ref={diwaliCanvasRef} className="diwali-canvas" />
-
-        {/* Twin Diyas - pure CSS shapes with radiant halo */}
-        <button className="diya diya-left" onClick={() => playDiyaBell('left')} aria-label="Light Diya" type="button">
-          <span className="diya-halo" />
-          <span className="diya-flame" />
-          <span className="diya-bowl" />
-        </button>
-
-        <button className="diya diya-right" onClick={() => playDiyaBell('right')} aria-label="Light Diya" type="button">
-          <span className="diya-halo" />
-          <span className="diya-flame" />
-          <span className="diya-bowl" />
-        </button>
-
-        {/* 6 sparkles - CSS dots */}
-        {[...Array(6)].map((_, i) => (
-          <span key={i} className={`diwali-sparkle s${i + 1}`} />
-        ))}
-
-        <div 
-          onTouchStart={handleBannerTouchStart}
-          onTouchEnd={handleBannerTouchEnd}
-          style={{
-            position: 'relative',
-            width: '100%',
-            borderRadius: '16px',
-            overflow: 'hidden',
-            boxShadow: '0 6px 20px rgba(15, 23, 42, 0.08)',
-            border: '1px solid rgba(212, 175, 55, 0.35)',
-            background: '#FAF8F4',
-            aspectRatio: '16 / 9'
+      {/* 🎬 HIGH-FIDELITY SAARTHI HERO ANIMATED BANNER (OFFLINE WEBP POSTER + MP4 HYBRID) */}
+      <div style={{
+        position: 'relative',
+        width: '100%',
+        borderRadius: '16px',
+        overflow: 'hidden',
+        marginBottom: '14px',
+        boxShadow: '0 6px 20px rgba(15, 23, 42, 0.08)',
+        border: '1px solid rgba(212, 175, 55, 0.35)',
+        background: '#FAF8F4 url(/banner/banner_poster.webp) center center / cover no-repeat',
+        aspectRatio: '16 / 9'
+      }}>
+        <video
+          ref={bannerVideoRef}
+          src="/banner/homescreen-banner.mp4"
+          autoPlay
+          loop
+          muted
+          playsInline
+          {...{
+            'webkit-playsinline': 'true',
+            'x5-playsinline': 'true',
+            'x5-video-player-type': 'h5',
+            'x5-video-player-fullscreen': 'false'
+          } as any}
+          disablePictureInPicture
+          disableRemotePlayback
+          controls={false}
+          controlsList="nodownload nofallback noremoteplayback noplaybackrate"
+          poster="/banner/banner_poster.webp"
+          preload="none"
+          aria-hidden="true"
+          tabIndex={-1}
+          onCanPlay={(e) => {
+            e.currentTarget.defaultMuted = true;
+            e.currentTarget.muted = true;
+            if (e.currentTarget.textTracks) {
+              for (let i = 0; i < e.currentTarget.textTracks.length; i++) {
+                e.currentTarget.textTracks[i].mode = 'disabled';
+              }
+            }
+            e.currentTarget.play().then(() => setIsVideoPlaying(true)).catch(() => {});
           }}
-        >
-          {/* Horizontal Track for Slides */}
-          <div style={{
-            display: 'flex',
-            width: showDiwali ? '200%' : '100%',
+          onLoadedData={(e) => {
+            e.currentTarget.defaultMuted = true;
+            e.currentTarget.muted = true;
+            if (e.currentTarget.textTracks) {
+              for (let i = 0; i < e.currentTarget.textTracks.length; i++) {
+                e.currentTarget.textTracks[i].mode = 'disabled';
+              }
+            }
+            e.currentTarget.play().then(() => setIsVideoPlaying(true)).catch(() => {});
+          }}
+          onPlaying={() => setIsVideoPlaying(true)}
+          onTimeUpdate={(e) => {
+            if (e.currentTarget.currentTime > 0 && !isVideoPlaying) {
+              setIsVideoPlaying(true);
+            }
+          }}
+          onError={() => setIsVideoPlaying(false)}
+          onPause={(e) => {
+            e.currentTarget.defaultMuted = true;
+            e.currentTarget.muted = true;
+            e.currentTarget.play().then(() => setIsVideoPlaying(true)).catch(() => {});
+          }}
+          onEnded={(e) => {
+            e.currentTarget.currentTime = 0;
+            e.currentTarget.play().then(() => setIsVideoPlaying(true)).catch(() => {});
+          }}
+          style={{
+            width: '100%',
             height: '100%',
-            transform: showDiwali && activeBannerSlide === 1 ? 'translateX(-50%)' : 'translateX(0%)',
-            transition: 'transform 0.65s cubic-bezier(0.25, 1, 0.5, 1)'
-          }}>
-            {/* Slide 1: Festive Diwali Banner Image */}
-            {showDiwali && (
-              <div style={{ width: '50%', height: '100%', position: 'relative', flexShrink: 0 }}>
-                <picture style={{ width: '100%', height: '100%', display: 'block' }}>
-                  <source srcSet="/banner/diwali-banner.webp" type="image/webp" />
-                  <img
-                    src="/banner/diwali-banner.jpg"
-                    alt="Happy Diwali from Team Saarthi - Sri Venkateswara Swamy Temple Tirumala"
-                    style={{
-                      width: '100%',
-                      height: '100%',
-                      objectFit: 'cover',
-                      objectPosition: 'center center',
-                      display: 'block',
-                      userSelect: 'none',
-                      WebkitUserSelect: 'none',
-                      pointerEvents: 'none'
-                    }}
-                  />
-                </picture>
-              </div>
-            )}
+            objectFit: 'cover',
+            objectPosition: 'center center',
+            display: 'block',
+            pointerEvents: 'none',
+            userSelect: 'none',
+            WebkitUserSelect: 'none',
+            WebkitTouchCallout: 'none',
+            opacity: isVideoPlaying ? 1 : 0,
+            transition: 'opacity 0.5s ease-in-out'
+          }}
+        />
 
-            {/* Slide 2: High-Fidelity Saarthi Hero Video with Navigation Hotspots */}
-            <div style={{ width: showDiwali ? '50%' : '100%', height: '100%', position: 'relative', flexShrink: 0 }}>
-              <video
-                ref={bannerVideoRef}
-                src="/banner/homescreen-banner.mp4"
-                autoPlay
-                loop
-                muted
-                playsInline
-                {...{
-                  'webkit-playsinline': 'true',
-                  'x5-playsinline': 'true',
-                  'x5-video-player-type': 'h5',
-                  'x5-video-player-fullscreen': 'false'
-                } as any}
-                disablePictureInPicture
-                disableRemotePlayback
-                controls={false}
-                controlsList="nodownload nofallback noremoteplayback noplaybackrate"
-                poster="/banner/banner_poster.webp"
-                preload="none"
-                aria-hidden="true"
-                tabIndex={-1}
-                onCanPlay={(e) => {
-                  e.currentTarget.defaultMuted = true;
-                  e.currentTarget.muted = true;
-                  if (e.currentTarget.textTracks) {
-                    for (let i = 0; i < e.currentTarget.textTracks.length; i++) {
-                      e.currentTarget.textTracks[i].mode = 'disabled';
-                    }
-                  }
-                  e.currentTarget.play().then(() => setIsVideoPlaying(true)).catch(() => {});
-                }}
-                onLoadedData={(e) => {
-                  e.currentTarget.defaultMuted = true;
-                  e.currentTarget.muted = true;
-                  if (e.currentTarget.textTracks) {
-                    for (let i = 0; i < e.currentTarget.textTracks.length; i++) {
-                      e.currentTarget.textTracks[i].mode = 'disabled';
-                    }
-                  }
-                  e.currentTarget.play().then(() => setIsVideoPlaying(true)).catch(() => {});
-                }}
-                onPlaying={() => setIsVideoPlaying(true)}
-                onTimeUpdate={(e) => {
-                  if (e.currentTarget.currentTime > 0 && !isVideoPlaying) {
-                    setIsVideoPlaying(true);
-                  }
-                }}
-                onError={() => setIsVideoPlaying(false)}
-                onPause={(e) => {
-                  e.currentTarget.defaultMuted = true;
-                  e.currentTarget.muted = true;
-                  e.currentTarget.play().then(() => setIsVideoPlaying(true)).catch(() => {});
-                }}
-                onEnded={(e) => {
-                  e.currentTarget.currentTime = 0;
-                  e.currentTarget.play().then(() => setIsVideoPlaying(true)).catch(() => {});
-                }}
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'cover',
-                  objectPosition: 'center center',
-                  display: 'block',
-                  pointerEvents: 'none',
-                  userSelect: 'none',
-                  WebkitUserSelect: 'none',
-                  WebkitTouchCallout: 'none',
-                  opacity: isVideoPlaying ? 1 : 0,
-                  transition: 'opacity 0.5s ease-in-out'
-                }}
-              />
 
-              {/* Right Side Transparent Touch Hotspots */}
-              <div style={{
-                position: 'absolute',
-                right: '8px',
-                top: '50%',
-                transform: 'translateY(-50%)',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '6px',
-                zIndex: 5
-              }}>
-                <Link
-                  href="/darshan/sarva-darshan"
-                  prefetch={false}
-                  aria-label={lang === 'te' ? 'దర్శనం' : 'Darshan'}
-                  title={lang === 'te' ? 'దర్శనం' : 'Darshan'}
-                  style={{
-                    width: '105px',
-                    height: '32px',
-                    borderRadius: '20px',
-                    background: 'transparent',
-                    display: 'block',
-                    textDecoration: 'none',
-                    WebkitTapHighlightColor: 'transparent',
-                    cursor: 'pointer'
-                  }}
-                />
-                <Link
-                  href="/darshan/ssd-token"
-                  prefetch={false}
-                  aria-label={lang === 'te' ? 'టోకెన్లు' : 'Tokens'}
-                  title={lang === 'te' ? 'టోకెన్లు' : 'Tokens'}
-                  style={{
-                    width: '105px',
-                    height: '32px',
-                    borderRadius: '20px',
-                    background: 'transparent',
-                    display: 'block',
-                    textDecoration: 'none',
-                    WebkitTapHighlightColor: 'transparent',
-                    cursor: 'pointer'
-                  }}
-                />
-                <Link
-                  href="/explore"
-                  prefetch={false}
-                  aria-label={lang === 'te' ? 'సమీపంలోనివి' : 'Nearby'}
-                  title={lang === 'te' ? 'సమీపంలోనివి' : 'Nearby'}
-                  style={{
-                    width: '105px',
-                    height: '32px',
-                    borderRadius: '20px',
-                    background: 'transparent',
-                    display: 'block',
-                    textDecoration: 'none',
-                    WebkitTapHighlightColor: 'transparent',
-                    cursor: 'pointer'
-                  }}
-                />
-              </div>
-            </div>
-          </div>
-
-          {/* Slide Indicator Pills */}
-          {showDiwali && (
-            <div style={{
-              position: 'absolute',
-              bottom: '8px',
-              left: '50%',
-              transform: 'translateX(-50%)',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px',
-              zIndex: 10,
-              background: 'rgba(15, 23, 42, 0.45)',
-              backdropFilter: 'blur(6px)',
-              padding: '3px 8px',
-              borderRadius: '999px',
-              pointerEvents: 'auto'
-            }}>
-              <button
-                type="button"
-                onClick={() => setActiveBannerSlide(0)}
-                aria-label="Diwali Greeting"
-                style={{
-                  width: activeBannerSlide === 0 ? '16px' : '6px',
-                  height: '6px',
-                  borderRadius: '3px',
-                  backgroundColor: activeBannerSlide === 0 ? '#F59E0B' : 'rgba(255, 255, 255, 0.55)',
-                  border: 'none',
-                  padding: 0,
-                  cursor: 'pointer',
-                  transition: 'all 0.25s ease'
-                }}
-              />
-              <button
-                type="button"
-                onClick={() => setActiveBannerSlide(1)}
-                aria-label="Saarthi Navigation Video"
-                style={{
-                  width: activeBannerSlide === 1 ? '16px' : '6px',
-                  height: '6px',
-                  borderRadius: '3px',
-                  backgroundColor: activeBannerSlide === 1 ? '#F59E0B' : 'rgba(255, 255, 255, 0.55)',
-                  border: 'none',
-                  padding: 0,
-                  cursor: 'pointer',
-                  transition: 'all 0.25s ease'
-                }}
-              />
-            </div>
-          )}
+        {/* Right Side Transparent Touch Hotspots (Matching Video's Built-in Buttons) */}
+        <div style={{
+          position: 'absolute',
+          right: '8px',
+          top: '50%',
+          transform: 'translateY(-50%)',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '6px',
+          zIndex: 5
+        }}>
+          <Link
+            href="/darshan/sarva-darshan"
+            prefetch={false}
+            aria-label={lang === 'te' ? 'దర్శనం' : 'Darshan'}
+            title={lang === 'te' ? 'దర్శనం' : 'Darshan'}
+            style={{
+              width: '105px',
+              height: '32px',
+              borderRadius: '20px',
+              background: 'transparent',
+              display: 'block',
+              textDecoration: 'none',
+              WebkitTapHighlightColor: 'transparent',
+              cursor: 'pointer'
+            }}
+          />
+          <Link
+            href="/darshan/ssd-token"
+            prefetch={false}
+            aria-label={lang === 'te' ? 'టోకెన్లు' : 'Tokens'}
+            title={lang === 'te' ? 'టోకెన్లు' : 'Tokens'}
+            style={{
+              width: '105px',
+              height: '32px',
+              borderRadius: '20px',
+              background: 'transparent',
+              display: 'block',
+              textDecoration: 'none',
+              WebkitTapHighlightColor: 'transparent',
+              cursor: 'pointer'
+            }}
+          />
+          <Link
+            href="/explore"
+            prefetch={false}
+            aria-label={lang === 'te' ? 'సమీపంలోనివి' : 'Nearby'}
+            title={lang === 'te' ? 'సమీపంలోనివి' : 'Nearby'}
+            style={{
+              width: '105px',
+              height: '32px',
+              borderRadius: '20px',
+              background: 'transparent',
+              display: 'block',
+              textDecoration: 'none',
+              WebkitTapHighlightColor: 'transparent',
+              cursor: 'pointer'
+            }}
+          />
         </div>
       </div>
 

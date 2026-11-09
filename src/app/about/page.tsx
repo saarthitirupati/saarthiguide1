@@ -3,8 +3,8 @@
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { 
-  ArrowLeft, Sparkles, Target, Compass, Heart, ShieldCheck, 
+import {
+  ArrowLeft, Sparkles, Target, Compass, Heart, ShieldCheck,
   MapPin, Award, CheckCircle2, Mail, Globe, Users, ExternalLink,
   BookOpen, Wrench, Search, WifiOff, PhoneCall, Shield, Check,
   BadgeCheck, MessageSquare, Coffee
@@ -22,7 +22,7 @@ const TEXTS = {
     heroTag: 'Public Pilgrimage Initiative',
     heroTitle: "The Pilgrim's Offline Companion for Tirumala & Tirupati",
     heroDesc: 'Saarthi Guide was conceived, designed, and built by Sunil Thatra to remove anxiety, confusion, and middleman exploitation for every visiting devotee. 100% offline-ready, verified ground contacts, and live queue intelligence.',
-    
+
     // Quick Stat Counters
     stats: [
       { num: '100+', label: 'Pilgrims Interviewed' },
@@ -45,7 +45,7 @@ const TEXTS = {
     researchTag: 'Field Research',
     researchTitle: 'What 100+ Devotee Interviews Revealed',
     researchDesc: 'Before writing a single line of code, Sunil conducted extensive on-ground field interviews across Tirupati Central Railway Station, RTC Central Bus Stand, and the Alipiri footpath entrance. Here are the 4 critical friction points pilgrims face every day:',
-    
+
     frictionPoints: [
       {
         icon: '🏠',
@@ -273,29 +273,29 @@ export default function AboutPage() {
 
   return (
     <div style={{ minHeight: '100vh', backgroundColor: '#FAF8F5', color: '#0F172A', paddingBottom: '70px', fontFamily: 'var(--font-sans), system-ui, -apple-system, sans-serif' }}>
-      
+
       {/* ── STICKY ELEGANT TOP BAR ── */}
-      <header style={{ 
-        position: 'sticky', 
-        top: 0, 
-        zIndex: 50, 
-        backgroundColor: 'rgba(250, 248, 245, 0.92)', 
+      <header style={{
+        position: 'sticky',
+        top: 0,
+        zIndex: 50,
+        backgroundColor: 'rgba(250, 248, 245, 0.92)',
         backdropFilter: 'blur(16px)',
         borderBottom: '1px solid #ECE7DE',
         padding: '12px 16px'
       }}>
         <div style={{ maxWidth: '1040px', margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-            <Link 
-              href="/" 
-              style={{ 
-                background: '#FFFFFF', 
-                border: '1px solid #E2DCD2', 
-                borderRadius: '50%', 
-                width: '40px', 
-                height: '40px', 
-                display: 'flex', 
-                alignItems: 'center', 
+            <Link
+              href="/"
+              style={{
+                background: '#FFFFFF',
+                border: '1px solid #E2DCD2',
+                borderRadius: '50%',
+                width: '40px',
+                height: '40px',
+                display: 'flex',
+                alignItems: 'center',
                 justifyContent: 'center',
                 textDecoration: 'none',
                 boxShadow: '0 2px 6px rgba(15, 23, 42, 0.04)',
@@ -314,14 +314,14 @@ export default function AboutPage() {
               </p>
             </div>
           </div>
-          
-          <div style={{ 
-            display: 'inline-flex', 
-            alignItems: 'center', 
-            gap: '6px', 
-            backgroundColor: '#ECFDF5', 
-            border: '1px solid #A7F3D0', 
-            padding: '5px 12px', 
+
+          <div style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '6px',
+            backgroundColor: '#ECFDF5',
+            border: '1px solid #A7F3D0',
+            padding: '5px 12px',
             borderRadius: '999px',
             boxShadow: '0 1px 3px rgba(16, 185, 129, 0.08)'
           }}>
@@ -333,7 +333,7 @@ export default function AboutPage() {
 
       {/* ── MAIN CONTENT ── */}
       <main style={{ maxWidth: '1040px', margin: '0 auto', padding: '24px 16px', display: 'flex', flexDirection: 'column', gap: '32px' }}>
-        
+
         {/* ── HERO BANNER ── */}
         <div style={{
           background: 'linear-gradient(145deg, #093722 0%, #0F5132 50%, #166534 100%)',
@@ -358,16 +358,16 @@ export default function AboutPage() {
           }} />
 
           <div style={{ position: 'relative', zIndex: 2, maxWidth: '840px' }}>
-            <span style={{ 
-              display: 'inline-flex', 
-              alignItems: 'center', 
-              gap: '6px', 
-              fontSize: '11.5px', 
-              fontWeight: 800, 
-              color: '#FEF08A', 
-              backgroundColor: 'rgba(254, 240, 138, 0.15)', 
-              border: '1px solid rgba(254, 240, 138, 0.3)', 
-              padding: '4px 12px', 
+            <span style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+              fontSize: '11.5px',
+              fontWeight: 800,
+              color: '#FEF08A',
+              backgroundColor: 'rgba(254, 240, 138, 0.15)',
+              border: '1px solid rgba(254, 240, 138, 0.3)',
+              padding: '4px 12px',
               borderRadius: '999px',
               marginBottom: '16px',
               letterSpacing: '0.3px',
@@ -377,13 +377,13 @@ export default function AboutPage() {
               <span>{t.heroTag}</span>
             </span>
 
-            <h2 style={{ 
-              fontSize: 'clamp(24px, 4.8vw, 34px)', 
-              fontWeight: 800, 
-              color: '#FFFFFF', 
-              margin: '0 0 14px 0', 
-              lineHeight: 1.25, 
-              letterSpacing: '-0.025em' 
+            <h2 style={{
+              fontSize: 'clamp(24px, 4.8vw, 34px)',
+              fontWeight: 800,
+              color: '#FFFFFF',
+              margin: '0 0 14px 0',
+              lineHeight: 1.25,
+              letterSpacing: '-0.025em'
             }}>
               {t.heroTitle}
             </h2>
@@ -428,15 +428,15 @@ export default function AboutPage() {
           {/* Section Header */}
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '10px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <div style={{ 
-                width: '32px', 
-                height: '32px', 
-                borderRadius: '10px', 
-                background: '#FEF3C7', 
-                border: '1px solid #FDE68A', 
-                display: 'flex', 
-                alignItems: 'center', 
-                justifyContent: 'center' 
+              <div style={{
+                width: '32px',
+                height: '32px',
+                borderRadius: '10px',
+                background: '#FEF3C7',
+                border: '1px solid #FDE68A',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center'
               }}>
                 <Award size={18} color="#B45309" />
               </div>
@@ -445,13 +445,13 @@ export default function AboutPage() {
               </h3>
             </div>
 
-            <span style={{ 
-              fontSize: '11px', 
-              fontWeight: 700, 
-              color: '#047857', 
-              backgroundColor: '#ECFDF5', 
-              border: '1px solid #A7F3D0', 
-              padding: '4px 10px', 
+            <span style={{
+              fontSize: '11px',
+              fontWeight: 700,
+              color: '#047857',
+              backgroundColor: '#ECFDF5',
+              border: '1px solid #A7F3D0',
+              padding: '4px 10px',
               borderRadius: '999px',
               display: 'inline-flex',
               alignItems: 'center',
@@ -474,19 +474,19 @@ export default function AboutPage() {
             border: '1px solid #EFEAE1'
           }}>
             {/* Portrait Image */}
-            <div style={{ 
-              position: 'relative', 
-              width: '104px', 
-              height: '104px', 
-              borderRadius: '24px', 
-              overflow: 'hidden', 
-              border: '3px solid #D97706', 
-              boxShadow: '0 8px 24px rgba(217, 119, 6, 0.25)', 
+            <div style={{
+              position: 'relative',
+              width: '104px',
+              height: '104px',
+              borderRadius: '24px',
+              overflow: 'hidden',
+              border: '3px solid #D97706',
+              boxShadow: '0 8px 24px rgba(217, 119, 6, 0.25)',
               flexShrink: 0,
               backgroundColor: '#ECE7DE'
             }}>
-              <Image 
-                src={PASSPORT_PHOTO_URL} 
+              <Image
+                src={PASSPORT_PHOTO_URL}
                 alt="Sunil Thatra - Founder & Lead Creator, Saarthi Guide"
                 fill
                 style={{ objectFit: 'cover' }}
@@ -579,13 +579,13 @@ export default function AboutPage() {
           gap: '24px'
         }}>
           <div>
-            <span style={{ 
-              fontSize: '11px', 
-              fontWeight: 800, 
-              color: '#B45309', 
-              backgroundColor: '#FEF3C7', 
-              border: '1px solid #FDE68A', 
-              padding: '4px 10px', 
+            <span style={{
+              fontSize: '11px',
+              fontWeight: 800,
+              color: '#B45309',
+              backgroundColor: '#FEF3C7',
+              border: '1px solid #FDE68A',
+              padding: '4px 10px',
               borderRadius: '999px',
               textTransform: 'uppercase',
               letterSpacing: '0.4px'
@@ -644,13 +644,13 @@ export default function AboutPage() {
           gap: '20px'
         }}>
           <div>
-            <span style={{ 
-              fontSize: '11px', 
-              fontWeight: 800, 
-              color: '#065F46', 
-              backgroundColor: '#D1FAE5', 
-              border: '1px solid #A7F3D0', 
-              padding: '4px 10px', 
+            <span style={{
+              fontSize: '11px',
+              fontWeight: 800,
+              color: '#065F46',
+              backgroundColor: '#D1FAE5',
+              border: '1px solid #A7F3D0',
+              padding: '4px 10px',
               borderRadius: '999px',
               textTransform: 'uppercase',
               letterSpacing: '0.4px'
@@ -689,7 +689,7 @@ export default function AboutPage() {
 
         {/* ── MISSION & VISION CARDS ── */}
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '20px' }}>
-          
+
           <div style={{
             backgroundColor: '#FFFFFF',
             borderRadius: '24px',
@@ -697,16 +697,16 @@ export default function AboutPage() {
             border: '1px solid #EAE5DC',
             boxShadow: '0 4px 20px rgba(15, 23, 42, 0.03)'
           }}>
-            <div style={{ 
-              width: '38px', 
-              height: '38px', 
-              borderRadius: '12px', 
-              background: '#ECFDF5', 
-              border: '1px solid #A7F3D0', 
-              display: 'flex', 
-              alignItems: 'center', 
-              justifyContent: 'center', 
-              marginBottom: '16px' 
+            <div style={{
+              width: '38px',
+              height: '38px',
+              borderRadius: '12px',
+              background: '#ECFDF5',
+              border: '1px solid #A7F3D0',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginBottom: '16px'
             }}>
               <Target size={20} color="#059669" />
             </div>
@@ -725,16 +725,16 @@ export default function AboutPage() {
             border: '1px solid #EAE5DC',
             boxShadow: '0 4px 20px rgba(15, 23, 42, 0.03)'
           }}>
-            <div style={{ 
-              width: '38px', 
-              height: '38px', 
-              borderRadius: '12px', 
-              background: '#FEF3C7', 
-              border: '1px solid #FDE68A', 
-              display: 'flex', 
-              alignItems: 'center', 
-              justifyContent: 'center', 
-              marginBottom: '16px' 
+            <div style={{
+              width: '38px',
+              height: '38px',
+              borderRadius: '12px',
+              background: '#FEF3C7',
+              border: '1px solid #FDE68A',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginBottom: '16px'
             }}>
               <Sparkles size={20} color="#D97706" />
             </div>
@@ -784,7 +784,7 @@ export default function AboutPage() {
           </div>
 
           <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', justifyContent: 'center' }}>
-            <a 
+            <a
               href={`mailto:${FOUNDER_EMAIL}`}
               style={{
                 display: 'inline-flex',
@@ -839,3 +839,4 @@ export default function AboutPage() {
     </div>
   );
 }
+
