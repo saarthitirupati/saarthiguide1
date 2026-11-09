@@ -15,6 +15,7 @@ import {
   DailyContent,
   QuickChecklist,
   VaikuntaEkadasiBanner,
+  KarthikaAdvisoryCard,
   FootpathTimingsCard,
   YatraChecklist,
   DesktopSidebarWidget,
@@ -161,6 +162,9 @@ export default function HomePage() {
 
           {/* LAYER 2.1: VAIKUNTA DWARA DARSHAN & EKADASI COUNTDOWN BANNER */}
           <VaikuntaEkadasiBanner />
+
+          {/* LAYER 2.2: KARTHIKA MASAM SEASONAL ADVISORY */}
+          <KarthikaAdvisoryCard />
 
           {/* LAYER 2.5: YATRA ESSENTIALS COMPLIANCE CHECKLIST */}
           <YatraChecklist />

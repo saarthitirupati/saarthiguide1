@@ -13,5 +13,6 @@ export { YatraChecklist } from './YatraChecklist';
 export { VaikuntaEkadasiBanner } from './VaikuntaEkadasiBanner';
 export { FootpathTimingsCard } from './FootpathTimingsCard';
 export { DesktopSidebarWidget } from './DesktopSidebarWidget';
+export { KarthikaAdvisoryCard } from './KarthikaAdvisoryCard';
 export { HomeSkeleton } from './HomeSkeleton';
 

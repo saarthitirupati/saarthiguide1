@@ -1,0 +1,88 @@
+.card {
+  margin: 16px 16px 20px;
+  padding: 18px 16px;
+  background-color: var(--surface-card, #FFFFFF);
+  border: var(--border-card, 1.5px solid #ECE9E3);
+  border-radius: 14px;
+  box-shadow: var(--shadow-card);
+  color: var(--surface-pulse, #0F172A);
+  font-family: var(--font-sans);
+}
+
+.cardTelugu {
+  font-family: var(--font-telugu, system-ui);
+}
+
+.category {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #475569;
+  text-transform: uppercase;
+}
+
+.title {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 4px 0 14px;
+  color: var(--surface-pulse, #0F172A);
+  line-height: 1.35;
+}
+
+.section {
+  margin-bottom: 12px;
+}
+
+.sectionLabel {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--surface-pulse, #0F172A);
+  margin-bottom: 2px;
+}
+
+.sectionText {
+  font-size: 14px;
+  line-height: 1.5;
+  color: #334155;
+}
+
+.footer {
+  border-top: 1px solid #E2E8F0;
+  padding-top: 12px;
+  margin-top: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.feedbackPrompt {
+  font-size: 14px;
+  font-weight: 600;
+  color: #334155;
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 10px;
+}
+
+.feedbackButton {
+  min-height: 44px;
+  min-width: 64px;
+  padding: 8px 18px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--surface-pulse, #0F172A);
+  background-color: #F1F5F9;
+  border: 1px solid #CBD5E1;
+  border-radius: 8px;
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.feedbackButton:active {
+  background-color: #E2E8F0;
+}
+

@@ -5,7 +5,9 @@ export function calculateCrowdScore(place: Place, context: DerivedContext): { sc
   if (!context.featureFlags.crowdActive) return { score: 0 };
 
   const isTirumalaHill = (place.location || '').toLowerCase().includes('tirumala') || place.id === 'venkateswara';
-  const isFoothillEscape = place.id === 'kapila-theertham' || place.id === 'padmavathi' || place.id === 'sv-museum';
+  const isPlaceUnderFestivalSurge = (context.activeFestivalPlaceIds || []).includes(place.id);
+  const isFoothillEscape = (place.id === 'kapila-theertham' || place.id === 'padmavathi' || place.id === 'sv-museum')
+    && !isPlaceUnderFestivalSurge;
 
   if (context.crowdLevel === 'extreme') {
     if (isTirumalaHill) {

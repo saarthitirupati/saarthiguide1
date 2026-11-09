@@ -872,8 +872,8 @@ export const PLACES: Place[] = [
       ],
       culturalMeaningTe: 'కపిల మహర్షి తపస్సుకు మెచ్చి శివుడు ఇక్కడ ప్రత్యక్షమయ్యాడని పురాణ గాథ. తిరుమల కొండల పాదాల వద్ద కొలువైన ఈ శైవ క్షేత్రం, హరిహరుల అభేద తత్వానికి గొప్ప నిదర్శనం.',
       culturalMeaningEn: 'Sage Kapila performed penance here, prompting Lord Shiva to emerge from the underworld. Located at the foot of the sacred hills, it embodies the spiritual harmony of Shiva and Vishnu in Tirupati tradition.',
-      saarthiTipTe: 'వర్షాకాలంలో జలపాతం ఉధృతంగా ఉంటుంది. జారే మెట్లపై జాగ్రత్తగా నడవండి. ఉదయం 6:00 నుండి 8:00 మధ్య సమయం ప్రశాంతమైన దర్శనానికి అనుకూలం.',
-      saarthiTipEn: 'The waterfall flows strongly post-monsoon. Steps can be slippery near the pond. Visiting between 6:00 AM and 8:00 AM allows peaceful darshan.'
+      saarthiTipTe: 'వర్షాకాలం తర్వాత జలపాతం ఉధృతంగా ఉంటుంది. కార్తీక మాసం మరియు శివరాత్రి పర్వదినాల్లో రద్దీ ఎక్కువగా ఉండటం వల్ల సుమారు 1.5–2.5 గంటల సమయం కేటాయించండి. ఉదయం స్నానాల రద్దీ మరియు సాయంత్రం దీపారాధన రద్దీని తప్పించుకోవడానికి మధ్యాహ్నం 12:30 నుండి 3:30 మధ్య సమయం అనుకూలం. జారే మెట్లపై జాగ్రత్తగా నడవండి.',
+      saarthiTipEn: 'The waterfall flows strongly post-monsoon. During festival periods like Karthika Masam and Shivaratri, plan for typically 1.5–2.5 hours rather than a quick stop. Visiting between 12:30 PM and 3:30 PM helps bypass the early morning snanam rush and evening lamp lighting crowds. Walk carefully on wet, slippery stone steps near the waterfall pond.'
     },
     timings: '5:00 AM - 9:00 PM',
     entryFee: "Free entry. Special Darshan ticket available at ₹5 and Special Pooja at ₹25.",
@@ -888,7 +888,7 @@ export const PLACES: Place[] = [
     closingTime: "8:00 PM",
     duration: "1 hour",
     travelByRTC: "Take local city buses or auto-rickshaws from Tirupati Railway Station or Bus Stand. Frequent services are available towards Alipiri.",
-    travelByCar: "Situated just 3 km from Tirupati city center towards Alipiri. Drive via Kapila Theertham road. Limited parking is available near the entrance.",
+    travelByCar: "Situated just 3 km from Tirupati city center towards Alipiri along Kapila Theertham road. Temple gate parking is limited and congests quickly during festivals; public transit, autos, or authorized outer lots near Alipiri link are recommended to avoid gate gridlock.",
     travelByBike: "A quick 5-minute ride from any central point in Tirupati.",
     approxRTCFare: "₹10 per person city bus / ₹60 for shared auto",
     approxCarCost: "₹50 fuel or ₹150 auto/cab ride",
@@ -896,7 +896,7 @@ export const PLACES: Place[] = [
     images: ["https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ8aG5OCFSjebG2YgVRgKif7WAWQCSBhg9G2MdYRPZ35A&s=10"],
     visitorTips: {
       dressCode: "Devotional traditional wear is appreciated. Casual wear is permitted but should be modest.",
-      crowdNote: "Generally peaceful, but sees huge crowds during Karthika Masam and Maha Shivaratri.",
+      crowdNote: "Generally peaceful on regular weekdays (15–30 min darshan). During Karthika Masam (typically Nov–Dec, especially on Mondays and Karthika Pournami) and Maha Shivaratri, queues can be significantly longer due to sacred bath rituals and evening Deeparadhana. Midday (12:30 PM – 3:30 PM) offers the best off-peak window to avoid the morning snanam rush.",
       footwearRule: "Deposit counters are available outside the temple gates.",
       photoRule: "Photography is permitted around the waterfall pond, but prohibited inside the Shiva shrine.",
       entryRule: "Open to all public. Bathing in the pond is permitted; take necessary safety precautions.",
@@ -913,7 +913,7 @@ export const PLACES: Place[] = [
     oneReasonToVisit: "Best waterfall temple near Tirupati with peaceful natural surroundings and sacred Shiva shrine.",
     verification: {
       status: 'Verified',
-      verifiedBy: 'Ground Visit & TTD Data',
+      verifiedBy: 'Ground Visit & Temple Records',
       verifiedDate: '2026-07-21',
       source: 'Ground Visit',
       confidenceScore: 96,

@@ -4,6 +4,7 @@
  */
 
 import { RawSignals } from './signals.service';
+import { Festival } from '@/data/festivals';
 
 export interface DerivedContext {
   userLocation: { lat: number; lng: number };
@@ -14,6 +15,8 @@ export interface DerivedContext {
   crowdLevel: 'low' | 'moderate' | 'high' | 'extreme';
   journeyStage: 'before_darshan' | 'after_darshan' | 'returning' | 'general';
   activeFestival: string | null;
+  activeFestivals: Festival[];
+  activeFestivalPlaceIds: string[];
   roadClosures: string[];
   parkingStatus: Record<string, 'available' | 'limited' | 'full'>;
   featureFlags: {
@@ -53,6 +56,8 @@ export function buildDerivedContext(signals: RawSignals): DerivedContext {
     crowdLevel: signals.liveCrowdStatus,
     journeyStage: signals.journeyStage,
     activeFestival: signals.activeFestival,
+    activeFestivals: signals.activeFestivals || [],
+    activeFestivalPlaceIds: signals.activeFestivalPlaceIds || [],
     roadClosures: signals.roadClosures,
     parkingStatus: signals.parkingStatus,
     featureFlags: {

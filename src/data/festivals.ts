@@ -2372,6 +2372,23 @@ export const FESTIVALS_2026: Festival[] = [
     coverImage: '/assets/temples/venkateswara.png'
   },
   {
+    id: 'karthika-masam-2026',
+    name: 'Karthika Masam (Masa Utsavam & Somavara Vratams)',
+    date: '2026-11-10',
+    dateEnd: '2026-12-08',
+    location: 'Sri Kapileswara Swamy Temple & Pushkarini',
+    placeId: 'kapila-theertham',
+    relatedTemples: [],
+    gravityScore: 8,
+    scoreWeight: 30,
+    expectedCrowd: 'High',
+    recommendedTime: '12:30 PM - 3:30 PM (Off-peak darshan; avoid 3:30 AM - 8:00 AM snanam rush)',
+    dressCode: 'Traditional',
+    parking: 'Outer transit lots or public transit recommended; temple gate parking congests early',
+    specialTips: 'Sacred waterfall snanam, daily Homa Mahotsavams, and high devotee footfall on Somavarams (Mondays: Nov 16, 23, 30, Dec 7).',
+    coverImage: '/assets/temples/kapila-theertham.png'
+  },
+  {
     id: 'ksheerabdi-dwadashi',
     name: 'Ksheerabdi Dwadashi (Chilku Dwadashi) & Pradosha Vratam',
     date: '2026-11-22',
@@ -2394,6 +2411,7 @@ export const FESTIVALS_2026: Festival[] = [
     placeId: 'kapila-theertham',
     relatedTemples: ['srikalahasti', 'venkateswara', 'govindaraja', 'iskcon-tirupati'],
     gravityScore: 10,
+    scoreWeight: 60,
     expectedCrowd: 'Very High',
     recommendedTime: '5:00 PM - 10:00 PM',
     dressCode: 'Traditional',

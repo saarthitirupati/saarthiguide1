@@ -43,6 +43,13 @@ function getDayDifference(targetDateStr: string, todayStr: string): number {
   return Math.round((dTarget - dToday) / (1000 * 60 * 60 * 24));
 }
 
+function getFestivalDurationDays(f: Festival): number {
+  if (!f.dateEnd || f.dateEnd === f.date) return 1;
+  const [y1, m1, d1] = f.date.split('-').map(Number);
+  const [y2, m2, d2] = f.dateEnd.split('-').map(Number);
+  return Math.max(1, Math.round((Date.UTC(y2, m2 - 1, d2) - Date.UTC(y1, m1 - 1, d1)) / 86400000) + 1);
+}
+
 /**
  * Dynamic Festival Crowd Intelligence
  * Evaluates whether the given placeId is directly hosting or experiencing spillover crowds from an active or upcoming festival.
@@ -71,41 +78,51 @@ export function getFestivalCrowdIntelligence(
     return createDefaultInfo();
   }
 
-  // 1. Check for TODAY'S ACTIVE FESTIVALS
-  for (const fest of matchingFestivals) {
-    const diff = getDayDifference(fest.date, todayStr);
-    
-    // Active if today is the festival date
-    if (diff === 0) {
-      const isDirectCenter = (fest.placeId || '').toLowerCase() === normalizedId;
-      const crowdLevel: FestivalCrowdInfo['crowdLevel'] = isDirectCenter
-        ? (fest.expectedCrowd === 'Very High' ? 'Peak Rush' : (fest.expectedCrowd || 'High'))
-        : 'High';
+  // 1. Check for TODAY'S ACTIVE FESTIVALS (either single-day or in date range)
+  const activeToday = matchingFestivals.filter(f => {
+    const start = f.date;
+    const end = f.dateEnd || f.date;
+    return todayStr >= start && todayStr <= end;
+  });
 
-      return {
-        hasImpact: true,
-        isFestivalActive: true,
-        isUpcoming: false,
-        daysUntil: 0,
-        festival: fest,
-        festivalName: fest.name,
-        festivalDate: fest.date,
-        crowdLevel,
-        isDirectCenter,
-        badgeTextEn: isDirectCenter ? 'Peak Rush Today' : 'High Devotee Rush',
-        badgeTextTe: isDirectCenter ? 'నేడు అత్యధిక రద్దీ' : 'అధిక భక్తుల రద్దీ',
-        alertTitleEn: fest.name,
-        alertTitleTe: fest.name,
-        alertMessageEn: isDirectCenter
-          ? `Primary celebrations active today. Devotee footfall and queues are at peak levels.`
-          : `High pilgrim footfall expected today due to festival celebrations.`,
-        alertMessageTe: isDirectCenter
-          ? `నేడు ఈ ఆలయంలో ప్రధాన ఉత్సవాలు జరుగుతున్నాయి. భక్తుల రద్దీ అత్యధికంగా ఉంటుంది.`
-          : `పండుగ సందర్భంగా నేడు భక్తుల రద్దీ అధికంగా ఉండే అవకాశం ఉంది.`,
-        recommendedTime: fest.recommendedTime || 'Early morning before 7:00 AM or late evening after 8:00 PM',
-        specialTips: fest.specialTips
-      };
-    }
+  // Sort: narrowest range first, tie-break by gravityScore descending
+  activeToday.sort((a, b) => {
+    const durA = getFestivalDurationDays(a);
+    const durB = getFestivalDurationDays(b);
+    if (durA !== durB) return durA - durB;
+    return (b.gravityScore || 0) - (a.gravityScore || 0);
+  });
+
+  if (activeToday.length > 0) {
+    const fest = activeToday[0];
+    const isDirectCenter = (fest.placeId || '').toLowerCase() === normalizedId;
+    const crowdLevel: FestivalCrowdInfo['crowdLevel'] = isDirectCenter
+      ? (fest.expectedCrowd === 'Very High' ? 'Peak Rush' : (fest.expectedCrowd || 'High'))
+      : 'High';
+
+    return {
+      hasImpact: true,
+      isFestivalActive: true,
+      isUpcoming: false,
+      daysUntil: 0,
+      festival: fest,
+      festivalName: fest.name,
+      festivalDate: fest.date,
+      crowdLevel,
+      isDirectCenter,
+      badgeTextEn: isDirectCenter ? 'Peak Rush Today' : 'High Devotee Rush',
+      badgeTextTe: isDirectCenter ? 'నేడు అత్యధిక రద్దీ' : 'అధిక భక్తుల రద్దీ',
+      alertTitleEn: fest.name,
+      alertTitleTe: fest.name,
+      alertMessageEn: isDirectCenter
+        ? `Primary celebrations active today. Plan for typically 1.5–2.5 hours for darshan and holy dip.`
+        : `High pilgrim footfall expected today due to festival celebrations.`,
+      alertMessageTe: isDirectCenter
+        ? `నేడు ఈ ఆలయంలో ప్రధాన ఉత్సవాలు జరుగుతున్నాయి. దర్శనం మరియు పుష్కరిణి స్నానానికి సుమారు 1.5–2.5 గంటల సమయం కేటాయించండి.`
+        : `పండుగ సందర్భంగా నేడు భక్తుల రద్దీ అధికంగా ఉండే అవకాశం ఉంది.`,
+      recommendedTime: fest.recommendedTime || 'Early morning before 7:00 AM or late evening after 8:00 PM',
+      specialTips: fest.specialTips
+    };
   }
 
   // 2. Check for UPCOMING FESTIVALS (next 1 to 2 days)
