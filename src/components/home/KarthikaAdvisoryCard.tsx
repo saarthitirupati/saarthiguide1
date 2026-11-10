@@ -1,6 +1,8 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { Calendar, Clock, Sun, Info, ChevronRight } from 'lucide-react';
 import { FESTIVALS_2026 } from '@/data/festivals';
 import { useLanguage } from '@/lib/useLanguage';
 import styles from './KarthikaAdvisoryCard.module.css';
@@ -15,12 +17,10 @@ export function KarthikaAdvisoryCard() {
   const [feedbackGiven, setFeedbackGiven] = useState(false);
 
   useEffect(() => {
-    // 7. Compute date after mount to avoid Next.js hydration mismatch
     const now = new Date();
     const todayStr = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Kolkata' }).format(now);
     setTodayString(todayStr);
 
-    // 1. Data-driven active check matching decision engine
     const karthikaFest = FESTIVALS_2026.find(f => f.id === 'karthika-masam-2026');
     if (!karthikaFest) {
       setMounted(true);
@@ -30,14 +30,12 @@ export function KarthikaAdvisoryCard() {
     const active = todayStr >= karthikaFest.date && todayStr <= (karthikaFest.dateEnd || karthikaFest.date);
     setIsActive(active);
 
-    // 8. Prevent repeat votes via localStorage
     try {
       if (localStorage.getItem('karthika_advisory_voted') === 'true') {
         setFeedbackGiven(true);
       }
     } catch {}
 
-    // 3. Log one anonymous impression per session
     if (active) {
       try {
         const alreadyLogged = sessionStorage.getItem('karthika_advisory_imp_logged');
@@ -45,7 +43,6 @@ export function KarthikaAdvisoryCard() {
           sessionStorage.setItem('karthika_advisory_imp_logged', 'true');
           const sessionId = localStorage.getItem('saarthi_session_id') || `sess_${Date.now().toString(36)}`;
 
-          // 2. Error handled without unhandled promise rejection
           fetch('/api/v1/telemetry', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -55,7 +52,7 @@ export function KarthikaAdvisoryCard() {
               entityType: 'place',
               entityId: 'kapila-theertham',
               metadata: {
-                cardVersion: 'v1_karthika_advisory',
+                cardVersion: 'v2_karthika_advisory_ui',
                 date: todayStr
               }
             })
@@ -77,7 +74,6 @@ export function KarthikaAdvisoryCard() {
       localStorage.setItem('karthika_advisory_voted', 'true');
       const sessionId = localStorage.getItem('saarthi_session_id') || `sess_${Date.now().toString(36)}`;
 
-      // 2. Handled fetch failure
       fetch('/api/v1/telemetry', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -88,7 +84,7 @@ export function KarthikaAdvisoryCard() {
           entityId: 'kapila-theertham',
           metadata: {
             helpful,
-            cardVersion: 'v1_karthika_advisory',
+            cardVersion: 'v2_karthika_advisory_ui',
             date: todayString
           }
         })
@@ -99,60 +95,88 @@ export function KarthikaAdvisoryCard() {
   return (
     <section 
       className={`${styles.card} ${isTe ? styles.cardTelugu : ''}`}
-      aria-label={isTe ? 'కపిల తీర్థం కార్తీక మాస సూచన' : 'Karthika Masam Advisory for Kapila Theertham'}
+      aria-label={isTe ? 'కపిల తీర్థం కార్తీక మాస దర్శన సూచన' : 'Kapila Theertham Karthika Masam Timing Advisory'}
     >
-      <div className={styles.category}>
-        {isTe ? 'కార్తీక మాస సూచన' : 'KARTHIKA MASAM ADVISORY'}
-      </div>
-      <h2 className={styles.title}>
-        {isTe ? 'శ్రీ కపిలేశ్వర స్వామి దేవస్థానం (కపిల తీర్థం)' : 'Sri Kapileswara Swamy Temple (Kapila Theertham)'}
-      </h2>
-
-      <div className={styles.section}>
-        <div className={styles.sectionLabel}>
-          {isTe ? 'దర్శనం సమయం' : 'Queue times'}
+      {/* ── CARD HEADER ── */}
+      <div className={styles.header}>
+        <div className={styles.headerLeft}>
+          <div className={styles.iconBadge} aria-hidden="true">
+            <Calendar size={16} />
+          </div>
+          <div className={styles.headerText}>
+            <div className={styles.category}>
+              {isTe ? 'కార్తీక మాస సూచన' : 'Karthika Masam'}
+            </div>
+            <h2 className={styles.title}>
+              {isTe ? 'కపిల తీర్థం దర్శనం' : 'Kapila Theertham'}
+            </h2>
+          </div>
         </div>
-        <div className={styles.sectionText}>
+
+        <Link 
+          href="/place/kapila-theertham"
+          className={styles.detailsLink}
+          aria-label={isTe ? 'కపిల తీర్థం పూర్తి వివరాలు' : 'Kapila Theertham details'}
+        >
+          <span>{isTe ? 'వివరాలు' : 'Details'}</span>
+          <ChevronRight size={13} aria-hidden="true" />
+        </Link>
+      </div>
+
+      {/* ── 2-COLUMN SCANNABLE TILES (LOW TEXT, HIGH VISUAL) ── */}
+      <div className={styles.grid}>
+        {/* Tile 1: Queue Times */}
+        <div className={styles.tile}>
+          <div className={styles.tileHeader}>
+            <Clock size={13} className={styles.tileIcon} aria-hidden="true" />
+            <span className={styles.tileLabel}>
+              {isTe ? 'దర్శనం సమయం' : 'Estimated Wait'}
+            </span>
+          </div>
+          <div className={styles.tileHighlight}>1.5 – 2.5 hrs</div>
+          <div className={styles.tileSubtext}>
+            {isTe ? 'పండుగ రద్దీ అంచనా' : 'Festival queue estimate'}
+          </div>
+        </div>
+
+        {/* Tile 2: Suggested Window */}
+        <div className={styles.tile}>
+          <div className={styles.tileHeader}>
+            <Sun size={13} className={styles.tileIcon} aria-hidden="true" />
+            <span className={styles.tileLabel}>
+              {isTe ? 'అనుకూల సమయం' : 'Best Window'}
+            </span>
+          </div>
+          <div className={styles.tileHighlight}>12:30 – 3:30 PM</div>
+          <div className={styles.tileSubtext}>
+            {isTe ? 'రద్దీ తక్కువగా ఉండే సమయం' : 'Lighter rush period'}
+          </div>
+        </div>
+      </div>
+
+      {/* ── NOTICE BOX (CONCISE & PUNCHY) ── */}
+      <div className={styles.noticeBox}>
+        <Info size={14} className={styles.noticeIcon} aria-hidden="true" />
+        <span className={styles.noticeText}>
           {isTe 
-            ? 'భక్తుల రద్దీ ఎక్కువగా ఉండే అవకాశం ఉంది. దర్శనానికి సుమారు 1.5 నుండి 2.5 గంటల సమయం కేటాయించండి (గత పండుగల ఆధారిత అంచనా).'
-            : 'Festival queues are expected. Plan for about 1.5 to 2.5 hours (estimate based on past festival patterns).'}
-        </div>
+            ? 'పుష్కరిణి, జలపాతం ప్రవేశం స్థానిక భద్రతా సూచనలపై ఆధారపడి ఉంటుంది.'
+            : 'Water & pushkarini entry subject to local safety rules on the day.'}
+        </span>
       </div>
 
-      <div className={styles.section}>
-        <div className={styles.sectionLabel}>
-          {isTe ? 'అనుకూల సమయం' : 'Suggested window'}
-        </div>
-        <div className={styles.sectionText}>
-          {isTe 
-            ? 'మధ్యాహ్నం 12:30 నుండి 3:30 వరకు రద్దీ కొంత తక్కువగా ఉండే అవకాశం ఉంది (ఉదయం స్నానాల రద్దీ మరియు సాయంత్రం ప్రార్థనల మధ్య).'
-            : '12:30 PM to 3:30 PM may be lighter, between the morning bath rush and the evening prayer crowds.'}
-        </div>
-      </div>
-
-      <div className={styles.section}>
-        <div className={styles.sectionLabel}>
-          {isTe ? 'గమనిక' : 'Please note'}
-        </div>
-        <div className={styles.sectionText}>
-          {isTe 
-            ? 'పుష్కరిణి మరియు జలపాతం ప్రవేశం ఆ రోజు దేవాలయ, స్థానిక అధికారుల ఆదేశాలపై ఆధారపడి ఉంటుంది.'
-            : 'Pushkarini and waterfall access depends on temple and local authority instructions on the day.'}
-        </div>
-      </div>
-
+      {/* ── FEEDBACK FOOTER ── */}
       <div className={styles.footer}>
         <span className={styles.feedbackPrompt}>
           {feedbackGiven 
-            ? (isTe ? 'మీ స్పందనకు ధన్యవాదాలు.' : 'Thank you for your feedback.') 
-            : (isTe ? 'ఈ సమాచారం మీకు ఉపయోగపడిందా?' : 'Was this timing estimate helpful?')}
+            ? (isTe ? 'ధన్యవాదాలు.' : 'Thank you for your feedback.') 
+            : (isTe ? 'ఈ అంచనా ఉపయోగపడిందా?' : 'Was this estimate helpful?')}
         </span>
         {!feedbackGiven && (
           <div className={styles.buttonGroup}>
             <button
               type="button"
               onClick={() => handleFeedback(true)}
-              aria-label={isTe ? 'అవును, ఈ సమాచారం ఉపయోగపడింది' : 'Yes, this timing estimate was helpful'}
+              aria-label={isTe ? 'అవును, ఈ సమాచారం ఉపయోగపడింది' : 'Yes, this estimate was helpful'}
               className={styles.feedbackButton}
             >
               {isTe ? 'అవును' : 'Yes'}
@@ -160,7 +184,7 @@ export function KarthikaAdvisoryCard() {
             <button
               type="button"
               onClick={() => handleFeedback(false)}
-              aria-label={isTe ? 'కాదు, ఈ సమాచారం ఉపయోగపడలేదు' : 'No, this timing estimate was not helpful'}
+              aria-label={isTe ? 'కాదు, ఈ సమాచారం ఉపయోగపడలేదు' : 'No, this estimate was not helpful'}
               className={styles.feedbackButton}
             >
               {isTe ? 'కాదు' : 'No'}
@@ -171,4 +195,3 @@ export function KarthikaAdvisoryCard() {
     </section>
   );
 }
-
