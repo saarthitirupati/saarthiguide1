@@ -1472,11 +1472,11 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
           }}>
 
             {/* Left — Official Saarthi Brand Lockup */}
-            <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '6px', textDecoration: 'none', flexShrink: 0, zIndex: 2 }}>
-              <Logo size={30} />
+            <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none', flexShrink: 0, zIndex: 2 }}>
+              <Logo size={32} />
               <span className="notranslate" style={{
                 fontSize: '18px',
-                fontWeight: 700,
+                fontWeight: 800,
                 color: '#0F5132',
                 letterSpacing: '-0.02em',
                 lineHeight: 1,
@@ -1521,10 +1521,10 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                   alignItems: 'center',
                   gap: '4px',
                   height: '32px',
-                  padding: '4px 9px',
+                  padding: '4px 10px',
                   borderRadius: '9999px',
                   border: '1px solid #CBD5E1',
-                  background: '#F8FAFC',
+                  background: '#FFFFFF',
                   color: '#0F5132',
                   fontSize: '12px',
                   fontWeight: 700,
@@ -1537,10 +1537,10 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                   flexShrink: 0,
                 }}
               >
-                <Languages size={14} color="#0F5132" strokeWidth={2.2} />
                 <span>
-                  {lang === 'en' ? 'EN' : lang === 'te' ? 'తెలుగు' : lang === 'hi' ? 'हिंदी' : 'தமிழ்'}
+                  {lang === 'en' ? 'English' : lang === 'te' ? 'తెలుగు' : lang === 'hi' ? 'हिंदी' : 'தமிழ்'}
                 </span>
+                <ChevronDown size={13} color="#64748B" strokeWidth={2.5} />
               </button>
 
               <Link href="/alerts" prefetch={false} aria-label="Notifications" style={{
@@ -1593,7 +1593,7 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
       />
 
       {/* ══════════ SCROLLABLE CONTENT ══════════ */}
-      <div style={{ padding: hideHeader ? '0' : '10px clamp(8px, 3vw, 12px) 16px', background: hideHeader ? 'transparent' : 'var(--bg-canvas, #FAF8F5)', width: '100%', maxWidth: '100%', boxSizing: 'border-box', overflowX: 'hidden' }}>
+      <div style={{ padding: hideHeader ? '0' : '10px clamp(8px, 3vw, 12px) 0px', background: hideHeader ? 'transparent' : 'var(--bg-canvas, #FAF8F5)', width: '100%', maxWidth: '100%', boxSizing: 'border-box', overflowX: 'hidden' }}>
 
         {!hideHeader && (
           <>
@@ -1755,888 +1755,785 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
         </div>
       </div>
 
-      {/* 🛕 SIGNATURE LIVE TEMPLE PULSE (CALM DEVOTIONAL CONTAINER) */}
-      <div style={{
-        background: isRainy
-          ? 'linear-gradient(165deg, rgba(240, 249, 255, 0.98) 0%, rgba(224, 242, 254, 0.92) 50%, rgba(241, 245, 249, 0.95) 100%)'
-          : 'var(--surface-card, #FFFFFF)',
-        borderRadius: '20px',
-        padding: '16px 14px',
-        color: 'var(--color-text-primary, #1E232D)',
-        boxShadow: isRainy
-          ? '0 8px 24px rgba(14, 116, 144, 0.08), 0 1px 3px rgba(0, 0, 0, 0.04)'
-          : '0 8px 24px -4px rgba(15, 23, 42, 0.05), 0 2px 6px rgba(15, 23, 42, 0.02)',
-        border: isRainy ? '1px solid #BAE6FD' : '1px solid rgba(200, 155, 60, 0.28)',
-        position: 'relative',
-        overflow: 'hidden'
-      }}>
-        {/* Subtle Top Accent Beam */}
+      {/* 🛕 TIRUMALA DARSHAN • LIVE CARD */}
+      <Link
+        href="/darshan/sarva-darshan"
+        prefetch={false}
+        style={{
+          textDecoration: 'none',
+          display: 'block',
+          marginBottom: '12px'
+        }}
+      >
         <div style={{
-          position: 'absolute',
-          top: 0,
-          left: '15%',
-          right: '15%',
-          height: '2px',
-          background: isRainy
-            ? 'linear-gradient(90deg, transparent 0%, #0284C7 30%, #38BDF8 50%, #0284C7 70%, transparent 100%)'
-            : 'linear-gradient(90deg, transparent 0%, #D97706 30%, #F59E0B 50%, #D97706 70%, transparent 100%)',
-          opacity: 0.85
-        }} />
-
-        {/* 🌧️ REAL-TIME TIRUMALA RAIN EFFECT (ONLY ACTIVE WHEN RAINING IN TIRUMALA VIA WEATHER API) */}
-        {isRainy && (
-          <div
-            aria-hidden="true"
-            style={{
-              position: 'absolute',
-              inset: 0,
-              pointerEvents: 'none',
-              zIndex: 1,
-              overflow: 'hidden',
-              borderRadius: '20px',
-            }}
-          >
-            <style>{`
-              @keyframes raindrop-fall {
-                0% {
-                  transform: translateY(-24px) translateX(0);
-                  opacity: 0;
-                }
-                20% {
-                  opacity: 0.7;
-                }
-                80% {
-                  opacity: 0.7;
-                }
-                100% {
-                  transform: translateY(220px) translateX(-20px);
-                  opacity: 0;
-                }
-              }
-              @keyframes raindrop-splash {
-                0% {
-                  transform: scale(0.2);
-                  opacity: 0.8;
-                }
-                80% {
-                  opacity: 0.3;
-                }
-                100% {
-                  transform: scale(1.6);
-                  opacity: 0;
-                }
-              }
-            `}</style>
-            {/* Falling Rain Streaks */}
-            {RAIN_DROPS.map((drop, i) => (
-              <div
-                key={i}
-                style={{
-                  position: 'absolute',
-                  top: 0,
-                  left: `${drop.left}%`,
-                  width: `${drop.width}px`,
-                  height: `${drop.height}px`,
-                  background: 'linear-gradient(180deg, rgba(56, 189, 248, 0) 0%, rgba(56, 189, 248, 0.55) 60%, rgba(14, 165, 233, 0.9) 100%)',
-                  borderRadius: '2px',
-                  transform: 'rotate(12deg)',
-                  animation: `raindrop-fall ${drop.duration}s linear infinite`,
-                  animationDelay: `${drop.delay}s`,
-                  willChange: 'transform',
-                }}
-              />
-            ))}
-            {/* Splash ripples at bottom */}
-            {RAIN_SPLASHES.map((splash, i) => (
-              <div
-                key={`splash-${i}`}
-                style={{
-                  position: 'absolute',
-                  bottom: `${splash.bottom}px`,
-                  left: `${splash.left}%`,
-                  width: '10px',
-                  height: '3.5px',
-                  borderRadius: '50%',
-                  border: '1px solid rgba(56, 189, 248, 0.65)',
-                  animation: `raindrop-splash ${splash.duration}s ease-out infinite`,
-                  animationDelay: `${splash.delay}s`,
-                  willChange: 'transform',
-                }}
-              />
-            ))}
+          background: 'linear-gradient(135deg, #F5FBF6 0%, #E9F5EB 100%)',
+          border: '1px solid #D5ECD8',
+          borderRadius: '18px',
+          padding: '8px 12px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: '10px',
+          boxShadow: '0 2px 8px rgba(10, 78, 51, 0.04)'
+        }}>
+          <div style={{
+            width: '66px',
+            height: '66px',
+            borderRadius: '14px',
+            overflow: 'hidden',
+            flexShrink: 0,
+            position: 'relative',
+            boxShadow: '0 2px 6px rgba(0,0,0,0.06)'
+          }}>
+            <img
+              src="/images/places/tirumala_gopuram_day.jpg"
+              alt="Tirumala Temple Gopuram"
+              style={{ width: '100%', height: '100%', objectFit: 'cover', objectPosition: 'center', display: 'block' }}
+            />
           </div>
-        )}
 
-        {/* 🌟 HEADER: LIVE STATUS BEACON & TITLE */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px', marginBottom: '12px', position: 'relative', zIndex: 2 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '7px', flexWrap: 'wrap' }}>
-            <span style={{
-              width: '8px',
-              height: '8px',
-              borderRadius: '50%',
-              backgroundColor: isRainy ? '#0284C7' : '#EF4444',
-              boxShadow: isRainy ? '0 0 8px rgba(2, 132, 199, 0.8)' : '0 0 8px rgba(239, 68, 68, 0.8)',
-              display: 'inline-block'
-            }} />
-            <h2 style={{
-              fontSize: '15px',
-              fontWeight: 700,
-              letterSpacing: '-0.015em',
-              color: 'var(--color-text-primary, #1E232D)',
-              margin: 0,
-              lineHeight: 1.25
-            }}>
-              {lang === 'te' ? 'తిరుమల లైవ్ స్టేటస్' : 'Tirumala Live Status'}
-            </h2>
-            {isRainy && (
-              <span 
-                onClick={() => setTestRainMode(prev => prev === false ? true : (prev === true ? null : false))}
-                title="Live Weather API: Rain in Tirumala (Click to test toggle)"
-                style={{
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '5px', marginBottom: '1px', flexWrap: 'wrap' }}>
+              <span style={{ fontSize: '12.5px', fontWeight: 800, color: '#1E293B', whiteSpace: 'nowrap' }}>
+                {lang === 'te' ? 'తిరుమల దర్శనం' : 'Tirumala Darshan'}
+              </span>
+              <span style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '3px',
+                padding: '1.5px 6px',
+                borderRadius: '9999px',
+                background: '#DCFCE7',
+                color: '#166534',
+                fontSize: '9.5px',
+                fontWeight: 800
+              }}>
+                <span style={{ width: '5px', height: '5px', borderRadius: '50%', background: '#16A34A' }} />
+                {lang === 'te' ? 'లైవ్' : 'Live'}
+              </span>
+
+              {/* Dynamic Live Rain Badge (Active Precipitation) */}
+              {isRainy && (
+                <span style={{
                   display: 'inline-flex',
                   alignItems: 'center',
                   gap: '3.5px',
-                  fontSize: '10px',
-                  fontWeight: 700,
+                  padding: '1.5px 7px',
+                  borderRadius: '9999px',
+                  background: '#E0F2FE',
+                  border: '1px solid #BAE6FD',
                   color: '#0369A1',
-                  background: 'rgba(224, 242, 254, 0.9)',
-                  border: '1px solid rgba(186, 230, 253, 0.95)',
-                  padding: '2px 7px',
-                  borderRadius: '12px',
-                  lineHeight: 1.2,
-                  cursor: 'pointer',
-                  userSelect: 'none'
-                }}
-              >
-                <CloudRain size={11} color="#0284C7" />
-                <span>{lang === 'te' ? 'వర్షం' : 'Rain in Tirumala'}</span>
-              </span>
-            )}
+                  fontSize: '9px',
+                  fontWeight: 800,
+                  whiteSpace: 'nowrap'
+                }}>
+                  <CloudRain size={10} color="#0284C7" strokeWidth={2.4} />
+                  <span>{lang === 'te' ? 'కొండపై వర్షం' : 'Rain on Hill'}</span>
+                </span>
+              )}
+            </div>
+
+            {(() => {
+              const rawWait = getDarshanWait('sarva') || liveWaitTime || '18 - 20';
+              const numOnly = rawWait.replace(/\s*(hours|hrs|గంటలు|Mins|Minutes)/gi, '').trim() || '18 - 20';
+              const unit = rawWait.toLowerCase().includes('min')
+                ? (lang === 'te' ? 'నిమిషాలు' : 'mins')
+                : (lang === 'te' ? 'గంటలు' : 'hours');
+
+              return (
+                <div style={{ display: 'flex', alignItems: 'baseline', gap: '5px', margin: '0' }}>
+                  <span style={{ fontSize: '21px', fontWeight: 900, color: '#0A4E33', letterSpacing: '-0.02em', lineHeight: 1.15 }}>
+                    {numOnly}
+                  </span>
+                  <span style={{ fontSize: '11.5px', fontWeight: 700, color: '#0A4E33' }}>
+                    {unit}
+                  </span>
+                </div>
+              );
+            })()}
+
+            <p style={{
+              fontSize: '10px',
+              color: isRainy ? '#0369A1' : '#64748B',
+              fontWeight: isRainy ? 700 : 500,
+              margin: 0,
+              whiteSpace: 'nowrap',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis'
+            }}>
+              {isRainy 
+                ? (lang === 'te' ? 'వర్షం సూచన · తడి క్యూలైన్లు & నడకదారులు' : 'Rain Active · Wet Open Compartments & Paths')
+                : (lang === 'te' ? 'సర్వదర్శనం కంపార్ట్‌మెంట్లు' : 'General Queue Compartments')}
+            </p>
           </div>
 
           <div style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '5px',
-            fontSize: '11px',
-            fontWeight: 600,
-            color: '#64748B'
-          }}>
-            <span>{updatedLabel}</span>
-            <RotateCcw size={13} color="#64748B" style={{ cursor: 'pointer' }} onClick={() => window.location.reload()} />
-          </div>
-        </div>
-
-        {/* 1️⃣ THREE SIDE-BY-SIDE DARSHAN CARDS (100% DYNAMIC FROM ADMIN DB) */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: '6px', marginBottom: '14px', position: 'relative', zIndex: 2, width: '100%', boxSizing: 'border-box' }}>
-          {(() => {
-            const sarvaWait = getDarshanWait('sarva');
-            const specialWait = getDarshanWait('special');
-            const ssdWait = getDarshanWait('ssd');
-
-            const getMaxHours = (text: string): number => {
-              const matches = text.match(/\d+/g);
-              if (!matches || matches.length === 0) return 0;
-              return Math.max(...matches.map(Number));
-            };
-
-            // 1. Dynamic Sarva Card Styling
-            const sarvaHrs = getMaxHours(sarvaWait);
-            const sarvaTheme = sarvaHrs >= 8 || sarvaWait.includes('24') || sarvaWait.includes('30')
-              ? { bg: '#FEF2F2', border: '#FECDD3', badgeBg: '#FEE2E2', badgeText: '#991B1B', iconColor: '#DC2626' }
-              : sarvaHrs >= 4
-              ? { bg: '#FFFDF0', border: '#FDE68A', badgeBg: '#FEF3C7', badgeText: '#92400E', iconColor: '#D97706' }
-              : { bg: '#F0FDF4', border: '#BBF7D0', badgeBg: '#DCFCE7', badgeText: '#166534', iconColor: '#059669' };
-
-            // 2. Dynamic Special Entry Card Styling
-            const specialHrs = getMaxHours(specialWait);
-            const specialTheme = specialHrs > 6
-              ? { bg: '#FEF2F2', border: '#FECDD3', badgeBg: '#FEE2E2', badgeText: '#991B1B', iconColor: '#DC2626' }
-              : specialHrs >= 3
-              ? { bg: '#FFFDF0', border: '#FDE68A', badgeBg: '#FEF3C7', badgeText: '#92400E', iconColor: '#D97706' }
-              : { bg: '#F0FDF4', border: '#BBF7D0', badgeBg: '#DCFCE7', badgeText: '#166534', iconColor: '#059669' };
-
-            // 3. Dynamic SSD Tokens Card Styling (Queue wait time directly from admin panel)
-            const ssdHrs = getMaxHours(ssdWait);
-            const ssdTheme = ssdHrs > 5
-              ? { bg: '#FEF2F2', border: '#FECDD3', badgeBg: '#FEE2E2', badgeText: '#991B1B', iconColor: '#DC2626' }
-              : ssdHrs >= 3
-              ? { bg: '#FFFDF0', border: '#FDE68A', badgeBg: '#FEF3C7', badgeText: '#92400E', iconColor: '#D97706' }
-              : { bg: '#F0FDF4', border: '#BBF7D0', badgeBg: '#DCFCE7', badgeText: '#166534', iconColor: '#059669' };
-
-            const queueCards = [
-              {
-                id: 'sarva',
-                href: '/darshan/sarva-darshan',
-                icon: <Building2 size={22} color={sarvaTheme.iconColor} />,
-                title: lang === 'te' ? 'సర్వదర్శనం' : lang === 'hi' ? 'सर्व दर्शन' : lang === 'ta' ? 'சர்வ தரிசனம்' : 'Sarva Darshan',
-                wait: sarvaWait,
-                bg: sarvaTheme.bg,
-                border: sarvaTheme.border,
-                badgeBg: sarvaTheme.badgeBg,
-                badgeText: sarvaTheme.badgeText
-              },
-              {
-                id: 'special',
-                href: '/darshan/special-entry',
-                icon: <Ticket size={22} color={specialTheme.iconColor} />,
-                title: lang === 'te' ? '₹300 ప్రవేశం' : lang === 'hi' ? '₹300 टिकट' : lang === 'ta' ? '₹300 கட்டணம்' : '₹300 Entry',
-                wait: specialWait,
-                bg: specialTheme.bg,
-                border: specialTheme.border,
-                badgeBg: specialTheme.badgeBg,
-                badgeText: specialTheme.badgeText
-              },
-              {
-                id: 'ssd',
-                href: '/darshan/ssd-token',
-                icon: <Ticket size={22} color={ssdTheme.iconColor} />,
-                title: lang === 'te' ? 'SSD టోకెన్లు' : lang === 'hi' ? 'SSD टोकन' : lang === 'ta' ? 'SSD டோக்கன்' : 'SSD Tokens',
-                wait: ssdWait || '—',
-                bg: ssdTheme.bg,
-                border: ssdTheme.border,
-                badgeBg: ssdTheme.badgeBg,
-                badgeText: ssdTheme.badgeText
-              }
-            ];
-
-            return queueCards.map((card) => (
-              <Link
-                key={card.id}
-                href={card.href}
-                prefetch={false}
-                style={{
-                  textDecoration: 'none',
-                  backgroundColor: card.bg,
-                  border: `1.5px solid ${card.border}`,
-                  borderRadius: '14px',
-                  padding: '10px 4px 8px',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  textAlign: 'center',
-                  justifyContent: 'space-between',
-                  minHeight: '112px',
-                  minWidth: 0,
-                  width: '100%',
-                  overflow: 'hidden',
-                  boxSizing: 'border-box',
-                  transition: 'transform 0.15s ease',
-                  cursor: 'pointer'
-                }}
-                className="darshan-home-card"
-              >
-                {/* Top Vector Icon */}
-                <div style={{
-                  height: '28px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  marginBottom: '2px',
-                  flexShrink: 0
-                }}>
-                  {card.icon}
-                </div>
-
-                {/* Title */}
-                <div className="notranslate" style={{
-                  fontSize: lang === 'ta' ? '11px' : lang === 'te' ? '11.5px' : '11.5px',
-                  fontWeight: 600,
-                  color: 'var(--color-text-primary, #1E232D)',
-                  marginBottom: '4px',
-                  lineHeight: 1.25,
-                  minWidth: 0,
-                  width: '100%',
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                  whiteSpace: 'nowrap'
-                }}>
-                  {card.title}
-                </div>
-
-                {/* Status Badge Pill */}
-                <div className="notranslate" style={{
-                  backgroundColor: card.badgeBg,
-                  color: card.badgeText,
-                  fontSize: 'clamp(9px, 2.3vw, 10px)',
-                  fontWeight: 600,
-                  padding: '2.5px 5px',
-                  borderRadius: '8px',
-                  marginBottom: '4px',
-                  width: '100%',
-                  maxWidth: '98%',
-                  boxSizing: 'border-box',
-                  whiteSpace: 'nowrap',
-                  overflow: 'hidden',
-                  textOverflow: 'ellipsis',
-                  lineHeight: 1.2,
-                  display: 'inline-block'
-                }}>
-                  {card.wait}
-                </div>
-
-                {/* Bottom Chevron Arrow */}
-                <ChevronRight size={12} color="#64748B" style={{ flexShrink: 0 }} />
-              </Link>
-            ));
-          })()}
-        </div>
-
-        {/* ── Hilltop Essentials Combined Banner ── */}
-        <div 
-          className="notranslate"
-          translate="no"
-          style={{
+            width: '26px',
+            height: '26px',
+            borderRadius: '50%',
             background: '#FFFFFF',
             border: '1px solid #E2E8F0',
-            borderRadius: '12px',
-            padding: '10px 12px',
-            marginBottom: '14px',
-            boxShadow: '0 1px 3px rgba(15, 23, 42, 0.04)'
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            color: '#64748B',
+            flexShrink: 0,
+            boxShadow: '0 1px 2px rgba(0,0,0,0.04)'
+          }}>
+            <ChevronRight size={15} strokeWidth={2.5} />
+          </div>
+        </div>
+      </Link>
+
+      {/* 🎫 2 PRIMARY QUICK ACTION CARDS: SSD & ₹300 ENTRY WITH LIVE TIMINGS */}
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
+        gap: '8px',
+        marginBottom: '10px'
+      }}>
+        {/* SSD Tokens with Timing */}
+        <Link
+          href="/ssd-tokens"
+          prefetch={false}
+          style={{
+            textDecoration: 'none',
+            background: '#FEF2F2',
+            border: '1px solid #FEE2E2',
+            borderRadius: '16px',
+            padding: '8px 8px',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            textAlign: 'center',
+            boxShadow: '0 1px 4px rgba(220, 38, 38, 0.04)',
+            transition: 'transform 0.15s ease'
           }}
         >
           <div style={{
+            width: '28px',
+            height: '28px',
+            borderRadius: '9px',
+            background: '#FEE2E2',
+            color: '#DC2626',
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'space-between',
-            marginBottom: '8px',
-            paddingBottom: '6px',
-            borderBottom: '1px solid #F1F5F9'
+            justifyContent: 'center',
+            marginBottom: '4px'
           }}>
-            <span 
-              className="notranslate"
-              translate="no"
-              style={{ fontSize: '11px', fontWeight: 700, color: '#475569', letterSpacing: '0.3px', textTransform: 'uppercase' }}
-            >
-              {lang === 'te' ? 'తిరుమలలో ముఖ్యమైన సౌకర్యాలు' : 'Hilltop Essentials'}
-            </span>
-            <Link
-              href="/essentials"
-              className="notranslate"
-              translate="no"
-              style={{ fontSize: '11px', fontWeight: 600, color: '#0F5132', textDecoration: 'none' }}
-            >
-              {lang === 'te' ? 'అన్నీ చూడండి >' : 'View all >'}
-            </Link>
+            <Ticket size={16} strokeWidth={2.2} />
           </div>
-
+          <span style={{ fontSize: '11.5px', fontWeight: 800, color: '#1E293B', lineHeight: 1.2, marginBottom: '3px' }}>
+            {lang === 'te' ? 'SSD టోకెన్లు' : 'SSD Tokens'}
+          </span>
           <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(4, minmax(0, 1fr))',
-            gap: '6px'
+            background: 'rgba(254, 226, 226, 0.95)',
+            border: '1px solid #FECDD3',
+            color: '#991B1B',
+            fontSize: '10px',
+            fontWeight: 800,
+            padding: '2px 7px',
+            borderRadius: '8px',
+            lineHeight: 1.2,
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '3px'
           }}>
-            {/* 1. Darshan Entry Points */}
-            <Link
-              href="/darshan/entry-points"
-              className="notranslate"
-              translate="no"
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                padding: '7px 2px',
-                borderRadius: '8px',
-                background: '#F0FDF4',
-                border: '1px solid #DCFCE7',
-                textDecoration: 'none',
-                textAlign: 'center',
-                transition: 'all 0.15s ease'
-              }}
-            >
-              <MapPin size={16} color="#059669" />
-              <span 
-                className="notranslate"
-                translate="no"
-                style={{ 
-                  fontSize: lang === 'te' ? '9.5px' : '11px', 
-                  fontWeight: 600, 
-                  color: '#065F46', 
-                  marginTop: '3px', 
-                  whiteSpace: 'nowrap',
-                  letterSpacing: lang === 'te' ? '-0.2px' : 'normal'
-                }}
-              >
-                {lang === 'te' ? 'ప్రవేశ ద్వారాలు' : 'Gates'}
-              </span>
-            </Link>
-
-            {/* 2. Free Bus */}
-            <Link
-              href="/free-bus"
-              className="notranslate"
-              translate="no"
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                padding: '7px 2px',
-                borderRadius: '8px',
-                background: '#FFFBEB',
-                border: '1px solid #FEF3C7',
-                textDecoration: 'none',
-                textAlign: 'center',
-                transition: 'all 0.15s ease'
-              }}
-            >
-              <Bus size={16} color="#D97706" />
-              <span 
-                className="notranslate"
-                translate="no"
-                style={{ fontSize: '11px', fontWeight: 600, color: '#92400E', marginTop: '3px', whiteSpace: 'nowrap' }}
-              >
-                {lang === 'te' ? 'ఉచిత బస్సు' : 'Free Bus'}
-              </span>
-            </Link>
-
-            {/* 3. Parking */}
-            <Link
-              href="/parking"
-              className="notranslate"
-              translate="no"
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                padding: '7px 2px',
-                borderRadius: '8px',
-                background: '#EFF6FF',
-                border: '1px solid #DBEAFE',
-                textDecoration: 'none',
-                textAlign: 'center',
-                transition: 'all 0.15s ease'
-              }}
-            >
-              <SquareParking size={16} color="#2563EB" />
-              <span 
-                className="notranslate"
-                translate="no"
-                style={{ fontSize: '11px', fontWeight: 600, color: '#1E40AF', marginTop: '3px', whiteSpace: 'nowrap' }}
-              >
-                {lang === 'te' ? 'పార్కింగ్' : 'Parking'}
-              </span>
-            </Link>
-
-            {/* 4. Medical */}
-            <Link
-              href="/medical"
-              className="notranslate"
-              translate="no"
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                justifyContent: 'center',
-                padding: '7px 2px',
-                borderRadius: '8px',
-                background: '#FEF2F2',
-                border: '1px solid #FEE2E2',
-                textDecoration: 'none',
-                textAlign: 'center',
-                transition: 'all 0.15s ease'
-              }}
-            >
-              <BriefcaseMedical size={16} color="#DC2626" />
-              <span 
-                className="notranslate"
-                translate="no"
-                style={{ 
-                  fontSize: lang === 'te' ? '10px' : '11px', 
-                  fontWeight: 600, 
-                  color: '#991B1B', 
-                  marginTop: '3px', 
-                  whiteSpace: 'nowrap',
-                  letterSpacing: lang === 'te' ? '-0.2px' : 'normal'
-                }}
-              >
-                {lang === 'te' ? 'వైద్య సహాయం' : 'Medical'}
-              </span>
-            </Link>
+            <Clock size={10} strokeWidth={2.4} />
+            <span>{getDarshanWait('ssd') !== '—' ? getDarshanWait('ssd') : '4 - 6 hours'}</span>
           </div>
-        </div>
+        </Link>
 
-        {/* ── DIVIDER ── */}
-        <div style={{ height: '1px', backgroundColor: 'rgba(15, 23, 42, 0.12)', marginBottom: '12px' }} />
-
-        {/* 2️⃣ TRAVEL & WEATHER CONDITIONS CAPSULES */}
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '8px' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
-            {isNight && (
-              <span suppressHydrationWarning style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '6px',
-                backgroundColor: 'rgba(30, 58, 138, 0.12)',
-                border: '1.5px solid #0F172A',
-                padding: '4px 10px',
-                borderRadius: '10px',
-                fontSize: '11px',
-                fontWeight: 700,
-                color: '#1E3A8A'
-              }}>
-                <Moon size={13} color="#1E3A8A" />
-                <span>Night</span>
-              </span>
-            )}
-            {isRainy ? (
-              <span style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '6px',
-                backgroundColor: 'rgba(14, 116, 144, 0.12)',
-                border: '1.5px solid #0F172A',
-                padding: '4px 10px',
-                borderRadius: '10px',
-                fontSize: '11px',
-                fontWeight: 700,
-                color: '#0E7490'
-              }}>
-                <CloudRain size={13} color="#0E7490" />
-                <span>Rain</span>
-              </span>
-            ) : (
-              <span style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '6px',
-                backgroundColor: 'rgba(217, 119, 6, 0.12)',
-                border: '1.5px solid #0F172A',
-                padding: '4px 10px',
-                borderRadius: '10px',
-                fontSize: '11px',
-                fontWeight: 700,
-                color: '#B45309'
-              }}>
-                <Sun size={13} color="#B45309" />
-                <span>{weatherTemp || '26°C'}</span>
-              </span>
-            )}
+        {/* ₹300 Entry with Timing */}
+        <Link
+          href="/darshan/special-entry"
+          prefetch={false}
+          style={{
+            textDecoration: 'none',
+            background: '#FFFBEB',
+            border: '1px solid #FEF3C7',
+            borderRadius: '16px',
+            padding: '8px 8px',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            textAlign: 'center',
+            boxShadow: '0 1px 4px rgba(217, 119, 6, 0.04)',
+            transition: 'transform 0.15s ease'
+          }}
+        >
+          <div style={{
+            width: '28px',
+            height: '28px',
+            borderRadius: '9px',
+            background: '#FEF3C7',
+            color: '#D97706',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginBottom: '4px',
+            fontSize: '15px',
+            fontWeight: 800
+          }}>
+            ₹
           </div>
+          <span style={{ fontSize: '11.5px', fontWeight: 800, color: '#1E293B', lineHeight: 1.2, marginBottom: '3px' }}>
+            {lang === 'te' ? '₹300 ప్రవేశం' : '₹300 Entry'}
+          </span>
+          <div style={{
+            background: 'rgba(254, 243, 199, 0.95)',
+            border: '1px solid #FDE68A',
+            color: '#92400E',
+            fontSize: '10px',
+            fontWeight: 800,
+            padding: '2px 7px',
+            borderRadius: '8px',
+            lineHeight: 1.2,
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '3px'
+          }}>
+            <Clock size={10} strokeWidth={2.4} />
+            <span>{getDarshanWait('special') !== '—' ? getDarshanWait('special') : '3 - 4 hours'}</span>
+          </div>
+        </Link>
+      </div>
 
-          {/* 1-Tap Share to Family button */}
-          <button
-            onClick={handleShareTodayPulse}
-            disabled={isSharingPulse}
-            style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '5px',
-              backgroundColor: isSharingPulse ? '#DCFCE7' : '#F0FDF4',
-              border: '1.5px solid #16A34A',
-              padding: '4px 10px',
-              borderRadius: '10px',
-              fontSize: '11px',
-              fontWeight: 700,
-              color: '#166534',
-              cursor: isSharingPulse ? 'wait' : 'pointer',
-              boxShadow: '0 1px 3px rgba(22, 163, 74, 0.12)',
-              transition: 'all 0.15s ease',
-              opacity: isSharingPulse ? 0.75 : 1
-            }}
-            aria-label="Share live updates on WhatsApp"
-          >
-            <Share2 size={12} color="#166534" />
-            <span>{isSharingPulse ? (lang === 'te' ? 'కార్డ్ తయారవుతోంది...' : 'Generating Card...') : (lang === 'te' ? 'కుటుంబానికి షేర్ చేయండి' : 'Share to Family')}</span>
-          </button>
-        </div>
+      {/* 🧭 4 SECONDARY ACTION PILLS */}
+      <div style={{
+        display: 'grid',
+        gridTemplateColumns: 'repeat(4, minmax(0, 1fr))',
+        gap: '8px',
+        marginBottom: '12px'
+      }}>
+        {/* Parking */}
+        <Link
+          href="/parking"
+          prefetch={false}
+          style={{
+            textDecoration: 'none',
+            background: '#FFFFFF',
+            border: '1px solid #E2E8F0',
+            borderRadius: '16px',
+            padding: '10px 4px',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            textAlign: 'center',
+            boxShadow: '0 1px 3px rgba(0,0,0,0.02)'
+          }}
+        >
+          <div style={{
+            width: '28px',
+            height: '28px',
+            borderRadius: '8px',
+            background: '#EFF6FF',
+            color: '#2563EB',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontWeight: 900,
+            fontSize: '14px',
+            marginBottom: '4px'
+          }}>
+            P
+          </div>
+          <span style={{ fontSize: '11px', fontWeight: 700, color: '#334155' }}>
+            {lang === 'te' ? 'పార్కింగ్' : 'Parking'}
+          </span>
+        </Link>
 
-        {/* 3️⃣ ⭐ DYNAMIC SAARTHI GUIDANCE (WARM IVORY PREMIUM CARD) */}
-        {(() => {
-          const sarvaWait = getDarshanWait('sarva');
-          const sarvaHours = getMaxWaitHours(sarvaWait);
-          const isSsdClosed = ssdTokenStatus === 'closed-for-day' || ssdTokenStatus === 'closed';
-          const isSsdOpen = ssdTokenStatus === 'issuing';
-          const isHeavyRush = sarvaHours >= 8 || crowdLevel === 'high' || crowdLevel === 'very-high';
-          const isTrulyLow = sarvaHours > 0 && sarvaHours < 4 && crowdLevel === 'low';
+        {/* Free Bus */}
+        <Link
+          href="/free-bus"
+          prefetch={false}
+          style={{
+            textDecoration: 'none',
+            background: '#FFFFFF',
+            border: '1px solid #E2E8F0',
+            borderRadius: '16px',
+            padding: '10px 4px',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            textAlign: 'center',
+            boxShadow: '0 1px 3px rgba(0,0,0,0.02)'
+          }}
+        >
+          <div style={{
+            width: '28px',
+            height: '28px',
+            borderRadius: '8px',
+            background: '#FFFBEB',
+            color: '#D97706',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginBottom: '4px'
+          }}>
+            <Bus size={15} strokeWidth={2.2} />
+          </div>
+          <span style={{ fontSize: '11px', fontWeight: 700, color: '#334155' }}>
+            {lang === 'te' ? 'ఉచిత బస్సు' : 'Free Bus'}
+          </span>
+        </Link>
 
-          // Day-of-week auspicious temple mapping (e.g. Monday: Shiva/Kapila, Tuesday: Hanuman/Japali, etc.)
-          const dayGuide = getDayTempleGuidance(new Date());
+        {/* Medical */}
+        <Link
+          href="/medical"
+          prefetch={false}
+          style={{
+            textDecoration: 'none',
+            background: '#FFFFFF',
+            border: '1px solid #E2E8F0',
+            borderRadius: '16px',
+            padding: '10px 4px',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            textAlign: 'center',
+            boxShadow: '0 1px 3px rgba(0,0,0,0.02)'
+          }}
+        >
+          <div style={{
+            width: '28px',
+            height: '28px',
+            borderRadius: '8px',
+            background: '#FEF2F2',
+            color: '#DC2626',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            fontWeight: 900,
+            fontSize: '15px',
+            marginBottom: '4px'
+          }}>
+            +
+          </div>
+          <span style={{ fontSize: '11px', fontWeight: 700, color: '#334155' }}>
+            {lang === 'te' ? 'వైద్యం' : 'Medical'}
+          </span>
+        </Link>
 
-          // Contextual Dynamic Headline & Rationales
-          let guidanceHeadline = scenario.recommendation;
-          let highlightedBenefit = scenario.benefit || 'Save approx. 4 hours by starting at 6:00 AM';
-          let customReasons: string[] = [];
+        {/* Gates */}
+        <Link
+          href="/darshan/entry-points"
+          prefetch={false}
+          style={{
+            textDecoration: 'none',
+            background: '#FFFFFF',
+            border: '1px solid #E2E8F0',
+            borderRadius: '16px',
+            padding: '10px 4px',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            textAlign: 'center',
+            boxShadow: '0 1px 3px rgba(0,0,0,0.02)'
+          }}
+        >
+          <div style={{
+            width: '28px',
+            height: '28px',
+            borderRadius: '8px',
+            background: '#FAF5FF',
+            color: '#9333EA',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginBottom: '4px'
+          }}>
+            <Building2 size={15} strokeWidth={2.2} />
+          </div>
+          <span style={{ fontSize: '11px', fontWeight: 700, color: '#334155' }}>
+            {lang === 'te' ? 'ద్వారాలు' : 'Gates'}
+          </span>
+        </Link>
+      </div>
 
-          if (isSsdOpen) {
-            guidanceHeadline = lang === 'te' ? 'ఇప్పుడే SSD కౌంటర్‌కు వెళ్లండి. ఉచిత టోకెన్లు జారీ అవుతున్నాయి.' : 'Head to SSD Counter now. Free token slots are issuing.';
-            highlightedBenefit = lang === 'te' ? 'సాధారణ క్యూతో పోలిస్తే 10+ గంటలు ఆదా' : 'SAVE OVER 10 HOURS VS GENERAL QUEUE';
-            customReasons = [
-              lang === 'te' ? 'SSD టోకెన్లు 15+ గంటల సాధారణ క్యూను నివారిస్తాయి' : 'SSD tokens bypass the 15+ hour general queue bottleneck',
-              lang === 'te' ? 'అలిపిరి, శ్రీనివాసం కేంద్రాలలో కౌంటర్లు తెరిచి ఉన్నాయి' : 'Alipiri & Srinivasam counters are currently active',
-              lang === 'te' ? 'ఈ రోజు దర్శనం కోసం వెంటనే పొందండి' : 'Secure your slotted darshan for today'
-            ];
-          } else if (isHeavyRush || isSsdClosed) {
-            // Dynamic Day-of-Week Temple Recommendation
-            guidanceHeadline = lang === 'te' ? dayGuide.headlineTe : dayGuide.headlineEn;
-            highlightedBenefit = isSsdClosed 
-              ? (lang === 'te' ? 'SSD బంద్ • ముందుగా పుణ్యక్షేత్రాలు దర్శించండి' : 'SSD CLOSED TODAY — VISIT SACRED SHRINES')
-              : (lang === 'te' ? dayGuide.benefitTe : dayGuide.benefitEn);
-            
-            const firstReason = isSsdClosed
-              ? (lang === 'te' ? 'అన్ని కౌంటర్లలో నేటి ఉచిత SSD టోకెన్లు పూర్తి' : "Today's free SSD token quota is exhausted across all counters")
-              : (lang === 'te' ? `సర్వదర్శనం క్యూ అధిక రద్దీతో ఉంది (${sarvaWait})` : `Sarva Darshan queue has heavy rush (${sarvaWait})`);
+      {/* 🛕 SAARTHI GUIDANCE & DAY'S AUSPICIOUS VERDICT (STREAMLINED PREMIUM CARD) */}
+      {(() => {
+        const sarvaWait = getDarshanWait('sarva');
+        const sarvaHours = getMaxWaitHours(sarvaWait);
+        const isSsdClosed = ssdTokenStatus === 'closed-for-day' || ssdTokenStatus === 'closed';
+        const isSsdOpen = ssdTokenStatus === 'issuing';
+        const isHeavyRush = sarvaHours >= 8 || crowdLevel === 'high' || crowdLevel === 'very-high';
+        const isTrulyLow = sarvaHours > 0 && sarvaHours < 4 && crowdLevel === 'low';
 
-            customReasons = lang === 'te' ? [
-              firstReason,
-              dayGuide.reasonsTe[0],
-              isRainy ? 'వర్షం కారణంగా విద్యుత్ బస్సులను ఎంచుకోండి' : dayGuide.reasonsTe[1]
-            ] : [
-              firstReason,
-              dayGuide.reasonsEn[0],
-              isRainy ? 'Take APSRTC Electric Bus due to rain on steps' : dayGuide.reasonsEn[1]
-            ];
-          } else if (isTrulyLow) {
-            guidanceHeadline = lang === 'te' ? 'దర్శనానికి అనుకూల సమయం! నేరుగా శ్రీవారి క్యూలో ప్రవేశించండి.' : 'Optimal Darshan window! Enter Srivari queue directly now.';
-            highlightedBenefit = lang === 'te' ? 'అత్యంత వేగవంతమైన దర్శనం — నిరీక్షణ స్వల్పం' : 'MINIMAL WAIT TIME — FASTEST ENTRY';
-            customReasons = [
-              lang === 'te' ? `ప్రస్తుత క్యూ సమయం అనుకూలంగా ఉంది (${sarvaWait})` : `Live queue wait is minimal (${sarvaWait})`,
-              lang === 'te' ? 'కంపార్ట్‌మెంట్లు వేగంగా కదులుతున్నాయి' : 'Queue compartments are moving smoothly without delays',
-              lang === 'te' ? 'శ్రీవారి ప్రశాంత దర్శనం చేసుకోవడానికి ఉత్తమ సమయం' : 'Ideal time for a peaceful and unhurried Darshan'
-            ];
-          } else {
-            customReasons = [
-              scenario.why,
-              isRainy 
-                ? `Live weather: ${liveWeather || 'Rain Showers'}` 
-                : `Weather: ${liveWeather || 'Clear Sky, Pleasant'}`,
-              isSsdClosed
-                ? 'SSD quota closed today'
-                : `Recommended darshan window: ${scenario.bestTime || adminBestTime || 'After 2:00 PM'}`
-            ];
+        // Day-of-week auspicious temple mapping (e.g. Monday: Shiva/Kapila, Tuesday: Hanuman/Japali, etc.)
+        const dayGuide = getDayTempleGuidance(new Date());
+
+        let guidanceHeadline = scenario.recommendation;
+
+        if (isSsdOpen) {
+          guidanceHeadline = lang === 'te' ? 'ఇప్పుడే SSD కౌంటర్‌కు వెళ్లండి. ఉచిత టోకెన్లు జారీ అవుతున్నాయి.' : 'Head to SSD Counter now. Free token slots are issuing.';
+        } else if (isHeavyRush || isSsdClosed) {
+          guidanceHeadline = lang === 'te' ? dayGuide.headlineTe : dayGuide.headlineEn;
+        } else if (isTrulyLow) {
+          guidanceHeadline = lang === 'te' ? 'దర్శనానికి అనుకూల సమయం! నేరుగా శ్రీవారి క్యూలో ప్రవేశించండి.' : 'Optimal Darshan window! Enter Srivari queue directly now.';
+        }
+
+        const getShortShrine = (en: string, te: string) => {
+          if (en.includes('Papavinasam')) return { en: 'Papavinasam', te: 'పాపవినాశనం' };
+          if (en.includes('Kapila')) return { en: 'Kapila Theertham', te: 'కపిలతీర్థం' };
+          if (en.includes('Japali') || en.includes('Bedi')) return { en: 'Japali Theertham', te: 'జాపాలి తీర్థం' };
+          if (en.includes('Mangapuram')) return { en: 'Mangapuram', te: 'మంగాపురం' };
+          if (en.includes('Appalayagunta')) return { en: 'Appalayagunta', te: 'అప్పలాయగుంట' };
+          if (en.includes('Padmavathi')) return { en: 'Tiruchanur', te: 'తిరుచానూరు' };
+          if (en.includes('Govindaraja')) return { en: 'Govindaraja', te: 'గోవిందరాజ' };
+          return {
+            en: en.replace(/Temple|Theertham|Sri|\(.*\)/gi, '').trim() || 'Sacred Shrine',
+            te: te.replace(/ఆలయం|తీర్థం|శ్రీ|\(.*\)/gi, '').trim() || 'పుణ్యక్షేత్రం'
+          };
+        };
+
+        const shortShrine = getShortShrine(dayGuide.placeName || '', dayGuide.placeNameTe || '');
+
+        const visualCards = isSsdClosed ? [
+          {
+            icon: <Building2 size={15} color="#166534" strokeWidth={2.2} />,
+            title: lang === 'te' ? 'నేటి విశేషం' : 'Sacred Shrine',
+            value: lang === 'te' ? shortShrine.te : shortShrine.en,
+            bg: '#F0FDF4',
+            border: '#DCFCE7',
+            labelColor: '#166534',
+            valColor: '#0F2C24'
+          },
+          {
+            icon: <Navigation size={14} color="#2563EB" strokeWidth={2.4} />,
+            title: lang === 'te' ? 'ఉత్తమ మార్గం' : 'Best Route',
+            value: lang === 'te' ? 'స్థానిక క్షేత్రాలు' : 'Local Shrines',
+            bg: '#EFF6FF',
+            border: '#DBEAFE',
+            labelColor: '#1D4ED8',
+            valColor: '#0F2C24'
+          },
+          {
+            icon: <Clock size={14} color="#D97706" strokeWidth={2.4} />,
+            title: lang === 'te' ? 'అనుకూల సమయం' : 'Optimal Time',
+            value: lang === 'te' ? 'ఉదయాన్నే' : 'Early Morning',
+            bg: '#FFFBEB',
+            border: '#FEF3C7',
+            labelColor: '#B45309',
+            valColor: '#0F2C24'
           }
+        ] : (isSsdOpen ? [
+          {
+            icon: <Ticket size={15} color="#166534" strokeWidth={2.2} />,
+            title: lang === 'te' ? 'కౌంటర్లు' : 'SSD Status',
+            value: lang === 'te' ? 'జారీ అవుతున్నాయి' : 'Issuing Now',
+            bg: '#F0FDF4',
+            border: '#DCFCE7',
+            labelColor: '#166534',
+            valColor: '#0F2C24'
+          },
+          {
+            icon: <Clock size={14} color="#2563EB" strokeWidth={2.4} />,
+            title: lang === 'te' ? 'సమయం ఆదా' : 'Time Saved',
+            value: lang === 'te' ? '10+ గంటలు' : 'Save 10+ Hrs',
+            bg: '#EFF6FF',
+            border: '#DBEAFE',
+            labelColor: '#1D4ED8',
+            valColor: '#0F2C24'
+          },
+          {
+            icon: <MapPin size={14} color="#D97706" strokeWidth={2.4} />,
+            title: lang === 'te' ? 'కేంద్రాలు' : 'Counters',
+            value: lang === 'te' ? 'అలిపిరి & శ్రీనివాసం' : 'Alipiri & Srinivasam',
+            bg: '#FFFBEB',
+            border: '#FEF3C7',
+            labelColor: '#B45309',
+            valColor: '#0F2C24'
+          }
+        ] : [
+          {
+            icon: <Users size={14} color="#2563EB" strokeWidth={2.4} />,
+            title: lang === 'te' ? 'క్యూ సమయం' : 'Queue Flow',
+            value: sarvaWait || (lang === 'te' ? 'సాధారణం' : 'Moderate'),
+            bg: '#EFF6FF',
+            border: '#DBEAFE',
+            labelColor: '#1D4ED8',
+            valColor: '#0F2C24'
+          },
+          {
+            icon: <Building2 size={15} color="#166534" strokeWidth={2.2} />,
+            title: lang === 'te' ? 'విశేష క్షేత్రం' : 'Sacred Shrine',
+            value: lang === 'te' ? shortShrine.te : shortShrine.en,
+            bg: '#F0FDF4',
+            border: '#DCFCE7',
+            labelColor: '#166534',
+            valColor: '#0F2C24'
+          },
+          {
+            icon: <Clock size={14} color="#D97706" strokeWidth={2.4} />,
+            title: lang === 'te' ? 'ఉత్తమ సమయం' : 'Best Time',
+            value: lang === 'te' ? 'ఉదయాన్నే' : 'Early Morning',
+            bg: '#FFFBEB',
+            border: '#FEF3C7',
+            labelColor: '#B45309',
+            valColor: '#0F2C24'
+          }
+        ]);
 
-          return (
+        return (
+          <div style={{
+            background: 'linear-gradient(135deg, #FCFBF9 0%, #F6F4EF 100%)',
+            border: '1.5px solid #0F5132',
+            borderRadius: '26px',
+            padding: '16px 14px',
+            marginBottom: '0px',
+            boxShadow: '0 6px 24px -4px rgba(10, 67, 45, 0.08), 0 2px 6px rgba(0, 0, 0, 0.03)',
+            position: 'relative',
+            overflow: 'hidden'
+          }}>
+            {/* 🛕 Ethereal Tirumala Gopuram Hillside Backdrop (Right side) */}
             <div style={{
-              background: '#FFFFFF',
-              border: '1px solid #E2E8F0',
-              borderRadius: '14px',
-              padding: '14px 16px',
-              color: '#0F172A',
-              boxShadow: '0 1px 3px rgba(15, 23, 42, 0.04)',
-              marginTop: '12px'
+              position: 'absolute',
+              right: '-8px',
+              top: '16px',
+              bottom: '40px',
+              width: '44%',
+              pointerEvents: 'none',
+              zIndex: 0,
+              maskImage: 'linear-gradient(to right, transparent 0%, rgba(0,0,0,0.3) 25%, rgba(0,0,0,0.85) 65%, black 100%)',
+              WebkitMaskImage: 'linear-gradient(to right, transparent 0%, rgba(0,0,0,0.3) 25%, rgba(0,0,0,0.85) 65%, black 100%)',
+              overflow: 'hidden',
+              borderRadius: '0 26px 26px 0',
+              opacity: 0.9
             }}>
-              {/* Header with Devotional Cue */}
+              <img
+                src="/images/places/tirumala_gopuram_day.jpg"
+                alt="Tirumala Hillside"
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                  objectPosition: 'center 20%',
+                  display: 'block'
+                }}
+              />
+            </div>
+
+            {/* Header: Guidance Badge on Left, Weather & Share on Right */}
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              gap: '8px',
+              marginBottom: '10px',
+              position: 'relative',
+              zIndex: 1
+            }}>
+              {/* Deep Emerald Badge */}
               <div style={{
-                display: 'flex',
+                display: 'inline-flex',
                 alignItems: 'center',
-                justifyContent: 'space-between',
-                flexWrap: 'wrap',
                 gap: '6px',
-                marginBottom: '10px'
-              }}>
-                <div style={{
-                  fontSize: '11px',
-                  fontWeight: 700,
-                  color: '#0F5132',
-                  background: '#F0FDF4',
-                  border: '1px solid #DCFCE7',
-                  padding: '3px 8px',
-                  borderRadius: '6px',
-                  textTransform: lang === 'te' ? 'none' : 'uppercase',
-                  letterSpacing: lang === 'te' ? 'normal' : '0.4px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '5px',
-                  flexShrink: 0
-                }}>
-                  <Sparkles size={13} color="#059669" />
-                  <span>{lang === 'te' ? 'సారథి మార్గదర్శనం' : 'SAARTHI GUIDANCE'}</span>
-                </div>
-                <span style={{
-                  fontSize: '11.5px',
-                  color: '#64748B',
-                  fontWeight: 600,
-                  fontStyle: 'italic',
-                  textAlign: 'right'
-                }}>
-                  {lang === 'te' ? '“శాంతితో శ్రీవారిని దర్శించండి”' : '“In calm faith, seek Srivari”'}
-                </span>
-              </div>
-              
-              {/* Clean Recommendation Headline */}
-              <div style={{
-                fontSize: lang === 'te' ? '14px' : '14.5px',
-                fontWeight: 700,
-                color: '#0F172A',
-                lineHeight: 1.35,
-                marginBottom: '12px',
+                background: 'linear-gradient(135deg, #063A26 0%, #0D573B 100%)',
+                padding: '5px 13px',
+                borderRadius: '9999px',
+                fontSize: '12.5px',
+                fontWeight: 800,
+                color: '#FFFFFF',
+                boxShadow: '0 2px 6px rgba(6, 58, 38, 0.25)',
                 letterSpacing: '-0.01em'
               }}>
-                {guidanceHeadline}
+                <Sparkles size={14} color="#FACC15" fill="#FACC15" />
+                <span>{lang === 'te' ? 'సారథి మార్గదర్శనం' : 'Saarthi Guidance'}</span>
               </div>
 
-              {/* VISUAL MICRO-CARDS GRID (Non-redundant, Clean Light Theme) */}
-              {(() => {
-                const getShortShrine = (en: string, te: string) => {
-                  if (en.includes('Papavinasam')) return { en: 'Papavinasam', te: 'పాపవినాశనం' };
-                  if (en.includes('Kapila')) return { en: 'Kapila Theertham', te: 'కపిలతీర్థం' };
-                  if (en.includes('Japali') || en.includes('Bedi')) return { en: 'Japali Theertham', te: 'జాపాలి తీర్థం' };
-                  if (en.includes('Mangapuram')) return { en: 'Mangapuram', te: 'మంగాపురం' };
-                  if (en.includes('Appalayagunta')) return { en: 'Appalayagunta', te: 'అప్పలాయగుంట' };
-                  if (en.includes('Padmavathi')) return { en: 'Tiruchanur', te: 'తిరుచానూరు' };
-                  if (en.includes('Govindaraja')) return { en: 'Govindaraja', te: 'గోవిందరాజ' };
-                  return {
-                    en: en.replace(/Temple|Theertham|Sri|\(.*\)/gi, '').trim() || 'Sacred Shrine',
-                    te: te.replace(/ఆలయం|తీర్థం|శ్రీ|\(.*\)/gi, '').trim() || 'పుణ్యక్షేత్రం'
-                  };
-                };
+              <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                {/* Weather Capsule */}
+                <div style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '4px',
+                  background: '#FFFBEB',
+                  border: '1px solid #FEF3C7',
+                  padding: '4px 10px',
+                  borderRadius: '9999px',
+                  fontSize: '11.5px',
+                  fontWeight: 800,
+                  color: '#78350F',
+                  boxShadow: '0 1px 2px rgba(217, 119, 6, 0.06)'
+                }}>
+                  {isRainy ? <CloudRain size={13} color="#0284C7" /> : <Sun size={13} color="#D97706" />}
+                  <span>{weatherTemp || '24°C'}</span>
+                </div>
 
-                const shortShrine = getShortShrine(dayGuide.placeName || '', dayGuide.placeNameTe || '');
-
-                const visualCards = isSsdClosed ? [
-                  {
-                    icon: <Building2 size={13} color="#059669" />,
-                    title: lang === 'te' ? 'నేటి విశేషం' : lang === 'hi' ? 'పవిత్ర క్షేత్రం' : lang === 'ta' ? 'புனித தலம்' : 'Sacred Shrine',
-                    value: lang === 'te' ? shortShrine.te : shortShrine.en,
-                    bg: '#F0FDF4',
-                    border: '#DCFCE7',
-                    valColor: '#065F46'
-                  },
-                  {
-                    icon: <Navigation size={13} color="#2563EB" />,
-                    title: lang === 'te' ? 'ఉత్తమ మార్గం' : lang === 'hi' ? 'उत्तम मार्ग' : lang === 'ta' ? 'சிறந்த வழி' : 'Best Route',
-                    value: lang === 'te' ? 'స్థానిక క్షేత్రాలు' : lang === 'hi' ? 'स्थानीय मंदिर' : lang === 'ta' ? 'உள்ளூர் தலங்கள்' : 'Local Shrines',
-                    bg: '#EFF6FF',
-                    border: '#DBEAFE',
-                    valColor: '#1E40AF'
-                  },
-                  {
-                    icon: <Clock size={13} color="#D97706" />,
-                    title: lang === 'te' ? 'అనుకూల సమయం' : lang === 'hi' ? 'अनुकूल समय' : lang === 'ta' ? 'உகந்த நேரம்' : 'Optimal Time',
-                    value: lang === 'te' ? 'ఉదయాన్నే' : lang === 'hi' ? 'प्रातः काल' : lang === 'ta' ? 'அதிகாலை' : 'Early Morning',
-                    bg: '#FFFBEB',
-                    border: '#FEF3C7',
-                    valColor: '#92400E'
-                  }
-                ] : (isSsdOpen ? [
-                  {
-                    icon: <Ticket size={13} color="#059669" />,
-                    title: lang === 'te' ? 'కౌంటర్లు' : lang === 'hi' ? 'एसएसडी स्थिति' : lang === 'ta' ? 'எஸ்எஸ்டி நிலை' : 'SSD Status',
-                    value: lang === 'te' ? 'జారీ అవుతున్నాయి' : lang === 'hi' ? 'जारी हो रहे हैं' : lang === 'ta' ? 'வழங்கப்படுகிறது' : 'Issuing Now',
-                    bg: '#F0FDF4',
-                    border: '#DCFCE7',
-                    valColor: '#065F46'
-                  },
-                  {
-                    icon: <Clock size={13} color="#2563EB" />,
-                    title: lang === 'te' ? 'సమయం ఆదా' : lang === 'hi' ? 'समय बचत' : lang === 'ta' ? 'நேர சேமிப்பு' : 'Time Saved',
-                    value: lang === 'te' ? '10+ గంటలు' : lang === 'hi' ? '10+ घंटे बचाएं' : lang === 'ta' ? '10+ மணிநேரம் சேமிப்பு' : 'Save 10+ Hrs',
-                    bg: '#EFF6FF',
-                    border: '#DBEAFE',
-                    valColor: '#1E40AF'
-                  },
-                  {
-                    icon: <MapPin size={13} color="#D97706" />,
-                    title: lang === 'te' ? 'కేంద్రాలు' : lang === 'hi' ? 'काउंटर' : lang === 'ta' ? 'மையங்கள்' : 'Counters',
-                    value: lang === 'te' ? 'అలిపిరి & శ్రీనివాసం' : lang === 'hi' ? 'अलिपिरी और श्रीनिवासम' : lang === 'ta' ? 'அலிபிரி & சீனிவாசம்' : 'Alipiri & Srinivasam',
-                    bg: '#FFFBEB',
-                    border: '#FEF3C7',
-                    valColor: '#92400E'
-                  }
-                ] : [
-                  {
-                    icon: <Users size={13} color="#2563EB" />,
-                    title: lang === 'te' ? 'క్యూ సమయం' : lang === 'hi' ? 'कतार प्रवाह' : lang === 'ta' ? 'வரிசை நேரம்' : 'Queue Flow',
-                    value: sarvaWait || (lang === 'te' ? 'సాధారణం' : lang === 'hi' ? 'सामान्य' : lang === 'ta' ? 'மிதமான' : 'Moderate'),
-                    bg: '#EFF6FF',
-                    border: '#DBEAFE',
-                    valColor: '#1E40AF'
-                  },
-                  {
-                    icon: <Building2 size={13} color="#059669" />,
-                    title: lang === 'te' ? 'విశేష క్షేత్రం' : lang === 'hi' ? 'పవిత్ర క్షేత్రం' : lang === 'ta' ? 'புனித தலம்' : 'Sacred Shrine',
-                    value: lang === 'te' ? shortShrine.te : shortShrine.en,
-                    bg: '#F0FDF4',
-                    border: '#DCFCE7',
-                    valColor: '#065F46'
-                  },
-                  {
-                    icon: <Clock size={13} color="#D97706" />,
-                    title: lang === 'te' ? 'ఉత్తమ సమయం' : lang === 'hi' ? 'उत्तम समय' : lang === 'ta' ? 'சிறந்த நேரம்' : 'Best Time',
-                    value: lang === 'te' ? 'ఉదయాన్నే' : lang === 'hi' ? 'प्रातः काल' : lang === 'ta' ? 'அதிகாலை' : 'Early Morning',
-                    bg: '#FFFBEB',
-                    border: '#FEF3C7',
-                    valColor: '#92400E'
-                  }
-                ]);
-
-                return (
-                  <div style={{
-                    display: 'grid',
-                    gridTemplateColumns: 'repeat(3, minmax(0, 1fr))',
-                    gap: '6px',
-                    marginBottom: '10px',
-                    width: '100%'
-                  }}>
-                    {visualCards.map((card: any, idx: number) => {
-                      return (
-                        <div key={idx} style={{
-                          backgroundColor: card.bg || '#F8FAFC',
-                          border: `1px solid ${card.border || '#E2E8F0'}`,
-                          borderRadius: '10px',
-                          padding: '7px 6px',
-                          display: 'flex',
-                          flexDirection: 'column',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          textAlign: 'center',
-                          minWidth: 0,
-                          boxSizing: 'border-box'
-                        }}>
-                          <div style={{
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            gap: '4px',
-                            marginBottom: '3px',
-                            minWidth: 0,
-                            maxWidth: '100%'
-                          }}>
-                            {card.icon}
-                            <span className="notranslate" style={{
-                              fontSize: '9.5px',
-                              fontWeight: 700,
-                              color: '#64748B',
-                              whiteSpace: 'nowrap',
-                              letterSpacing: '0.03em',
-                              textTransform: 'uppercase'
-                            }}>
-                              {card.title}
-                            </span>
-                          </div>
-                          <div className="notranslate" style={{
-                            fontSize: '11px',
-                            fontWeight: 700,
-                            color: card.valColor || '#0F172A',
-                            lineHeight: 1.25,
-                            textAlign: 'center',
-                            wordBreak: 'break-word',
-                            display: '-webkit-box',
-                            WebkitLineClamp: 2,
-                            WebkitBoxOrient: 'vertical',
-                            overflow: 'hidden',
-                            width: '100%'
-                          }}>
-                            {card.value}
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                );
-              })()}
-
-              {/* Subtle Trust & Confidence Footer */}
-              <div style={{ fontSize: '11px', color: '#64748B', fontWeight: 500, display: 'flex', alignItems: 'center', gap: '5px', marginTop: '4px' }}>
-                <Sparkles size={12} color="#059669" />
-                <span>{lang === 'te' ? 'లైవ్ క్యూ ఆధారంగా • ఇటీవల ధృవీకరించబడింది' : 'Based on live queue data · Verified recently'}</span>
+                {/* Share Pill Button */}
+                <button
+                  onClick={handleShareTodayPulse}
+                  disabled={isSharingPulse}
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '4px',
+                    backgroundColor: isSharingPulse ? '#DCFCE7' : '#FFFFFF',
+                    border: '1.5px solid #0A432D',
+                    padding: '4px 11px',
+                    borderRadius: '9999px',
+                    fontSize: '11.5px',
+                    fontWeight: 700,
+                    color: '#0A432D',
+                    cursor: isSharingPulse ? 'wait' : 'pointer',
+                    boxShadow: '0 1px 3px rgba(10, 67, 45, 0.08)',
+                    transition: 'all 0.15s ease'
+                  }}
+                  aria-label="Share live updates on WhatsApp"
+                >
+                  <Share2 size={12} color="#0A432D" strokeWidth={2.2} />
+                  <span>{isSharingPulse ? (lang === 'te' ? 'సిద్ధమవుతోంది...' : 'Sharing...') : (lang === 'te' ? 'కుటుంబానికి షేర్' : 'Share to Family')}</span>
+                </button>
               </div>
             </div>
-          );
-        })()}
-      </div>
+
+            {/* Devotional Quote with Golden Side Rules */}
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              margin: '8px 0 10px 0',
+              position: 'relative',
+              zIndex: 1
+            }}>
+              <div style={{ width: '24px', height: '1.5px', background: '#D4A373', borderRadius: '1px', flexShrink: 0 }} />
+              <p style={{
+                fontSize: '12px',
+                fontStyle: 'italic',
+                color: '#475569',
+                margin: 0,
+                fontWeight: 500,
+                lineHeight: 1.2,
+                whiteSpace: 'nowrap',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis'
+              }}>
+                {lang === 'te' ? '“శాంతితో శ్రీవారిని దర్శించండి”' : '“In calm faith, seek Srivari”'}
+              </p>
+              <div style={{ width: '24px', height: '1.5px', background: '#D4A373', borderRadius: '1px', flexShrink: 0 }} />
+            </div>
+
+            {/* Main Actionable Guidance Headline with Gold Accent Bar */}
+            <div style={{
+              display: 'flex',
+              alignItems: 'stretch',
+              gap: '10px',
+              margin: '0 0 12px 0',
+              position: 'relative',
+              zIndex: 1
+            }}>
+              <div style={{
+                width: '3.5px',
+                borderRadius: '3px',
+                background: '#D97706',
+                flexShrink: 0
+              }} />
+              <h3 style={{
+                fontSize: '16px',
+                fontWeight: 800,
+                color: '#0F2C24',
+                lineHeight: 1.35,
+                margin: 0,
+                letterSpacing: '-0.01em',
+                maxWidth: '68%'
+              }}>
+                {guidanceHeadline}
+              </h3>
+            </div>
+
+            {/* 3 Unified Information Cards Grid */}
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(3, minmax(0, 1fr))',
+              gap: '6px',
+              marginBottom: '10px',
+              position: 'relative',
+              zIndex: 1
+            }}>
+              {visualCards.map((card: any, idx: number) => (
+                <div key={idx} style={{
+                  backgroundColor: card.bg,
+                  border: `1.5px solid ${card.border}`,
+                  borderRadius: '16px',
+                  padding: '9px 7px',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'space-between',
+                  minHeight: '62px',
+                  boxShadow: '0 1px 3px rgba(0,0,0,0.03)'
+                }}>
+                  <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between',
+                    gap: '4px',
+                    marginBottom: '4px'
+                  }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                      {card.icon}
+                      <span style={{
+                        fontSize: '9.5px',
+                        fontWeight: 700,
+                        color: card.labelColor || '#64748B',
+                        whiteSpace: 'nowrap',
+                        letterSpacing: '-0.01em'
+                      }}>
+                        {card.title}
+                      </span>
+                    </div>
+                    <ChevronRight size={13} color={card.labelColor || '#64748B'} strokeWidth={2.5} style={{ flexShrink: 0 }} />
+                  </div>
+                  <div style={{
+                    fontSize: '12px',
+                    fontWeight: 800,
+                    color: '#0F2C24',
+                    lineHeight: 1.2,
+                    letterSpacing: '-0.01em'
+                  }}>
+                    {card.value}
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Footer Trust Indicator with Checkmark */}
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              padding: '6px 10px',
+              background: 'rgba(240, 253, 244, 0.75)',
+              borderRadius: '12px',
+              border: '1px solid #DCFCE7',
+              position: 'relative',
+              zIndex: 1
+            }}>
+              <div style={{
+                width: '15px',
+                height: '15px',
+                borderRadius: '50%',
+                background: '#166534',
+                color: '#FFFFFF',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexShrink: 0
+              }}>
+                <Check size={10} strokeWidth={3} />
+              </div>
+              <span style={{
+                fontSize: '11px',
+                color: '#166534',
+                fontWeight: 600,
+                letterSpacing: '-0.01em'
+              }}>
+                {lang === 'te' ? 'లైవ్ క్యూ ఆధారంగా • ఇటీవల ధృవీకరించబడింది' : 'Based on live queue data • Verified recently'}
+              </span>
+            </div>
+          </div>
+        );
+      })()}
       </div>
     </div>
   );

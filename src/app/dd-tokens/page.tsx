@@ -7,7 +7,7 @@ import {
   ArrowLeft, Ticket, Clock, ShieldAlert, CheckCircle2, 
   MapPin, Mountain, Footprints, RefreshCw, Share2, Check, 
   ExternalLink, Sparkles, ChevronRight, Navigation, 
-  Luggage, ShieldCheck, Play, Lightbulb, AlertTriangle
+  Luggage, ShieldCheck, Play, Lightbulb, AlertTriangle, Zap
 } from 'lucide-react';
 import { TirumalaStatus } from '@/lib/statusDb';
 import { useLanguage } from '@/lib/useLanguage';
@@ -18,6 +18,10 @@ interface DdCollectionCentre {
   nameTe: string;
   pathwayEn: string;
   pathwayTe: string;
+  badgeEn: string;
+  badgeTe: string;
+  targetAudienceEn: string;
+  targetAudienceTe: string;
   stepsCount: string;
   distance: string;
   duration: string;
@@ -34,13 +38,17 @@ const DD_COUNTERS: DdCollectionCentre[] = [
     nameTe: 'శ్రీవారి మెట్టు నడకదారి కౌంటర్',
     pathwayEn: 'Srivari Mettu Trail (via Srinivasa Mangapuram)',
     pathwayTe: 'శ్రీనివాస మంగాపురం మీదుగా శ్రీవారి మెట్టు మార్గం',
+    badgeEn: 'Best for Speed • Fastest Ascent',
+    badgeTe: 'వేగవంతమైన మార్గం • తక్కువ సమయం',
+    targetAudienceEn: 'Short & steep • Ideal for fit pilgrims (~2 hrs)',
+    targetAudienceTe: 'నిటారైన మెట్లు • త్వరగా చేరుకోవాలనుకునే భక్తులకు అనుకూలం',
     stepsCount: '2,388 Steps',
     distance: '2.1 km',
     duration: '1.5 – 2.5 Hours',
     counterHours: 'Opens 6:00 AM daily (or evening release)',
     descriptionEn: 'Shortest and steepest historic trail. Tokens issued at the 1,200th step checkpoint. Highest quota allocation.',
     descriptionTe: 'అతి తక్కువ దూరం (2.1 కి.మీ). 1,200వ మెట్టు వద్ద బయోమెట్రిక్ కౌంటర్ ఉంటుంది.',
-    mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Srivari+Mettu+Tirupati'
+    mapsUrl: 'https://www.google.com/maps/dir/?api=1&destination=13.6264,79.3242'
   },
   {
     id: 'alipiri-mettu',
@@ -48,13 +56,17 @@ const DD_COUNTERS: DdCollectionCentre[] = [
     nameTe: 'అలిపిరి మెట్టు (గాలిగోపురం కౌంటర్)',
     pathwayEn: 'Alipiri Mettu Footpath (Tirupati Base to Tirumala)',
     pathwayTe: 'అలిపిరి మెట్ల మార్గం (తిరుపతి నుండి తిరుమల)',
+    badgeEn: 'Best Amenities • Covered & 24/7 Lit',
+    badgeTe: 'పూర్తి సౌకర్యాలు • రక్షణ, షెడ్లు & వెలుతురు',
+    targetAudienceEn: 'Covered path, drinking water & medical stations • Ideal for families & night treks',
+    targetAudienceTe: 'పూర్తిగా షెడ్లు, ఉచిత తాగునీరు & వైద్య కేంద్రాలు • కుటుంబాలు, రాత్రి నడకకు అనుకూలం',
     stepsCount: '3,550 Steps',
     distance: '9.0 km',
     duration: '3.5 – 5.0 Hours',
     counterHours: 'Open 3:00 AM – 10:00 PM for trekking',
     descriptionEn: 'Historic covered pathway with night lighting, continuous drinking water, and medical support. Biometric token verification at Galigopuram (Step ~2,083).',
     descriptionTe: 'చారిత్రాత్మక మార్గం. 24 గంటల భద్రత, ఉచిత తాగునీరు. గాలిగోపురం వద్ద తనిఖీ మరియు టోకెన్ ధృవీకరణ.',
-    mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Alipiri+Mettu+Galigopuram+Tirupati'
+    mapsUrl: 'https://www.google.com/maps/dir/?api=1&destination=13.6548,79.3976'
   }
 ];
 
@@ -360,35 +372,91 @@ export default function DdTokensStandalonePage() {
         {/* ── 2. SAARTHI ACTIONABLE GUIDANCE CARD ── */}
         <section style={{
           backgroundColor: '#F0FDF4',
-          border: '1px solid #DCFCE7',
+          border: '1px solid #BBF7D0',
           borderRadius: '16px',
-          padding: '14px 16px',
+          padding: '16px',
           display: 'flex',
-          alignItems: 'flex-start',
-          gap: '12px'
+          flexDirection: 'column',
+          gap: '12px',
+          boxShadow: '0 4px 16px rgba(22, 101, 52, 0.06)'
         }}>
-          <div style={{
-            width: '32px', height: '32px', borderRadius: '50%', backgroundColor: '#DCFCE7',
-            color: '#15803D', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, marginTop: '2px'
-          }}>
-            <Lightbulb size={18} />
+          <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
+            <div style={{
+              width: '36px', height: '36px', borderRadius: '50%', backgroundColor: '#DCFCE7',
+              border: '1px solid #BBF7D0',
+              color: '#15803D', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0
+            }}>
+              <Lightbulb size={20} />
+            </div>
+            <div style={{ flex: 1 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap', marginBottom: '4px' }}>
+                <h3 style={{ fontSize: '14.5px', fontWeight: 800, color: '#14532D', margin: 0 }}>
+                  {isCompleted
+                    ? (lang === 'te' ? 'నేటి డివి టోకెన్లు పూర్తయినా దర్శనం ఎలా?' : 'DD Quota Completed: You can still trek!')
+                    : (lang === 'te' ? 'దివ్య దర్శనం పొందడానికి సలహా' : 'Trekking with Divya Darshan Token')}
+                </h3>
+                {isCompleted && (
+                  <span style={{
+                    fontSize: '10px',
+                    fontWeight: 800,
+                    color: '#166534',
+                    backgroundColor: '#DCFCE7',
+                    border: '1px solid #86EFAC',
+                    padding: '2px 8px',
+                    borderRadius: '9999px',
+                    letterSpacing: '0.01em'
+                  }}>
+                    {lang === 'te' ? 'ఉచిత ప్రవేశం అందుబాటులో ఉంది' : '100% Free Walk-in Open'}
+                  </span>
+                )}
+              </div>
+              <p style={{ fontSize: '12.5px', color: '#166534', margin: 0, lineHeight: 1.5 }}>
+                {isCompleted
+                  ? (lang === 'te'
+                      ? 'నేటి 2,000 టోకెన్లు ముగిసినప్పటికీ, భక్తులు అలిపిరి లేదా శ్రీవారి మెట్టు ద్వారా నడిచి తిరుమల చేరుకుని ఉచిత సర్వదర్శనం (Sarva Darshan) లైన్లలో నేరుగా ప్రవేశించవచ్చు. ఎలాంటి ముందస్తు టికెట్ అవసరం లేదు.'
+                      : "Even after the 2K footpath quota completes, pilgrims can still trek up Alipiri or Srivari Mettu freely and join the general Sarva Darshan (Free Walk-in) queue directly at Tirumala with zero ticket required.")
+                  : (lang === 'te'
+                      ? 'టోకెన్ జారీ వేళల్లో శ్రీవారి మెట్టు కౌంటర్ వద్ద ఒరిజినల్ ఆధార్ కార్డుతో బయోమెట్రిక్ టోకెన్ పొందవచ్చు.'
+                      : 'Collect your token at the Srivari Mettu base / 1,200th step checkpoint using your original physical Aadhaar card.')}
+              </p>
+            </div>
           </div>
-          <div>
-            <h3 style={{ fontSize: '13.5px', fontWeight: 700, color: '#14532D', margin: '0 0 3px 0' }}>
-              {isCompleted
-                ? (lang === 'te' ? 'నేటి డివి టోకెన్లు పూర్తయినా దర్శనం ఎలా?' : 'DD Quota Completed: You can still trek!')
-                : (lang === 'te' ? 'దివ్య దర్శనం పొందడానికి సలహా' : 'Trekking with Divya Darshan Token')}
-            </h3>
-            <p style={{ fontSize: '12px', color: '#166534', margin: 0, lineHeight: 1.45 }}>
-              {isCompleted
-                ? (lang === 'te'
-                    ? 'నేటి 2,000 టోకెన్లు ముగిసినప్పటికీ, భక్తులు అలిపిరి లేదా శ్రీవారి మెట్టు ద్వారా నడిచి తిరుమల చేరుకుని ఉచిత సర్వదర్శనం (Sarva Darshan) లైన్లలో నేరుగా ప్రవేశించవచ్చు.'
-                    : "Even after the 2K footpath quota completes, pilgrims can still trek up Alipiri or Srivari Mettu freely and join the general Sarva Darshan (Free Walk-in) queue directly at Tirumala with zero ticket required.")
-                : (lang === 'te'
-                    ? 'టోకెన్ జారీ వేళల్లో శ్రీవారి మెట్టు కౌంటర్ వద్ద ఒరిజినల్ ఆధార్ కార్డుతో బయోమెట్రిక్ టోకెన్ పొందవచ్చు.'
-                    : 'Collect your token at the Srivari Mettu base / 1,200th step checkpoint using your original physical Aadhaar card.')}
-            </p>
-          </div>
+
+          {/* Quick Pivot CTA to SSD Alternative */}
+          {isCompleted && (
+            <div style={{
+              borderTop: '1px solid #DCFCE7',
+              paddingTop: '12px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              flexWrap: 'wrap',
+              gap: '10px'
+            }}>
+              <span style={{ fontSize: '11.5px', color: '#15803D', fontWeight: 600 }}>
+                {lang === 'te' ? 'తిరుపతిలోని ఇతర కౌంటర్ల వద్ద సర్వదర్శనం టోకెన్లు లభిస్తాయి:' : 'Prefer a timed slot token from city counters?'}
+              </span>
+              <Link
+                href="/ssd-tokens"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  backgroundColor: '#0F5132',
+                  color: '#FFFFFF',
+                  padding: '7px 14px',
+                  borderRadius: '10px',
+                  fontSize: '12px',
+                  fontWeight: 700,
+                  textDecoration: 'none',
+                  boxShadow: '0 2px 8px rgba(15, 81, 50, 0.25)'
+                }}
+              >
+                <span>{lang === 'te' ? 'సర్వ దర్శనం (SSD) ప్రత్యామ్నాయం చూడండి' : 'View Sarva Darshan (SSD) Alternative'}</span>
+                <ChevronRight size={13} strokeWidth={2.8} />
+              </Link>
+            </div>
+          )}
         </section>
 
         {/* ── 3. FOOTPATH TOKEN COLLECTION COUNTERS ── */}
@@ -406,46 +474,76 @@ export default function DdTokensStandalonePage() {
               <div key={counter.id} style={{
                 backgroundColor: '#FFFFFF',
                 border: '1px solid #E2E8F0',
-                borderRadius: '14px',
-                padding: '14px',
-                boxShadow: '0 2px 8px rgba(15, 23, 42, 0.03)'
+                borderRadius: '16px',
+                padding: '16px',
+                boxShadow: '0 2px 10px rgba(15, 23, 42, 0.04)'
               }}>
                 <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '10px' }}>
-                  <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
+                  <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', flex: 1, minWidth: 0 }}>
                     <div style={{
-                      width: '38px', height: '38px', borderRadius: '10px',
-                      backgroundColor: counter.id === 'srivari-mettu' ? '#FEF3C7' : '#EFF6FF',
+                      width: '40px', height: '40px', borderRadius: '12px',
+                      backgroundColor: counter.id === 'srivari-mettu' ? '#DCFCE7' : '#EFF6FF',
+                      border: `1px solid ${counter.id === 'srivari-mettu' ? '#BBF7D0' : '#DBEAFE'}`,
                       display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0
                     }}>
-                      <Footprints size={20} color={counter.id === 'srivari-mettu' ? '#B45309' : '#1D4ED8'} />
+                      <Footprints size={20} color={counter.id === 'srivari-mettu' ? '#16A34A' : '#1D4ED8'} />
                     </div>
-                    <div>
-                      <h4 style={{ fontSize: '14px', fontWeight: 700, color: '#0F172A', margin: 0 }}>
-                        {lang === 'te' ? counter.nameTe : counter.nameEn}
-                      </h4>
-                      <p style={{ fontSize: '11.5px', color: '#64748B', margin: '2px 0 0 0', fontWeight: 500 }}>
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap', marginBottom: '3px' }}>
+                        <h4 style={{ fontSize: '14.5px', fontWeight: 800, color: '#0F172A', margin: 0 }}>
+                          {lang === 'te' ? counter.nameTe : counter.nameEn}
+                        </h4>
+                        <span style={{
+                          fontSize: '10px',
+                          fontWeight: 800,
+                          padding: '2px 7px',
+                          borderRadius: '6px',
+                          backgroundColor: counter.id === 'srivari-mettu' ? '#DCFCE7' : '#EFF6FF',
+                          color: counter.id === 'srivari-mettu' ? '#14532D' : '#1E40AF',
+                          border: `1px solid ${counter.id === 'srivari-mettu' ? '#BBF7D0' : '#DBEAFE'}`
+                        }}>
+                          {lang === 'te' ? counter.badgeTe : counter.badgeEn}
+                        </span>
+                      </div>
+                      <p style={{ fontSize: '11.5px', color: '#64748B', margin: '0 0 4px 0', fontWeight: 500 }}>
                         {lang === 'te' ? counter.pathwayTe : counter.pathwayEn}
                       </p>
 
-                      {/* Badges Row */}
-                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginTop: '6px' }}>
+                      {/* Helper Audience Line */}
+                      <p style={{
+                        fontSize: '11px',
+                        color: counter.id === 'srivari-mettu' ? '#166534' : '#1E40AF',
+                        margin: '0 0 8px 0',
+                        fontWeight: 600
+                      }}>
+                        {lang === 'te' ? counter.targetAudienceTe : counter.targetAudienceEn}
+                      </p>
+
+                      {/* Vector Badges Row (No Emojis) */}
+                      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
                         <span style={{
-                          fontSize: '10px', fontWeight: 700, color: '#0F172A', backgroundColor: '#F1F5F9',
-                          padding: '2px 7px', borderRadius: '6px'
+                          fontSize: '10.5px', fontWeight: 700, color: '#0F172A', backgroundColor: '#F8FAFC',
+                          border: '1px solid #E2E8F0', padding: '3px 8px', borderRadius: '6px',
+                          display: 'inline-flex', alignItems: 'center', gap: '4px'
                         }}>
-                          ⛰️ {counter.stepsCount}
+                          <Mountain size={11} color="#64748B" />
+                          <span>{counter.stepsCount}</span>
                         </span>
                         <span style={{
-                          fontSize: '10px', fontWeight: 700, color: '#0F172A', backgroundColor: '#F1F5F9',
-                          padding: '2px 7px', borderRadius: '6px'
+                          fontSize: '10.5px', fontWeight: 700, color: '#0F172A', backgroundColor: '#F8FAFC',
+                          border: '1px solid #E2E8F0', padding: '3px 8px', borderRadius: '6px',
+                          display: 'inline-flex', alignItems: 'center', gap: '4px'
                         }}>
-                          📏 {counter.distance}
+                          <MapPin size={11} color="#64748B" />
+                          <span>{counter.distance}</span>
                         </span>
                         <span style={{
-                          fontSize: '10px', fontWeight: 700, color: '#166534', backgroundColor: '#DCFCE7',
-                          padding: '2px 7px', borderRadius: '6px'
+                          fontSize: '10.5px', fontWeight: 700, color: '#166534', backgroundColor: '#F0FDF4',
+                          border: '1px solid #DCFCE7', padding: '3px 8px', borderRadius: '6px',
+                          display: 'inline-flex', alignItems: 'center', gap: '4px'
                         }}>
-                          ⏱️ ~{counter.duration}
+                          <Clock size={11} color="#16A34A" />
+                          <span>~{counter.duration}</span>
                         </span>
                       </div>
                     </div>
@@ -456,22 +554,23 @@ export default function DdTokensStandalonePage() {
                     target="_blank" 
                     rel="noopener noreferrer"
                     style={{
-                      background: '#F1F5F9', border: '1px solid #CBD5E1', color: '#0F172A',
-                      padding: '6px 10px', borderRadius: '8px', fontSize: '11px', fontWeight: 600,
-                      textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '4px', flexShrink: 0
+                      background: '#F0FDF4', border: '1px solid #BBF7D0', color: '#166534',
+                      padding: '6px 12px', borderRadius: '10px', fontSize: '11.5px', fontWeight: 700,
+                      textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '5px', flexShrink: 0
                     }}
+                    title="Get turn-by-turn directions"
                   >
-                    <Navigation size={13} /> Maps
+                    <Navigation size={13} strokeWidth={2.4} /> Directions
                   </a>
                 </div>
 
                 <div style={{
                   borderTop: '1px solid #F1F5F9',
-                  marginTop: '10px',
+                  marginTop: '12px',
                   paddingTop: '8px',
                   fontSize: '11.5px',
                   color: '#475569',
-                  lineHeight: 1.4
+                  lineHeight: 1.45
                 }}>
                   {lang === 'te' ? counter.descriptionTe : counter.descriptionEn}
                 </div>
@@ -487,49 +586,141 @@ export default function DdTokensStandalonePage() {
           borderRadius: '16px',
           padding: '16px'
         }}>
-          <h3 style={{ fontSize: '15px', fontWeight: 700, color: '#0F172A', margin: '0 0 12px 0', display: 'flex', alignItems: 'center', gap: '6px' }}>
-            <ShieldCheck size={16} color="#16A34A" />
-            <span>{lang === 'te' ? 'దివ్య దర్శనం నియమాలు' : 'Mandatory Rules for Divya Darshan'}</span>
-          </h3>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
+            <h3 style={{ fontSize: '15px', fontWeight: 700, color: '#0F172A', margin: 0, display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <ShieldCheck size={16} color="#16A34A" />
+              <span>{lang === 'te' ? 'దివ్య దర్శనం నియమాలు' : 'Mandatory Rules for Divya Darshan'}</span>
+            </h3>
+            <span style={{ fontSize: '10.5px', color: '#DC2626', fontWeight: 700, backgroundColor: '#FEE2E2', padding: '2px 7px', borderRadius: '6px' }}>
+              {lang === 'te' ? 'కఠిన తనిఖీ' : 'Biometric Enforced'}
+            </span>
+          </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
-              <CheckCircle2 size={16} color="#16A34A" style={{ flexShrink: 0, marginTop: '2px' }} />
-              <div>
-                <strong style={{ fontSize: '12.5px', color: '#0F172A' }}>Original Physical Aadhaar Card Mandatory</strong>
-                <p style={{ fontSize: '11.5px', color: '#64748B', margin: '2px 0 0 0' }}>Every individual pilgrim (including children 5+ years) must produce physical Aadhaar card for biometric thumb & photo capture.</p>
+            {/* SHOWSTOPPER 1: PHYSICAL AADHAAR */}
+            <div style={{
+              backgroundColor: '#FEF2F2',
+              border: '1px solid #FECACA',
+              borderLeft: '4px solid #DC2626',
+              borderRadius: '12px',
+              padding: '12px',
+              display: 'flex',
+              alignItems: 'flex-start',
+              gap: '10px'
+            }}>
+              <AlertTriangle size={18} color="#DC2626" style={{ flexShrink: 0, marginTop: '2px' }} />
+              <div style={{ flex: 1 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap', marginBottom: '2px' }}>
+                  <strong style={{ fontSize: '13px', color: '#991B1B' }}>
+                    {lang === 'te' ? 'ఒరిజినల్ భౌతిక ఆధార్ కార్డు తప్పనిసరి' : 'Original Physical Aadhaar Card Mandatory'}
+                  </strong>
+                  <span style={{ fontSize: '9px', fontWeight: 800, color: '#991B1B', backgroundColor: '#FEE2E2', padding: '1px 6px', borderRadius: '4px', textTransform: 'uppercase' }}>
+                    {lang === 'te' ? 'గేట్ రూల్' : 'Strict Gate Rule'}
+                  </span>
+                </div>
+                <p style={{ fontSize: '11.5px', color: '#7F1D1D', margin: 0, lineHeight: 1.45 }}>
+                  {lang === 'te'
+                    ? 'ప్రతి భక్తుడు (5+ సంవత్సరాల పిల్లలతో సహా) ఒరిజినల్ ఫిజికల్ ఆధార్ కార్డు చూపించాలి. ఫోటోకాపీలు (జెరాక్స్) లేదా ఫోన్ లోని డిజిటల్ కాపీలను బయోమెట్రిక్ కౌంటర్ల వద్ద అనుమతించరు.'
+                    : 'Every individual pilgrim (including children 5+ years) must produce physical Aadhaar card. Photocopies (xerox) and mobile photos/PDFs are strictly rejected at biometric turnstiles.'}
+                </p>
               </div>
             </div>
 
-            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
-              <CheckCircle2 size={16} color="#16A34A" style={{ flexShrink: 0, marginTop: '2px' }} />
-              <div>
-                <strong style={{ fontSize: '12.5px', color: '#0F172A' }}>Physical Climb Verification</strong>
-                <p style={{ fontSize: '11.5px', color: '#64748B', margin: '2px 0 0 0' }}>Tokens are verified at intermediate checkpoints along the steps. Pilgrims must trek the hill on foot to validate token entry.</p>
+            {/* SHOWSTOPPER 2: 30-DAY LIMITATION */}
+            <div style={{
+              backgroundColor: '#FFFBEB',
+              border: '1px solid #FDE68A',
+              borderLeft: '4px solid #D97706',
+              borderRadius: '12px',
+              padding: '12px',
+              display: 'flex',
+              alignItems: 'flex-start',
+              gap: '10px'
+            }}>
+              <ShieldAlert size={18} color="#D97706" style={{ flexShrink: 0, marginTop: '2px' }} />
+              <div style={{ flex: 1 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap', marginBottom: '2px' }}>
+                  <strong style={{ fontSize: '13px', color: '#92400E' }}>
+                    {lang === 'te' ? '30 రోజుల బయోమెట్రిక్ పరిమితి' : '30-Day Biometric Limitation'}
+                  </strong>
+                  <span style={{ fontSize: '9px', fontWeight: 800, color: '#92400E', backgroundColor: '#FEF3C7', padding: '1px 6px', borderRadius: '4px', textTransform: 'uppercase' }}>
+                    {lang === 'te' ? 'ఆటోమేటిక్ తిరస్కరణ' : 'Biometric Block'}
+                  </span>
+                </div>
+                <p style={{ fontSize: '11.5px', color: '#78350F', margin: 0, lineHeight: 1.45 }}>
+                  {lang === 'te'
+                    ? 'ఒక ఆధార్ కార్డుపై దివ్య దర్శనం లేదా సర్వదర్శనం టోకెన్ 30 రోజులకు ఒక్కసారి మాత్రమే లభిస్తుంది. 30 రోజుల లోపు సిస్టమ్ ఆటోమేటిక్ గా తిరస్కరిస్తుంది.'
+                    : 'A pilgrim can obtain a Divya Darshan (DD) or Sarva Darshan (SSD) token only once every 30 days per Aadhaar. TTD biometric scanner automatically blocks token re-issuance within 30 days.'}
+                </p>
               </div>
             </div>
 
-            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
+            {/* STANDARD CHECK 1: PHYSICAL CLIMB */}
+            <div style={{
+              display: 'flex',
+              alignItems: 'flex-start',
+              gap: '10px',
+              backgroundColor: '#F8FAFC',
+              border: '1px solid #F1F5F9',
+              borderRadius: '10px',
+              padding: '10px 12px'
+            }}>
               <CheckCircle2 size={16} color="#16A34A" style={{ flexShrink: 0, marginTop: '2px' }} />
               <div>
-                <strong style={{ fontSize: '12.5px', color: '#0F172A' }}>Free Luggage Transit Service</strong>
-                <p style={{ fontSize: '11.5px', color: '#64748B', margin: '2px 0 0 0' }}>TTD provides free luggage transport. Deposit your heavy bags at Alipiri or Srivari Mettu base counters and collect them safely at Tirumala hilltop.</p>
+                <strong style={{ fontSize: '12.5px', color: '#0F172A' }}>
+                  {lang === 'te' ? 'నడకదారి ధృవీకరణ' : 'Physical Climb Verification'}
+                </strong>
+                <p style={{ fontSize: '11.5px', color: '#64748B', margin: '2px 0 0 0', lineHeight: 1.4 }}>
+                  {lang === 'te'
+                    ? 'మెట్ల మార్గంలో మధ్యంతర చెక్‌పాయింట్ల వద్ద టోకెన్లను స్కాన్ చేస్తారు. భక్తులు స్వయంగా కాలినడకన కొండ ఎక్కడం ద్వారా మాత్రమే టోకెన్ చెల్లుబాటు అవుతుంది.'
+                    : 'Tokens are verified at intermediate checkpoints along the steps. Pilgrims must trek the hill on foot to validate token entry at the hilltop.'}
+                </p>
               </div>
             </div>
 
-            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
+            {/* STANDARD CHECK 2: FREE LUGGAGE TRANSIT */}
+            <div style={{
+              display: 'flex',
+              alignItems: 'flex-start',
+              gap: '10px',
+              backgroundColor: '#F8FAFC',
+              border: '1px solid #F1F5F9',
+              borderRadius: '10px',
+              padding: '10px 12px'
+            }}>
               <CheckCircle2 size={16} color="#16A34A" style={{ flexShrink: 0, marginTop: '2px' }} />
               <div>
-                <strong style={{ fontSize: '12.5px', color: '#0F172A' }}>Traditional Dress Code at VQC</strong>
-                <p style={{ fontSize: '11.5px', color: '#64748B', margin: '2px 0 0 0' }}>Comfortable footwear and attire allowed during the climb. However, traditional dress (Dhoti/Kurta for men, Saree/Chudidar with dupatta for women) is mandatory upon queue entry at Tirumala.</p>
+                <strong style={{ fontSize: '12.5px', color: '#0F172A' }}>
+                  {lang === 'te' ? 'ఉచిత లగేజ్ రవాణా సదుపాయం' : 'Free Luggage Transit Service'}
+                </strong>
+                <p style={{ fontSize: '11.5px', color: '#64748B', margin: '2px 0 0 0', lineHeight: 1.4 }}>
+                  {lang === 'te'
+                    ? 'TTD ఉచిత లగేజ్ రవాణా అందిస్తుంది. అలిపిరి లేదా శ్రీవారి మెట్టు బేస్ కౌంటర్లలో మీ బరువు లగేజీని డిపాజిట్ చేసి, తిరుమలలో సురక్షితంగా అందుకోవచ్చు.'
+                    : 'TTD provides free luggage transport. Deposit your heavy bags at Alipiri or Srivari Mettu base counters and collect them safely at Tirumala hilltop.'}
+                </p>
               </div>
             </div>
 
-            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
+            {/* STANDARD CHECK 3: DRESS CODE */}
+            <div style={{
+              display: 'flex',
+              alignItems: 'flex-start',
+              gap: '10px',
+              backgroundColor: '#F8FAFC',
+              border: '1px solid #F1F5F9',
+              borderRadius: '10px',
+              padding: '10px 12px'
+            }}>
               <CheckCircle2 size={16} color="#16A34A" style={{ flexShrink: 0, marginTop: '2px' }} />
               <div>
-                <strong style={{ fontSize: '12.5px', color: '#0F172A' }}>30-Day Biometric Limitation</strong>
-                <p style={{ fontSize: '11.5px', color: '#64748B', margin: '2px 0 0 0' }}>A pilgrim can obtain a Divya Darshan / SSD token only once every 30 days per Aadhaar number.</p>
+                <strong style={{ fontSize: '12.5px', color: '#0F172A' }}>
+                  {lang === 'te' ? 'సంప్రదాయ వస్త్రధారణ నిబంధన' : 'Traditional Dress Code at VQC'}
+                </strong>
+                <p style={{ fontSize: '11.5px', color: '#64748B', margin: '2px 0 0 0', lineHeight: 1.4 }}>
+                  {lang === 'te'
+                    ? 'నడక సమయంలో సౌకర్యవంతమైన దుస్తులు అనుమతించబడతాయి. అయితే తిరుమలలో దర్శనం క్యూ లైన్లలోకి ప్రవేశించే సమయంలో సంప్రదాయ దుస్తులు (పురుషులకు ధోవతి/కుర్తా, స్త్రీలకు చీర/చుడీదార్) తప్పనిసరి.'
+                    : 'Comfortable footwear and attire allowed during the climb. However, traditional dress (Dhoti/Kurta for men, Saree/Chudidar with dupatta for women) is mandatory upon queue entry at Tirumala.'}
+                </p>
               </div>
             </div>
           </div>

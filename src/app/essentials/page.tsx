@@ -406,7 +406,7 @@ export default function PilgrimEssentialsPage() {
       </header>
 
       {/* Main Scroll Content */}
-      <div className={styles.scrollArea} style={{ paddingBottom: '16px', gap: '20px' }}>
+      <div className={styles.scrollArea} style={{ paddingBottom: 'calc(110px + env(safe-area-inset-bottom, 20px))', gap: '16px' }}>
         
         {/* Search Bar ("What are you looking for?") */}
         <div className={styles.searchContainer}>
@@ -434,6 +434,94 @@ export default function PilgrimEssentialsPage() {
           </div>
         </div>
 
+        {/* Quick Emergency & Helpdesks Strip (Tap-to-Call) */}
+        {!searchQuery && (
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
+            gap: '8px',
+            marginTop: '-4px'
+          }}>
+            <a
+              href="tel:155257"
+              style={{
+                background: 'linear-gradient(135deg, #FFFFFF 0%, #F0FDF4 100%)',
+                border: '1px solid #BBF7D0',
+                borderRadius: '14px',
+                padding: '9px 11px',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                textDecoration: 'none',
+                color: 'inherit',
+                boxShadow: '0 1px 3px rgba(15, 81, 50, 0.05)',
+                cursor: 'pointer'
+              }}
+            >
+              <div style={{
+                width: '30px',
+                height: '30px',
+                borderRadius: '8px',
+                background: '#DCFCE7',
+                color: '#15803D',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexShrink: 0
+              }}>
+                <Phone size={14} strokeWidth={2.4} />
+              </div>
+              <div style={{ minWidth: 0 }}>
+                <div style={{ fontSize: '10px', color: '#166534', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.04em', lineHeight: 1.1 }}>
+                  {lang === 'te' ? 'టిటిడి హెల్ప్‌లైన్' : 'TTD Enquiry'}
+                </div>
+                <div style={{ fontSize: '13px', fontWeight: 800, color: '#0F172A', marginTop: '1px', lineHeight: 1.2 }}>
+                  155257
+                </div>
+              </div>
+            </a>
+
+            <a
+              href="tel:108"
+              style={{
+                background: 'linear-gradient(135deg, #FFFFFF 0%, #FEF2F2 100%)',
+                border: '1px solid #FECACA',
+                borderRadius: '14px',
+                padding: '9px 11px',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '8px',
+                textDecoration: 'none',
+                color: 'inherit',
+                boxShadow: '0 1px 3px rgba(220, 38, 38, 0.05)',
+                cursor: 'pointer'
+              }}
+            >
+              <div style={{
+                width: '30px',
+                height: '30px',
+                borderRadius: '8px',
+                background: '#FEE2E2',
+                color: '#DC2626',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexShrink: 0
+              }}>
+                <ShieldAlert size={15} strokeWidth={2.4} />
+              </div>
+              <div style={{ minWidth: 0 }}>
+                <div style={{ fontSize: '10px', color: '#991B1B', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.04em', lineHeight: 1.1 }}>
+                  {lang === 'te' ? 'వైద్య / అత్యవసరం' : 'Medical / Emergency'}
+                </div>
+                <div style={{ fontSize: '13px', fontWeight: 800, color: '#991B1B', marginTop: '1px', lineHeight: 1.2 }}>
+                  108
+                </div>
+              </div>
+            </a>
+          </div>
+        )}
+
         {/* Today's Notice (Clean Amber Container) */}
         {!dismissedNotice && !searchQuery && noticeText && (
           <motion.div 
@@ -456,7 +544,11 @@ export default function PilgrimEssentialsPage() {
             </div>
             <div style={{ flex: 1, minWidth: 0 }}>
               <div className={styles.noticeHeader}>
+                <span className={styles.pulseDot} />
                 <span>{t.todaysNotice}</span>
+                <span style={{ fontSize: '9px', fontWeight: 800, padding: '1px 5px', borderRadius: '4px', background: '#FDE68A', color: '#78350F', marginLeft: 'auto' }}>
+                  LIVE
+                </span>
               </div>
               <p className={styles.noticeContent}>
                 {noticeText}

@@ -1217,15 +1217,15 @@ export const PLACES: Place[] = [
     budgetLevel: 'budget',
     entryFeeNum: 0,
     interests: ['history', 'spiritual'],
-    openFrom: 7,
+    openFrom: 6,
     openTo: 20,
     isMustVisit: true,
     whyVisit: 'This temple houses the world\'s oldest surviving naturalistic Shiva Lingam, dating to the 3rd century BCE — over 2,300 years old. It features a unique Trimurti representation with Lord Brahma at the base, Lord Vishnu in the middle, and Lord Shiva at the top.',
     shortIntro: 'The Parasurameswara Swamy Temple in Gudimallam houses the world\'s oldest surviving naturalistic Shiva Lingam (3rd century BCE). Located on Papanaidupet-Gudimallam Road in Yerpedu Mandal, it is an ancient archaeological and spiritual marvel.',
     description: 'Home to the oldest known naturalistic Shiva Lingam in India, dating to 3rd century BCE, featuring a unique Trimurti carving of Brahma, Vishnu, and Shiva.',
     history: 'The Parasurameswara Swamy Temple is an archaeological treasure of immense historical significance. The main Lingam is carved from a single stone, featuring Lord Shiva standing on a dwarf (Yaksha), flanked by Lord Brahma and Lord Vishnu. Inscriptions link the temple to the Pallava, Chola and Vijayanagara dynasties.',
-    timings: '7:00 AM - 8:00 PM',
-    openingTime: '7:00 AM',
+    timings: '6:00 AM - 8:00 PM (Morning: 6:00 AM – 12:00 PM | Afternoon: 12:30 PM – 4:00 PM | Evening: 4:30 PM – 8:00 PM; Poojas: 6:00 AM, 12:00 PM, 5:30 PM)',
+    openingTime: '6:00 AM',
     closingTime: '8:00 PM',
     entryFee: 'Free Entry',
     address: 'Shri Parashurameshwara Temple, Papanaidupet - Gudimallam Rd, Gudimallam, Yerpedu Mandal, AP 517526',
@@ -1234,7 +1234,7 @@ export const PLACES: Place[] = [
     image: '/assets/temples/gudimallam.png',
     coordinates: { lat: 13.6037445, lng: 79.5785729 },
     tags: ['Ancient', 'Shiva', 'Trimurti', 'Archaeological', 'Oldest Lingam', 'Yerpedu'],
-    bestTime: 'Morning (7:00 AM – 11:30 AM) or Evening (4:30 PM – 8:00 PM)',
+    bestTime: 'Morning (6:00 AM – 12:00 PM) or Evening (4:30 PM – 8:00 PM)',
     practicalInfo: { dressCode: 'Strict Traditional', food: 'No restaurants or food stalls nearby — carry water & snacks', parking: 'Available' },
     travelEstimates: { 'tirupati': '45 mins' },
     visitorTips: {
@@ -1243,6 +1243,17 @@ export const PLACES: Place[] = [
       footwearRule: 'Must be deposited at footwear stand outside.',
       crowdNote: 'Generally peaceful. Moderate crowds on Mondays and festival days.',
       entryRule: 'Free public entry for general darshan. Note: No office/helpdesk, restrooms, or eateries on site — carry drinking water.'
+    },
+    spiritualInfo: {
+      god: 'Lord Parasurameswara Swamy (Shiva)',
+      knownFor: 'World\'s oldest surviving naturalistic Shiva Lingam (3rd Century BCE)',
+      mantra: 'Om Namah Shivaya',
+      devoteeTips: [
+        'Daily Darshan Schedule: Morning 6:00 AM – 12:00 PM, Afternoon 12:30 PM – 4:00 PM, Evening 4:30 PM – 8:00 PM',
+        'Daily Poojas and Archana are conducted at 6:00 AM, 12:00 PM, and 5:30 PM',
+        'Special Abhishekam is conducted on Karthika Masam, Maha Shivaratri, and Mondays',
+        'Carry drinking water and snacks as there are limited food stalls around the heritage precinct'
+      ]
     }
   },
 

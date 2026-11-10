@@ -10,9 +10,10 @@ import { playSaarthiSonicIdent } from '@/lib/audioIdentity';
 interface DailyGitaCardProps {
   date?: Date;
   variant?: 'mobile' | 'desktop';
+  embedded?: boolean;
 }
 
-export function DailyGitaCard({ date, variant = 'desktop' }: DailyGitaCardProps) {
+export function DailyGitaCard({ date, variant = 'desktop', embedded = false }: DailyGitaCardProps) {
   const lang = useLanguage();
   const shloka: GitaShloka = getDailyGitaShloka(date);
   const [script, setScript] = useState<'te' | 'sa' | 'en'>(lang === 'te' ? 'te' : lang === 'hi' || lang === 'ta' ? 'sa' : 'en');
@@ -91,7 +92,10 @@ export function DailyGitaCard({ date, variant = 'desktop' }: DailyGitaCardProps)
 
   return (
     <div
-      style={{
+      style={embedded ? {
+        position: 'relative',
+        width: '100%'
+      } : {
         background: 'linear-gradient(135deg, #FFFFFF 0%, #FFFDF5 50%, #FEF9C3 100%)',
         border: '1.5px solid #FDE68A',
         borderRadius: '20px',
@@ -101,23 +105,25 @@ export function DailyGitaCard({ date, variant = 'desktop' }: DailyGitaCardProps)
         overflow: 'hidden'
       }}
     >
-      {/* Decorative Golden Ambient Watermark */}
-      <div
-        style={{
-          position: 'absolute',
-          right: '-12px',
-          bottom: '-16px',
-          fontSize: '110px',
-          color: 'rgba(217, 119, 6, 0.04)',
-          fontWeight: 700,
-          fontFamily: 'serif',
-          userSelect: 'none',
-          pointerEvents: 'none',
-          lineHeight: 1
-        }}
-      >
-        ॐ
-      </div>
+      {/* Decorative Golden Ambient Watermark (Only if standalone) */}
+      {!embedded && (
+        <div
+          style={{
+            position: 'absolute',
+            right: '-12px',
+            bottom: '-16px',
+            fontSize: '110px',
+            color: 'rgba(217, 119, 6, 0.04)',
+            fontWeight: 700,
+            fontFamily: 'serif',
+            userSelect: 'none',
+            pointerEvents: 'none',
+            lineHeight: 1
+          }}
+        >
+          ॐ
+        </div>
+      )}
 
       {/* ── HEADER ── */}
       <div
@@ -127,31 +133,31 @@ export function DailyGitaCard({ date, variant = 'desktop' }: DailyGitaCardProps)
           justifyContent: 'space-between',
           flexWrap: 'wrap',
           gap: '8px',
-          marginBottom: '12px'
+          marginBottom: '10px'
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', minWidth: 0 }}>
           <div
             style={{
-              width: '32px',
-              height: '32px',
-              borderRadius: '10px',
+              width: '30px',
+              height: '30px',
+              borderRadius: '9px',
               background: 'linear-gradient(135deg, #FEF3C7, #FDE68A)',
               border: '1px solid #FCD34D',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              boxShadow: '0 2px 6px rgba(217, 119, 6, 0.12)',
+              boxShadow: '0 2px 5px rgba(217, 119, 6, 0.1)',
               flexShrink: 0
             }}
           >
-            <BookOpen size={16} color="#B45309" />
+            <BookOpen size={15} color="#B45309" />
           </div>
-          <div>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <div style={{ fontSize: '13px', fontWeight: 700, color: '#92400E', letterSpacing: '-0.01em', lineHeight: '1.2' }}>
+          <div style={{ minWidth: 0 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap' }}>
+              <span style={{ fontSize: '13px', fontWeight: 700, color: '#92400E', letterSpacing: '-0.01em', lineHeight: '1.2' }}>
                 {lang === 'te' ? 'భగవద్గీత నిత్య శ్లోకం' : lang === 'hi' ? 'भगवद्गीता नित्य श्लोक' : lang === 'ta' ? 'பகவத் கீதை தினசரி ஸ்லோகம்' : 'Daily Gita Shloka'}
-              </div>
+              </span>
               <span style={{
                 fontSize: '9.5px',
                 fontWeight: 700,
@@ -159,8 +165,9 @@ export function DailyGitaCard({ date, variant = 'desktop' }: DailyGitaCardProps)
                 backgroundColor: '#FEF3C7',
                 border: '1px solid #FCD34D',
                 padding: '1px 6px',
-                borderRadius: '8px',
-                lineHeight: 1.2
+                borderRadius: '7px',
+                lineHeight: 1.2,
+                whiteSpace: 'nowrap'
               }}>
                 {streak} {lang === 'te' ? 'రోజు సాధన' : lang === 'hi' ? 'दिन साधना' : lang === 'ta' ? 'நாள் சாதனை' : (streak === 1 ? 'Day Streak' : 'Days Streak')}
               </span>
@@ -171,17 +178,18 @@ export function DailyGitaCard({ date, variant = 'desktop' }: DailyGitaCardProps)
           </div>
         </div>
 
-        {/* Script Selector Tabs */}
+        {/* Sleek Segmented Script Selector Tabs */}
         <div
           style={{
-            display: 'flex',
+            display: 'inline-flex',
             alignItems: 'center',
             backgroundColor: '#FFFFFF',
             border: '1px solid #FCD34D',
-            borderRadius: '10px',
+            borderRadius: '9px',
             padding: '2px',
             gap: '2px',
-            boxShadow: '0 1px 3px rgba(0,0,0,0.04)'
+            boxShadow: '0 1px 3px rgba(0,0,0,0.03)',
+            marginLeft: 'auto'
           }}
         >
           <button
@@ -191,9 +199,9 @@ export function DailyGitaCard({ date, variant = 'desktop' }: DailyGitaCardProps)
               color: script === 'te' ? '#FFFFFF' : '#78350F',
               border: 'none',
               borderRadius: '7px',
-              padding: '3px 7px',
-              fontSize: '10.5px',
-              fontWeight: 600,
+              padding: '2px 7px',
+              fontSize: '10px',
+              fontWeight: 700,
               cursor: 'pointer',
               transition: 'all 0.15s ease'
             }}
@@ -207,9 +215,9 @@ export function DailyGitaCard({ date, variant = 'desktop' }: DailyGitaCardProps)
               color: script === 'sa' ? '#FFFFFF' : '#78350F',
               border: 'none',
               borderRadius: '7px',
-              padding: '3px 7px',
-              fontSize: '10.5px',
-              fontWeight: 600,
+              padding: '2px 7px',
+              fontSize: '10px',
+              fontWeight: 700,
               cursor: 'pointer',
               transition: 'all 0.15s ease'
             }}
@@ -223,9 +231,9 @@ export function DailyGitaCard({ date, variant = 'desktop' }: DailyGitaCardProps)
               color: script === 'en' ? '#FFFFFF' : '#78350F',
               border: 'none',
               borderRadius: '7px',
-              padding: '3px 7px',
-              fontSize: '10.5px',
-              fontWeight: 600,
+              padding: '2px 7px',
+              fontSize: '10px',
+              fontWeight: 700,
               cursor: 'pointer',
               transition: 'all 0.15s ease'
             }}
@@ -305,28 +313,30 @@ export function DailyGitaCard({ date, variant = 'desktop' }: DailyGitaCardProps)
         </span>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+          {/* Primary Action: Solid Warm Accent Fill */}
           <button
             onClick={handleAudioPlay}
             style={{
               display: 'flex',
               alignItems: 'center',
-              gap: '4px',
-              backgroundColor: isSpeaking ? '#FEF3C7' : '#FFFFFF',
-              border: `1px solid ${isSpeaking ? '#D97706' : '#FCD34D'}`,
-              borderRadius: '9px',
-              padding: '4px 10px',
+              gap: '5px',
+              backgroundColor: isSpeaking ? '#FDE68A' : '#FEF3C7',
+              border: `1.5px solid ${isSpeaking ? '#B45309' : '#F59E0B'}`,
+              borderRadius: '10px',
+              padding: '5px 12px',
               fontSize: '11px',
-              fontWeight: 600,
+              fontWeight: 700,
               color: '#92400E',
               cursor: 'pointer',
-              boxShadow: '0 2px 4px rgba(0,0,0,0.03)',
+              boxShadow: '0 2px 5px rgba(217, 119, 6, 0.1)',
               transition: 'all 0.15s ease'
             }}
           >
-            {isSpeaking ? <VolumeX size={12} color="#DC2626" /> : <Volume2 size={12} color="#D97706" />}
+            {isSpeaking ? <VolumeX size={13} color="#DC2626" /> : <Volume2 size={13} color="#D97706" />}
             <span>{isSpeaking ? (lang === 'te' ? 'ఆపండి' : 'Stop Audio') : (lang === 'te' ? 'శ్లోకం వినండి' : 'Listen Shloka')}</span>
           </button>
 
+          {/* Secondary Action: Clean Outline Pill */}
           <button
             onClick={handleShare}
             style={{
@@ -335,13 +345,13 @@ export function DailyGitaCard({ date, variant = 'desktop' }: DailyGitaCardProps)
               gap: '5px',
               backgroundColor: '#FFFFFF',
               border: '1px solid #FCD34D',
-              borderRadius: '9px',
-              padding: '4px 10px',
+              borderRadius: '10px',
+              padding: '5px 12px',
               fontSize: '11px',
               fontWeight: 600,
               color: '#92400E',
               cursor: 'pointer',
-              boxShadow: '0 2px 4px rgba(0,0,0,0.03)',
+              boxShadow: '0 1px 3px rgba(0,0,0,0.03)',
               transition: 'background 0.15s ease'
             }}
           >

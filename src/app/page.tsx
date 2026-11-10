@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { MapPin, Lock, Utensils, Scissors, Bed, ChevronRight, Sparkles, BookOpen, ShieldCheck, HelpCircle, ChevronDown, ChevronUp } from 'lucide-react';
+import { MapPin, Lock, Utensils, Scissors, Bed, ChevronRight, Sparkles, BookOpen, ShieldCheck, HelpCircle, ChevronDown, ChevronUp, Landmark, Compass, Mountain } from 'lucide-react';
 import { useState, useMemo } from 'react';
 import { useHomeData } from '@/hooks/useHomeData';
 import { useTrip } from '@/components/TripContext';
@@ -107,7 +107,7 @@ export default function HomePage() {
       status: t.lockersStatus,
       statusColor: '#16A34A',
       icon: Lock,
-      image: '/images/places/img_6_IMG_6992_cq6gls.jpg',
+      image: '/images/places/img_2_IMG_6992_cq6gls.jpg',
       link: '/essentials/secure-belongings'
     },
     {
@@ -117,7 +117,7 @@ export default function HomePage() {
       status: t.mealsStatus,
       statusColor: '#16A34A',
       icon: Utensils,
-      image: '/images/places/img_7_Annaprasadam-4-copy_lyo86v.jpg',
+      image: '/images/places/img_3_Annaprasadam-4-copy_lyo86v.jpg',
       link: '/essentials/free-meals'
     },
     {
@@ -127,7 +127,7 @@ export default function HomePage() {
       status: t.tonsureStatus,
       statusColor: '#16A34A',
       icon: Scissors,
-      image: '/images/places/img_8_painted-sign-board-of-kalyanakatta-balaji-temple-t.jpg',
+      image: '/images/places/img_4_painted-sign-board-of-kalyanakatta-balaji-temple-t.jpg',
       link: '/essentials/hair-offering'
     },
     {
@@ -137,7 +137,7 @@ export default function HomePage() {
       status: t.stayStatus,
       statusColor: '#D97706',
       icon: Bed,
-      image: '/images/places/img_9_maxresdefault_fwmwke.jpg',
+      image: '/images/places/img_5_maxresdefault_fwmwke.jpg',
       link: '/rooms'
     }
   ];
@@ -153,7 +153,7 @@ export default function HomePage() {
           <HomeHero {...home.hero} liveStatus={home.status.liveStatus} activeAlertsCount={home.alerts.activeAlertsCount} hideHeader={false} />
 
           {/* LAYER 2: SSD TOKEN STATUS & COLLECTION CENTRES (IMMEDIATELY AFTER CROWD DETAILS) */}
-          <div style={{ marginTop: '4px', marginBottom: '4px' }}>
+          <div style={{ marginTop: '0px', marginBottom: '4px' }}>
             <QuickChecklist {...home.checklist} liveStatus={home.status.liveStatus} />
           </div>
 
@@ -180,8 +180,9 @@ export default function HomePage() {
                   {t.servicesSub}
                 </p>
               </div>
-              <Link href="/essentials" prefetch={false} style={{ fontSize: '11.5px', fontWeight: 600, color: '#0F5132', textDecoration: 'none' }}>
-                {t.seeAll}
+              <Link href="/essentials" prefetch={false} style={{ fontSize: '12px', fontWeight: 700, color: '#0F5132', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '2px' }}>
+                <span>{lang === 'te' ? 'అన్నీ చూడండి' : 'See all'}</span>
+                <ChevronRight size={13} strokeWidth={2.6} />
               </Link>
             </div>
 
@@ -189,6 +190,7 @@ export default function HomePage() {
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(135px, 1fr))', gap: '10px' }}>
               {PRIMARY_SERVICES.map(srv => {
                 const IconComp = srv.icon;
+                const isAmber = srv.id === 'stay';
                 return (
                   <Link
                     key={srv.id}
@@ -196,19 +198,20 @@ export default function HomePage() {
                     prefetch={false}
                     style={{
                       textDecoration: 'none',
-                      backgroundColor: 'var(--surface-card, #FFFFFF)',
+                      backgroundColor: '#FFFFFF',
                       borderRadius: '16px',
                       overflow: 'hidden',
-                      border: '1px solid rgba(30, 35, 45, 0.08)',
-                      boxShadow: '0 4px 14px -2px rgba(15, 23, 42, 0.04), 0 1px 3px rgba(15, 23, 42, 0.02)',
+                      border: '1px solid #E2E8F0',
+                      boxShadow: '0 4px 14px rgba(15, 23, 42, 0.04)',
                       display: 'flex',
                       flexDirection: 'column',
                       minWidth: 0,
-                      transition: 'transform 0.15s ease'
+                      transition: 'transform 0.15s ease, box-shadow 0.15s ease'
                     }}
                   >
+                    {/* Image Container with Floating Badges */}
                     <div style={{
-                      height: '74px',
+                      height: '86px',
                       width: '100%',
                       backgroundColor: '#EAE6DF',
                       position: 'relative',
@@ -229,41 +232,114 @@ export default function HomePage() {
                       <div style={{
                         position: 'absolute',
                         inset: 0,
-                        background: 'linear-gradient(180deg, rgba(0,0,0,0.08) 0%, rgba(0,0,0,0.38) 100%)'
+                        background: 'linear-gradient(180deg, rgba(0,0,0,0.30) 0%, rgba(0,0,0,0.04) 45%, rgba(0,0,0,0.40) 100%)'
                       }} />
+
+                      {/* Top-Left Frosted Vector Icon Badge */}
                       <div style={{
                         position: 'absolute',
-                        top: '6px',
-                        left: '6px',
+                        top: '7px',
+                        left: '7px',
                         width: '24px',
                         height: '24px',
-                        borderRadius: '7px',
-                        backgroundColor: 'rgba(15, 81, 50, 0.88)',
-                        boxShadow: '0 2px 6px rgba(0, 0, 0, 0.15)',
+                        borderRadius: '50%',
+                        backgroundColor: 'rgba(15, 23, 42, 0.55)',
+                        backdropFilter: 'blur(8px)',
+                        WebkitBackdropFilter: 'blur(8px)',
+                        border: '1px solid rgba(255, 255, 255, 0.28)',
                         display: 'flex',
                         alignItems: 'center',
-                        justifyContent: 'center'
+                        justifyContent: 'center',
+                        boxShadow: '0 2px 6px rgba(0, 0, 0, 0.18)'
                       }}>
-                        <IconComp size={13} color="#FFFFFF" />
+                        <IconComp size={12} color="#FFFFFF" strokeWidth={2.4} />
                       </div>
-                    </div>
 
-                    <div style={{ padding: '8px 10px 10px' }}>
-                      <span style={{
+                      {/* Top-Right Floating Live Status Pill */}
+                      <div style={{
+                        position: 'absolute',
+                        top: '7px',
+                        right: '7px',
                         display: 'inline-flex',
                         alignItems: 'center',
                         gap: '4px',
-                        fontSize: '9.5px',
-                        fontWeight: 600,
-                        color: srv.statusColor,
-                        marginBottom: '2px'
+                        padding: '2.5px 7px',
+                        borderRadius: '9999px',
+                        backgroundColor: isAmber ? 'rgba(180, 83, 9, 0.92)' : 'rgba(22, 101, 52, 0.92)',
+                        backdropFilter: 'blur(8px)',
+                        WebkitBackdropFilter: 'blur(8px)',
+                        border: '1px solid rgba(255, 255, 255, 0.30)',
+                        boxShadow: '0 2px 6px rgba(0, 0, 0, 0.20)',
+                        color: '#FFFFFF',
+                        fontSize: '9px',
+                        fontWeight: 700,
+                        letterSpacing: '0.01em',
+                        lineHeight: 1.2
                       }}>
-                        <span style={{ width: '4px', height: '4px', borderRadius: '50%', backgroundColor: 'currentColor' }} />
-                        <span>{srv.status}</span>
-                      </span>
-                      <h3 style={{ fontSize: '12.5px', fontWeight: 600, color: 'var(--color-text-primary, #1E232D)', margin: 0, lineHeight: 1.3 }}>
+                        <span style={{
+                          width: '4.5px',
+                          height: '4.5px',
+                          borderRadius: '50%',
+                          backgroundColor: '#FFFFFF',
+                          boxShadow: '0 0 4px #FFFFFF',
+                          flexShrink: 0
+                        }} />
+                        <span style={{ whiteSpace: 'nowrap' }}>{srv.status}</span>
+                      </div>
+                    </div>
+
+                    {/* Card Content with Subtitle & Interactive Chevron */}
+                    <div style={{
+                      padding: '8px 10px 10px',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'space-between',
+                      flex: 1
+                    }}>
+                      <h3 style={{
+                        fontSize: '12.5px',
+                        fontWeight: 700,
+                        color: '#0F172A',
+                        margin: 0,
+                        lineHeight: 1.3,
+                        letterSpacing: '-0.01em'
+                      }}>
                         {srv.title}
                       </h3>
+
+                      <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        marginTop: '4px',
+                        gap: '6px'
+                      }}>
+                        <span style={{
+                          fontSize: '10px',
+                          color: '#64748B',
+                          fontWeight: 500,
+                          lineHeight: 1.25,
+                          whiteSpace: 'nowrap',
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          flex: 1
+                        }}>
+                          {srv.subtitle}
+                        </span>
+                        <div style={{
+                          width: '18px',
+                          height: '18px',
+                          borderRadius: '50%',
+                          backgroundColor: '#F0FDF4',
+                          border: '1px solid #BBF7D0',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          flexShrink: 0
+                        }}>
+                          <ChevronRight size={11} color="#0F5132" strokeWidth={2.8} />
+                        </div>
+                      </div>
                     </div>
                   </Link>
                 );
@@ -271,91 +347,334 @@ export default function HomePage() {
             </div>
           </div>
 
-          {/* LAYER 4: EXPLORE AROUND YOU (PHOTO-FIRST CARDS) */}
-          {nearbyPlaces.length > 0 && (
-            <div style={{ padding: '0 0 16px' }}>
-              <div style={{ padding: '0 14px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
-                <p style={{ fontSize: '13px', fontWeight: 600, color: '#0F172A', letterSpacing: '0.2px', margin: 0 }}>
-                  {t.nearbyPlaces}
-                </p>
-                <Link href="/explore" style={{ fontSize: '11px', fontWeight: 600, color: '#0F5132', textDecoration: 'none' }}>
-                  {t.seeAll}
-                </Link>
-              </div>
-              <div className="noScrollbar" style={{ display: 'flex', gap: '10px', overflowX: 'auto', padding: '0 14px 4px', scrollbarWidth: 'none', msOverflowStyle: 'none' as any, WebkitOverflowScrolling: 'touch' }}>
-                {nearbyPlaces.map(p => (
-                  <Link 
-                    key={p.id} 
-                    href={`/place/${p.id}`} 
-                    prefetch={false}
-                    style={{ 
-                      textDecoration: 'none', 
-                      flexShrink: 0, 
-                      width: 'clamp(138px, 40vw, 150px)',
-                      backgroundColor: '#FFFFFF',
-                      borderRadius: '16px',
-                      overflow: 'hidden',
-                      border: '1px solid rgba(15, 23, 42, 0.06)',
-                      boxShadow: '0 6px 20px -4px rgba(15, 23, 42, 0.04), 0 2px 6px rgba(15, 23, 42, 0.02)'
-                    }}
-                  >
-                    {/* PHOTO BANNER */}
-                    <div style={{
-                      width: '100%', 
-                      height: '84px', 
-                      backgroundImage: `url(${p.image})`, 
-                      backgroundSize: 'cover', 
-                      backgroundPosition: 'center',
-                      backgroundColor: '#E2E8F0',
-                      position: 'relative'
-                    }}>
-                      <div style={{
-                        position: 'absolute',
-                        bottom: '5px',
-                        left: '5px',
-                        backgroundColor: 'rgba(15, 23, 42, 0.75)',
-                        backdropFilter: 'blur(4px)',
-                        padding: '2px 6px',
-                        borderRadius: '5px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: '3px',
-                        color: '#FFFFFF',
-                        fontSize: '9.5px',
-                        fontWeight: 700
-                      }}>
-                        <MapPin size={9} />
-                        <span>{p._dist} km</span>
-                      </div>
-                    </div>
+          {/* EXPLORE TIRUPATI REGION (BENTO CATEGORY CARDS) */}
+          <div style={{ padding: '0 14px 16px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
+              <h2 style={{ fontSize: '15px', fontWeight: 800, color: 'var(--color-text-primary, #1E232D)', margin: 0, letterSpacing: '-0.015em' }}>
+                {lang === 'te' ? 'తిరుపతి ప్రాంతాన్ని అన్వేషించండి' : 'Explore Tirupati Region'}
+              </h2>
+              <Link href="/explore" prefetch={false} style={{ fontSize: '12px', fontWeight: 700, color: '#0F5132', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '2px' }}>
+                <span>{lang === 'te' ? 'అన్నీ చూడండి' : 'View All'}</span>
+                <ChevronRight size={14} strokeWidth={2.5} />
+              </Link>
+            </div>
 
-                    <div style={{ padding: '7px 8px 9px' }}>
-                      <p style={{
-                        fontSize: '12px', 
-                        fontWeight: 600, 
-                        color: '#0F172A', 
-                        margin: '0 0 2px', 
-                        lineHeight: 1.25,
-                        height: '2.5em',
-                        overflow: 'hidden', 
-                        display: '-webkit-box', 
-                        WebkitLineClamp: 2, 
-                        WebkitBoxOrient: 'vertical' as const
-                      }}>
-                        {p.name}
-                      </p>
-                      <span style={{ fontSize: '10px', color: '#64748B', fontWeight: 600 }}>
-                        {p._dist ? `${Math.max(4, Math.round(Number(p._dist) * 3))} min away` : 'Nearby'}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+              {/* Primary Bento Hero: Temples */}
+              <Link
+                href="/explore?category=Temples"
+                prefetch={false}
+                style={{
+                  textDecoration: 'none',
+                  height: '118px',
+                  borderRadius: '18px',
+                  overflow: 'hidden',
+                  position: 'relative',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'flex-end',
+                  boxShadow: '0 4px 14px rgba(15, 23, 42, 0.08)',
+                  border: '1px solid rgba(15, 23, 42, 0.06)'
+                }}
+              >
+                <img
+                  src="/images/places/img_11_iskcon-temple-tirupati_wl7dd2.jpg"
+                  alt="Temples"
+                  style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
+                />
+                <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, transparent 30%, rgba(15, 23, 42, 0.82) 100%)' }} />
+                <div style={{ position: 'relative', zIndex: 2, padding: '10px 12px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                  <div style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                    background: 'rgba(15, 23, 42, 0.5)',
+                    backdropFilter: 'blur(10px)',
+                    WebkitBackdropFilter: 'blur(10px)',
+                    border: '1px solid rgba(255, 255, 255, 0.25)',
+                    padding: '4px 10px',
+                    borderRadius: '9999px'
+                  }}>
+                    <Landmark size={12} color="#FDE047" strokeWidth={2.4} />
+                    <span style={{ fontSize: '11.5px', fontWeight: 800, color: '#FFFFFF', letterSpacing: '-0.01em' }}>
+                      {lang === 'te' ? 'ఆలయాలు' : 'Temples'}
+                    </span>
+                  </div>
+                  <span style={{ fontSize: '10px', color: '#DCFCE7', fontWeight: 700, background: 'rgba(22, 101, 52, 0.65)', padding: '2px 8px', borderRadius: '9999px' }}>
+                    {lang === 'te' ? 'ప్రధాన క్షేత్రాలు' : 'Sacred Shrines'}
+                  </span>
+                </div>
+              </Link>
+
+              {/* Secondary 3-Card Row: Nature, Heritage, Viewpoints */}
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: '8px' }}>
+                {/* Nature */}
+                <Link
+                  href="/explore?category=Nature"
+                  prefetch={false}
+                  style={{
+                    textDecoration: 'none',
+                    height: '92px',
+                    borderRadius: '16px',
+                    overflow: 'hidden',
+                    position: 'relative',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'flex-end',
+                    boxShadow: '0 2px 8px rgba(15, 23, 42, 0.05)',
+                    border: '1px solid rgba(15, 23, 42, 0.06)'
+                  }}
+                >
+                  <img
+                    src="/images/places/img_38_kailasakona-waterfalls_g3yvzv.jpg"
+                    alt="Nature"
+                    style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
+                  />
+                  <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, transparent 35%, rgba(15, 23, 42, 0.85) 100%)' }} />
+                  <div style={{ position: 'relative', zIndex: 2, padding: '6px', textAlign: 'center' }}>
+                    <div style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '4px',
+                      background: 'rgba(15, 23, 42, 0.55)',
+                      backdropFilter: 'blur(8px)',
+                      WebkitBackdropFilter: 'blur(8px)',
+                      border: '1px solid rgba(255, 255, 255, 0.22)',
+                      padding: '3px 7px',
+                      borderRadius: '9999px'
+                    }}>
+                      <Compass size={10} color="#6EE7B7" strokeWidth={2.4} />
+                      <span style={{ fontSize: '10px', fontWeight: 800, color: '#FFFFFF', whiteSpace: 'nowrap' }}>
+                        {lang === 'te' ? 'ప్రకృతి' : 'Nature'}
                       </span>
                     </div>
-                  </Link>
-                ))}
+                  </div>
+                </Link>
+
+                {/* Heritage */}
+                <Link
+                  href="/explore?category=Heritage"
+                  prefetch={false}
+                  style={{
+                    textDecoration: 'none',
+                    height: '92px',
+                    borderRadius: '16px',
+                    overflow: 'hidden',
+                    position: 'relative',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'flex-end',
+                    boxShadow: '0 2px 8px rgba(15, 23, 42, 0.05)',
+                    border: '1px solid rgba(15, 23, 42, 0.06)'
+                  }}
+                >
+                  <img
+                    src="/images/places/img_17_Natural_stone_arch_in_tirumala.JPG_dmf29w.jpg"
+                    alt="Heritage"
+                    style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
+                  />
+                  <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, transparent 35%, rgba(15, 23, 42, 0.85) 100%)' }} />
+                  <div style={{ position: 'relative', zIndex: 2, padding: '6px', textAlign: 'center' }}>
+                    <div style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '4px',
+                      background: 'rgba(15, 23, 42, 0.55)',
+                      backdropFilter: 'blur(8px)',
+                      WebkitBackdropFilter: 'blur(8px)',
+                      border: '1px solid rgba(255, 255, 255, 0.22)',
+                      padding: '3px 7px',
+                      borderRadius: '9999px'
+                    }}>
+                      <Landmark size={10} color="#FDE68A" strokeWidth={2.4} />
+                      <span style={{ fontSize: '10px', fontWeight: 800, color: '#FFFFFF', whiteSpace: 'nowrap' }}>
+                        {lang === 'te' ? 'వారసత్వం' : 'Heritage'}
+                      </span>
+                    </div>
+                  </div>
+                </Link>
+
+                {/* Viewpoints */}
+                <Link
+                  href="/explore?category=Viewpoints"
+                  prefetch={false}
+                  style={{
+                    textDecoration: 'none',
+                    height: '92px',
+                    borderRadius: '16px',
+                    overflow: 'hidden',
+                    position: 'relative',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'flex-end',
+                    boxShadow: '0 2px 8px rgba(15, 23, 42, 0.05)',
+                    border: '1px solid rgba(15, 23, 42, 0.06)'
+                  }}
+                >
+                  <img
+                    src="/images/places/img_51_GOGARBHA-DAM-04_tvbyh0.jpg"
+                    alt="Viewpoints"
+                    style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
+                  />
+                  <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, transparent 35%, rgba(15, 23, 42, 0.85) 100%)' }} />
+                  <div style={{ position: 'relative', zIndex: 2, padding: '6px', textAlign: 'center' }}>
+                    <div style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '4px',
+                      background: 'rgba(15, 23, 42, 0.55)',
+                      backdropFilter: 'blur(8px)',
+                      WebkitBackdropFilter: 'blur(8px)',
+                      border: '1px solid rgba(255, 255, 255, 0.22)',
+                      padding: '3px 7px',
+                      borderRadius: '9999px'
+                    }}>
+                      <Mountain size={10} color="#93C5FD" strokeWidth={2.4} />
+                      <span style={{ fontSize: '10px', fontWeight: 800, color: '#FFFFFF', whiteSpace: 'nowrap' }}>
+                        {lang === 'te' ? 'వీక్షణలు' : 'Viewpoints'}
+                      </span>
+                    </div>
+                  </div>
+                </Link>
+              </div>
+            </div>
+          </div>
+
+          {/* LAYER 4: EXPLORE AROUND YOU (SNAP-SCROLL CAROUSEL WITH DISTINCT PHOTOS) */}
+          {nearbyPlaces.length > 0 && (
+            <div style={{ padding: '0 0 16px' }}>
+              <div style={{ padding: '0 14px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
+                <h2 style={{ fontSize: '15px', fontWeight: 700, color: 'var(--color-text-primary, #1E232D)', margin: 0, letterSpacing: '-0.015em' }}>
+                  {t.nearbyPlaces}
+                </h2>
+                <Link href="/explore" prefetch={false} style={{ fontSize: '12px', fontWeight: 700, color: '#0F5132', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '2px' }}>
+                  <span>{lang === 'te' ? 'అన్నీ చూడండి' : 'See all'}</span>
+                  <ChevronRight size={13} strokeWidth={2.6} />
+                </Link>
+              </div>
+              <div
+                className="noScrollbar"
+                style={{
+                  display: 'flex',
+                  gap: '12px',
+                  overflowX: 'auto',
+                  padding: '0 14px 6px',
+                  scrollSnapType: 'x mandatory',
+                  WebkitOverflowScrolling: 'touch',
+                  scrollbarWidth: 'none',
+                  msOverflowStyle: 'none' as any
+                }}
+              >
+                {(() => {
+                  const fallbackUniqueImages = [
+                    '/images/places/img_23_srikalahasti_P2533_i9a7zu.webp',
+                    '/images/places/img_25_IMG-20180106-WA0026_amybm5.jpg',
+                    '/images/places/img_34_Kanipakam-Temple_bz4lzw.jpg',
+                    '/images/places/img_40_appalayagunta2_ybksjq.jpg',
+                    '/images/places/img_49_mallimadugu-dam-karakambadi-tirupati-tourist-attra.jpg',
+                    '/images/places/img_18_tirupati-Sri-Vari-Museum_k6h8yz.jpg'
+                  ];
+
+                  return nearbyPlaces.map((p, idx) => {
+                    const placeImg = p.image || p.images?.[0] || fallbackUniqueImages[idx % fallbackUniqueImages.length];
+
+                    return (
+                      <Link 
+                        key={p.id} 
+                        href={`/place/${p.id}`} 
+                        prefetch={false}
+                        style={{ 
+                          textDecoration: 'none', 
+                          flexShrink: 0, 
+                          width: '154px',
+                          backgroundColor: '#FFFFFF',
+                          borderRadius: '18px',
+                          overflow: 'hidden',
+                          border: '1px solid #E2E8F0',
+                          boxShadow: '0 4px 16px rgba(15, 23, 42, 0.05)',
+                          scrollSnapAlign: 'start',
+                          display: 'flex',
+                          flexDirection: 'column',
+                          justifyContent: 'space-between'
+                        }}
+                      >
+                        {/* DISTINCT PHOTO BANNER */}
+                        <div style={{
+                          width: '100%', 
+                          height: '92px', 
+                          backgroundImage: `url(${placeImg})`, 
+                          backgroundSize: 'cover', 
+                          backgroundPosition: 'center',
+                          backgroundColor: '#E2E8F0',
+                          position: 'relative'
+                        }}>
+                          {/* Elevated Floating Top-Right Distance Pill */}
+                          <div style={{
+                            position: 'absolute',
+                            top: '6px',
+                            right: '6px',
+                            backgroundColor: 'rgba(15, 81, 50, 0.92)',
+                            backdropFilter: 'blur(8px)',
+                            WebkitBackdropFilter: 'blur(8px)',
+                            padding: '2.5px 7px',
+                            borderRadius: '9999px',
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '3px',
+                            color: '#FFFFFF',
+                            fontSize: '9.5px',
+                            fontWeight: 700,
+                            boxShadow: '0 2px 6px rgba(0, 0, 0, 0.15)'
+                          }}>
+                            <MapPin size={9} strokeWidth={2.4} />
+                            <span>{p._dist} km</span>
+                          </div>
+                        </div>
+
+                        {/* CARD BODY WITH CATEGORY & TIME */}
+                        <div style={{ padding: '8px 10px 10px' }}>
+                          <p style={{
+                            fontSize: '12.5px', 
+                            fontWeight: 700, 
+                            color: '#0F172A', 
+                            margin: '0 0 5px', 
+                            lineHeight: 1.25,
+                            height: '2.5em',
+                            overflow: 'hidden', 
+                            display: '-webkit-box', 
+                            WebkitLineClamp: 2, 
+                            WebkitBoxOrient: 'vertical' as const
+                          }}>
+                            {p.name}
+                          </p>
+                          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '4px' }}>
+                            <span style={{
+                              fontSize: '9px',
+                              fontWeight: 700,
+                              padding: '2px 5px',
+                              borderRadius: '5px',
+                              backgroundColor: '#F1F5F9',
+                              color: '#475569',
+                              letterSpacing: '0.02em',
+                              whiteSpace: 'nowrap'
+                            }}>
+                              {p.category || 'Spot'}
+                            </span>
+                            <span style={{ fontSize: '10px', color: '#166534', fontWeight: 700, whiteSpace: 'nowrap' }}>
+                              {p._dist ? `${Math.max(4, Math.round(Number(p._dist) * 3))} min` : 'Nearby'}
+                            </span>
+                          </div>
+                        </div>
+                      </Link>
+                    );
+                  });
+                })()}
               </div>
             </div>
           )}
 
           {/* LAYER 5: DEVOTIONAL TRADITIONS & SACRED LORE (Single Consolidated Drawer) */}
-          <div style={{ padding: '0 14px 14px' }}>
+          <div style={{ padding: '0 14px 20px' }}>
             <button
               onClick={() => setShowLoreDrawer(!showLoreDrawer)}
               style={{

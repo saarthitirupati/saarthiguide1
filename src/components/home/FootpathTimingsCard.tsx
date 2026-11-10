@@ -3,8 +3,8 @@
 import React from 'react';
 import Link from 'next/link';
 import { 
-  Footprints, Clock, AlertTriangle, ShieldCheck, 
-  MapPin, ChevronRight, Baby, Sparkles, Navigation
+  Footprints, Clock, ShieldCheck, 
+  ChevronRight, AlertCircle, TrendingUp, Luggage
 } from 'lucide-react';
 import { useLanguage } from '@/lib/useLanguage';
 
@@ -14,56 +14,115 @@ export function FootpathTimingsCard() {
   return (
     <div style={{
       backgroundColor: '#FFFFFF',
-      borderRadius: '20px',
-      border: '1.5px solid #E2E8F0',
-      padding: '16px 16px 14px',
-      boxShadow: '0 4px 16px rgba(15, 23, 42, 0.04)',
-      margin: '8px 14px 12px'
+      borderRadius: '24px',
+      border: '1px solid #D5ECD8',
+      overflow: 'hidden',
+      boxShadow: '0 4px 20px rgba(10, 78, 51, 0.06)',
+      margin: '0px 12px 10px',
+      fontFamily: 'var(--font-sans), Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
     }}>
-      {/* ── CARD HEADER ── */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+      {/* ── 1. SACRED GREEN HEADER WITH STEPS TRAIL PANORAMA ── */}
+      <div style={{
+        position: 'relative',
+        background: 'linear-gradient(135deg, #053320 0%, #0A4E33 55%, #0B5C3C 100%)',
+        color: '#FFFFFF',
+        padding: '14px 16px',
+        overflow: 'hidden',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between'
+      }}>
+        {/* Footpath Hillside Stone Steps Panorama on the right */}
+        <div style={{
+          position: 'absolute',
+          top: 0,
+          right: 0,
+          bottom: 0,
+          width: '48%',
+          pointerEvents: 'none',
+          opacity: 0.95,
+          maskImage: 'linear-gradient(to right, transparent 0%, rgba(0,0,0,0.35) 20%, rgba(0,0,0,1) 55%)',
+          WebkitMaskImage: 'linear-gradient(to right, transparent 0%, rgba(0,0,0,0.35) 20%, rgba(0,0,0,1) 55%)',
+          overflow: 'hidden'
+        }}>
+          <img
+            src="/images/places/footpath_trail_panorama.png"
+            alt="Tirumala Footpath Mountain Trail"
+            style={{
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              objectPosition: 'right center',
+              display: 'block'
+            }}
+          />
+        </div>
+
+        {/* Header Left: Icon & Title Group */}
+        <div style={{ position: 'relative', zIndex: 1, display: 'flex', alignItems: 'center', gap: '10px' }}>
           <div style={{
-            width: '30px',
-            height: '30px',
-            borderRadius: '9px',
-            backgroundColor: '#F0FDF4',
-            color: '#16A34A',
+            width: '36px',
+            height: '36px',
+            borderRadius: '50%',
+            background: 'rgba(255, 255, 255, 0.16)',
+            border: '1px solid rgba(255, 255, 255, 0.25)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             flexShrink: 0
           }}>
-            <Footprints size={16} />
+            <Footprints size={18} color="#FFFFFF" strokeWidth={2.4} />
           </div>
-          <h3 style={{ fontSize: '14.5px', fontWeight: 700, color: '#0F172A', margin: 0, lineHeight: 1.2 }}>
-            {lang === 'te' ? 'తిరుమల సోపాన మార్గాలు' : 'Footpath Routes'}
-          </h3>
+          <div>
+            <h3 style={{
+              fontSize: '15.5px',
+              fontWeight: 800,
+              color: '#FFFFFF',
+              margin: 0,
+              letterSpacing: '-0.015em',
+              lineHeight: 1.2
+            }}>
+              {lang === 'te' ? 'తిరుమల సోపాన మార్గాలు' : 'Footpath Routes'}
+            </h3>
+            <p style={{
+              fontSize: '11px',
+              color: 'rgba(255, 255, 255, 0.85)',
+              margin: '2px 0 0 0',
+              fontWeight: 500
+            }}>
+              {lang === 'te' ? 'కాలినడకన తిరుమల • దివ్య దర్శనం (DD)' : 'Tirumala by Walk • Divya Darshan (DD)'}
+            </p>
+          </div>
         </div>
 
+        {/* Header Right: Details Button Pill */}
         <Link 
           href="/footpaths"
           style={{
+            position: 'relative',
+            zIndex: 1,
             display: 'inline-flex',
             alignItems: 'center',
-            gap: '2px',
+            gap: '3px',
             fontSize: '11.5px',
-            fontWeight: 600,
+            fontWeight: 700,
             color: '#0F5132',
             textDecoration: 'none',
-            backgroundColor: '#F0FDF4',
-            padding: '3px 8px',
-            borderRadius: '16px',
-            border: '1px solid #BBF7D0'
+            backgroundColor: '#FFFFFF',
+            padding: '5px 12px',
+            borderRadius: '9999px',
+            boxShadow: '0 2px 8px rgba(0, 0, 0, 0.14)',
+            flexShrink: 0
           }}
         >
           <span>{lang === 'te' ? 'వివరాలు' : 'Details'}</span>
-          <ChevronRight size={13} />
+          <ChevronRight size={12} strokeWidth={2.8} />
         </Link>
       </div>
 
-      {/* ── 2-COLUMN ROUTE TILES ── */}
+      {/* ── 2. TWO ROUTE TILES IN GRID ── */}
       <div style={{
+        padding: '12px 10px 14px',
         display: 'grid',
         gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
         gap: '10px'
@@ -71,144 +130,200 @@ export function FootpathTimingsCard() {
         {/* 1. Srivari Mettu */}
         <div style={{
           backgroundColor: '#FFFFFF',
-          border: '1px solid #E2E8F0',
-          borderRadius: '14px',
-          padding: '12px 10px',
+          background: 'linear-gradient(180deg, #FFFFFF 65%, #F0FDF4 100%)',
+          border: '1px solid #D1FAE5',
+          borderRadius: '16px',
+          padding: '12px 10px 10px',
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-between',
-          boxShadow: '0 1px 2px rgba(0, 0, 0, 0.03)'
+          boxShadow: '0 2px 8px rgba(22, 101, 52, 0.04)',
+          position: 'relative',
+          overflow: 'hidden'
         }}>
           <div>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '4px', marginBottom: '6px' }}>
-              <h4 style={{ fontSize: '13.5px', fontWeight: 800, color: '#0F172A', margin: 0, lineHeight: 1.2 }}>
-                {lang === 'te' ? 'శ్రీవారి మెట్టు' : 'Srivari Mettu'}
-              </h4>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '4px', marginBottom: '8px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <div style={{
+                  width: '26px',
+                  height: '26px',
+                  borderRadius: '50%',
+                  background: '#DCFCE7',
+                  border: '1px solid #BBF7D0',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flexShrink: 0
+                }}>
+                  <TrendingUp size={13} color="#16A34A" strokeWidth={2.6} />
+                </div>
+                <h4 style={{ fontSize: '13.5px', fontWeight: 800, color: '#0F172A', margin: 0, lineHeight: 1.2 }}>
+                  {lang === 'te' ? 'శ్రీవారి మెట్టు' : 'Srivari Mettu'}
+                </h4>
+              </div>
               <span style={{
-                fontSize: '9.5px',
-                fontWeight: 700,
-                color: '#166534',
+                fontSize: '10px',
+                fontWeight: 800,
+                color: '#14532D',
                 backgroundColor: '#DCFCE7',
-                padding: '2px 5px',
-                borderRadius: '5px'
+                border: '1px solid #BBF7D0',
+                padding: '2px 8px',
+                borderRadius: '9999px',
+                letterSpacing: '0.01em'
               }}>
                 Open
               </span>
             </div>
 
             {/* Steps & Duration */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '5px', fontSize: '11px', color: '#64748B', fontWeight: 500, marginBottom: '8px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '5px', fontSize: '11px', color: '#475569', fontWeight: 600, marginBottom: '8px' }}>
+              <Footprints size={12} color="#16A34A" />
               <span>2,388 {lang === 'te' ? 'మెట్లు' : 'steps'}</span>
-              <span>•</span>
+              <span>|</span>
               <span>~2 hrs</span>
             </div>
 
-            {/* Time Pill (Non-wrapping clean pill) */}
+            {/* Time Pill */}
             <div style={{
               display: 'flex',
               alignItems: 'center',
-              gap: '4px',
-              backgroundColor: '#F8FAFC',
-              border: '1px solid #E2E8F0',
-              borderRadius: '7px',
-              padding: '4px 6px',
-              fontSize: '10.5px',
-              fontWeight: 700,
-              color: '#1E293B',
+              gap: '5px',
+              backgroundColor: '#F0F7FF',
+              border: '1px solid #E0F2FE',
+              borderRadius: '8px',
+              padding: '5px 8px',
+              fontSize: '11px',
+              fontWeight: 800,
+              color: '#0F172A',
               whiteSpace: 'nowrap',
               overflow: 'hidden',
-              marginBottom: '6px'
+              marginBottom: '8px'
             }}>
-              <Clock size={11} color="#64748B" style={{ flexShrink: 0 }} />
+              <Clock size={12} color="#0284C7" strokeWidth={2.4} style={{ flexShrink: 0 }} />
               <span>6:00 AM – 5:30 PM</span>
             </div>
           </div>
 
           {/* Restriction badge */}
-          <div style={{ marginTop: '4px' }}>
-            <span style={{
-              background: 'rgba(239, 68, 68, 0.08)',
-              color: '#991B1B',
-              border: '1px solid rgba(239, 68, 68, 0.15)',
-              borderRadius: '6px',
-              padding: '2px 6px',
-              fontWeight: 600,
-              fontSize: '9.5px',
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '3px',
-              lineHeight: 1.2
-            }}>
-              <Baby size={11} color="#DC2626" />
-              <span>{lang === 'te' ? '<12 ఏళ్లు: 2 PM వరకు' : 'Kids <12: till 2 PM'}</span>
-            </span>
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '4px',
+            backgroundColor: '#FEF2F2',
+            border: '1px solid #FECACA',
+            borderRadius: '8px',
+            padding: '4px 8px',
+            fontSize: '10px',
+            fontWeight: 700,
+            color: '#991B1B',
+            lineHeight: 1.2
+          }}>
+            <AlertCircle size={12} color="#DC2626" strokeWidth={2.4} style={{ flexShrink: 0 }} />
+            <span>{lang === 'te' ? '<12 ఏళ్లు: 2 PM వరకు' : 'Kids < 12: till 2 PM'}</span>
           </div>
         </div>
 
         {/* 2. Alipiri Mettu */}
         <div style={{
           backgroundColor: '#FFFFFF',
-          border: '1px solid #E2E8F0',
-          borderRadius: '14px',
-          padding: '12px 10px',
+          background: 'linear-gradient(180deg, #FFFFFF 65%, #FFFBEB 100%)',
+          border: '1px solid #FEF3C7',
+          borderRadius: '16px',
+          padding: '12px 10px 10px',
           display: 'flex',
           flexDirection: 'column',
           justifyContent: 'space-between',
-          boxShadow: '0 1px 2px rgba(0, 0, 0, 0.03)'
+          boxShadow: '0 2px 8px rgba(217, 119, 6, 0.04)',
+          position: 'relative',
+          overflow: 'hidden'
         }}>
           <div>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '4px', marginBottom: '6px' }}>
-              <h4 style={{ fontSize: '13.5px', fontWeight: 800, color: '#0F172A', margin: 0, lineHeight: 1.2 }}>
-                {lang === 'te' ? 'అలిపిరి మెట్టు' : 'Alipiri Mettu'}
-              </h4>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '4px', marginBottom: '8px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                <div style={{
+                  width: '26px',
+                  height: '26px',
+                  borderRadius: '50%',
+                  background: '#FEF3C7',
+                  border: '1px solid #FDE68A',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  flexShrink: 0
+                }}>
+                  <TrendingUp size={13} color="#D97706" strokeWidth={2.6} />
+                </div>
+                <h4 style={{ fontSize: '13.5px', fontWeight: 800, color: '#0F172A', margin: 0, lineHeight: 1.2 }}>
+                  {lang === 'te' ? 'అలిపిరి మెట్టు' : 'Alipiri Mettu'}
+                </h4>
+              </div>
               <span style={{
-                fontSize: '9.5px',
-                fontWeight: 700,
-                color: '#166534',
+                fontSize: '10px',
+                fontWeight: 800,
+                color: '#14532D',
                 backgroundColor: '#DCFCE7',
-                padding: '2px 5px',
-                borderRadius: '5px'
+                border: '1px solid #BBF7D0',
+                padding: '2px 8px',
+                borderRadius: '9999px',
+                letterSpacing: '0.01em'
               }}>
                 Open
               </span>
             </div>
 
             {/* Steps & Duration */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '5px', fontSize: '11px', color: '#64748B', fontWeight: 500, marginBottom: '8px' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '5px', fontSize: '11px', color: '#475569', fontWeight: 600, marginBottom: '8px' }}>
+              <Footprints size={12} color="#D97706" />
               <span>3,550 {lang === 'te' ? 'మెట్లు' : 'steps'}</span>
-              <span>•</span>
+              <span>|</span>
               <span>~4 hrs</span>
             </div>
 
-            {/* Time Pill (Non-wrapping clean pill) */}
+            {/* Time Pill */}
             <div style={{
               display: 'flex',
               alignItems: 'center',
-              gap: '4px',
-              backgroundColor: '#F8FAFC',
-              border: '1px solid #E2E8F0',
-              borderRadius: '7px',
-              padding: '4px 6px',
-              fontSize: '10.5px',
-              fontWeight: 700,
-              color: '#1E293B',
+              gap: '5px',
+              backgroundColor: '#F0F7FF',
+              border: '1px solid #E0F2FE',
+              borderRadius: '8px',
+              padding: '5px 8px',
+              fontSize: '11px',
+              fontWeight: 800,
+              color: '#0F172A',
               whiteSpace: 'nowrap',
               overflow: 'hidden',
-              marginBottom: '6px'
+              marginBottom: '8px'
             }}>
-              <Clock size={11} color="#64748B" style={{ flexShrink: 0 }} />
+              <Clock size={12} color="#0284C7" strokeWidth={2.4} style={{ flexShrink: 0 }} />
               <span>5:00 AM – 9:30 PM</span>
             </div>
           </div>
 
           {/* Facility badges */}
-          <div style={{ marginTop: '4px', display: 'flex', gap: '4px', flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', gap: '4px', flexWrap: 'wrap' }}>
             <span style={{
-              background: 'rgba(16, 185, 129, 0.08)',
-              color: '#065F46',
-              border: '1px solid rgba(16, 185, 129, 0.2)',
-              borderRadius: '6px',
-              padding: '2px 6px',
+              background: '#F0FDF4',
+              border: '1px solid #DCFCE7',
+              color: '#166534',
+              borderRadius: '8px',
+              padding: '4px 6px',
+              fontWeight: 700,
+              fontSize: '9.5px',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '3px',
+              lineHeight: 1.2
+            }}>
+              <ShieldCheck size={11} color="#059669" strokeWidth={2.4} />
+              <span>24/7 Lit</span>
+            </span>
+            <span style={{
+              background: '#F8FAFC',
+              border: '1px solid #E2E8F0',
+              color: '#334155',
+              borderRadius: '8px',
+              padding: '4px 6px',
               fontWeight: 600,
               fontSize: '9.5px',
               display: 'inline-flex',
@@ -216,20 +331,8 @@ export function FootpathTimingsCard() {
               gap: '3px',
               lineHeight: 1.2
             }}>
-              <ShieldCheck size={11} color="#059669" />
-              <span>24/7 Lit</span>
-            </span>
-            <span style={{
-              background: '#F8FAFC',
-              border: '1px solid #E2E8F0',
-              color: '#475569',
-              borderRadius: '6px',
-              padding: '2px 6px',
-              fontWeight: 500,
-              fontSize: '9.5px',
-              lineHeight: 1.2
-            }}>
-              Luggage Van
+              <Luggage size={11} color="#475569" strokeWidth={2.2} />
+              <span>Luggage Van</span>
             </span>
           </div>
         </div>

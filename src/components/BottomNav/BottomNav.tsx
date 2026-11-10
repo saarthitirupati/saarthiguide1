@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
-import { Home, Layers, Compass } from 'lucide-react';
+import { Home, LayoutGrid, Compass } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import styles from './BottomNav.module.css';
@@ -21,12 +21,12 @@ const TEXTS = {
   },
   hi: {
     home: 'होम',
-    essentials: 'आवश्यकताएं',
+    essentials: 'ज़रूरी बातें',
     explore: 'खोजें',
   },
   ta: {
     home: 'முகப்பு',
-    essentials: 'தேவைகள்',
+    essentials: 'அத்தியாவசியங்கள்',
     explore: 'ஆராய்க',
   },
 };
@@ -34,9 +34,9 @@ const TEXTS = {
 type TextMap = Record<string, string>;
 
 const getNavItems = (t: TextMap) => [
-  { key: 'home',       name: t.home || 'Home',             icon: Home,      href: '/' },
-  { key: 'essentials', name: t.essentials || 'Essentials', icon: Layers,    href: '/essentials' },
-  { key: 'explore',    name: t.explore || 'Explore',       icon: Compass,   href: '/explore' },
+  { key: 'home',       name: t.home || 'Home',             icon: Home,       href: '/' },
+  { key: 'essentials', name: t.essentials || 'Essentials', icon: LayoutGrid, href: '/essentials' },
+  { key: 'explore',    name: t.explore || 'Explore',       icon: Compass,    href: '/explore' },
 ];
 
 export default function BottomNav() {

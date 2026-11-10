@@ -16,7 +16,7 @@
   min-height: 100vh;
   background-color: var(--saarthi-ivory);
   color: var(--saarthi-text);
-  padding-bottom: 100px;
+  padding-bottom: calc(120px + env(safe-area-inset-bottom, 24px));
   font-family: var(--font-sans), system-ui, sans-serif;
 }
 
@@ -1732,7 +1732,7 @@
   max-width: 100%;
   overflow-x: hidden;
   box-sizing: border-box;
-  padding-bottom: 8px;
+  padding-bottom: calc(30px + env(safe-area-inset-bottom, 16px));
 }
 
 .desktopOnly {

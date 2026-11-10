@@ -142,8 +142,19 @@ function ExploreContent() {
       setSearchQuery(initialQuery);
     }
     if (initialFilter) {
-      const match = filters.find(f => f.toLowerCase() === initialFilter.toLowerCase());
-      if (match) setActiveFilter(match);
+      const lower = initialFilter.toLowerCase();
+      let target = filters.find(f => f.toLowerCase() === lower);
+
+      // Resolve Home Bento category aliases
+      if (!target) {
+        if (lower === 'temples' || lower === 'temple' || lower === 'spiritual') target = 'Spiritual';
+        else if (lower === 'heritage' || lower === 'historical' || lower === 'history') target = 'Historical';
+        else if (lower === 'viewpoints' || lower === 'viewpoint') target = 'Nature';
+        else if (lower === 'water' || lower === 'theerthams' || lower === 'theertham') target = 'Water';
+        else if (lower === 'hidden' || lower === 'hiddengems' || lower === 'hidden gems') target = 'Hidden';
+      }
+
+      if (target) setActiveFilter(target);
     }
   }, [initialQuery, initialFilter]);
 
@@ -743,139 +754,90 @@ function ExploreContent() {
                   className={styles.templeItem}
                   initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: index * 0.05 }}
+                  transition={{ delay: index * 0.04 }}
                 >
-                  <button
-                    type="button"
-                    onClick={(e) => toggleSavePlace(place.id, e)}
-                    title={savedPlaces.includes(place.id) ? 'Remove from Saved' : 'Save Place'}
-                    aria-label={savedPlaces.includes(place.id) ? 'Remove from Saved' : 'Save Place'}
-                    style={{
-                      position: 'absolute',
-                      top: '12px',
-                      right: '12px',
-                      zIndex: 3,
-                      background: 'rgba(255, 255, 255, 0.92)',
-                      border: '1px solid rgba(0, 0, 0, 0.08)',
-                      borderRadius: '50%',
-                      width: '32px',
-                      height: '32px',
-                      padding: 0,
-                      cursor: 'pointer',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      boxShadow: '0 2px 6px rgba(0, 0, 0, 0.08)'
-                    }}
-                  >
-                    <Heart
-                      size={16}
-                      fill={savedPlaces.includes(place.id) ? '#E11D48' : 'none'}
-                      color={savedPlaces.includes(place.id) ? '#E11D48' : '#94A3B8'}
-                    />
-                  </button>
                   <Link href={`/place/${place.id}`} prefetch={false} className={styles.templeLink}>
                     <div 
                       className={styles.itemImage}
                       style={{ backgroundImage: `url(${place.image || 'https://images.unsplash.com/photo-1514222134-b57cbf8ce673?auto=format&fit=crop&q=80&w=800'})` }}
                     />
                     <div className={styles.itemInfo}>
-                      <div className={styles.itemHeader} style={{ paddingRight: '28px' }}>
-                        <h3 style={{ fontSize: '15.5px', fontWeight: 700, color: 'var(--color-text-primary, #1E232D)', margin: 0, letterSpacing: '-0.01em', lineHeight: 1.3 }}>
+                      <div className={styles.itemHeader}>
+                        <h3 style={{ fontSize: '15px', fontWeight: 700, color: 'var(--color-text-primary, #1E232D)', margin: 0, letterSpacing: '-0.01em', lineHeight: 1.3 }}>
                           {getPlaceName(place, lang)}
                         </h3>
                         <div className={styles.rating}>
-                          <Star size={14} fill="#FF9933" color="#FF9933" />
+                          <Star size={13} fill="#FF9933" color="#FF9933" />
                           <span>{place.rating}</span>
                         </div>
                       </div>
 
-                      {/* Explainable Recommendation Badge */}
+                      {/* Explainable Recommendation Badge (1-line clamp) */}
                       {explainableReason && (
                         <div style={{
                           display: 'inline-flex',
                           alignItems: 'center',
                           gap: '5px',
-                          backgroundColor: festCrowd.hasImpact && festCrowd.isFestivalActive ? 'rgba(220, 38, 38, 0.08)' : 'rgba(217, 119, 6, 0.12)',
+                          backgroundColor: festCrowd.hasImpact && festCrowd.isFestivalActive ? 'rgba(220, 38, 38, 0.08)' : 'rgba(217, 119, 6, 0.10)',
                           color: festCrowd.hasImpact && festCrowd.isFestivalActive ? '#991B1B' : '#92400E',
                           fontSize: '11px',
                           fontWeight: 500,
                           borderRadius: '6px',
-                          padding: '3px 8px',
+                          padding: '2.5px 7px',
                           margin: '4px 0 6px 0',
-                          lineHeight: 1.3
+                          lineHeight: 1.3,
+                          maxWidth: '100%'
                         }}>
                           <Sparkles size={11} color={festCrowd.hasImpact && festCrowd.isFestivalActive ? '#DC2626' : '#D97706'} style={{ flexShrink: 0 }} />
-                          <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '300px' }}>
+                          <span style={{
+                            overflow: 'hidden',
+                            textOverflow: 'ellipsis',
+                            whiteSpace: 'nowrap',
+                            display: 'block'
+                          }}>
                             {explainableReason}
                           </span>
                         </div>
                       )}
 
-                      <div className={styles.tags} style={{ marginTop: '6px' }}>
-                        <span className={styles.tag} style={{ backgroundColor: '#F8FAFC', border: '1px solid #E2E8F0', color: '#475569', fontWeight: 500, borderRadius: '6px', padding: '2px 6px', fontSize: '11px' }}>
-                          {place.category || place.placeType || 'Spot'}
-                        </span>
-
+                      {/* Operational Logistics First */}
+                      <div className={styles.tags} style={{ marginTop: '4px' }}>
                         {(place as any).computedDistance !== undefined ? (
-                          <span className={styles.tag} style={{ backgroundColor: 'rgba(217, 119, 6, 0.12)', color: '#92400E', fontWeight: 600, borderRadius: '999px', padding: '2px 8px', fontSize: '11px', display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
-                            <MapPin size={11} style={{ flexShrink: 0 }} />
-                            {Number((place as any).computedDistance) < 1.0
-                              ? `${formatDistance(Number((place as any).computedDistance), lang)} ${t.kmsAway}`
-                              : `${formatDistance(Number((place as any).computedDistance), lang)} (${formatTravelTime(estimateDriveDuration(Number((place as any).computedDistance)), lang)})`}
+                          <span className={styles.tag} style={{ backgroundColor: 'rgba(217, 119, 6, 0.12)', color: '#92400E', fontWeight: 700, borderRadius: '999px', padding: '2px 8px', fontSize: '10.5px', display: 'inline-flex', alignItems: 'center', gap: '3px' }}>
+                            <MapPin size={10} style={{ flexShrink: 0 }} />
+                            <span>
+                              {Number((place as any).computedDistance) < 1.0
+                                ? `${formatDistance(Number((place as any).computedDistance), lang)} ${t.kmsAway}`
+                                : `${formatDistance(Number((place as any).computedDistance), lang)} (${formatTravelTime(estimateDriveDuration(Number((place as any).computedDistance)), lang)})`}
+                            </span>
                           </span>
                         ) : (
-                          <span className={styles.tag} style={{ backgroundColor: '#F8FAFC', border: '1px solid #E2E8F0', color: '#475569', fontWeight: 500, borderRadius: '6px', padding: '2px 6px', fontSize: '11px' }}>{formatDistance(place.distanceKms || 5, lang)}</span>
+                          <span className={styles.tag} style={{ backgroundColor: '#F8FAFC', border: '1px solid #E2E8F0', color: '#475569', fontWeight: 500, borderRadius: '6px', padding: '2px 6px', fontSize: '10.5px' }}>{formatDistance(place.distanceKms || 5, lang)}</span>
                         )}
 
-                        {festCrowd.hasImpact && festCrowd.isFestivalActive ? (
-                          <span className={styles.tag} style={{
-                            backgroundColor: '#FEE2E2',
-                            color: '#991B1B',
-                            fontWeight: 500,
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            gap: '4px',
-                            border: '1px solid #FCA5A5',
-                            borderRadius: '6px',
-                            padding: '2px 6px',
-                            fontSize: '11px'
-                          }}>
-                            {lang === 'te' ? festCrowd.badgeTextTe : festCrowd.badgeTextEn}
-                          </span>
-                        ) : festCrowd.hasImpact && festCrowd.isUpcoming ? (
-                          <span className={styles.tag} style={{
-                            backgroundColor: '#EFF6FF',
-                            color: '#1D4ED8',
-                            fontWeight: 500,
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            gap: '4px',
-                            border: '1px solid #BFDBFE',
-                            borderRadius: '6px',
-                            padding: '2px 6px',
-                            fontSize: '11px'
-                          }}>
-                            {lang === 'te' ? festCrowd.badgeTextTe : festCrowd.badgeTextEn}
-                          </span>
-                        ) : crowd ? (
+                        {crowd && (
                           <span className={styles.tag} style={{
                             backgroundColor: crowd === 'High' ? '#FEE2E2' : '#DCFCE7',
                             color: crowd === 'High' ? '#991B1B' : '#166534',
-                            fontWeight: 500,
+                            fontWeight: 600,
                             display: 'inline-flex',
                             alignItems: 'center',
-                            gap: '4px',
+                            gap: '3px',
                             borderRadius: '6px',
                             padding: '2px 6px',
-                            fontSize: '11px'
+                            fontSize: '10.5px'
                           }}>
-                            ● {crowd === 'High' ? (lang === 'te' ? 'అత్యధిక రద్దీ' : lang === 'hi' ? 'भारी भीड़' : lang === 'ta' ? 'அதிக கூட்டம்' : 'High Crowd') : (lang === 'te' ? 'సాధారణ రద్దీ' : lang === 'hi' ? 'सामान्य भीड़' : lang === 'ta' ? 'குறைந்த கூட்டம்' : 'Moderate Crowd')}
+                            ● {crowd === 'High' ? (lang === 'te' ? 'అత్యధిక రద్దీ' : 'High') : (lang === 'te' ? 'సాధారణ రద్దీ' : 'Moderate')}
                           </span>
-                        ) : null}
+                        )}
 
-                        {(place.tags || []).slice(0, 3).map((tag: string) => (
-                          <span key={tag} className={styles.tag} style={{ backgroundColor: '#F8FAFC', border: '1px solid #E2E8F0', color: '#475569', fontWeight: 500, borderRadius: '6px', padding: '2px 6px', fontSize: '11px' }}>{tag}</span>
+                        {/* Semantic / Thematic Tags */}
+                        <span className={styles.tag} style={{ backgroundColor: '#F8FAFC', border: '1px solid #E2E8F0', color: '#64748B', fontWeight: 500, borderRadius: '6px', padding: '2px 6px', fontSize: '10.5px' }}>
+                          {place.category || place.placeType || 'Spot'}
+                        </span>
+
+                        {(place.tags || []).slice(0, 2).map((tag: string) => (
+                          <span key={tag} className={styles.tag} style={{ backgroundColor: '#F8FAFC', border: '1px solid #E2E8F0', color: '#64748B', fontWeight: 500, borderRadius: '6px', padding: '2px 6px', fontSize: '10.5px' }}>{tag}</span>
                         ))}
                       </div>
                     </div>

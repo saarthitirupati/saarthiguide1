@@ -223,8 +223,8 @@ export default function HotelLoginPage() {
         </form>
 
         <div style={{ marginTop: '20px', paddingTop: '16px', borderTop: '1px solid #F1F5F9', textAlign: 'center' }}>
-          <Link href="/tirupati-hotels" style={{ fontSize: '12px', color: '#0F5132', textDecoration: 'none', fontWeight: 600 }}>
-            ← Back to Stays
+          <Link href="/rooms" style={{ fontSize: '12px', color: '#0F5132', textDecoration: 'none', fontWeight: 600 }}>
+            ← Back to Rooms
           </Link>
         </div>
       </div>

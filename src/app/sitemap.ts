@@ -22,12 +22,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.95,
     },
     {
-      url: `${baseUrl}/tirupati-hotels`,
-      lastModified: now,
-      changeFrequency: 'daily',
-      priority: 0.95,
-    },
-    {
       url: `${baseUrl}/cabs`,
       lastModified: now,
       changeFrequency: 'daily',

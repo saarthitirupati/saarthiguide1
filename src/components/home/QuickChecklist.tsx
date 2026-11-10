@@ -10,8 +10,11 @@ import {
   Mountain, 
   Ticket,
   Play,
+  Square,
+  Bell,
   CheckCircle2,
-  AlertCircle
+  AlertCircle,
+  MapPin
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useLanguage } from '@/lib/useLanguage';
@@ -268,20 +271,25 @@ function formatDisplayDateTime(str?: string): string {
 // getISTDateInfo is imported and re-exported from '@/lib/istDate' above
 
 /**
- * Temple Shikharam / Gopuram Vector Icon
+ * South Indian Temple Gopuram Vector Icon
  */
-function TempleIcon({ color = '#2563EB' }: { color?: string }) {
+function TempleIcon({ color = '#15803D' }: { color?: string }) {
   return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" style={{ flexShrink: 0 }}>
-      <circle cx="12" cy="2.5" r="1.5" fill={color} />
-      <path d="M12 4.5L5 9H19L12 4.5Z" fill={color} />
-      <rect x="4" y="9" width="16" height="2" rx="0.5" fill={color} />
-      <rect x="5.5" y="11" width="2" height="7" rx="0.5" fill={color} />
-      <rect x="9.5" y="11" width="2" height="7" rx="0.5" fill={color} />
-      <rect x="13.5" y="11" width="2" height="7" rx="0.5" fill={color} />
-      <rect x="17.5" y="11" width="2" height="7" rx="0.5" fill={color} />
-      <rect x="3" y="18" width="18" height="2" rx="0.5" fill={color} />
-      <rect x="2" y="20" width="20" height="2" rx="0.5" fill={color} />
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" style={{ flexShrink: 0 }}>
+      {/* Top Kalasam / Stupi */}
+      <circle cx="12" cy="2.5" r="1.2" fill={color} />
+      <path d="M12 3.8v1.5" stroke={color} strokeWidth="1.5" strokeLinecap="round" />
+      {/* Tier 1 */}
+      <path d="M10 5.5h4l1 3H9l1-3z" fill={color} />
+      <rect x="8" y="8.5" width="8" height="1.5" rx="0.4" fill={color} />
+      {/* Tier 2 */}
+      <path d="M8.5 10h7l1 3.5h-9l1-3.5z" fill={color} />
+      <rect x="6.5" y="13.5" width="11" height="1.5" rx="0.4" fill={color} />
+      {/* Tier 3 (Base) */}
+      <path d="M7 15h10l1.2 4.5H5.8L7 15z" fill={color} />
+      {/* Entrance Door */}
+      <path d="M10.2 19.5v-3.2a1.8 1.8 0 0 1 3.6 0v3.2h-3.6z" fill="#FFFFFF" />
+      <rect x="4" y="19.5" width="16" height="2" rx="0.6" fill={color} />
     </svg>
   );
 }
@@ -514,18 +522,19 @@ export function QuickChecklist(props: any) {
     : t.tokensIssuedNote(canonicalTargetDate);
 
   return (
+    <>
     <div
-      onClick={() => router.push('/darshan/ssd-token')}
+      onClick={() => router.push('/ssd-tokens')}
       role="button"
       tabIndex={0}
-      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') router.push('/darshan/ssd-token'); }}
+      onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') router.push('/ssd-tokens'); }}
       style={{
         backgroundColor: '#FFFFFF',
-        borderRadius: '20px',
-        border: '1.5px solid #E2E8F0',
-        padding: '16px 16px 14px',
-        boxShadow: '0 4px 16px rgba(15, 23, 42, 0.04)',
-        margin: '8px 14px 12px',
+        borderRadius: '24px',
+        border: '1px solid #D5ECD8',
+        overflow: 'hidden',
+        boxShadow: '0 4px 20px rgba(10, 78, 51, 0.06)',
+        margin: '0px 12px 12px',
         cursor: 'pointer',
         textDecoration: 'none',
         color: 'inherit',
@@ -533,114 +542,192 @@ export function QuickChecklist(props: any) {
       }}
     >
       {/* ═══════════════════════════════════════════════════
-          1. CARD HEADER
-          ═══════════════════════════════════════════════════ */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '9px' }}>
-          <div style={{
-            width: '32px',
-            height: '32px',
-            borderRadius: '9px',
-            backgroundColor: isIssuing ? '#DCFCE7' : '#E6F4EA',
-            color: '#16A34A',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            flexShrink: 0
-          }}>
-            <Ticket size={17} />
-          </div>
-          <div>
-            <h3 style={{ fontSize: '15px', fontWeight: 800, color: '#0F172A', margin: 0, lineHeight: 1.2, letterSpacing: '-0.01em' }}>
-              {t.ssdDdStatus}
-            </h3>
-            <span style={{ fontSize: '11px', color: '#64748B', fontWeight: 500, marginTop: '2px', display: 'block' }}>
-              {t.updated}: {ist.updatedDisplay}
-            </span>
-          </div>
-        </div>
-
-        <span style={{
-          fontSize: '11px',
-          fontWeight: 700,
-          color: isSsdIssuing ? '#166534' : isSsdPaused ? '#B45309' : '#991B1B',
-              backgroundColor: isSsdIssuing ? '#DCFCE7' : isSsdPaused ? '#FEF3C7' : '#FEE2E2',
-          border: `1px solid ${isIssuing ? '#BBF7D0' : isPaused ? '#FDE68A' : '#FECACA'}`,
-          padding: '3px 10px',
-          borderRadius: '999px',
-          lineHeight: 1,
-          flexShrink: 0
-        }}>
-          {headerBadgeText}
-        </span>
-      </div>
-
-      {/* ═══════════════════════════════════════════════════
-          2. DATE SUMMARY BANNER (Asia/Kolkata Dynamic)
+          1. SACRED GREEN HEADER WITH SUNRISE PANORAMA
           ═══════════════════════════════════════════════════ */}
       <div style={{
-        backgroundColor: isIssuing ? '#F0FDF4' : '#FFF5F5',
-        border: `1px solid ${isIssuing ? '#BBF7D0' : '#FED7D7'}`,
-        borderRadius: '14px',
-        padding: '11px 12px',
-        marginBottom: '12px',
-        overflow: 'hidden',
-        boxSizing: 'border-box'
+        position: 'relative',
+        background: 'linear-gradient(135deg, #053320 0%, #0A4E33 55%, #0B5C3C 100%)',
+        color: '#FFFFFF',
+        padding: '16px 16px 20px',
+        overflow: 'hidden'
       }}>
+        {/* Sunrise Panorama Background on the right */}
         <div style={{
+          position: 'absolute',
+          top: 0,
+          right: 0,
+          bottom: 0,
+          width: '56%',
+          pointerEvents: 'none',
+          opacity: 0.95,
+          zIndex: 1
+        }}>
+          <img
+            src="/images/places/tirumala_sunrise_panorama.jpg"
+            alt="Tirumala Sunrise"
+            style={{
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              objectPosition: 'right center',
+              maskImage: 'linear-gradient(to right, transparent 0%, rgba(0,0,0,0.3) 25%, rgba(0,0,0,1) 80%)',
+              WebkitMaskImage: 'linear-gradient(to right, transparent 0%, rgba(0,0,0,0.3) 25%, rgba(0,0,0,1) 80%)'
+            }}
+          />
+        </div>
+
+        {/* Header Content */}
+        <div style={{
+          position: 'relative',
+          zIndex: 2,
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          gap: '8px',
-          flexWrap: 'wrap'
+          gap: '12px'
         }}>
-          {/* Left: Calendar Icon + Date */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '9px', minWidth: 0 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
             <div style={{
-              width: '32px',
-              height: '32px',
-              borderRadius: '9px',
-              backgroundColor: '#FFFFFF',
-              border: `1px solid ${isIssuing ? '#BBF7D0' : '#FEE2E2'}`,
+              width: '38px',
+              height: '38px',
+              borderRadius: '11px',
+              background: 'rgba(255, 255, 255, 0.16)',
+              backdropFilter: 'blur(8px)',
+              border: '1px solid rgba(255, 255, 255, 0.28)',
+              color: '#86EFAC',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              color: isIssuing ? '#16A34A' : '#DC2626',
               flexShrink: 0
             }}>
-              <Calendar size={16} />
+              <Ticket size={20} strokeWidth={2.2} />
             </div>
-
-            <div style={{ minWidth: 0 }}>
-              <span style={{ fontSize: '10px', color: '#64748B', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.03em', display: 'block', lineHeight: 1.1 }}>
-                {activeDateLabel}
-              </span>
-              <span style={{ fontSize: '14px', fontWeight: 800, color: '#0F172A', marginTop: '2px', display: 'block', letterSpacing: '-0.01em', lineHeight: 1.2 }}>
-                {activeTokenDate}
+            <div>
+              <h3 style={{
+                fontSize: '16.5px',
+                fontWeight: 800,
+                color: '#FFFFFF',
+                margin: 0,
+                lineHeight: 1.2,
+                letterSpacing: '-0.01em'
+              }}>
+                {t.ssdDdStatus}
+              </h3>
+              <span style={{
+                fontSize: '11.5px',
+                color: '#D1FAE5',
+                fontWeight: 500,
+                marginTop: '2px',
+                display: 'block',
+                opacity: 0.95
+              }}>
+                {lang === 'te' ? 'తిరుమల సర్వదర్శనం టోకెన్లు' : 'Tirumala Sarva Darshan Tokens'}
               </span>
             </div>
           </div>
 
-          {/* Right: Status Badge */}
-          <span style={{
+          <div style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '5px',
+            padding: '4px 11px',
+            borderRadius: '9999px',
+            backgroundColor: isCompleted ? '#FEE2E2' : '#DCFCE7',
+            color: isCompleted ? '#B91C1C' : '#15803D',
             fontSize: '11px',
-            fontWeight: 700,
-            color: isIssuing ? '#166534' : '#991B1B',
-            backgroundColor: isIssuing ? '#DCFCE7' : '#FEE2E2',
-            border: `1px solid ${isIssuing ? '#BBF7D0' : '#FECACA'}`,
-            padding: '3px 8px',
-            borderRadius: '6px',
-            flexShrink: 0,
-            lineHeight: 1.2
+            fontWeight: 800,
+            boxShadow: '0 2px 6px rgba(0,0,0,0.12)',
+            flexShrink: 0
           }}>
-            {todayStatusText}
-          </span>
+            <span style={{
+              width: '6px',
+              height: '6px',
+              borderRadius: '50%',
+              backgroundColor: isCompleted ? '#DC2626' : '#16A34A'
+            }} />
+            <span>{headerBadgeText}</span>
+          </div>
+        </div>
+      </div>
+
+      {/* ═══════════════════════════════════════════════════
+          WHITE CARD BODY
+          ═══════════════════════════════════════════════════ */}
+      <div style={{
+        backgroundColor: '#FFFFFF',
+        padding: '14px 14px 14px',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '10px'
+      }}>
+        {/* Updated Timestamp Pill */}
+        <div style={{
+          display: 'inline-flex',
+          alignItems: 'center',
+          gap: '5px',
+          padding: '3px 9px',
+          borderRadius: '9999px',
+          backgroundColor: '#F1F5F9',
+          color: '#475569',
+          fontSize: '10.5px',
+          fontWeight: 600,
+          alignSelf: 'flex-start'
+        }}>
+          <Clock size={11} strokeWidth={2.4} color="#64748B" />
+          <span>{t.updated}: {ist.updatedDisplay}</span>
         </div>
 
-        <p style={{ fontSize: '11.5px', color: '#64748B', margin: '7px 0 0 0', fontWeight: 500, lineHeight: 1.35 }}>
-          {todayNoteText}
-        </p>
-      </div>
+        {/* ── CARD 1: TODAY'S DATE & QUOTA STATUS ── */}
+        <div style={{
+          background: 'linear-gradient(135deg, #FFF5F5 0%, #FEF2F2 100%)',
+          border: '1px solid #FEE2E2',
+          borderRadius: '16px',
+          padding: '11px 12px'
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px', flexWrap: 'wrap' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <div style={{
+                width: '30px',
+                height: '30px',
+                borderRadius: '9px',
+                backgroundColor: '#FEE2E2',
+                color: '#DC2626',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexShrink: 0
+              }}>
+                <Calendar size={15} strokeWidth={2.3} />
+              </div>
+              <span style={{ fontSize: '12.5px', fontWeight: 800, color: '#1E293B' }}>
+                {activeDateLabel} • {activeTokenDate}
+              </span>
+            </div>
+
+            <div style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              padding: '2.5px 8px',
+              borderRadius: '9999px',
+              backgroundColor: '#FEE2E2',
+              color: '#991B1B',
+              fontSize: '10px',
+              fontWeight: 800,
+              border: '1px solid #FECACA'
+            }}>
+              {todayStatusText}
+            </div>
+          </div>
+
+          <p style={{
+            fontSize: '11px',
+            color: '#7F1D1D',
+            fontWeight: 500,
+            margin: '7px 0 0 0',
+            lineHeight: 1.4
+          }}>
+            {todayNoteText}
+          </p>
+        </div>
 
       {/* ═══════════════════════════════════════════════════
           3. SEPARATE SSD & DD TOKEN CARDS WITH TIMELINE
@@ -659,76 +746,83 @@ export function QuickChecklist(props: any) {
           }}
           style={{
             cursor: 'pointer',
-          backgroundColor: '#F8FAFC',
-          border: '1px solid #E2E8F0',
-          borderRadius: '16px',
-          padding: '12px 12px',
-          display: 'flex',
-          flexDirection: 'column',
-          minWidth: 0
-        }}>
+            background: 'linear-gradient(180deg, #FFFFFF 0%, #F5FBF6 100%)',
+            border: '1px solid #D5ECD8',
+            borderRadius: '16px',
+            padding: '11px 10px',
+            display: 'flex',
+            flexDirection: 'column',
+            minWidth: 0,
+            boxShadow: '0 1px 4px rgba(10, 78, 51, 0.03)'
+          }}
+        >
           {/* Top Row: Icon + Title */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '7px', marginBottom: '6px' }}>
             <div style={{
-              width: '26px',
-              height: '26px',
-              borderRadius: '50%',
-              backgroundColor: '#EFF6FF',
+              width: '30px',
+              height: '30px',
+              borderRadius: '9px',
+              backgroundColor: '#DCFCE7',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               flexShrink: 0
             }}>
-              <TempleIcon color="#2563EB" />
+              <TempleIcon color="#15803D" />
             </div>
-            <h4 style={{ fontSize: '13px', fontWeight: 800, color: '#0F172A', margin: 0 }}>
-              {t.ssdTokens}
-            </h4>
+            <div style={{ minWidth: 0 }}>
+              <h4 style={{ fontSize: '12.5px', fontWeight: 800, color: '#0F172A', margin: 0, lineHeight: 1.2 }}>
+                {t.ssdTokens}
+              </h4>
+              <span style={{ fontSize: '9.5px', color: '#64748B', fontWeight: 600, display: 'block', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                {lang === 'te' ? 'స్లాటెడ్ సర్వదర్శనం' : 'Slotted Sarva Darshan'}
+              </span>
+            </div>
           </div>
 
           {/* Quota Number: [Left] / [Total] */}
-          <div style={{ margin: '2px 0 6px 0', display: 'flex', alignItems: 'baseline', gap: '3px', flexWrap: 'wrap' }}>
-            <span style={{ fontSize: '16px', fontWeight: 800, color: '#0F172A', letterSpacing: '-0.02em', lineHeight: 1.1 }}>
-              {isSsdCompleted ? '0' : (hasVerifiedSsdLeft ? Number(rawSsdLeftVal).toLocaleString('en-IN') : '--')}
+          <div style={{ margin: '3px 0 5px 0', display: 'flex', alignItems: 'baseline', gap: '3px' }}>
+            <span style={{ fontSize: '22px', fontWeight: 900, color: '#0A4E33', lineHeight: 1 }}>
+              {ssdLeftCount}
             </span>
-            <span style={{ fontSize: '11px', color: isSsdCompleted ? '#DC2626' : '#16A34A', fontWeight: 700 }}>
-              {t.tokensAvailable}
-            </span>
-            <span style={{ fontSize: '11.5px', color: '#64748B', fontWeight: 600 }}>
+            <span style={{ fontSize: '12px', fontWeight: 700, color: '#64748B' }}>
               / {formatQuotaNumber(ssdTotalCount, '10,000')}
             </span>
           </div>
 
           {/* Status Badge */}
-          <div style={{ marginBottom: '12px' }}>
+          <div style={{ marginBottom: '8px' }}>
             <span style={{
-              fontSize: '10px',
-              fontWeight: 700,
-              color: isIssuing ? '#166534' : isPaused ? '#B45309' : '#991B1B',
-              backgroundColor: isIssuing ? '#DCFCE7' : isPaused ? '#FEF3C7' : '#FEE2E2',
+              fontSize: '9.5px',
+              fontWeight: 800,
+              color: isSsdCompleted ? '#991B1B' : '#15803D',
+              backgroundColor: isSsdCompleted ? '#FEE2E2' : '#DCFCE7',
               padding: '2px 7px',
-              borderRadius: '6px',
+              borderRadius: '9999px',
               display: 'inline-flex',
               alignItems: 'center',
-              gap: '4px'
+              gap: '4px',
+              border: `1px solid ${isSsdCompleted ? '#FECACA' : '#BBF7D0'}`
             }}>
               <span style={{
-                width: '6px',
-                height: '6px',
+                width: '5px',
+                height: '5px',
                 borderRadius: '50%',
-                backgroundColor: isSsdIssuing ? '#16A34A' : isSsdPaused ? '#D97706' : '#DC2626'
+                backgroundColor: isSsdCompleted ? '#DC2626' : '#16A34A'
               }} />
               {isSsdIssuing ? t.issuingBadge : isSsdPaused ? t.pausedBadge : t.completed}
             </span>
           </div>
 
+          <div style={{ height: '1px', backgroundColor: '#E2E8F0', margin: '2px 0 6px 0' }} />
+
           {/* Vertical Timeline */}
-          <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: '5px' }}>
             {/* Timeline Item 1: Started at */}
-            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '6px' }}>
+            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '5px' }}>
               <div style={{
-                width: '14px',
-                height: '14px',
+                width: '13px',
+                height: '13px',
                 borderRadius: '50%',
                 backgroundColor: ssdRawStart ? '#DCFCE7' : '#F1F5F9',
                 display: 'flex',
@@ -741,37 +835,37 @@ export function QuickChecklist(props: any) {
                 <Play size={7} fill={ssdRawStart ? '#16A34A' : '#64748B'} />
               </div>
               <div style={{ minWidth: 0, flex: 1 }}>
-                <span style={{ fontSize: '10px', color: '#64748B', fontWeight: 500, display: 'block', lineHeight: 1.2 }}>
+                <span style={{ fontSize: '9px', color: '#64748B', fontWeight: 600, display: 'block', lineHeight: 1.2 }}>
                   {t.startedAt}
                 </span>
-                <span style={{ fontSize: '11px', color: '#1E293B', fontWeight: 700, display: 'block', marginTop: '1px', lineHeight: 1.25, wordBreak: 'normal' }}>
+                <span style={{ fontSize: '10px', color: '#0F172A', fontWeight: 800, display: 'block', marginTop: '1px', lineHeight: 1.25 }}>
                   {formatDisplayDateTime(ssdStartDisplay)}
                 </span>
               </div>
             </div>
 
-            {/* Timeline Item 2: Quota completed at / Status (hidden when issuing to avoid duplicate count) */}
+            {/* Timeline Item 2: Quota completed at / Status */}
             {!isSsdIssuing && (
-              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '6px' }}>
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '5px' }}>
                 <div style={{
-                  width: '14px',
-                  height: '14px',
-                  borderRadius: '50%',
-                  backgroundColor: ssdRow2Bg,
+                  width: '13px',
+                  height: '13px',
+                  borderRadius: '2.5px',
+                  backgroundColor: '#FEE2E2',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  color: ssdRow2Color,
+                  color: '#DC2626',
                   flexShrink: 0,
                   marginTop: '1px'
                 }}>
-                  <div style={{ width: '5px', height: '5px', borderRadius: '50%', backgroundColor: ssdRow2Color }} />
+                  <Square size={6} fill="#DC2626" />
                 </div>
                 <div style={{ minWidth: 0, flex: 1 }}>
-                  <span style={{ fontSize: '10px', color: '#64748B', fontWeight: 500, display: 'block', lineHeight: 1.2 }}>
+                  <span style={{ fontSize: '9px', color: '#64748B', fontWeight: 600, display: 'block', lineHeight: 1.2 }}>
                     {ssdRow2Title}
                   </span>
-                  <span style={{ fontSize: '11px', color: '#1E293B', fontWeight: 700, display: 'block', marginTop: '1px', lineHeight: 1.25, wordBreak: 'normal' }}>
+                  <span style={{ fontSize: '10px', color: '#0F172A', fontWeight: 800, display: 'block', marginTop: '1px', lineHeight: 1.25 }}>
                     {formatDisplayDateTime(ssdRow2Value)}
                   </span>
                 </div>
@@ -788,21 +882,23 @@ export function QuickChecklist(props: any) {
           }}
           style={{
             cursor: 'pointer',
-          backgroundColor: '#F8FAFC',
-          border: '1px solid #E2E8F0',
-          borderRadius: '16px',
-          padding: '12px 12px',
-          display: 'flex',
-          flexDirection: 'column',
-          minWidth: 0
-        }}>
+            background: 'linear-gradient(180deg, #FFFFFF 0%, #FFFDF5 100%)',
+            border: '1px solid #FEF3C7',
+            borderRadius: '16px',
+            padding: '11px 10px',
+            display: 'flex',
+            flexDirection: 'column',
+            minWidth: 0,
+            boxShadow: '0 1px 4px rgba(217, 119, 6, 0.03)'
+          }}
+        >
           {/* Top Row: Icon + Title */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '7px', marginBottom: '6px' }}>
             <div style={{
-              width: '26px',
-              height: '26px',
-              borderRadius: '50%',
-              backgroundColor: '#FFFBEB',
+              width: '30px',
+              height: '30px',
+              borderRadius: '9px',
+              backgroundColor: '#FEF3C7',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
@@ -810,54 +906,59 @@ export function QuickChecklist(props: any) {
             }}>
               <TempleIcon color="#D97706" />
             </div>
-            <h4 style={{ fontSize: '13px', fontWeight: 800, color: '#0F172A', margin: 0 }}>
-              {t.ddTokens}
-            </h4>
+            <div style={{ minWidth: 0 }}>
+              <h4 style={{ fontSize: '12.5px', fontWeight: 800, color: '#0F172A', margin: 0, lineHeight: 1.2 }}>
+                {t.ddTokens}
+              </h4>
+              <span style={{ fontSize: '9.5px', color: '#64748B', fontWeight: 600, display: 'block', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                {lang === 'te' ? 'దివ్యదర్శనం (మెట్ల మార్గం)' : 'Divya Darshan (Footpath)'}
+              </span>
+            </div>
           </div>
 
           {/* Quota Number: [Left] / [Total] */}
-          <div style={{ margin: '2px 0 6px 0', display: 'flex', alignItems: 'baseline', gap: '3px', flexWrap: 'wrap' }}>
-            <span style={{ fontSize: '16px', fontWeight: 800, color: '#0F172A', letterSpacing: '-0.02em', lineHeight: 1.1 }}>
-              {isDdNowCompleted ? '0' : (hasVerifiedDdLeft ? Number(rawDdLeftVal).toLocaleString('en-IN') : '--')}
+          <div style={{ margin: '3px 0 5px 0', display: 'flex', alignItems: 'baseline', gap: '3px' }}>
+            <span style={{ fontSize: '22px', fontWeight: 900, color: '#0A4E33', lineHeight: 1 }}>
+              {ddLeftCount}
             </span>
-            <span style={{ fontSize: '11px', color: isDdNowCompleted ? '#DC2626' : '#16A34A', fontWeight: 700 }}>
-              {t.tokensAvailable}
-            </span>
-            <span style={{ fontSize: '11.5px', color: '#64748B', fontWeight: 600 }}>
+            <span style={{ fontSize: '12px', fontWeight: 700, color: '#64748B' }}>
               / {formatQuotaNumber(ddTotalCount, '2,000')}
             </span>
           </div>
 
           {/* Status Badge */}
-          <div style={{ marginBottom: '12px' }}>
+          <div style={{ marginBottom: '8px' }}>
             <span style={{
-              fontSize: '10px',
-              fontWeight: 700,
-              color: isDdNowIssuing ? '#166534' : isDdNowPaused ? '#B45309' : '#991B1B',
-              backgroundColor: isDdNowIssuing ? '#DCFCE7' : isDdNowPaused ? '#FEF3C7' : '#FEE2E2',
+              fontSize: '9.5px',
+              fontWeight: 800,
+              color: isDdNowCompleted ? '#991B1B' : '#15803D',
+              backgroundColor: isDdNowCompleted ? '#FEE2E2' : '#DCFCE7',
               padding: '2px 7px',
-              borderRadius: '6px',
+              borderRadius: '9999px',
               display: 'inline-flex',
               alignItems: 'center',
-              gap: '4px'
+              gap: '4px',
+              border: `1px solid ${isDdNowCompleted ? '#FECACA' : '#BBF7D0'}`
             }}>
               <span style={{
-                width: '6px',
-                height: '6px',
+                width: '5px',
+                height: '5px',
                 borderRadius: '50%',
-                backgroundColor: isDdNowIssuing ? '#16A34A' : isDdNowPaused ? '#D97706' : '#DC2626'
+                backgroundColor: isDdNowCompleted ? '#DC2626' : '#16A34A'
               }} />
               {isDdNowIssuing ? t.issuingBadge : isDdNowPaused ? t.pausedBadge : t.completed}
             </span>
           </div>
 
+          <div style={{ height: '1px', backgroundColor: '#E2E8F0', margin: '2px 0 6px 0' }} />
+
           {/* Vertical Timeline */}
-          <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          <div style={{ marginTop: 'auto', display: 'flex', flexDirection: 'column', gap: '5px' }}>
             {/* Timeline Item 1: Started at */}
-            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '6px' }}>
+            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '5px' }}>
               <div style={{
-                width: '14px',
-                height: '14px',
+                width: '13px',
+                height: '13px',
                 borderRadius: '50%',
                 backgroundColor: ddRawStart ? '#DCFCE7' : '#F1F5F9',
                 display: 'flex',
@@ -867,40 +968,40 @@ export function QuickChecklist(props: any) {
                 flexShrink: 0,
                 marginTop: '1px'
               }}>
-                <Play size={7} fill={ddRawStart ? '#16A34A' : '#64748B'} />
+                <Play size={7} fill="#16A34A" />
               </div>
               <div style={{ minWidth: 0, flex: 1 }}>
-                <span style={{ fontSize: '10px', color: '#64748B', fontWeight: 500, display: 'block', lineHeight: 1.2 }}>
+                <span style={{ fontSize: '9px', color: '#64748B', fontWeight: 600, display: 'block', lineHeight: 1.2 }}>
                   {t.startedAt}
                 </span>
-                <span style={{ fontSize: '11px', color: '#1E293B', fontWeight: 700, display: 'block', marginTop: '1px', lineHeight: 1.25, wordBreak: 'normal' }}>
+                <span style={{ fontSize: '10px', color: '#0F172A', fontWeight: 800, display: 'block', marginTop: '1px', lineHeight: 1.25 }}>
                   {formatDisplayDateTime(ddStartDisplay)}
                 </span>
               </div>
             </div>
 
-            {/* Timeline Item 2: Quota completed at / Status (hidden when issuing to avoid duplicate count) */}
+            {/* Timeline Item 2: Quota completed at / Status */}
             {!isDdNowIssuing && (
-              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '6px' }}>
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '5px' }}>
                 <div style={{
-                  width: '14px',
-                  height: '14px',
-                  borderRadius: '50%',
-                  backgroundColor: ddRow2Bg,
+                  width: '13px',
+                  height: '13px',
+                  borderRadius: '2.5px',
+                  backgroundColor: '#FEE2E2',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  color: ddRow2Color,
+                  color: '#DC2626',
                   flexShrink: 0,
                   marginTop: '1px'
                 }}>
-                  <div style={{ width: '5px', height: '5px', borderRadius: '50%', backgroundColor: ddRow2Color }} />
+                  <Square size={6} fill="#DC2626" />
                 </div>
                 <div style={{ minWidth: 0, flex: 1 }}>
-                  <span style={{ fontSize: '10px', color: '#64748B', fontWeight: 500, display: 'block', lineHeight: 1.2 }}>
+                  <span style={{ fontSize: '9px', color: '#64748B', fontWeight: 600, display: 'block', lineHeight: 1.2 }}>
                     {ddRow2Title}
                   </span>
-                  <span style={{ fontSize: '11px', color: '#1E293B', fontWeight: 700, display: 'block', marginTop: '1px', lineHeight: 1.25, wordBreak: 'normal' }}>
+                  <span style={{ fontSize: '10px', color: '#0F172A', fontWeight: 800, display: 'block', marginTop: '1px', lineHeight: 1.25 }}>
                     {formatDisplayDateTime(ddRow2Value)}
                   </span>
                 </div>
@@ -911,16 +1012,17 @@ export function QuickChecklist(props: any) {
       </div>
 
       {/* ═══════════════════════════════════════════════════
-          4. NEXT EXPECTED RELEASE (Horizontal Information Row)
+          4. NEXT EXPECTED RELEASE (Card with Deep Green Button)
           ═══════════════════════════════════════════════════ */}
       <div style={{
-        backgroundColor: '#F0F7FF',
-        border: '1px solid #DBEAFE',
-        borderRadius: '14px',
-        padding: '10px 12px',
+        backgroundColor: '#FFFFFF',
+        border: '1px solid #E2E8F0',
+        borderRadius: '16px',
+        padding: '11px 12px',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
+        gap: '8px',
         marginBottom: '10px'
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '9px', minWidth: 0 }}>
@@ -928,32 +1030,41 @@ export function QuickChecklist(props: any) {
             width: '32px',
             height: '32px',
             borderRadius: '50%',
-            backgroundColor: '#DBEAFE',
-            color: '#1D4ED8',
+            backgroundColor: '#FEF3C7',
+            color: '#B45309',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             flexShrink: 0
           }}>
-            <Clock size={16} />
+            <Clock size={16} strokeWidth={2.4} />
           </div>
           <div style={{ minWidth: 0 }}>
-            <span style={{ fontSize: '12.5px', fontWeight: 700, color: '#1E3A8A', display: 'block', lineHeight: 1.2 }}>
+            <span style={{ fontSize: '12.5px', fontWeight: 800, color: '#0F172A', display: 'block', lineHeight: 1.2 }}>
               {nextReleaseTitle}
             </span>
-            {nextReleaseDateLabel ? (
-              <span style={{ fontSize: '11px', color: '#64748B', fontWeight: 500, marginTop: '2px', display: 'block' }}>
-                {nextReleaseDateLabel}
-              </span>
-            ) : null}
+            <span style={{ fontSize: '10.5px', color: '#64748B', fontWeight: 600, marginTop: '2px', display: 'block' }}>
+              {nextReleaseDateLabel || (lang === 'te' ? '11 నవంబర్ 2026 (రేపు)' : '11 Nov 2026 (Tomorrow)')}
+            </span>
           </div>
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '3px', flexShrink: 0 }}>
-          <span style={{ fontSize: '13.5px', fontWeight: 800, color: '#1E3A8A' }}>
-            {nextReleaseDisplay}
-          </span>
-          <ChevronRight size={14} color="#1E3A8A" />
+        <div style={{
+          background: '#064E3B',
+          color: '#FFFFFF',
+          borderRadius: '9999px',
+          padding: '6px 12px',
+          display: 'inline-flex',
+          alignItems: 'center',
+          gap: '5px',
+          fontSize: '11.5px',
+          fontWeight: 800,
+          boxShadow: '0 2px 6px rgba(6, 78, 59, 0.2)',
+          flexShrink: 0
+        }}>
+          <Bell size={12} strokeWidth={2.5} />
+          <span>{nextReleaseDisplay !== t.notAnnouncedYet ? nextReleaseDisplay : '5:30 PM'}</span>
+          <ChevronRight size={12} strokeWidth={2.5} />
         </div>
       </div>
 
@@ -961,10 +1072,10 @@ export function QuickChecklist(props: any) {
           5. GUIDANCE CARD
           ═══════════════════════════════════════════════════ */}
       <div style={{
-        backgroundColor: '#F0FDF4',
-        border: '1px solid #DCFCE7',
-        borderRadius: '14px',
-        padding: '10px 12px',
+        background: 'linear-gradient(135deg, #F0FDF4 0%, #E8F8ED 100%)',
+        border: '1px solid #BBF7D0',
+        borderRadius: '16px',
+        padding: '11px 12px',
         display: 'flex',
         alignItems: 'flex-start',
         gap: '9px',
@@ -975,102 +1086,321 @@ export function QuickChecklist(props: any) {
           height: '28px',
           borderRadius: '50%',
           backgroundColor: '#DCFCE7',
-          color: '#166534',
+          color: '#15803D',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
           flexShrink: 0,
           marginTop: '1px'
         }}>
-          <Lightbulb size={16} />
+          <Lightbulb size={15} strokeWidth={2.3} />
         </div>
         <div>
-          <span style={{ fontSize: '12px', fontWeight: 700, color: '#14532D', display: 'block', lineHeight: 1.3 }}>
+          <span style={{ fontSize: '12px', fontWeight: 800, color: '#14532D', display: 'block', lineHeight: 1.3 }}>
             {guidanceTitle}
           </span>
-          <span style={{ fontSize: '11px', color: '#475569', display: 'block', marginTop: '2px', lineHeight: 1.35 }}>
+          <span style={{ fontSize: '10.5px', color: '#166534', display: 'block', marginTop: '2px', lineHeight: 1.35, fontWeight: 500 }}>
             {guidanceSubtitle}
           </span>
         </div>
       </div>
 
-      {/* ═══════════════════════════════════════════════════
-          6. COLLECTION CENTRES (Preserved & Responsive)
-          ═══════════════════════════════════════════════════ */}
-      <div style={{ borderTop: '1px solid #F1F5F9', paddingTop: '10px' }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
-          <span style={{ fontSize: '10.5px', fontWeight: 700, color: '#64748B', letterSpacing: '0.04em', textTransform: 'uppercase' }}>
-            {t.collectionCentres}
-          </span>
-          <span style={{ fontSize: '10.5px', fontWeight: 600, color: '#0F5132' }}>
-            {t.tapForDirections}
-          </span>
+      </div>
+    </div>
+
+    {/* ═══════════════════════════════════════════════════
+        CARD 2: COLLECTION CENTRES (SACRED GREEN HEADER)
+        ═══════════════════════════════════════════════════ */}
+    <div
+      style={{
+        backgroundColor: '#FFFFFF',
+        borderRadius: '24px',
+        border: '1px solid #D5ECD8',
+        overflow: 'hidden',
+        boxShadow: '0 4px 20px rgba(10, 78, 51, 0.06)',
+        margin: '0px 12px 10px',
+        fontFamily: 'var(--font-sans), Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
+      }}
+    >
+      {/* 1. Sacred Green Header with Gopuram Panorama */}
+      <div style={{
+        position: 'relative',
+        background: 'linear-gradient(135deg, #053320 0%, #0A4E33 55%, #0B5C3C 100%)',
+        color: '#FFFFFF',
+        padding: '14px 16px',
+        overflow: 'hidden'
+      }}>
+        {/* Gopuram Sunrise Panorama on the right */}
+        <div style={{
+          position: 'absolute',
+          top: 0,
+          right: 0,
+          bottom: 0,
+          width: '46%',
+          pointerEvents: 'none',
+          opacity: 0.95,
+          maskImage: 'linear-gradient(to right, transparent 0%, rgba(0,0,0,0.4) 20%, rgba(0,0,0,1) 55%)',
+          WebkitMaskImage: 'linear-gradient(to right, transparent 0%, rgba(0,0,0,0.4) 20%, rgba(0,0,0,1) 55%)',
+          overflow: 'hidden'
+        }}>
+          <img
+            src="/images/places/tirumala_sunrise_panorama.jpg"
+            alt="Tirumala Temple Gopuram"
+            style={{
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              objectPosition: 'right center',
+              display: 'block'
+            }}
+          />
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: '8px' }}>
-          {[
-            {
-              id: 'vishnu-nivasam',
-              name: t.vishnuNivasam,
-              sub: t.oppRailway,
-              icon: <Train size={14} color="#2563EB" />,
-              iconBg: '#EFF6FF',
-              url: 'https://www.google.com/maps/place/Vishnu+Nivasam/@13.6292776,79.4215889,17z/data=!3m1!4b1!4m6!3m5!1s0x3a4d4bbbe2ad2eff:0x6b655eee58504269!8m2!3d13.6292776!4d79.4215889!16s%2Fg%2F11g1q7vspv'
-            },
-            {
-              id: 'srinivasam',
-              name: t.srinivasam,
-              sub: t.oppBusStand,
-              icon: <Bus size={14} color="#16A34A" />,
-              iconBg: '#F0FDF4',
-              url: 'https://www.google.com/maps/place/Srinivasam/@13.6315627,79.4288389,17z/data=!3m1!4b1!4m6!3m5!1s0x3a4d4b1372b4101d:0x5da265ff8e42d9fa!8m2!3d13.6315627!4d79.4288389!16s%2Fg%2F1pyqs92yw'
-            },
-            {
-              id: 'bhudevi',
-              name: t.bhudevi,
-              sub: t.nearAlipiri,
-              icon: <Mountain size={14} color="#D97706" />,
-              iconBg: '#FFFBEB',
-              url: 'https://www.google.com/maps/place/Tirupati+Temple+Ticket+Booking/@13.6472334,79.4096899,18z/data=!3m1!4b1!4m6!3m5!1s0x3a4d4bca25aa01fd:0x2800c58e092405dc!8m2!3d13.6472334!4d79.4096899!16s%2Fg%2F11nrvw17f7'
-            }
-          ].map(c => (
+        {/* Header Left: Circular Icon & Titles */}
+        <div style={{ position: 'relative', zIndex: 1, display: 'flex', alignItems: 'center', gap: '10px' }}>
+          <div style={{
+            width: '36px',
+            height: '36px',
+            borderRadius: '50%',
+            background: 'rgba(255, 255, 255, 0.16)',
+            border: '1px solid rgba(255, 255, 255, 0.25)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexShrink: 0
+          }}>
+            <MapPin size={18} color="#FFFFFF" strokeWidth={2.4} />
+          </div>
+          <div>
+            <h3 style={{
+              fontSize: '15.5px',
+              fontWeight: 800,
+              color: '#FFFFFF',
+              margin: 0,
+              letterSpacing: '-0.015em',
+              lineHeight: 1.2
+            }}>
+              {lang === 'te' ? 'టోకెన్ కౌంటర్లు' : 'Collection Centres'}
+            </h3>
+            <p style={{
+              fontSize: '11px',
+              color: 'rgba(255, 255, 255, 0.85)',
+              margin: '2px 0 0 0',
+              fontWeight: 500
+            }}>
+              {lang === 'te' ? 'SSD / DD టోకెన్ జారీ కేంద్రాలు' : 'SSD / DD Token Collection Locations'}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* 2. Three Hub Cards in Grid */}
+      <div style={{ padding: '12px 10px 14px' }}>
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(3, minmax(0, 1fr))',
+          gap: '8px'
+        }}>
+          {/* 1. Vishnu Nivasam */}
+          <div style={{
+            background: 'linear-gradient(180deg, #FFFFFF 55%, #F0F7FF 100%)',
+            border: '1px solid #DBEAFE',
+            borderRadius: '16px',
+            padding: '10px 6px 10px',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            textAlign: 'center',
+            boxShadow: '0 2px 8px rgba(37, 99, 235, 0.04)',
+            boxSizing: 'border-box'
+          }}>
+            <div style={{
+              width: '28px',
+              height: '28px',
+              borderRadius: '50%',
+              background: '#EFF6FF',
+              border: '1px solid #DBEAFE',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginBottom: '4px'
+            }}>
+              <Train size={14} color="#2563EB" strokeWidth={2.4} />
+            </div>
+            <div style={{ width: '100%', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '2px 0 4px', overflow: 'hidden' }}>
+              <img
+                src="/images/places/hub_vishnu_nivasam.png?v=2"
+                alt="Vishnu Nivasam Complex"
+                style={{ maxHeight: '100%', maxWidth: '95%', objectFit: 'contain', display: 'block' }}
+              />
+            </div>
+            <span style={{ fontSize: '11px', fontWeight: 800, color: '#0F172A', lineHeight: 1.2 }}>
+              {lang === 'te' ? 'విష్ణు నివాసం' : 'Vishnu Nivasam'}
+            </span>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '2px', fontSize: '9px', color: '#2563EB', fontWeight: 600, margin: '3px 0 8px' }}>
+              <MapPin size={9} color="#2563EB" />
+              <span>{lang === 'te' ? 'రైల్వే స్టేషన్' : 'Opp. Railway Station'}</span>
+            </div>
             <a
-              key={c.id}
-              href={c.url}
+              href="https://www.google.com/maps/place/Vishnu+Nivasam/@13.6292776,79.4215889,17z"
               target="_blank"
               rel="noopener noreferrer"
-              onClick={(e) => e.stopPropagation()}
               style={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                textAlign: 'center',
-                padding: '10px 4px',
-                borderRadius: '12px',
-                background: '#F8FAFC',
-                border: '1px solid #E2E8F0',
+                width: '100%',
+                padding: '6px 2px',
+                background: '#0F5132',
+                color: '#FFFFFF',
+                borderRadius: '9999px',
+                fontSize: '10px',
+                fontWeight: 700,
                 textDecoration: 'none',
-                cursor: 'pointer',
-                transition: 'background 0.15s ease, border-color 0.15s ease',
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '2px',
+                boxShadow: '0 2px 6px rgba(15, 81, 50, 0.22)',
                 boxSizing: 'border-box'
               }}
             >
-              <div style={{ width: '28px', height: '28px', borderRadius: '50%', background: c.iconBg, display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '4px' }}>
-                {c.icon}
-              </div>
-              <span className="notranslate" style={{ fontSize: '11px', fontWeight: 700, color: '#1E293B', lineHeight: 1.2 }}>
-                {c.name}
-              </span>
-              <span style={{ fontSize: '9px', color: '#64748B', fontWeight: 500, marginTop: '2px' }}>
-                {c.sub}
-              </span>
-              <span style={{ marginTop: '6px', fontSize: '9px', fontWeight: 600, color: '#0F5132', background: '#F0FDF4', border: '1px solid #BBF7D0', padding: '2px 6px', borderRadius: '999px', display: 'inline-flex', alignItems: 'center', gap: '2px' }}>
-                {t.navigate}
-              </span>
+              <span>{lang === 'te' ? 'నావిగేట్' : 'Navigate'}</span>
+              <ChevronRight size={11} strokeWidth={2.8} />
             </a>
-          ))}
+          </div>
+
+          {/* 2. Srinivasam */}
+          <div style={{
+            background: 'linear-gradient(180deg, #FFFFFF 55%, #F0FDF4 100%)',
+            border: '1px solid #DCFCE7',
+            borderRadius: '16px',
+            padding: '10px 6px 10px',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            textAlign: 'center',
+            boxShadow: '0 2px 8px rgba(22, 101, 52, 0.04)',
+            boxSizing: 'border-box'
+          }}>
+            <div style={{
+              width: '28px',
+              height: '28px',
+              borderRadius: '50%',
+              background: '#F0FDF4',
+              border: '1px solid #DCFCE7',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginBottom: '4px'
+            }}>
+              <Bus size={14} color="#16A34A" strokeWidth={2.4} />
+            </div>
+            <div style={{ width: '100%', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '2px 0 4px', overflow: 'hidden' }}>
+              <img
+                src="/images/places/hub_srinivasam.png?v=2"
+                alt="Srinivasam Complex"
+                style={{ maxHeight: '100%', maxWidth: '95%', objectFit: 'contain', display: 'block' }}
+              />
+            </div>
+            <span style={{ fontSize: '11px', fontWeight: 800, color: '#0F172A', lineHeight: 1.2 }}>
+              {lang === 'te' ? 'శ్రీనివాసం' : 'Srinivasam'}
+            </span>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '2px', fontSize: '9px', color: '#166534', fontWeight: 600, margin: '3px 0 8px' }}>
+              <MapPin size={9} color="#166534" />
+              <span>{lang === 'te' ? 'బస్ స్టాండ్' : 'Opp. Bus Stand'}</span>
+            </div>
+            <a
+              href="https://www.google.com/maps/place/Srinivasam/@13.6315627,79.4288389,17z"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                width: '100%',
+                padding: '6px 2px',
+                background: '#0F5132',
+                color: '#FFFFFF',
+                borderRadius: '9999px',
+                fontSize: '10px',
+                fontWeight: 700,
+                textDecoration: 'none',
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '2px',
+                boxShadow: '0 2px 6px rgba(15, 81, 50, 0.22)',
+                boxSizing: 'border-box'
+              }}
+            >
+              <span>{lang === 'te' ? 'నావిగేట్' : 'Navigate'}</span>
+              <ChevronRight size={11} strokeWidth={2.8} />
+            </a>
+          </div>
+
+          {/* 3. Bhudevi Complex */}
+          <div style={{
+            background: 'linear-gradient(180deg, #FFFFFF 55%, #FFFBEB 100%)',
+            border: '1px solid #FEF3C7',
+            borderRadius: '16px',
+            padding: '10px 6px 10px',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            textAlign: 'center',
+            boxShadow: '0 2px 8px rgba(217, 119, 6, 0.04)',
+            boxSizing: 'border-box'
+          }}>
+            <div style={{
+              width: '28px',
+              height: '28px',
+              borderRadius: '50%',
+              background: '#FFFBEB',
+              border: '1px solid #FEF3C7',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginBottom: '4px'
+            }}>
+              <Mountain size={14} color="#D97706" strokeWidth={2.4} />
+            </div>
+            <div style={{ width: '100%', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '2px 0 4px', overflow: 'hidden' }}>
+              <img
+                src="/images/places/hub_bhudevi.png?v=2"
+                alt="Bhudevi Complex"
+                style={{ maxHeight: '100%', maxWidth: '95%', objectFit: 'contain', display: 'block' }}
+              />
+            </div>
+            <span style={{ fontSize: '11px', fontWeight: 800, color: '#0F172A', lineHeight: 1.2 }}>
+              {lang === 'te' ? 'భూదేవి కాంప్లెక్స్' : 'Bhudevi Complex'}
+            </span>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '2px', fontSize: '9px', color: '#B45309', fontWeight: 600, margin: '3px 0 8px' }}>
+              <MapPin size={9} color="#B45309" />
+              <span>{lang === 'te' ? 'అలిపిరి గేట్' : 'Near Alipiri Gate'}</span>
+            </div>
+            <a
+              href="https://www.google.com/maps/place/Tirupati+Temple+Ticket+Booking/@13.6472334,79.4096899,18z"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                width: '100%',
+                padding: '6px 2px',
+                background: '#0F5132',
+                color: '#FFFFFF',
+                borderRadius: '9999px',
+                fontSize: '10px',
+                fontWeight: 700,
+                textDecoration: 'none',
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '2px',
+                boxShadow: '0 2px 6px rgba(15, 81, 50, 0.22)',
+                boxSizing: 'border-box'
+              }}
+            >
+              <span>{lang === 'te' ? 'నావిగేట్' : 'Navigate'}</span>
+              <ChevronRight size={11} strokeWidth={2.8} />
+            </a>
+          </div>
         </div>
       </div>
     </div>
+  </>
   );
 }

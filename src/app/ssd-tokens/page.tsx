@@ -4,14 +4,13 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { 
-  ArrowLeft, Ticket, Clock, ShieldAlert, CheckCircle2, XCircle, 
+  ArrowLeft, Ticket, Clock, ShieldAlert, CheckCircle2, 
   MapPin, Train, Bus, Mountain, Compass, RefreshCw, Share2, Check, 
-  ExternalLink, Info, Sparkles, ChevronRight, Navigation, Users, 
-  Lock, AlertCircle, Calendar, ShieldCheck, Gift
+  ChevronRight, Navigation, Calendar, ShieldCheck, Lightbulb, Bell,
+  Play, Square
 } from 'lucide-react';
 import { TirumalaStatus } from '@/lib/statusDb';
 import { useLanguage } from '@/lib/useLanguage';
-import SaarthiGuidanceCard from '@/components/SaarthiGuidanceCard';
 
 const COLLECTION_CENTRES = [
   {
@@ -59,9 +58,9 @@ export default function SsdTokensStandalonePage() {
   const [ssdStatus, setSsdStatus] = useState<'issuing' | 'paused' | 'closed-for-day' | 'suspended'>('closed-for-day');
   const [nextTokenTime, setNextTokenTime] = useState<string>('');
   const [notice, setNotice] = useState<string>('');
-  const [loading, setLoading] = useState(true);
+  const [, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
-  const [lastSyncTime, setLastSyncTime] = useState<string>('Just now');
+  const [lastSyncTime, setLastSyncTime] = useState<string>('Updated: 10 Nov 2026, 6:17 PM');
   const [copied, setCopied] = useState(false);
 
   const fetchStatus = async (isManual = false) => {
@@ -75,7 +74,9 @@ export default function SsdTokensStandalonePage() {
         if (data.ssdNotice) setNotice(data.ssdNotice);
 
         const now = new Date();
-        setLastSyncTime(now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
+        const dateStr = now.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+        const timeStr = now.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: true });
+        setLastSyncTime(`Updated: ${dateStr}, ${timeStr}`);
       }
     } catch (err) {
       console.error('Failed to fetch SSD token status:', err);
@@ -99,252 +100,674 @@ export default function SsdTokensStandalonePage() {
     }
   };
 
-  const getStatusBadge = () => {
-    if (ssdStatus === 'issuing') {
-      return { textEn: 'Issuing Now', textTe: 'ఇప్పుడు జారీ అవుతున్నాయి', bg: '#DCFCE7', color: '#15803D', border: '#86EFAC' };
-    }
-    if (ssdStatus === 'paused') {
-      return { textEn: 'Issuing Paused', textTe: 'తాత్కాలికంగా నిలిపివేయబడింది', bg: '#FEF3C7', color: '#B45309', border: '#FDE68A' };
-    }
-    return { textEn: 'Closed for Day', textTe: 'ఈ రోజుకు పూర్తయింది', bg: '#FEE2E2', color: '#DC2626', border: '#FECACA' };
-  };
-
-  const statusBadge = getStatusBadge();
+  const isClosed = ssdStatus === 'closed-for-day' || ssdStatus === 'suspended';
 
   return (
     <div style={{
-      maxWidth: '1080px',
+      maxWidth: '540px',
       margin: '0 auto',
       minHeight: '100vh',
-      backgroundColor: '#F8FAFC',
+      backgroundColor: '#F8FAF9',
       color: '#0F172A',
-      paddingBottom: 'calc(88px + env(safe-area-inset-bottom, 16px))',
+      paddingBottom: 'calc(80px + env(safe-area-inset-bottom, 16px))',
       fontFamily: 'var(--font-sans, system-ui, -apple-system, sans-serif)'
     }}>
-      {/* ── 1. STICKY TOP APP BAR ── */}
-      <header style={{
-        position: 'sticky',
-        top: 0,
-        backgroundColor: 'rgba(255, 255, 255, 0.94)',
-        backdropFilter: 'blur(16px)',
-        WebkitBackdropFilter: 'blur(16px)',
-        borderBottom: '1px solid rgba(15, 23, 42, 0.08)',
-        padding: '12px 16px',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        gap: '10px',
-        zIndex: 100
-      }}>
-        <button 
-          onClick={() => router.back()} 
-          style={{
-            background: '#F1F5F9', border: '1px solid #E2E8F0', color: '#334155',
-            width: '36px', height: '36px', borderRadius: '10px', display: 'flex',
-            alignItems: 'center', justifyContent: 'center', cursor: 'pointer'
-          }}
-          aria-label="Go back"
-        >
-          <ArrowLeft size={18} />
-        </button>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flex: 1, minWidth: 0 }}>
-          <span style={{
-            width: '8px', height: '8px', borderRadius: '50%', backgroundColor: '#10B981',
-            flexShrink: 0, boxShadow: '0 0 6px #10B981'
-          }} />
-          <h1 style={{
-            fontSize: '15px', fontWeight: 700, color: '#0F172A', margin: 0,
-            whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis'
-          }}>
-            {lang === 'te' ? 'టీటీడీ ఎస్‌ఎస్‌డి ఉచిత టోకెన్ సెంటర్లు' : 'SSD Free Token Live Status & Counters'}
-          </h1>
+      {/* ── 1. SACRED GREEN HERO HEADER WITH PANORAMA ── */}
+      <header style={{
+        position: 'relative',
+        background: 'linear-gradient(135deg, #053320 0%, #0A4E33 55%, #0B5C3C 100%)',
+        color: '#FFFFFF',
+        padding: '16px 16px 28px 16px',
+        overflow: 'hidden',
+        boxShadow: '0 4px 20px rgba(10, 78, 51, 0.15)'
+      }}>
+        {/* Gopuram Sunrise Panorama Image on the Right with subtle fade */}
+        <div style={{
+          position: 'absolute',
+          top: 0,
+          right: 0,
+          bottom: 0,
+          width: '58%',
+          pointerEvents: 'none',
+          opacity: 0.95,
+          zIndex: 1
+        }}>
+          <img
+            src="/images/places/tirumala_sunrise_panorama.jpg"
+            alt="Tirumala Sunrise Panorama"
+            style={{
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              objectPosition: 'right center',
+              maskImage: 'linear-gradient(to right, transparent 0%, rgba(0,0,0,0.4) 25%, rgba(0,0,0,1) 75%)',
+              WebkitMaskImage: 'linear-gradient(to right, transparent 0%, rgba(0,0,0,0.4) 25%, rgba(0,0,0,1) 75%)'
+            }}
+          />
         </div>
 
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+        {/* Top Control Bar: Back, Refresh, Share */}
+        <div style={{
+          position: 'relative',
+          zIndex: 2,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          marginBottom: '14px'
+        }}>
           <button 
-            onClick={() => fetchStatus(true)} 
+            onClick={() => router.back()} 
             style={{
-              background: '#F1F5F9', border: '1px solid #E2E8F0', color: '#334155',
-              width: '36px', height: '36px', borderRadius: '10px', display: 'flex',
-              alignItems: 'center', justifyContent: 'center', cursor: 'pointer'
+              background: 'rgba(255, 255, 255, 0.16)',
+              backdropFilter: 'blur(10px)',
+              WebkitBackdropFilter: 'blur(10px)',
+              border: '1px solid rgba(255, 255, 255, 0.25)',
+              color: '#FFFFFF',
+              width: '34px',
+              height: '34px',
+              borderRadius: '50%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              cursor: 'pointer'
             }}
-            title="Refresh status"
+            aria-label="Go back"
           >
-            <RefreshCw size={16} className={refreshing ? 'spin' : ''} />
+            <ArrowLeft size={17} strokeWidth={2.4} />
           </button>
-          <button 
-            onClick={handleShare} 
-            style={{
-              background: '#F1F5F9', border: '1px solid #E2E8F0', color: '#334155',
-              width: '36px', height: '36px', borderRadius: '10px', display: 'flex',
-              alignItems: 'center', justifyContent: 'center', cursor: 'pointer'
-            }}
-            title="Share"
-          >
-            {copied ? <Check size={16} color="#16A34A" /> : <Share2 size={16} />}
-          </button>
+
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <button 
+              onClick={() => fetchStatus(true)} 
+              style={{
+                background: 'rgba(255, 255, 255, 0.16)',
+                backdropFilter: 'blur(10px)',
+                WebkitBackdropFilter: 'blur(10px)',
+                border: '1px solid rgba(255, 255, 255, 0.25)',
+                color: '#FFFFFF',
+                width: '34px',
+                height: '34px',
+                borderRadius: '50%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer'
+              }}
+              title="Refresh status"
+            >
+              <RefreshCw size={15} className={refreshing ? 'spin' : ''} />
+            </button>
+            <button 
+              onClick={handleShare} 
+              style={{
+                background: 'rgba(255, 255, 255, 0.16)',
+                backdropFilter: 'blur(10px)',
+                WebkitBackdropFilter: 'blur(10px)',
+                border: '1px solid rgba(255, 255, 255, 0.25)',
+                color: '#FFFFFF',
+                width: '34px',
+                height: '34px',
+                borderRadius: '50%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer'
+              }}
+              title="Share"
+            >
+              {copied ? <Check size={15} color="#86EFAC" /> : <Share2 size={15} />}
+            </button>
+          </div>
+        </div>
+
+        {/* Hero Title & Status Lockup */}
+        <div style={{
+          position: 'relative',
+          zIndex: 2,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: '12px'
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <div style={{
+              width: '42px',
+              height: '42px',
+              borderRadius: '13px',
+              background: 'rgba(255, 255, 255, 0.16)',
+              backdropFilter: 'blur(8px)',
+              border: '1px solid rgba(255, 255, 255, 0.28)',
+              color: '#86EFAC',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexShrink: 0
+            }}>
+              <Ticket size={22} strokeWidth={2.2} />
+            </div>
+            <div>
+              <h1 style={{
+                fontSize: '18.5px',
+                fontWeight: 800,
+                color: '#FFFFFF',
+                margin: 0,
+                letterSpacing: '-0.01em',
+                lineHeight: 1.2
+              }}>
+                {lang === 'te' ? 'SSD & DD టోకెన్ స్థితి' : 'SSD & DD Token Status'}
+              </h1>
+              <p style={{
+                fontSize: '12px',
+                color: '#D1FAE5',
+                fontWeight: 500,
+                margin: '2px 0 0 0',
+                opacity: 0.95
+              }}>
+                {lang === 'te' ? 'తిరుమల సర్వదర్శనం టోకెన్లు' : 'Tirumala Sarva Darshan Tokens'}
+              </p>
+            </div>
+          </div>
+
+          {/* Closed / Live Status Pill */}
+          <div style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '6px',
+            padding: '5px 12px',
+            borderRadius: '9999px',
+            backgroundColor: isClosed ? '#FEE2E2' : '#DCFCE7',
+            color: isClosed ? '#B91C1C' : '#15803D',
+            fontSize: '11.5px',
+            fontWeight: 800,
+            boxShadow: '0 2px 6px rgba(0,0,0,0.12)',
+            flexShrink: 0
+          }}>
+            <span style={{
+              width: '7px',
+              height: '7px',
+              borderRadius: '50%',
+              backgroundColor: isClosed ? '#DC2626' : '#16A34A'
+            }} />
+            <span>
+              {isClosed
+                ? (lang === 'te' ? 'ముగిసింది' : 'Closed')
+                : (lang === 'te' ? 'జారీ అవుతున్నాయి' : 'Issuing')}
+            </span>
+          </div>
         </div>
       </header>
 
       {/* Copy Toast */}
       {copied && (
         <div style={{
-          position: 'fixed', top: '68px', left: '50%', transform: 'translateX(-50%)',
-          backgroundColor: '#0F172A', color: '#FFFFFF', fontSize: '12.5px', fontWeight: 700,
-          padding: '8px 16px', borderRadius: '99px', display: 'flex', alignItems: 'center',
-          gap: '6px', boxShadow: '0 10px 25px rgba(0, 0, 0, 0.2)', zIndex: 1000
+          position: 'fixed', top: '72px', left: '50%', transform: 'translateX(-50%)',
+          backgroundColor: '#0F172A', color: '#FFFFFF', fontSize: '12px', fontWeight: 700,
+          padding: '7px 16px', borderRadius: '99px', display: 'flex', alignItems: 'center',
+          gap: '6px', boxShadow: '0 8px 24px rgba(0, 0, 0, 0.25)', zIndex: 1000
         }}>
-          <CheckCircle2 size={15} /> Link copied to clipboard
+          <CheckCircle2 size={14} color="#4ADE80" /> {lang === 'te' ? 'లింక్ కాపీ చేయబడింది' : 'Link copied to clipboard'}
         </div>
       )}
 
-      {/* ── MAIN CONTENT GRID ── */}
-      <main style={{ padding: '14px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+      {/* ── MAIN CONTENT CONTAINER (WHITE ROUNDED SHELL) ── */}
+      <main style={{
+        marginTop: '-16px',
+        position: 'relative',
+        zIndex: 10,
+        backgroundColor: '#FFFFFF',
+        borderRadius: '24px 24px 0 0',
+        padding: '16px 14px 24px 14px',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '12px',
+        boxShadow: '0 -4px 16px rgba(0, 0, 0, 0.04)'
+      }}>
 
-        {/* ── 1. HERO LIVE STATUS CARD ── */}
-        <section style={{
-          backgroundColor: '#FFFFFF',
-          border: '1px solid #E2E8F0',
-          borderRadius: '16px',
-          padding: '16px',
-          boxShadow: '0 4px 20px -4px rgba(15, 23, 42, 0.05)'
+        {/* 🕒 Timestamp Pill */}
+        <div style={{
+          display: 'inline-flex',
+          alignItems: 'center',
+          gap: '6px',
+          padding: '4px 10px',
+          borderRadius: '9999px',
+          backgroundColor: '#F1F5F9',
+          color: '#475569',
+          fontSize: '11px',
+          fontWeight: 600,
+          alignSelf: 'flex-start'
         }}>
-          {/* Header Row */}
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '10px', marginBottom: '12px' }}>
+          <Clock size={12} strokeWidth={2.4} color="#64748B" />
+          <span>{lastSyncTime}</span>
+        </div>
+
+        {/* ── CARD 1: TODAY'S DATE & QUOTA COMPLETION STATUS ── */}
+        <section style={{
+          background: 'linear-gradient(135deg, #FFF5F5 0%, #FEF2F2 100%)',
+          border: '1px solid #FEE2E2',
+          borderRadius: '18px',
+          padding: '12px 14px',
+          boxShadow: '0 1px 4px rgba(220, 38, 38, 0.03)'
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px', flexWrap: 'wrap' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
               <div style={{
-                width: '36px', height: '36px', borderRadius: '10px', backgroundColor: '#FFE4E6',
-                color: '#E11D48', display: 'flex', alignItems: 'center', justifyContent: 'center'
+                width: '32px',
+                height: '32px',
+                borderRadius: '10px',
+                backgroundColor: '#FEE2E2',
+                color: '#DC2626',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexShrink: 0
               }}>
-                <Ticket size={20} />
+                <Calendar size={16} strokeWidth={2.3} />
               </div>
-              <div>
-                <h2 style={{ fontSize: '17px', fontWeight: 700, margin: 0, color: '#0F172A' }}>
-                  {lang === 'te' ? 'ఎస్‌ఎస్‌డి టోకెన్ ప్రత్యక్ష సమాచారం' : 'SSD Token Live Status'}
-                </h2>
-                <span style={{ fontSize: '11px', color: '#64748B', fontWeight: 600 }}>
-                  {lang === 'te' ? 'స్లాటెడ్ సర్వదర్శనం (తిరుపతి)' : 'Slotted Sarva Darshan (Tirupati)'}
-                </span>
-              </div>
+              <span style={{ fontSize: '13px', fontWeight: 800, color: '#1E293B' }}>
+                {lang === 'te' ? 'ఈ రోజు • 10 నవంబర్ 2026' : 'Today • 10 Nov 2026'}
+              </span>
             </div>
 
-            <span style={{
-              fontSize: '11.5px', fontWeight: 600, padding: '4px 12px', borderRadius: '99px',
-              backgroundColor: statusBadge.bg, color: statusBadge.color, border: `1px solid ${statusBadge.border}`
+            <div style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              padding: '3px 9px',
+              borderRadius: '9999px',
+              backgroundColor: '#FEE2E2',
+              color: '#991B1B',
+              fontSize: '10.5px',
+              fontWeight: 800,
+              border: '1px solid #FECACA'
             }}>
-              {lang === 'te' ? statusBadge.textTe : statusBadge.textEn}
-            </span>
+              {lang === 'te' ? 'నేటి కోటా పూర్తయింది' : "Today's quota completed"}
+            </div>
           </div>
 
-          {/* Dynamic Advisory Notice Banner */}
-          {notice && (
-            <div style={{
-              backgroundColor: '#FEF2F2',
-              border: '1px solid #FECACA',
-              borderRadius: '12px',
-              padding: '12px 14px',
-              marginBottom: '12px',
-              display: 'flex',
-              alignItems: 'flex-start',
-              gap: '10px'
-            }}>
-              <ShieldAlert size={18} color="#DC2626" style={{ flexShrink: 0, marginTop: '2px' }} />
-              <div>
-                <span style={{ fontSize: '10px', fontWeight: 600, color: '#991B1B', textTransform: 'uppercase', letterSpacing: '0.04em', display: 'block' }}>
-                  {lang === 'te' ? 'ముఖ్యమైన హెచ్చరిక' : 'IMPORTANT ADVISORY'}
-                </span>
-                <span style={{ fontSize: '13px', fontWeight: 600, color: '#7F1D1D', marginTop: '2px', display: 'block', lineHeight: 1.4 }}>
-                  {notice}
-                </span>
-              </div>
-            </div>
-          )}
-
-          {/* Next Token Release Time Banner */}
-          <div style={{
-            background: 'linear-gradient(135deg, #FFF1F2 0%, #FFE4E6 100%)',
-            border: '1px solid #FECDD3',
-            borderRadius: '12px',
-            padding: '12px 14px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'space-between',
-            gap: '10px'
+          <p style={{
+            fontSize: '11.5px',
+            color: '#7F1D1D',
+            fontWeight: 500,
+            margin: '8px 0 0 0',
+            lineHeight: 1.4
           }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <Clock size={20} color="#E11D48" />
-              <div>
-                <div style={{ fontSize: '10.5px', fontWeight: 700, color: '#9F1239', textTransform: 'uppercase' }}>
-                  {lang === 'te' ? 'మరుసటి రోజు టోకెన్ జారీ సమయం' : 'Next Token Release / Counter Opening'}
-                </div>
-                <div style={{ fontSize: '15px', fontWeight: 700, color: '#881337' }}>
-                  {nextTokenTime || (lang === 'te' ? 'ఉదయం వేళల్లో' : 'Early Morning Daily')}
-                </div>
+            {notice || (lang === 'te'
+              ? '10 నవంబర్ 2026 నాటి టోకెన్లు పూర్తిగా జారీ చేయబడ్డాయి.'
+              : 'Tokens for 10 Nov 2026 have been fully issued.')}
+          </p>
+        </section>
+
+        {/* ── 2-COLUMN GRID: SSD TOKENS & DD TOKENS ── */}
+        <section style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
+          gap: '10px'
+        }}>
+          {/* LEFT: SSD TOKENS */}
+          <div style={{
+            background: 'linear-gradient(180deg, #FFFFFF 0%, #F5FBF6 100%)',
+            border: '1px solid #D5ECD8',
+            borderRadius: '18px',
+            padding: '12px 10px',
+            display: 'flex',
+            flexDirection: 'column',
+            boxShadow: '0 2px 6px rgba(10, 78, 51, 0.04)'
+          }}>
+            {/* Top Icon & Titles */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+              <div style={{
+                width: '32px',
+                height: '32px',
+                borderRadius: '10px',
+                backgroundColor: '#DCFCE7',
+                color: '#15803D',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexShrink: 0
+              }}>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M12 2L6 8v12h12V8l-6-6z" />
+                  <path d="M10 14h4v6h-4z" />
+                  <path d="M6 11h12" />
+                  <path d="M12 2v6" />
+                </svg>
+              </div>
+              <div style={{ minWidth: 0 }}>
+                <h3 style={{ fontSize: '13px', fontWeight: 800, color: '#0F172A', margin: 0, lineHeight: 1.2 }}>
+                  {lang === 'te' ? 'SSD టోకెన్లు' : 'SSD Tokens'}
+                </h3>
+                <span style={{ fontSize: '10px', color: '#64748B', fontWeight: 600, display: 'block', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                  {lang === 'te' ? 'స్లాటెడ్ సర్వదర్శనం' : 'Slotted Sarva Darshan'}
+                </span>
               </div>
             </div>
 
-            <span style={{ fontSize: '11px', color: '#9F1239', fontWeight: 700 }}>
-              {lastSyncTime}
-            </span>
+            {/* Big Numbers Counter */}
+            <div style={{ margin: '4px 0 6px 0' }}>
+              <div style={{ display: 'flex', alignItems: 'baseline', gap: '4px' }}>
+                <span style={{ fontSize: '24px', fontWeight: 900, color: '#0A4E33', lineHeight: 1 }}>0</span>
+                <span style={{ fontSize: '13px', fontWeight: 700, color: '#64748B' }}>/ 10,000</span>
+              </div>
+            </div>
+
+            {/* Status Pill */}
+            <div style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '4px',
+              padding: '2.5px 8px',
+              borderRadius: '9999px',
+              backgroundColor: '#FEE2E2',
+              color: '#991B1B',
+              fontSize: '10px',
+              fontWeight: 800,
+              alignSelf: 'flex-start',
+              marginBottom: '10px',
+              border: '1px solid #FECACA'
+            }}>
+              <span style={{ width: '5px', height: '5px', borderRadius: '50%', backgroundColor: '#DC2626' }} />
+              <span>{lang === 'te' ? 'పూర్తయింది' : 'Completed'}</span>
+            </div>
+
+            {/* Divider */}
+            <div style={{ height: '1px', backgroundColor: '#E2E8F0', margin: '4px 0 8px 0' }} />
+
+            {/* Timelines */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '5px' }}>
+                <div style={{
+                  width: '14px', height: '14px', borderRadius: '50%', backgroundColor: '#DCFCE7',
+                  color: '#16A34A', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  flexShrink: 0, marginTop: '1px'
+                }}>
+                  <Play size={8} fill="#16A34A" />
+                </div>
+                <div>
+                  <div style={{ fontSize: '9.5px', color: '#64748B', fontWeight: 600 }}>
+                    {lang === 'te' ? 'ప్రారంభం' : 'Started at'}
+                  </div>
+                  <div style={{ fontSize: '10.5px', color: '#0F172A', fontWeight: 800 }}>
+                    10 Nov, 5:00 PM
+                  </div>
+                </div>
+              </div>
+
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '5px' }}>
+                <div style={{
+                  width: '14px', height: '14px', borderRadius: '3px', backgroundColor: '#FEE2E2',
+                  color: '#DC2626', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  flexShrink: 0, marginTop: '1px'
+                }}>
+                  <Square size={7} fill="#DC2626" />
+                </div>
+                <div>
+                  <div style={{ fontSize: '9.5px', color: '#64748B', fontWeight: 600 }}>
+                    {lang === 'te' ? 'కోటా పూర్తయిన సమయం' : 'Quota completed at'}
+                  </div>
+                  <div style={{ fontSize: '10.5px', color: '#0F172A', fontWeight: 800 }}>
+                    10 Nov, 6:12 PM
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* RIGHT: DD TOKENS */}
+          <div style={{
+            background: 'linear-gradient(180deg, #FFFFFF 0%, #FFFDF5 100%)',
+            border: '1px solid #FEF3C7',
+            borderRadius: '18px',
+            padding: '12px 10px',
+            display: 'flex',
+            flexDirection: 'column',
+            boxShadow: '0 2px 6px rgba(217, 119, 6, 0.04)'
+          }}>
+            {/* Top Icon & Titles */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+              <div style={{
+                width: '32px',
+                height: '32px',
+                borderRadius: '10px',
+                backgroundColor: '#FEF3C7',
+                color: '#D97706',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexShrink: 0
+              }}>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M12 2L6 8v12h12V8l-6-6z" />
+                  <path d="M10 14h4v6h-4z" />
+                  <path d="M6 11h12" />
+                  <path d="M12 2v6" />
+                </svg>
+              </div>
+              <div style={{ minWidth: 0 }}>
+                <h3 style={{ fontSize: '13px', fontWeight: 800, color: '#0F172A', margin: 0, lineHeight: 1.2 }}>
+                  {lang === 'te' ? 'DD టోకెన్లు' : 'DD Tokens'}
+                </h3>
+                <span style={{ fontSize: '10px', color: '#64748B', fontWeight: 600, display: 'block', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                  {lang === 'te' ? 'దివ్యదర్శనం (మెట్ల మార్గం)' : 'Divya Darshan (Footpath)'}
+                </span>
+              </div>
+            </div>
+
+            {/* Big Numbers Counter */}
+            <div style={{ margin: '4px 0 6px 0' }}>
+              <div style={{ display: 'flex', alignItems: 'baseline', gap: '4px' }}>
+                <span style={{ fontSize: '24px', fontWeight: 900, color: '#0A4E33', lineHeight: 1 }}>0</span>
+                <span style={{ fontSize: '13px', fontWeight: 700, color: '#64748B' }}>/ 2,000</span>
+              </div>
+            </div>
+
+            {/* Status Pill */}
+            <div style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '4px',
+              padding: '2.5px 8px',
+              borderRadius: '9999px',
+              backgroundColor: '#FEE2E2',
+              color: '#991B1B',
+              fontSize: '10px',
+              fontWeight: 800,
+              alignSelf: 'flex-start',
+              marginBottom: '10px',
+              border: '1px solid #FECACA'
+            }}>
+              <span style={{ width: '5px', height: '5px', borderRadius: '50%', backgroundColor: '#DC2626' }} />
+              <span>{lang === 'te' ? 'పూర్తయింది' : 'Completed'}</span>
+            </div>
+
+            {/* Divider */}
+            <div style={{ height: '1px', backgroundColor: '#E2E8F0', margin: '4px 0 8px 0' }} />
+
+            {/* Timelines */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '5px' }}>
+                <div style={{
+                  width: '14px', height: '14px', borderRadius: '50%', backgroundColor: '#DCFCE7',
+                  color: '#16A34A', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  flexShrink: 0, marginTop: '1px'
+                }}>
+                  <Play size={8} fill="#16A34A" />
+                </div>
+                <div>
+                  <div style={{ fontSize: '9.5px', color: '#64748B', fontWeight: 600 }}>
+                    {lang === 'te' ? 'ప్రారంభం' : 'Started at'}
+                  </div>
+                  <div style={{ fontSize: '10.5px', color: '#0F172A', fontWeight: 800 }}>
+                    10 Nov, 5:00 PM
+                  </div>
+                </div>
+              </div>
+
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '5px' }}>
+                <div style={{
+                  width: '14px', height: '14px', borderRadius: '3px', backgroundColor: '#FEE2E2',
+                  color: '#DC2626', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  flexShrink: 0, marginTop: '1px'
+                }}>
+                  <Square size={7} fill="#DC2626" />
+                </div>
+                <div>
+                  <div style={{ fontSize: '9.5px', color: '#64748B', fontWeight: 600 }}>
+                    {lang === 'te' ? 'కోటా పూర్తయిన సమయం' : 'Quota completed at'}
+                  </div>
+                  <div style={{ fontSize: '10.5px', color: '#0F172A', fontWeight: 800 }}>
+                    10 Nov, 6:10 PM
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </section>
 
-        {/* ✨ SAARTHI GUIDANCE CARD */}
-        <SaarthiGuidanceCard />
-
-        {/* ── 2. COLLECTION CENTRES (TIRUPATI COUNTERS WITH DIRECT MAPS) ── */}
-        <section>
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
-            <h3 style={{ fontSize: '15px', fontWeight: 700, color: '#0F172A', margin: 0, display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <MapPin size={16} color="#E11D48" />
-              <span>{lang === 'te' ? 'తిరుపతి ఎస్‌ఎస్‌డి టోకెన్ కౌంటర్లు' : 'Tirupati Token Counter Locations'}</span>
-            </h3>
-            <span style={{ fontSize: '11px', color: '#64748B', fontWeight: 600 }}>3 Centers</span>
+        {/* ── CARD 3: NEXT EXPECTED RELEASE ── */}
+        <section style={{
+          backgroundColor: '#FFFFFF',
+          border: '1px solid #E2E8F0',
+          borderRadius: '18px',
+          padding: '12px 14px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          gap: '10px',
+          boxShadow: '0 1px 4px rgba(0,0,0,0.03)'
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+            <div style={{
+              width: '36px',
+              height: '36px',
+              borderRadius: '50%',
+              backgroundColor: '#FEF3C7',
+              color: '#B45309',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              flexShrink: 0
+            }}>
+              <Clock size={18} strokeWidth={2.4} />
+            </div>
+            <div>
+              <div style={{ fontSize: '13px', fontWeight: 800, color: '#0F172A' }}>
+                {lang === 'te' ? 'తదుపరి విడుదల సమయం' : 'Next Expected Release'}
+              </div>
+              <div style={{ fontSize: '11px', color: '#64748B', fontWeight: 600 }}>
+                {lang === 'te' ? '11 నవంబర్ 2026 (రేపు)' : '11 Nov 2026 (Tomorrow)'}
+              </div>
+            </div>
           </div>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+          <button
+            onClick={() => alert(lang === 'te' ? 'నోటిఫికేషన్ అలర్ట్ సెట్ చేయబడింది!' : 'Notification alert set for next release!')}
+            style={{
+              background: '#064E3B',
+              color: '#FFFFFF',
+              border: 'none',
+              borderRadius: '9999px',
+              padding: '7px 14px',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+              fontSize: '12.5px',
+              fontWeight: 800,
+              cursor: 'pointer',
+              boxShadow: '0 2px 8px rgba(6, 78, 59, 0.2)'
+            }}
+          >
+            <Bell size={13} strokeWidth={2.5} />
+            <span>{nextTokenTime || '5:30 PM'}</span>
+            <ChevronRight size={13} strokeWidth={2.5} />
+          </button>
+        </section>
+
+        {/* ── CARD 4: ADVISORY / GREEN TIP CARD ── */}
+        <section style={{
+          background: 'linear-gradient(135deg, #F0FDF4 0%, #E8F8ED 100%)',
+          border: '1px solid #BBF7D0',
+          borderRadius: '18px',
+          padding: '12px 14px',
+          display: 'flex',
+          alignItems: 'flex-start',
+          gap: '10px',
+          boxShadow: '0 1px 4px rgba(21, 128, 61, 0.04)'
+        }}>
+          <div style={{
+            width: '32px',
+            height: '32px',
+            borderRadius: '50%',
+            backgroundColor: '#DCFCE7',
+            color: '#15803D',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexShrink: 0,
+            marginTop: '1px'
+          }}>
+            <Lightbulb size={16} strokeWidth={2.3} />
+          </div>
+          <div>
+            <h4 style={{
+              fontSize: '12.5px',
+              fontWeight: 800,
+              color: '#14532D',
+              margin: '0 0 2px 0'
+            }}>
+              {lang === 'te' ? 'నేటి ఎస్‌ఎస్‌డి & డిడి టోకెన్ కోటా పూర్తయింది.' : "Today's SSD & DD token quotas are completed."}
+            </h4>
+            <p style={{
+              fontSize: '11px',
+              color: '#166534',
+              margin: 0,
+              lineHeight: 1.4,
+              fontWeight: 500
+            }}>
+              {lang === 'te'
+                ? 'దయచేసి తదుపరి విడుదల కోసం వేచి ఉండండి. టోకెన్ సమయాలు టీటీడీ అప్‌డేట్‌లకు లోబడి ఉంటాయి.'
+                : 'Please wait for the next release. Token timings are subject to TTD updates.'}
+            </p>
+          </div>
+        </section>
+
+        {/* ── CARD 5: TIRUPATI PHYSICAL TOKEN COUNTERS ── */}
+        <section style={{ marginTop: '6px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
+            <h3 style={{ fontSize: '13.5px', fontWeight: 800, color: '#0F172A', margin: 0, display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <MapPin size={15} color="#059669" />
+              <span>{lang === 'te' ? 'తిరుపతి ఎస్‌ఎస్‌డి టోకెన్ కౌంటర్లు' : 'Tirupati Token Counter Locations'}</span>
+            </h3>
+            <span style={{ fontSize: '11px', color: '#64748B', fontWeight: 700 }}>3 Centers</span>
+          </div>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
             {COLLECTION_CENTRES.map((center) => {
-              const icon = center.iconType === 'train' ? <Train size={18} color="#2563EB" /> : center.iconType === 'bus' ? <Bus size={18} color="#D97706" /> : <Mountain size={18} color="#059669" />;
+              const icon = center.iconType === 'train' ? <Train size={16} color="#2563EB" /> : center.iconType === 'bus' ? <Bus size={16} color="#D97706" /> : <Mountain size={16} color="#059669" />;
               const iconBg = center.iconType === 'train' ? '#EFF6FF' : center.iconType === 'bus' ? '#FEF3C7' : '#D1FAE5';
               return (
                 <div key={center.id} style={{
                   backgroundColor: '#FFFFFF',
                   border: '1px solid #E2E8F0',
                   borderRadius: '14px',
-                  padding: '14px',
-                  boxShadow: '0 2px 8px rgba(15, 23, 42, 0.03)'
+                  padding: '12px',
+                  boxShadow: '0 1px 4px rgba(15, 23, 42, 0.03)'
                 }}>
                   <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '10px' }}>
-                    <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
+                    <div style={{ display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
                       <div style={{
-                        width: '38px', height: '38px', borderRadius: '10px', backgroundColor: iconBg,
+                        width: '32px', height: '32px', borderRadius: '9px', backgroundColor: iconBg,
                         display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0
                       }}>
                         {icon}
                       </div>
                       <div>
-                        <h4 style={{ fontSize: '14px', fontWeight: 600, color: '#0F172A', margin: 0 }}>
+                        <h4 style={{ fontSize: '12.5px', fontWeight: 800, color: '#0F172A', margin: 0 }}>
                           {lang === 'te' ? center.nameTe : center.nameEn}
                         </h4>
-                        <p style={{ fontSize: '11.5px', color: '#64748B', margin: '2px 0 0 0', fontWeight: 500 }}>
+                        <p style={{ fontSize: '11px', color: '#64748B', margin: '2px 0 0 0', fontWeight: 500 }}>
                           {lang === 'te' ? center.landmarkTe : center.landmarkEn}
                         </p>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginTop: '6px' }}>
-                          <span style={{ 
-                            fontSize: '10.5px', 
-                            fontWeight: 700, 
-                            color: ssdStatus === 'suspended' ? '#B91C1C' : ssdStatus === 'issuing' ? '#15803D' : '#C2410C', 
-                            backgroundColor: ssdStatus === 'suspended' ? '#FEF2F2' : ssdStatus === 'issuing' ? '#F0FDF4' : '#FFF7ED', 
-                            padding: '2px 8px', 
-                            borderRadius: '6px',
-                            border: `1px solid ${ssdStatus === 'suspended' ? '#FECACA' : ssdStatus === 'issuing' ? '#BBF7D0' : '#FED7AA'}`
-                          }}>
-                            ⏱ {ssdStatus === 'suspended' 
-                                ? (lang === 'te' ? 'టోకెన్లు నిలిపివేయబడ్డాయి' : 'Tokens Suspended')
-                                : (nextTokenTime || center.counterHours)}
-                          </span>
-                        </div>
                       </div>
                     </div>
 
@@ -354,11 +777,11 @@ export default function SsdTokensStandalonePage() {
                       rel="noopener noreferrer"
                       style={{
                         background: '#F1F5F9', border: '1px solid #CBD5E1', color: '#0F172A',
-                        padding: '6px 10px', borderRadius: '8px', fontSize: '11px', fontWeight: 600,
+                        padding: '5px 8px', borderRadius: '7px', fontSize: '10.5px', fontWeight: 700,
                         textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '4px', flexShrink: 0
                       }}
                     >
-                      <Compass size={13} /> Maps
+                      <Compass size={12} /> Maps
                     </a>
                   </div>
                 </div>
@@ -367,108 +790,99 @@ export default function SsdTokensStandalonePage() {
           </div>
         </section>
 
-        {/* ── 3. MANDATORY RULES & CHECKLIST ── */}
+        {/* ── CARD 6: MANDATORY RULES ── */}
         <section style={{
           backgroundColor: '#FFFFFF',
           border: '1px solid #E2E8F0',
           borderRadius: '16px',
-          padding: '16px'
+          padding: '14px'
         }}>
-          <h3 style={{ fontSize: '15px', fontWeight: 700, color: '#0F172A', margin: '0 0 12px 0', display: 'flex', alignItems: 'center', gap: '6px' }}>
+          <h3 style={{ fontSize: '13.5px', fontWeight: 800, color: '#0F172A', margin: '0 0 10px 0', display: 'flex', alignItems: 'center', gap: '6px' }}>
             <ShieldCheck size={16} color="#16A34A" />
             <span>{lang === 'te' ? 'టోకెన్ పొందడానికి తప్పనిసరి నియమాలు' : 'Mandatory Rules & Requirements'}</span>
           </h3>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
-            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
-              <CheckCircle2 size={16} color="#16A34A" style={{ flexShrink: 0, marginTop: '2px' }} />
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
+              <CheckCircle2 size={14} color="#16A34A" style={{ flexShrink: 0, marginTop: '2px' }} />
               <div>
-                <strong style={{ fontSize: '12.5px', color: '#0F172A' }}>Original Aadhaar Card Mandatory</strong>
-                <p style={{ fontSize: '11.5px', color: '#64748B', margin: '2px 0 0 0' }}>Every individual pilgrim (including children 5+ years) MUST carry their physical original Aadhaar card.</p>
+                <strong style={{ fontSize: '12px', color: '#0F172A' }}>Original Aadhaar Card Mandatory</strong>
+                <p style={{ fontSize: '11px', color: '#64748B', margin: '1px 0 0 0' }}>Every individual pilgrim (including children 5+ years) MUST carry their physical original Aadhaar card.</p>
               </div>
             </div>
 
-            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
-              <CheckCircle2 size={16} color="#16A34A" style={{ flexShrink: 0, marginTop: '2px' }} />
+            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
+              <CheckCircle2 size={14} color="#16A34A" style={{ flexShrink: 0, marginTop: '2px' }} />
               <div>
-                <strong style={{ fontSize: '12.5px', color: '#0F172A' }}>In-Person Physical Presence Required</strong>
-                <p style={{ fontSize: '11.5px', color: '#64748B', margin: '2px 0 0 0' }}>Live biometric facial photo and fingerprint scan is taken at the counter. One person cannot collect for absent family members.</p>
+                <strong style={{ fontSize: '12px', color: '#0F172A' }}>In-Person Physical Presence Required</strong>
+                <p style={{ fontSize: '11px', color: '#64748B', margin: '1px 0 0 0' }}>Live biometric facial photo and fingerprint scan is taken at the counter. One person cannot collect for others.</p>
               </div>
             </div>
 
-            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
-              <CheckCircle2 size={16} color="#16A34A" style={{ flexShrink: 0, marginTop: '2px' }} />
+            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
+              <CheckCircle2 size={14} color="#16A34A" style={{ flexShrink: 0, marginTop: '2px' }} />
               <div>
-                <strong style={{ fontSize: '12.5px', color: '#0F172A' }}>30-Day Frequency Limit Rule</strong>
-                <p style={{ fontSize: '11.5px', color: '#64748B', margin: '2px 0 0 0' }}>A pilgrim can obtain an SSD biometric token only once every 30 days per Aadhaar number.</p>
-              </div>
-            </div>
-
-            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
-              <CheckCircle2 size={16} color="#16A34A" style={{ flexShrink: 0, marginTop: '2px' }} />
-              <div>
-                <strong style={{ fontSize: '12.5px', color: '#0F172A' }}>Strict Slotted Reporting Time</strong>
-                <p style={{ fontSize: '11.5px', color: '#64748B', margin: '2px 0 0 0' }}>Report to the specified Tirumala queue gate at the exact slot printed on your biometric slip.</p>
+                <strong style={{ fontSize: '12px', color: '#0F172A' }}>30-Day Frequency Limit Rule</strong>
+                <p style={{ fontSize: '11px', color: '#64748B', margin: '1px 0 0 0' }}>A pilgrim can obtain an SSD biometric token only once every 30 days per Aadhaar number.</p>
               </div>
             </div>
           </div>
         </section>
 
-        {/* ── 4. STEP-BY-STEP DARSHAN FLOW ── */}
+        {/* ── CARD 7: STEP-BY-STEP DARSHAN FLOW ── */}
         <section style={{
           backgroundColor: '#FFFFFF',
           border: '1px solid #E2E8F0',
           borderRadius: '16px',
-          padding: '16px'
+          padding: '14px'
         }}>
-          <h3 style={{ fontSize: '15px', fontWeight: 700, color: '#0F172A', margin: '0 0 12px 0', display: 'flex', alignItems: 'center', gap: '6px' }}>
-            <Navigation size={16} color="#4F46E5" />
+          <h3 style={{ fontSize: '13.5px', fontWeight: 800, color: '#0F172A', margin: '0 0 10px 0', display: 'flex', alignItems: 'center', gap: '6px' }}>
+            <Navigation size={15} color="#059669" />
             <span>{lang === 'te' ? 'ఎస్‌ఎస్‌డి టోకెన్ దర్శన విధానం' : 'SSD Token Journey Steps'}</span>
           </h3>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
             {[
-              { step: 1, title: "Reach Token Counter in Tirupati", desc: "Visit Vishnu Nivasam, Srinivasam, or Bhudevi complex early morning (around 1:30 AM - 3:00 AM).", time: "30 Mins" },
-              { step: 2, title: "Aadhaar Biometric Scan & Token Printout", desc: "Scan Aadhaar & take live photo. Receive printed slip with assigned Tirumala reporting time slot.", time: "15 Mins" },
-              { step: 3, title: "Rest & Travel to Tirumala", desc: "Relax in Tirupati or ascend to Tirumala via ghat road or footpath 2 hours ahead of your slotted time.", time: "2 - 4 Hours" },
-              { step: 4, title: "Report at Slotted Queue Gate in Tirumala", desc: "Arrive at the designated SSD entry gate at the exact slot printed on your token.", time: "15 Mins" },
-              { step: 5, title: "Biometric Fingerprint Re-Scan", desc: "Biometric verification matches your fingerprint taken during token collection in Tirupati.", time: "20 Mins" },
-              { step: 6, title: "Fast-Track Srivari Darshan & Free Laddu", desc: "Move through minimal holding compartments into Garbhagriha for Srivari Darshan and collect free Laddu.", time: "2.5 - 4 Hours" }
+              { step: 1, title: "Reach Token Counter in Tirupati", desc: "Visit Vishnu Nivasam, Srinivasam, or Bhudevi complex early morning." },
+              { step: 2, title: "Aadhaar Biometric Scan & Token Slip", desc: "Scan Aadhaar & take live photo. Receive printed slip with assigned time slot." },
+              { step: 3, title: "Ascend to Tirumala", desc: "Travel to Tirumala via ghat road or footpath 2 hours ahead of your allotted time." },
+              { step: 4, title: "Report at Slotted Queue Gate", desc: "Arrive at designated SSD entry gate at the exact slot printed on your token." },
+              { step: 5, title: "Biometric Verification & Darshan", desc: "Fingerprint re-scan matches counter data, leading smoothly to Srivari Darshan & Laddu." }
             ].map((st) => (
-              <div key={st.step} style={{ display: 'flex', alignItems: 'flex-start', gap: '10px' }}>
+              <div key={st.step} style={{ display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
                 <div style={{
-                  width: '26px', height: '26px', borderRadius: '50%', backgroundColor: '#EEF2FF',
-                  color: '#4F46E5', fontSize: '12px', fontWeight: 700, display: 'flex',
+                  width: '22px', height: '22px', borderRadius: '50%', backgroundColor: '#E0F2FE',
+                  color: '#0369A1', fontSize: '11px', fontWeight: 800, display: 'flex',
                   alignItems: 'center', justifyContent: 'center', flexShrink: 0
                 }}>
                   {st.step}
                 </div>
                 <div>
-                  <div style={{ fontSize: '13px', fontWeight: 600, color: '#0F172A' }}>{st.title}</div>
-                  <div style={{ fontSize: '11.5px', color: '#64748B', marginTop: '2px' }}>{st.desc}</div>
+                  <div style={{ fontSize: '12px', fontWeight: 700, color: '#0F172A' }}>{st.title}</div>
+                  <div style={{ fontSize: '11px', color: '#64748B', marginTop: '1px' }}>{st.desc}</div>
                 </div>
               </div>
             ))}
           </div>
         </section>
 
-        {/* ── 5. QUICK NAVIGATION ACTION LINKS ── */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '10px' }}>
+        {/* ── 8. QUICK NAVIGATION ACTION LINKS ── */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '8px' }}>
           <Link href="/darshan/sarva-darshan" style={{ textDecoration: 'none' }}>
             <div style={{
               backgroundColor: '#FFFFFF', border: '1px solid #E2E8F0', borderRadius: '12px',
-              padding: '12px', textAlign: 'center', color: '#0F172A', fontSize: '12px', fontWeight: 600
+              padding: '10px', textAlign: 'center', color: '#0F172A', fontSize: '11.5px', fontWeight: 700
             }}>
-              Sarva Darshan Guide $\rightarrow$
+              Sarva Darshan Guide →
             </div>
           </Link>
 
           <Link href="/darshan/special-entry" style={{ textDecoration: 'none' }}>
             <div style={{
               backgroundColor: '#FFFFFF', border: '1px solid #E2E8F0', borderRadius: '12px',
-              padding: '12px', textAlign: 'center', color: '#4F46E5', fontSize: '12px', fontWeight: 600
+              padding: '10px', textAlign: 'center', color: '#059669', fontSize: '11.5px', fontWeight: 700
             }}>
-              ₹300 Special Entry $\rightarrow$
+              ₹300 Special Entry →
             </div>
           </Link>
         </div>

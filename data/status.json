@@ -1,10 +1,10 @@
 {
-  "waitTime": "12-15 hours",
+  "waitTime": "18- 20 hours",
   "bestTime": "",
   "crowdLevel": "moderate",
   "sevaStatus": "All sevas open",
   "notice": "",
-  "lastUpdated": "2026-11-08T04:05:58.905+00:00",
+  "lastUpdated": "2026-11-10T12:47:18.622+00:00",
   "darshanSpeed": "normal",
   "accommodationStatus": "available",
   "ladduAvailability": "available",
@@ -12,17 +12,17 @@
   "darshans": [
     {
       "name": "Sarva Darshan (Free)",
-      "waitTime": "12-15 hours",
+      "waitTime": "18- 20 hours",
       "peakHours": "Daily 10 AM - 6 PM"
     },
     {
       "name": "Special Entry (₹300)",
-      "waitTime": "2-3 hours",
+      "waitTime": "3-4 hours",
       "peakHours": "Daily 9 AM - 3 PM"
     },
     {
       "name": "Divya Darshan (Footpath)",
-      "waitTime": "3-5 hours",
+      "waitTime": "4-6 hours",
       "peakHours": "Daily 8 AM - 4 PM"
     },
     {
@@ -65,8 +65,8 @@
       "tokensLeft": "Available"
     }
   ],
-  "ssdNotice": "⏰ 7th November – SSD 10K & DD 2K Tokens Issue Started @ 5:00Pm\n",
-  "ssdTimingsGuide": "SSD Quota: 10,000 (Available: 0, Started at 7 Nov 2026, 5:00 pm, Completed at 8 Nov 2026, 8:16pm, Status: completed, Verified at: 2026-11-08T04:05:56.813Z), DD Quota: 2,000 (Available: 0, Started at 7 Nov 2026, 5:00 pm, Completed at 8 Nov 2026, 9:30 pm, Status: completed, Verified at: 2026-11-08T04:05:56.813Z)",
+  "ssdNotice": "⏰ 10th November – SSD 10K & DD 2K Tokens Quota Completed@ 5:02Pm\n",
+  "ssdTimingsGuide": "SSD Quota: 10,000 (Available: O, Started at 10 Nov 2026, 5:00 pm, Completed at 10 Nov 2026, 6:12pm, Status: completed, Verified at: 2026-11-10T12:47:18.023Z), DD Quota: 2,000 (Available: 0, Started at 10 Nov 2026, 5:00 pm, Completed at 10 Nov 2026, 6:10pm, Status: completed, Verified at: 2026-11-10T12:47:18.023Z)",
   "ssdCounters": [
     {
       "name": "Vishnu Nivasam Counter",
@@ -85,18 +85,18 @@
   "ssdModeBadge": "Tokens Not Available",
   "ssdTokenDetails": {
     "totalTokens": "10,000",
-    "tokensLeft": "0",
+    "tokensLeft": "O",
     "status": "completed",
-    "startTime": "7 Nov 2026, 5:00 pm",
-    "completedTime": "8 Nov 2026, 8:16pm",
-    "lastVerifiedAt": "2026-11-08T04:05:56.813Z"
+    "startTime": "10 Nov 2026, 5:00 pm",
+    "completedTime": "10 Nov 2026, 6:12pm",
+    "lastVerifiedAt": "2026-11-10T12:47:18.023Z"
   },
   "ddTokenDetails": {
     "totalTokens": "2,000",
     "tokensLeft": "0",
     "status": "completed",
-    "startTime": "7 Nov 2026, 5:00 pm",
-    "completedTime": "8 Nov 2026, 9:30 pm",
-    "lastVerifiedAt": "2026-11-08T04:05:56.813Z"
+    "startTime": "10 Nov 2026, 5:00 pm",
+    "completedTime": "10 Nov 2026, 6:10pm",
+    "lastVerifiedAt": "2026-11-10T12:47:18.023Z"
   }
 }
