@@ -1454,7 +1454,7 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
           width: '100%',
           maxWidth: '100vw',
           boxSizing: 'border-box',
-          paddingTop: 'env(safe-area-inset-top, 0px)',
+          paddingTop: 'max(8px, env(safe-area-inset-top, 0px))',
           transform: 'translate3d(0, 0, 0)',
           WebkitTransform: 'translate3d(0, 0, 0)',
           backfaceVisibility: 'hidden',
@@ -1462,8 +1462,8 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
         }}>
           <div style={{
             maxWidth: '100%',
-            padding: '8px 16px',
-            minHeight: '56px',
+            padding: '6px 14px',
+            minHeight: '48px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
@@ -1472,8 +1472,8 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
           }}>
 
             {/* Left — Official Saarthi Brand Lockup */}
-            <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '8px', textDecoration: 'none', flexShrink: 0, zIndex: 2 }}>
-              <Logo size={32} />
+            <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: '7px', textDecoration: 'none', flexShrink: 0, zIndex: 2 }}>
+              <Logo size={28} />
               <span className="notranslate" style={{
                 fontSize: '18px',
                 fontWeight: 800,
@@ -1612,10 +1612,10 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
       <div style={{
         position: 'relative',
         width: '100%',
-        borderRadius: '16px',
+        borderRadius: '14px',
         overflow: 'hidden',
-        marginBottom: '14px',
-        boxShadow: '0 6px 20px rgba(15, 23, 42, 0.08)',
+        marginBottom: '8px',
+        boxShadow: '0 4px 16px rgba(15, 23, 42, 0.06)',
         border: '1px solid rgba(212, 175, 55, 0.35)',
         background: '#FAF8F4 url(/banner/banner_poster.webp) center center / cover no-repeat',
         aspectRatio: '16 / 9'
@@ -1755,31 +1755,33 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
         </div>
       </div>
 
-      {/* 🛕 TIRUMALA DARSHAN • LIVE CARD */}
-      <Link
-        href="/darshan/sarva-darshan"
-        prefetch={false}
-        style={{
-          textDecoration: 'none',
-          display: 'block',
-          marginBottom: '12px'
-        }}
-      >
-        <div style={{
-          background: 'linear-gradient(135deg, #F5FBF6 0%, #E9F5EB 100%)',
-          border: '1px solid #D5ECD8',
-          borderRadius: '18px',
-          padding: '8px 12px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          gap: '10px',
-          boxShadow: '0 2px 8px rgba(10, 78, 51, 0.04)'
-        }}>
+      {/* 🛕 UNIFIED DARSHAN & TOKENS LIVE HUB CARD (Modern Clean Grid with Hairline Dividers) */}
+      <div style={{
+        background: '#FFFFFF',
+        border: '1px solid #E2E8F0',
+        borderRadius: '20px',
+        overflow: 'hidden',
+        boxShadow: '0 2px 10px rgba(10, 78, 51, 0.04)',
+        marginBottom: '12px'
+      }}>
+        {/* Top: Tirumala Darshan Main Live Row */}
+        <Link
+          href="/darshan/sarva-darshan"
+          prefetch={false}
+          style={{
+            textDecoration: 'none',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            gap: '12px',
+            padding: '11px 14px',
+            background: 'linear-gradient(135deg, #F8FCF9 0%, #EFF9F2 100%)'
+          }}
+        >
           <div style={{
-            width: '66px',
-            height: '66px',
-            borderRadius: '14px',
+            width: '62px',
+            height: '62px',
+            borderRadius: '13px',
             overflow: 'hidden',
             flexShrink: 0,
             position: 'relative',
@@ -1793,8 +1795,8 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
           </div>
 
           <div style={{ flex: 1, minWidth: 0 }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '5px', marginBottom: '1px', flexWrap: 'wrap' }}>
-              <span style={{ fontSize: '12.5px', fontWeight: 800, color: '#1E293B', whiteSpace: 'nowrap' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '5px', marginBottom: '2px', flexWrap: 'wrap' }}>
+              <span className="notranslate" translate="no" style={{ fontSize: '13px', fontWeight: 800, color: '#1E293B', whiteSpace: 'nowrap' }}>
                 {lang === 'te' ? 'తిరుమల దర్శనం' : 'Tirumala Darshan'}
               </span>
               <span style={{
@@ -1809,7 +1811,7 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                 fontWeight: 800
               }}>
                 <span style={{ width: '5px', height: '5px', borderRadius: '50%', background: '#16A34A' }} />
-                {lang === 'te' ? 'లైవ్' : 'Live'}
+                <span>{lang === 'te' ? 'లైవ్' : 'Live'}</span>
               </span>
 
               {/* Dynamic Live Rain Badge (Active Precipitation) */}
@@ -1841,18 +1843,18 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                 : (lang === 'te' ? 'గంటలు' : 'hours');
 
               return (
-                <div style={{ display: 'flex', alignItems: 'baseline', gap: '5px', margin: '0' }}>
-                  <span style={{ fontSize: '21px', fontWeight: 900, color: '#0A4E33', letterSpacing: '-0.02em', lineHeight: 1.15 }}>
+                <div style={{ display: 'flex', alignItems: 'baseline', gap: '4px', margin: '0' }}>
+                  <span style={{ fontSize: '20px', fontWeight: 900, color: '#0A4E33', letterSpacing: '-0.02em', lineHeight: 1.15 }}>
                     {numOnly}
                   </span>
-                  <span style={{ fontSize: '11.5px', fontWeight: 700, color: '#0A4E33' }}>
+                  <span style={{ fontSize: '11px', fontWeight: 700, color: '#0A4E33' }}>
                     {unit}
                   </span>
                 </div>
               );
             })()}
 
-            <p style={{
+            <p className="notranslate" translate="no" style={{
               fontSize: '10px',
               color: isRainy ? '#0369A1' : '#64748B',
               fontWeight: isRainy ? 700 : 500,
@@ -1880,127 +1882,122 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
             flexShrink: 0,
             boxShadow: '0 1px 2px rgba(0,0,0,0.04)'
           }}>
-            <ChevronRight size={15} strokeWidth={2.5} />
+            <ChevronRight size={14} strokeWidth={2.5} />
           </div>
+        </Link>
+
+        {/* Subtle Hairline Divider */}
+        <div style={{ height: '1px', background: '#EAEFEA', width: '100%' }} />
+
+        {/* Bottom 2-Column Grid with Hairline Center Divider */}
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: '1fr 1fr',
+          background: '#FFFFFF'
+        }}>
+          {/* SSD Tokens with Timing */}
+          <Link
+            href="/ssd-tokens"
+            prefetch={false}
+            style={{
+              textDecoration: 'none',
+              padding: '9px 10px',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              textAlign: 'center',
+              borderRight: '1px solid #F1F5F9',
+              background: '#FFFFFF'
+            }}
+          >
+            <div style={{
+              width: '26px',
+              height: '26px',
+              borderRadius: '8px',
+              background: '#FEE2E2',
+              color: '#DC2626',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginBottom: '3px'
+            }}>
+              <Ticket size={15} strokeWidth={2.2} />
+            </div>
+            <span className="notranslate" translate="no" style={{ fontSize: '11px', fontWeight: 800, color: '#1E293B', lineHeight: 1.2, marginBottom: '3px' }}>
+              {lang === 'te' ? 'SSD టోకెన్లు' : 'SSD Tokens'}
+            </span>
+            <div style={{
+              background: '#FEF2F2',
+              border: '1px solid #FECDD3',
+              color: '#991B1B',
+              fontSize: '9.5px',
+              fontWeight: 800,
+              padding: '1.5px 7px',
+              borderRadius: '9999px',
+              lineHeight: 1.2,
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '3px'
+            }}>
+              <Clock size={9.5} strokeWidth={2.4} />
+              <span>{getDarshanWait('ssd') !== '—' ? getDarshanWait('ssd') : '4 - 6 hours'}</span>
+            </div>
+          </Link>
+
+          {/* ₹300 Entry with Timing */}
+          <Link
+            href="/darshan/special-entry"
+            prefetch={false}
+            style={{
+              textDecoration: 'none',
+              padding: '9px 10px',
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+              textAlign: 'center',
+              background: '#FFFFFF'
+            }}
+          >
+            <div style={{
+              width: '26px',
+              height: '26px',
+              borderRadius: '8px',
+              background: '#FEF3C7',
+              color: '#D97706',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginBottom: '3px',
+              fontSize: '13px',
+              fontWeight: 800
+            }}>
+              ₹
+            </div>
+            <span className="notranslate" translate="no" style={{ fontSize: '11px', fontWeight: 800, color: '#1E293B', lineHeight: 1.2, marginBottom: '3px' }}>
+              {lang === 'te' ? '₹300 ప్రవేశం' : '₹300 Entry'}
+            </span>
+            <div style={{
+              background: '#FFFBEB',
+              border: '1px solid #FDE68A',
+              color: '#92400E',
+              fontSize: '9.5px',
+              fontWeight: 800,
+              padding: '1.5px 7px',
+              borderRadius: '9999px',
+              lineHeight: 1.2,
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '3px'
+            }}>
+              <Clock size={9.5} strokeWidth={2.4} />
+              <span>{getDarshanWait('special') !== '—' ? getDarshanWait('special') : '3 - 4 hours'}</span>
+            </div>
+          </Link>
         </div>
-      </Link>
-
-      {/* 🎫 2 PRIMARY QUICK ACTION CARDS: SSD & ₹300 ENTRY WITH LIVE TIMINGS */}
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(2, minmax(0, 1fr))',
-        gap: '8px',
-        marginBottom: '10px'
-      }}>
-        {/* SSD Tokens with Timing */}
-        <Link
-          href="/ssd-tokens"
-          prefetch={false}
-          style={{
-            textDecoration: 'none',
-            background: '#FEF2F2',
-            border: '1px solid #FEE2E2',
-            borderRadius: '16px',
-            padding: '8px 8px',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            textAlign: 'center',
-            boxShadow: '0 1px 4px rgba(220, 38, 38, 0.04)',
-            transition: 'transform 0.15s ease'
-          }}
-        >
-          <div style={{
-            width: '28px',
-            height: '28px',
-            borderRadius: '9px',
-            background: '#FEE2E2',
-            color: '#DC2626',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            marginBottom: '4px'
-          }}>
-            <Ticket size={16} strokeWidth={2.2} />
-          </div>
-          <span style={{ fontSize: '11.5px', fontWeight: 800, color: '#1E293B', lineHeight: 1.2, marginBottom: '3px' }}>
-            {lang === 'te' ? 'SSD టోకెన్లు' : 'SSD Tokens'}
-          </span>
-          <div style={{
-            background: 'rgba(254, 226, 226, 0.95)',
-            border: '1px solid #FECDD3',
-            color: '#991B1B',
-            fontSize: '10px',
-            fontWeight: 800,
-            padding: '2px 7px',
-            borderRadius: '8px',
-            lineHeight: 1.2,
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '3px'
-          }}>
-            <Clock size={10} strokeWidth={2.4} />
-            <span>{getDarshanWait('ssd') !== '—' ? getDarshanWait('ssd') : '4 - 6 hours'}</span>
-          </div>
-        </Link>
-
-        {/* ₹300 Entry with Timing */}
-        <Link
-          href="/darshan/special-entry"
-          prefetch={false}
-          style={{
-            textDecoration: 'none',
-            background: '#FFFBEB',
-            border: '1px solid #FEF3C7',
-            borderRadius: '16px',
-            padding: '8px 8px',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            textAlign: 'center',
-            boxShadow: '0 1px 4px rgba(217, 119, 6, 0.04)',
-            transition: 'transform 0.15s ease'
-          }}
-        >
-          <div style={{
-            width: '28px',
-            height: '28px',
-            borderRadius: '9px',
-            background: '#FEF3C7',
-            color: '#D97706',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            marginBottom: '4px',
-            fontSize: '15px',
-            fontWeight: 800
-          }}>
-            ₹
-          </div>
-          <span style={{ fontSize: '11.5px', fontWeight: 800, color: '#1E293B', lineHeight: 1.2, marginBottom: '3px' }}>
-            {lang === 'te' ? '₹300 ప్రవేశం' : '₹300 Entry'}
-          </span>
-          <div style={{
-            background: 'rgba(254, 243, 199, 0.95)',
-            border: '1px solid #FDE68A',
-            color: '#92400E',
-            fontSize: '10px',
-            fontWeight: 800,
-            padding: '2px 7px',
-            borderRadius: '8px',
-            lineHeight: 1.2,
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '3px'
-          }}>
-            <Clock size={10} strokeWidth={2.4} />
-            <span>{getDarshanWait('special') !== '—' ? getDarshanWait('special') : '3 - 4 hours'}</span>
-          </div>
-        </Link>
       </div>
 
       {/* 🧭 4 SECONDARY ACTION PILLS */}
-      <div style={{
+      <div className="notranslate" translate="no" style={{
         display: 'grid',
         gridTemplateColumns: 'repeat(4, minmax(0, 1fr))',
         gap: '8px',
@@ -2145,7 +2142,7 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
           }}>
             <Building2 size={15} strokeWidth={2.2} />
           </div>
-          <span style={{ fontSize: '11px', fontWeight: 700, color: '#334155' }}>
+          <span className="notranslate" translate="no" style={{ fontSize: '11px', fontWeight: 700, color: '#334155' }}>
             {lang === 'te' ? 'ద్వారాలు' : 'Gates'}
           </span>
         </Link>
@@ -2191,115 +2188,115 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
 
         const visualCards = isSsdClosed ? [
           {
-            icon: <Building2 size={15} color="#166534" strokeWidth={2.2} />,
+            icon: <Building2 size={15} color="#065F46" strokeWidth={2.4} />,
             title: lang === 'te' ? 'నేటి విశేషం' : 'Sacred Shrine',
             value: lang === 'te' ? shortShrine.te : shortShrine.en,
-            bg: '#F0FDF4',
-            border: '#DCFCE7',
-            labelColor: '#166534',
-            valColor: '#0F2C24'
+            bg: '#ECFDF5',
+            border: '#A7F3D0',
+            labelColor: '#064E3B',
+            valColor: '#022C22'
           },
           {
-            icon: <Navigation size={14} color="#2563EB" strokeWidth={2.4} />,
+            icon: <Navigation size={14} color="#1E40AF" strokeWidth={2.4} />,
             title: lang === 'te' ? 'ఉత్తమ మార్గం' : 'Best Route',
             value: lang === 'te' ? 'స్థానిక క్షేత్రాలు' : 'Local Shrines',
             bg: '#EFF6FF',
-            border: '#DBEAFE',
-            labelColor: '#1D4ED8',
-            valColor: '#0F2C24'
+            border: '#BFDBFE',
+            labelColor: '#1E40AF',
+            valColor: '#0F172A'
           },
           {
-            icon: <Clock size={14} color="#D97706" strokeWidth={2.4} />,
+            icon: <Clock size={14} color="#92400E" strokeWidth={2.4} />,
             title: lang === 'te' ? 'అనుకూల సమయం' : 'Optimal Time',
             value: lang === 'te' ? 'ఉదయాన్నే' : 'Early Morning',
             bg: '#FFFBEB',
-            border: '#FEF3C7',
-            labelColor: '#B45309',
-            valColor: '#0F2C24'
+            border: '#FDE68A',
+            labelColor: '#92400E',
+            valColor: '#1E293B'
           }
         ] : (isSsdOpen ? [
           {
-            icon: <Ticket size={15} color="#166534" strokeWidth={2.2} />,
+            icon: <Ticket size={15} color="#065F46" strokeWidth={2.4} />,
             title: lang === 'te' ? 'కౌంటర్లు' : 'SSD Status',
             value: lang === 'te' ? 'జారీ అవుతున్నాయి' : 'Issuing Now',
-            bg: '#F0FDF4',
-            border: '#DCFCE7',
-            labelColor: '#166534',
-            valColor: '#0F2C24'
+            bg: '#ECFDF5',
+            border: '#A7F3D0',
+            labelColor: '#064E3B',
+            valColor: '#022C22'
           },
           {
-            icon: <Clock size={14} color="#2563EB" strokeWidth={2.4} />,
+            icon: <Clock size={14} color="#1E40AF" strokeWidth={2.4} />,
             title: lang === 'te' ? 'సమయం ఆదా' : 'Time Saved',
             value: lang === 'te' ? '10+ గంటలు' : 'Save 10+ Hrs',
             bg: '#EFF6FF',
-            border: '#DBEAFE',
-            labelColor: '#1D4ED8',
-            valColor: '#0F2C24'
+            border: '#BFDBFE',
+            labelColor: '#1E40AF',
+            valColor: '#0F172A'
           },
           {
-            icon: <MapPin size={14} color="#D97706" strokeWidth={2.4} />,
+            icon: <MapPin size={14} color="#92400E" strokeWidth={2.4} />,
             title: lang === 'te' ? 'కేంద్రాలు' : 'Counters',
             value: lang === 'te' ? 'అలిపిరి & శ్రీనివాసం' : 'Alipiri & Srinivasam',
             bg: '#FFFBEB',
-            border: '#FEF3C7',
-            labelColor: '#B45309',
-            valColor: '#0F2C24'
+            border: '#FDE68A',
+            labelColor: '#92400E',
+            valColor: '#1E293B'
           }
         ] : [
           {
-            icon: <Users size={14} color="#2563EB" strokeWidth={2.4} />,
+            icon: <Users size={14} color="#1E40AF" strokeWidth={2.4} />,
             title: lang === 'te' ? 'క్యూ సమయం' : 'Queue Flow',
             value: sarvaWait || (lang === 'te' ? 'సాధారణం' : 'Moderate'),
             bg: '#EFF6FF',
-            border: '#DBEAFE',
-            labelColor: '#1D4ED8',
-            valColor: '#0F2C24'
+            border: '#BFDBFE',
+            labelColor: '#1E40AF',
+            valColor: '#0F172A'
           },
           {
-            icon: <Building2 size={15} color="#166534" strokeWidth={2.2} />,
+            icon: <Building2 size={15} color="#065F46" strokeWidth={2.4} />,
             title: lang === 'te' ? 'విశేష క్షేత్రం' : 'Sacred Shrine',
             value: lang === 'te' ? shortShrine.te : shortShrine.en,
-            bg: '#F0FDF4',
-            border: '#DCFCE7',
-            labelColor: '#166534',
-            valColor: '#0F2C24'
+            bg: '#ECFDF5',
+            border: '#A7F3D0',
+            labelColor: '#064E3B',
+            valColor: '#022C22'
           },
           {
-            icon: <Clock size={14} color="#D97706" strokeWidth={2.4} />,
+            icon: <Clock size={14} color="#92400E" strokeWidth={2.4} />,
             title: lang === 'te' ? 'ఉత్తమ సమయం' : 'Best Time',
             value: lang === 'te' ? 'ఉదయాన్నే' : 'Early Morning',
             bg: '#FFFBEB',
-            border: '#FEF3C7',
-            labelColor: '#B45309',
-            valColor: '#0F2C24'
+            border: '#FDE68A',
+            labelColor: '#92400E',
+            valColor: '#1E293B'
           }
         ]);
 
         return (
-          <div style={{
-            background: 'linear-gradient(135deg, #FCFBF9 0%, #F6F4EF 100%)',
-            border: '1.5px solid #0F5132',
-            borderRadius: '26px',
-            padding: '16px 14px',
+          <div className="notranslate" translate="no" style={{
+            background: '#FFFFFF',
+            border: '1px solid #EAE6DF',
+            borderRadius: '20px',
+            padding: '12px 14px',
             marginBottom: '0px',
-            boxShadow: '0 6px 24px -4px rgba(10, 67, 45, 0.08), 0 2px 6px rgba(0, 0, 0, 0.03)',
+            boxShadow: '0 4px 16px -2px rgba(15, 23, 42, 0.05), 0 1px 3px rgba(0, 0, 0, 0.02)',
             position: 'relative',
             overflow: 'hidden'
           }}>
             {/* 🛕 Ethereal Tirumala Gopuram Hillside Backdrop (Right side) */}
             <div style={{
               position: 'absolute',
-              right: '-8px',
-              top: '16px',
-              bottom: '40px',
-              width: '44%',
+              right: '-6px',
+              top: '8px',
+              bottom: '24px',
+              width: '40%',
               pointerEvents: 'none',
               zIndex: 0,
-              maskImage: 'linear-gradient(to right, transparent 0%, rgba(0,0,0,0.3) 25%, rgba(0,0,0,0.85) 65%, black 100%)',
-              WebkitMaskImage: 'linear-gradient(to right, transparent 0%, rgba(0,0,0,0.3) 25%, rgba(0,0,0,0.85) 65%, black 100%)',
+              maskImage: 'linear-gradient(to right, transparent 0%, rgba(0,0,0,0.2) 25%, rgba(0,0,0,0.7) 70%, black 100%)',
+              WebkitMaskImage: 'linear-gradient(to right, transparent 0%, rgba(0,0,0,0.2) 25%, rgba(0,0,0,0.7) 70%, black 100%)',
               overflow: 'hidden',
-              borderRadius: '0 26px 26px 0',
-              opacity: 0.9
+              borderRadius: '0 20px 20px 0',
+              opacity: 0.78
             }}>
               <img
                 src="/images/places/tirumala_gopuram_day.jpg"
@@ -2319,45 +2316,44 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'space-between',
-              gap: '8px',
-              marginBottom: '10px',
+              gap: '6px',
+              marginBottom: '5px',
               position: 'relative',
               zIndex: 1
             }}>
-              {/* Deep Emerald Badge */}
+              {/* Refined Sage Guidance Badge */}
               <div style={{
                 display: 'inline-flex',
                 alignItems: 'center',
-                gap: '6px',
-                background: 'linear-gradient(135deg, #063A26 0%, #0D573B 100%)',
-                padding: '5px 13px',
+                gap: '5px',
+                background: '#F0FDF4',
+                border: '1px solid #DCFCE7',
+                padding: '3px 9px',
                 borderRadius: '9999px',
-                fontSize: '12.5px',
-                fontWeight: 800,
-                color: '#FFFFFF',
-                boxShadow: '0 2px 6px rgba(6, 58, 38, 0.25)',
-                letterSpacing: '-0.01em'
+                fontSize: '11px',
+                fontWeight: 700,
+                color: '#166534',
+                boxShadow: '0 1px 2px rgba(22, 101, 52, 0.06)'
               }}>
-                <Sparkles size={14} color="#FACC15" fill="#FACC15" />
+                <Sparkles size={11} color="#EAB308" fill="#EAB308" />
                 <span>{lang === 'te' ? 'సారథి మార్గదర్శనం' : 'Saarthi Guidance'}</span>
               </div>
 
-              <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
                 {/* Weather Capsule */}
                 <div style={{
                   display: 'inline-flex',
                   alignItems: 'center',
-                  gap: '4px',
+                  gap: '3px',
                   background: '#FFFBEB',
                   border: '1px solid #FEF3C7',
-                  padding: '4px 10px',
+                  padding: '2.5px 7px',
                   borderRadius: '9999px',
-                  fontSize: '11.5px',
-                  fontWeight: 800,
-                  color: '#78350F',
-                  boxShadow: '0 1px 2px rgba(217, 119, 6, 0.06)'
+                  fontSize: '10.5px',
+                  fontWeight: 700,
+                  color: '#92400E'
                 }}>
-                  {isRainy ? <CloudRain size={13} color="#0284C7" /> : <Sun size={13} color="#D97706" />}
+                  {isRainy ? <CloudRain size={11} color="#0284C7" /> : <Sun size={11} color="#D97706" />}
                   <span>{weatherTemp || '24°C'}</span>
                 </div>
 
@@ -2370,126 +2366,111 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                     alignItems: 'center',
                     gap: '4px',
                     backgroundColor: isSharingPulse ? '#DCFCE7' : '#FFFFFF',
-                    border: '1.5px solid #0A432D',
-                    padding: '4px 11px',
+                    border: '1px solid #E2E8F0',
+                    padding: '2.5px 8px',
                     borderRadius: '9999px',
-                    fontSize: '11.5px',
-                    fontWeight: 700,
-                    color: '#0A432D',
+                    fontSize: '10.5px',
+                    fontWeight: 600,
+                    color: '#475569',
                     cursor: isSharingPulse ? 'wait' : 'pointer',
-                    boxShadow: '0 1px 3px rgba(10, 67, 45, 0.08)',
+                    boxShadow: '0 1px 2px rgba(0, 0, 0, 0.03)',
                     transition: 'all 0.15s ease'
                   }}
                   aria-label="Share live updates on WhatsApp"
                 >
-                  <Share2 size={12} color="#0A432D" strokeWidth={2.2} />
+                  <Share2 size={11} color="#475569" strokeWidth={2.2} />
                   <span>{isSharingPulse ? (lang === 'te' ? 'సిద్ధమవుతోంది...' : 'Sharing...') : (lang === 'te' ? 'కుటుంబానికి షేర్' : 'Share to Family')}</span>
                 </button>
               </div>
             </div>
 
-            {/* Devotional Quote with Golden Side Rules */}
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px',
-              margin: '8px 0 10px 0',
+            {/* Devotional Subtitle */}
+            <p style={{
+              fontSize: '10.5px',
+              fontStyle: 'italic',
+              color: '#64748B',
+              margin: '0 0 5px 0',
+              fontWeight: 500,
+              lineHeight: 1.25,
+              whiteSpace: 'nowrap',
+              overflow: 'hidden',
+              textOverflow: 'ellipsis',
               position: 'relative',
               zIndex: 1
             }}>
-              <div style={{ width: '24px', height: '1.5px', background: '#D4A373', borderRadius: '1px', flexShrink: 0 }} />
-              <p style={{
-                fontSize: '12px',
-                fontStyle: 'italic',
-                color: '#475569',
-                margin: 0,
-                fontWeight: 500,
-                lineHeight: 1.2,
-                whiteSpace: 'nowrap',
-                overflow: 'hidden',
-                textOverflow: 'ellipsis'
-              }}>
-                {lang === 'te' ? '“శాంతితో శ్రీవారిని దర్శించండి”' : '“In calm faith, seek Srivari”'}
-              </p>
-              <div style={{ width: '24px', height: '1.5px', background: '#D4A373', borderRadius: '1px', flexShrink: 0 }} />
-            </div>
+              {lang === 'te' ? '“శాంతితో శ్రీవారిని దర్శించండి”' : '“In calm faith, seek Srivari”'}
+            </p>
 
-            {/* Main Actionable Guidance Headline with Gold Accent Bar */}
+            {/* Main Actionable Guidance Headline */}
             <div style={{
-              display: 'flex',
-              alignItems: 'stretch',
-              gap: '10px',
-              margin: '0 0 12px 0',
+              margin: '0 0 8px 0',
               position: 'relative',
               zIndex: 1
             }}>
-              <div style={{
-                width: '3.5px',
-                borderRadius: '3px',
-                background: '#D97706',
-                flexShrink: 0
-              }} />
               <h3 style={{
-                fontSize: '16px',
-                fontWeight: 800,
-                color: '#0F2C24',
+                fontSize: '13.5px',
+                fontWeight: 700,
+                color: '#0F172A',
                 lineHeight: 1.35,
                 margin: 0,
                 letterSpacing: '-0.01em',
-                maxWidth: '68%'
+                maxWidth: '72%'
               }}>
                 {guidanceHeadline}
               </h3>
             </div>
 
-            {/* 3 Unified Information Cards Grid */}
+            {/* 3 Unified Information Cards Grid (Light & Airy) */}
             <div style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(3, minmax(0, 1fr))',
               gap: '6px',
-              marginBottom: '10px',
+              marginBottom: '6px',
               position: 'relative',
               zIndex: 1
             }}>
               {visualCards.map((card: any, idx: number) => (
                 <div key={idx} style={{
-                  backgroundColor: card.bg,
-                  border: `1.5px solid ${card.border}`,
-                  borderRadius: '16px',
-                  padding: '9px 7px',
+                  backgroundColor: '#F8FAFC',
+                  border: '1px solid #F1F5F9',
+                  borderRadius: '10px',
+                  padding: '6px 7px',
                   display: 'flex',
                   flexDirection: 'column',
                   justifyContent: 'space-between',
-                  minHeight: '62px',
-                  boxShadow: '0 1px 3px rgba(0,0,0,0.03)'
+                  minHeight: '46px',
+                  boxShadow: '0 1px 2px rgba(0,0,0,0.02)'
                 }}>
                   <div style={{
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'space-between',
-                    gap: '4px',
-                    marginBottom: '4px'
+                    gap: '3px',
+                    marginBottom: '2px'
                   }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '3px' }}>
                       {card.icon}
                       <span style={{
                         fontSize: '9.5px',
-                        fontWeight: 700,
-                        color: card.labelColor || '#64748B',
+                        fontWeight: 600,
+                        color: '#64748B',
                         whiteSpace: 'nowrap',
                         letterSpacing: '-0.01em'
                       }}>
                         {card.title}
                       </span>
                     </div>
-                    <ChevronRight size={13} color={card.labelColor || '#64748B'} strokeWidth={2.5} style={{ flexShrink: 0 }} />
+                    <ChevronRight size={10} color="#94A3B8" strokeWidth={2.4} style={{ flexShrink: 0 }} />
                   </div>
                   <div style={{
-                    fontSize: '12px',
-                    fontWeight: 800,
-                    color: '#0F2C24',
+                    fontSize: '11px',
+                    fontWeight: 700,
+                    color: '#0F172A',
                     lineHeight: 1.2,
-                    letterSpacing: '-0.01em'
+                    letterSpacing: '-0.01em',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                    whiteSpace: 'nowrap'
                   }}>
                     {card.value}
                   </div>
@@ -2497,35 +2478,20 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
               ))}
             </div>
 
-            {/* Footer Trust Indicator with Checkmark */}
+            {/* Minimalist Footnote Trust Indicator */}
             <div style={{
               display: 'flex',
               alignItems: 'center',
-              gap: '6px',
-              padding: '6px 10px',
-              background: 'rgba(240, 253, 244, 0.75)',
-              borderRadius: '12px',
-              border: '1px solid #DCFCE7',
+              gap: '4px',
+              marginTop: '4px',
               position: 'relative',
               zIndex: 1
             }}>
-              <div style={{
-                width: '15px',
-                height: '15px',
-                borderRadius: '50%',
-                background: '#166534',
-                color: '#FFFFFF',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                flexShrink: 0
-              }}>
-                <Check size={10} strokeWidth={3} />
-              </div>
+              <Check size={11} color="#16A34A" strokeWidth={2.6} />
               <span style={{
-                fontSize: '11px',
-                color: '#166534',
-                fontWeight: 600,
+                fontSize: '9.5px',
+                color: '#64748B',
+                fontWeight: 500,
                 letterSpacing: '-0.01em'
               }}>
                 {lang === 'te' ? 'లైవ్ క్యూ ఆధారంగా • ఇటీవల ధృవీకరించబడింది' : 'Based on live queue data • Verified recently'}

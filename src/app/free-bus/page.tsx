@@ -10,7 +10,6 @@ import {
 import { 
   BUS_STATIONS_DATA, 
   BUS_HELPLINE, 
-  BUS_DISCLAIMER,
   BusStationStop
 } from '@/data/freeBusStations';
 import styles from './page.module.css';
@@ -200,11 +199,6 @@ export default function FreeBusStationsPage() {
             <span>{BUS_HELPLINE.phoneFormatted}</span>
           </div>
         </a>
-
-        {/* Disclaimer Notice */}
-        <p className={styles.disclaimerText}>
-          {BUS_DISCLAIMER}
-        </p>
       </div>
     </div>
   );

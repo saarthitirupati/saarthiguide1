@@ -11,7 +11,6 @@ import {
   MEDICAL_LOCATIONS_DATA, 
   MEDICAL_EMERGENCY,
   MEDICAL_HELPLINE, 
-  MEDICAL_DISCLAIMER,
   MedicalLocation
 } from '@/data/medicalLocations';
 import styles from './page.module.css';
@@ -211,11 +210,6 @@ export default function MedicalDirectoryPage() {
             <span>{MEDICAL_HELPLINE.phoneFormatted}</span>
           </div>
         </a>
-
-        {/* Disclaimer Notice */}
-        <p className={styles.disclaimerText}>
-          {MEDICAL_DISCLAIMER}
-        </p>
       </div>
     </div>
   );

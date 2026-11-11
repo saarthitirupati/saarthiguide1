@@ -92,6 +92,8 @@ export function DailyGitaCard({ date, variant = 'desktop', embedded = false }: D
 
   return (
     <div
+      className="notranslate"
+      translate="no"
       style={embedded ? {
         position: 'relative',
         width: '100%'

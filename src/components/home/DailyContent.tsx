@@ -74,7 +74,7 @@ export function DailyContent(props: any) {
   const badge = priorityColors[(companionData.priorityLevel as 1|2|3|4)] ?? priorityColors[3];
 
   return (
-    <div style={{
+    <div className="notranslate" translate="no" style={{
       background: 'linear-gradient(135deg, #FFFFFF 0%, #FFFDF7 50%, #FEF9C3 100%)',
       border: '1.5px solid #FDE68A',
       borderRadius: '20px',

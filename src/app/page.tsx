@@ -34,7 +34,7 @@ const TEXTS = {
     openDrawer: 'More for your pilgrimage',
     closeDrawer: 'Close',
     lockers: 'Lockers & Luggage',
-    lockersSub: 'Deposit phones & bags before queue',
+    lockersSub: 'Deposit phones & bags',
     lockersStatus: '6 Locations Open',
     meals: 'Free Annaprasadam',
     mealsSub: 'Free hot meals at Vengamamba',
@@ -56,7 +56,7 @@ const TEXTS = {
     openDrawer: 'మరిన్ని వివరాలు & సమాచారం',
     closeDrawer: 'మూసివేయి',
     lockers: 'లాకర్లు & లగేజీ',
-    lockersSub: 'క్యూ లోకి వెళ్లేముందు ఫోన్లు, లగేజీ డిపాజిట్ చేయండి',
+    lockersSub: 'ఫోన్లు & లగేజీ డిపాజిట్',
     lockersStatus: '6 కేంద్రాలు ఓపెన్',
     meals: 'ఉచిత అన్నప్రసాదం',
     mealsSub: 'వెంగమాంబ సముదాయంలో ఉచిత భోజనం',
@@ -143,7 +143,7 @@ export default function HomePage() {
   ];
 
   return (
-    <div className={styles.homeWrapper} style={{ backgroundColor: 'var(--bg-canvas, #FAF8F5)', minHeight: '100vh', width: '100%', maxWidth: '100%', overflowX: 'hidden', overflowY: 'auto', boxSizing: 'border-box' }}>
+    <div className={styles.homeWrapper} style={{ backgroundColor: 'var(--bg-canvas, #FAF8F5)', minHeight: '100vh', width: '100%', maxWidth: '100%', overflowX: 'hidden', boxSizing: 'border-box' }}>
       
       {/* 📱 MOBILE VIEW (<768px): 3-Layer Information Architecture */}
       <div className={styles.mobileOnly}>
@@ -348,9 +348,9 @@ export default function HomePage() {
           </div>
 
           {/* EXPLORE TIRUPATI REGION (BENTO CATEGORY CARDS) */}
-          <div style={{ padding: '0 14px 16px' }}>
+          <div className="notranslate" translate="no" style={{ padding: '0 14px 16px' }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
-              <h2 style={{ fontSize: '15px', fontWeight: 800, color: 'var(--color-text-primary, #1E232D)', margin: 0, letterSpacing: '-0.015em' }}>
+              <h2 className="notranslate" translate="no" style={{ fontSize: '15px', fontWeight: 800, color: 'var(--color-text-primary, #1E232D)', margin: 0, letterSpacing: '-0.015em' }}>
                 {lang === 'te' ? 'తిరుపతి ప్రాంతాన్ని అన్వేషించండి' : 'Explore Tirupati Region'}
               </h2>
               <Link href="/explore" prefetch={false} style={{ fontSize: '12px', fontWeight: 700, color: '#0F5132', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '2px' }}>
@@ -366,15 +366,15 @@ export default function HomePage() {
                 prefetch={false}
                 style={{
                   textDecoration: 'none',
-                  height: '118px',
+                  height: '124px',
                   borderRadius: '18px',
                   overflow: 'hidden',
                   position: 'relative',
                   display: 'flex',
                   flexDirection: 'column',
                   justifyContent: 'flex-end',
-                  boxShadow: '0 4px 14px rgba(15, 23, 42, 0.08)',
-                  border: '1px solid rgba(15, 23, 42, 0.06)'
+                  boxShadow: '0 4px 16px rgba(15, 23, 42, 0.08)',
+                  border: '1px solid rgba(15, 23, 42, 0.08)'
                 }}
               >
                 <img
@@ -382,25 +382,37 @@ export default function HomePage() {
                   alt="Temples"
                   style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
                 />
-                <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, transparent 30%, rgba(15, 23, 42, 0.82) 100%)' }} />
-                <div style={{ position: 'relative', zIndex: 2, padding: '10px 12px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, transparent 20%, rgba(15, 23, 42, 0.5) 60%, rgba(15, 23, 42, 0.92) 100%)' }} />
+                <div style={{ position: 'relative', zIndex: 2, padding: '12px 14px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                   <div style={{
                     display: 'inline-flex',
                     alignItems: 'center',
                     gap: '6px',
-                    background: 'rgba(15, 23, 42, 0.5)',
-                    backdropFilter: 'blur(10px)',
-                    WebkitBackdropFilter: 'blur(10px)',
-                    border: '1px solid rgba(255, 255, 255, 0.25)',
-                    padding: '4px 10px',
-                    borderRadius: '9999px'
+                    background: 'rgba(15, 23, 42, 0.72)',
+                    backdropFilter: 'blur(12px)',
+                    WebkitBackdropFilter: 'blur(12px)',
+                    border: '1px solid rgba(255, 255, 255, 0.3)',
+                    padding: '5px 12px',
+                    borderRadius: '9999px',
+                    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.2)'
                   }}>
-                    <Landmark size={12} color="#FDE047" strokeWidth={2.4} />
-                    <span style={{ fontSize: '11.5px', fontWeight: 800, color: '#FFFFFF', letterSpacing: '-0.01em' }}>
-                      {lang === 'te' ? 'ఆలయాలు' : 'Temples'}
+                    <Landmark size={13} color="#FDE047" strokeWidth={2.4} />
+                    <span className="notranslate" translate="no" style={{ fontSize: '12px', fontWeight: 800, color: '#FFFFFF', letterSpacing: '-0.01em' }}>
+                      {lang === 'te' ? 'దేవాలయాలు' : 'Temples'}
                     </span>
                   </div>
-                  <span style={{ fontSize: '10px', color: '#DCFCE7', fontWeight: 700, background: 'rgba(22, 101, 52, 0.65)', padding: '2px 8px', borderRadius: '9999px' }}>
+                  <span className="notranslate" translate="no" style={{ 
+                    fontSize: '10.5px', 
+                    color: '#ECFDF5', 
+                    fontWeight: 700, 
+                    background: 'rgba(6, 78, 59, 0.85)', 
+                    backdropFilter: 'blur(8px)',
+                    WebkitBackdropFilter: 'blur(8px)',
+                    border: '1px solid rgba(52, 211, 153, 0.35)',
+                    padding: '3px 10px', 
+                    borderRadius: '9999px',
+                    boxShadow: '0 2px 6px rgba(0, 0, 0, 0.15)'
+                  }}>
                     {lang === 'te' ? 'ప్రధాన క్షేత్రాలు' : 'Sacred Shrines'}
                   </span>
                 </div>
@@ -421,8 +433,8 @@ export default function HomePage() {
                     display: 'flex',
                     flexDirection: 'column',
                     justifyContent: 'flex-end',
-                    boxShadow: '0 2px 8px rgba(15, 23, 42, 0.05)',
-                    border: '1px solid rgba(15, 23, 42, 0.06)'
+                    boxShadow: '0 3px 10px rgba(15, 23, 42, 0.07)',
+                    border: '1px solid rgba(15, 23, 42, 0.08)'
                   }}
                 >
                   <img
@@ -430,21 +442,22 @@ export default function HomePage() {
                     alt="Nature"
                     style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
                   />
-                  <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, transparent 35%, rgba(15, 23, 42, 0.85) 100%)' }} />
-                  <div style={{ position: 'relative', zIndex: 2, padding: '6px', textAlign: 'center' }}>
+                  <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, transparent 30%, rgba(15, 23, 42, 0.88) 100%)' }} />
+                  <div style={{ position: 'relative', zIndex: 2, padding: '7px 6px', textAlign: 'center' }}>
                     <div style={{
                       display: 'inline-flex',
                       alignItems: 'center',
                       gap: '4px',
-                      background: 'rgba(15, 23, 42, 0.55)',
+                      background: 'rgba(15, 23, 42, 0.70)',
                       backdropFilter: 'blur(8px)',
                       WebkitBackdropFilter: 'blur(8px)',
-                      border: '1px solid rgba(255, 255, 255, 0.22)',
-                      padding: '3px 7px',
-                      borderRadius: '9999px'
+                      border: '1px solid rgba(255, 255, 255, 0.25)',
+                      padding: '3px 8px',
+                      borderRadius: '9999px',
+                      boxShadow: '0 1px 4px rgba(0, 0, 0, 0.18)'
                     }}>
                       <Compass size={10} color="#6EE7B7" strokeWidth={2.4} />
-                      <span style={{ fontSize: '10px', fontWeight: 800, color: '#FFFFFF', whiteSpace: 'nowrap' }}>
+                      <span className="notranslate" translate="no" style={{ fontSize: '10px', fontWeight: 800, color: '#FFFFFF', whiteSpace: 'nowrap' }}>
                         {lang === 'te' ? 'ప్రకృతి' : 'Nature'}
                       </span>
                     </div>
@@ -464,8 +477,8 @@ export default function HomePage() {
                     display: 'flex',
                     flexDirection: 'column',
                     justifyContent: 'flex-end',
-                    boxShadow: '0 2px 8px rgba(15, 23, 42, 0.05)',
-                    border: '1px solid rgba(15, 23, 42, 0.06)'
+                    boxShadow: '0 3px 10px rgba(15, 23, 42, 0.07)',
+                    border: '1px solid rgba(15, 23, 42, 0.08)'
                   }}
                 >
                   <img
@@ -473,21 +486,22 @@ export default function HomePage() {
                     alt="Heritage"
                     style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
                   />
-                  <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, transparent 35%, rgba(15, 23, 42, 0.85) 100%)' }} />
-                  <div style={{ position: 'relative', zIndex: 2, padding: '6px', textAlign: 'center' }}>
+                  <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, transparent 30%, rgba(15, 23, 42, 0.88) 100%)' }} />
+                  <div style={{ position: 'relative', zIndex: 2, padding: '7px 6px', textAlign: 'center' }}>
                     <div style={{
                       display: 'inline-flex',
                       alignItems: 'center',
                       gap: '4px',
-                      background: 'rgba(15, 23, 42, 0.55)',
+                      background: 'rgba(15, 23, 42, 0.70)',
                       backdropFilter: 'blur(8px)',
                       WebkitBackdropFilter: 'blur(8px)',
-                      border: '1px solid rgba(255, 255, 255, 0.22)',
-                      padding: '3px 7px',
-                      borderRadius: '9999px'
+                      border: '1px solid rgba(255, 255, 255, 0.25)',
+                      padding: '3px 8px',
+                      borderRadius: '9999px',
+                      boxShadow: '0 1px 4px rgba(0, 0, 0, 0.18)'
                     }}>
                       <Landmark size={10} color="#FDE68A" strokeWidth={2.4} />
-                      <span style={{ fontSize: '10px', fontWeight: 800, color: '#FFFFFF', whiteSpace: 'nowrap' }}>
+                      <span className="notranslate" translate="no" style={{ fontSize: '10px', fontWeight: 800, color: '#FFFFFF', whiteSpace: 'nowrap' }}>
                         {lang === 'te' ? 'వారసత్వం' : 'Heritage'}
                       </span>
                     </div>
@@ -507,8 +521,8 @@ export default function HomePage() {
                     display: 'flex',
                     flexDirection: 'column',
                     justifyContent: 'flex-end',
-                    boxShadow: '0 2px 8px rgba(15, 23, 42, 0.05)',
-                    border: '1px solid rgba(15, 23, 42, 0.06)'
+                    boxShadow: '0 3px 10px rgba(15, 23, 42, 0.07)',
+                    border: '1px solid rgba(15, 23, 42, 0.08)'
                   }}
                 >
                   <img
@@ -516,28 +530,30 @@ export default function HomePage() {
                     alt="Viewpoints"
                     style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
                   />
-                  <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, transparent 35%, rgba(15, 23, 42, 0.85) 100%)' }} />
-                  <div style={{ position: 'relative', zIndex: 2, padding: '6px', textAlign: 'center' }}>
+                  <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, transparent 30%, rgba(15, 23, 42, 0.88) 100%)' }} />
+                  <div style={{ position: 'relative', zIndex: 2, padding: '7px 6px', textAlign: 'center' }}>
                     <div style={{
                       display: 'inline-flex',
                       alignItems: 'center',
                       gap: '4px',
-                      background: 'rgba(15, 23, 42, 0.55)',
+                      background: 'rgba(15, 23, 42, 0.70)',
                       backdropFilter: 'blur(8px)',
                       WebkitBackdropFilter: 'blur(8px)',
-                      border: '1px solid rgba(255, 255, 255, 0.22)',
-                      padding: '3px 7px',
-                      borderRadius: '9999px'
+                      border: '1px solid rgba(255, 255, 255, 0.25)',
+                      padding: '3px 8px',
+                      borderRadius: '9999px',
+                      boxShadow: '0 1px 4px rgba(0, 0, 0, 0.18)'
                     }}>
                       <Mountain size={10} color="#93C5FD" strokeWidth={2.4} />
-                      <span style={{ fontSize: '10px', fontWeight: 800, color: '#FFFFFF', whiteSpace: 'nowrap' }}>
-                        {lang === 'te' ? 'వీక్షణలు' : 'Viewpoints'}
+                      <span className="notranslate" translate="no" style={{ fontSize: '10px', fontWeight: 800, color: '#FFFFFF', whiteSpace: 'nowrap' }}>
+                        {lang === 'te' ? 'దృశ్యాలు' : 'Viewpoints'}
                       </span>
                     </div>
                   </div>
                 </Link>
               </div>
             </div>
+
           </div>
 
           {/* LAYER 4: EXPLORE AROUND YOU (SNAP-SCROLL CAROUSEL WITH DISTINCT PHOTOS) */}
@@ -611,22 +627,23 @@ export default function HomePage() {
                           {/* Elevated Floating Top-Right Distance Pill */}
                           <div style={{
                             position: 'absolute',
-                            top: '6px',
-                            right: '6px',
-                            backgroundColor: 'rgba(15, 81, 50, 0.92)',
+                            top: '8px',
+                            right: '8px',
+                            backgroundColor: 'rgba(6, 78, 59, 0.92)',
                             backdropFilter: 'blur(8px)',
                             WebkitBackdropFilter: 'blur(8px)',
-                            padding: '2.5px 7px',
+                            border: '1px solid rgba(255, 255, 255, 0.25)',
+                            padding: '3px 8px',
                             borderRadius: '9999px',
                             display: 'inline-flex',
                             alignItems: 'center',
                             gap: '3px',
                             color: '#FFFFFF',
-                            fontSize: '9.5px',
+                            fontSize: '10px',
                             fontWeight: 700,
-                            boxShadow: '0 2px 6px rgba(0, 0, 0, 0.15)'
+                            boxShadow: '0 2px 6px rgba(0, 0, 0, 0.2)'
                           }}>
-                            <MapPin size={9} strokeWidth={2.4} />
+                            <MapPin size={9.5} strokeWidth={2.4} />
                             <span>{p._dist} km</span>
                           </div>
                         </div>
@@ -634,32 +651,62 @@ export default function HomePage() {
                         {/* CARD BODY WITH CATEGORY & TIME */}
                         <div style={{ padding: '8px 10px 10px' }}>
                           <p style={{
-                            fontSize: '12.5px', 
+                            fontSize: '12px', 
                             fontWeight: 700, 
                             color: '#0F172A', 
-                            margin: '0 0 5px', 
-                            lineHeight: 1.25,
-                            height: '2.5em',
+                            margin: '0 0 6px', 
+                            lineHeight: 1.35,
+                            minHeight: '2.7em',
+                            maxHeight: '2.7em',
                             overflow: 'hidden', 
                             display: '-webkit-box', 
                             WebkitLineClamp: 2, 
-                            WebkitBoxOrient: 'vertical' as const
+                            WebkitBoxOrient: 'vertical' as const,
+                            wordBreak: 'break-word'
                           }}>
                             {p.name}
                           </p>
                           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '4px' }}>
-                            <span style={{
-                              fontSize: '9px',
-                              fontWeight: 700,
-                              padding: '2px 5px',
-                              borderRadius: '5px',
-                              backgroundColor: '#F1F5F9',
-                              color: '#475569',
-                              letterSpacing: '0.02em',
-                              whiteSpace: 'nowrap'
-                            }}>
-                              {p.category || 'Spot'}
-                            </span>
+                            {(() => {
+                              const cat = (p.category || 'Spot').toLowerCase();
+                              let bg = '#F1F5F9';
+                              let color = '#475569';
+                              let border = '1px solid #E2E8F0';
+
+                              if (cat.includes('temple') || cat.includes('sacred') || cat.includes('దేవాలయ')) {
+                                bg = '#FEF3C7';
+                                color = '#92400E';
+                                border = '1px solid #FDE68A';
+                              } else if (cat.includes('water') || cat.includes('nature') || cat.includes('fall') || cat.includes('lake') || cat.includes('ప్రకృతి')) {
+                                bg = '#E0F2FE';
+                                color = '#0369A1';
+                                border = '1px solid #BAE6FD';
+                              } else if (cat.includes('heritage') || cat.includes('museum') || cat.includes('fort') || cat.includes('వారసత్వ')) {
+                                bg = '#F3E8FF';
+                                color = '#6B21A8';
+                                border = '1px solid #E9D5FF';
+                              } else if (cat.includes('city') || cat.includes('leisure') || cat.includes('park') || cat.includes('నగరం')) {
+                                bg = '#ECFDF5';
+                                color = '#065F46';
+                                border = '1px solid #A7F3D0';
+                              }
+
+                              return (
+                                <span style={{
+                                  fontSize: '9.5px',
+                                  fontWeight: 700,
+                                  padding: '2.5px 6.5px',
+                                  borderRadius: '6px',
+                                  backgroundColor: bg,
+                                  color: color,
+                                  border: border,
+                                  letterSpacing: '0.01em',
+                                  whiteSpace: 'nowrap'
+                                }}>
+                                  {p.category || 'Spot'}
+                                </span>
+                              );
+                            })()}
                             <span style={{ fontSize: '10px', color: '#166534', fontWeight: 700, whiteSpace: 'nowrap' }}>
                               {p._dist ? `${Math.max(4, Math.round(Number(p._dist) * 3))} min` : 'Nearby'}
                             </span>
@@ -674,7 +721,7 @@ export default function HomePage() {
           )}
 
           {/* LAYER 5: DEVOTIONAL TRADITIONS & SACRED LORE (Single Consolidated Drawer) */}
-          <div style={{ padding: '0 14px 20px' }}>
+          <div className="notranslate" translate="no" style={{ padding: '0 14px 6px' }}>
             <button
               onClick={() => setShowLoreDrawer(!showLoreDrawer)}
               style={{
@@ -695,7 +742,7 @@ export default function HomePage() {
                 <div style={{ width: '24px', height: '24px', borderRadius: '6px', background: '#FEF9C3', border: '1px solid #FDE047', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                   <Sparkles size={13} color="#CA8A04" />
                 </div>
-                <div style={{ textAlign: 'left' }}>
+                <div className="notranslate" translate="no" style={{ textAlign: 'left' }}>
                   <span style={{ fontSize: '12.5px', fontWeight: 600, color: '#0F172A', display: 'block', lineHeight: 1.2 }}>
                     {lang === 'te' ? 'స్వామివారి విశేషాలు & ఆధ్యాత్మిక విశేషాలు' : 'Sacred Lore, Chants & Traditions'}
                   </span>

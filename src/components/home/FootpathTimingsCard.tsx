@@ -21,7 +21,7 @@ export function FootpathTimingsCard() {
       margin: '0px 12px 10px',
       fontFamily: 'var(--font-sans), Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
     }}>
-      {/* ── 1. SACRED GREEN HEADER WITH STEPS TRAIL PANORAMA ── */}
+      {/* ── 1. SACRED GREEN HEADER WITH AUTHENTIC FOOTPATH TRAIL ── */}
       <div style={{
         position: 'relative',
         background: 'linear-gradient(135deg, #053320 0%, #0A4E33 55%, #0B5C3C 100%)',
@@ -32,28 +32,42 @@ export function FootpathTimingsCard() {
         alignItems: 'center',
         justifyContent: 'space-between'
       }}>
-        {/* Footpath Hillside Stone Steps Panorama on the right */}
+        {/* Soft natural ambient glow */}
+        <div style={{
+          position: 'absolute',
+          top: '-30%',
+          right: '5%',
+          width: '160px',
+          height: '160px',
+          borderRadius: '50%',
+          background: 'radial-gradient(circle, rgba(52, 211, 153, 0.15) 0%, transparent 70%)',
+          pointerEvents: 'none',
+          zIndex: 0
+        }} />
+
+        {/* Authentic Footpath Stone Steps Photography */}
         <div style={{
           position: 'absolute',
           top: 0,
           right: 0,
           bottom: 0,
-          width: '48%',
+          width: '46%',
           pointerEvents: 'none',
-          opacity: 0.95,
-          maskImage: 'linear-gradient(to right, transparent 0%, rgba(0,0,0,0.35) 20%, rgba(0,0,0,1) 55%)',
-          WebkitMaskImage: 'linear-gradient(to right, transparent 0%, rgba(0,0,0,0.35) 20%, rgba(0,0,0,1) 55%)',
+          opacity: 0.9,
+          maskImage: 'linear-gradient(to right, transparent 0%, rgba(0,0,0,0.18) 20%, rgba(0,0,0,0.85) 65%, rgba(0,0,0,1) 100%)',
+          WebkitMaskImage: 'linear-gradient(to right, transparent 0%, rgba(0,0,0,0.18) 20%, rgba(0,0,0,0.85) 65%, rgba(0,0,0,1) 100%)',
           overflow: 'hidden'
         }}>
           <img
-            src="/images/places/footpath_trail_panorama.png"
-            alt="Tirumala Footpath Mountain Trail"
+            src="/assets/temples/alipiri-footpath.png"
+            alt="Tirumala Sacred Footpath Historic Trail"
             style={{
               width: '100%',
               height: '100%',
               objectFit: 'cover',
-              objectPosition: 'right center',
-              display: 'block'
+              objectPosition: 'center 40%',
+              display: 'block',
+              filter: 'contrast(1.05) saturate(1.08)'
             }}
           />
         </div>
@@ -61,11 +75,12 @@ export function FootpathTimingsCard() {
         {/* Header Left: Icon & Title Group */}
         <div style={{ position: 'relative', zIndex: 1, display: 'flex', alignItems: 'center', gap: '10px' }}>
           <div style={{
-            width: '36px',
-            height: '36px',
-            borderRadius: '50%',
-            background: 'rgba(255, 255, 255, 0.16)',
-            border: '1px solid rgba(255, 255, 255, 0.25)',
+            width: '38px',
+            height: '38px',
+            borderRadius: '12px',
+            background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.20), rgba(255, 255, 255, 0.08))',
+            border: '1px solid rgba(255, 255, 255, 0.24)',
+            boxShadow: 'inset 0 1px 1px rgba(255, 255, 255, 0.22), 0 2px 6px rgba(0, 0, 0, 0.12)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -74,23 +89,36 @@ export function FootpathTimingsCard() {
             <Footprints size={18} color="#FFFFFF" strokeWidth={2.4} />
           </div>
           <div>
-            <h3 style={{
-              fontSize: '15.5px',
-              fontWeight: 800,
-              color: '#FFFFFF',
-              margin: 0,
-              letterSpacing: '-0.015em',
-              lineHeight: 1.2
-            }}>
+            <h3 
+              className="notranslate" 
+              translate="no" 
+              style={{
+                fontSize: '15.5px',
+                fontWeight: 800,
+                color: '#FFFFFF',
+                margin: 0,
+                letterSpacing: '-0.015em',
+                lineHeight: 1.2
+              }}
+            >
               {lang === 'te' ? 'తిరుమల సోపాన మార్గాలు' : 'Footpath Routes'}
             </h3>
-            <p style={{
-              fontSize: '11px',
-              color: 'rgba(255, 255, 255, 0.85)',
-              margin: '2px 0 0 0',
-              fontWeight: 500
-            }}>
-              {lang === 'te' ? 'కాలినడకన తిరుమల • దివ్య దర్శనం (DD)' : 'Tirumala by Walk • Divya Darshan (DD)'}
+            <p 
+              className="notranslate" 
+              translate="no" 
+              style={{
+                fontSize: '11px',
+                color: 'rgba(236, 253, 245, 0.85)',
+                margin: '2px 0 0 0',
+                fontWeight: 500,
+                display: 'flex',
+                alignItems: 'center',
+                gap: '5px'
+              }}
+            >
+              <span>{lang === 'te' ? 'కాలినడకన తిరుమల' : 'Tirumala by Walk'}</span>
+              <span style={{ opacity: 0.5 }}>•</span>
+              <span>{lang === 'te' ? 'దివ్య దర్శనం (DD)' : 'Divya Darshan (DD)'}</span>
             </p>
           </div>
         </div>
@@ -98,6 +126,8 @@ export function FootpathTimingsCard() {
         {/* Header Right: Details Button Pill */}
         <Link 
           href="/footpaths"
+          className="notranslate"
+          translate="no"
           style={{
             position: 'relative',
             zIndex: 1,
@@ -106,12 +136,13 @@ export function FootpathTimingsCard() {
             gap: '3px',
             fontSize: '11.5px',
             fontWeight: 700,
-            color: '#0F5132',
+            color: '#064E3B',
             textDecoration: 'none',
-            backgroundColor: '#FFFFFF',
+            backgroundColor: '#FAF7F2',
+            border: '1px solid rgba(255, 255, 255, 0.85)',
             padding: '5px 12px',
             borderRadius: '9999px',
-            boxShadow: '0 2px 8px rgba(0, 0, 0, 0.14)',
+            boxShadow: '0 2px 8px rgba(0, 30, 18, 0.18)',
             flexShrink: 0
           }}
         >

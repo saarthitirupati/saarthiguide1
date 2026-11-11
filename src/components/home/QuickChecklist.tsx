@@ -542,39 +542,36 @@ export function QuickChecklist(props: any) {
       }}
     >
       {/* ═══════════════════════════════════════════════════
-          1. SACRED GREEN HEADER WITH SUNRISE PANORAMA
+          1. SACRED GREEN HEADER (Clean, Bespoke Human-Crafted)
           ═══════════════════════════════════════════════════ */}
       <div style={{
         position: 'relative',
-        background: 'linear-gradient(135deg, #053320 0%, #0A4E33 55%, #0B5C3C 100%)',
+        background: 'linear-gradient(135deg, #022c22 0%, #064e3b 55%, #065f46 100%)',
         color: '#FFFFFF',
-        padding: '16px 16px 20px',
+        padding: '16px 16px 18px',
         overflow: 'hidden'
       }}>
-        {/* Sunrise Panorama Background on the right */}
+        {/* Soft Organic Ambient Radial Glows */}
         <div style={{
           position: 'absolute',
-          top: 0,
-          right: 0,
-          bottom: 0,
-          width: '56%',
-          pointerEvents: 'none',
-          opacity: 0.95,
-          zIndex: 1
-        }}>
-          <img
-            src="/images/places/tirumala_sunrise_panorama.jpg"
-            alt="Tirumala Sunrise"
-            style={{
-              width: '100%',
-              height: '100%',
-              objectFit: 'cover',
-              objectPosition: 'right center',
-              maskImage: 'linear-gradient(to right, transparent 0%, rgba(0,0,0,0.3) 25%, rgba(0,0,0,1) 80%)',
-              WebkitMaskImage: 'linear-gradient(to right, transparent 0%, rgba(0,0,0,0.3) 25%, rgba(0,0,0,1) 80%)'
-            }}
-          />
-        </div>
+          top: '-20px',
+          right: '-20px',
+          width: '180px',
+          height: '180px',
+          background: 'radial-gradient(circle, rgba(52, 211, 153, 0.12) 0%, transparent 70%)',
+          borderRadius: '50%',
+          pointerEvents: 'none'
+        }} />
+        <div style={{
+          position: 'absolute',
+          bottom: '-30px',
+          left: '10%',
+          width: '140px',
+          height: '140px',
+          background: 'radial-gradient(circle, rgba(16, 185, 129, 0.08) 0%, transparent 70%)',
+          borderRadius: '50%',
+          pointerEvents: 'none'
+        }} />
 
         {/* Header Content */}
         <div style={{
@@ -589,60 +586,78 @@ export function QuickChecklist(props: any) {
             <div style={{
               width: '38px',
               height: '38px',
-              borderRadius: '11px',
-              background: 'rgba(255, 255, 255, 0.16)',
-              backdropFilter: 'blur(8px)',
-              border: '1px solid rgba(255, 255, 255, 0.28)',
-              color: '#86EFAC',
+              borderRadius: '12px',
+              background: 'linear-gradient(135deg, rgba(6, 78, 59, 0.95), rgba(4, 120, 87, 0.85))',
+              boxShadow: 'inset 0 1px 1px rgba(255, 255, 255, 0.22), 0 2px 8px rgba(0, 0, 0, 0.18)',
+              border: '1px solid rgba(52, 211, 153, 0.35)',
+              color: '#A7F3D0',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               flexShrink: 0
             }}>
-              <Ticket size={20} strokeWidth={2.2} />
+              <Ticket size={19} strokeWidth={2.4} />
             </div>
             <div>
-              <h3 style={{
-                fontSize: '16.5px',
-                fontWeight: 800,
-                color: '#FFFFFF',
-                margin: 0,
-                lineHeight: 1.2,
-                letterSpacing: '-0.01em'
-              }}>
+              <h3 
+                className="notranslate"
+                translate="no"
+                style={{
+                  fontSize: '16px',
+                  fontWeight: 700,
+                  color: '#FFFFFF',
+                  margin: 0,
+                  lineHeight: 1.25,
+                  letterSpacing: '-0.02em',
+                  fontFamily: 'var(--font-sans), system-ui, sans-serif'
+                }}
+              >
                 {t.ssdDdStatus}
               </h3>
-              <span style={{
-                fontSize: '11.5px',
-                color: '#D1FAE5',
-                fontWeight: 500,
-                marginTop: '2px',
-                display: 'block',
-                opacity: 0.95
-              }}>
+              <span 
+                className="notranslate"
+                translate="no"
+                style={{
+                  fontSize: '11px',
+                  color: 'rgba(209, 250, 229, 0.82)',
+                  fontWeight: 500,
+                  marginTop: '2px',
+                  display: 'block',
+                  letterSpacing: '0.01em'
+                }}
+              >
                 {lang === 'te' ? 'తిరుమల సర్వదర్శనం టోకెన్లు' : 'Tirumala Sarva Darshan Tokens'}
               </span>
             </div>
           </div>
 
-          <div style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '5px',
-            padding: '4px 11px',
-            borderRadius: '9999px',
-            backgroundColor: isCompleted ? '#FEE2E2' : '#DCFCE7',
-            color: isCompleted ? '#B91C1C' : '#15803D',
-            fontSize: '11px',
-            fontWeight: 800,
-            boxShadow: '0 2px 6px rgba(0,0,0,0.12)',
-            flexShrink: 0
-          }}>
+          {/* Bespoke Hand-crafted Status Badge with High-Contrast Editorial Styling */}
+          <div 
+            className="notranslate"
+            translate="no"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '6px',
+              padding: '5px 12px',
+              borderRadius: '9999px',
+              backgroundColor: isCompleted ? 'rgba(159, 18, 57, 0.28)' : 'rgba(6, 78, 59, 0.35)',
+              border: isCompleted ? '1px solid rgba(251, 113, 133, 0.5)' : '1px solid rgba(52, 211, 153, 0.5)',
+              color: isCompleted ? '#FFE4E6' : '#ECFDF5',
+              fontSize: '11.5px',
+              fontWeight: 700,
+              backdropFilter: 'blur(10px)',
+              WebkitBackdropFilter: 'blur(10px)',
+              boxShadow: isCompleted ? '0 2px 8px rgba(159, 18, 57, 0.2)' : '0 2px 8px rgba(6, 78, 59, 0.2)',
+              flexShrink: 0
+            }}
+          >
             <span style={{
               width: '6px',
               height: '6px',
               borderRadius: '50%',
-              backgroundColor: isCompleted ? '#DC2626' : '#16A34A'
+              backgroundColor: isCompleted ? '#FB7185' : '#34D399',
+              boxShadow: isCompleted ? '0 0 8px #FB7185' : '0 0 8px #34D399'
             }} />
             <span>{headerBadgeText}</span>
           </div>
@@ -1122,87 +1137,92 @@ export function QuickChecklist(props: any) {
         fontFamily: 'var(--font-sans), Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
       }}
     >
-      {/* 1. Sacred Green Header with Gopuram Panorama */}
+      {/* 1. Sacred Green Header (Clean, Bespoke Human-Crafted) */}
       <div style={{
         position: 'relative',
-        background: 'linear-gradient(135deg, #053320 0%, #0A4E33 55%, #0B5C3C 100%)',
+        background: 'linear-gradient(135deg, #022c22 0%, #064e3b 55%, #065f46 100%)',
         color: '#FFFFFF',
-        padding: '14px 16px',
+        padding: '15px 16px',
         overflow: 'hidden'
       }}>
-        {/* Gopuram Sunrise Panorama on the right */}
+        {/* Soft Organic Ambient Radial Glow */}
         <div style={{
           position: 'absolute',
-          top: 0,
-          right: 0,
-          bottom: 0,
-          width: '46%',
-          pointerEvents: 'none',
-          opacity: 0.95,
-          maskImage: 'linear-gradient(to right, transparent 0%, rgba(0,0,0,0.4) 20%, rgba(0,0,0,1) 55%)',
-          WebkitMaskImage: 'linear-gradient(to right, transparent 0%, rgba(0,0,0,0.4) 20%, rgba(0,0,0,1) 55%)',
-          overflow: 'hidden'
-        }}>
-          <img
-            src="/images/places/tirumala_sunrise_panorama.jpg"
-            alt="Tirumala Temple Gopuram"
-            style={{
-              width: '100%',
-              height: '100%',
-              objectFit: 'cover',
-              objectPosition: 'right center',
-              display: 'block'
-            }}
-          />
-        </div>
+          top: '-20px',
+          right: '-20px',
+          width: '160px',
+          height: '160px',
+          background: 'radial-gradient(circle, rgba(52, 211, 153, 0.12) 0%, transparent 70%)',
+          borderRadius: '50%',
+          pointerEvents: 'none'
+        }} />
 
-        {/* Header Left: Circular Icon & Titles */}
+        {/* Header Left: Tactile Squircle Icon & Titles */}
         <div style={{ position: 'relative', zIndex: 1, display: 'flex', alignItems: 'center', gap: '10px' }}>
           <div style={{
-            width: '36px',
-            height: '36px',
-            borderRadius: '50%',
-            background: 'rgba(255, 255, 255, 0.16)',
-            border: '1px solid rgba(255, 255, 255, 0.25)',
+            width: '38px',
+            height: '38px',
+            borderRadius: '12px',
+            background: 'linear-gradient(135deg, rgba(6, 78, 59, 0.95), rgba(4, 120, 87, 0.85))',
+            boxShadow: 'inset 0 1px 1px rgba(255, 255, 255, 0.22), 0 2px 8px rgba(0, 0, 0, 0.18)',
+            border: '1px solid rgba(52, 211, 153, 0.35)',
+            color: '#A7F3D0',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             flexShrink: 0
           }}>
-            <MapPin size={18} color="#FFFFFF" strokeWidth={2.4} />
+            <MapPin size={18} color="#A7F3D0" strokeWidth={2.4} />
           </div>
           <div>
-            <h3 style={{
-              fontSize: '15.5px',
-              fontWeight: 800,
-              color: '#FFFFFF',
-              margin: 0,
-              letterSpacing: '-0.015em',
-              lineHeight: 1.2
-            }}>
+            <h3 
+              className="notranslate"
+              translate="no"
+              style={{
+                fontSize: '15.5px',
+                fontWeight: 800,
+                color: '#FFFFFF',
+                margin: 0,
+                letterSpacing: '-0.015em',
+                lineHeight: 1.2
+              }}
+            >
               {lang === 'te' ? 'టోకెన్ కౌంటర్లు' : 'Collection Centres'}
             </h3>
-            <p style={{
-              fontSize: '11px',
-              color: 'rgba(255, 255, 255, 0.85)',
-              margin: '2px 0 0 0',
-              fontWeight: 500
-            }}>
+            <p 
+              className="notranslate"
+              translate="no"
+              style={{
+                fontSize: '11px',
+                color: 'rgba(209, 250, 229, 0.82)',
+                margin: '2px 0 0 0',
+                fontWeight: 500
+              }}
+            >
               {lang === 'te' ? 'SSD / DD టోకెన్ జారీ కేంద్రాలు' : 'SSD / DD Token Collection Locations'}
             </p>
           </div>
         </div>
       </div>
 
-      {/* 2. Three Hub Cards in Grid */}
-      <div style={{ padding: '12px 10px 14px' }}>
+      {/* 2. Three Hub Cards in Scrollable Track */}
+      <div style={{ padding: '12px 10px 14px', position: 'relative' }}>
         <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(3, minmax(0, 1fr))',
-          gap: '8px'
+          display: 'flex',
+          overflowX: 'auto',
+          scrollSnapType: 'x mandatory',
+          gap: '8px',
+          paddingRight: '12px',
+          paddingBottom: '2px',
+          WebkitOverflowScrolling: 'touch',
+          scrollbarWidth: 'none',
+          msOverflowStyle: 'none'
         }}>
           {/* 1. Vishnu Nivasam */}
           <div style={{
+            flex: '1 0 calc(33.333% - 6px)',
+            minWidth: '102px',
+            scrollSnapAlign: 'start',
             background: 'linear-gradient(180deg, #FFFFFF 55%, #F0F7FF 100%)',
             border: '1px solid #DBEAFE',
             borderRadius: '16px',
@@ -1234,41 +1254,76 @@ export function QuickChecklist(props: any) {
                 style={{ maxHeight: '100%', maxWidth: '95%', objectFit: 'contain', display: 'block' }}
               />
             </div>
-            <span style={{ fontSize: '11px', fontWeight: 800, color: '#0F172A', lineHeight: 1.2 }}>
+            <span 
+              className="notranslate"
+              translate="no"
+              style={{ 
+                fontSize: '12.5px', 
+                fontWeight: 700, 
+                color: '#0F172A', 
+                lineHeight: 1.25,
+                letterSpacing: '-0.01em',
+                fontFamily: 'var(--font-sans), system-ui, sans-serif'
+              }}
+            >
               {lang === 'te' ? 'విష్ణు నివాసం' : 'Vishnu Nivasam'}
             </span>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '2px', fontSize: '9px', color: '#2563EB', fontWeight: 600, margin: '3px 0 8px' }}>
-              <MapPin size={9} color="#2563EB" />
-              <span>{lang === 'te' ? 'రైల్వే స్టేషన్' : 'Opp. Railway Station'}</span>
+            <div 
+              className="notranslate"
+              translate="no"
+              style={{ 
+                display: 'flex', 
+                alignItems: 'center', 
+                justifyContent: 'center', 
+                gap: '3px', 
+                fontSize: '10px', 
+                color: '#64748B', 
+                fontWeight: 500, 
+                margin: '3px 0 8px',
+                minHeight: '18px',
+                width: '100%',
+                fontFamily: 'var(--font-sans), system-ui, sans-serif'
+              }}
+            >
+              <MapPin size={10} color="#64748B" strokeWidth={2.2} style={{ flexShrink: 0 }} />
+              <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                {lang === 'te' ? 'రైల్వే స్టేషన్' : 'Opp. Railway Stn'}
+              </span>
             </div>
             <a
               href="https://www.google.com/maps/place/Vishnu+Nivasam/@13.6292776,79.4215889,17z"
               target="_blank"
               rel="noopener noreferrer"
+              className="notranslate"
+              translate="no"
               style={{
                 width: '100%',
-                padding: '6px 2px',
+                padding: '6px 4px',
                 background: '#0F5132',
                 color: '#FFFFFF',
                 borderRadius: '9999px',
-                fontSize: '10px',
+                fontSize: '11px',
                 fontWeight: 700,
+                letterSpacing: '0.01em',
                 textDecoration: 'none',
                 display: 'inline-flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                gap: '2px',
-                boxShadow: '0 2px 6px rgba(15, 81, 50, 0.22)',
+                gap: '3px',
+                boxShadow: '0 2px 6px rgba(15, 81, 50, 0.18)',
                 boxSizing: 'border-box'
               }}
             >
               <span>{lang === 'te' ? 'నావిగేట్' : 'Navigate'}</span>
-              <ChevronRight size={11} strokeWidth={2.8} />
+              <ChevronRight size={12} strokeWidth={2.6} />
             </a>
           </div>
 
           {/* 2. Srinivasam */}
           <div style={{
+            flex: '1 0 calc(33.333% - 6px)',
+            minWidth: '102px',
+            scrollSnapAlign: 'start',
             background: 'linear-gradient(180deg, #FFFFFF 55%, #F0FDF4 100%)',
             border: '1px solid #DCFCE7',
             borderRadius: '16px',
@@ -1300,41 +1355,76 @@ export function QuickChecklist(props: any) {
                 style={{ maxHeight: '100%', maxWidth: '95%', objectFit: 'contain', display: 'block' }}
               />
             </div>
-            <span style={{ fontSize: '11px', fontWeight: 800, color: '#0F172A', lineHeight: 1.2 }}>
+            <span 
+              className="notranslate"
+              translate="no"
+              style={{ 
+                fontSize: '12.5px', 
+                fontWeight: 700, 
+                color: '#0F172A', 
+                lineHeight: 1.25,
+                letterSpacing: '-0.01em',
+                fontFamily: 'var(--font-sans), system-ui, sans-serif'
+              }}
+            >
               {lang === 'te' ? 'శ్రీనివాసం' : 'Srinivasam'}
             </span>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '2px', fontSize: '9px', color: '#166534', fontWeight: 600, margin: '3px 0 8px' }}>
-              <MapPin size={9} color="#166534" />
-              <span>{lang === 'te' ? 'బస్ స్టాండ్' : 'Opp. Bus Stand'}</span>
+            <div 
+              className="notranslate"
+              translate="no"
+              style={{ 
+                display: 'flex', 
+                alignItems: 'center', 
+                justifyContent: 'center', 
+                gap: '3px', 
+                fontSize: '10px', 
+                color: '#64748B', 
+                fontWeight: 500, 
+                margin: '3px 0 8px',
+                minHeight: '18px',
+                width: '100%',
+                fontFamily: 'var(--font-sans), system-ui, sans-serif'
+              }}
+            >
+              <MapPin size={10} color="#64748B" strokeWidth={2.2} style={{ flexShrink: 0 }} />
+              <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                {lang === 'te' ? 'బస్ స్టాండ్' : 'Opp. Bus Stand'}
+              </span>
             </div>
             <a
               href="https://www.google.com/maps/place/Srinivasam/@13.6315627,79.4288389,17z"
               target="_blank"
               rel="noopener noreferrer"
+              className="notranslate"
+              translate="no"
               style={{
                 width: '100%',
-                padding: '6px 2px',
+                padding: '6px 4px',
                 background: '#0F5132',
                 color: '#FFFFFF',
                 borderRadius: '9999px',
-                fontSize: '10px',
+                fontSize: '11px',
                 fontWeight: 700,
+                letterSpacing: '0.01em',
                 textDecoration: 'none',
                 display: 'inline-flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                gap: '2px',
-                boxShadow: '0 2px 6px rgba(15, 81, 50, 0.22)',
+                gap: '3px',
+                boxShadow: '0 2px 6px rgba(15, 81, 50, 0.18)',
                 boxSizing: 'border-box'
               }}
             >
               <span>{lang === 'te' ? 'నావిగేట్' : 'Navigate'}</span>
-              <ChevronRight size={11} strokeWidth={2.8} />
+              <ChevronRight size={12} strokeWidth={2.6} />
             </a>
           </div>
 
           {/* 3. Bhudevi Complex */}
           <div style={{
+            flex: '1 0 calc(33.333% - 6px)',
+            minWidth: '102px',
+            scrollSnapAlign: 'start',
             background: 'linear-gradient(180deg, #FFFFFF 55%, #FFFBEB 100%)',
             border: '1px solid #FEF3C7',
             borderRadius: '16px',
@@ -1366,36 +1456,68 @@ export function QuickChecklist(props: any) {
                 style={{ maxHeight: '100%', maxWidth: '95%', objectFit: 'contain', display: 'block' }}
               />
             </div>
-            <span style={{ fontSize: '11px', fontWeight: 800, color: '#0F172A', lineHeight: 1.2 }}>
+            <span 
+              className="notranslate"
+              translate="no"
+              style={{ 
+                fontSize: '12.5px', 
+                fontWeight: 700, 
+                color: '#0F172A', 
+                lineHeight: 1.25,
+                letterSpacing: '-0.01em',
+                fontFamily: 'var(--font-sans), system-ui, sans-serif'
+              }}
+            >
               {lang === 'te' ? 'భూదేవి కాంప్లెక్స్' : 'Bhudevi Complex'}
             </span>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '2px', fontSize: '9px', color: '#B45309', fontWeight: 600, margin: '3px 0 8px' }}>
-              <MapPin size={9} color="#B45309" />
-              <span>{lang === 'te' ? 'అలిపిరి గేట్' : 'Near Alipiri Gate'}</span>
+            <div 
+              className="notranslate"
+              translate="no"
+              style={{ 
+                display: 'flex', 
+                alignItems: 'center', 
+                justifyContent: 'center', 
+                gap: '3px', 
+                fontSize: '10px', 
+                color: '#64748B', 
+                fontWeight: 500, 
+                margin: '3px 0 8px',
+                minHeight: '18px',
+                width: '100%',
+                fontFamily: 'var(--font-sans), system-ui, sans-serif'
+              }}
+            >
+              <MapPin size={10} color="#64748B" strokeWidth={2.2} style={{ flexShrink: 0 }} />
+              <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                {lang === 'te' ? 'అలిపిరి గేట్' : 'Near Alipiri Gate'}
+              </span>
             </div>
             <a
               href="https://www.google.com/maps/place/Tirupati+Temple+Ticket+Booking/@13.6472334,79.4096899,18z"
               target="_blank"
               rel="noopener noreferrer"
+              className="notranslate"
+              translate="no"
               style={{
                 width: '100%',
-                padding: '6px 2px',
+                padding: '6px 4px',
                 background: '#0F5132',
                 color: '#FFFFFF',
                 borderRadius: '9999px',
-                fontSize: '10px',
+                fontSize: '11px',
                 fontWeight: 700,
+                letterSpacing: '0.01em',
                 textDecoration: 'none',
                 display: 'inline-flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                gap: '2px',
-                boxShadow: '0 2px 6px rgba(15, 81, 50, 0.22)',
+                gap: '3px',
+                boxShadow: '0 2px 6px rgba(15, 81, 50, 0.18)',
                 boxSizing: 'border-box'
               }}
             >
               <span>{lang === 'te' ? 'నావిగేట్' : 'Navigate'}</span>
-              <ChevronRight size={11} strokeWidth={2.8} />
+              <ChevronRight size={12} strokeWidth={2.6} />
             </a>
           </div>
         </div>

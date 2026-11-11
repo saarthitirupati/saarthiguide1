@@ -100,7 +100,8 @@ function LayoutContent({
         />
       )}
       <div 
-        className="appContainer"
+        className="appContainer notranslate"
+        translate="no"
         style={{ 
           visibility: hideContent ? 'hidden' : 'visible', 
           minHeight: '100%', 

@@ -52,7 +52,7 @@ export default function BottomNav() {
   const navItems = getNavItems(t);
 
   return (
-    <nav className={styles.dockWrapper} suppressHydrationWarning>
+    <nav className={`${styles.dockWrapper} notranslate`} translate="no" suppressHydrationWarning>
       <div className={styles.dockPill}>
         {navItems.map((item) => {
           const isActive = mounted && (
@@ -65,8 +65,9 @@ export default function BottomNav() {
               key={item.key}
               href={item.href}
               prefetch={false}
-              className={`${styles.dockItem} ${isActive ? styles.dockItemActive : ''}`}
+              className={`${styles.dockItem} ${isActive ? styles.dockItemActive : ''} notranslate`}
               aria-label={item.name}
+              translate="no"
             >
               <motion.div
                 className={styles.iconContainer}
@@ -79,7 +80,7 @@ export default function BottomNav() {
                   className={isActive ? styles.iconActive : styles.iconInactive}
                 />
               </motion.div>
-              <span className={isActive ? styles.labelActive : styles.labelInactive}>
+              <span className={`${isActive ? styles.labelActive : styles.labelInactive} notranslate`} translate="no">
                 {item.name}
               </span>
             </Link>

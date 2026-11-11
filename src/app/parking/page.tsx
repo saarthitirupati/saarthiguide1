@@ -10,7 +10,6 @@ import {
 import { 
   PARKING_LOCATIONS_DATA, 
   PARKING_HELPLINE, 
-  PARKING_DISCLAIMER,
   ParkingLocation
 } from '@/data/parkingLocations';
 import styles from './page.module.css';
@@ -200,11 +199,6 @@ export default function ParkingDirectoryPage() {
             <span>{PARKING_HELPLINE.phoneFormatted}</span>
           </div>
         </a>
-
-        {/* Disclaimer Notice */}
-        <p className={styles.disclaimerText}>
-          {PARKING_DISCLAIMER}
-        </p>
       </div>
     </div>
   );
