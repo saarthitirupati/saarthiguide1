@@ -347,10 +347,10 @@ export default function OnboardingPage() {
                         onClick={() => {
                           setSelectedLanguage(lang.code);
                           localStorage.setItem('saarthi_user_language', lang.code);
-                          // Instant one-tap advance to next step with smooth tactile ripple
+                          // Direct instant one-tap advance to Step 2
                           setTimeout(() => {
-                            nextStep();
-                          }, 120);
+                            setStep(2);
+                          }, 100);
                         }}
                         whileHover={{ scale: 1.01 }}
                         whileTap={{ scale: 0.98 }}
@@ -366,15 +366,6 @@ export default function OnboardingPage() {
                               {lang.code !== 'en' && (
                                 <span className={styles.languageEnglishLabel}>({lang.englishLabel})</span>
                               )}
-                            </div>
-                            <div className={styles.languageSubText}>
-                              {isSelected ? (
-                                lang.code === 'te' ? 'తెలుగులో కొనసాగండి →' :
-                                lang.code === 'hi' ? 'हिंदी में जारी रखें →' :
-                                lang.code === 'ta' ? 'தமிழில் தொடரவும் →' :
-                                lang.code === 'kn' ? 'ಕನ್ನಡದಲ್ಲಿ ಮುಂದುವರಿಯಿರಿ →' :
-                                'Continue in English →'
-                              ) : lang.subText}
                             </div>
                           </div>
                         </div>
