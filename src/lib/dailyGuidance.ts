@@ -1,6 +1,9 @@
 export interface DayTempleInfo {
   dayName: string;
   dayNameTe: string;
+  dayNameKn?: string;
+  dayNameHi?: string;
+  dayNameTa?: string;
   deity: string;
   deityTe: string;
   placeId: string;
@@ -8,6 +11,9 @@ export interface DayTempleInfo {
   placeNameTe: string;
   headlineEn: string;
   headlineTe: string;
+  headlineKn?: string;
+  headlineHi?: string;
+  headlineTa?: string;
   benefitEn: string;
   benefitTe: string;
   reasonsEn: string[];
@@ -25,6 +31,9 @@ export const DAY_TEMPLE_GUIDES: Record<number, DayTempleInfo> = {
     placeNameTe: 'పాపవినాశనం & ఆకాశగంగ తీర్థం',
     headlineEn: 'Sunday: Visit Papavinasam & Akasa Ganga while queue eases.',
     headlineTe: 'ఆదివారం: పాపవినాశనం & ఆకాశగంగ దర్శించండి.',
+    headlineKn: 'ಭಾನುವಾರ: ಸರತಿ ಸಾಲು ಕಡಿಮೆಯಾಗುವಾಗ ಪಾಪವಿನಾಶನಂ ಮತ್ತು ಆಕಾಶಗಂಗಾ ದರ್ಶನ ಮಾಡಿ.',
+    headlineHi: 'रविवार: कतार कम होने पर पापविनाशनम और आकाशगंगा के दर्शन करें।',
+    headlineTa: 'ஞாயிற்றுக்கிழமை: வரிசை குறையும் போது பாபவிநாசனம் மற்றும் ஆகாசகங்கையைத் தரிசியுங்கள்.',
     benefitEn: '⚡ SAVE 2-3 HOURS WAITING',
     benefitTe: '⚡ 2-3 గంటల నిరీక్షణ ఆదా',
     reasonsEn: [
@@ -48,6 +57,9 @@ export const DAY_TEMPLE_GUIDES: Record<number, DayTempleInfo> = {
     placeNameTe: 'శ్రీ కపిలేశ్వరస్వామి ఆలయం (కపిలతీర్థం)',
     headlineEn: 'Monday: Visit Kapila Theertham now; queue eases after 2 PM.',
     headlineTe: 'సోమవారం: కపిలతీర్థం దర్శించండి; మధ్యాహ్నం 2 తర్వాత క్యూకి వెళ్లండి.',
+    headlineKn: 'ಸೋಮವಾರ: ಕಪಿಲತೀರ್ಥಂ ದರ್ಶನ ಮಾಡಿ; ಮಧ್ಯಾಹ್ನ 2 ರ ನಂತರ ಸರತಿ ಸಾಲಿಗೆ ತೆರಳಿ.',
+    headlineHi: 'सोमवार: कपिला तीर्थम के दर्शन करें; दोपहर 2 बजे के बाद कतार में जाएं।',
+    headlineTa: 'திங்கட்கிழமை: கபில தீர்த்தத்தைத் தரிசியுங்கள்; மதியம் 2 மணிக்கு மேல் வரிசைக்குச் செல்லுங்கள்.',
     benefitEn: '⚡ SAVE 2 HOURS WAITING',
     benefitTe: '⚡ 2 గంటల నిరీక్షణ ఆదా',
     reasonsEn: [
@@ -71,6 +83,9 @@ export const DAY_TEMPLE_GUIDES: Record<number, DayTempleInfo> = {
     placeNameTe: 'జాపాలి హనుమాన్ తీర్థం',
     headlineEn: 'Tuesday: Visit Japali Hanuman Theertham while queue eases.',
     headlineTe: 'మంగళవారం: జాపాలి హనుమాన్ తీర్థం దర్శించండి.',
+    headlineKn: 'ಮಂಗಳವಾರ: ಸರತಿ ಸಾಲು ಕಡಿಮೆಯಾಗುವಾಗ ಜಾಪಾಲಿ ಹನುಮಾನ್ ತೀರ್ಥಂ ದರ್ಶನ ಮಾಡಿ.',
+    headlineHi: 'मंगलवार: कतार कम होने पर जापाली हनुमान तीर्थम के दर्शन करें।',
+    headlineTa: 'செவ்வாய்க்கிழமை: வரிசை குறையும் போது ஜாபாலி அனுமன் தீர்த்தத்தைத் தரிசியுங்கள்.',
     benefitEn: '⚡ SAVE 2.5 HOURS WAITING',
     benefitTe: '⚡ 2.5 గంటల నిరీక్షణ ఆదా',
     reasonsEn: [
@@ -94,6 +109,9 @@ export const DAY_TEMPLE_GUIDES: Record<number, DayTempleInfo> = {
     placeNameTe: 'ఇస్కాన్ లోటస్ టెంపుల్',
     headlineEn: 'Wednesday: Visit ISKCON Lotus Temple now; enter queue later.',
     headlineTe: 'బుధవారం: ఇస్కాన్ లోటస్ టెంపుల్ దర్శించండి.',
+    headlineKn: 'ಬುಧವಾರ: ಇಸ್ಕಾನ್ ಕಮಲ ದೇವಾಲಯಕ್ಕೆ ಭೇಟಿ ನೀಡಿ; ನಂತರ ಸರತಿ ಸಾಲಿಗೆ ತೆರಳಿ.',
+    headlineHi: 'बुधवार: इस्कॉन लोटस मंदिर के दर्शन करें; बाद में कतार में जाएं।',
+    headlineTa: 'புதன்கிழமை: இஸ்கான் தாமரை கோயிலைத் தரிசியுங்கள்; பின்னர் வரிசைக்குச் செல்லுங்கள்.',
     benefitEn: '⚡ SAVE 2 HOURS WAITING',
     benefitTe: '⚡ 2 గంటల సమయం ఆదా',
     reasonsEn: [
@@ -117,6 +135,9 @@ export const DAY_TEMPLE_GUIDES: Record<number, DayTempleInfo> = {
     placeNameTe: 'శ్రీ పద్మావతి అమ్మవారి ఆలయం (తిరుచానూరు)',
     headlineEn: 'Thursday: Visit Goddess Padmavathi at Tiruchanur first.',
     headlineTe: 'గురువారం: తిరుచానూరు పద్మావతి అమ్మవారిని దర్శించండి.',
+    headlineKn: 'ಗುರುವಾರ: ಮೊದಲು ತಿರುಚಾನೂರಿನ ಪದ್ಮಾವತಿ ಅಮ್ಮನವರ ದರ್ಶನ ಪಡೆಯಿರಿ.',
+    headlineHi: 'गुरुवार: पहले तिरुचानूर में देवी पद्मावती के दर्शन करें।',
+    headlineTa: 'வியாழக்கிழமை: முதலில் திருச்சானூர் பத்மாவதி தாயாரைத் தரிசியுங்கள்.',
     benefitEn: '⚡ FULL PILGRIMAGE BLESSINGS + 2 HRS SAVED',
     benefitTe: '⚡ సంపూర్ణ యాత్రా ఫలం + 2 గంటలు ఆదా',
     reasonsEn: [
@@ -140,6 +161,9 @@ export const DAY_TEMPLE_GUIDES: Record<number, DayTempleInfo> = {
     placeNameTe: 'శ్రీ పద్మావతి అమ్మవారి ఆలయం (తిరుచానూరు)',
     headlineEn: 'Friday: Seek Goddess Padmavathi blessings at Tiruchanur.',
     headlineTe: 'శుక్రవారం: తిరుచానూరు పద్మావతి అమ్మవారిని దర్శించండి.',
+    headlineKn: 'ಶುಕ್ರವಾರ: ತಿರುಚಾನೂರಿನ ಪದ್ಮಾವತಿ ಅಮ್ಮನವರ ಕೃಪೆಗೆ ಪಾತ್ರರಾಗಿ.',
+    headlineHi: 'शुक्रवार: तिरुचानूर में देवी पद्मावती का आशीर्वाद प्राप्त करें।',
+    headlineTa: 'வெள்ளிக்கிழமை: திருச்சானூர் பத்மாவதி தாயாரின் அருளைப் பெறுங்கள்.',
     benefitEn: '⚡ MAHALAKSHMI BLESSINGS + 2 HRS SAVED',
     benefitTe: '⚡ మహాలక్ష్మి కృప + 2 గంటలు ఆదా',
     reasonsEn: [
@@ -163,6 +187,9 @@ export const DAY_TEMPLE_GUIDES: Record<number, DayTempleInfo> = {
     placeNameTe: 'శ్రీ గోవిందరాజస్వామి ఆలయం',
     headlineEn: 'Saturday: Visit Sri Govindaraja Swamy Temple in Tirupati.',
     headlineTe: 'శనివారం: శ్రీ గోవిందరాజస్వామిని దర్శించండి.',
+    headlineKn: 'ಶನಿವಾರ: ತಿರುಪತಿಯ ಶ್ರೀ ಗೋವಿಂದರಾಜ ಸ್ವಾಮಿ ದೇವಾಲಯಕ್ಕೆ ಭೇಟಿ ನೀಡಿ.',
+    headlineHi: 'शनिवार: तिरुपति में श्री गोविंदराज स्वामी मंदिर के दर्शन करें।',
+    headlineTa: 'சனிக்கிழமை: திருப்பதியில் உள்ள ஸ்ரீ கோவிந்தராஜ சுவாமி கோயிலைத் தரிசியுங்கள்.',
     benefitEn: '⚡ AVOID MORNING SURGE + SAVE 3 HOURS',
     benefitTe: '⚡ శనివారపు రద్దీ నివారణ + 3 గంటలు ఆదా',
     reasonsEn: [

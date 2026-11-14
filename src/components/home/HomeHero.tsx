@@ -1600,12 +1600,13 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
               <button
                 type="button"
                 onClick={() => setIsLanguageModalOpen(true)}
-                aria-label="Change Language (English, తెలుగు, हिंदी, தமிழ்)"
+                aria-label="Change Language (English, తెలుగు, ಕನ್ನಡ, हिंदी, தமிழ்)"
                 aria-haspopup="dialog"
                 aria-expanded={isLanguageModalOpen}
                 title={
                   lang === 'en' ? 'Choose Language' :
                   lang === 'te' ? 'భాషను ఎంచుకోండి' :
+                  lang === 'kn' ? 'ಭಾಷೆಯನ್ನು ಆಯ್ಕೆಮಾಡಿ' :
                   lang === 'hi' ? 'भाषा चुनें' :
                   'மொழியைத் தேர்ந்தெடுக்கவும்'
                 }
@@ -1631,7 +1632,7 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                 }}
               >
                 <span>
-                  {lang === 'en' ? 'English' : lang === 'te' ? 'తెలుగు' : lang === 'hi' ? 'हिंदी' : 'தமிழ்'}
+                  {lang === 'en' ? 'English' : lang === 'te' ? 'తెలుగు' : lang === 'kn' ? 'ಕನ್ನಡ' : lang === 'hi' ? 'हिंदी' : 'தமிழ்'}
                 </span>
                 <ChevronDown size={13} color="#64748B" strokeWidth={2.5} />
               </button>
@@ -2256,34 +2257,62 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
         let guidanceHeadline = scenario.recommendation;
 
         if (isSsdOpen) {
-          guidanceHeadline = lang === 'te' ? 'ఇప్పుడే SSD కౌంటర్‌కు వెళ్లండి. ఉచిత టోకెన్లు జారీ అవుతున్నాయి.' : 'Head to SSD Counter now. Free token slots are issuing.';
+          guidanceHeadline = lang === 'te' 
+            ? 'ఇప్పుడే SSD కౌంటర్‌కు వెళ్లండి. ఉచిత టోకెన్లు జారీ అవుతున్నాయి.' 
+            : lang === 'kn'
+            ? 'ಈಗಲೇ SSD ಕೌಂಟರ್‌ಗೆ ತೆರಳಿ. ಉಚಿತ ಟೋಕನ್‌ಗಳು ಜಾರಿಯಾಗುತ್ತಿವೆ.'
+            : lang === 'hi'
+            ? 'अभी SSD काउंटर पर जाएं। निःशुल्क टोकन जारी हो रहे हैं।'
+            : lang === 'ta'
+            ? 'இப்போதே SSD கவுண்டருக்குச் செல்லவும். இலவச டோக்கன்கள் வழங்கப்படுகின்றன.'
+            : 'Head to SSD Counter now. Free token slots are issuing.';
         } else if (isHeavyRush || isSsdClosed) {
-          guidanceHeadline = lang === 'te' ? dayGuide.headlineTe : dayGuide.headlineEn;
+          guidanceHeadline = lang === 'te' 
+            ? dayGuide.headlineTe 
+            : lang === 'kn'
+            ? (dayGuide.headlineKn || dayGuide.headlineEn)
+            : lang === 'hi'
+            ? (dayGuide.headlineHi || dayGuide.headlineEn)
+            : lang === 'ta'
+            ? (dayGuide.headlineTa || dayGuide.headlineEn)
+            : dayGuide.headlineEn;
         } else if (isTrulyLow) {
-          guidanceHeadline = lang === 'te' ? 'దర్శనానికి అనుకూల సమయం! నేరుగా శ్రీవారి క్యూలో ప్రవేశించండి.' : 'Optimal Darshan window! Enter Srivari queue directly now.';
+          guidanceHeadline = lang === 'te' 
+            ? 'దర్శనానికి అనుకూల సమయం! నేరుగా శ్రీవారి క్యూలో ప్రవేశించండి.' 
+            : lang === 'kn'
+            ? 'ದರ್ಶನಕ್ಕೆ ಅತ್ಯಂತ ಸೂಕ್ತ ಸಮಯ! ನೇರವಾಗಿ ಶ್ರೀವಾರಿ ಸರತಿ ಸಾಲಿಗೆ ಪ್ರವೇಶಿಸಿ.'
+            : lang === 'hi'
+            ? 'दर्शन का उत्तम समय! सीधे श्रीवारी कतार में प्रवेश करें।'
+            : lang === 'ta'
+            ? 'தரிசனத்திற்கு உகந்த நேரம்! நேரடியாக ஸ்ரீவாரி வரிசையில் நுழையவும்.'
+            : 'Optimal Darshan window! Enter Srivari queue directly now.';
         }
 
         const getShortShrine = (en: string, te: string) => {
-          if (en.includes('Papavinasam')) return { en: 'Papavinasam', te: 'పాపవినాశనం' };
-          if (en.includes('Kapila')) return { en: 'Kapila Theertham', te: 'కపిలతీర్థం' };
-          if (en.includes('Japali') || en.includes('Bedi')) return { en: 'Japali Theertham', te: 'జాపాలి తీర్థం' };
-          if (en.includes('Mangapuram')) return { en: 'Mangapuram', te: 'మంగాపురం' };
-          if (en.includes('Appalayagunta')) return { en: 'Appalayagunta', te: 'అప్పలాయగుంట' };
-          if (en.includes('Padmavathi')) return { en: 'Tiruchanur', te: 'తిరుచానూరు' };
-          if (en.includes('Govindaraja')) return { en: 'Govindaraja', te: 'గోవిందరాజ' };
+          if (en.includes('Papavinasam')) return { en: 'Papavinasam', te: 'పాపవినాశనం', kn: 'ಪಾಪವಿನಾಶನಂ', hi: 'पापविनाशनम', ta: 'பாபவிநாசனம்' };
+          if (en.includes('Kapila')) return { en: 'Kapila Theertham', te: 'కపిలతీర్థం', kn: 'ಕಪಿಲ ತೀರ್ಥಂ', hi: 'कपिला तीर्थम', ta: 'கபில தீர்த்தம்' };
+          if (en.includes('Japali') || en.includes('Bedi')) return { en: 'Japali Theertham', te: 'జాపాలి తీర్థం', kn: 'ಜಾಪಾಲಿ ತೀರ್ಥಂ', hi: 'जापाली तीर्थम', ta: 'ஜாபாலி தீர்த்தம்' };
+          if (en.includes('Mangapuram')) return { en: 'Mangapuram', te: 'మంగాపురం', kn: 'ಮಂಗಾಪುರಂ', hi: 'मंगापुरम', ta: 'மங்காபுரம்' };
+          if (en.includes('Appalayagunta')) return { en: 'Appalayagunta', te: 'అప్పలాయగుంట', kn: 'ಅಪ್ಪಲಯಗುಂಟ', hi: 'अप्पलायगुंटा', ta: 'அப்பலாயகுண்டா' };
+          if (en.includes('Padmavathi')) return { en: 'Tiruchanur', te: 'తిరుచానూరు', kn: 'ತಿರುಚಾನೂರು', hi: 'तिरुचानूर', ta: 'திருச்சானூர்' };
+          if (en.includes('Govindaraja')) return { en: 'Govindaraja', te: 'గోవిందరాజ', kn: 'ಗೋವಿಂದರಾಜ', hi: 'गोविंदराज', ta: 'கோவிந்தராஜர்' };
           return {
             en: en.replace(/Temple|Theertham|Sri|\(.*\)/gi, '').trim() || 'Sacred Shrine',
-            te: te.replace(/ఆలయం|తీర్థం|శ్రీ|\(.*\)/gi, '').trim() || 'పుణ్యక్షేత్రం'
+            te: te.replace(/ఆలయం|తీర్థం|శ్రీ|\(.*\)/gi, '').trim() || 'పుణ్యక్షేత్రం',
+            kn: 'ಪವಿತ್ರ ಕ್ಷೇತ್ರ',
+            hi: 'पवित्र तीर्थ',
+            ta: 'புனித தலம்'
           };
         };
 
         const shortShrine = getShortShrine(dayGuide.placeName || '', dayGuide.placeNameTe || '');
+        const shrineVal = (shortShrine as any)[lang] || shortShrine.en;
 
         const visualCards = isSsdClosed ? [
           {
             icon: <Building2 size={15} color="#065F46" strokeWidth={2.4} />,
-            title: lang === 'te' ? 'నేటి విశేషం' : 'Sacred Shrine',
-            value: lang === 'te' ? shortShrine.te : shortShrine.en,
+            title: lang === 'te' ? 'నేటి విశేషం' : lang === 'kn' ? 'ಪವಿತ್ರ ಕ್ಷೇತ್ರ' : lang === 'hi' ? 'पवित्र तीर्थ' : lang === 'ta' ? 'புனித தலம்' : 'Sacred Shrine',
+            value: shrineVal,
             bg: '#ECFDF5',
             border: '#A7F3D0',
             labelColor: '#064E3B',
@@ -2291,8 +2320,8 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
           },
           {
             icon: <Navigation size={14} color="#1E40AF" strokeWidth={2.4} />,
-            title: lang === 'te' ? 'ఉత్తమ మార్గం' : 'Best Route',
-            value: lang === 'te' ? 'స్థానిక క్షేత్రాలు' : 'Local Shrines',
+            title: lang === 'te' ? 'ఉత్తమ మార్గం' : lang === 'kn' ? 'ಉತ್ತಮ ಮಾರ್ಗ' : lang === 'hi' ? 'सर्वोत्तम मार्ग' : lang === 'ta' ? 'சிறந்த வழி' : 'Best Route',
+            value: lang === 'te' ? 'స్థానిక క్షేత్రాలు' : lang === 'kn' ? 'ಸ್ಥಳೀಯ ಕ್ಷೇತ್ರಗಳು' : lang === 'hi' ? 'स्थानीय तीर्थ' : lang === 'ta' ? 'உள்ளூர் தலங்கள்' : 'Local Shrines',
             bg: '#EFF6FF',
             border: '#BFDBFE',
             labelColor: '#1E40AF',
@@ -2300,8 +2329,8 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
           },
           {
             icon: <Clock size={14} color="#92400E" strokeWidth={2.4} />,
-            title: lang === 'te' ? 'అనుకూల సమయం' : 'Optimal Time',
-            value: lang === 'te' ? 'ఉదయాన్నే' : 'Early Morning',
+            title: lang === 'te' ? 'అనుకూల సమయం' : lang === 'kn' ? 'ಅನುಕೂಲಕರ ಸಮಯ' : lang === 'hi' ? 'उत्तम समय' : lang === 'ta' ? 'உகந்த நேரம்' : 'Optimal Time',
+            value: lang === 'te' ? 'ఉదయాన్నే' : lang === 'kn' ? 'ಮುಂಜಾನೆ' : lang === 'hi' ? 'प्रातःकाल' : lang === 'ta' ? 'அதிகாலை' : 'Early Morning',
             bg: '#FFFBEB',
             border: '#FDE68A',
             labelColor: '#92400E',
@@ -2310,8 +2339,8 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
         ] : (isSsdOpen ? [
           {
             icon: <Ticket size={15} color="#065F46" strokeWidth={2.4} />,
-            title: lang === 'te' ? 'కౌంటర్లు' : 'SSD Status',
-            value: lang === 'te' ? 'జారీ అవుతున్నాయి' : 'Issuing Now',
+            title: lang === 'te' ? 'కౌంటర్లు' : lang === 'kn' ? 'ಕೌಂಟರ್‌ಗಳು' : lang === 'hi' ? 'काउंटर' : lang === 'ta' ? 'கவுண்டர்கள்' : 'SSD Status',
+            value: lang === 'te' ? 'జారీ అవుతున్నాయి' : lang === 'kn' ? 'ಜಾರಿಯಾಗುತ್ತಿವೆ' : lang === 'hi' ? 'जारी हो रहे हैं' : lang === 'ta' ? 'வழங்கப்படுகின்றன' : 'Issuing Now',
             bg: '#ECFDF5',
             border: '#A7F3D0',
             labelColor: '#064E3B',
@@ -2319,8 +2348,8 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
           },
           {
             icon: <Clock size={14} color="#1E40AF" strokeWidth={2.4} />,
-            title: lang === 'te' ? 'సమయం ఆదా' : 'Time Saved',
-            value: lang === 'te' ? '10+ గంటలు' : 'Save 10+ Hrs',
+            title: lang === 'te' ? 'సమయం ఆదా' : lang === 'kn' ? 'ಉಳಿತಾಯ ಸಮಯ' : lang === 'hi' ? 'समय बचत' : lang === 'ta' ? 'நேர சேமிப்பு' : 'Time Saved',
+            value: lang === 'te' ? '10+ గంటలు' : lang === 'kn' ? '10+ ಗಂಟೆಗಳು' : lang === 'hi' ? '10+ घंटे' : lang === 'ta' ? '10+ மணிநேரம்' : 'Save 10+ Hrs',
             bg: '#EFF6FF',
             border: '#BFDBFE',
             labelColor: '#1E40AF',
@@ -2328,8 +2357,8 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
           },
           {
             icon: <MapPin size={14} color="#92400E" strokeWidth={2.4} />,
-            title: lang === 'te' ? 'కేంద్రాలు' : 'Counters',
-            value: lang === 'te' ? 'అలిపిరి & శ్రీనివాసం' : 'Alipiri & Srinivasam',
+            title: lang === 'te' ? 'కేంద్రాలు' : lang === 'kn' ? 'ಕೇಂದ್ರಗಳು' : lang === 'hi' ? 'केंद्र' : lang === 'ta' ? 'மையங்கள்' : 'Counters',
+            value: lang === 'te' ? 'అలిపిరి & శ్రీనివాసం' : lang === 'kn' ? 'ಅಲಿಪಿರಿ & ಶ್ರೀನಿವಾಸಂ' : lang === 'hi' ? 'अलिपिरी व श्रीनिवासम' : lang === 'ta' ? 'அலிபிரி & ஸ்ரீனிவாசம்' : 'Alipiri & Srinivasam',
             bg: '#FFFBEB',
             border: '#FDE68A',
             labelColor: '#92400E',
@@ -2338,8 +2367,8 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
         ] : [
           {
             icon: <Users size={14} color="#1E40AF" strokeWidth={2.4} />,
-            title: lang === 'te' ? 'క్యూ సమయం' : 'Queue Flow',
-            value: sarvaWait || (lang === 'te' ? 'సాధారణం' : 'Moderate'),
+            title: lang === 'te' ? 'క్యూ సమయం' : lang === 'kn' ? 'ಸರತಿ ಸಾಲಿನ ಸಮಯ' : lang === 'hi' ? 'कतार समय' : lang === 'ta' ? 'வரிசை நேரம்' : 'Queue Flow',
+            value: sarvaWait || (lang === 'te' ? 'సాధారణం' : lang === 'kn' ? 'ಸಾಮಾನ್ಯ' : lang === 'hi' ? 'सामान्य' : lang === 'ta' ? 'வழக்கமானது' : 'Moderate'),
             bg: '#EFF6FF',
             border: '#BFDBFE',
             labelColor: '#1E40AF',
@@ -2347,8 +2376,8 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
           },
           {
             icon: <Building2 size={15} color="#065F46" strokeWidth={2.4} />,
-            title: lang === 'te' ? 'విశేష క్షేత్రం' : 'Sacred Shrine',
-            value: lang === 'te' ? shortShrine.te : shortShrine.en,
+            title: lang === 'te' ? 'విశేష క్షేత్రం' : lang === 'kn' ? 'ಪವಿತ್ರ ಕ್ಷೇತ್ರ' : lang === 'hi' ? 'पवित्र तीर्थ' : lang === 'ta' ? 'புனித தலம்' : 'Sacred Shrine',
+            value: shrineVal,
             bg: '#ECFDF5',
             border: '#A7F3D0',
             labelColor: '#064E3B',
@@ -2356,8 +2385,8 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
           },
           {
             icon: <Clock size={14} color="#92400E" strokeWidth={2.4} />,
-            title: lang === 'te' ? 'ఉత్తమ సమయం' : 'Best Time',
-            value: lang === 'te' ? 'ఉదయాన్నే' : 'Early Morning',
+            title: lang === 'te' ? 'ఉత్తమ సమయం' : lang === 'kn' ? 'ಅನುಕೂಲಕರ ಸಮಯ' : lang === 'hi' ? 'उत्तम समय' : lang === 'ta' ? 'உகந்த நேரம்' : 'Best Time',
+            value: lang === 'te' ? 'ఉదయాన్నే' : lang === 'kn' ? 'ಮುಂಜಾನೆ' : lang === 'hi' ? 'प्रातःकाल' : lang === 'ta' ? 'அதிகாலை' : 'Early Morning',
             bg: '#FFFBEB',
             border: '#FDE68A',
             labelColor: '#92400E',
@@ -2429,7 +2458,13 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                 boxShadow: '0 1px 2px rgba(22, 101, 52, 0.06)'
               }}>
                 <Sparkles size={11} color="#EAB308" fill="#EAB308" />
-                <span>{lang === 'te' ? 'సారథి మార్గదర్శనం' : 'Saarthi Guidance'}</span>
+                <span>
+                  {lang === 'te' ? 'సారథి మార్గదర్శనం' :
+                   lang === 'kn' ? 'ಸಾರಥಿ ಮಾರ್ಗದರ್ಶನ' :
+                   lang === 'hi' ? 'सारथी मार्गदर्शन' :
+                   lang === 'ta' ? 'சாரதி வழிகாட்டல்' :
+                   'Saarthi Guidance'}
+                </span>
               </div>
 
               <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
@@ -2472,7 +2507,19 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                   aria-label="Share live updates on WhatsApp"
                 >
                   <Share2 size={11} color="#475569" strokeWidth={2.2} />
-                  <span>{isSharingPulse ? (lang === 'te' ? 'సిద్ధమవుతోంది...' : 'Sharing...') : (lang === 'te' ? 'కుటుంబానికి షేర్' : 'Share to Family')}</span>
+                  <span>
+                    {isSharingPulse
+                      ? (lang === 'te' ? 'సిద్ధమవుతోంది...' :
+                         lang === 'kn' ? 'ಸಿದ್ಧವಾಗುತ್ತಿದೆ...' :
+                         lang === 'hi' ? 'साझा हो रहा है...' :
+                         lang === 'ta' ? 'பகிரப்படுகிறது...' :
+                         'Sharing...')
+                      : (lang === 'te' ? 'కుటుంబానికి షేర్' :
+                         lang === 'kn' ? 'ಕುಟುಂಬಕ್ಕೆ ಹಂಚಿಕೊಳ್ಳಿ' :
+                         lang === 'hi' ? 'परिवार को साझा करें' :
+                         lang === 'ta' ? 'குடும்பத்துடன் பகிர்க' :
+                         'Share to Family')}
+                  </span>
                 </button>
               </div>
             </div>
@@ -2491,7 +2538,11 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
               position: 'relative',
               zIndex: 1
             }}>
-              {lang === 'te' ? '“శాంతితో శ్రీవారిని దర్శించండి”' : '“In calm faith, seek Srivari”'}
+              {lang === 'te' ? '“శాంతితో శ్రీవారిని దర్శించండి”' :
+               lang === 'kn' ? '“ಶಾಂತಿಯಿಂದ ಶ್ರೀವಾರಿ ದರ್ಶನ ಮಾಡಿ”' :
+               lang === 'hi' ? '“शांत भाव से श्रीवारी के दर्शन करें”' :
+               lang === 'ta' ? '“அமைதியான பக்தியுடன் ஸ்ரீவாரி தரிசனம் செய்க”' :
+               '“In calm faith, seek Srivari”'}
             </p>
 
             {/* Main Actionable Guidance Headline */}
@@ -2587,7 +2638,11 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                 fontWeight: 500,
                 letterSpacing: '-0.01em'
               }}>
-                {lang === 'te' ? 'లైవ్ క్యూ ఆధారంగా • ఇటీవల ధృవీకరించబడింది' : 'Based on live queue data • Verified recently'}
+                {lang === 'te' ? 'లైవ్ క్యూ ఆధారంగా • ఇటీవల ధృవీకరించబడింది' :
+                 lang === 'kn' ? 'ಲೈವ್ ಸರತಿ ಮಾಹಿತಿ ಆಧಾರಿತ • ಇತ್ತೀಚೆಗೆ ದೃಢಪಡಿಸಲಾಗಿದೆ' :
+                 lang === 'hi' ? 'लाइव कतार डेटा पर आधारित • हाल ही में सत्यापित' :
+                 lang === 'ta' ? 'நேரலை வரிசை தரவு அடிப்படையிலானது • சமீபத்தில் சரிபார்க்கப்பட்டது' :
+                 'Based on live queue data • Verified recently'}
               </span>
             </div>
           </div>

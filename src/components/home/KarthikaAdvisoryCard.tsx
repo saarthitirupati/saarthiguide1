@@ -6,9 +6,92 @@ import { Calendar, Clock, Sun, Info, ChevronRight } from 'lucide-react';
 import { FESTIVALS_2026 } from '@/data/festivals';
 import { useLanguage } from '@/lib/useLanguage';
 
+const TEXTS = {
+  en: {
+    karthikaBadge: 'Karthika Masam',
+    title: 'Kapila Theertham',
+    subtitle: 'Pushkarini Snanam & Darshan Timing',
+    details: 'Details',
+    estimatedWait: 'Estimated Wait',
+    queueSub: 'Festival queue estimate',
+    bestWindow: 'Best Window',
+    windowSub: 'Lighter rush period',
+    safetyNotice: 'Water & pushkarini entry subject to local safety rules on the day.',
+    feedbackThanks: 'Thank you for your feedback.',
+    feedbackAsk: 'Was this estimate helpful?',
+    yes: 'Yes',
+    no: 'No',
+    ariaLabel: 'Kapila Theertham Karthika Masam Timing Advisory'
+  },
+  te: {
+    karthikaBadge: 'కార్తీక మాస సూచన',
+    title: 'కపిల తీర్థం దర్శనం',
+    subtitle: 'పుష్కరిణి స్నానం & దీపారాధన సమయాలు',
+    details: 'వివరాలు',
+    estimatedWait: 'దర్శనం సమయం',
+    queueSub: 'పండుగ రద్దీ అంచనా',
+    bestWindow: 'అనుకూల సమయం',
+    windowSub: 'రద్దీ తక్కువగా ఉండే సమయం',
+    safetyNotice: 'పుష్కరిణి, జలపాతం ప్రవేశం స్థానిక భద్రతా సూచనలపై ఆధారపడి ఉంటుంది.',
+    feedbackThanks: 'ధన్యవాదాలు.',
+    feedbackAsk: 'ఈ అంచనా ఉపయోగపడిందా?',
+    yes: 'అవును',
+    no: 'కాదు',
+    ariaLabel: 'కపిల తీర్థం కార్తీక మాస దర్శన సూచన'
+  },
+  kn: {
+    karthikaBadge: 'ಕಾರ್ತಿಕ ಮಾಸದ ಮಾಹಿತಿ',
+    title: 'ಕಪಿಲ ತೀರ್ಥಂ ದರ್ಶನ',
+    subtitle: 'ಪುಷ್ಕರಿಣಿ ಸ್ನಾನ & ದೀಪಾರಾಧನೆ ಸಮಯ',
+    details: 'ವಿವರಗಳು',
+    estimatedWait: 'ದರ್ಶನ ಸಮಯ',
+    queueSub: 'ಹಬ್ಬದ ಸಾಲಿನ ಅಂದಾಜು',
+    bestWindow: 'ಅನುಕೂಲಕರ ಸಮಯ',
+    windowSub: 'ಕಡಿಮೆ ಜನಸಂದಣಿಯ ಸಮಯ',
+    safetyNotice: 'ಪುಷ್ಕರಿಣಿ ಮತ್ತು ಜಲಪಾತ ಪ್ರವೇಶವು ಅಂದಿನ ಸ್ಥಳೀಯ ಸುರಕ್ಷತಾ ನಿಯಮಗಳಿಗೆ ಒಳಪಟ್ಟಿರುತ್ತದೆ.',
+    feedbackThanks: 'ಧನ್ಯವಾದಗಳು.',
+    feedbackAsk: 'ಈ ಅಂದಾಜು ಉಪಯುಕ್ತವಾಗಿದೆಯೇ?',
+    yes: 'ಹೌದು',
+    no: 'ಇಲ್ಲ',
+    ariaLabel: 'ಕಪಿಲ ತೀರ್ಥಂ ಕಾರ್ತಿಕ ಮಾಸ ದರ್ಶನ ಮಾಹಿತಿ'
+  },
+  hi: {
+    karthikaBadge: 'कार्तिक मास विशेष सूचना',
+    title: 'कपिला तीर्थम दर्शन',
+    subtitle: 'पुष्करिणी स्नान व दीप दर्शन समय',
+    details: 'विवरण',
+    estimatedWait: 'दर्शन का अनुमानित समय',
+    queueSub: 'त्योहार की भीड़ का अनुमान',
+    bestWindow: 'दर्शन का उत्तम समय',
+    windowSub: 'कम भीड़ का समय',
+    safetyNotice: 'पुष्करिणी व झरने में प्रवेश स्थानीय सुरक्षा नियमों के अधीन है।',
+    feedbackThanks: 'आपकी प्रतिक्रिया के लिए धन्यवाद।',
+    feedbackAsk: 'क्या यह अनुमान उपयोगी रहा?',
+    yes: 'हाँ',
+    no: 'नहीं',
+    ariaLabel: 'कपिला तीर्थम कार्तिक मास दर्शन सूचना'
+  },
+  ta: {
+    karthikaBadge: 'கார்த்திகை மாத தகவல்',
+    title: 'கபில தீர்த்தம் தரிசனம்',
+    subtitle: 'புஷ்கரிணி நீராடல் & தரிசன நேரம்',
+    details: 'விவரங்கள்',
+    estimatedWait: 'தரிசன நேரம்',
+    queueSub: 'திருவிழா வரிசை மதிப்பீடு',
+    bestWindow: 'சிறந்த நேரம்',
+    windowSub: 'குறைந்த கூட்ட நேரம்',
+    safetyNotice: 'புஷ்கரிணி மற்றும் நீர்வீழ்ச்சி நுழைவு உள்ளூர் பாதுகாப்பு விதிகளுக்கு உட்பட்டது.',
+    feedbackThanks: 'உங்கள் கருத்துக்கு நன்றி.',
+    feedbackAsk: 'இந்த மதிப்பீடு பயனுள்ளதாக இருந்ததா?',
+    yes: 'ஆம்',
+    no: 'இல்லை',
+    ariaLabel: 'கபில தீர்த்தம் கார்த்திகை மாத தரிசன தகவல்'
+  }
+};
+
 export function KarthikaAdvisoryCard() {
   const lang = useLanguage();
-  const isTe = lang === 'te';
+  const t = TEXTS[lang as keyof typeof TEXTS] || TEXTS.en;
 
   const [mounted, setMounted] = useState(false);
   const [isActive, setIsActive] = useState(false);
@@ -102,9 +185,9 @@ export function KarthikaAdvisoryCard() {
         boxShadow: '0 4px 20px rgba(10, 78, 51, 0.06)',
         color: '#0F172A',
         overflow: 'hidden',
-        fontFamily: isTe ? 'var(--font-telugu, system-ui)' : 'var(--font-body, var(--font-sans))'
+        fontFamily: lang === 'te' ? 'var(--font-telugu, system-ui)' : 'var(--font-body, var(--font-sans))'
       }}
-      aria-label={isTe ? 'కపిల తీర్థం కార్తీక మాస దర్శన సూచన' : 'Kapila Theertham Karthika Masam Timing Advisory'}
+      aria-label={t.ariaLabel}
     >
       {/* ── CARD HEADER (SACRED EMERALD BANNER) ── */}
       <div style={{
@@ -176,7 +259,7 @@ export function KarthikaAdvisoryCard() {
               marginBottom: '2px',
               lineHeight: 1.2
             }}>
-              {isTe ? 'కార్తీక మాస సూచన' : 'Karthika Masam'}
+              {t.karthikaBadge}
             </div>
             <h3 style={{
               fontSize: '15.5px',
@@ -186,7 +269,7 @@ export function KarthikaAdvisoryCard() {
               lineHeight: 1.2,
               letterSpacing: '-0.015em'
             }}>
-              {isTe ? 'కపిల తీర్థం దర్శనం' : 'Kapila Theertham'}
+              {t.title}
             </h3>
             <p style={{
               fontSize: '11px',
@@ -194,7 +277,7 @@ export function KarthikaAdvisoryCard() {
               margin: '2px 0 0 0',
               fontWeight: 500
             }}>
-              {isTe ? 'పుష్కరిణి స్నానం & దీపారాధన సమయాలు' : 'Pushkarini Snanam & Darshan Timing'}
+              {t.subtitle}
             </p>
           </div>
         </div>
@@ -217,9 +300,9 @@ export function KarthikaAdvisoryCard() {
             boxShadow: '0 2px 8px rgba(0, 0, 0, 0.14)',
             flexShrink: 0
           }}
-          aria-label={isTe ? 'కపిల తీర్థం పూర్తి వివరాలు' : 'Kapila Theertham details'}
+          aria-label={t.title}
         >
-          <span>{isTe ? 'వివరాలు' : 'Details'}</span>
+          <span>{t.details}</span>
           <ChevronRight size={12} strokeWidth={2.8} aria-hidden="true" />
         </Link>
       </div>
@@ -261,7 +344,7 @@ export function KarthikaAdvisoryCard() {
                   <Clock size={13} strokeWidth={2.4} aria-hidden="true" />
                 </div>
                 <span style={{ fontSize: '11.5px', fontWeight: 700, color: '#334155' }}>
-                  {isTe ? 'దర్శనం సమయం' : 'Estimated Wait'}
+                  {t.estimatedWait}
                 </span>
               </div>
               <div style={{
@@ -276,7 +359,7 @@ export function KarthikaAdvisoryCard() {
               </div>
             </div>
             <div style={{ fontSize: '10.5px', lineHeight: 1.35, color: '#2563EB', fontWeight: 600 }}>
-              {isTe ? 'పండుగ రద్దీ అంచనా' : 'Festival queue estimate'}
+              {t.queueSub}
             </div>
           </div>
 
@@ -308,7 +391,7 @@ export function KarthikaAdvisoryCard() {
                   <Sun size={13} strokeWidth={2.4} aria-hidden="true" />
                 </div>
                 <span style={{ fontSize: '11.5px', fontWeight: 700, color: '#334155' }}>
-                  {isTe ? 'అనుకూల సమయం' : 'Best Window'}
+                  {t.bestWindow}
                 </span>
               </div>
               <div style={{
@@ -323,7 +406,7 @@ export function KarthikaAdvisoryCard() {
               </div>
             </div>
             <div style={{ fontSize: '10.5px', lineHeight: 1.35, color: '#B45309', fontWeight: 600 }}>
-              {isTe ? 'రద్దీ తక్కువగా ఉండే సమయం' : 'Lighter rush period'}
+              {t.windowSub}
             </div>
           </div>
         </div>
@@ -341,9 +424,7 @@ export function KarthikaAdvisoryCard() {
         }}>
           <Info size={14} color="#16A34A" strokeWidth={2.3} style={{ flexShrink: 0 }} aria-hidden="true" />
           <span style={{ fontSize: '11.5px', lineHeight: 1.4, color: '#166534', fontWeight: 500 }}>
-            {isTe 
-              ? 'పుష్కరిణి, జలపాతం ప్రవేశం స్థానిక భద్రతా సూచనలపై ఆధారపడి ఉంటుంది.'
-              : 'Water & pushkarini entry subject to local safety rules on the day.'}
+            {t.safetyNotice}
           </span>
         </div>
 
@@ -359,15 +440,15 @@ export function KarthikaAdvisoryCard() {
         }}>
           <span style={{ fontSize: '11.5px', fontWeight: 600, color: '#475569' }}>
             {feedbackGiven 
-              ? (isTe ? 'ధన్యవాదాలు.' : 'Thank you for your feedback.') 
-              : (isTe ? 'ఈ అంచనా ఉపయోగపడిందా?' : 'Was this estimate helpful?')}
+              ? t.feedbackThanks 
+              : t.feedbackAsk}
           </span>
           {!feedbackGiven && (
             <div style={{ display: 'flex', gap: '6px' }}>
               <button
                 type="button"
                 onClick={() => handleFeedback(true)}
-                aria-label={isTe ? 'అవును, ఈ సమాచారం ఉపయోగపడింది' : 'Yes, this estimate was helpful'}
+                aria-label={t.yes}
                 style={{
                   minHeight: '30px',
                   minWidth: '50px',
@@ -382,12 +463,12 @@ export function KarthikaAdvisoryCard() {
                   touchAction: 'manipulation'
                 }}
               >
-                {isTe ? 'అవును' : 'Yes'}
+                {t.yes}
               </button>
               <button
                 type="button"
                 onClick={() => handleFeedback(false)}
-                aria-label={isTe ? 'కాదు, ఈ సమాచారం ఉపయోగపడలేదు' : 'No, this estimate was not helpful'}
+                aria-label={t.no}
                 style={{
                   minHeight: '30px',
                   minWidth: '50px',
@@ -402,7 +483,7 @@ export function KarthikaAdvisoryCard() {
                   touchAction: 'manipulation'
                 }}
               >
-                {isTe ? 'కాదు' : 'No'}
+                {t.no}
               </button>
             </div>
           )}

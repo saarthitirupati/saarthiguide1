@@ -944,23 +944,33 @@ export default function HomePage() {
                               let bg = '#F1F5F9';
                               let color = '#475569';
                               let border = '1px solid #E2E8F0';
+                              let label = p.category || 'Spot';
 
                               if (cat.includes('temple') || cat.includes('sacred') || cat.includes('దేవాలయ')) {
                                 bg = '#FEF3C7';
                                 color = '#92400E';
                                 border = '1px solid #FDE68A';
-                              } else if (cat.includes('water') || cat.includes('nature') || cat.includes('fall') || cat.includes('lake') || cat.includes('ప్రకృతి')) {
+                                label = lang === 'kn' ? 'ಪುಣ್ಯ ಕ್ಷೇತ್ರ' : lang === 'te' ? 'పుణ్యక్షేత్రం' : lang === 'hi' ? 'पवित्र मंदिर' : lang === 'ta' ? 'புனித தலம்' : 'Sacred Shrine';
+                              } else if (cat.includes('water') || cat.includes('nature') || cat.includes('fall') || cat.includes('lake') || cat.includes('ಪ್ರಕೃತಿ')) {
                                 bg = '#E0F2FE';
                                 color = '#0369A1';
                                 border = '1px solid #BAE6FD';
+                                label = lang === 'kn' ? 'ಜಲ & ಪ್ರಕೃತಿ' : lang === 'te' ? 'జల & ప్రకృతి' : lang === 'hi' ? 'जल व प्रकृति' : lang === 'ta' ? 'நீர் & இயற்கை' : 'Water & Nature';
                               } else if (cat.includes('heritage') || cat.includes('museum') || cat.includes('fort') || cat.includes('వారసత్వ')) {
                                 bg = '#F3E8FF';
                                 color = '#6B21A8';
                                 border = '1px solid #E9D5FF';
-                              } else if (cat.includes('city') || cat.includes('leisure') || cat.includes('park') || cat.includes('నగరం')) {
+                                label = lang === 'kn' ? 'ಪರಂಪರೆ' : lang === 'te' ? 'వారసత్వం' : lang === 'hi' ? 'धरोहर' : lang === 'ta' ? 'பாரம்பரியம்' : 'Heritage';
+                              } else if (cat.includes('city') || cat.includes('నగరం')) {
                                 bg = '#ECFDF5';
                                 color = '#065F46';
                                 border = '1px solid #A7F3D0';
+                                label = lang === 'kn' ? 'ತಿರುಪತಿ ನಗರ' : lang === 'te' ? 'తిరుపతి నగరం' : lang === 'hi' ? 'तिरुपति नगर' : lang === 'ta' ? 'திருப்பதி நகரம்' : 'Tirupati City';
+                              } else if (cat.includes('leisure') || cat.includes('park') || cat.includes('విశ్రాంతి')) {
+                                bg = '#ECFDF5';
+                                color = '#065F46';
+                                border = '1px solid #A7F3D0';
+                                label = lang === 'kn' ? 'ವಿಶ್ರಾಂತಿ ತಾಣ' : lang === 'te' ? 'విశ్రాంతి' : lang === 'hi' ? 'विश्राम स्थल' : lang === 'ta' ? 'ஓய்வு தளம்' : 'Leisure';
                               }
 
                               return (
@@ -975,13 +985,21 @@ export default function HomePage() {
                                   letterSpacing: '0.01em',
                                   whiteSpace: 'nowrap'
                                 }}>
-                                  {p.category || 'Spot'}
+                                  {label}
                                 </span>
                               );
                             })()}
-                            <span style={{ fontSize: '10px', color: '#166534', fontWeight: 700, whiteSpace: 'nowrap' }}>
-                              {p._dist ? `${Math.max(4, Math.round(Number(p._dist) * 3))} min` : 'Nearby'}
-                            </span>
+                            {(() => {
+                              const distMins = p._dist ? Math.max(4, Math.round(Number(p._dist) * 3)) : null;
+                              const timeStr = distMins
+                                ? `${distMins} ${lang === 'kn' ? 'ನಿಮಿಷ' : lang === 'te' ? 'నిమి' : lang === 'hi' ? 'मिनट' : lang === 'ta' ? 'நிமி' : 'min'}`
+                                : (lang === 'kn' ? 'ಹತ್ತಿರ' : lang === 'te' ? 'సమీపం' : lang === 'hi' ? 'निकट' : lang === 'ta' ? 'அருகில்' : 'Nearby');
+                              return (
+                                <span style={{ fontSize: '10px', color: '#166534', fontWeight: 700, whiteSpace: 'nowrap' }}>
+                                  {timeStr}
+                                </span>
+                              );
+                            })()}
                           </div>
                         </div>
                       </Link>
@@ -1133,7 +1151,13 @@ export default function HomePage() {
                           {p.name}
                         </p>
                         <span style={{ fontSize: '10px', color: '#64748B', fontWeight: 600 }}>
-                          {p._dist ? `${Math.max(4, Math.round(Number(p._dist) * 3))} min away` : 'Nearby'}
+                          {(() => {
+                            const distMins = p._dist ? Math.max(4, Math.round(Number(p._dist) * 3)) : null;
+                            if (!distMins) {
+                              return lang === 'kn' ? 'ಹತ್ತಿರ' : lang === 'te' ? 'సమీపం' : lang === 'hi' ? 'निकट' : lang === 'ta' ? 'அருகில்' : 'Nearby';
+                            }
+                            return `${distMins} ${lang === 'kn' ? 'ನಿಮಿಷ' : lang === 'te' ? 'నిమి' : lang === 'hi' ? 'मिनट' : lang === 'ta' ? 'நிமி' : 'min away'}`;
+                          })()}
                         </span>
                       </div>
                     </Link>

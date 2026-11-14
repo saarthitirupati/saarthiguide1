@@ -68,7 +68,11 @@ const TEXTS = {
     pleaseWaitNote: 'Please wait for the next release. Token timings are subject to TTD updates.',
     directWalkInOpen: 'Direct walk-in Sarva Darshan open at Tirumala (No tokens needed).',
     collectAtCounters: 'Collect tokens at counters listed below with original Aadhaar.',
-    collectionCentres: 'COLLECTION CENTRES',
+    sarvaTokensSub: 'Tirumala Sarva Darshan Tokens',
+    slottedSarvaDarshan: 'Slotted Sarva Darshan',
+    divyaDarshanFootpath: 'Divya Darshan (Footpath)',
+    collectionCentres: 'Collection Centres',
+    collectionLocations: 'SSD / DD Token Collection Locations',
     tapForDirections: 'Tap for directions',
     vishnuNivasam: 'Vishnu Nivasam',
     oppRailway: 'Opp. Railway Station',
@@ -124,7 +128,11 @@ const TEXTS = {
     pleaseWaitNote: 'దయచేసి తదుపరి విడుదల కోసం వేచి ఉండండి. టోకెన్ సమయాలు TTD నవీకరణలకు లోబడి ఉంటాయి.',
     directWalkInOpen: 'తిరుమలలో నేరుగా వైకుంఠం క్యూ ద్వారా సర్వదర్శనం చేసుకోవచ్చు (టోకెన్ అవసరం లేదు).',
     collectAtCounters: 'అసలు ఆధార్ కార్డుతో కింద ఉన్న కౌంటర్ల వద్ద టోకెన్లు పొందండి.',
-    collectionCentres: 'సేకరణ కేంద్రాలు',
+    sarvaTokensSub: 'తిరుమల సర్వదర్శనం టోకెన్లు',
+    slottedSarvaDarshan: 'స్లాటెడ్ సర్వదర్శనం',
+    divyaDarshanFootpath: 'దివ్యదర్శనం (మెట్ల మార్గం)',
+    collectionCentres: 'టోకెన్ కౌంటర్లు',
+    collectionLocations: 'SSD / DD టోకెన్ జారీ కేంద్రాలు',
     tapForDirections: 'మ్యాప్ డైరెక్షన్స్',
     vishnuNivasam: 'విష్ణు నివాసం',
     oppRailway: 'రైల్వే స్టేషన్ ఎదురుగా',
@@ -180,7 +188,11 @@ const TEXTS = {
     pleaseWaitNote: 'कृपया अगले अपडेट की प्रतीक्षा करें। टोकन समय टीटीडी नियमों के अधीन हैं।',
     directWalkInOpen: 'तिरुपति में बिना टोकन सीधे सर्व दर्शन खुला है।',
     collectAtCounters: 'मूल आधार कार्ड के साथ काउंटरों पर टोकन प्राप्त करें।',
-    collectionCentres: 'संग्रह केंद्र',
+    sarvaTokensSub: 'तिरुपति सर्वदर्शन टोकन',
+    slottedSarvaDarshan: 'स्लॉटेड सर्वदर्शन',
+    divyaDarshanFootpath: 'दिव्य दर्शन (पैदल मार्ग)',
+    collectionCentres: 'टोकन काउंटर',
+    collectionLocations: 'SSD / DD टोकन वितरण केंद्र',
     tapForDirections: 'दिशा-निर्देश देखें',
     vishnuNivasam: 'विष्णु निवासम',
     oppRailway: 'रेलवे स्टेशन के सामने',
@@ -236,7 +248,11 @@ const TEXTS = {
     pleaseWaitNote: 'தயவுசெய்து அடுத்த புதுப்பிப்புக்காக காத்திருக்கவும். டோக்கன் நேரங்கள் TTD மாற்றங்களுக்கு உட்பட்டவை.',
     directWalkInOpen: 'டோக்கன் இல்லாமல் நேரடியாக சர்வ தரிசனம் செய்யலாம்.',
     collectAtCounters: 'அசல் ஆதார் அட்டையுடன் மையங்களில் டோக்கன் பெறவும்.',
+    sarvaTokensSub: 'திருமலை சர்வ தரிசன டோக்கன்கள்',
+    slottedSarvaDarshan: 'நேரக் குறிப்பிட்ட சர்வ தரிசனம்',
+    divyaDarshanFootpath: 'திவ்ய தரிசனம் (நடைபாதை)',
     collectionCentres: 'டோக்கன் மையங்கள்',
+    collectionLocations: 'SSD / DD டோக்கன் விநியோக மையங்கள்',
     tapForDirections: 'வரைபட வழிகள்',
     vishnuNivasam: 'விஷ்ணு நிவாசம்',
     oppRailway: 'ரயில் நிலையம் எதிரில்',
@@ -245,6 +261,66 @@ const TEXTS = {
     bhudevi: 'பூதேவி வளாகம்',
     nearAlipiri: 'அலிபிரி அருகில்',
     navigate: 'வழி ↗'
+  },
+  kn: {
+    ssdDdStatus: 'SSD & DD ಟೋಕನ್ ಸ್ಥಿತಿ',
+    updated: 'ಅಪ್‌ಡೇಟ್',
+    closed: 'ಮುಕ್ತಾಯಗೊಂಡಿದೆ',
+    issuing: 'ಜಾರಿಯಲ್ಲಿದೆ',
+    paused: 'ತಾತ್ಕಾಲಿಕ ನಿಲುಗಡೆ',
+    suspended: 'ಸ್ಥಗಿತಗೊಳಿಸಲಾಗಿದೆ',
+    today: 'ಇಂದು',
+    tomorrowDarshanLabel: 'ನಾಳೆಯ ದರ್ಶನ',
+    startedAt: 'ಜಾರಿ ಪ್ರಾರಂಭ',
+    quotaCompletedAt: 'ಕೋಟಾ ಪೂರ್ಣಗೊಂಡ ಸಮಯ',
+    tokensRemaining: 'ಉಳಿದ ಟೋಕನ್‌ಗಳು',
+    tokensAvailable: 'ಲಭ್ಯವಿದೆ',
+    temporarilyPaused: 'ತಾತ್ಕಾಲಿಕವಾಗಿ ನಿಲ್ಲಿಸಲಾಗಿದೆ',
+    activelyIssuing: 'ಟೋಕನ್‌ಗಳು ಜಾರಿಯಾಗುತ್ತಿವೆ',
+    notAnnounced: 'ಇನ್ನೂ ಪ್ರಕಟಿಸಿಲ್ಲ',
+    unavailable: 'ಲಭ್ಯವಿಲ್ಲ',
+    status: 'ಸ್ಥಿತಿ',
+    todayQuotaCompleted: 'ಇಂದಿನ ಕೋಟಾ ಪೂರ್ಣಗೊಂಡಿದೆ',
+    tokensIssuingNow: 'ಟೋಕನ್‌ಗಳು ಈಗ ಲಭ್ಯವಿವೆ',
+    tokensPaused: 'ಟೋಕನ್ ವಿತರಣೆ ಸ್ಥಗಿತ',
+    tokensSuspended: 'ರದ್ದಿಯ ಕಾರಣ ಟೋಕನ್ ವಿತರಣೆ ರದ್ದು',
+    tokensIssuedNote: (date: string) => `${date} ರ ಟೋಕನ್‌ಗಳು ಸಂಪೂರ್ಣವಾಗಿ ಜಾರಿಯಾಗಿವೆ.`,
+    tokensIssuingNote: (date: string) => `ನಾಳೆಯ ದರ್ಶನದ (${date}) ಟೋಕನ್‌ಗಳು ಕೌಂಟರ್‌ಗಳಲ್ಲಿ ಜಾರಿಯಾಗುತ್ತಿವೆ.`,
+    tokensPausedNote: (date: string) => `${date} ರ ಟೋಕನ್ ವಿತರಣೆ ತಾತ್ಕಾಲಿಕವಾಗಿ ನಿಂತಿದೆ.`,
+    tokensSuspendedNote: (date: string) => `ಹಬ್ಬ/ರದ್ದಿಯ ಕಾರಣ ${date} ರ ಟೋಕನ್ ವಿತರಣೆ ಸ್ಥಗಿತಗೊಂಡಿದೆ.`,
+    ssdTokens: 'SSD ಟೋಕನ್‌ಗಳು',
+    ddTokens: 'DD ಟೋಕನ್‌ಗಳು',
+    completed: 'ಪೂರ್ಣಗೊಂಡಿದೆ',
+    issuingBadge: 'ಜಾರಿಯಲ್ಲಿದೆ',
+    pausedBadge: 'ನಿಲುಗಡೆ',
+    perDay: '/ ದಿನಕ್ಕೆ',
+    issuingStarted: 'ಜಾರಿ ಪ್ರಾರಂಭ',
+    quotaCompleted: 'ಕೋಟಾ ಪೂರ್ಣ',
+    previousDay: 'ಹಿಂದಿನ ದಿನ',
+    completedAt: 'ಪೂರ್ಣಗೊಂಡ ಸಮಯ',
+    historicalPending: 'ಮಾಹಿತಿಗಾಗಿ ಕಾಯಲಾಗುತ್ತಿದೆ',
+    nextExpectedRelease: 'ಮುಂದಿನ ನಿರೀಕ್ಷಿತ ಬಿಡುಗಡೆ',
+    nextConfirmedRelease: 'ಖಚಿತ ಮುಂದಿನ ಬಿಡುಗಡೆ',
+    notAnnouncedYet: 'ಇನ್ನೂ ಪ್ರಕಟವಾಗಿಲ್ಲ',
+    tomorrow: 'ನಾಳೆ',
+    todayLabel: 'ಇಂದು',
+    quotasCompletedAdvice: 'ಇಂದಿನ SSD ಮತ್ತು DD ಟೋಕನ್ ಕೋಟಾಗಳು ಪೂರ್ಣಗೊಂಡಿವೆ.',
+    pleaseWaitNote: 'ದಯವಿಟ್ಟು ಮುಂದಿನ ಬಿಡುಗಡೆಗಾಗಿ ಕಾಯಿರಿ. ಟೋಕನ್ ಸಮಯ TTD ನಿಯಮಗಳಿಗೆ ಒಳಪಟ್ಟಿರುತ್ತದೆ.',
+    directWalkInOpen: 'ತಿರುಮಲದಲ್ಲಿ ನೇರ ಸರ್ವ ದರ್ಶನ ಲಭ್ಯವಿದೆ (ಟೋಕನ್ ಅಗತ್ಯವಿಲ್ಲ).',
+    collectAtCounters: 'ಮೂಲ ಆಧಾರ್ ಕಾರ್ಡ್‌ನೊಂದಿಗೆ ಕೆಳಗಿನ ಕೌಂಟರ್‌ಗಳಲ್ಲಿ ಟೋಕನ್ ಪಡೆಯಿರಿ.',
+    sarvaTokensSub: 'ತಿರುಮಲ ಸರ್ವ ದರ್ಶನ ಟೋಕನ್‌ಗಳು',
+    slottedSarvaDarshan: 'ಸ್ಲಾಟೆಡ್ ಸರ್ವ ದರ್ಶನ',
+    divyaDarshanFootpath: 'ದಿವ್ಯ ದರ್ಶನ (ಪಾದಯಾತ್ರೆ ಮಾರ್ಗ)',
+    collectionCentres: 'ಟೋಕನ್ ಕೌಂಟರ್ ಕೇಂದ್ರಗಳು',
+    collectionLocations: 'SSD / DD ಟೋಕನ್ ವಿತರಣಾ ಕೇಂದ್ರಗಳು',
+    tapForDirections: 'ದಾರಿಗಾಗಿ ಒತ್ತಿ',
+    vishnuNivasam: 'ವಿಷ್ಣು ನಿವಾಸಂ',
+    oppRailway: 'ರೈಲ್ವೆ ನಿಲ್ದಾಣದ ಎದುರು',
+    srinivasam: 'ಶ್ರೀನಿವಾಸಂ',
+    oppBusStand: 'ಬಸ್ ನಿಲ್ದಾಣದ ಎದುರು',
+    bhudevi: 'ಭೂದೇವಿ ಕಾಂಪ್ಲೆಕ್ಸ್',
+    nearAlipiri: 'ಅಲಿಪಿರಿ ಗೇಟ್ ಬಳಿ',
+    navigate: 'ದಾರಿ ↗'
   }
 };
 
@@ -626,7 +702,7 @@ export function QuickChecklist(props: any) {
                   letterSpacing: '0.01em'
                 }}
               >
-                {lang === 'te' ? 'తిరుమల సర్వదర్శనం టోకెన్లు' : 'Tirumala Sarva Darshan Tokens'}
+                {t.sarvaTokensSub}
               </span>
             </div>
           </div>
@@ -790,7 +866,7 @@ export function QuickChecklist(props: any) {
                 {t.ssdTokens}
               </h4>
               <span style={{ fontSize: '9.5px', color: '#64748B', fontWeight: 600, display: 'block', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                {lang === 'te' ? 'స్లాటెడ్ సర్వదర్శనం' : 'Slotted Sarva Darshan'}
+                {t.slottedSarvaDarshan}
               </span>
             </div>
           </div>
@@ -926,7 +1002,7 @@ export function QuickChecklist(props: any) {
                 {t.ddTokens}
               </h4>
               <span style={{ fontSize: '9.5px', color: '#64748B', fontWeight: 600, display: 'block', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                {lang === 'te' ? 'దివ్యదర్శనం (మెట్ల మార్గం)' : 'Divya Darshan (Footpath)'}
+                {t.divyaDarshanFootpath}
               </span>
             </div>
           </div>
@@ -1059,7 +1135,7 @@ export function QuickChecklist(props: any) {
               {nextReleaseTitle}
             </span>
             <span style={{ fontSize: '10.5px', color: '#64748B', fontWeight: 600, marginTop: '2px', display: 'block' }}>
-              {nextReleaseDateLabel || (lang === 'te' ? '11 నవంబర్ 2026 (రేపు)' : '11 Nov 2026 (Tomorrow)')}
+              {nextReleaseDateLabel || `${ist.tomorrow} (${t.tomorrow})`}
             </span>
           </div>
         </div>
@@ -1187,7 +1263,7 @@ export function QuickChecklist(props: any) {
                 lineHeight: 1.2
               }}
             >
-              {lang === 'te' ? 'టోకెన్ కౌంటర్లు' : 'Collection Centres'}
+              {t.collectionCentres}
             </h3>
             <p 
               className="notranslate"
@@ -1199,7 +1275,7 @@ export function QuickChecklist(props: any) {
                 fontWeight: 500
               }}
             >
-              {lang === 'te' ? 'SSD / DD టోకెన్ జారీ కేంద్రాలు' : 'SSD / DD Token Collection Locations'}
+              {t.collectionLocations}
             </p>
           </div>
         </div>
@@ -1266,7 +1342,7 @@ export function QuickChecklist(props: any) {
                 fontFamily: 'var(--font-sans), system-ui, sans-serif'
               }}
             >
-              {lang === 'te' ? 'విష్ణు నివాసం' : 'Vishnu Nivasam'}
+              {t.vishnuNivasam}
             </span>
             <div 
               className="notranslate"
@@ -1287,7 +1363,7 @@ export function QuickChecklist(props: any) {
             >
               <MapPin size={10} color="#64748B" strokeWidth={2.2} style={{ flexShrink: 0 }} />
               <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                {lang === 'te' ? 'రైల్వే స్టేషన్' : 'Opp. Railway Stn'}
+                {t.oppRailway}
               </span>
             </div>
             <a
@@ -1314,7 +1390,7 @@ export function QuickChecklist(props: any) {
                 boxSizing: 'border-box'
               }}
             >
-              <span>{lang === 'te' ? 'నావిగేట్' : 'Navigate'}</span>
+              <span>{t.navigate}</span>
               <ChevronRight size={12} strokeWidth={2.6} />
             </a>
           </div>
@@ -1367,7 +1443,7 @@ export function QuickChecklist(props: any) {
                 fontFamily: 'var(--font-sans), system-ui, sans-serif'
               }}
             >
-              {lang === 'te' ? 'శ్రీనివాసం' : 'Srinivasam'}
+              {t.srinivasam}
             </span>
             <div 
               className="notranslate"
@@ -1388,7 +1464,7 @@ export function QuickChecklist(props: any) {
             >
               <MapPin size={10} color="#64748B" strokeWidth={2.2} style={{ flexShrink: 0 }} />
               <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                {lang === 'te' ? 'బస్ స్టాండ్' : 'Opp. Bus Stand'}
+                {t.oppBusStand}
               </span>
             </div>
             <a
@@ -1415,7 +1491,7 @@ export function QuickChecklist(props: any) {
                 boxSizing: 'border-box'
               }}
             >
-              <span>{lang === 'te' ? 'నావిగేట్' : 'Navigate'}</span>
+              <span>{t.navigate}</span>
               <ChevronRight size={12} strokeWidth={2.6} />
             </a>
           </div>
@@ -1468,7 +1544,7 @@ export function QuickChecklist(props: any) {
                 fontFamily: 'var(--font-sans), system-ui, sans-serif'
               }}
             >
-              {lang === 'te' ? 'భూదేవి కాంప్లెక్స్' : 'Bhudevi Complex'}
+              {t.bhudevi}
             </span>
             <div 
               className="notranslate"
@@ -1489,7 +1565,7 @@ export function QuickChecklist(props: any) {
             >
               <MapPin size={10} color="#64748B" strokeWidth={2.2} style={{ flexShrink: 0 }} />
               <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                {lang === 'te' ? 'అలిపిరి గేట్' : 'Near Alipiri Gate'}
+                {t.nearAlipiri}
               </span>
             </div>
             <a
@@ -1516,7 +1592,7 @@ export function QuickChecklist(props: any) {
                 boxSizing: 'border-box'
               }}
             >
-              <span>{lang === 'te' ? 'నావిగేట్' : 'Navigate'}</span>
+              <span>{t.navigate}</span>
               <ChevronRight size={12} strokeWidth={2.6} />
             </a>
           </div>
