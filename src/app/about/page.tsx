@@ -7,7 +7,7 @@ import {
   ArrowLeft, Sparkles, Target, Compass, Heart, ShieldCheck,
   MapPin, Award, CheckCircle2, Mail, Globe, Users, ExternalLink,
   BookOpen, Wrench, Search, WifiOff, PhoneCall, Shield, Check,
-  BadgeCheck, MessageSquare, Coffee
+  BadgeCheck, MessageSquare, Coffee, Home, Car, Ticket
 } from 'lucide-react';
 import { useLanguage } from '@/lib/useLanguage';
 
@@ -48,25 +48,21 @@ const TEXTS = {
 
     frictionPoints: [
       {
-        icon: '🏠',
         title: 'Unverified Stays & Broker Scams',
         problem: 'Devotees arriving late at night are misled by agents claiming all rooms are full.',
         solution: 'Direct phone numbers & walk-in guides for mutts (Ahobila, Rayar, Kanchi) & verified lodges.'
       },
       {
-        icon: '🚖',
         title: 'Inflated Taxi & Ghat Fares',
         problem: 'Private drivers often charge 2x to 3x standard rates during peak festival rush.',
         solution: 'Standardized rate cards and direct zero-commission driver contact numbers.'
       },
       {
-        icon: '📶',
         title: 'Mountain Cellular Blackouts',
         problem: 'Cellular signals drop drastically across Tirumala hills and queue compartments.',
         solution: '100% offline-first architecture — all essential guides, maps, and numbers work without internet.'
       },
       {
-        icon: '🎟️',
         title: 'Queue & Token Confusion',
         problem: 'First-time pilgrims confuse Sarva Darshan (Free), SSD tokens, and Divya Darshan.',
         solution: 'Live counter status, time estimates, and step-by-step queue entry maps.'
@@ -132,25 +128,21 @@ const TEXTS = {
 
     frictionPoints: [
       {
-        icon: '🏠',
         title: 'గదుల కోసం దళారుల దోపిడీ',
         problem: 'రాత్రి సమయాల్లో వచ్చే భక్తులకు గదులు లేవని చెప్పి ఎక్కువ మొత్తాలు వసూలు చేస్తారు.',
         solution: 'ప్రముఖ మఠాలు (అహోబిల, రాయర, కంచి) మరియు ధృవీకరించబడిన లాడ్జిల ప్రత్యక్ష నంబర్లు.'
       },
       {
-        icon: '🚖',
         title: 'క్యాబ్‌ల అధిక ధరలు',
         problem: 'రద్దీ సమయాల్లో సాధారణ చార్జీల కంటే 2 నుండి 3 రెట్లు ఎక్కువ వసూలు చేయడం.',
         solution: 'పారదర్శక ధరలు మరియు జీరో-కమీషన్ క్యాబ్ డ్రైవర్ల ప్రత్యక్ష నంబర్లు.'
       },
       {
-        icon: '📶',
         title: 'కొండపై సిగ్నల్ సమస్యలు',
         problem: 'తిరుమల కొండపై మరియు కంపార్ట్‌మెంట్లలో మొబైల్ నెట్‌వర్క్ సరిగ్గా పనిచేయదు.',
         solution: '100% ఆఫ్‌లైన్ ఆర్కిటెక్చర్ — ఇంటర్నెట్ లేకపోయినా మ్యాప్‌లు, నంబర్లు పనిచేస్తాయి.'
       },
       {
-        icon: '🎟️',
         title: 'టోకెన్ల గందరగోళం',
         problem: 'సర్వదర్శనం, SSD టోకెన్లు మరియు దివ్యదర్శనాల మధ్య అవగాహన లోపం.',
         solution: 'లైవ్ టోకెన్ కౌంటర్ వివరాలు, వేచి ఉండే సమయాలు మరియు స్పష్టమైన మార్గదర్శకాలు.'
@@ -213,25 +205,21 @@ const TEXTS = {
 
     frictionPoints: [
       {
-        icon: '🏠',
         title: 'कमरों के लिए बिचौलियों का शोषण',
         problem: 'देर रात आने वाले श्रद्धालुओं से कमरों के लिए मनमाना किराया वसूला जाता है।',
         solution: 'पारंपरिक मठों (अहोबिला, रायर, कांची) और लॉज के सीधे संपर्क नंबर।'
       },
       {
-        icon: '🚖',
         title: 'टैक्सी का अत्यधिक किराया',
         problem: 'भीड़ के समय 2 से 3 गुना अधिक किराया लिया जाता है।',
         solution: 'मानकीकृत दरें और सीधे ड्राइवरों के ज़ीरो-कमीशन नंबर।'
       },
       {
-        icon: '📶',
         title: 'पहाड़ी पर नेटवर्क समस्या',
         problem: 'तिरुमाला पहाड़ी और कतार परिसरों में मोबाइल सिग्नल नहीं मिलते।',
         solution: '100% ऑफ़लाइन आर्किटेक्चर — इंटरनेट के बिना भी सभी मैप और नंबर काम करते हैं।'
       },
       {
-        icon: '🎟️',
         title: 'टोकन और कतार में भ्रम',
         problem: 'सर्व दर्शन, SSD टोकन और दिव्य दर्शन के नियमों में भ्रम।',
         solution: 'लाइव काउंटर स्थिति, अनुमानित समय और प्रवेश मार्गदर्शक।'
@@ -613,7 +601,22 @@ export default function AboutPage() {
                 gap: '12px'
               }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                  <span style={{ fontSize: '22px' }}>{pt.icon}</span>
+                  <div style={{
+                    width: '38px',
+                    height: '38px',
+                    borderRadius: '11px',
+                    backgroundColor: '#E8F5E9',
+                    border: '1px solid #C8E6C9',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexShrink: 0
+                  }}>
+                    {i === 0 && <Home size={19} color="#0F5132" />}
+                    {i === 1 && <Car size={19} color="#0F5132" />}
+                    {i === 2 && <WifiOff size={19} color="#0F5132" />}
+                    {i === 3 && <Ticket size={19} color="#0F5132" />}
+                  </div>
                   <h4 style={{ fontSize: '15px', fontWeight: 800, color: '#0F172A', margin: 0 }}>
                     {pt.title}
                   </h4>
