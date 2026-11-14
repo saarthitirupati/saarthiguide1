@@ -327,12 +327,12 @@ export default function OnboardingPage() {
               exit="exit"
             >
               <div className={styles.stepBody}>
-                <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '8px' }}>
-                  <Logo size={42} />
+                <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '4px' }}>
+                  <Logo size={36} />
                 </div>
 
                 <h1 className={styles.stepTitle}>
-                  <Globe size={20} style={{ color: '#0F5132' }} /> {t.selectLanguage}
+                  <Globe size={18} style={{ color: '#0F5132' }} /> {t.selectLanguage}
                 </h1>
                 <p className={styles.stepSubtitle}>
                   {t.selectLanguageSub}
@@ -347,9 +347,10 @@ export default function OnboardingPage() {
                         onClick={() => {
                           setSelectedLanguage(lang.code);
                           localStorage.setItem('saarthi_user_language', lang.code);
-                          if (isSelected) {
+                          // Instant one-tap advance to next step with smooth tactile ripple
+                          setTimeout(() => {
                             nextStep();
-                          }
+                          }, 120);
                         }}
                         whileHover={{ scale: 1.01 }}
                         whileTap={{ scale: 0.98 }}
