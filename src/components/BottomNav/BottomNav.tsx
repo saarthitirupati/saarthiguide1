@@ -29,6 +29,11 @@ const TEXTS = {
     essentials: 'அத்தியாவசியங்கள்',
     explore: 'ஆராய்க',
   },
+  kn: {
+    home: 'ಮುಖಪುಟ',
+    essentials: 'ಅಗತ್ಯಗಳು',
+    explore: 'ಅನ್ವೇಷಿಸಿ',
+  },
 };
 
 type TextMap = Record<string, string>;

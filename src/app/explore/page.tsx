@@ -17,15 +17,15 @@ import { SrivariNamamVector } from '@/components/common/DevotionalSvgIcons';
 import { PageSkeleton } from '@/components/common/PageSkeleton';
 
 const FILTERS_DATA = [
-  { key: 'All', labelEn: 'All', labelTe: 'అన్నీ', labelHi: 'सभी', labelTa: 'அனைத்தும்' },
-  { key: 'Nearby', labelEn: 'Nearby', labelTe: 'సమీపంలో', labelHi: 'पास में', labelTa: 'அருகில்' },
-  { key: 'Saved', labelEn: 'Saved', labelTe: 'దాచినవి', labelHi: 'सेव किए गए', labelTa: 'சேமிக்கப்பட்டவை' },
-  { key: 'Spiritual', labelEn: 'Spiritual', labelTe: 'ఆధ్యాత్మికం', labelHi: 'आध्यात्मिक', labelTa: 'ஆன்மீகம்' },
-  { key: 'Nature', labelEn: 'Nature', labelTe: 'ప్రకృతి', labelHi: 'प्रकृति', labelTa: 'இயற்கை' },
-  { key: 'Water', labelEn: 'Theerthams', labelTe: 'తీర్థాలు', labelHi: 'तीर्थम', labelTa: 'தீர்த்தங்கள்' },
-  { key: 'Historical', labelEn: 'Heritage', labelTe: 'చారిత్రకం', labelHi: 'ऐतिहासिक', labelTa: 'பாரம்பரியம்' },
-  { key: 'Hidden', labelEn: 'Hidden Gems', labelTe: 'దాగి ఉన్నవి', labelHi: 'छिपे हुए स्थल', labelTa: 'மறைக்கப்பட்ட இடங்கள்' },
-  { key: 'Culture', labelEn: 'Culture', labelTe: 'సంస్కృతి', labelHi: 'संस्कृति', labelTa: 'கலாச்சாரம்' }
+  { key: 'All', labelEn: 'All', labelTe: 'అన్నీ', labelHi: 'सभी', labelTa: 'அனைத்தும்', labelKn: 'ಎಲ್ಲವೂ' },
+  { key: 'Nearby', labelEn: 'Nearby', labelTe: 'సమీపంలో', labelHi: 'पास में', labelTa: 'அருகில்', labelKn: 'ಹತ್ತಿರದಲ್ಲಿ' },
+  { key: 'Saved', labelEn: 'Saved', labelTe: 'దాచినవి', labelHi: 'सेव किए गए', labelTa: 'சேமிக்கப்பட்டவை', labelKn: 'ಉಳಿಸಿದವು' },
+  { key: 'Spiritual', labelEn: 'Spiritual', labelTe: 'ఆధ్యాత్మికం', labelHi: 'आध्यात्मिक', labelTa: 'ஆன்மீகம்', labelKn: 'ಧಾರ್ಮಿಕ' },
+  { key: 'Nature', labelEn: 'Nature', labelTe: 'ప్రకృతి', labelHi: 'प्रकृति', labelTa: 'இயற்கை', labelKn: 'ಪ್ರಕೃತಿ' },
+  { key: 'Water', labelEn: 'Theerthams', labelTe: 'తీర్థాలు', labelHi: 'तीर्थम', labelTa: 'தீர்த்தங்கள்', labelKn: 'ತೀರ್ಥಗಳು' },
+  { key: 'Historical', labelEn: 'Heritage', labelTe: 'చారిత్రకం', labelHi: 'ऐतिहासिक', labelTa: 'பாரம்பரியம்', labelKn: 'ಪರಂಪರೆ' },
+  { key: 'Hidden', labelEn: 'Hidden Gems', labelTe: 'దాగి ఉన్నవి', labelHi: 'छिपे हुए स्थल', labelTa: 'மறைக்கப்பட்ட இடங்கள்', labelKn: 'ಗುಪ್ತ ತಾಣಗಳು' },
+  { key: 'Culture', labelEn: 'Culture', labelTe: 'సంస్కృతి', labelHi: 'संस्कृति', labelTa: 'கலாச்சாரம்', labelKn: 'ಸಂಸ್ಕೃತಿ' }
 ];
 
 const TEXTS: Record<string, Record<string, string>> = {
@@ -108,6 +108,26 @@ const TEXTS: Record<string, Record<string, string>> = {
     kmsAway: 'கி.மீ தொலைவில்',
     minsDrive: 'நிமிடம் பயணம்',
     viewDetails: 'விவரங்களை காண்க'
+  },
+  kn: {
+    headerTitle: 'ಸ್ಥಳಗಳನ್ನು ಅನ್ವೇಷಿಸಿ',
+    searchPlaceholder: 'ದೇವಾಲಯಗಳು, ಜಲಪಾತಗಳು, ಪ್ರಸಾದ, ಇತಿಹಾಸ ಹುಡುಕಿ…',
+    filtersHeader: 'ಫಿಲ್ಟರ್‌ಗಳು & ವರ್ಗಗಳು',
+    categoriesLabel: 'ವರ್ಗಗಳು',
+    resultsFor: 'ಫಲಿತಾಂಶಗಳು:',
+    placesFound: 'ಸ್ಥಳಗಳು ಲಭ್ಯವಿವೆ',
+    noPlacesFound: 'ಯಾವುದೇ ಸ್ಥಳಗಳು ಹೊಂದಿಕೆಯಾಗುತ್ತಿಲ್ಲ:',
+    clearSearch: 'ಹುಡುಕಾಟ ತೆರವುಗೊಳಿಸಿ',
+    nearLocation: 'ಸಮೀಪದ ಸ್ಥಳ:',
+    locateMe: 'ನನ್ನ ಸ್ಥಳ ಗುರುತಿಸಿ',
+    changeLocation: 'ಸ್ಥಳ ಬದಲಾಯಿಸಿ',
+    nearby: 'ಸಮೀಪದ ಪ್ರಸಿದ್ಧ ಸ್ಥಳಗಳು',
+    mustVisit: 'ಖಂಡಿತ ಭೇಟಿ ನೀಡಬೇಕಾದ ಸ್ಥಳಗಳು',
+    hiddenGems: 'ಶಾಂತಿಯುತ & ಸುಂದರ ಸ್ಥಳಗಳು',
+    allExperiences: 'ಎಲ್ಲಾ ಸ್ಥಳಗಳು & ಅನುಭವಗಳು',
+    kmsAway: 'ಕಿ.ಮೀ ದೂರ',
+    minsDrive: 'ನಿಮಿಷಗಳ ಪ್ರಯಾಣ',
+    viewDetails: 'ವಿವರಗಳನ್ನು ನೋಡಿ'
   }
 };
 
@@ -720,9 +740,9 @@ function ExploreContent() {
         <div className={styles.sectionHeader}>
           <h2 className={styles.sectionTitle}>
             {isAlternativeQuery 
-              ? (lang === 'te' ? 'ప్రత్యామ్నాయ పవిత్ర దర్శనాలు' : lang === 'hi' ? 'अनुशंसित वैकल्पिक दर्शन' : lang === 'ta' ? 'பரிந்துரைக்கப்பட்ட மாற்று தரிசனங்கள்' : 'Recommended Alternatives') 
+              ? (lang === 'te' ? 'ప్రత్యామ్నాయ పవిత్ర దర్శనాలు' : lang === 'kn' ? 'ಶಿಫಾರಸು ಮಾಡಿದ ಪರ್ಯಾಯ ದರ್ಶನಗಳು' : lang === 'hi' ? 'अनुशंसित वैकल्पिक दर्शन' : lang === 'ta' ? 'பரிந்துரைக்கப்பட்ட மாற்று தரிசனங்கள்' : 'Recommended Alternatives') 
               : isTirupatiQuery 
-              ? (lang === 'te' ? 'తిరుపతి నగరంలోని ఆకర్షణలు' : lang === 'hi' ? 'तिरुपति शहर के आकर्षण' : lang === 'ta' ? 'திருப்பதி நகரத்தின் ஈர்ப்புகள்' : 'Attractions in Tirupati City') 
+              ? (lang === 'te' ? 'తిరుపతి నగరంలోని ఆకర్షణలు' : lang === 'kn' ? 'ತಿರುಪತಿ ನಗರದ ಪ್ರಮುಖ ಆಕರ್ಷಣೆಗಳು' : lang === 'hi' ? 'तिरुपति शहर के आकर्षण' : lang === 'ta' ? 'திருப்பதி நகரத்தின் ஈர்ப்புகள்' : 'Attractions in Tirupati City') 
               : searchQuery 
               ? `${t.resultsFor} "${searchQuery}"` 
               : activeFilter === 'All' 

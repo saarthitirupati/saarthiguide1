@@ -181,12 +181,53 @@ const TEXTS: Record<string, Record<string, string>> = {
     emergencySub: 'போலீஸ் & மருத்துவ சேவைகள்',
     callEmergency: 'அழைக்க 108 →',
     faqTitle: 'அடிக்கடி கேட்கப்படும் கேள்விகள்'
+  },
+  kn: {
+    headerTitle: 'ಯಾತ್ರಿಕರ ಅಗತ್ಯಗಳು',
+    searchTitle: 'ನೀವು ಏನನ್ನು ಹುಡುಕುತ್ತಿದ್ದೀರಿ?',
+    searchPlaceholder: 'ಲಾಕರ್‌ಗಳು, ಊಟ, ಕೊಠಡಿಗಳು, ಕಲ್ಯಾಣಕಟ್ಟ ಹುಡುಕಿ...',
+    todaysNotice: 'ಇಂದಿನ ಪ್ರಮುಖ ಸೂಚನೆ',
+    allFacilitiesTitle: 'ಎಲ್ಲಾ ಸೌಲಭ್ಯಗಳು',
+    readinessTitle: 'ದರ್ಶನ ಪೂರ್ವ ಸಿದ್ಧತೆ ಚೆಕ್‌ಲಿಸ್ಟ್',
+    hideChecklist: 'ಪಟ್ಟಿ ಮರೆಮಾಡಿ',
+    searchResults: 'ಹುಡುಕಾಟದ ಫಲಿತಾಂಶಗಳು',
+    noFacilitiesFound: 'ಹೊಂದಿಕೆಯಾಗುವ ಸೌಲಭ್ಯಗಳು ಕಂಡುಬಂದಿಲ್ಲ:',
+    trySearching: '"ಫೋನ್", "ಲಾಕರ್", "ಊಟ", "ಕೊಠಡಿ", "ಕಲ್ಯಾಣಕಟ್ಟ" ಎಂದು ಹುಡುಕಿ',
+    viewDetails: 'ವಿವರಗಳನ್ನು ನೋಡಿ →',
+    whatDoYouNeed: 'ನಿಮಗೆ ಈಗ ಏನು ಬೇಕು?',
+    instantGuidance: 'ದೇವಸ್ಥಾನ ಪ್ರವೇಶಿಸುವ ಮುನ್ನ ತಕ್ಷಣದ ಮಾರ್ಗದರ್ಶನ',
+    darshanEntryTitle: 'ದರ್ಶನ ಪ್ರವೇಶ ದ್ವಾರಗಳು',
+    darshanEntrySub: '15 ಸಕ್ರಿಯ ದ್ವಾರಗಳು · VQC-1, VQC-2, ₹300 SED, ಅನಿವಾಸಿ, ಹಿರಿಯ ನಾಗರಿಕರು ಮತ್ತು ರಶ್ ಲೈನ್‌ಗಳು (ಗೂಗಲ್ ಮ್ಯಾಪ್ಸ್ ಮಾರ್ಗಗಳು).',
+    findGates: 'ನಿಮ್ಮ ಗೇಟ್ & ಮಾರ್ಗ ಹುಡುಕಿ →',
+    secureBelongingsTitle: 'ವಸ್ತುಗಳ ರಕ್ಷಣೆ & ಉಚಿತ ಲಾಕರ್‌ಗಳು',
+    secureBelongingsSub: 'ಕ್ಯೂ ಸ್ಕ್ಯಾನರ್‌ಗೆ ಪ್ರವೇಶಿಸುವ ಮೊದಲು ಮೊಬೈಲ್, ಬ್ಯಾಗ್ ಮತ್ತು ಪಾದರಕ್ಷೆಗಳನ್ನು ಸುರಕ್ಷಿತವಾಗಿ ಇರಿಸಿ. 100% ಉಚಿತ ಸೇವೆ.',
+    findLocker: 'ಲಾಕರ್ ಕೇಂದ್ರಗಳು →',
+    freeMealsTitle: 'ಉಚಿತ ಅನ್ನಪ್ರಸಾದ',
+    freeMealsSub: 'ಮಾತೃಶ್ರೀ ತರಿಗೊಂಡ ವೆಂಗಮಾಂಬ ಅನ್ನಪ್ರಸಾದ ಸಂಕೀರ್ಣ',
+    findMeals: 'ಅನ್ನಪ್ರಸಾದ ವಿವರಗಳು →',
+    hairOfferingTitle: 'ಮುಡಿ ಸಮರ್ಪಣೆ',
+    hairOfferingSub: 'ಕಲ್ಯಾಣಕಟ್ಟ (24/7 ಉಚಿತ ಸೇವೆ)',
+    findHair: 'ಕಲ್ಯಾಣಕಟ್ಟ ವಿವರಗಳು →',
+    accommodationTitle: 'ವಸತಿ & ಕೊಠಡಿಗಳು',
+    accommodationSub: 'ಪಿಎಸಿ ಹಾಲ್‌ಗಳು ಮತ್ತು ಕೊಠಡಿಗಳು',
+    findRooms: 'ಕೊಠಡಿಗಳು & ಪಿಎಸಿ ಹುಡುಕಿ →',
+    shoppingTitle: 'ಅಧಿಕೃತ ಶಾಪಿಂಗ್',
+    shoppingSub: 'ಟಿಟಿಡಿ ಪುಸ್ತಕಗಳು ಮತ್ತು ಲಡ್ಡು ಕೌಂಟರ್‌ಗಳು',
+    viewStores: 'ಅಂಗಡಿಗಳನ್ನು ನೋಡಿ →',
+    supportEmergency: 'ಸಹಾಯ & ತುರ್ತು ಸೇವೆ',
+    helpdeskTitle: 'ಟಿಟಿಡಿ ಸಹಾಯವಾಣಿ',
+    helpdeskSub: 'ಅಧಿಕೃತ 24/7 ಭಕ್ತರ ವಿಚಾರಣಾ ಕೇಂದ್ರ',
+    callHelpdesk: 'ಕರೆ ಮಾಡಿ 155257 →',
+    emergencyTitle: 'ತುರ್ತು ಸಹಾಯ',
+    emergencySub: 'ಪೊಲೀಸ್ & ವೈದ್ಯಕೀಯ ಸೇವೆಗಳು',
+    callEmergency: 'ಕರೆ ಮಾಡಿ 108 →',
+    faqTitle: 'ಪದೇ ಪದೇ ಕೇಳಲಾಗುವ ಪ್ರಶ್ನೆಗಳು'
   }
 };
 
 interface FacilityTileItem {
   id: string;
-  name: { en: string; te: string; hi: string; ta: string };
+  name: { en: string; te: string; hi: string; ta: string; kn?: string };
   count: number;
   bg: string;
   color: string;
@@ -198,7 +239,7 @@ interface FacilityTileItem {
 const ALL_FACILITIES_TILES: FacilityTileItem[] = [
   {
     id: 'parking',
-    name: { en: 'Parking', te: 'పార్కింగ్', hi: 'पार्किंग', ta: 'பார்க்கிங்' },
+    name: { en: 'Parking', te: 'పార్కింగ్', hi: 'पार्किंग', ta: 'பார்க்கிங்', kn: 'ಪಾರ್ಕಿಂಗ್' },
     count: 13,
     bg: '#F1F5F9',
     color: '#475569',
@@ -208,7 +249,7 @@ const ALL_FACILITIES_TILES: FacilityTileItem[] = [
   },
   {
     id: 'free-bus-stations',
-    name: { en: 'Free bus & stations', te: 'ఉచిత బస్సు & స్టేషన్లు', hi: 'मुफ्त बस और स्टेशन', ta: 'இலவச பஸ் & நிலையங்கள்' },
+    name: { en: 'Free bus & stations', te: 'ఉచిత బస్సు & స్టేషన్లు', hi: 'मुफ्त बस और स्टेशन', ta: 'இலவச பஸ் & நிலையங்கள்', kn: 'ಉಚಿತ ಬಸ್ & ನಿಲ್ದಾಣಗಳು' },
     count: 17,
     bg: '#FFEDD5',
     color: '#C2410C',
@@ -218,7 +259,7 @@ const ALL_FACILITIES_TILES: FacilityTileItem[] = [
   },
   {
     id: 'medical',
-    name: { en: 'Medical', te: 'వైద్య సేవలు', hi: 'चिकित्सा', ta: 'மருத்துவம்' },
+    name: { en: 'Medical', te: 'వైద్య సేవలు', hi: 'चिकित्सा', ta: 'மருத்துவம்', kn: 'ವೈದ್ಯಕೀಯ ಸೇವೆಗಳು' },
     count: 3,
     bg: '#FFE4E6',
     color: '#E11D48',
@@ -228,7 +269,7 @@ const ALL_FACILITIES_TILES: FacilityTileItem[] = [
   },
   {
     id: 'free-pac',
-    name: { en: 'Free PACs', te: 'ఉచిత పిఎసి', hi: 'मुफ्त पीएसी', ta: 'இலவச பிஏசி' },
+    name: { en: 'Free PACs', te: 'ఉచిత పిఎసి', hi: 'मुफ्त पीएसी', ta: 'இலவச பிஏசி', kn: 'ಉಚಿತ ಪಿಎಸಿ' },
     count: 5,
     bg: '#ECFDF5',
     color: '#047857',
@@ -238,7 +279,7 @@ const ALL_FACILITIES_TILES: FacilityTileItem[] = [
   },
   {
     id: 'room-allotment',
-    name: { en: 'Room Allotment', te: 'గదుల కేటాయింపు', hi: 'कमरा आवंटन', ta: 'அறை ஒதுக்கீடு' },
+    name: { en: 'Room Allotment', te: 'గదుల కేటాయింపు', hi: 'कमरा आवंटन', ta: 'அறை ஒதுக்கீடு', kn: 'ಕೊಠಡಿ ಹಂಚಿಕೆ' },
     count: 19,
     bg: '#FFFBEB',
     color: '#B45309',
@@ -665,7 +706,7 @@ export default function PilgrimEssentialsPage() {
               <div className={styles.allFacilitiesGrid}>
                 {ALL_FACILITIES_TILES.map((fac) => {
                   const IconComp = fac.icon;
-                  const label = fac.name[lang as 'en' | 'te' | 'hi' | 'ta'] || fac.name.en;
+                  const label = fac.name[lang as 'en' | 'te' | 'hi' | 'ta' | 'kn'] || fac.name.en;
                   return (
                     <button
                       key={fac.id}
