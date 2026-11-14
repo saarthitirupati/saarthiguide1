@@ -9,10 +9,11 @@ import {
   BookOpen, Activity 
 } from 'lucide-react';
 import Logo from '@/components/Logo/Logo';
+import { type AppLang } from '@/lib/useLanguage';
 import styles from './Onboarding.module.css';
 
 interface LanguageOption {
-  code: 'en' | 'te' | 'hi' | 'ta';
+  code: AppLang;
   badge: string;
   nativeName: string;
   englishLabel: string;
@@ -23,7 +24,8 @@ const LANGUAGES: LanguageOption[] = [
   { code: 'en', badge: 'Aa', nativeName: 'English', englishLabel: 'English', subText: 'Default App Language' },
   { code: 'te', badge: 'అ', nativeName: 'తెలుగు', englishLabel: 'Telugu', subText: 'ఆంధ్రప్రదేశ్ & తెలంగాణ' },
   { code: 'hi', badge: 'अ', nativeName: 'हिंदी', englishLabel: 'Hindi', subText: 'भारत की राजभाषा' },
-  { code: 'ta', badge: 'அ', nativeName: 'தமிழ்', englishLabel: 'Tamil', subText: 'தமிழ்நாடு & புதுச்சேரி' }
+  { code: 'ta', badge: 'அ', nativeName: 'தமிழ்', englishLabel: 'Tamil', subText: 'தமிழ்நாடு & புதுச்சேரி' },
+  { code: 'kn', badge: 'ಅ', nativeName: 'ಕನ್ನಡ', englishLabel: 'Kannada', subText: 'ಕರ್ನಾಟಕ ಮತ್ತು ಬೆಂಗಳೂರು' }
 ];
 
 const TRANSLATIONS = {
@@ -110,6 +112,27 @@ const TRANSLATIONS = {
     loadingTagline: 'உங்கள் வழிகாட்டி தயாராகிறது...',
     blessing: 'ஓம் ஸ்ரீ வேங்கடேசாய நமஹ',
     skip: 'தவிர்க்க'
+  },
+  kn: {
+    selectLanguage: 'ನಿಮ್ಮ ಭಾಷೆಯನ್ನು ಆಯ್ಕೆಮಾಡಿ',
+    selectLanguageSub: 'Choose Your Language',
+    welcomeTitle: 'ಸಾರಥಿಗೆ ಸುಸ್ವಾಗತ',
+    welcomeSub: 'ತಿರುಪತಿ ಮತ್ತು ತಿರುಮಲ ದರ್ಶನವನ್ನು ಸುಲಭ ಹಾಗೂ ಅರ್ಥಪೂರ್ಣವಾಗಿಸಲು ನಿಮ್ಮ ನಂಬಿಕಸ್ಥ ಸಹಚರ.',
+    cards: [
+      { title: 'ಲೈವ್ ಮಾಹಿತಿ', desc: 'ದರ್ಶನ ಸಮಯ, ನೈಜ ಜನಸಂದಣಿ ಮತ್ತು ತಕ್ಷಣದ ಎಚ್ಚರಿಕೆಗಳು.', color: '#059669', bg: '#E5F3EB', icon: Activity },
+      { title: 'ಪುಣ್ಯ ಕ್ಷೇತ್ರಗಳು', desc: 'ದೇವಾಲಯಗಳು, ನೈಸರ್ಗಿಕ ತಾಣಗಳು ಮತ್ತು ಮಾರ್ಗದರ್ಶಿ ವಿವರಗಳು.', color: '#D97706', bg: '#FFF7ED', icon: Compass },
+      { title: 'ಯಾತ್ರಾ ಸೌಲಭ್ಯಗಳು', desc: 'ಅಧಿಕೃತ ನಿಯಮಗಳು, ಸಾರಿಗೆ ವಿವರಗಳು ಮತ್ತು ಉಪಯುಕ್ತ ಪರಿಶೀಲನಾ ಪಟ್ಟಿ.', color: '#2563EB', bg: '#EFF6FF', icon: BookOpen }
+    ],
+    nameTitle: 'ನಿಮ್ಮನ್ನು ಏನೆಂದು ಕರೆಯಬೇಕು?',
+    nameDesc: 'ನಿಮ್ಮ ಯಾತ್ರೆಗೆ ಅನುಗುಣವಾಗಿ ಮಾಹಿತಿಯನ್ನು ವೈಯಕ್ತೀಕರಿಸುತ್ತೇವೆ.',
+    namePlaceholder: 'ನಿಮ್ಮ ಹೆಸರನ್ನು ನಮೂದಿಸಿ',
+    nameExamples: 'ಉದಾ: ಶೇಖರ್, ಉಷಾ, ಸಾರಥಿ',
+    privacyNote: 'ನಿಮ್ಮ ಗೌಪ್ಯತೆ ನಮ್ಮ ಆದ್ಯತೆ. ನಿಮ್ಮ ವಿವರಗಳನ್ನು ಹಂಚಿಕೊಳ್ಳಲಾಗುವುದಿಲ್ಲ; ಅವು ಸುರಕ್ಷಿತವಾಗಿ ನಿಮ್ಮ ಫೋನ್‌ನಲ್ಲೇ ಇರುತ್ತವೆ.',
+    btnContinue: 'ಮುಂದುವರಿಯಿರಿ',
+    btnLetsGo: 'ಪ್ರಾರಂಭಿಸೋಣ',
+    loadingTagline: 'ನಿಮ್ಮ ಮಾರ್ಗದರ್ಶಿಯನ್ನು ಸಿದ್ಧಪಡಿಸಲಾಗುತ್ತಿದೆ...',
+    blessing: 'ಓಂ ಶ್ರೀ ವೆಂಕಟೇಶಾಯ ನಮಃ',
+    skip: 'ಮುಂದೂಡಿ'
   }
 };
 
@@ -138,7 +161,7 @@ export default function OnboardingPage() {
   const router = useRouter();
   const [step, setStep] = useState(1);
   const [name, setName] = useState('');
-  const [selectedLanguage, setSelectedLanguage] = useState<'en' | 'te' | 'hi' | 'ta'>('en');
+  const [selectedLanguage, setSelectedLanguage] = useState<AppLang>('en');
   const [isMounted, setIsMounted] = useState(false);
 
   const [locationPerm] = useState(true);
@@ -151,8 +174,8 @@ export default function OnboardingPage() {
     const savedName = localStorage.getItem('saarthi_user_name');
     if (savedName) setName(savedName);
 
-    const savedLanguage = localStorage.getItem('saarthi_user_language') as 'en' | 'te' | 'hi' | 'ta';
-    if (savedLanguage && ['en', 'te', 'hi', 'ta'].includes(savedLanguage)) {
+    const savedLanguage = localStorage.getItem('saarthi_user_language') as AppLang;
+    if (savedLanguage && ['en', 'te', 'hi', 'ta', 'kn'].includes(savedLanguage)) {
       setSelectedLanguage(savedLanguage);
     }
     router.prefetch('/');
@@ -186,7 +209,14 @@ export default function OnboardingPage() {
   };
 
   const finish = () => {
-    const defaultName = selectedLanguage === 'te' ? 'యాత్రికులు' : 'Traveler';
+    const defaultNames: Record<AppLang, string> = {
+      te: 'యాత్రికులు',
+      kn: 'ಯಾತ್ರಿಕರು',
+      hi: 'तीर्थयात्री',
+      ta: 'யாத்ரீகர்',
+      en: 'Traveler'
+    };
+    const defaultName = defaultNames[selectedLanguage] || 'Traveler';
     const finalName = name.trim() || defaultName;
     const isApp = window.matchMedia('(display-mode: standalone)').matches;
     localStorage.setItem(isApp ? 'hasSeenOnboarding_app' : 'hasSeenOnboarding', 'true');
@@ -341,6 +371,7 @@ export default function OnboardingPage() {
                                 lang.code === 'te' ? 'తెలుగులో కొనసాగండి →' :
                                 lang.code === 'hi' ? 'हिंदी में जारी रखें →' :
                                 lang.code === 'ta' ? 'தமிழில் தொடரவும் →' :
+                                lang.code === 'kn' ? 'ಕನ್ನಡದಲ್ಲಿ ಮುಂದುವರಿಯಿರಿ →' :
                                 'Continue in English →'
                               ) : lang.subText}
                             </div>
@@ -569,7 +600,10 @@ export default function OnboardingPage() {
                   letterSpacing: '0.01em'
                 }}
               >
-                {selectedLanguage === 'te' ? 'సారథి' : 'Saarthi'}
+                {selectedLanguage === 'te' ? 'సారథి' :
+                 selectedLanguage === 'kn' ? 'ಸಾರಥಿ' :
+                 selectedLanguage === 'hi' ? 'सारथी' :
+                 selectedLanguage === 'ta' ? 'சாரதி' : 'Saarthi'}
               </motion.h2>
 
               <motion.p
