@@ -207,69 +207,76 @@
   max-width: 580px;
 }
 
-/* Step 1: Language Grid (First-Principles Refinement) */
+/* Step 1: Language Grid (Modern 2-Column Box Layout) */
 .languageGrid {
   display: grid;
-  grid-template-columns: 1fr;
-  gap: 6px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
   width: 100%;
-  max-width: 560px;
-  margin: 2px auto 0;
-}
-
-@media (min-width: 640px) {
-  .languageGrid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-    margin-top: 6px;
-  }
+  max-width: 440px;
+  margin: 4px auto 0;
 }
 
 .languageCard {
   display: flex;
-  align-items: center;
+  flex-direction: column;
   justify-content: space-between;
-  padding: 7px 12px;
-  border-radius: 12px;
+  padding: 10px 12px;
+  border-radius: 14px;
   background: #FFFFFF;
   border: 1.5px solid var(--saarthi-border);
-  box-shadow: 0 1px 4px rgba(15, 23, 42, 0.03);
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.03);
   cursor: pointer;
   text-align: left;
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-  width: 100%;
   box-sizing: border-box;
-  min-height: 44px;
+  min-height: 68px;
 }
 
-@media (min-width: 768px) {
-  .languageCard {
-    padding: 16px 20px;
-  }
+.languageCardSpan {
+  grid-column: span 2;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  min-height: 48px;
+  padding: 8px 14px;
 }
 
 .languageCard:hover {
   border-color: var(--saarthi-emerald);
-  box-shadow: 0 6px 20px rgba(15, 81, 50, 0.1);
-  transform: translateY(-1px);
+  box-shadow: 0 4px 14px rgba(15, 81, 50, 0.08);
 }
 
 .languageCardActive {
   background: #F0FDF4 !important;
   border: 2px solid var(--saarthi-emerald) !important;
-  box-shadow: 0 8px 24px rgba(15, 81, 50, 0.14) !important;
+  box-shadow: 0 6px 18px rgba(15, 81, 50, 0.12) !important;
 }
 
-.languageCardContent {
+.languageBoxTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-bottom: 6px;
+}
+
+.languageBoxBottom {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1px;
+}
+
+.languageCardContentSpan {
   display: flex;
   align-items: center;
   gap: 10px;
-  min-width: 0;
 }
 
 .languageAvatar {
-  width: 30px;
-  height: 30px;
+  width: 28px;
+  height: 28px;
   border-radius: 8px;
   background: #F8FAFC;
   border: 1px solid #E2E8F0;
@@ -277,19 +284,10 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  font-size: 14px;
+  font-size: 13.5px;
   font-weight: 700;
   color: var(--saarthi-emerald);
   transition: all 0.2s ease;
-}
-
-@media (min-width: 768px) {
-  .languageAvatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 12px;
-    font-size: 16px;
-  }
 }
 
 .languageCardActive .languageAvatar {
@@ -312,39 +310,28 @@
 }
 
 .languageNativeName {
-  font-size: 16px;
-  font-weight: 600;
+  font-size: 14.5px;
+  font-weight: 700;
   color: var(--saarthi-dark);
-  line-height: 1.25;
+  line-height: 1.2;
 }
 
 .languageEnglishLabel {
-  font-size: 12.5px;
+  font-size: 11px;
   font-weight: 600;
   color: var(--saarthi-text-muted);
+  line-height: 1.2;
 }
 
 .languageSubText {
-  font-size: 11.5px;
-  font-weight: 600;
-  color: var(--saarthi-text-muted);
-  margin-top: 2px;
-  line-height: 1.25;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.languageCardActive .languageSubText {
-  color: var(--saarthi-emerald);
-  font-weight: 700;
+  display: none;
 }
 
 .radioIndicator {
-  width: 22px;
-  height: 22px;
+  width: 19px;
+  height: 19px;
   border-radius: 50%;
-  border: 2px solid #CBD5E1;
+  border: 1.5px solid #CBD5E1;
   background: transparent;
   display: flex;
   align-items: center;

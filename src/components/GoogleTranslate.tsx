@@ -47,7 +47,7 @@ export default function GoogleTranslate() {
             new (window as any).google.translate.TranslateElement(
               {
                 pageLanguage: 'en',
-                includedLanguages: 'te,hi,ta',
+                includedLanguages: 'te,hi,ta,kn',
                 autoDisplay: false,
               },
               'google_translate_element'

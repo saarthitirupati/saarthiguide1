@@ -247,7 +247,19 @@ export default function OnboardingPage() {
     };
     localStorage.setItem('jeevapath_trip_state', JSON.stringify(updatedState));
 
-    // Notify listeners and perform instantaneous client-side navigation (no full page reload)
+    // Ensure language cookie and runtime state are immediately active across app
+    if (selectedLanguage !== 'en') {
+      document.cookie = `googtrans=/en/${selectedLanguage}; path=/;`;
+      if (window.location.hostname && window.location.hostname !== 'localhost') {
+        document.cookie = `googtrans=/en/${selectedLanguage}; domain=.${window.location.hostname}; path=/;`;
+      }
+    } else {
+      document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+    }
+    document.documentElement.lang = selectedLanguage;
+    window.dispatchEvent(new CustomEvent('saarthi_language_change', { detail: selectedLanguage }));
+
+    // Notify listeners and perform instantaneous client-side navigation
     window.dispatchEvent(new Event('storage'));
     router.replace('/');
   };
@@ -339,39 +351,67 @@ export default function OnboardingPage() {
                 </p>
 
                 <div className={styles.languageGrid}>
-                  {LANGUAGES.map((lang) => {
+                  {LANGUAGES.map((lang, index) => {
                     const isSelected = selectedLanguage === lang.code;
+                    const isSpan = index === 4;
                     return (
                       <motion.button
                         key={lang.code}
                         onClick={() => {
                           setSelectedLanguage(lang.code);
                           localStorage.setItem('saarthi_user_language', lang.code);
+                          if (lang.code !== 'en') {
+                            document.cookie = `googtrans=/en/${lang.code}; path=/;`;
+                            if (window.location.hostname && window.location.hostname !== 'localhost') {
+                              document.cookie = `googtrans=/en/${lang.code}; domain=.${window.location.hostname}; path=/;`;
+                            }
+                          } else {
+                            document.cookie = 'googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+                          }
+                          document.documentElement.lang = lang.code;
+                          window.dispatchEvent(new CustomEvent('saarthi_language_change', { detail: lang.code }));
                           // Direct instant one-tap advance to Step 2
                           setTimeout(() => {
                             setStep(2);
-                          }, 100);
+                          }, 120);
                         }}
                         whileHover={{ scale: 1.01 }}
                         whileTap={{ scale: 0.98 }}
-                        className={`${styles.languageCard} ${isSelected ? styles.languageCardActive : ''}`}
+                        className={`${styles.languageCard} ${isSelected ? styles.languageCardActive : ''} ${isSpan ? styles.languageCardSpan : ''}`}
                       >
-                        <div className={styles.languageCardContent}>
-                          <div className={styles.languageAvatar}>
-                            <span>{lang.badge}</span>
-                          </div>
-                          <div className={styles.languageTextContainer}>
-                            <div className={styles.languageTitleRow}>
-                              <span className={styles.languageNativeName}>{lang.nativeName}</span>
-                              {lang.code !== 'en' && (
+                        {isSpan ? (
+                          <div className={styles.languageCardContentSpan}>
+                            <div className={styles.languageAvatar}>
+                              <span>{lang.badge}</span>
+                            </div>
+                            <div className={styles.languageTextContainer}>
+                              <div className={styles.languageTitleRow}>
+                                <span className={styles.languageNativeName}>{lang.nativeName}</span>
                                 <span className={styles.languageEnglishLabel}>({lang.englishLabel})</span>
-                              )}
+                              </div>
                             </div>
                           </div>
-                        </div>
-                        <div className={`${styles.radioIndicator} ${isSelected ? styles.radioIndicatorActive : ''}`}>
-                          {isSelected && <Check size={14} color="#FFFFFF" strokeWidth={3} />}
-                        </div>
+                        ) : (
+                          <>
+                            <div className={styles.languageBoxTop}>
+                              <div className={styles.languageAvatar}>
+                                <span>{lang.badge}</span>
+                              </div>
+                              <div className={`${styles.radioIndicator} ${isSelected ? styles.radioIndicatorActive : ''}`}>
+                                {isSelected && <Check size={12} color="#FFFFFF" strokeWidth={3} />}
+                              </div>
+                            </div>
+                            <div className={styles.languageBoxBottom}>
+                              <span className={styles.languageNativeName}>{lang.nativeName}</span>
+                              <span className={styles.languageEnglishLabel}>({lang.englishLabel})</span>
+                            </div>
+                          </>
+                        )}
+                        {isSpan && (
+                          <div className={`${styles.radioIndicator} ${isSelected ? styles.radioIndicatorActive : ''}`}>
+                            {isSelected && <Check size={12} color="#FFFFFF" strokeWidth={3} />}
+                          </div>
+                        )}
                       </motion.button>
                     );
                   })}
