@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { X, Share2, Copy, Check, Sparkles, Flame } from 'lucide-react';
+import { useLanguage } from '@/lib/useLanguage';
 
 interface ShareableQuoteCardModalProps {
   isOpen: boolean;
@@ -11,10 +12,23 @@ interface ShareableQuoteCardModalProps {
 
 export function ShareableQuoteCardModal({ isOpen, onClose, quote, author, theme }: ShareableQuoteCardModalProps) {
   const [copied, setCopied] = useState(false);
+  const lang = useLanguage();
 
   if (!isOpen) return null;
 
-  const fullShareText = `*Today's Divine Guidance* (${theme})\n\n"${quote}"\n\n~ ${author}\n\nShared via *Saarthi - Tirumala Yatra Companion*`;
+  const titleText = lang === 'te' ? 'నేటి దివ్య మార్గదర్శనం'
+    : lang === 'kn' ? 'ಇಂದಿನ ದಿವ್ಯ ಸಂದೇಶ'
+    : lang === 'hi' ? 'आज का दिव्य मार्गदर्शन'
+    : lang === 'ta' ? 'இன்றைய தெய்வீக வழிகாட்டல்'
+    : "Today's Divine Guidance";
+
+  const appSubtext = lang === 'te' ? 'సారథి - తిరుమల యాత్రా మార్గదర్శి'
+    : lang === 'kn' ? 'ಸಾರಥಿ - ತಿರುಮಲ ಯಾತ್ರಾ ಮಾರ್ಗದರ್ಶಿ'
+    : lang === 'hi' ? 'सारथी - तिरुमला यात्रा साथी'
+    : lang === 'ta' ? 'சாரதி - திருமலை யாத்திரை வழிகாட்டி'
+    : 'Saarthi - Tirumala Yatra Companion';
+
+  const fullShareText = `*${titleText}* (${theme})\n\n"${quote}"\n\n~ ${author}\n\n— *${appSubtext}* (saarthiguide.in)`;
 
   const handleCopy = async () => {
     try {
@@ -65,7 +79,13 @@ export function ShareableQuoteCardModal({ isOpen, onClose, quote, author, theme 
         }}>
           <span style={{ fontSize: '13px', fontWeight: 600, color: '#D97706', display: 'flex', alignItems: 'center', gap: '6px' }}>
             <Sparkles size={16} />
-            <span>Share Divine Blessing</span>
+            <span>
+              {lang === 'te' ? 'దివ్య సందేశాన్ని షేర్ చేయండి'
+               : lang === 'kn' ? 'ದಿವ್ಯ ಸಂದೇಶವನ್ನು ಹಂಚಿಕೊಳ್ಳಿ'
+               : lang === 'hi' ? 'दिव्य संदेश साझा करें'
+               : lang === 'ta' ? 'தெய்வீக ஆசியைப் பகிர்க'
+               : 'Share Divine Blessing'}
+            </span>
           </span>
           <button 
             onClick={onClose}
@@ -170,7 +190,11 @@ export function ShareableQuoteCardModal({ isOpen, onClose, quote, author, theme 
               }}
             >
               {copied ? <Check size={16} /> : <Copy size={16} />}
-              <span>{copied ? 'Copied!' : 'Copy Quote'}</span>
+              <span>
+                {copied
+                  ? (lang === 'te' ? 'కాపీ చేయబడింది!' : lang === 'kn' ? 'ಕಾಪಿ ಮಾಡಲಾಗಿದೆ!' : lang === 'hi' ? 'कॉपी हो गया!' : lang === 'ta' ? 'நகலெடுக்கப்பட்டது!' : 'Copied!')
+                  : (lang === 'te' ? 'కోట్ కాపీ చేయండి' : lang === 'kn' ? 'ಸಂದೇಶ ಕಾಪಿ ಮಾಡಿ' : lang === 'hi' ? 'संदेश कॉपी करें' : lang === 'ta' ? 'மேற்கோள் நகலெடு' : 'Copy Quote')}
+              </span>
             </button>
           </div>
         </div>

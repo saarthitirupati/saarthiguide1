@@ -35,6 +35,13 @@ const TEXTS = {
     share: 'பகிரவும்',
     listen: 'கேட்க',
     stop: 'நிறுத்த'
+  },
+  kn: {
+    todaysCompanion: 'ಇಂದಿನ ಒಡನಾಡಿ',
+    didYouKnow: 'ನಿಮಗೆ ತಿಳಿದಿದೆಯೇ?',
+    share: 'ಹಂಚಿಕೊಳ್ಳಿ',
+    listen: 'ಕೇಳಿ',
+    stop: 'ನಿಲ್ಲಿಸಿ'
   }
 };
 
@@ -52,6 +59,36 @@ export function DailyContent(props: any) {
     return getTodaysCompanion(new Date(), liveStatus, 'general', todayFestival);
   }, [dailyContent, liveStatus, todayFestival]);
 
+  const localizedTheme = lang === 'te' ? (companionData.themeTe || companionData.theme)
+    : lang === 'kn' ? (companionData.themeKn || companionData.theme)
+    : lang === 'hi' ? (companionData.themeHi || companionData.theme)
+    : lang === 'ta' ? (companionData.themeTa || companionData.theme)
+    : companionData.theme;
+
+  const localizedPriorityReason = lang === 'te' ? (companionData.priorityReasonTe || companionData.priorityReason)
+    : lang === 'kn' ? (companionData.priorityReasonKn || companionData.priorityReason)
+    : lang === 'hi' ? (companionData.priorityReasonHi || companionData.priorityReason)
+    : lang === 'ta' ? (companionData.priorityReasonTa || companionData.priorityReason)
+    : companionData.priorityReason;
+
+  const localizedQuote = lang === 'te' ? (companionData.divineMoment.quoteTe || companionData.divineMoment.quote)
+    : lang === 'kn' ? (companionData.divineMoment.quoteKn || companionData.divineMoment.quote)
+    : lang === 'hi' ? (companionData.divineMoment.quoteHi || companionData.divineMoment.quote)
+    : lang === 'ta' ? (companionData.divineMoment.quoteTa || companionData.divineMoment.quote)
+    : companionData.divineMoment.quote;
+
+  const localizedAuthor = lang === 'te' ? (companionData.divineMoment.authorTe || companionData.divineMoment.author)
+    : lang === 'kn' ? (companionData.divineMoment.authorKn || companionData.divineMoment.author)
+    : lang === 'hi' ? (companionData.divineMoment.authorHi || companionData.divineMoment.author)
+    : lang === 'ta' ? (companionData.divineMoment.authorTa || companionData.divineMoment.author)
+    : companionData.divineMoment.author;
+
+  const localizedDuration = lang === 'te' ? (companionData.divineMoment.durationTe || '30-సెకన్ల ధ్యానం')
+    : lang === 'kn' ? (companionData.divineMoment.durationKn || '30-ಸೆಕೆಂಡ್ ಚಿಂತನೆ')
+    : lang === 'hi' ? (companionData.divineMoment.durationHi || '30-सेकंड चिंतन')
+    : lang === 'ta' ? (companionData.divineMoment.durationTa || '30-விநாடி சிந்தனை')
+    : '30-Sec Reflection';
+
   const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const { isSpeaking, toggleSpeak, stop } = useSpeechSynthesis();
 
@@ -60,7 +97,8 @@ export function DailyContent(props: any) {
       stop();
     } else {
       playSaarthiSonicIdent(true);
-      toggleSpeak(companionData.divineMoment.quote, { lang: lang === 'te' ? 'te-IN' : 'en-IN', mode: 'explainer' });
+      const speechLang = lang === 'te' ? 'te-IN' : lang === 'kn' ? 'kn-IN' : lang === 'hi' ? 'hi-IN' : lang === 'ta' ? 'ta-IN' : 'en-IN';
+      toggleSpeak(localizedQuote, { lang: speechLang, mode: 'explainer' });
     }
   };
 
@@ -119,7 +157,7 @@ export function DailyContent(props: any) {
             padding: '2px 7px',
             borderRadius: '6px'
           }}>
-            {companionData.theme}
+            {localizedTheme}
           </span>
           <span style={{
             fontSize: '9.5px',
@@ -132,7 +170,7 @@ export function DailyContent(props: any) {
             letterSpacing: '0.2px',
             whiteSpace: 'nowrap'
           }}>
-            {companionData.priorityReason}
+            {localizedPriorityReason}
           </span>
         </div>
       </div>
@@ -156,17 +194,17 @@ export function DailyContent(props: any) {
           borderLeft: '3.5px solid #0F5132',
           paddingLeft: '10px'
         }}>
-          "{companionData.divineMoment.quote}"
+          "{localizedQuote}"
         </blockquote>
 
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: '8px', borderTop: '1px solid #FEF3C7', flexWrap: 'wrap', gap: '8px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
             <span style={{ fontSize: '11px', fontWeight: 700, color: '#64748B' }}>
-              ~ {companionData.divineMoment.author}
+              ~ {localizedAuthor}
             </span>
             <span style={{ fontSize: '10px', color: '#92400E', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '3px', backgroundColor: '#FEF3C7', padding: '1px 6px', borderRadius: '6px' }}>
               <Sparkles size={10} color="#D97706" />
-              <span>{companionData.divineMoment.duration}</span>
+              <span>{localizedDuration}</span>
             </span>
           </div>
 
@@ -231,9 +269,9 @@ export function DailyContent(props: any) {
       <ShareableQuoteCardModal
         isOpen={isShareModalOpen}
         onClose={() => setIsShareModalOpen(false)}
-        quote={companionData.divineMoment.quote}
-        author={companionData.divineMoment.author}
-        theme={companionData.theme}
+        quote={localizedQuote}
+        author={localizedAuthor}
+        theme={localizedTheme}
       />
     </div>
   );

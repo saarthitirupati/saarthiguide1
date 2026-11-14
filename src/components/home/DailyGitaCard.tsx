@@ -16,11 +16,51 @@ interface DailyGitaCardProps {
 export function DailyGitaCard({ date, variant = 'desktop', embedded = false }: DailyGitaCardProps) {
   const lang = useLanguage();
   const shloka: GitaShloka = getDailyGitaShloka(date);
-  const [script, setScript] = useState<'te' | 'sa' | 'en'>(lang === 'te' ? 'te' : lang === 'hi' || lang === 'ta' ? 'sa' : 'en');
+  
+  const getInitialScript = (l: string): 'te' | 'kn' | 'ta' | 'sa' | 'en' => {
+    if (l === 'te') return 'te';
+    if (l === 'kn') return 'kn';
+    if (l === 'ta') return 'ta';
+    if (l === 'hi') return 'sa';
+    return 'en';
+  };
+
+  const [script, setScript] = useState<'te' | 'kn' | 'ta' | 'sa' | 'en'>(getInitialScript(lang));
 
   React.useEffect(() => {
-    setScript(lang === 'te' ? 'te' : lang === 'hi' || lang === 'ta' ? 'sa' : 'en');
+    setScript(getInitialScript(lang));
   }, [lang]);
+
+  const activeShlokaText = script === 'en' ? shloka.transliteration
+    : script === 'sa' ? shloka.shlokaSanskrit
+    : script === 'te' ? shloka.shlokaTelugu
+    : script === 'kn' ? (shloka.shlokaKannada || shloka.shlokaTelugu)
+    : (shloka.shlokaTamil || shloka.shlokaSanskrit);
+
+  const localizedRef = lang === 'te' ? shloka.referenceTe
+    : lang === 'kn' ? (shloka.referenceKn || shloka.referenceEn)
+    : lang === 'hi' ? (shloka.referenceHi || shloka.referenceEn)
+    : lang === 'ta' ? (shloka.referenceTa || shloka.referenceEn)
+    : shloka.referenceEn;
+
+  const localizedMeaning = lang === 'te' ? shloka.meaningTe
+    : lang === 'kn' ? (shloka.meaningKn || shloka.meaningEn)
+    : lang === 'hi' ? (shloka.meaningHi || shloka.meaningEn)
+    : lang === 'ta' ? (shloka.meaningTa || shloka.meaningEn)
+    : shloka.meaningEn;
+
+  const localizedReflection = lang === 'te' ? shloka.pilgrimReflectionTe
+    : lang === 'kn' ? (shloka.pilgrimReflectionKn || shloka.pilgrimReflectionEn)
+    : lang === 'hi' ? (shloka.pilgrimReflectionHi || shloka.pilgrimReflectionEn)
+    : lang === 'ta' ? (shloka.pilgrimReflectionTa || shloka.pilgrimReflectionEn)
+    : shloka.pilgrimReflectionEn;
+
+  const localizedTheme = lang === 'te' ? shloka.themeTe
+    : lang === 'kn' ? (shloka.themeKn || shloka.themeEn)
+    : lang === 'hi' ? (shloka.themeHi || shloka.themeEn)
+    : lang === 'ta' ? (shloka.themeTa || shloka.themeEn)
+    : shloka.themeEn;
+
   const [activeTab, setActiveTab] = useState<'meaning' | 'practice'>('meaning');
   const [copied, setCopied] = useState(false);
   const [streak, setStreak] = useState(1);
@@ -55,8 +95,12 @@ export function DailyGitaCard({ date, variant = 'desktop', embedded = false }: D
       stop();
     } else {
       playSaarthiSonicIdent(true);
-      const textToRecite = script === 'en' ? shloka.transliteration : script === 'sa' ? shloka.shlokaSanskrit : shloka.shlokaTelugu;
-      const speechLang = script === 'te' ? 'te-IN' : script === 'sa' ? 'sa-IN' : 'en-IN';
+      const textToRecite = activeShlokaText;
+      const speechLang = script === 'te' ? 'te-IN'
+        : script === 'kn' ? 'kn-IN'
+        : script === 'ta' ? 'ta-IN'
+        : script === 'sa' ? 'sa-IN'
+        : 'en-IN';
       const speechMode = script === 'sa' ? 'sanskrit' : 'devotional';
       toggleSpeak(textToRecite, {
         lang: speechLang,
@@ -67,8 +111,13 @@ export function DailyGitaCard({ date, variant = 'desktop', embedded = false }: D
   };
 
   const handleShare = async () => {
-    const activeShlokaText = script === 'en' ? shloka.transliteration : script === 'sa' ? shloka.shlokaSanskrit : shloka.shlokaTelugu;
-    const textToShare = `*శ్రీమద్భగవద్గీత నిత్య శ్లోకం • Daily Gita Shloka*\n${lang === 'te' ? shloka.referenceTe : shloka.referenceEn}\n\n"${activeShlokaText}"\n\n• భావం (Meaning):\n${lang === 'te' ? shloka.meaningTe : shloka.meaningEn}\n\n• యాత్ర సాధన (Pilgrim Reflection):\n${lang === 'te' ? shloka.pilgrimReflectionTe : shloka.pilgrimReflectionEn}\n\n— Saarthi Tirumala Yatra Companion (saarthiguide.in)`;
+    const textToShare = `*${
+      lang === 'te' ? 'శ్రీమద్భగవద్గీత నిత్య శ్లోకం'
+      : lang === 'kn' ? 'ಶ್ರೀಮದ್ಭಗವದ್ಗೀತಾ ನಿತ್ಯ ಶ್ಲೋಕ'
+      : lang === 'hi' ? 'श्रीमद्भगवद्गीता नित्य श्लोक'
+      : lang === 'ta' ? 'ஸ்ரீமத் பகவத் கீதை தினசரி ஸ்லோகம்'
+      : 'Daily Bhagavad Gita Shloka'
+    }*\n${localizedRef}\n\n"${activeShlokaText}"\n\n• ${lang === 'te' ? 'భావం' : lang === 'kn' ? 'ಭಾವಾರ್ಥ' : lang === 'hi' ? 'भावार्थ' : lang === 'ta' ? 'பொருள்' : 'Meaning'}:\n${localizedMeaning}\n\n• ${lang === 'te' ? 'యాత్ర సాధన' : lang === 'kn' ? 'ಯಾತ್ರಾ ಚಿಂತನೆ' : lang === 'hi' ? 'यात्रा साधना' : lang === 'ta' ? 'யாத்திரை சிந்தனை' : 'Pilgrim Reflection'}:\n${localizedReflection}\n\n— Saarthi Tirumala Yatra Companion (saarthiguide.in)`;
 
     if (typeof navigator !== 'undefined' && navigator.share) {
       try {
@@ -158,7 +207,11 @@ export function DailyGitaCard({ date, variant = 'desktop', embedded = false }: D
           <div style={{ minWidth: 0 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px', flexWrap: 'wrap' }}>
               <span style={{ fontSize: '13px', fontWeight: 700, color: '#92400E', letterSpacing: '-0.01em', lineHeight: '1.2' }}>
-                {lang === 'te' ? 'భగవద్గీత నిత్య శ్లోకం' : lang === 'hi' ? 'भगवद्गीता नित्य श्लोक' : lang === 'ta' ? 'பகவத் கீதை தினசரி ஸ்லோகம்' : 'Daily Gita Shloka'}
+                {lang === 'te' ? 'భగవద్గీత నిత్య శ్లోకం'
+                 : lang === 'kn' ? 'ಭಗವದ್ಗೀತಾ ನಿತ್ಯ ಶ್ಲೋಕ'
+                 : lang === 'hi' ? 'भगवद्गीता नित्य श्लोक'
+                 : lang === 'ta' ? 'பகவத் கீதை தினசரி ஸ்லோகம்'
+                 : 'Daily Gita Shloka'}
               </span>
               <span style={{
                 fontSize: '9.5px',
@@ -171,16 +224,22 @@ export function DailyGitaCard({ date, variant = 'desktop', embedded = false }: D
                 lineHeight: 1.2,
                 whiteSpace: 'nowrap'
               }}>
-                {streak} {lang === 'te' ? 'రోజు సాధన' : lang === 'hi' ? 'दिन साधना' : lang === 'ta' ? 'நாள் சாதனை' : (streak === 1 ? 'Day Streak' : 'Days Streak')}
+                {streak} {
+                  lang === 'te' ? 'రోజు సాధన'
+                  : lang === 'kn' ? 'ದಿನ ಸಾಧನೆ'
+                  : lang === 'hi' ? 'दिन साधना'
+                  : lang === 'ta' ? 'நாள் சாதனை'
+                  : (streak === 1 ? 'Day Streak' : 'Days Streak')
+                }
               </span>
             </div>
             <div style={{ fontSize: '11px', fontWeight: 700, color: '#B45309', marginTop: '1px' }}>
-              {lang === 'te' ? shloka.referenceTe : shloka.referenceEn}
+              {localizedRef}
             </div>
           </div>
         </div>
 
-        {/* Sleek Segmented Script Selector Tabs */}
+        {/* Sleek Segmented Script Selector Tabs (All 5 Scripts) */}
         <div
           style={{
             display: 'inline-flex',
@@ -194,54 +253,31 @@ export function DailyGitaCard({ date, variant = 'desktop', embedded = false }: D
             marginLeft: 'auto'
           }}
         >
-          <button
-            onClick={() => setScript('te')}
-            style={{
-              background: script === 'te' ? '#D97706' : 'transparent',
-              color: script === 'te' ? '#FFFFFF' : '#78350F',
-              border: 'none',
-              borderRadius: '7px',
-              padding: '2px 7px',
-              fontSize: '10px',
-              fontWeight: 700,
-              cursor: 'pointer',
-              transition: 'all 0.15s ease'
-            }}
-          >
-            తెలుగు
-          </button>
-          <button
-            onClick={() => setScript('sa')}
-            style={{
-              background: script === 'sa' ? '#D97706' : 'transparent',
-              color: script === 'sa' ? '#FFFFFF' : '#78350F',
-              border: 'none',
-              borderRadius: '7px',
-              padding: '2px 7px',
-              fontSize: '10px',
-              fontWeight: 700,
-              cursor: 'pointer',
-              transition: 'all 0.15s ease'
-            }}
-          >
-            संस्कृतम्
-          </button>
-          <button
-            onClick={() => setScript('en')}
-            style={{
-              background: script === 'en' ? '#D97706' : 'transparent',
-              color: script === 'en' ? '#FFFFFF' : '#78350F',
-              border: 'none',
-              borderRadius: '7px',
-              padding: '2px 7px',
-              fontSize: '10px',
-              fontWeight: 700,
-              cursor: 'pointer',
-              transition: 'all 0.15s ease'
-            }}
-          >
-            English
-          </button>
+          {[
+            { id: 'te', label: 'తెలుగు' },
+            { id: 'kn', label: 'ಕನ್ನಡ' },
+            { id: 'ta', label: 'தமிழ்' },
+            { id: 'sa', label: 'संस्कृतम्' },
+            { id: 'en', label: 'English' }
+          ].map((tab) => (
+            <button
+              key={tab.id}
+              onClick={() => setScript(tab.id as any)}
+              style={{
+                background: script === tab.id ? '#D97706' : 'transparent',
+                color: script === tab.id ? '#FFFFFF' : '#78350F',
+                border: 'none',
+                borderRadius: '7px',
+                padding: '2px 6px',
+                fontSize: '9.5px',
+                fontWeight: 700,
+                cursor: 'pointer',
+                transition: 'all 0.15s ease'
+              }}
+            >
+              {tab.label}
+            </button>
+          ))}
         </div>
       </div>
 
@@ -269,9 +305,7 @@ export function DailyGitaCard({ date, variant = 'desktop', embedded = false }: D
             fontFamily: script === 'en' ? 'inherit' : 'serif'
           }}
         >
-          {script === 'te' && shloka.shlokaTelugu}
-          {script === 'sa' && shloka.shlokaSanskrit}
-          {script === 'en' && shloka.transliteration}
+          {activeShlokaText}
         </p>
       </div>
 
@@ -284,7 +318,7 @@ export function DailyGitaCard({ date, variant = 'desktop', embedded = false }: D
         marginBottom: '10px'
       }}>
         <p style={{ fontSize: '12px', color: '#78350F', margin: 0, lineHeight: '1.45', fontWeight: 700 }}>
-          {lang === 'te' ? shloka.meaningTe : shloka.meaningEn}
+          {localizedMeaning}
         </p>
       </div>
 
@@ -311,7 +345,7 @@ export function DailyGitaCard({ date, variant = 'desktop', embedded = false }: D
             borderRadius: '6px'
           }}
         >
-          {lang === 'te' ? shloka.themeTe : shloka.themeEn}
+          {localizedTheme}
         </span>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
@@ -335,7 +369,21 @@ export function DailyGitaCard({ date, variant = 'desktop', embedded = false }: D
             }}
           >
             {isSpeaking ? <VolumeX size={13} color="#DC2626" /> : <Volume2 size={13} color="#D97706" />}
-            <span>{isSpeaking ? (lang === 'te' ? 'ఆపండి' : 'Stop Audio') : (lang === 'te' ? 'శ్లోకం వినండి' : 'Listen Shloka')}</span>
+            <span>
+              {isSpeaking ? (
+                lang === 'te' ? 'ఆపండి'
+                : lang === 'kn' ? 'ನಿಲ್ಲಿಸಿ'
+                : lang === 'hi' ? 'रोकें'
+                : lang === 'ta' ? 'நிறுத்த'
+                : 'Stop Audio'
+              ) : (
+                lang === 'te' ? 'శ్లోకం వినండి'
+                : lang === 'kn' ? 'ಶ್ಲೋಕ ಕೇಳಿ'
+                : lang === 'hi' ? 'श्लोक सुनें'
+                : lang === 'ta' ? 'ஸ்லோகம் கேட்க'
+                : 'Listen Shloka'
+              )}
+            </span>
           </button>
 
           {/* Secondary Action: Clean Outline Pill */}
@@ -358,7 +406,21 @@ export function DailyGitaCard({ date, variant = 'desktop', embedded = false }: D
             }}
           >
             {copied ? <Check size={12} color="#059669" /> : <Share2 size={12} color="#D97706" />}
-            <span>{copied ? (lang === 'te' ? 'కాపీ చేయబడింది!' : 'Copied!') : (lang === 'te' ? 'శ్లోకం షేర్ చేయండి' : 'Share Shloka')}</span>
+            <span>
+              {copied ? (
+                lang === 'te' ? 'కాపీ చేయబడింది!'
+                : lang === 'kn' ? 'ಕಾಪಿ ಮಾಡಲಾಗಿದೆ!'
+                : lang === 'hi' ? 'कॉपी हो गया!'
+                : lang === 'ta' ? 'நகலெடுக்கப்பட்டது!'
+                : 'Copied!'
+              ) : (
+                lang === 'te' ? 'శ్లోకం షేర్ చేయండి'
+                : lang === 'kn' ? 'ಶ್ಲೋಕ ಹಂಚಿಕೊಳ್ಳಿ'
+                : lang === 'hi' ? 'श्लोक साझा करें'
+                : lang === 'ta' ? 'ஸ்லோகம் பகிர்க'
+                : 'Share Shloka'
+              )}
+            </span>
           </button>
         </div>
       </div>
