@@ -38,6 +38,21 @@ const TEXTS = {
     darshanTip: 'దర్శన సూచన',
     darshanTipDesc: 'ఉదయపు స్లాట్లలో సాధారణంగా తక్కువ రద్దీ ఉంటుంది. సాంప్రదాయ ప్రారంభం కోసం ముందు కపిల తీర్థం సందర్శించండి.'
   },
+  kn: {
+    menu: 'ಮೆನು',
+    home: 'ಮುಖಪುಟ',
+    explore: 'ಸ್ಥಳಗಳನ್ನು ಅನ್ವೇಷಿಸಿ',
+    offlineMaps: 'ಆಫ್‌ಲೈನ್ ನಕ್ಷೆಗಳು',
+    tripEstimator: 'ಪ್ರಯಾಣ ಅಂದಾಜು & ದರಗಳು',
+    smartPlanner: 'ಸ್ಮಾರ್ಟ್ ಯಾತ್ರಾ ಯೋಜಕ',
+    liveUpdates: 'ತಿರುಮಲ ಲೈವ್ ಅಪ್‌ಡೇಟ್‌ಗಳು',
+    festivals: 'ಉತ್ಸವಗಳು & ಕಾರ್ಯಕ್ರಮಗಳು',
+    liveAlerts: 'ಲೈವ್ ಎಚ್ಚರಿಕೆಗಳು & ಸಲಹೆಗಳು',
+    aboutUs: 'ಸಾರಥಿ ಬಗ್ಗೆ',
+    adminDashboard: 'ನಿರ್ವಾಹಕ ಡ್ಯಾಶ್‌ಬೋರ್ಡ್',
+    darshanTip: 'ದರ್ಶನ ಸಲಹೆ',
+    darshanTipDesc: 'ಬೆಳಗಿನ ಸಮಯದಲ್ಲಿ ಸಾಮಾನ್ಯವಾಗಿ ಕಡಿಮೆ ಜನದಟ್ಟಣೆ ಇರುತ್ತದೆ. ಸಾಂಪ್ರದಾಯಿಕ ಆರಂಭಕ್ಕಾಗಿ ಮೊದಲು ಕಪಿಲ ತೀರ್ಥಕ್ಕೆ ಭೇಟಿ ನೀಡಿ.'
+  },
   hi: {
     menu: 'मेनू',
     home: 'होम',
@@ -164,12 +179,13 @@ export default function SideMenu({ isOpen, onClose }: SideMenuProps) {
             }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px', color: '#334155', fontSize: '13px', fontWeight: 600 }}>
                 <Languages size={17} color="#0F5132" />
-                <span>{lang === 'te' ? 'భాష' : lang === 'hi' ? 'भाषा' : lang === 'ta' ? 'மொழி' : 'Language'}</span>
+                <span>{lang === 'te' ? 'భాష' : lang === 'kn' ? 'ಭಾಷೆ' : lang === 'hi' ? 'भाषा' : lang === 'ta' ? 'மொழி' : 'Language'}</span>
               </div>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '4px' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: '4px' }}>
                 {[
                   { code: 'en', label: 'EN' },
                   { code: 'te', label: 'తెలుగు' },
+                  { code: 'kn', label: 'ಕನ್ನಡ' },
                   { code: 'hi', label: 'हिंदी' },
                   { code: 'ta', label: 'தமிழ்' }
                 ].map((item) => (
@@ -220,8 +236,16 @@ export default function SideMenu({ isOpen, onClose }: SideMenuProps) {
                 >
                   <span>
                     {isIOS 
-                      ? (lang === 'te' ? '📲 ఐఫోన్‌లో సారథిని పొందండి' : '📲 Install Saarthi on iPhone')
-                      : (lang === 'te' ? '📲 సారథి యాప్‌ను పొందండి' : '📲 Get Saarthi App')}
+                      ? (lang === 'te' ? '📲 ఐఫోన్‌లో సారథిని పొందండి' 
+                         : lang === 'kn' ? '📲 ಐಫೋನ್‌ನಲ್ಲಿ ಸಾರಥಿ ಪಡೆಯಿರಿ'
+                         : lang === 'hi' ? '📲 आईफोन में सारथी प्राप्त करें'
+                         : lang === 'ta' ? '📲 ஐபோனில் சாரதியைப் பெறுக'
+                         : '📲 Install Saarthi on iPhone')
+                      : (lang === 'te' ? '📲 సారథి యాప్‌ను పొందండి' 
+                         : lang === 'kn' ? '📲 ಸಾರಥಿ ಆ್ಯಪ್ ಪಡೆಯಿರಿ'
+                         : lang === 'hi' ? '📲 सारथी ऐप प्राप्त करें'
+                         : lang === 'ta' ? '📲 சாரதி செயலியைப் பெறுக'
+                         : '📲 Get Saarthi App')}
                   </span>
                 </Link>
               )}

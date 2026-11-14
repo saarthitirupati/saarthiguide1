@@ -8,12 +8,24 @@ interface ChecklistItem {
   id: string;
   titleEn: string;
   titleTe: string;
+  titleKn: string;
+  titleHi: string;
+  titleTa: string;
   shortEn: string;
   shortTe: string;
+  shortKn: string;
+  shortHi: string;
+  shortTa: string;
   descEn: string;
   descTe: string;
+  descKn: string;
+  descHi: string;
+  descTa: string;
   tagEn: string;
   tagTe: string;
+  tagKn: string;
+  tagHi: string;
+  tagTa: string;
 }
 
 const CHECKLIST_ITEMS: ChecklistItem[] = [
@@ -21,56 +33,116 @@ const CHECKLIST_ITEMS: ChecklistItem[] = [
     id: 'aadhaar',
     titleEn: 'Original Physical Aadhaar Card',
     titleTe: 'అసలు ఆధార్ కార్డు (ఒరిజినల్)',
+    titleKn: 'ಮೂಲ ಭೌತಿಕ ಆಧಾರ್ ಕಾರ್ಡ್',
+    titleHi: 'मूल आधार कार्ड (ओरिजिनल)',
+    titleTa: 'அசல் ஆதார் அட்டை',
     shortEn: 'ID Card',
     shortTe: 'ఆధార్ ID',
+    shortKn: 'ಆಧಾರ್ ID',
+    shortHi: 'आधार ID',
+    shortTa: 'ஆதார் ID',
     descEn: 'Required for all members. Photos or xerox copies are rejected at Vaikuntam queue.',
     descTe: 'అన్ని వయసుల వారికి తప్పనిసరి. ఫోన్ ఫోటోలను అనుమతించరు.',
+    descKn: 'ಎಲ್ಲಾ ಭಕ್ತರಿಗೂ ಕಡ್ಡಾಯ. ವೈಕುಂಠಂ ಸರತಿಯಲ್ಲಿ ಮೊಬೈಲ್ ಫೋಟೋಗಳನ್ನು ಒಪ್ಪುವುದಿಲ್ಲ.',
+    descHi: 'सभी भक्तों के लिए अनिवार्य। वैकुंठम कतार में फोन फोटो या ज़ेरॉक्स मान्य नहीं हैं।',
+    descTa: 'அனைத்து பக்தர்களுக்கும் கட்டாயம். வைகுண்டம் வரிசையில் மொபைல் புகைப்படங்கள் ஏற்கப்படாது.',
     tagEn: 'Mandatory',
-    tagTe: 'తప్పనిసరి'
+    tagTe: 'తప్పనిసరి',
+    tagKn: 'ಕಡ್ಡಾಯ',
+    tagHi: 'अनिवार्य',
+    tagTa: 'கட்டாயம்'
   },
   {
     id: 'dress',
     titleEn: 'Traditional Dress Code Compliant',
     titleTe: 'సాంప్రదాయ వస్త్రధారణ నియమావళి',
+    titleKn: 'ಸಾಂಪ್ರದಾಯಿಕ ಉಡುಪಿನ ನಿಯಮ',
+    titleHi: 'पारंपरिक वेशभूषा नियम',
+    titleTa: 'பாரம்பரிய உடை கட்டுப்பாடு',
     shortEn: 'Dress Code',
     shortTe: 'వస్త్రధారణ',
+    shortKn: 'ವಸ್ತ್ರ ನಿಯಮ',
+    shortHi: 'वेशभूषा',
+    shortTa: 'உடை விதி',
     descEn: 'Men: Dhoti/Kurta. Women: Saree/Chudidar. Jeans and Western wear are barred.',
     descTe: 'పురుషులు: ధోతీ/కుర్తా. స్త్రీలు: చీర/చుడీదార్.',
+    descKn: 'ಪುರುಷರು: ಧೋತಿ/ಕುರ್ತಾ. ಮಹಿಳೆಯರು: ಸೀರೆ/ಚೂಡಿದಾರ್. ಜೀನ್ಸ್ ಹಾಗೂ ಪಾಶ್ಚಾತ್ಯ ಉಡುಪುಗಳಿಗೆ ಪ್ರವೇಶವಿಲ್ಲ.',
+    descHi: 'पुरुष: धोती/कुर्ता। महिलाएं: साड़ी/चूड़ीदार। जींस व वेस्टर्न परिधान वर्जित हैं।',
+    descTa: 'ஆண்கள்: வேஷ்டி/குர்தா. பெண்கள்: புடவை/சுடிதார். ஜீன்ஸ் மற்றும் மேலைநாட்டு உடைகளுக்கு அனுமதி இல்லை.',
     tagEn: 'Mandatory',
-    tagTe: 'తప్పనిసరి'
+    tagTe: 'తప్పనిసరి',
+    tagKn: 'ಕಡ್ಡಾಯ',
+    tagHi: 'अनिवार्य',
+    tagTa: 'கட்டாயம்'
   },
   {
     id: 'cash',
     titleEn: 'Physical Cash & ₹50 Notes',
     titleTe: 'నగదు & ₹50 నోట్లు',
+    titleKn: 'ನಗದು ಹಣ & ₹50 ನೋಟುಗಳು',
+    titleHi: 'नकद राशि व ₹50 के नोट',
+    titleTa: 'ரொக்கப் பணம் & ₹50 நோட்டுகள்',
     shortEn: 'Cash & Coins',
     shortTe: 'నగదు',
+    shortKn: 'ನಗದು',
+    shortHi: 'नकद',
+    shortTa: 'பணம்',
     descEn: 'For extra Srivari Laddus (₹50 each) and locker tokens. Mobile UPI often fails.',
     descTe: 'అదనపు లడ్డూల కోసం. కొండపై యూపీఐ ఆగిపోయే ప్రమాదం ఉంది.',
+    descKn: 'ಹೆಚ್ಚುವರಿ ಲಡ್ಡುಗಳು (ತಲಾ ₹50) ಮತ್ತು ಲಾಕರ್ ಟೋಕನ್‌ಗಳಿಗೆ. ಬೆಟ್ಟದ ಮೇಲೆ UPI ನೆಟ್‌ವರ್ಕ್ ಸಮಸ್ಯೆ ಇರಬಹುದು.',
+    descHi: 'अतिरिक्त श्रीवारी लड्डू (₹50 प्रत्येक) व लॉकर के लिए। पहाड़ी पर यूपीआई नेटवर्क बाधित हो सकता है।',
+    descTa: 'கூடுதல் லட்டு (தலா ₹50) மற்றும் லாக்கர் பயன்பாட்டிற்கு. மலையில் UPI இணைய வேகம் குறைய வாய்ப்புள்ளது.',
     tagEn: 'Recommended',
-    tagTe: 'సిఫార్సు'
+    tagTe: 'సిఫార్సు',
+    tagKn: 'ಶಿಫಾರಸು',
+    tagHi: 'अनुशंसित',
+    tagTa: 'பரிந்துரை'
   },
   {
     id: 'medicine',
     titleEn: 'Personal Medication & Water',
     titleTe: 'వ్యక్తిగత మందులు & నీరు',
+    titleKn: 'ವೈಯಕ್ತಿಕ ಔಷಧಿಗಳು & ಕುಡಿಯುವ ನೀರು',
+    titleHi: 'दवाइयां एवं पेयजल',
+    titleTa: 'அத்தியாவசிய மருந்துகள் & குடிநீர்',
     shortEn: 'Meds & Water',
     shortTe: 'మందులు',
+    shortKn: 'ಔಷಧಿಗಳು',
+    shortHi: 'दवाइयां',
+    shortTa: 'மருந்துகள்',
     descEn: 'Queue waiting in compartments can span 4–10 hours. Keep daily pills handy.',
     descTe: 'క్యూ వేచి ఉండే సమయం 4-10 గంటలు ఉండవచ్చు. మందులను పౌచ్‌లో ఉంచుకోండి.',
+    descKn: 'ಕಾಂಪಾರ್ಟ್‌ಮೆಂಟ್‌ಗಳಲ್ಲಿ ಕಾಯುವ ಸಮಯ 4-10 ಗಂಟೆಗಳಾಗಬಹುದು. ನಿಯಮಿತ ಮಾತ್ರೆಗಳನ್ನು ಜತೆಯಲ್ಲೇ ಇಟ್ಟುಕೊಳ್ಳಿ.',
+    descHi: 'कम्पार्टमेंट में प्रतीक्षा समय 4-10 घंटे हो सकता है। दैनिक दवाएं साथ रखें।',
+    descTa: 'அறைகளில் காத்திருப்பு நேரம் 4-10 மணிநேரம் ஆகலாம். தினசரி மாத்திரைகளை கையில் வைத்திருக்கவும்.',
     tagEn: 'Elders & Kids',
-    tagTe: 'ముఖ్యమైనది'
+    tagTe: 'ముఖ్యమైనది',
+    tagKn: 'ಹಿರಿಯರು & ಮಕ್ಕಳಿಗೆ',
+    tagHi: 'बुजुर्ग व बच्चे',
+    tagTa: 'முதியோர் & குழந்தைகள்'
   },
   {
     id: 'powerbank',
     titleEn: 'Charged Phone & Power Bank',
     titleTe: 'ఫోన్ & పవర్ బ్యాంక్',
+    titleKn: 'ಚಾರ್ಜ್ ಮಾಡಿದ ಮೊಬೈಲ್ & ಪವರ್ ಬ್ಯಾಂಕ್',
+    titleHi: 'चार्ज फोन व पावर बैंक',
+    titleTa: 'சார்ஜ் செய்யப்பட்ட போன் & பவர் பேங்க்',
     shortEn: 'Phone & Power',
     shortTe: 'ఫోన్',
+    shortKn: 'ಮೊಬೈಲ್',
+    shortHi: 'मोबाइल',
+    shortTa: 'மொபைல்',
     descEn: 'Phones are permitted inside waiting compartments; deposit safely before entering the main temple.',
     descTe: 'కంపార్ట్‌మెంట్లలో ఫోన్లు అనుమతిస్తారు. గర్భాలయ ప్రవేశానికి ముందు ఉచితంగా డిపాజిట్ చేయవచ్చు.',
+    descKn: 'ಕಾಂಪಾರ್ಟ್‌ಮೆಂಟ್‌ಗಳಲ್ಲಿ ಮೊಬೈಲ್ ಅನುಮತಿಸಲಾಗಿದೆ; ಮುಖ್ಯ ಗರ್ಭಗುಡಿ ಪ್ರವೇಶಿಸುವ ಮುನ್ನ ಉಚಿತ ಕೌಂಟರ್‌ನಲ್ಲಿ ಠೇವಣಿ ಇರಿಸಿ.',
+    descHi: 'प्रतीक्षा कक्षों में फोन ले जाने की अनुमति है; मुख्य मंदिर प्रवेश से पूर्व सुरक्षित काउंटर पर जमा करें।',
+    descTa: 'காத்திருப்பு அறைகளில் போன் அனுமதிக்கப்படுகிறது; கருவறை நுழைவுக்கு முன் இலவசமாக பாதுகாப்பகத்தில் ஒப்படைக்கவும்.',
     tagEn: 'Helpful',
-    tagTe: 'ఉపయోగకరం'
+    tagTe: 'ఉపయోగకరం',
+    tagKn: 'ಉಪಯುಕ್ತ',
+    tagHi: 'उपयोगी',
+    tagTa: 'பயனுள்ளது'
   }
 ];
 
@@ -168,7 +240,7 @@ export function YatraChecklist() {
               color: '#0F172A',
               letterSpacing: '-0.01em'
             }}>
-              {lang === 'te' ? 'యాత్ర అత్యవసర చెక్‌లిస్ట్' : 'Yatra Essentials'}
+              {lang === 'te' ? 'యాత్ర అత్యవసర చెక్‌లిస్ట్' : lang === 'kn' ? 'ಯಾತ್ರಾ ಅಗತ್ಯ ವಸ್ತುಗಳ ಪಟ್ಟಿ' : lang === 'hi' ? 'यात्रा आवश्यक चेकलिस्ट' : lang === 'ta' ? 'பயண அத்தியாவசிய பட்டியல்' : 'Yatra Essentials'}
             </span>
           </div>
 
@@ -182,7 +254,7 @@ export function YatraChecklist() {
               color: isAllDone ? '#166534' : '#334155',
               border: `1px solid ${isAllDone ? '#BBF7D0' : 'rgba(15, 23, 42, 0.1)'}`
             }}>
-              {isClient ? `${completedCount}/5` : '5 Items'}
+              {isClient ? `${completedCount}/5` : (lang === 'te' ? '5 అంశాలు' : lang === 'kn' ? '5 ಅಂಶಗಳು' : lang === 'hi' ? '5 वस्तुएं' : lang === 'ta' ? '5 பொருட்கள்' : '5 Items')}
             </span>
             {isExpanded ? <ChevronUp size={16} color="#64748B" /> : <ChevronDown size={16} color="#64748B" />}
           </div>
@@ -199,12 +271,14 @@ export function YatraChecklist() {
         }}>
           {CHECKLIST_ITEMS.map(item => {
             const isChecked = isClient && !!checkedIds[item.id];
+            const itemTitle = lang === 'te' ? item.titleTe : lang === 'kn' ? item.titleKn : lang === 'hi' ? item.titleHi : lang === 'ta' ? item.titleTa : item.titleEn;
+            const itemShort = lang === 'te' ? item.shortTe : lang === 'kn' ? item.shortKn : lang === 'hi' ? item.shortHi : lang === 'ta' ? item.shortTa : item.shortEn;
             return (
               <button
                 key={item.id}
                 type="button"
                 onClick={(e) => toggleItem(item.id, e)}
-                title={lang === 'te' ? item.titleTe : item.titleEn}
+                title={itemTitle}
                 style={{
                   display: 'flex',
                   flexDirection: 'column',
@@ -233,7 +307,7 @@ export function YatraChecklist() {
                   textOverflow: 'ellipsis',
                   maxWidth: '100%'
                 }}>
-                  {lang === 'te' ? item.shortTe : item.shortEn}
+                  {itemShort}
                 </span>
               </button>
             );
@@ -259,6 +333,12 @@ export function YatraChecklist() {
             <span>
               {lang === 'te'
                 ? 'యాత్ర సన్నద్ధత 100% పూర్తయింది! శ్రీవారి దర్శనానికి మీ యాత్ర సిద్ధంగా ఉంది.'
+                : lang === 'kn'
+                ? 'ಯಾತ್ರಾ ಸಿದ್ಧತೆ 100% ಪೂರ್ಣಗೊಂಡಿದೆ! ಶ್ರೀವಾರಿ ದರ್ಶನಕ್ಕೆ ನಿಮ್ಮ ಪ್ರಯಾಣ ಸಿದ್ಧವಾಗಿದೆ.'
+                : lang === 'hi'
+                ? 'यात्रा की तैयारी 100% पूर्ण! श्रीवारी दर्शन के लिए आपकी यात्रा तैयार है।'
+                : lang === 'ta'
+                ? 'பயணத் தயாரிப்பு 100% நிறைவடைந்தது! ஸ்ரீவாரி தரிசனத்திற்கு நீங்கள் தயார்.'
                 : '100% Ready for Srivari Darshan! All essentials verified.'}
             </span>
           </div>
@@ -269,6 +349,8 @@ export function YatraChecklist() {
           <div style={{ padding: '10px 14px 12px 14px', borderTop: '1px solid #E2E8F0', display: 'flex', flexDirection: 'column', gap: '8px' }}>
             {CHECKLIST_ITEMS.map(item => {
               const isChecked = isClient && !!checkedIds[item.id];
+              const itemTitle = lang === 'te' ? item.titleTe : lang === 'kn' ? item.titleKn : lang === 'hi' ? item.titleHi : lang === 'ta' ? item.titleTa : item.titleEn;
+              const itemDesc = lang === 'te' ? item.descTe : lang === 'kn' ? item.descKn : lang === 'hi' ? item.descHi : lang === 'ta' ? item.descTa : item.descEn;
               return (
                 <div
                   key={item.id}
@@ -289,10 +371,10 @@ export function YatraChecklist() {
                   </div>
                   <div style={{ flex: 1, minWidth: 0 }}>
                     <div style={{ fontSize: '12px', fontWeight: 700, color: isChecked ? '#166534' : '#0F172A', textDecoration: isChecked ? 'line-through' : 'none' }}>
-                      {lang === 'te' ? item.titleTe : item.titleEn}
+                      {itemTitle}
                     </div>
                     <div style={{ fontSize: '10.5px', color: '#475569', marginTop: '1px' }}>
-                      {lang === 'te' ? item.descTe : item.descEn}
+                      {itemDesc}
                     </div>
                   </div>
                 </div>

@@ -10,6 +10,74 @@ import { useLanguage } from '@/lib/useLanguage';
 
 export { PRESET_LOCATIONS, type LocationOption };
 
+const MODAL_TEXTS = {
+  en: {
+    title: 'Choose Your Starting Location',
+    subtitle: 'For accurate route times & recommendations',
+    acquiringGps: 'Acquiring high-accuracy GPS...',
+    gpsUnavailable: 'GPS unavailable. Please select your city below.',
+    useLiveGps: 'Use Current Live GPS Location',
+    hintNotTirupati: 'Not in Tirupati right now? Pick your starting city to calculate exact highway travel times and trip itineraries.',
+    searchPlaceholder: 'Search city, station, or temple...',
+    allPlaces: 'All Places',
+    tirupatiHills: 'Tirupati & Hills',
+    fromOtherCities: 'From Other Cities',
+    noLocations: 'No locations found matching your search.'
+  },
+  te: {
+    title: 'మీ ప్రారంభ ప్రాంతాన్ని ఎంచుకోండి',
+    subtitle: 'సరియైన దూరం & మార్గ సమయం కోసం',
+    acquiringGps: 'జీపీఎస్ సిగ్నల్ శోధిస్తోంది...',
+    gpsUnavailable: 'జీపీఎస్ అనుమతించబడలేదు. దయచేసి క్రింద ఉన్న నగరాన్ని ఎంచుకోండి.',
+    useLiveGps: 'లైవ్ GPS లొకేషన్ ఉపయోగించు',
+    hintNotTirupati: 'మీరు ప్రస్తుతం తిరుపతిలో లేకపోతే, ఇంటి నుండి ప్లాన్ చేయడానికి మీ ప్రారంభ నగరాన్ని ఎంచుకోండి.',
+    searchPlaceholder: 'నగరం లేదా క్షేత్రం శోధించండి...',
+    allPlaces: 'అన్ని ప్రాంతాలు',
+    tirupatiHills: 'తిరుపతి & కొండపై',
+    fromOtherCities: 'ఇతర నగరాల నుండి',
+    noLocations: 'ఫలితాలు కనుగొనబడలేదు'
+  },
+  kn: {
+    title: 'ನಿಮ್ಮ ಆರಂಭಿಕ ಸ್ಥಳವನ್ನು ಆಯ್ಕೆಮಾಡಿ',
+    subtitle: 'ನಿಖರವಾದ ಮಾರ್ಗ ಸಮಯ ಮತ್ತು ಶಿಫಾರಸುಗಳಿಗಾಗಿ',
+    acquiringGps: 'GPS ಸಿಗ್ನಲ್ ಹುಡುಕಲಾಗುತ್ತಿದೆ...',
+    gpsUnavailable: 'GPS ಲಭ್ಯವಿಲ್ಲ. ದಯವಿಟ್ಟು ಕೆಳಗಿನ ನಿಮ್ಮ ನಗರವನ್ನು ಆಯ್ಕೆಮಾಡಿ.',
+    useLiveGps: 'ಪ್ರಸ್ತುತ ಲೈವ್ GPS ಸ್ಥಳವನ್ನು ಬಳಸಿ',
+    hintNotTirupati: 'ನೀವು ಪ್ರಸ್ತುತ ತಿರುಪತಿಯಲ್ಲಿಲ್ಲವೇ? ನಿಖರ ಹೆದ್ದಾರಿ ಪ್ರಯಾಣ ಸಮಯ ಮತ್ತು ಯೋಜನೆಗಾಗಿ ನಿಮ್ಮ ಆರಂಭಿಕ ನಗರವನ್ನು ಆಯ್ಕೆಮಾಡಿ.',
+    searchPlaceholder: 'ನಗರ, ರೈಲು ನಿಲ್ದಾಣ ಅಥವಾ ದೇವಾಲಯ ಹುಡುಕಿ...',
+    allPlaces: 'ಎಲ್ಲಾ ಸ್ಥಳಗಳು',
+    tirupatiHills: 'ತಿರುಪತಿ & ಬೆಟ್ಟ',
+    fromOtherCities: 'ಇತರ ನಗರಗಳಿಂದ',
+    noLocations: 'ಯಾವುದೇ ಸ್ಥಳ ಕಂಡುಬಂದಿಲ್ಲ.'
+  },
+  hi: {
+    title: 'अपना प्रारंभिक स्थान चुनें',
+    subtitle: 'सटीक मार्ग समय व अनुशंसाओं के लिए',
+    acquiringGps: 'जीपीएस सिग्नल प्राप्त किया जा रहा है...',
+    gpsUnavailable: 'जीपीएस अनुपलब्ध है। कृपया नीचे से अपना शहर चुनें।',
+    useLiveGps: 'वर्तमान लाइव GPS स्थान का उपयोग करें',
+    hintNotTirupati: 'वर्तमान में तिरुपति में नहीं हैं? सटीक राजमार्ग यात्रा समय व योजना के लिए अपना प्रारंभिक शहर चुनें।',
+    searchPlaceholder: 'शहर, स्टेशन या मंदिर खोजें...',
+    allPlaces: 'सभी स्थान',
+    tirupatiHills: 'तिरुपति व तिरुमला',
+    fromOtherCities: 'अन्य शहरों से',
+    noLocations: 'कोई स्थान नहीं मिला।'
+  },
+  ta: {
+    title: 'உங்கள் தொடக்க இடத்தை தேர்வு செய்யவும்',
+    subtitle: 'துல்லியமான பயண நேரம் மற்றும் பரிந்துரைகளுக்கு',
+    acquiringGps: 'GPS சிக்னல் பெறப்படுகிறது...',
+    gpsUnavailable: 'GPS கிடைக்கவில்லை. தயவுசெய்து கீழே உங்கள் நகரத்தைத் தேர்ந்தெடுக்கவும்.',
+    useLiveGps: 'நேரலை GPS இருப்பிடத்தைப் பயன்படுத்தவும்',
+    hintNotTirupati: 'நீங்கள் இப்போது திருப்பதியில் இல்லையா? துல்லியமான பயண நேரத்தைக் கணக்கிட உங்கள் தொடக்க நகரத்தைத் தேர்வு செய்யவும்.',
+    searchPlaceholder: 'நகரம், நிலையம் அல்லது கோவிலைத் தேடவும்...',
+    allPlaces: 'அனைத்து இடங்கள்',
+    tirupatiHills: 'திருப்பதி & திருமலை',
+    fromOtherCities: 'மற்ற நகரங்களிலிருந்து',
+    noLocations: 'இருப்பிடங்கள் எதுவும் கிடைக்கவில்லை.'
+  }
+};
+
 export interface LocationPickerModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -24,6 +92,7 @@ export function LocationPickerModal({
   onSelectLocation
 }: LocationPickerModalProps) {
   const lang = useLanguage();
+  const t = MODAL_TEXTS[lang as keyof typeof MODAL_TEXTS] || MODAL_TEXTS.en;
   const { setUserLocation, setLocationName, setLocationPermission, locationName } = useTrip();
   const [searchQuery, setSearchQuery] = useState('');
   const [activeTab, setActiveTab] = useState<'all' | 'local' | 'planning'>('all');
@@ -81,7 +150,7 @@ export function LocationPickerModal({
 
   const handleAutoDetectGPS = () => {
     setIsLocating(true);
-    setStatusMessage(lang === 'te' ? 'జీపీఎస్ సిగ్నల్ శోధిస్తోంది...' : 'Acquiring high-accuracy GPS...');
+    setStatusMessage(t.acquiringGps);
     
     detectCoordinates(
       (coords, source) => {
@@ -102,7 +171,7 @@ export function LocationPickerModal({
       },
       () => {
         setIsLocating(false);
-        setStatusMessage(lang === 'te' ? 'జీపీఎస్ అనుమతించబడలేదు. దయచేసి క్రింద ఉన్న నగరాన్ని ఎంచుకోండి.' : 'GPS unavailable. Please select your city below.');
+        setStatusMessage(t.gpsUnavailable);
       }
     );
   };
@@ -162,10 +231,10 @@ export function LocationPickerModal({
             </div>
             <div>
               <h3 style={{ fontSize: '16px', fontWeight: 800, color: '#1E293B', margin: 0 }}>
-                {lang === 'te' ? 'మీ ప్రారంభ ప్రాంతాన్ని ఎంచుకోండి' : 'Choose Your Starting Location'}
+                {t.title}
               </h3>
               <p style={{ fontSize: '12px', color: '#64748B', margin: '2px 0 0 0' }}>
-                {lang === 'te' ? 'సరియైన దూరం & మార్గ సమయం కోసం' : 'For accurate route times & recommendations'}
+                {t.subtitle}
               </p>
             </div>
           </div>
@@ -226,8 +295,8 @@ export function LocationPickerModal({
             <Navigation size={17} className={isLocating ? 'animate-spin' : ''} style={{ color: '#059669' }} />
             <span>
               {isLocating 
-                ? (lang === 'te' ? 'జీపీఎస్ సిగ్నల్ శోధిస్తోంది...' : 'Acquiring Live GPS...')
-                : (lang === 'te' ? 'లైవ్ GPS లొకేషన్ ఉపయోగించు' : 'Use Current Live GPS Location')}
+                ? t.acquiringGps
+                : t.useLiveGps}
             </span>
           </button>
 
@@ -250,9 +319,7 @@ export function LocationPickerModal({
           }}>
             <Sparkles size={16} color="#B45309" style={{ flexShrink: 0, marginTop: '2px' }} />
             <p style={{ fontSize: '12px', color: '#475569', margin: 0, lineHeight: 1.4 }}>
-              {lang === 'te' 
-                ? 'మీరు ప్రస్తుతం తిరుపతిలో లేకపోతే, ఇంటి నుండి ప్లాన్ చేయడానికి మీ ప్రారంభ నగరాన్ని ఎంచుకోండి.'
-                : 'Not in Tirupati right now? Pick your starting city to calculate exact highway travel times and trip itineraries.'}
+              {t.hintNotTirupati}
             </p>
           </div>
 
@@ -269,7 +336,7 @@ export function LocationPickerModal({
             <Search size={16} color="#64748B" />
             <input 
               type="text"
-              placeholder={lang === 'te' ? 'నగరం లేదా క్షేత్రం శోధించండి...' : 'Search city, station, or temple...'}
+              placeholder={t.searchPlaceholder}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               style={{
@@ -295,9 +362,9 @@ export function LocationPickerModal({
           {/* Tab Filter Pills */}
           <div style={{ display: 'flex', gap: '6px', marginBottom: '14px', overflowX: 'auto', paddingBottom: '2px' }}>
             {[
-              { id: 'all', labelEn: 'All Places', labelTe: 'అన్ని ప్రాంతాలు' },
-              { id: 'local', labelEn: 'Tirupati & Hills', labelTe: 'తిరుపతి & కొండపై' },
-              { id: 'planning', labelEn: 'From Other Cities', labelTe: 'ఇతర నగరాల నుండి' }
+              { id: 'all', label: t.allPlaces },
+              { id: 'local', label: t.tirupatiHills },
+              { id: 'planning', label: t.fromOtherCities }
             ].map((tab) => (
               <button
                 key={tab.id}
@@ -315,7 +382,7 @@ export function LocationPickerModal({
                   transition: 'all 0.15s'
                 }}
               >
-                {lang === 'te' ? tab.labelTe : tab.labelEn}
+                {tab.label}
               </button>
             ))}
           </div>
@@ -374,7 +441,7 @@ export function LocationPickerModal({
             {filteredLocations.length === 0 && (
               <div style={{ padding: '24px 16px', textAlign: 'center', color: '#64748B' }}>
                 <p style={{ fontSize: '13px', fontWeight: 600, margin: 0 }}>
-                  {lang === 'te' ? 'ఫలితాలు కనుగొనబడలేదు' : 'No locations found matching your search.'}
+                  {t.noLocations}
                 </p>
               </div>
             )}

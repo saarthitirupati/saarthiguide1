@@ -871,25 +871,37 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
       };
       const sarvaHours = getMaxHours(sarvaWait);
       const isSarvaExtreme = sarvaHours >= 12 || sarvaWait.includes('24') || sarvaWait.includes('30');
-      const sarvaLabel = isSarvaExtreme ? (lang === 'kn' ? 'ತೀವ್ರ ಜನಸಂದಣಿ' : lang === 'te' ? 'తీవ్రమైన రద్దీ' : 'EXTREME') : sarvaHours > 6 ? (lang === 'kn' ? 'ಹೆಚ್ಚಿನ ಜನಸಂದಣಿ' : lang === 'te' ? 'రద్దీ ఎక్కువ' : 'HIGH') : (lang === 'kn' ? 'ಮಿತವಾದ ಜನಸಂದಣಿ' : lang === 'te' ? 'మితమైన రద్దీ' : 'MODERATE');
+      const sarvaLabel = isSarvaExtreme 
+        ? (lang === 'kn' ? 'ತೀವ್ರ ಜನಸಂದಣಿ' : lang === 'te' ? 'తీవ్రమైన రద్దీ' : lang === 'ta' ? 'அதிகபட்ச கூட்டம்' : lang === 'hi' ? 'अत्यधिक भीड़' : 'EXTREME') 
+        : sarvaHours > 6 
+        ? (lang === 'kn' ? 'ಹೆಚ್ಚಿನ ಜನಸಂದಣಿ' : lang === 'te' ? 'రద్దీ ఎక్కువ' : lang === 'ta' ? 'அதிக கூட்டம்' : lang === 'hi' ? 'भारी भीड़' : 'HIGH') 
+        : (lang === 'kn' ? 'ಮಿತವಾದ ಜನಸಂದಣಿ' : lang === 'te' ? 'మితమైన రద్దీ' : lang === 'ta' ? 'மிதமான கூட்டம்' : lang === 'hi' ? 'सामान्य भीड़' : 'MODERATE');
       const sarvaColor = isSarvaExtreme ? '#E11D48' : sarvaHours > 6 ? '#D97706' : '#CA8A04';
       const sarvaMeter = isSarvaExtreme ? 5 : sarvaHours > 6 ? 4 : 3;
 
       const specialHours = getMaxHours(specialWait);
-      const specialLabel = specialHours > 7 ? (lang === 'kn' ? 'ತೀವ್ರ ಜನಸಂದಣಿ' : lang === 'te' ? 'తీవ్రమైన రద్దీ' : 'EXTREME') : specialHours > 4 ? (lang === 'kn' ? 'ಹೆಚ್ಚಿನ ಜನಸಂದಣಿ' : lang === 'te' ? 'రద్దీ ఎక్కువ' : 'HIGH') : (lang === 'kn' ? 'ಮಿತವಾದ ಜನಸಂದಣಿ' : lang === 'te' ? 'మితమైన రద్దీ' : 'MODERATE');
+      const specialLabel = specialHours > 7 
+        ? (lang === 'kn' ? 'ತೀವ್ರ ಜನಸಂದಣಿ' : lang === 'te' ? 'తీవ్రమైన రద్దీ' : lang === 'ta' ? 'அதிகபட்ச கூட்டம்' : lang === 'hi' ? 'अत्यधिक भीड़' : 'EXTREME') 
+        : specialHours > 4 
+        ? (lang === 'kn' ? 'ಹೆಚ್ಚಿನ ಜನಸಂದಣಿ' : lang === 'te' ? 'రద్దీ ఎక్కువ' : lang === 'ta' ? 'அதிக கூட்டம்' : lang === 'hi' ? 'भारी भीड़' : 'HIGH') 
+        : (lang === 'kn' ? 'ಮಿತವಾದ ಜನಸಂದಣಿ' : lang === 'te' ? 'మితమైన రద్దీ' : lang === 'ta' ? 'மிதமான கூட்டம்' : lang === 'hi' ? 'सामान्य भीड़' : 'MODERATE');
       const specialColor = specialHours > 7 ? '#E11D48' : specialHours > 4 ? '#D97706' : '#CA8A04';
       const specialMeter = specialHours > 7 ? 5 : specialHours > 4 ? 4 : 3;
 
       const ssdHours = getMaxHours(ssdWait);
       const isSsdExtreme = /cancel|full|heavy|rush|crowd|closed|stop/i.test(ssdWait) || ssdTokenStatus === 'closed-for-day' || ssdTokenStatus === 'closed';
-      const ssdLabel = (ssdHours > 7 || isSsdExtreme) ? (lang === 'kn' ? 'ತೀವ್ರ ಜನಸಂದಣಿ' : lang === 'te' ? 'తీవ్రమైన రద్దీ' : 'EXTREME') : ssdHours > 4 ? (lang === 'kn' ? 'ಹೆಚ್ಚಿನ ಜನಸಂದಣಿ' : lang === 'te' ? 'రద్దీ ఎక్కువ' : 'HIGH') : (lang === 'kn' ? 'ಮಿತವಾದ ಜನಸಂದಣಿ' : lang === 'te' ? 'మితమైన రద్దీ' : 'MODERATE');
+      const ssdLabel = (ssdHours > 7 || isSsdExtreme) 
+        ? (lang === 'kn' ? 'ತೀವ್ರ ಜನಸಂದಣಿ' : lang === 'te' ? 'తీవ్రమైన రద్దీ' : lang === 'ta' ? 'அதிகபட்ச கூட்டம்' : lang === 'hi' ? 'अत्यधिक भीड़' : 'EXTREME') 
+        : ssdHours > 4 
+        ? (lang === 'kn' ? 'ಹೆಚ್ಚಿನ ಜನಸಂದಣಿ' : lang === 'te' ? 'రద్దీ ఎక్కువ' : lang === 'ta' ? 'அதிக கூட்டம்' : lang === 'hi' ? 'भारी भीड़' : 'HIGH') 
+        : (lang === 'kn' ? 'ಮಿತವಾದ ಜನಸಂದಣಿ' : lang === 'te' ? 'మితమైన రద్దీ' : lang === 'ta' ? 'மிதமான கூட்டம்' : lang === 'hi' ? 'सामान्य भीड़' : 'MODERATE');
       const ssdColor = (ssdHours > 7 || isSsdExtreme) ? '#E11D48' : ssdHours > 4 ? '#D97706' : '#CA8A04';
       const ssdMeter = (ssdHours > 7 || isSsdExtreme) ? 5 : ssdHours > 4 ? 4 : 3;
 
       const queues = [
         {
-          name: lang === 'kn' ? 'ಸರ್ವ ದರ್ಶನ' : lang === 'te' ? 'సర్వదర్శనం' : 'Sarva Darshan',
-          subtitle: lang === 'kn' ? 'ಉಚಿತ ಸಾಮಾನ್ಯ ಸಾಲು' : lang === 'te' ? 'ఉచిత సాధారణ క్యూ' : 'Free General Queue',
+          name: lang === 'kn' ? 'ಸರ್ವ ದರ್ಶನ' : lang === 'te' ? 'సర్వదర్శనం' : lang === 'ta' ? 'சர்வ தரிசனம்' : lang === 'hi' ? 'सर्वदर्शन' : 'Sarva Darshan',
+          subtitle: lang === 'kn' ? 'ಉಚಿತ ಸಾಮಾನ್ಯ ಸಾಲು' : lang === 'te' ? 'ఉచిత సాధారణ క్యూ' : lang === 'ta' ? 'இலவச பொது வரிசை' : lang === 'hi' ? 'निःशुल्क सामान्य कतार' : 'Free General Queue',
           wait: sarvaWait,
           label: sarvaLabel,
           meter: sarvaMeter,
@@ -897,9 +909,9 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
           bg: '#FFE4E6'
         },
         {
-          name: lang === 'kn' ? '₹300 ವಿಶೇಷ ಪ್ರವೇಶ ದರ್ಶನ' : lang === 'te' ? '₹300 ప్రత్యేక ప్రవేశ దర్శనం' : '₹300 Special Entry Darshan',
-          subtitle: lang === 'kn' ? 'ಆನ್‌ಲೈನ್‌ನಲ್ಲಿ ಬುಕ್ ಮಾಡಿದ ಸ್ಲಾಟ್' : lang === 'te' ? 'ఆన్‌లైన్ బుకింగ్ స్లాట్' : 'Online Booked Slot',
-          category: lang === 'kn' ? '₹300 ಟಿಕೆಟ್ ಹೊಂದಿರುವವರಿಗೆ' : lang === 'te' ? '₹300 టికెట్ ఉన్నవారికి' : 'For ₹300 ticket holders',
+          name: lang === 'kn' ? '₹300 ವಿಶೇಷ ಪ್ರವೇಶ ದರ್ಶನ' : lang === 'te' ? '₹300 ప్రత్యేక ప్రవేశ దర్శనం' : lang === 'ta' ? '₹300 சிறப்பு நுழைவு தரிசனம்' : lang === 'hi' ? '₹300 विशेष प्रवेश दर्शन' : '₹300 Special Entry Darshan',
+          subtitle: lang === 'kn' ? 'ಆನ್‌ಲೈನ್‌ನಲ್ಲಿ ಬುಕ್ ಮಾಡಿದ ಸ್ಲಾಟ್' : lang === 'te' ? 'ఆన్‌లైన్ బుకింగ్ స్లాట్' : lang === 'ta' ? 'ஆன்லைன் முன்பதிவு ஸ்லாட்' : lang === 'hi' ? 'ऑनलाइन बुक स्लॉट' : 'Online Booked Slot',
+          category: lang === 'kn' ? '₹300 ಟಿಕೆಟ್ ಹೊಂದಿರುವವರಿಗೆ' : lang === 'te' ? '₹300 టికెట్ ఉన్నవారికి' : lang === 'ta' ? '₹300 டிக்கெட் வைத்திருப்பவர்களுக்கு' : lang === 'hi' ? '₹300 टिकट धारकों के लिए' : 'For ₹300 ticket holders',
           wait: specialWait,
           label: specialLabel,
           meter: specialMeter,
@@ -907,8 +919,8 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
           bg: '#FEF3C7'
         },
         {
-          name: lang === 'kn' ? 'ಉಚಿತ ಸಮಯ ಸ್ಲಾಟ್ ದರ್ಶನ (SSD)' : lang === 'te' ? 'ఉచిత సమయ స్లాట్ దర్శనం' : 'Free Time-Slotted Darshan',
-          subtitle: lang === 'kn' ? 'ಟೋಕನ್ ಆಧಾರಿತ ಪ್ರವೇಶ' : lang === 'te' ? 'టోకెన్ ఆధారిత ప్రవేశం' : 'Token-based Entry',
+          name: lang === 'kn' ? 'ಉಚಿತ ಸಮಯ ಸ್ಲಾಟ್ ದರ್ಶನ (SSD)' : lang === 'te' ? 'ఉచిత సమయ స్లాట్ దర్శనం' : lang === 'ta' ? 'இலவச நேரக் குறிப்பிட்ட தரிசனம் (SSD)' : lang === 'hi' ? 'निःशुल्क समय स्लॉट दर्शन (SSD)' : 'Free Time-Slotted Darshan',
+          subtitle: lang === 'kn' ? 'ಟೋಕನ್ ಆಧಾರಿತ ಪ್ರವೇಶ' : lang === 'te' ? 'టోకెన్ ఆధారిత ప్రవేశం' : lang === 'ta' ? 'டோக்கன் வழி நுழைவு' : lang === 'hi' ? 'टोकन आधारित प्रवेश' : 'Token-based Entry',
           wait: ssdWait,
           label: ssdLabel,
           meter: ssdMeter,
@@ -933,6 +945,22 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
           `• రద్దీ స్థితి: *${whyThatNowText}*\n` +
           `• ఘాట్ రోడ్లు: *ప్రస్తుతం తెరిచి ఉన్నాయి*\n\n` +
           `సారథి గైడ్‌లో లైవ్ అప్‌డేట్స్ చూడండి 👇\n${siteUrl}`
+        : lang === 'ta'
+        ? `🛕 *நேரலை திருமலை தரிசனம் மற்றும் கூட்ட நிலவரம் (${dayName})*\n\n` +
+          `• சர்வ தரிசனம் (இலவசம்): *${sarvaWait}* [${sarvaLabel}]\n` +
+          `• ₹300 சிறப்பு நுழைவு தரிசனம்: *${specialWait}* [${specialLabel}]\n` +
+          `• இலவச நேரக் குறிப்பிட்ட தரிசனம்: *${ssdWait}* [${ssdLabel}]\n` +
+          `• கூட்ட நிலவரம்: *${whyThatNowText}*\n` +
+          `• மலைப்பாதை சாலைகள்: *தற்போது திறக்கப்பட்டுள்ளன*\n\n` +
+          `சாரதி வழிகாட்டியில் நேரலை விவரங்களைக் காண்க 👇\n${siteUrl}`
+        : lang === 'hi'
+        ? `🛕 *आज का तिरुमला दर्शन एवं भीड़ का हाल (${dayName})*\n\n` +
+          `• सर्वदर्शन (निःशुल्क): *${sarvaWait}* [${sarvaLabel}]\n` +
+          `• ₹300 विशेष प्रवेश दर्शन: *${specialWait}* [${specialLabel}]\n` +
+          `• निःशुल्क समय स्लॉट दर्शन: *${ssdWait}* [${ssdLabel}]\n` +
+          `• भीड़ की स्थिति: *${whyThatNowText}*\n` +
+          `• घाट मार्ग: *वर्तमान में खुले हैं*\n\n` +
+          `सारथी गाइड पर लाइव अपडेट देखें 👇\n${siteUrl}`
         : `🛕 *Live Tirumala Darshan & Crowd Update (${dayName})*\n\n` +
           `• Sarva Darshan (Free): *${sarvaWait}* [${sarvaLabel}]\n` +
           `• ₹300 Special Entry Darshan: *${specialWait}* [${specialLabel}]\n` +
@@ -949,14 +977,24 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
         queues,
         weatherTemp: weatherTemp || '26°C',
         crowdSummary: whyThatNowText,
-        lang: lang === 'te' ? 'te' : 'en'
+        lang: (['te', 'ta', 'hi', 'kn'].includes(lang) ? lang : 'en') as any
       });
+
+      const shareTitle = lang === 'te' 
+        ? 'నేటి తిరుమల దర్శనం అప్‌డేట్' 
+        : lang === 'ta'
+        ? 'நேரலை திருமலை தரிசன தகவல்'
+        : lang === 'hi'
+        ? 'आज का तिरुमला दर्शन अपडेट'
+        : lang === 'kn'
+        ? 'ಇಂದಿನ ತಿರುಮಲ ದರ್ಶನ ಅಪ್‌ಡೇಟ್'
+        : 'Today in Tirumala Live Update';
 
       if (cardBlob) {
         await shareOrDownloadCard(
           cardBlob,
           `Saarthi-Today-In-Tirumala-${new Date().toISOString().slice(0,10)}.png`,
-          lang === 'te' ? 'నేటి తిరుమల దర్శనం అప్‌డేట్' : 'Today in Tirumala Live Update',
+          shareTitle,
           shareText,
           siteUrl
         );
@@ -965,7 +1003,7 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
         if (typeof navigator !== 'undefined' && navigator.share) {
           try {
             await navigator.share({
-              title: lang === 'te' ? 'నేటి తిరుమల దర్శనం అప్‌డేట్' : 'Today in Tirumala Live Update',
+              title: shareTitle,
               text: `${shareText}\n\n${siteUrl}`,
               url: siteUrl
             });
@@ -1525,8 +1563,9 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
   };
 
   const scenario = getSaarthiDecisionScenario();
-  const todayDateStr = new Date().toLocaleDateString(lang === 'te' ? 'te-IN' : 'en-GB', { day: 'numeric', month: 'short' });
-  const dayShort = new Date().toLocaleDateString(lang === 'te' ? 'te-IN' : 'en-US', { weekday: 'short' });
+  const localeStr = lang === 'te' ? 'te-IN' : lang === 'ta' ? 'ta-IN' : lang === 'hi' ? 'hi-IN' : lang === 'kn' ? 'kn-IN' : 'en-IN';
+  const todayDateStr = new Date().toLocaleDateString(localeStr, { day: 'numeric', month: 'short' });
+  const dayShort = new Date().toLocaleDateString(localeStr, { weekday: 'short' });
 
   const handleCycleScenario = () => {
     const list = ['auto', 'green', 'yellow', 'red', 'blue', 'purple', 'orange', 'night', 'alert'];
@@ -1801,8 +1840,8 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
           <Link
             href="/darshan/sarva-darshan"
             prefetch={false}
-            aria-label={lang === 'te' ? 'దర్శనం' : 'Darshan'}
-            title={lang === 'te' ? 'దర్శనం' : 'Darshan'}
+            aria-label={lang === 'te' ? 'దర్శనం' : lang === 'ta' ? 'தரிசனம்' : lang === 'hi' ? 'दर्शन' : lang === 'kn' ? 'ದರ್ಶನ' : 'Darshan'}
+            title={lang === 'te' ? 'దర్శనం' : lang === 'ta' ? 'தரிசனம்' : lang === 'hi' ? 'दर्शन' : lang === 'kn' ? 'ದರ್ಶನ' : 'Darshan'}
             style={{
               width: '105px',
               height: '32px',
@@ -1817,8 +1856,8 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
           <Link
             href="/darshan/ssd-token"
             prefetch={false}
-            aria-label={lang === 'te' ? 'టోకెన్లు' : 'Tokens'}
-            title={lang === 'te' ? 'టోకెన్లు' : 'Tokens'}
+            aria-label={lang === 'te' ? 'టోకెన్లు' : lang === 'ta' ? 'டோக்கன்கள்' : lang === 'hi' ? 'टोकन' : lang === 'kn' ? 'ಟೋಕನ್‌ಗಳು' : 'Tokens'}
+            title={lang === 'te' ? 'టోకెన్లు' : lang === 'ta' ? 'டோக்கன்கள்' : lang === 'hi' ? 'टोकन' : lang === 'kn' ? 'ಟೋಕನ್‌ಗಳು' : 'Tokens'}
             style={{
               width: '105px',
               height: '32px',
@@ -1833,8 +1872,8 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
           <Link
             href="/explore"
             prefetch={false}
-            aria-label={lang === 'te' ? 'సమీపంలోనివి' : 'Nearby'}
-            title={lang === 'te' ? 'సమీపంలోనివి' : 'Nearby'}
+            aria-label={lang === 'te' ? 'సమీపంలోనివి' : lang === 'ta' ? 'அருகிலுள்ளவை' : lang === 'hi' ? 'आस-पास' : lang === 'kn' ? 'ಹತ್ತಿರದ ಸ್ಥಳಗಳು' : 'Nearby'}
+            title={lang === 'te' ? 'సమీపంలోనివి' : lang === 'ta' ? 'அருகிலுள்ளவை' : lang === 'hi' ? 'आस-पास' : lang === 'kn' ? 'ಹತ್ತಿರದ ಸ್ಥಳಗಳು' : 'Nearby'}
             style={{
               width: '105px',
               height: '32px',
@@ -1891,7 +1930,7 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
           <div style={{ flex: 1, minWidth: 0 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '5px', marginBottom: '2px', flexWrap: 'wrap' }}>
               <span className="notranslate" translate="no" style={{ fontSize: '13px', fontWeight: 800, color: '#1E293B', whiteSpace: 'nowrap' }}>
-                {lang === 'kn' ? 'ತಿರುಮಲ ದರ್ಶನ' : lang === 'te' ? 'తిరుమల దర్శనం' : 'Tirumala Darshan'}
+                {lang === 'kn' ? 'ತಿರುಮಲ ದರ್ಶನ' : lang === 'te' ? 'తిరుమల దర్శనం' : lang === 'ta' ? 'திருமலை தரிசனம்' : lang === 'hi' ? 'तिरुमला दर्शन' : 'Tirumala Darshan'}
               </span>
               <span style={{
                 display: 'inline-flex',
@@ -1905,7 +1944,7 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                 fontWeight: 800
               }}>
                 <span style={{ width: '5px', height: '5px', borderRadius: '50%', background: '#16A34A' }} />
-                <span>{lang === 'kn' ? 'ಲೈವ್' : lang === 'te' ? 'లైవ్' : 'Live'}</span>
+                <span>{lang === 'kn' ? 'ಲೈವ್' : lang === 'te' ? 'లైవ్' : lang === 'ta' ? 'நேரலை' : lang === 'hi' ? 'लाइव' : 'Live'}</span>
               </span>
 
               {/* Dynamic Live Rain Badge (Active Precipitation) */}
@@ -1924,7 +1963,7 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                   whiteSpace: 'nowrap'
                 }}>
                   <CloudRain size={10} color="#0284C7" strokeWidth={2.4} />
-                  <span>{lang === 'kn' ? 'ಬೆಟ್ಟದ ಮೇಲೆ ಮಳೆ' : lang === 'te' ? 'కొండపై వర్షం' : 'Rain on Hill'}</span>
+                  <span>{lang === 'kn' ? 'ಬೆಟ್ಟದ ಮೇಲೆ ಮಳೆ' : lang === 'te' ? 'కొండపై వర్షం' : lang === 'ta' ? 'மலையில் மழை' : lang === 'hi' ? 'पहाड़ी पर बारिश' : 'Rain on Hill'}</span>
                 </span>
               )}
             </div>
@@ -1933,8 +1972,8 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
               const rawWait = getDarshanWait('sarva') || liveWaitTime || '18 - 20';
               const numOnly = rawWait.replace(/\s*(hours|hrs|గంటలు|Mins|Minutes)/gi, '').trim() || '18 - 20';
               const unit = rawWait.toLowerCase().includes('min')
-                ? (lang === 'kn' ? 'ನಿಮಿಷಗಳು' : lang === 'te' ? 'నిమిషాలు' : 'mins')
-                : (lang === 'kn' ? 'ಗಂಟೆಗಳು' : lang === 'te' ? 'గంటలు' : 'hours');
+                ? (lang === 'kn' ? 'ನಿಮಿಷಗಳು' : lang === 'te' ? 'నిమిషాలు' : lang === 'ta' ? 'நிமிடங்கள்' : lang === 'hi' ? 'मिनट' : 'mins')
+                : (lang === 'kn' ? 'ಗಂಟೆಗಳು' : lang === 'te' ? 'గంటలు' : lang === 'ta' ? 'மணிநேரம்' : lang === 'hi' ? 'घंटे' : 'hours');
 
               return (
                 <div style={{ display: 'flex', alignItems: 'baseline', gap: '4px', margin: '0' }}>
@@ -1958,8 +1997,16 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
               textOverflow: 'ellipsis'
             }}>
               {isRainy 
-                ? (lang === 'kn' ? 'ಮಳೆ ಮುನ್ಸೂಚನೆ · ತೇವವಾದ ಕ್ಯೂ ಕಾಂಪ್ಲೆಕ್ಸ್ ಮತ್ತು ನಡಿಗೆ ಮಾರ್ಗಗಳು' : lang === 'te' ? 'వర్షం సూచన · తడి క్యూలైన్లు & నడకదారులు' : 'Rain Active · Wet Open Compartments & Paths')
-                : (lang === 'kn' ? 'ಸರ್ವ ದರ್ಶನ ಕಾಂಪಾರ್ಟ್‌ಮೆಂಟ್‌ಗಳು' : lang === 'te' ? 'సర్వదర్శనం కంపార్ట్‌మెంట్లు' : 'General Queue Compartments')}
+                ? (lang === 'kn' ? 'ಮಳೆ ಮುನ್ಸೂಚನೆ · ತೇವವಾದ ಕ್ಯೂ ಕಾಂಪ್ಲೆಕ್ಸ್ ಮತ್ತು ನಡಿಗೆ ಮಾರ್ಗಗಳು' 
+                   : lang === 'te' ? 'వర్షం సూచన · తడి క్యూలైన్లు & నడకదారులు' 
+                   : lang === 'ta' ? 'மழை எச்சரிக்கை · ஈரமான வரிசைகள் மற்றும் பாதைகள்'
+                   : lang === 'hi' ? 'बारिश सक्रिय · गीले खुले कम्पार्टमेंट व रास्ते'
+                   : 'Rain Active · Wet Open Compartments & Paths')
+                : (lang === 'kn' ? 'ಸರ್ವ ದರ್ಶನ ಕಾಂಪಾರ್ಟ್‌ಮೆಂಟ್‌ಗಳು' 
+                   : lang === 'te' ? 'సర్వదర్శనం కంపార్ట్‌మెంట్లు' 
+                   : lang === 'ta' ? 'சர்வ தரிசன அறைகள்'
+                   : lang === 'hi' ? 'सर्वदर्शन कम्पार्टमेंट'
+                   : 'General Queue Compartments')}
             </p>
           </div>
 
@@ -2018,7 +2065,7 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
               <Ticket size={15} strokeWidth={2.2} />
             </div>
             <span className="notranslate" translate="no" style={{ fontSize: '11px', fontWeight: 800, color: '#1E293B', lineHeight: 1.2, marginBottom: '3px' }}>
-              {lang === 'kn' ? 'SSD ಟೋಕನ್‌ಗಳು' : lang === 'te' ? 'SSD టోకెన్లు' : 'SSD Tokens'}
+              {lang === 'kn' ? 'SSD ಟೋಕನ್‌ಗಳು' : lang === 'te' ? 'SSD టోకెన్లు' : lang === 'ta' ? 'SSD டோக்கன்கள்' : lang === 'hi' ? 'SSD टोकन' : 'SSD Tokens'}
             </span>
             <div style={{
               background: '#FEF2F2',
@@ -2034,7 +2081,14 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
               gap: '3px'
             }}>
               <Clock size={9.5} strokeWidth={2.4} />
-              <span>{getDarshanWait('ssd') !== '—' ? getDarshanWait('ssd') : '4 - 6 hours'}</span>
+              <span>{(() => {
+                const waitStr = getDarshanWait('ssd') !== '—' ? getDarshanWait('ssd') : '4 - 6 hours';
+                const num = waitStr.replace(/\s*(hours|hrs|గంటలు|Mins|Minutes)/gi, '').trim();
+                const unit = waitStr.toLowerCase().includes('min')
+                  ? (lang === 'kn' ? 'ನಿಮಿ' : lang === 'te' ? 'నిమి' : lang === 'ta' ? 'நிமி' : lang === 'hi' ? 'मिनट' : 'mins')
+                  : (lang === 'kn' ? 'ಗಂಟೆಗಳು' : lang === 'te' ? 'గంటలు' : lang === 'ta' ? 'மணிநேரம்' : lang === 'hi' ? 'घंटे' : 'hours');
+                return `${num} ${unit}`;
+              })()}</span>
             </div>
           </Link>
 
@@ -2068,7 +2122,7 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
               ₹
             </div>
             <span className="notranslate" translate="no" style={{ fontSize: '11px', fontWeight: 800, color: '#1E293B', lineHeight: 1.2, marginBottom: '3px' }}>
-              {lang === 'kn' ? '₹300 ಪ್ರವೇಶ' : lang === 'te' ? '₹300 ప్రవేశం' : '₹300 Entry'}
+              {lang === 'kn' ? '₹300 ಪ್ರವೇಶ' : lang === 'te' ? '₹300 ప్రవేశం' : lang === 'ta' ? '₹300 நுழைவு' : lang === 'hi' ? '₹300 प्रवेश' : '₹300 Entry'}
             </span>
             <div style={{
               background: '#FFFBEB',
@@ -2084,7 +2138,14 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
               gap: '3px'
             }}>
               <Clock size={9.5} strokeWidth={2.4} />
-              <span>{getDarshanWait('special') !== '—' ? getDarshanWait('special') : '3 - 4 hours'}</span>
+              <span>{(() => {
+                const waitStr = getDarshanWait('special') !== '—' ? getDarshanWait('special') : '3 - 4 hours';
+                const num = waitStr.replace(/\s*(hours|hrs|గంటలు|Mins|Minutes)/gi, '').trim();
+                const unit = waitStr.toLowerCase().includes('min')
+                  ? (lang === 'kn' ? 'ನಿಮಿ' : lang === 'te' ? 'నిమి' : lang === 'ta' ? 'நிமி' : lang === 'hi' ? 'मिनट' : 'mins')
+                  : (lang === 'kn' ? 'ಗಂಟೆಗಳು' : lang === 'te' ? 'గంటలు' : lang === 'ta' ? 'மணிநேரம்' : lang === 'hi' ? 'घंटे' : 'hours');
+                return `${num} ${unit}`;
+              })()}</span>
             </div>
           </Link>
         </div>
@@ -2130,7 +2191,7 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
             P
           </div>
           <span style={{ fontSize: '11px', fontWeight: 700, color: '#334155' }}>
-            {lang === 'kn' ? 'ಪಾರ್ಕಿಂಗ್' : lang === 'te' ? 'పార్కింగ్' : 'Parking'}
+            {lang === 'kn' ? 'ಪಾರ್ಕಿಂಗ್' : lang === 'te' ? 'పార్కింగ్' : lang === 'ta' ? 'பார்க்கிங்' : lang === 'hi' ? 'पार्किंग' : 'Parking'}
           </span>
         </Link>
 
@@ -2165,7 +2226,7 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
             <Bus size={15} strokeWidth={2.2} />
           </div>
           <span style={{ fontSize: '11px', fontWeight: 700, color: '#334155' }}>
-            {lang === 'kn' ? 'ಉಚಿತ ಬಸ್' : lang === 'te' ? 'ఉచిత బస్సు' : 'Free Bus'}
+            {lang === 'kn' ? 'ಉಚಿತ ಬಸ್' : lang === 'te' ? 'ఉచిత బస్సు' : lang === 'ta' ? 'இலவச பேருந்து' : lang === 'hi' ? 'निःशुल्क बस' : 'Free Bus'}
           </span>
         </Link>
 
@@ -2202,7 +2263,7 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
             +
           </div>
           <span style={{ fontSize: '11px', fontWeight: 700, color: '#334155' }}>
-            {lang === 'kn' ? 'ವೈದ್ಯಕೀಯ' : lang === 'te' ? 'వైద్యం' : 'Medical'}
+            {lang === 'kn' ? 'ವೈದ್ಯಕೀಯ' : lang === 'te' ? 'వైద్యం' : lang === 'ta' ? 'மருத்துவம்' : lang === 'hi' ? 'चिकित्सा' : 'Medical'}
           </span>
         </Link>
 
@@ -2237,7 +2298,7 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
             <Building2 size={15} strokeWidth={2.2} />
           </div>
           <span className="notranslate" translate="no" style={{ fontSize: '11px', fontWeight: 700, color: '#334155' }}>
-            {lang === 'kn' ? 'ದ್ವಾರಗಳು' : lang === 'te' ? 'ద్వారాలు' : 'Gates'}
+            {lang === 'kn' ? 'ದ್ವಾರಗಳು' : lang === 'te' ? 'ద్వారాలు' : lang === 'ta' ? 'நுழைவு வாயில்கள்' : lang === 'hi' ? 'प्रवेश द्वार' : 'Gates'}
           </span>
         </Link>
       </div>
