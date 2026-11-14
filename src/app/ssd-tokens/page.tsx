@@ -9,7 +9,7 @@ import {
   ChevronRight, Navigation, Calendar, ShieldCheck, Lightbulb, Bell,
   Play, Square
 } from 'lucide-react';
-import { TirumalaStatus } from '@/lib/statusDb';
+import { TirumalaStatus, TokenBatchDetails } from '@/lib/statusDb';
 import { useLanguage } from '@/lib/useLanguage';
 
 const COLLECTION_CENTRES = [
@@ -58,9 +58,11 @@ export default function SsdTokensStandalonePage() {
   const [ssdStatus, setSsdStatus] = useState<'issuing' | 'paused' | 'closed-for-day' | 'suspended'>('closed-for-day');
   const [nextTokenTime, setNextTokenTime] = useState<string>('');
   const [notice, setNotice] = useState<string>('');
+  const [ssdTokenDetails, setSsdTokenDetails] = useState<TokenBatchDetails | null>(null);
+  const [ddTokenDetails, setDdTokenDetails] = useState<TokenBatchDetails | null>(null);
   const [, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
-  const [lastSyncTime, setLastSyncTime] = useState<string>('Updated: 10 Nov 2026, 6:17 PM');
+  const [lastSyncTime, setLastSyncTime] = useState<string>('Live Updating...');
   const [copied, setCopied] = useState(false);
 
   const fetchStatus = async (isManual = false) => {
@@ -72,10 +74,12 @@ export default function SsdTokensStandalonePage() {
         if (data.ssdTokenStatus) setSsdStatus(data.ssdTokenStatus);
         if (data.ssdNextTokenTime) setNextTokenTime(data.ssdNextTokenTime);
         if (data.ssdNotice) setNotice(data.ssdNotice);
+        if (data.ssdTokenDetails) setSsdTokenDetails(data.ssdTokenDetails);
+        if (data.ddTokenDetails) setDdTokenDetails(data.ddTokenDetails);
 
-        const now = new Date();
-        const dateStr = now.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
-        const timeStr = now.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: true });
+        const updateDate = data.lastUpdated ? new Date(data.lastUpdated) : new Date();
+        const dateStr = updateDate.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+        const timeStr = updateDate.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit', hour12: true });
         setLastSyncTime(`Updated: ${dateStr}, ${timeStr}`);
       }
     } catch (err) {
@@ -100,7 +104,19 @@ export default function SsdTokensStandalonePage() {
     }
   };
 
-  const isClosed = ssdStatus === 'closed-for-day' || ssdStatus === 'suspended';
+  const isIssuing = ssdStatus === 'issuing' || ssdTokenDetails?.status === 'issuing' || ddTokenDetails?.status === 'issuing';
+  const isPaused = (ssdStatus === 'paused' || ssdTokenDetails?.status === 'paused') && !isIssuing;
+  const isClosed = !isIssuing && !isPaused;
+
+  const now = new Date();
+  const todayFormattedEn = now.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+  const teluguMonths = ['జనవరి', 'ఫిబ్రవరి', 'మార్చి', 'ఏప్రిల్', 'మే', 'జూన్', 'జూలై', 'ఆగస్టు', 'సెప్టెంబర్', 'అక్టోబర్', 'నవంబర్', 'డిసెంబర్'];
+  const todayFormattedTe = `${now.getDate()} ${teluguMonths[now.getMonth()]} ${now.getFullYear()}`;
+
+  const tomorrow = new Date(now);
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  const tomorrowFormattedEn = `${tomorrow.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })} (Tomorrow)`;
+  const tomorrowFormattedTe = `${tomorrow.getDate()} ${teluguMonths[tomorrow.getMonth()]} ${tomorrow.getFullYear()} (రేపు)`;
 
   return (
     <div style={{
@@ -276,8 +292,8 @@ export default function SsdTokensStandalonePage() {
             gap: '6px',
             padding: '5px 12px',
             borderRadius: '9999px',
-            backgroundColor: isClosed ? '#FEE2E2' : '#DCFCE7',
-            color: isClosed ? '#B91C1C' : '#15803D',
+            backgroundColor: isIssuing ? '#DCFCE7' : isPaused ? '#FEF3C7' : '#FEE2E2',
+            color: isIssuing ? '#15803D' : isPaused ? '#B45309' : '#B91C1C',
             fontSize: '11.5px',
             fontWeight: 800,
             boxShadow: '0 2px 6px rgba(0,0,0,0.12)',
@@ -287,12 +303,14 @@ export default function SsdTokensStandalonePage() {
               width: '7px',
               height: '7px',
               borderRadius: '50%',
-              backgroundColor: isClosed ? '#DC2626' : '#16A34A'
+              backgroundColor: isIssuing ? '#16A34A' : isPaused ? '#D97706' : '#DC2626'
             }} />
             <span>
-              {isClosed
-                ? (lang === 'te' ? 'ముగిసింది' : 'Closed')
-                : (lang === 'te' ? 'జారీ అవుతున్నాయి' : 'Issuing')}
+              {isIssuing
+                ? (lang === 'te' ? 'జారీ అవుతున్నాయి' : 'Issuing')
+                : isPaused
+                  ? (lang === 'te' ? 'నిలిపివేయబడింది' : 'Paused')
+                  : (lang === 'te' ? 'ముగిసింది' : 'Closed')}
             </span>
           </div>
         </div>
@@ -343,11 +361,15 @@ export default function SsdTokensStandalonePage() {
 
         {/* ── CARD 1: TODAY'S DATE & QUOTA COMPLETION STATUS ── */}
         <section style={{
-          background: 'linear-gradient(135deg, #FFF5F5 0%, #FEF2F2 100%)',
-          border: '1px solid #FEE2E2',
+          background: isIssuing
+            ? 'linear-gradient(135deg, #F0FDF4 0%, #DCFCE7 100%)'
+            : isPaused
+              ? 'linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%)'
+              : 'linear-gradient(135deg, #FFF5F5 0%, #FEF2F2 100%)',
+          border: `1px solid ${isIssuing ? '#BBF7D0' : isPaused ? '#FDE68A' : '#FEE2E2'}`,
           borderRadius: '18px',
           padding: '12px 14px',
-          boxShadow: '0 1px 4px rgba(220, 38, 38, 0.03)'
+          boxShadow: '0 1px 4px rgba(0, 0, 0, 0.03)'
         }}>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '8px', flexWrap: 'wrap' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
@@ -355,8 +377,8 @@ export default function SsdTokensStandalonePage() {
                 width: '32px',
                 height: '32px',
                 borderRadius: '10px',
-                backgroundColor: '#FEE2E2',
-                color: '#DC2626',
+                backgroundColor: isIssuing ? '#DCFCE7' : isPaused ? '#FEF3C7' : '#FEE2E2',
+                color: isIssuing ? '#15803D' : isPaused ? '#D97706' : '#DC2626',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -365,7 +387,7 @@ export default function SsdTokensStandalonePage() {
                 <Calendar size={16} strokeWidth={2.3} />
               </div>
               <span style={{ fontSize: '13px', fontWeight: 800, color: '#1E293B' }}>
-                {lang === 'te' ? 'ఈ రోజు • 10 నవంబర్ 2026' : 'Today • 10 Nov 2026'}
+                {lang === 'te' ? `ఈ రోజు • ${todayFormattedTe}` : `Today • ${todayFormattedEn}`}
               </span>
             </div>
 
@@ -374,26 +396,38 @@ export default function SsdTokensStandalonePage() {
               alignItems: 'center',
               padding: '3px 9px',
               borderRadius: '9999px',
-              backgroundColor: '#FEE2E2',
-              color: '#991B1B',
+              backgroundColor: isIssuing ? '#DCFCE7' : isPaused ? '#FEF3C7' : '#FEE2E2',
+              color: isIssuing ? '#166534' : isPaused ? '#92400E' : '#991B1B',
               fontSize: '10.5px',
               fontWeight: 800,
-              border: '1px solid #FECACA'
+              border: `1px solid ${isIssuing ? '#BBF7D0' : isPaused ? '#FDE68A' : '#FECACA'}`
             }}>
-              {lang === 'te' ? 'నేటి కోటా పూర్తయింది' : "Today's quota completed"}
+              {isIssuing
+                ? (lang === 'te' ? 'టోకెన్లు జారీ అవుతున్నాయి' : 'Tokens actively issuing')
+                : isPaused
+                  ? (lang === 'te' ? 'కోటా నిలిపివేయబడింది' : 'Quota paused')
+                  : (lang === 'te' ? 'నేటి కోటా పూర్తయింది' : "Today's quota completed")}
             </div>
           </div>
 
           <p style={{
             fontSize: '11.5px',
-            color: '#7F1D1D',
+            color: isIssuing ? '#166534' : isPaused ? '#92400E' : '#7F1D1D',
             fontWeight: 500,
             margin: '8px 0 0 0',
             lineHeight: 1.4
           }}>
-            {notice || (lang === 'te'
-              ? '10 నవంబర్ 2026 నాటి టోకెన్లు పూర్తిగా జారీ చేయబడ్డాయి.'
-              : 'Tokens for 10 Nov 2026 have been fully issued.')}
+            {notice || (isIssuing
+              ? (lang === 'te'
+                  ? 'కౌంటర్లు ప్రస్తుతం తెరిచి ఉన్నాయి మరియు బయోమెట్రిక్ టోకెన్లు జారీ చేస్తున్నాయి.'
+                  : 'Counters are currently open and issuing biometric tokens.')
+              : isPaused
+                ? (lang === 'te'
+                    ? 'టోకెన్ జారీ తాత్కాలికంగా నిలిపివేయబడింది. తదుపరి ప్రకటన కోసం వేచి ఉండండి.'
+                    : 'Token issuance is temporarily paused. Please wait for next announcement.')
+                : (lang === 'te'
+                    ? `${todayFormattedTe} నాటి టోకెన్లు పూర్తిగా జారీ చేయబడ్డాయి.`
+                    : `Tokens for ${todayFormattedEn} have been fully issued.`))}
           </p>
         </section>
 
@@ -404,224 +438,270 @@ export default function SsdTokensStandalonePage() {
           gap: '10px'
         }}>
           {/* LEFT: SSD TOKENS */}
-          <div style={{
-            background: 'linear-gradient(180deg, #FFFFFF 0%, #F5FBF6 100%)',
-            border: '1px solid #D5ECD8',
-            borderRadius: '18px',
-            padding: '12px 10px',
-            display: 'flex',
-            flexDirection: 'column',
-            boxShadow: '0 2px 6px rgba(10, 78, 51, 0.04)'
-          }}>
-            {/* Top Icon & Titles */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+          {(() => {
+            const ssdStatusStr = (ssdTokenDetails?.status || (isIssuing ? 'issuing' : isPaused ? 'paused' : 'completed')).toLowerCase();
+            const isSsdIssuing = ssdStatusStr === 'issuing' || ssdStatusStr === 'available';
+            const isSsdPaused = ssdStatusStr === 'paused';
+            const isSsdDone = !isSsdIssuing && !isSsdPaused;
+
+            return (
               <div style={{
-                width: '32px',
-                height: '32px',
-                borderRadius: '10px',
-                backgroundColor: '#DCFCE7',
-                color: '#15803D',
+                background: 'linear-gradient(180deg, #FFFFFF 0%, #F5FBF6 100%)',
+                border: `1px solid ${isSsdIssuing ? '#BBF7D0' : isSsdPaused ? '#FDE68A' : '#D5ECD8'}`,
+                borderRadius: '18px',
+                padding: '12px 10px',
                 display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                flexShrink: 0
+                flexDirection: 'column',
+                boxShadow: '0 2px 6px rgba(10, 78, 51, 0.04)'
               }}>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M12 2L6 8v12h12V8l-6-6z" />
-                  <path d="M10 14h4v6h-4z" />
-                  <path d="M6 11h12" />
-                  <path d="M12 2v6" />
-                </svg>
-              </div>
-              <div style={{ minWidth: 0 }}>
-                <h3 style={{ fontSize: '13px', fontWeight: 800, color: '#0F172A', margin: 0, lineHeight: 1.2 }}>
-                  {lang === 'te' ? 'SSD టోకెన్లు' : 'SSD Tokens'}
-                </h3>
-                <span style={{ fontSize: '10px', color: '#64748B', fontWeight: 600, display: 'block', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                  {lang === 'te' ? 'స్లాటెడ్ సర్వదర్శనం' : 'Slotted Sarva Darshan'}
-                </span>
-              </div>
-            </div>
+                {/* Top Icon & Titles */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+                  <div style={{
+                    width: '32px',
+                    height: '32px',
+                    borderRadius: '10px',
+                    backgroundColor: isSsdIssuing ? '#DCFCE7' : isSsdPaused ? '#FEF3C7' : '#F1F5F9',
+                    color: isSsdIssuing ? '#15803D' : isSsdPaused ? '#B45309' : '#0A4E33',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexShrink: 0
+                  }}>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M12 2L6 8v12h12V8l-6-6z" />
+                      <path d="M10 14h4v6h-4z" />
+                      <path d="M6 11h12" />
+                      <path d="M12 2v6" />
+                    </svg>
+                  </div>
+                  <div style={{ minWidth: 0 }}>
+                    <h3 style={{ fontSize: '13px', fontWeight: 800, color: '#0F172A', margin: 0, lineHeight: 1.2 }}>
+                      {lang === 'te' ? 'SSD టోకెన్లు' : 'SSD Tokens'}
+                    </h3>
+                    <span style={{ fontSize: '10px', color: '#64748B', fontWeight: 600, display: 'block', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                      {lang === 'te' ? 'స్లాటెడ్ సర్వదర్శనం' : 'Slotted Sarva Darshan'}
+                    </span>
+                  </div>
+                </div>
 
-            {/* Big Numbers Counter */}
-            <div style={{ margin: '4px 0 6px 0' }}>
-              <div style={{ display: 'flex', alignItems: 'baseline', gap: '4px' }}>
-                <span style={{ fontSize: '24px', fontWeight: 900, color: '#0A4E33', lineHeight: 1 }}>0</span>
-                <span style={{ fontSize: '13px', fontWeight: 700, color: '#64748B' }}>/ 10,000</span>
-              </div>
-            </div>
+                {/* Big Numbers Counter */}
+                <div style={{ margin: '4px 0 6px 0' }}>
+                  <div style={{ display: 'flex', alignItems: 'baseline', gap: '4px' }}>
+                    <span style={{ fontSize: '24px', fontWeight: 900, color: '#0A4E33', lineHeight: 1 }}>
+                      {ssdTokenDetails?.tokensLeft ?? (isClosed ? '0' : 'Available')}
+                    </span>
+                    <span style={{ fontSize: '13px', fontWeight: 700, color: '#64748B' }}>
+                      / {ssdTokenDetails?.totalTokens ?? '10,000'}
+                    </span>
+                  </div>
+                </div>
 
-            {/* Status Pill */}
-            <div style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '4px',
-              padding: '2.5px 8px',
-              borderRadius: '9999px',
-              backgroundColor: '#FEE2E2',
-              color: '#991B1B',
-              fontSize: '10px',
-              fontWeight: 800,
-              alignSelf: 'flex-start',
-              marginBottom: '10px',
-              border: '1px solid #FECACA'
-            }}>
-              <span style={{ width: '5px', height: '5px', borderRadius: '50%', backgroundColor: '#DC2626' }} />
-              <span>{lang === 'te' ? 'పూర్తయింది' : 'Completed'}</span>
-            </div>
-
-            {/* Divider */}
-            <div style={{ height: '1px', backgroundColor: '#E2E8F0', margin: '4px 0 8px 0' }} />
-
-            {/* Timelines */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '5px' }}>
+                {/* Status Pill */}
                 <div style={{
-                  width: '14px', height: '14px', borderRadius: '50%', backgroundColor: '#DCFCE7',
-                  color: '#16A34A', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  flexShrink: 0, marginTop: '1px'
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '4px',
+                  padding: '2.5px 8px',
+                  borderRadius: '9999px',
+                  backgroundColor: isSsdIssuing ? '#DCFCE7' : isSsdPaused ? '#FEF3C7' : '#FEE2E2',
+                  color: isSsdIssuing ? '#166534' : isSsdPaused ? '#92400E' : '#991B1B',
+                  fontSize: '10px',
+                  fontWeight: 800,
+                  alignSelf: 'flex-start',
+                  marginBottom: '10px',
+                  border: `1px solid ${isSsdIssuing ? '#BBF7D0' : isSsdPaused ? '#FDE68A' : '#FECACA'}`
                 }}>
-                  <Play size={8} fill="#16A34A" />
+                  <span style={{ width: '5px', height: '5px', borderRadius: '50%', backgroundColor: isSsdIssuing ? '#16A34A' : isSsdPaused ? '#D97706' : '#DC2626' }} />
+                  <span>
+                    {isSsdIssuing
+                      ? (lang === 'te' ? 'జారీ అవుతున్నాయి' : 'Issuing')
+                      : isSsdPaused
+                        ? (lang === 'te' ? 'నిలిపివేయబడింది' : 'Paused')
+                        : (lang === 'te' ? 'పూర్తయింది' : 'Completed')}
+                  </span>
                 </div>
-                <div>
-                  <div style={{ fontSize: '9.5px', color: '#64748B', fontWeight: 600 }}>
-                    {lang === 'te' ? 'ప్రారంభం' : 'Started at'}
-                  </div>
-                  <div style={{ fontSize: '10.5px', color: '#0F172A', fontWeight: 800 }}>
-                    10 Nov, 5:00 PM
-                  </div>
-                </div>
-              </div>
 
-              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '5px' }}>
-                <div style={{
-                  width: '14px', height: '14px', borderRadius: '3px', backgroundColor: '#FEE2E2',
-                  color: '#DC2626', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  flexShrink: 0, marginTop: '1px'
-                }}>
-                  <Square size={7} fill="#DC2626" />
-                </div>
-                <div>
-                  <div style={{ fontSize: '9.5px', color: '#64748B', fontWeight: 600 }}>
-                    {lang === 'te' ? 'కోటా పూర్తయిన సమయం' : 'Quota completed at'}
+                {/* Divider */}
+                <div style={{ height: '1px', backgroundColor: '#E2E8F0', margin: '4px 0 8px 0' }} />
+
+                {/* Timelines */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                  <div style={{ display: 'flex', alignItems: 'flex-start', gap: '5px' }}>
+                    <div style={{
+                      width: '14px', height: '14px', borderRadius: '50%', backgroundColor: '#DCFCE7',
+                      color: '#16A34A', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      flexShrink: 0, marginTop: '1px'
+                    }}>
+                      <Play size={8} fill="#16A34A" />
+                    </div>
+                    <div>
+                      <div style={{ fontSize: '9.5px', color: '#64748B', fontWeight: 600 }}>
+                        {lang === 'te' ? 'ప్రారంభం' : 'Started at'}
+                      </div>
+                      <div style={{ fontSize: '10.5px', color: '#0F172A', fontWeight: 800 }}>
+                        {ssdTokenDetails?.startTime || 'Morning Batch'}
+                      </div>
+                    </div>
                   </div>
-                  <div style={{ fontSize: '10.5px', color: '#0F172A', fontWeight: 800 }}>
-                    10 Nov, 6:12 PM
+
+                  <div style={{ display: 'flex', alignItems: 'flex-start', gap: '5px' }}>
+                    <div style={{
+                      width: '14px', height: '14px', borderRadius: '3px',
+                      backgroundColor: isSsdDone ? '#FEE2E2' : '#EFF6FF',
+                      color: isSsdDone ? '#DC2626' : '#2563EB',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      flexShrink: 0, marginTop: '1px'
+                    }}>
+                      <Square size={7} fill={isSsdDone ? '#DC2626' : '#2563EB'} />
+                    </div>
+                    <div>
+                      <div style={{ fontSize: '9.5px', color: '#64748B', fontWeight: 600 }}>
+                        {isSsdDone
+                          ? (lang === 'te' ? 'కోటా పూర్తయిన సమయం' : 'Quota completed at')
+                          : (lang === 'te' ? 'ప్రస్తుత స్థితి' : 'Current Status')}
+                      </div>
+                      <div style={{ fontSize: '10.5px', color: '#0F172A', fontWeight: 800 }}>
+                        {isSsdDone ? (ssdTokenDetails?.completedTime || 'Completed') : (lang === 'te' ? 'కౌంటర్లు తెరిచి ఉన్నాయి' : 'Counters Active')}
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
+            );
+          })()}
 
           {/* RIGHT: DD TOKENS */}
-          <div style={{
-            background: 'linear-gradient(180deg, #FFFFFF 0%, #FFFDF5 100%)',
-            border: '1px solid #FEF3C7',
-            borderRadius: '18px',
-            padding: '12px 10px',
-            display: 'flex',
-            flexDirection: 'column',
-            boxShadow: '0 2px 6px rgba(217, 119, 6, 0.04)'
-          }}>
-            {/* Top Icon & Titles */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+          {(() => {
+            const ddStatusStr = (ddTokenDetails?.status || (isIssuing ? 'issuing' : isPaused ? 'paused' : 'completed')).toLowerCase();
+            const isDdIssuing = ddStatusStr === 'issuing' || ddStatusStr === 'available';
+            const isDdPaused = ddStatusStr === 'paused';
+            const isDdDone = !isDdIssuing && !isDdPaused;
+
+            return (
               <div style={{
-                width: '32px',
-                height: '32px',
-                borderRadius: '10px',
-                backgroundColor: '#FEF3C7',
-                color: '#D97706',
+                background: 'linear-gradient(180deg, #FFFFFF 0%, #FFFDF5 100%)',
+                border: `1px solid ${isDdIssuing ? '#BBF7D0' : isDdPaused ? '#FDE68A' : '#FEF3C7'}`,
+                borderRadius: '18px',
+                padding: '12px 10px',
                 display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                flexShrink: 0
+                flexDirection: 'column',
+                boxShadow: '0 2px 6px rgba(217, 119, 6, 0.04)'
               }}>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M12 2L6 8v12h12V8l-6-6z" />
-                  <path d="M10 14h4v6h-4z" />
-                  <path d="M6 11h12" />
-                  <path d="M12 2v6" />
-                </svg>
-              </div>
-              <div style={{ minWidth: 0 }}>
-                <h3 style={{ fontSize: '13px', fontWeight: 800, color: '#0F172A', margin: 0, lineHeight: 1.2 }}>
-                  {lang === 'te' ? 'DD టోకెన్లు' : 'DD Tokens'}
-                </h3>
-                <span style={{ fontSize: '10px', color: '#64748B', fontWeight: 600, display: 'block', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                  {lang === 'te' ? 'దివ్యదర్శనం (మెట్ల మార్గం)' : 'Divya Darshan (Footpath)'}
-                </span>
-              </div>
-            </div>
+                {/* Top Icon & Titles */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+                  <div style={{
+                    width: '32px',
+                    height: '32px',
+                    borderRadius: '10px',
+                    backgroundColor: isDdIssuing ? '#DCFCE7' : isDdPaused ? '#FEF3C7' : '#FEF3C7',
+                    color: isDdIssuing ? '#15803D' : '#D97706',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexShrink: 0
+                  }}>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M12 2L6 8v12h12V8l-6-6z" />
+                      <path d="M10 14h4v6h-4z" />
+                      <path d="M6 11h12" />
+                      <path d="M12 2v6" />
+                    </svg>
+                  </div>
+                  <div style={{ minWidth: 0 }}>
+                    <h3 style={{ fontSize: '13px', fontWeight: 800, color: '#0F172A', margin: 0, lineHeight: 1.2 }}>
+                      {lang === 'te' ? 'DD టోకెన్లు' : 'DD Tokens'}
+                    </h3>
+                    <span style={{ fontSize: '10px', color: '#64748B', fontWeight: 600, display: 'block', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                      {lang === 'te' ? 'దివ్యదర్శనం (మెట్ల మార్గం)' : 'Divya Darshan (Footpath)'}
+                    </span>
+                  </div>
+                </div>
 
-            {/* Big Numbers Counter */}
-            <div style={{ margin: '4px 0 6px 0' }}>
-              <div style={{ display: 'flex', alignItems: 'baseline', gap: '4px' }}>
-                <span style={{ fontSize: '24px', fontWeight: 900, color: '#0A4E33', lineHeight: 1 }}>0</span>
-                <span style={{ fontSize: '13px', fontWeight: 700, color: '#64748B' }}>/ 2,000</span>
-              </div>
-            </div>
+                {/* Big Numbers Counter */}
+                <div style={{ margin: '4px 0 6px 0' }}>
+                  <div style={{ display: 'flex', alignItems: 'baseline', gap: '4px' }}>
+                    <span style={{ fontSize: '24px', fontWeight: 900, color: '#0A4E33', lineHeight: 1 }}>
+                      {ddTokenDetails?.tokensLeft ?? (isClosed ? '0' : 'Available')}
+                    </span>
+                    <span style={{ fontSize: '13px', fontWeight: 700, color: '#64748B' }}>
+                      / {ddTokenDetails?.totalTokens ?? '2,000'}
+                    </span>
+                  </div>
+                </div>
 
-            {/* Status Pill */}
-            <div style={{
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '4px',
-              padding: '2.5px 8px',
-              borderRadius: '9999px',
-              backgroundColor: '#FEE2E2',
-              color: '#991B1B',
-              fontSize: '10px',
-              fontWeight: 800,
-              alignSelf: 'flex-start',
-              marginBottom: '10px',
-              border: '1px solid #FECACA'
-            }}>
-              <span style={{ width: '5px', height: '5px', borderRadius: '50%', backgroundColor: '#DC2626' }} />
-              <span>{lang === 'te' ? 'పూర్తయింది' : 'Completed'}</span>
-            </div>
-
-            {/* Divider */}
-            <div style={{ height: '1px', backgroundColor: '#E2E8F0', margin: '4px 0 8px 0' }} />
-
-            {/* Timelines */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '5px' }}>
+                {/* Status Pill */}
                 <div style={{
-                  width: '14px', height: '14px', borderRadius: '50%', backgroundColor: '#DCFCE7',
-                  color: '#16A34A', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  flexShrink: 0, marginTop: '1px'
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '4px',
+                  padding: '2.5px 8px',
+                  borderRadius: '9999px',
+                  backgroundColor: isDdIssuing ? '#DCFCE7' : isDdPaused ? '#FEF3C7' : '#FEE2E2',
+                  color: isDdIssuing ? '#166534' : isDdPaused ? '#92400E' : '#991B1B',
+                  fontSize: '10px',
+                  fontWeight: 800,
+                  alignSelf: 'flex-start',
+                  marginBottom: '10px',
+                  border: `1px solid ${isDdIssuing ? '#BBF7D0' : isDdPaused ? '#FDE68A' : '#FECACA'}`
                 }}>
-                  <Play size={8} fill="#16A34A" />
+                  <span style={{ width: '5px', height: '5px', borderRadius: '50%', backgroundColor: isDdIssuing ? '#16A34A' : isDdPaused ? '#D97706' : '#DC2626' }} />
+                  <span>
+                    {isDdIssuing
+                      ? (lang === 'te' ? 'జారీ అవుతున్నాయి' : 'Issuing')
+                      : isDdPaused
+                        ? (lang === 'te' ? 'నిలిపివేయబడింది' : 'Paused')
+                        : (lang === 'te' ? 'పూర్తయింది' : 'Completed')}
+                  </span>
                 </div>
-                <div>
-                  <div style={{ fontSize: '9.5px', color: '#64748B', fontWeight: 600 }}>
-                    {lang === 'te' ? 'ప్రారంభం' : 'Started at'}
-                  </div>
-                  <div style={{ fontSize: '10.5px', color: '#0F172A', fontWeight: 800 }}>
-                    10 Nov, 5:00 PM
-                  </div>
-                </div>
-              </div>
 
-              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '5px' }}>
-                <div style={{
-                  width: '14px', height: '14px', borderRadius: '3px', backgroundColor: '#FEE2E2',
-                  color: '#DC2626', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  flexShrink: 0, marginTop: '1px'
-                }}>
-                  <Square size={7} fill="#DC2626" />
-                </div>
-                <div>
-                  <div style={{ fontSize: '9.5px', color: '#64748B', fontWeight: 600 }}>
-                    {lang === 'te' ? 'కోటా పూర్తయిన సమయం' : 'Quota completed at'}
+                {/* Divider */}
+                <div style={{ height: '1px', backgroundColor: '#E2E8F0', margin: '4px 0 8px 0' }} />
+
+                {/* Timelines */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                  <div style={{ display: 'flex', alignItems: 'flex-start', gap: '5px' }}>
+                    <div style={{
+                      width: '14px', height: '14px', borderRadius: '50%', backgroundColor: '#DCFCE7',
+                      color: '#16A34A', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      flexShrink: 0, marginTop: '1px'
+                    }}>
+                      <Play size={8} fill="#16A34A" />
+                    </div>
+                    <div>
+                      <div style={{ fontSize: '9.5px', color: '#64748B', fontWeight: 600 }}>
+                        {lang === 'te' ? 'ప్రారంభం' : 'Started at'}
+                      </div>
+                      <div style={{ fontSize: '10.5px', color: '#0F172A', fontWeight: 800 }}>
+                        {ddTokenDetails?.startTime || 'Morning Batch'}
+                      </div>
+                    </div>
                   </div>
-                  <div style={{ fontSize: '10.5px', color: '#0F172A', fontWeight: 800 }}>
-                    10 Nov, 6:10 PM
+
+                  <div style={{ display: 'flex', alignItems: 'flex-start', gap: '5px' }}>
+                    <div style={{
+                      width: '14px', height: '14px', borderRadius: '3px',
+                      backgroundColor: isDdDone ? '#FEE2E2' : '#EFF6FF',
+                      color: isDdDone ? '#DC2626' : '#2563EB',
+                      display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      flexShrink: 0, marginTop: '1px'
+                    }}>
+                      <Square size={7} fill={isDdDone ? '#DC2626' : '#2563EB'} />
+                    </div>
+                    <div>
+                      <div style={{ fontSize: '9.5px', color: '#64748B', fontWeight: 600 }}>
+                        {isDdDone
+                          ? (lang === 'te' ? 'కోటా పూర్తయిన సమయం' : 'Quota completed at')
+                          : (lang === 'te' ? 'ప్రస్తుత స్థితి' : 'Current Status')}
+                      </div>
+                      <div style={{ fontSize: '10.5px', color: '#0F172A', fontWeight: 800 }}>
+                        {isDdDone ? (ddTokenDetails?.completedTime || 'Completed') : (lang === 'te' ? 'కౌంటర్లు తెరిచి ఉన్నాయి' : 'Counters Active')}
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
+            );
+          })()}
         </section>
 
         {/* ── CARD 3: NEXT EXPECTED RELEASE ── */}
@@ -655,7 +735,7 @@ export default function SsdTokensStandalonePage() {
                 {lang === 'te' ? 'తదుపరి విడుదల సమయం' : 'Next Expected Release'}
               </div>
               <div style={{ fontSize: '11px', color: '#64748B', fontWeight: 600 }}>
-                {lang === 'te' ? '11 నవంబర్ 2026 (రేపు)' : '11 Nov 2026 (Tomorrow)'}
+                {lang === 'te' ? tomorrowFormattedTe : tomorrowFormattedEn}
               </div>
             </div>
           </div>
@@ -678,15 +758,17 @@ export default function SsdTokensStandalonePage() {
             }}
           >
             <Bell size={13} strokeWidth={2.5} />
-            <span>{nextTokenTime || '5:30 PM'}</span>
+            <span>{nextTokenTime || '5:00 AM'}</span>
             <ChevronRight size={13} strokeWidth={2.5} />
           </button>
         </section>
 
         {/* ── CARD 4: ADVISORY / GREEN TIP CARD ── */}
         <section style={{
-          background: 'linear-gradient(135deg, #F0FDF4 0%, #E8F8ED 100%)',
-          border: '1px solid #BBF7D0',
+          background: isIssuing
+            ? 'linear-gradient(135deg, #F0FDF4 0%, #E8F8ED 100%)'
+            : 'linear-gradient(135deg, #F8FAFC 0%, #F1F5F9 100%)',
+          border: `1px solid ${isIssuing ? '#BBF7D0' : '#E2E8F0'}`,
           borderRadius: '18px',
           padding: '12px 14px',
           display: 'flex',
@@ -698,8 +780,8 @@ export default function SsdTokensStandalonePage() {
             width: '32px',
             height: '32px',
             borderRadius: '50%',
-            backgroundColor: '#DCFCE7',
-            color: '#15803D',
+            backgroundColor: isIssuing ? '#DCFCE7' : '#E2E8F0',
+            color: isIssuing ? '#15803D' : '#475569',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
@@ -712,21 +794,27 @@ export default function SsdTokensStandalonePage() {
             <h4 style={{
               fontSize: '12.5px',
               fontWeight: 800,
-              color: '#14532D',
+              color: isIssuing ? '#14532D' : '#0F172A',
               margin: '0 0 2px 0'
             }}>
-              {lang === 'te' ? 'నేటి ఎస్‌ఎస్‌డి & డిడి టోకెన్ కోటా పూర్తయింది.' : "Today's SSD & DD token quotas are completed."}
+              {isIssuing
+                ? (lang === 'te' ? 'ఎస్‌ఎస్‌డి & డిడి టోకెన్ కౌంటర్లు ప్రస్తుతం తెరిచి ఉన్నాయి.' : 'SSD & DD token counters are currently OPEN.')
+                : (lang === 'te' ? 'నేటి ఎస్‌ఎస్‌డి & డిడి టోకెన్ కోటా పూర్తయింది.' : "Today's SSD & DD token quotas are completed.")}
             </h4>
             <p style={{
               fontSize: '11px',
-              color: '#166534',
+              color: isIssuing ? '#166534' : '#475569',
               margin: 0,
               lineHeight: 1.4,
               fontWeight: 500
             }}>
-              {lang === 'te'
-                ? 'దయచేసి తదుపరి విడుదల కోసం వేచి ఉండండి. టోకెన్ సమయాలు టీటీడీ అప్‌డేట్‌లకు లోబడి ఉంటాయి.'
-                : 'Please wait for the next release. Token timings are subject to TTD updates.'}
+              {isIssuing
+                ? (lang === 'te'
+                    ? 'మీ అసలు భౌతిక ఆధార్ కార్డు తప్పనిసరి. విష్ణు నివాసం, శ్రీనివాసం లేదా భూదేవి కాంప్లెక్స్ వద్దకు వెంటనే చేరుకోండి.'
+                    : 'Physical original Aadhaar card mandatory. Report directly to Vishnu Nivasam, Srinivasam, or Bhudevi complex.')
+                : (lang === 'te'
+                    ? 'దయచేసి తదుపరి విడుదల కోసం వేచి ఉండండి. టోకెన్ సమయాలు టీటీడీ అప్‌డేట్‌లకు లోబడి ఉంటాయి.'
+                    : 'Please wait for the next release. Token timings are subject to TTD updates.')}
             </p>
           </div>
         </section>

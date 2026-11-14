@@ -17,6 +17,7 @@ interface LanguageOption {
 const LANGUAGES: LanguageOption[] = [
   { code: 'en', badge: 'Aa', nativeName: 'English', englishLabel: 'English', subText: 'Default App Language' },
   { code: 'te', badge: 'అ', nativeName: 'తెలుగు', englishLabel: 'Telugu', subText: 'ఆంధ్రప్రదేశ్ & తెలంగాణ' },
+  { code: 'kn', badge: 'ಅ', nativeName: 'ಕನ್ನಡ', englishLabel: 'Kannada', subText: 'ಕರ್ನಾಟಕ ಮತ್ತು ಬೆಂಗಳೂರು' },
   { code: 'hi', badge: 'अ', nativeName: 'हिंदी', englishLabel: 'Hindi', subText: 'भारत की राजभाषा' },
   { code: 'ta', badge: 'அ', nativeName: 'தமிழ்', englishLabel: 'Tamil', subText: 'தமிழ்நாடு & புதுச்சேரி' }
 ];

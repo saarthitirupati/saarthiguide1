@@ -44,7 +44,45 @@ const TEXTS = {
     tonsureStatus: 'Open 24/7',
     stay: 'Stay & PAC Halls',
     staySub: 'Free resting & hot water halls',
-    stayStatus: 'Halls Available'
+    stayStatus: 'Halls Available',
+    sarvaDarshan: {
+      title: 'Sarva Darshan',
+      subtitle: 'Free General Queue',
+      description: 'Free walk-in queue through Vaikuntam queue complex without advance booking',
+    },
+    specialEntryDarshan: {
+      title: '₹300 Special Entry Darshan',
+      subtitle: 'Online Booked Slot',
+      category: 'For ₹300 ticket holders',
+    },
+    timeSlottedDarshan: {
+      title: 'Free Time-Slotted Darshan (SSD)',
+      subtitle: 'Token-based Entry',
+    },
+    crowdLabels: {
+      normal: 'Moderate Crowd',
+      high: 'High Crowd',
+      extreme: 'Extreme Crowd',
+    },
+    footpaths: {
+      title: 'Tirumala Footpath Routes',
+      alipiri: {
+        name: 'Alipiri Mettu',
+        distance: '9 km • 3,550 steps',
+        timings: 'Open 24 Hours',
+      },
+      srivariMettu: {
+        name: 'Srivari Mettu',
+        distance: '2.1 km • 2,388 steps',
+        timings: '6:00 AM – 6:00 PM',
+      },
+    },
+    dressCode: {
+      title: 'Mandatory Traditional Dress Code',
+      men: 'Men: Dhoti with Uttareeyam or Kurta Pyjama (lungi, jeans, t-shirts not permitted)',
+      women: 'Women: Saree, Half-Saree or Chudidar with Dupatta (western wear not permitted)',
+      children: 'Children: Decent traditional attire',
+    },
   },
   te: {
     loading: 'మీ సారథి లోడ్ అవుతోంది...',
@@ -66,7 +104,241 @@ const TEXTS = {
     tonsureStatus: '24/7 అందుబాటులో ఉంది',
     stay: 'వసతి & PAC హాళ్ళు',
     staySub: 'ఉచిత విశ్రాంతి హాళ్ళు & వేడి నీటి స్నానాలు',
-    stayStatus: 'హాళ్ళు అందుబాటులో ఉన్నాయి'
+    stayStatus: 'హాళ్ళు అందుబాటులో ఉన్నాయి',
+    sarvaDarshan: {
+      title: 'సర్వదర్శనం',
+      subtitle: 'ఉచిత సాధారణ క్యూ',
+      description: 'ముందస్తు బుకింగ్ లేకుండా వైకుంఠం క్యూ కాంప్లెక్స్ ద్వారా ఉచిత నడక క్యూ',
+    },
+    specialEntryDarshan: {
+      title: '₹300 ప్రత్యేక ప్రవేశ దర్శనం',
+      subtitle: 'ఆన్‌లైన్ బుకింగ్ స్లాట్',
+      category: '₹300 టికెట్ ఉన్నవారికి',
+    },
+    timeSlottedDarshan: {
+      title: 'ఉచిత సమయ స్లాట్ దర్శనం (SSD)',
+      subtitle: 'టోకెన్ ఆధారిత ప్రవేశం',
+    },
+    crowdLabels: {
+      normal: 'మితమైన రద్దీ',
+      high: 'రద్దీ ఎక్కువ',
+      extreme: 'తీవ్రమైన రద్దీ',
+    },
+    footpaths: {
+      title: 'తిరుమల సోపాన మార్గాలు',
+      alipiri: {
+        name: 'అలిపిరి మెట్టు',
+        distance: '9 కి.మీ • 3,550 మెట్లు',
+        timings: '24 గంటలూ అందుబాటులో ఉంటుంది',
+      },
+      srivariMettu: {
+        name: 'శ్రీవారి మెట్టు',
+        distance: '2.1 కి.మీ • 2,388 మెట్లు',
+        timings: 'ఉదయం 6:00 – సాయంత్రం 6:00',
+      },
+    },
+    dressCode: {
+      title: 'ఆలయ సాంప్రదాయ దుస్తుల నియమావళి',
+      men: 'పురుషులు: ధోవతి / పంచె లేదా కుర్తా పైజామా (లుంగీ, జీన్స్, టీ-షర్టులకు అనుమతి లేదు)',
+      women: 'మహిళలు: చీర / లంగా ఒణి లేదా చుడీదార్ (పాశ్చాత్య దుస్తులకు అనుమతి లేదు)',
+      children: 'పిల్లలు: సాంప్రదాయ దుస్తులు',
+    },
+  },
+  kn: {
+    loading: 'ನಿಮ್ಮ ಸಾರಥಿ ಲೋಡ್ ಆಗುತ್ತಿದೆ...',
+    primaryServices: 'ನಿಮಗೆ ಈಗ ಬೇಕಾಗಿರುವುದು',
+    servicesSub: 'ಅಗತ್ಯ ಯಾತ್ರಾ ಸೌಲಭ್ಯಗಳು',
+    nearbyPlaces: 'ನಿಮ್ಮ ಸುತ್ತಮುತ್ತಲಿನ ಸ್ಥಳಗಳು',
+    seeAll: 'ಎಲ್ಲವನ್ನೂ ನೋಡಿ →',
+    navigate: 'ದಾರಿ →',
+    openDrawer: 'ಹೆಚ್ಚಿನ ಮಾಹಿತಿ ಮತ್ತು ವಿವರಗಳು',
+    closeDrawer: 'ಮುಚ್ಚಿ',
+
+    // 1. Lockers
+    lockers: 'ಲಾಕರ್‌ಗಳು ಮತ್ತು ಲಗೇಜ್',
+    lockersSub: 'ದರ್ಶನಕ್ಕೂ ಮುನ್ನ ಮೊಬೈಲ್ ಮತ್ತು ಬ್ಯಾಗ್ ಠೇವಣಿ',
+    lockersStatus: '6 ಕೇಂದ್ರಗಳು ತೆರೆದಿವೆ',
+
+    // 2. Annaprasadam
+    meals: 'ಉಚಿತ ಅನ್ನಪ್ರಸಾದ',
+    mealsSub: 'ವೆಂಗಮಾಂಬ ಭವನದಲ್ಲಿ ನಿರಂತರ ಬಿಸಿ ಊಟ',
+    mealsStatus: 'ನಿರಂತರ ಸೇವೆ ಲಭ್ಯ',
+
+    // 3. Kalyana Katta
+    tonsure: 'ಕಲ್ಯಾಣಕಟ್ಟೆ (ಮುಡಿ ಅರ್ಪಣೆ)',
+    tonsureSub: 'ದರ್ಶನಕ್ಕೂ ಮುನ್ನ ಪವಿತ್ರ ತಲೆಕೂದಲು ಅರ್ಪಣೆ',
+    tonsureStatus: '24×7 ತೆರೆದಿರುತ್ತದೆ',
+
+    // 4. PAC Halls
+    stay: 'ಉಚಿತ ವಸತಿ ಮತ್ತು PAC ಹಾಲ್‌ಗಳು',
+    staySub: 'ಉಚಿತ ವಿಶ್ರಾಂತಿ ಕೊಠಡಿಗಳು ಮತ್ತು ಬಿಸಿ ನೀರಿನ ವ್ಯವಸ್ಥೆ',
+    stayStatus: 'ಹಾಲ್‌ಗಳು ಲಭ್ಯವಿವೆ',
+
+    // --- 1. Live Queue Cards (from HomeHero) ---
+    sarvaDarshan: {
+      title: 'ಸರ್ವ ದರ್ಶನ',
+      subtitle: 'ಉಚಿತ ಸಾಮಾನ್ಯ ಸಾಲು',
+      description: 'ಮುಂಗಡ ಬುಕಿಂಗ್ ಇಲ್ಲದೆ ವೈಕುಂಠಂ ಸರತಿ ಸಂಕೀರ್ಣದ ಮೂಲಕ ಉಚಿತ ನಡಿಗೆ ಸಾಲು',
+    },
+    specialEntryDarshan: {
+      title: '₹300 ವಿಶೇಷ ಪ್ರವೇಶ ದರ್ಶನ',
+      subtitle: 'ಆನ್‌ಲೈನ್‌ನಲ್ಲಿ ಬುಕ್ ಮಾಡಿದ ಸ್ಲಾಟ್',
+      category: '₹300 ಟಿಕೆಟ್ ಹೊಂದಿರುವವರಿಗೆ',
+    },
+    timeSlottedDarshan: {
+      title: 'ಉಚಿತ ಸಮಯ ಸ್ಲಾಟ್ ದರ್ಶನ (SSD)',
+      subtitle: 'ಟೋಕನ್ ಆಧಾರಿತ ಪ್ರವೇಶ',
+    },
+
+    // --- 2. Crowd Status Labels ---
+    crowdLabels: {
+      normal: 'ಮಿತವಾದ ಜನಸಂದಣಿ',
+      high: 'ಹೆಚ್ಚಿನ ಜನಸಂದಣಿ',
+      extreme: 'ತೀವ್ರ ಜನಸಂದಣಿ',
+    },
+
+    // --- 3. Footpath Routes (from FootpathTimingsCard) ---
+    footpaths: {
+      title: 'ತಿರುಮಲ ಪಾದಯಾತ್ರಾ ಮಾರ್ಗಗಳು',
+      alipiri: {
+        name: 'ಅಲಿಪಿರಿ ಮೆಟ್ಟು',
+        distance: '9 ಕಿ.ಮೀ • 3,550 ಮೆಟ್ಟಿಲುಗಳು',
+        timings: '24 ಗಂಟೆಗಳೂ ತೆರೆದಿರುತ್ತದೆ',
+      },
+      srivariMettu: {
+        name: 'ಶ್ರೀವಾರಿ ಮೆಟ್ಟು',
+        distance: '2.1 ಕಿ.ಮೀ • 2,388 ಮೆಟ್ಟಿಲುಗಳು',
+        timings: 'ಬೆಳಗ್ಗೆ 6:00 – ಸಂಜೆ 6:00',
+      },
+    },
+
+    // --- 4. Dress Code Guidelines ---
+    dressCode: {
+      title: 'ಕಡ್ಡಾಯ ಸಾಂಪ್ರದಾಯಿಕ ಉಡುಪು ನಿಯಮಾವಳಿ',
+      men: 'ಪುರುಷರು: ಉತ್ತರೀಯದೊಂದಿಗೆ ಧೋತಿ ಅಥವಾ ಕುರ್ತಾ ಪೈಜಾಮಾ (ಲುಂಗಿ, ಜೀನ್ಸ್, ಟಿ-ಶರ್ಟ್‌ಗಳಿಗೆ ಅವಕಾಶವಿಲ್ಲ)',
+      women: 'ಮಹಿಳೆಯರು: ಸೀರೆ, ಅರ್ಧ ಸೀರೆ ಅಥವಾ ದುಪಟ್ಟಾದೊಂದಿಗೆ ಚೂಡಿದಾರ್ (ಪಾಶ್ಚಾತ್ಯ ಉಡುಪುಗಳಿಗೆ ಅವಕಾಶವಿಲ್ಲ)',
+      children: 'ಮಕ್ಕಳು: ಸಭ್ಯ ಸಾಂಪ್ರದಾಯಿಕ ಉಡುಪು',
+    },
+  },
+  hi: {
+    loading: 'आपका सारथि लोड हो रहा है...',
+    primaryServices: 'आपको अभी क्या चाहिए',
+    servicesSub: 'आवश्यक तीर्थयात्री सुविधाएं',
+    nearbyPlaces: 'अपने आस-पास के स्थान देखें',
+    seeAll: 'सभी देखें →',
+    navigate: 'मार्ग →',
+    openDrawer: 'तीर्थयात्रा से जुड़ी अधिक जानकारी',
+    closeDrawer: 'बंद करें',
+    lockers: 'लॉकर और सामान',
+    lockersSub: 'दर्शन से पहले फोन और बैग जमा करें',
+    lockersStatus: '6 केंद्र खुले हैं',
+    meals: 'मुफ्त अन्नप्रसादम',
+    mealsSub: 'वेंगमांबा परिसर में गर्म ताजा भोजन',
+    mealsStatus: 'उपलब्ध है',
+    tonsure: 'कल्याण कट्टा (मुंडन)',
+    tonsureSub: 'दर्शन से पहले पवित्र केश समर्पण',
+    tonsureStatus: '24/7 खुला है',
+    stay: 'आवास और पीएसी हॉल',
+    staySub: 'मुफ्त विश्राम हॉल और गर्म पानी स्नान',
+    stayStatus: 'हॉल उपलब्ध हैं',
+    sarvaDarshan: {
+      title: 'सर्व दर्शन',
+      subtitle: 'निःशुल्क सामान्य कतार',
+      description: 'बिना अग्रिम बुकिंग के वैकुण्ठम कतार परिसर के माध्यम से निःशुल्क पैदल कतार',
+    },
+    specialEntryDarshan: {
+      title: '₹300 विशेष प्रवेश दर्शन',
+      subtitle: 'ऑनलाइन बुक किया गया स्लॉट',
+      category: '₹300 टिकट धारकों के लिए',
+    },
+    timeSlottedDarshan: {
+      title: 'निःशुल्क टाइम-स्लॉटेड दर्शन (SSD)',
+      subtitle: 'टोकन आधारित प्रवेश',
+    },
+    crowdLabels: {
+      normal: 'सामान्य भीड़',
+      high: 'अधिक भीड़',
+      extreme: 'अत्यधिक भीड़',
+    },
+    footpaths: {
+      title: 'तिरुमाला पैदल मार्ग',
+      alipiri: {
+        name: 'अलिपिरी मेट्टू',
+        distance: '9 किमी • 3,550 सीढ़ियाँ',
+        timings: '24 घंटे खुला रहता है',
+      },
+      srivariMettu: {
+        name: 'श्रीवारी मेट्टू',
+        distance: '2.1 किमी • 2,388 सीढ़ियाँ',
+        timings: 'सुबह 6:00 – शाम 6:00',
+      },
+    },
+    dressCode: {
+      title: 'अनिवार्य पारंपरिक पोशाक नियम',
+      men: 'पुरुष: उत्तरीय के साथ धोती या कुर्ता-पायजामा (लुंगी, जींस, टी-शर्ट की अनुमति नहीं है)',
+      women: 'महिलाएं: साड़ी, हाफ-साड़ी या दुपट्टे के साथ चूड़ीदार (पश्चिमी कपड़ों की अनुमति नहीं है)',
+      children: 'बच्चे: शालीन पारंपरिक पोशाक',
+    },
+  },
+  ta: {
+    loading: 'உங்கள் சாரதி தயாராகிறது...',
+    primaryServices: 'உங்களுக்கு இப்போது தேவைப்படுபவை',
+    servicesSub: 'அத்தியாவசிய யாத்ரீக வசதிகள்',
+    nearbyPlaces: 'உங்களைச் சுற்றியுள்ள இடங்கள்',
+    seeAll: 'அனைத்தையும் காண்க →',
+    navigate: 'வழிசெலுத்து →',
+    openDrawer: 'கூடுதல் தகவல்கள் மற்றும் விவரங்கள்',
+    closeDrawer: 'மூடுக',
+    lockers: 'லாக்கர்கள் மற்றும் லக்கேஜ்',
+    lockersSub: 'தரிசனத்திற்கு முன் போன் மற்றும் உடைமைகள் பாதுகாப்பு',
+    lockersStatus: '6 மையங்கள் திறந்துள்ளன',
+    meals: 'இலவச அன்னப்பிரசாதம்',
+    mealsSub: 'வெங்கமாம்பா கூடத்தில் சுடச்சுட இலவச உணவு',
+    mealsStatus: 'தொடர்ந்து வழங்கப்படுகிறது',
+    tonsure: 'கல்யாண கட்டா (முடி காணிக்கை)',
+    tonsureSub: 'தரிசனத்திற்கு முன் புனித முடி காணிக்கை',
+    tonsureStatus: '24/7 திறந்துள்ளது',
+    stay: 'தங்குமிடம் & PAC ஓய்வு மண்டபங்கள்',
+    staySub: 'இலவச ஓய்வு அறைகள் மற்றும் சுடுநீர் வசதி',
+    stayStatus: 'மண்டபங்கள் பயன்பாட்டில் உள்ளன',
+    sarvaDarshan: {
+      title: 'சர்வ தரிசனம்',
+      subtitle: 'இலவச பொது வரிசை',
+      description: 'முன்பதிவு இன்றி வைகுண்டம் வரிசை வளாகம் வழியாக செல்லும் இலவச நடை வரிசை',
+    },
+    specialEntryDarshan: {
+      title: '₹300 சிறப்பு நுழைவு தரிசனம்',
+      subtitle: 'ஆன்லைன் முன்பதிவு நேரம்',
+      category: '₹300 டிக்கெட் வைத்திருப்போருக்கு',
+    },
+    timeSlottedDarshan: {
+      title: 'இலவச நேரக் குறிப்பிட்ட தரிசனம் (SSD)',
+      subtitle: 'டோக்கன் அடிப்படையிலான நுழைவு',
+    },
+    crowdLabels: {
+      normal: 'மிதமான கூட்டம்',
+      high: 'அதிக கூட்டம்',
+      extreme: 'மிக அதிக கூட்டம்',
+    },
+    footpaths: {
+      title: 'திருமலை நடைபாதை வழிகள்',
+      alipiri: {
+        name: 'அலிபிரி மெட்டு',
+        distance: '9 கி.மீ • 3,550 படிகள்',
+        timings: '24 மணி நேரமும் திறந்திருக்கும்',
+      },
+      srivariMettu: {
+        name: 'ஸ்ரீவாரி மெட்டு',
+        distance: '2.1 கி.மீ • 2,388 படிகள்',
+        timings: 'காலை 6:00 – மாலை 6:00',
+      },
+    },
+    dressCode: {
+      title: 'கட்டாய பாரம்பரிய உடை விதிமுறைகள்',
+      men: 'ஆண்கள்: வேட்டி, உத்தரீயம் அல்லது குர்தா பைஜாமா (லுங்கி, ஜீன்ஸ், டி-சர்ட் அனுமதிக்கப்படாது)',
+      women: 'பெண்கள்: புடவை, தாவணி அல்லது துப்பட்டாவுடன் சுடிதார் (மேற்கத்திய ஆடைகளுக்கு அனுமதியில்லை)',
+      children: 'குழந்தைகள்: கண்ணியமான பாரம்பரிய உடைகள்',
+    },
   }
 };
 
@@ -181,7 +453,7 @@ export default function HomePage() {
                 </p>
               </div>
               <Link href="/essentials" prefetch={false} style={{ fontSize: '12px', fontWeight: 700, color: '#0F5132', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '2px' }}>
-                <span>{lang === 'te' ? 'అన్నీ చూడండి' : 'See all'}</span>
+                <span>{lang === 'kn' ? 'ಎಲ್ಲವನ್ನೂ ನೋಡಿ' : lang === 'te' ? 'అన్నీ చూడండి' : 'See all'}</span>
                 <ChevronRight size={13} strokeWidth={2.6} />
               </Link>
             </div>
@@ -351,10 +623,10 @@ export default function HomePage() {
           <div className="notranslate" translate="no" style={{ padding: '0 14px 16px' }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
               <h2 className="notranslate" translate="no" style={{ fontSize: '15px', fontWeight: 800, color: 'var(--color-text-primary, #1E232D)', margin: 0, letterSpacing: '-0.015em' }}>
-                {lang === 'te' ? 'తిరుపతి ప్రాంతాన్ని అన్వేషించండి' : 'Explore Tirupati Region'}
+                {lang === 'kn' ? 'ತಿರುಪತಿ ಪ್ರದೇಶವನ್ನು ಅನ್ವೇಷಿಸಿ' : lang === 'te' ? 'తిరుపతి ప్రాంతాన్ని అన్వేషించండి' : 'Explore Tirupati Region'}
               </h2>
               <Link href="/explore" prefetch={false} style={{ fontSize: '12px', fontWeight: 700, color: '#0F5132', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '2px' }}>
-                <span>{lang === 'te' ? 'అన్నీ చూడండి' : 'View All'}</span>
+                <span>{lang === 'kn' ? 'ಎಲ್ಲವನ್ನೂ ನೋಡಿ' : lang === 'te' ? 'అన్నీ చూడండి' : 'View All'}</span>
                 <ChevronRight size={14} strokeWidth={2.5} />
               </Link>
             </div>
@@ -398,7 +670,7 @@ export default function HomePage() {
                   }}>
                     <Landmark size={13} color="#FDE047" strokeWidth={2.4} />
                     <span className="notranslate" translate="no" style={{ fontSize: '12px', fontWeight: 800, color: '#FFFFFF', letterSpacing: '-0.01em' }}>
-                      {lang === 'te' ? 'దేవాలయాలు' : 'Temples'}
+                      {lang === 'kn' ? 'ದೇವಾಲಯಗಳು' : lang === 'te' ? 'దేవాలయాలు' : 'Temples'}
                     </span>
                   </div>
                   <span className="notranslate" translate="no" style={{ 
@@ -413,7 +685,7 @@ export default function HomePage() {
                     borderRadius: '9999px',
                     boxShadow: '0 2px 6px rgba(0, 0, 0, 0.15)'
                   }}>
-                    {lang === 'te' ? 'ప్రధాన క్షేత్రాలు' : 'Sacred Shrines'}
+                    {lang === 'kn' ? 'ಪವಿತ್ರ ಕ್ಷೇತ್ರಗಳು' : lang === 'te' ? 'ప్రధాన క్షేత్రాలు' : 'Sacred Shrines'}
                   </span>
                 </div>
               </Link>
@@ -458,7 +730,7 @@ export default function HomePage() {
                     }}>
                       <Compass size={10} color="#6EE7B7" strokeWidth={2.4} />
                       <span className="notranslate" translate="no" style={{ fontSize: '10px', fontWeight: 800, color: '#FFFFFF', whiteSpace: 'nowrap' }}>
-                        {lang === 'te' ? 'ప్రకృతి' : 'Nature'}
+                        {lang === 'kn' ? 'ಪ್ರಕೃತಿ' : lang === 'te' ? 'ప్రకృతి' : 'Nature'}
                       </span>
                     </div>
                   </div>
@@ -502,7 +774,7 @@ export default function HomePage() {
                     }}>
                       <Landmark size={10} color="#FDE68A" strokeWidth={2.4} />
                       <span className="notranslate" translate="no" style={{ fontSize: '10px', fontWeight: 800, color: '#FFFFFF', whiteSpace: 'nowrap' }}>
-                        {lang === 'te' ? 'వారసత్వం' : 'Heritage'}
+                        {lang === 'kn' ? 'ಪರಂಪರೆ' : lang === 'te' ? 'వారసత్వం' : 'Heritage'}
                       </span>
                     </div>
                   </div>
@@ -546,7 +818,7 @@ export default function HomePage() {
                     }}>
                       <Mountain size={10} color="#93C5FD" strokeWidth={2.4} />
                       <span className="notranslate" translate="no" style={{ fontSize: '10px', fontWeight: 800, color: '#FFFFFF', whiteSpace: 'nowrap' }}>
-                        {lang === 'te' ? 'దృశ్యాలు' : 'Viewpoints'}
+                        {lang === 'kn' ? 'ವೀಕ್ಷಣಾ ತಾಣಗಳು' : lang === 'te' ? 'దృశ్యాలు' : 'Viewpoints'}
                       </span>
                     </div>
                   </div>
@@ -564,7 +836,7 @@ export default function HomePage() {
                   {t.nearbyPlaces}
                 </h2>
                 <Link href="/explore" prefetch={false} style={{ fontSize: '12px', fontWeight: 700, color: '#0F5132', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '2px' }}>
-                  <span>{lang === 'te' ? 'అన్నీ చూడండి' : 'See all'}</span>
+                  <span>{lang === 'kn' ? 'ಎಲ್ಲವನ್ನೂ ನೋಡಿ' : lang === 'te' ? 'అన్నీ చూడండి' : 'See all'}</span>
                   <ChevronRight size={13} strokeWidth={2.6} />
                 </Link>
               </div>
@@ -744,15 +1016,15 @@ export default function HomePage() {
                 </div>
                 <div className="notranslate" translate="no" style={{ textAlign: 'left' }}>
                   <span style={{ fontSize: '12.5px', fontWeight: 600, color: '#0F172A', display: 'block', lineHeight: 1.2 }}>
-                    {lang === 'te' ? 'స్వామివారి విశేషాలు & ఆధ్యాత్మిక విశేషాలు' : 'Sacred Lore, Chants & Traditions'}
+                    {lang === 'kn' ? 'ಸ್ವಾಮಿವರ ಮಹಿಮೆ ಮತ್ತು ಆಧ್ಯಾತ್ಮಿಕ ವಿಶೇಷಗಳು' : lang === 'te' ? 'స్వామివారి విశేషాలు & ఆధ్యాత్మిక విశేషాలు' : 'Sacred Lore, Chants & Traditions'}
                   </span>
                   <span style={{ fontSize: '10px', color: '#854D0E', fontWeight: 600 }}>
-                    {lang === 'te' ? 'నేటి సుప్రభాతం, శ్లోకాలు, ప్రసాద విశేషాలు' : 'Daily Shloka, Suprabhatam & Tirumala lore'}
+                    {lang === 'kn' ? 'ದೈನಂದಿನ ಸುಪ್ರಭಾತ, ಶ್ಲೋಕಗಳು ಮತ್ತು ಪ್ರಸಾದದ ವಿವರಗಳು' : lang === 'te' ? 'నేటి సుప్రభాతం, శ్లోకాలు, ప్రసాద విశేషాలు' : 'Daily Shloka, Suprabhatam & Tirumala lore'}
                   </span>
                 </div>
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '11px', fontWeight: 600, color: '#0F5132' }}>
-                <span>{showLoreDrawer ? (lang === 'te' ? 'దాచు' : 'Hide') : (lang === 'te' ? 'చూడు' : 'View')}</span>
+                <span>{showLoreDrawer ? (lang === 'kn' ? 'ಮುಚ್ಚಿ' : lang === 'te' ? 'దాచు' : 'Hide') : (lang === 'kn' ? 'ನೋಡಿ' : lang === 'te' ? 'చూడు' : 'View')}</span>
                 {showLoreDrawer ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
               </div>
             </button>
@@ -773,14 +1045,14 @@ export default function HomePage() {
           <h1 suppressHydrationWarning style={{ fontSize: '28px', fontWeight: 700, color: '#0F172A', margin: '0 0 6px 0', letterSpacing: '-0.02em' }}>
             {(() => {
               const hr = getISTDate().getHours();
-              if (hr >= 5 && hr < 12) return lang === 'te' ? 'శుభోదయం' : 'Good Morning';
-              if (hr >= 12 && hr < 17) return lang === 'te' ? 'శుభ మధ్యాహ్నం' : 'Good Afternoon';
-              if (hr >= 17 && hr < 21) return lang === 'te' ? 'శుభ సాయంత్రం' : 'Good Evening';
-              return lang === 'te' ? 'శుభ రాత్రి' : 'Good Night';
+              if (hr >= 5 && hr < 12) return lang === 'kn' ? 'ಶುಭೋದಯ' : lang === 'te' ? 'శుభోదయం' : 'Good Morning';
+              if (hr >= 12 && hr < 17) return lang === 'kn' ? 'ಶುಭ ಮಧ್ಯಾಹ್ನ' : lang === 'te' ? 'శుభ మధ్యాహ్నం' : 'Good Afternoon';
+              if (hr >= 17 && hr < 21) return lang === 'kn' ? 'ಶುಭ ಸಂಜೆ' : lang === 'te' ? 'శుభ సాయంత్రం' : 'Good Evening';
+              return lang === 'kn' ? 'ಶುಭ ರಾತ್ರಿ' : lang === 'te' ? 'శుభ రాత్రి' : 'Good Night';
             })()}, <span style={{ color: '#0F5132' }}>{home.hero.userName}</span>
           </h1>
           <p style={{ fontSize: '14.5px', color: '#0F5132', margin: 0, fontWeight: 700 }}>
-            {lang === 'te' ? 'తిరుమల, తిరుపతి ప్రత్యక్ష యాత్రా సహచరి.' : 'Live pilgrimage companion for Tirumala and Tirupati.'}
+            {lang === 'kn' ? 'ತಿರುಮಲ ಮತ್ತು ತಿರುಪತಿ ನೇರ ಯಾತ್ರಾ ಸಹಾಯಕ.' : lang === 'te' ? 'తిరుమల, తిరుపతి ప్రత్యక్ష యాత్రా సహచరి.' : 'Live pilgrimage companion for Tirumala and Tirupati.'}
           </p>
         </div>
 

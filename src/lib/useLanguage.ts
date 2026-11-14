@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 
-export type AppLang = 'en' | 'te' | 'hi' | 'ta';
+export type AppLang = 'en' | 'te' | 'hi' | 'ta' | 'kn';
 
 /**
  * Persists the chosen language and reloads the page to cleanly update
@@ -42,7 +42,7 @@ export function useLanguage(): AppLang {
 
   useEffect(() => {
     const saved = localStorage.getItem('saarthi_user_language') as AppLang | null;
-    if (saved && ['en', 'te', 'hi', 'ta'].includes(saved)) {
+    if (saved && ['en', 'te', 'hi', 'ta', 'kn'].includes(saved)) {
       setLang(saved);
       document.documentElement.lang = saved;
     } else {
@@ -52,7 +52,7 @@ export function useLanguage(): AppLang {
 
     const handleLanguageChange = (e: Event) => {
       const customEvent = e as CustomEvent<AppLang>;
-      if (customEvent?.detail && ['en', 'te', 'hi', 'ta'].includes(customEvent.detail)) {
+      if (customEvent?.detail && ['en', 'te', 'hi', 'ta', 'kn'].includes(customEvent.detail)) {
         setLang(customEvent.detail);
         document.documentElement.lang = customEvent.detail;
       }

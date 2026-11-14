@@ -101,7 +101,7 @@ export function FootpathTimingsCard() {
                 lineHeight: 1.2
               }}
             >
-              {lang === 'te' ? 'తిరుమల సోపాన మార్గాలు' : 'Footpath Routes'}
+              {lang === 'kn' ? 'ತಿರುಮಲ ಪಾದಯಾತ್ರಾ ಮಾರ್ಗಗಳು' : lang === 'te' ? 'తిరుమల సోపాన మార్గాలు' : 'Footpath Routes'}
             </h3>
             <p 
               className="notranslate" 
@@ -116,9 +116,9 @@ export function FootpathTimingsCard() {
                 gap: '5px'
               }}
             >
-              <span>{lang === 'te' ? 'కాలినడకన తిరుమల' : 'Tirumala by Walk'}</span>
+              <span>{lang === 'kn' ? 'ಕಾಲ್ನಡಿಗೆಯಲ್ಲಿ ತಿರುಮಲ' : lang === 'te' ? 'కాలినడకన తిరుమల' : 'Tirumala by Walk'}</span>
               <span style={{ opacity: 0.5 }}>•</span>
-              <span>{lang === 'te' ? 'దివ్య దర్శనం (DD)' : 'Divya Darshan (DD)'}</span>
+              <span>{lang === 'kn' ? 'ದಿವ್ಯ ದರ್ಶನ (DD)' : lang === 'te' ? 'దివ్య దర్శనం (DD)' : 'Divya Darshan (DD)'}</span>
             </p>
           </div>
         </div>
@@ -146,7 +146,7 @@ export function FootpathTimingsCard() {
             flexShrink: 0
           }}
         >
-          <span>{lang === 'te' ? 'వివరాలు' : 'Details'}</span>
+          <span>{lang === 'kn' ? 'ವಿವರಗಳು' : lang === 'te' ? 'వివరాలు' : 'Details'}</span>
           <ChevronRight size={12} strokeWidth={2.8} />
         </Link>
       </div>
@@ -189,7 +189,7 @@ export function FootpathTimingsCard() {
                   <TrendingUp size={13} color="#16A34A" strokeWidth={2.6} />
                 </div>
                 <h4 style={{ fontSize: '13.5px', fontWeight: 800, color: '#0F172A', margin: 0, lineHeight: 1.2 }}>
-                  {lang === 'te' ? 'శ్రీవారి మెట్టు' : 'Srivari Mettu'}
+                  {lang === 'kn' ? 'ಶ್ರೀವಾರಿ ಮೆಟ್ಟು' : lang === 'te' ? 'శ్రీవారి మెట్టు' : 'Srivari Mettu'}
                 </h4>
               </div>
               <span style={{
@@ -202,14 +202,14 @@ export function FootpathTimingsCard() {
                 borderRadius: '9999px',
                 letterSpacing: '0.01em'
               }}>
-                Open
+                {lang === 'kn' ? 'ತೆರೆದಿದೆ' : lang === 'te' ? 'ఓపెన్' : 'Open'}
               </span>
             </div>
 
             {/* Steps & Duration */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '5px', fontSize: '11px', color: '#475569', fontWeight: 600, marginBottom: '8px' }}>
               <Footprints size={12} color="#16A34A" />
-              <span>2,388 {lang === 'te' ? 'మెట్లు' : 'steps'}</span>
+              <span>2,388 {lang === 'kn' ? 'ಮೆಟ್ಟಿಲುಗಳು' : lang === 'te' ? 'మెట్లు' : 'steps'}</span>
               <span>|</span>
               <span>~2 hrs</span>
             </div>
@@ -250,7 +250,7 @@ export function FootpathTimingsCard() {
             lineHeight: 1.2
           }}>
             <AlertCircle size={12} color="#DC2626" strokeWidth={2.4} style={{ flexShrink: 0 }} />
-            <span>{lang === 'te' ? '<12 ఏళ్లు: 2 PM వరకు' : 'Kids < 12: till 2 PM'}</span>
+            <span>{lang === 'kn' ? '<12 ವರ್ಷ: ಮಧ್ಯಾಹ್ನ 2:00 ವರೆಗೆ' : lang === 'te' ? '<12 ఏళ్లు: 2 PM వరకు' : 'Kids < 12: till 2 PM'}</span>
           </div>
         </div>
 
@@ -285,7 +285,7 @@ export function FootpathTimingsCard() {
                   <TrendingUp size={13} color="#D97706" strokeWidth={2.6} />
                 </div>
                 <h4 style={{ fontSize: '13.5px', fontWeight: 800, color: '#0F172A', margin: 0, lineHeight: 1.2 }}>
-                  {lang === 'te' ? 'అలిపిరి మెట్టు' : 'Alipiri Mettu'}
+                  {lang === 'kn' ? 'ಅಲಿಪಿರಿ ಮೆಟ್ಟು' : lang === 'te' ? 'అలిపిరి మెట్టు' : 'Alipiri Mettu'}
                 </h4>
               </div>
               <span style={{
@@ -298,14 +298,14 @@ export function FootpathTimingsCard() {
                 borderRadius: '9999px',
                 letterSpacing: '0.01em'
               }}>
-                Open
+                {lang === 'kn' ? 'ತೆರೆದಿದೆ' : lang === 'te' ? 'ఓపెన్' : 'Open'}
               </span>
             </div>
 
             {/* Steps & Duration */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '5px', fontSize: '11px', color: '#475569', fontWeight: 600, marginBottom: '8px' }}>
               <Footprints size={12} color="#D97706" />
-              <span>3,550 {lang === 'te' ? 'మెట్లు' : 'steps'}</span>
+              <span>3,550 {lang === 'kn' ? 'ಮೆಟ್ಟಿಲುಗಳು' : lang === 'te' ? 'మెట్లు' : 'steps'}</span>
               <span>|</span>
               <span>~4 hrs</span>
             </div>
@@ -347,7 +347,7 @@ export function FootpathTimingsCard() {
               lineHeight: 1.2
             }}>
               <ShieldCheck size={11} color="#059669" strokeWidth={2.4} />
-              <span>24/7 Lit</span>
+              <span>{lang === 'kn' ? '24/7 ಬೆಳಕಿನ ವ್ಯವಸ್ಥೆ' : '24/7 Lit'}</span>
             </span>
             <span style={{
               background: '#F8FAFC',
@@ -363,7 +363,7 @@ export function FootpathTimingsCard() {
               lineHeight: 1.2
             }}>
               <Luggage size={11} color="#475569" strokeWidth={2.2} />
-              <span>Luggage Van</span>
+              <span>{lang === 'kn' ? 'ಲಗೇಜ್ ವ್ಯಾನ್' : 'Luggage Van'}</span>
             </span>
           </div>
         </div>

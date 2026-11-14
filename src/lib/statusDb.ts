@@ -23,6 +23,15 @@ export interface SsdCounter {
   description: string;
 }
 
+export interface TokenBatchDetails {
+  totalTokens?: string;
+  tokensLeft?: string;
+  status?: string;
+  startTime?: string;
+  completedTime?: string;
+  lastVerifiedAt?: string;
+}
+
 export interface TirumalaStatus {
   waitTime: string;
   crowdLevel: 'low' | 'moderate' | 'high' | 'very-high';
@@ -43,6 +52,8 @@ export interface TirumalaStatus {
   ssdCounters: SsdCounter[];
   ssdAdvisoryTag?: string;
   ssdModeBadge?: string;
+  ssdTokenDetails?: TokenBatchDetails;
+  ddTokenDetails?: TokenBatchDetails;
 }
 
 const DEFAULT_STATUS: TirumalaStatus = {
@@ -211,6 +222,10 @@ async function refreshFromSupabase(): Promise<void> {
       ssdNotice: resolvedNotice,
       ssdTimingsGuide: resolvedTimingsGuide,
       ssdCounters: ssdCounters && ssdCounters.length > 0 ? ssdCounters : memoryStatus.ssdCounters,
+      ssdTokenDetails: memoryStatus.ssdTokenDetails,
+      ddTokenDetails: memoryStatus.ddTokenDetails,
+      ssdAdvisoryTag: memoryStatus.ssdAdvisoryTag,
+      ssdModeBadge: memoryStatus.ssdModeBadge,
       lastUpdated: metrics.updated_at || memoryStatus.lastUpdated || new Date().toISOString(),
     };
     

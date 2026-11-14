@@ -179,14 +179,14 @@ const TEXTS: Record<AppLang, TranslationSchema> = {
     ]
   },
   ta: {
-    tagline: 'வைகுண்ட த்வார தரிசனம்',
+    tagline: 'வைகுண்ட துவார தரிசனம்',
     title: 'வைகுண்ட ஏகாதசி',
     daysLeft: 'நாட்கள் மீதமுள்ளன',
     targetDateStr: 'ஞாயிறு, 20 டிசம் 2026',
     fullTargetDateStr: 'ஞாயிற்றுக்கிழமை, 20 டிசம்பர் 2026',
     subtext: 'வைகுண்ட ஏகாதசி (முக்கோடி ஏகாதசி)',
     countdownTitle: 'வைகுண்ட ஏகாதசி கவுண்ட்டவுன்',
-    subtitle: 'திவ்ய வைகுண்ட த்வார தரிசனம்',
+    subtitle: 'திவ்ய வைகுண்ட துவார தரிசனம்',
     badgeText: 'சுவாமி வாரி திவ்ய தரிசனம்',
     goldDwaramText: 'தங்க வைகுண்ட துவாரம் விரைவில் திறக்கப்படும்',
     days: 'நாட்கள்',
@@ -224,12 +224,59 @@ const TEXTS: Record<AppLang, TranslationSchema> = {
       'செல்லுபடியாகும் புகைப்பட அடையாள சான்றை எடுத்து வாருங்கள்.',
       'சமீபத்திய ஏற்பாடுகளுக்கு அதிகாரப்பூர்வ TTD புதுப்பிப்புகளை சரிபார்க்கவும்.'
     ]
+  },
+  kn: {
+    tagline: 'ವೈಕುಂಠ ದ್ವಾರ ದರ್ಶನ',
+    title: 'ವೈಕುಂಠ ಏಕಾದಶಿ',
+    daysLeft: 'ದಿನಗಳು ಬಾಕಿ ಇವೆ',
+    targetDateStr: 'ಭಾನು, 20 ಡಿಸೆಂಬರ್ 2026',
+    fullTargetDateStr: 'ಭಾನುವಾರ, 20 ಡಿಸೆಂಬರ್ 2026',
+    subtext: 'ವೈಕುಂಠ ಏಕಾದಶಿ (ಮುಕ್ಕೋಟಿ ಏಕಾದಶಿ)',
+    countdownTitle: 'ವೈಕುಂಠ ಏಕಾದಶಿ ಕೌಂಟ್‌ಡೌನ್',
+    subtitle: 'ದಿವ್ಯ ವೈಕುಂಠ ದ್ವಾರ ದರ್ಶನ',
+    badgeText: 'ಸ್ವಾಮಿವರ ದಿವ್ಯ ದರ್ಶನ',
+    goldDwaramText: 'ಚಿನ್ನದ ವೈಕುಂಠ ದ್ವಾರ ಶೀಘ್ರದಲ್ಲೇ ತೆರೆಯಲಿದೆ',
+    days: 'ದಿನಗಳು',
+    hours: 'ಗಂಟೆಗಳು',
+    minutes: 'ನಿಮಿಷಗಳು',
+    seconds: 'ಸೆಕೆಂಡುಗಳು',
+    darshanOpens: 'ದರ್ಶನ ಪ್ರಾರಂಭ: 20 ಡಿಸೆಂಬರ್ 2026',
+    scheduleTitle: 'ವೇಳಾಪಟ್ಟಿ ಮತ್ತು ಮಾಹಿತಿ',
+    eventSchedule: 'ಕಾರ್ಯಕ್ರಮಗಳ ವೇಳಾಪಟ್ಟಿ',
+    importantInfo: 'ಮುಖ್ಯ ಮಾಹಿತಿ',
+    scheduleItems: [
+      {
+        date: '20',
+        month: 'ಡಿಸೆಂಬರ್ 2026',
+        title: 'ವೈಕುಂಠ ಏಕಾದಶಿ (ಮುಕ್ಕೋಟಿ ಏಕಾದಶಿ)',
+        desc: 'ಮುಂಜಾನೆ ಪವಿತ್ರ ವೈಕುಂಠ ದ್ವಾರ ತೆರೆಯಲಾಗುತ್ತದೆ. ಮಧ್ಯಾಹ್ನ ಸ್ವರ್ಣ ರಥೋತ್ಸವ.'
+      },
+      {
+        date: '21',
+        month: 'ಡಿಸೆಂಬರ್ 2026',
+        title: 'ವೈಕುಂಠ ದ್ವಾದಶಿ',
+        desc: 'ಮುಂಜಾನೆ ಸ್ವಾಮಿ ಪುಷ್ಕರಣಿಯಲ್ಲಿ ಸಾಂಪ್ರದಾಯಿಕ ಚಕ್ರಸ್ನಾನ.'
+      },
+      {
+        date: '22 – 29',
+        month: 'ಡಿಸೆಂಬರ್ 2026',
+        title: 'ವೈಕುಂಠ ದ್ವಾರ ದರ್ಶನ ಮುಂದುವರಿಕೆ',
+        desc: 'ಉಳಿದ ದಿನಗಳಲ್ಲಿ ಭಕ್ತರಿಗಾಗಿ ವೈಕುಂಠ ದ್ವಾರ ತೆರೆದಿರುತ್ತದೆ.'
+      }
+    ],
+    bulletPoints: [
+      'ಭಾರೀ ಜನಸಂದಣಿ ಇರುತ್ತದೆ — 10–12 ಗಂಟೆಗಳ ಕಾಲಾವಕಾಶ ಯೋಜಿಸಿ.',
+      'ಪ್ರತ್ಯೇಕ ಟಿಕೆಟ್ ಕಡ್ಡಾಯ — ಅಧಿಕೃತ TTD ವೆಬ್‌ಸೈಟ್ ಮಾತ್ರ ಗಮನಿಸಿ.',
+      'ಕ್ಯೂ ಸಾಲಿನ ನಿಯಮಗಳನ್ನು ಪಾಲಿಸಿ — ಸಿಬ್ಬಂದಿಯ ಸೂಚನೆಗಳನ್ನು ಅನುಸರಿಸಿ.',
+      'ಆಧಾರ್ ಕಾರ್ಡ್ ಕಡ್ಡಾಯ — ಮೂಲ ಗುರುತಿನ ಚೀಟಿ ತರಬೇಕು.',
+      'ದಲ್ಲಾಳಿಗಳನ್ನು ನಂಬಬೇಡಿ — ಅಧಿಕೃತ ಪ್ರಕಟಣೆಗಳನ್ನು ಮಾತ್ರ ಗಮನಿಸಿ.'
+    ]
   }
 };
 
 /**
  * Returns script-specific font weights and line heights following First Principles.
- * Indic scripts (Hindi/Tamil/Telugu) require slightly lighter font weight & more line height
+ * Indic scripts (Hindi/Tamil/Telugu/Kannada) require slightly lighter font weight & more line height
  * to prevent character stroke clipping and maintain pristine legibility.
  */
 function getTypographyStyle(lang: AppLang) {
@@ -250,6 +297,7 @@ function getTypographyStyle(lang: AppLang) {
         bodyLineHeight: 1.5,
         fontSizeScale: '100%'
       };
+    case 'kn':
     case 'te':
       return {
         titleWeight: 700,

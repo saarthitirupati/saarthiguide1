@@ -167,7 +167,7 @@ export default function ClientLayout({
     const hasSeenOnboarding = localStorage.getItem(obKey) || localStorage.getItem('hasSeenOnboarding');
     const name = localStorage.getItem(isApp ? 'saarthi_user_name_app' : 'saarthi_user_name') || localStorage.getItem('saarthi_user_name');
     const lang = localStorage.getItem('saarthi_user_language') as AppLang | null;
-    if (lang && ['en', 'te', 'hi', 'ta'].includes(lang)) setUserLanguage(lang);
+    if (lang && ['en', 'te', 'hi', 'ta', 'kn'].includes(lang)) setUserLanguage(lang);
 
     const existing = Boolean(hasSeenOnboarding && name);
     setIsExistingUser(existing);
