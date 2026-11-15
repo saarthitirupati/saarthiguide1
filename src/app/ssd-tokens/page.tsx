@@ -444,6 +444,26 @@ export default function SsdTokensStandalonePage() {
   };
   const tomorrowFormatted = `${tomorrow.getDate()} ${activeMonths[tomorrow.getMonth()]} ${tomorrow.getFullYear()} ${tomorrowSuffix[lang] || tomorrowSuffix.en}`;
 
+  // Dynamically resolve SSD issuing time and date updated by admin
+  const rawIssuing = (ssdTokenDetails?.startTime || nextTokenTime || '11:30 AM').trim();
+  const timeMatch = rawIssuing.match(/\b(\d{1,2}:\d{2}(?:\s*[AaPp][Mm])?)\b/) || rawIssuing.match(/\b(\d{1,2}\s*[AaPp][Mm])\b/);
+  const dynamicIssuingTime = timeMatch ? timeMatch[1] : (rawIssuing || '11:30 AM');
+
+  let dynamicIssuingDate = tomorrowFormatted;
+  const todayLabel = lang === 'te' ? '(ఈ రోజు)' : lang === 'kn' ? '(ಇಂದು)' : lang === 'ta' ? '(இன்று)' : lang === 'hi' ? '(आज)' : '(Today)';
+  if (/today/i.test(rawIssuing) || isIssuing) {
+    dynamicIssuingDate = `${todayFormatted} ${todayLabel}`;
+  } else if (/tomorrow/i.test(rawIssuing)) {
+    dynamicIssuingDate = tomorrowFormatted;
+  } else {
+    const explicitDateMatch = rawIssuing.match(/(\d{1,2})\s+([A-Za-z]+)(?:\s+(\d{4}))?/);
+    if (explicitDateMatch) {
+      dynamicIssuingDate = `${explicitDateMatch[1]} ${explicitDateMatch[2]} ${explicitDateMatch[3] || now.getFullYear()}`;
+    } else {
+      dynamicIssuingDate = isClosed ? tomorrowFormatted : `${todayFormatted} ${todayLabel}`;
+    }
+  }
+
   return (
     <div style={{
       maxWidth: '540px',
@@ -1051,7 +1071,7 @@ export default function SsdTokensStandalonePage() {
                 {t.nextReleaseTitle}
               </div>
               <div style={{ fontSize: '11px', color: '#64748B', fontWeight: 600 }}>
-                {tomorrowFormatted}
+                {dynamicIssuingDate}
               </div>
             </div>
           </div>
@@ -1074,7 +1094,7 @@ export default function SsdTokensStandalonePage() {
             }}
           >
             <Bell size={13} strokeWidth={2.5} />
-            <span>{nextTokenTime || '5:00 AM'}</span>
+            <span>{dynamicIssuingTime}</span>
             <ChevronRight size={13} strokeWidth={2.5} />
           </button>
         </section>

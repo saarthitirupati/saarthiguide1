@@ -300,7 +300,7 @@ export default function AdminSsdTokensPage() {
       const nowIso = new Date().toISOString();
       const payload = {
         ssdTokenStatus: globalStatus,
-        ssdNextTokenTime: nextBatchTime,
+        ssdNextTokenTime: ssdStartTime || nextBatchTime,
         ssdNotice: liveNotice,
         ssdTimingsGuide: `SSD Quota: 10,000 (Available: ${ssdAvailable}, Started at ${ssdStartTime || 'N/A'}, Completed at ${ssdCompletedTime || 'N/A'}, Status: ${ssdStatus}, Verified at: ${nowIso}), DD Quota: 2,000 (Available: ${ddAvailable}, Started at ${ddStartTime || 'N/A'}, Completed at ${ddCompletedTime || 'N/A'}, Status: ${ddStatus}, Verified at: ${nowIso})`,
         ssdAdvisoryTag: advisoryBadge,
@@ -690,7 +690,10 @@ export default function AdminSsdTokensPage() {
                   <input
                     type="text"
                     value={ssdStartTime}
-                    onChange={(e) => setSsdStartTime(e.target.value)}
+                    onChange={(e) => {
+                      setSsdStartTime(e.target.value);
+                      setNextBatchTime(e.target.value);
+                    }}
                     placeholder="e.g. 30 Oct 2026, 5:30 PM"
                     style={{
                       width: '100%',

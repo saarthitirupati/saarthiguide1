@@ -32,7 +32,7 @@
     }
   ],
   "ssdTokenStatus": "closed-for-day",
-  "ssdNextTokenTime": "5:30 PM ",
+  "ssdNextTokenTime": "11:30 AM",
   "ssdTokenSlots": [
     {
       "slotTime": "5:00 AM - 7:00 AM",
@@ -87,7 +87,7 @@
     "totalTokens": "10,000",
     "tokensLeft": "O",
     "status": "completed",
-    "startTime": "10 Nov 2026, 5:00 pm",
+    "startTime": "11:30 AM",
     "completedTime": "10 Nov 2026, 6:12pm",
     "lastVerifiedAt": "2026-11-10T12:47:18.023Z"
   },
@@ -95,7 +95,7 @@
     "totalTokens": "2,000",
     "tokensLeft": "0",
     "status": "completed",
-    "startTime": "10 Nov 2026, 5:00 pm",
+    "startTime": "11:30 AM",
     "completedTime": "10 Nov 2026, 6:10pm",
     "lastVerifiedAt": "2026-11-10T12:47:18.023Z"
   }
