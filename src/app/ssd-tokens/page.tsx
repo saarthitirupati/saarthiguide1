@@ -11,6 +11,7 @@ import {
 } from 'lucide-react';
 import { TirumalaStatus, TokenBatchDetails } from '@/lib/statusDb';
 import { useLanguage } from '@/lib/useLanguage';
+import styles from './ssdTokens.module.css';
 
 const COLLECTION_CENTRES = [
   {
@@ -467,199 +468,143 @@ export default function SsdTokensStandalonePage() {
   }
 
   return (
-    <div style={{
-      maxWidth: '540px',
-      margin: '0 auto',
-      minHeight: '100vh',
-      backgroundColor: '#F8FAF9',
-      color: '#0F172A',
-      paddingBottom: 'calc(80px + env(safe-area-inset-bottom, 16px))',
-      fontFamily: 'var(--font-sans, system-ui, -apple-system, sans-serif)'
-    }}>
+    <div className={styles.pageContainer}>
 
       {/* ── 1. SACRED GREEN HERO HEADER WITH PANORAMA ── */}
-      <header style={{
-        position: 'relative',
-        background: 'linear-gradient(135deg, #053320 0%, #0A4E33 55%, #0B5C3C 100%)',
-        color: '#FFFFFF',
-        padding: '16px 16px 28px 16px',
-        overflow: 'hidden',
-        boxShadow: '0 4px 20px rgba(10, 78, 51, 0.15)'
-      }}>
-        {/* Gopuram Sunrise Panorama Image on the Right with subtle fade */}
-        <div style={{
-          position: 'absolute',
-          top: 0,
-          right: 0,
-          bottom: 0,
-          width: '58%',
-          pointerEvents: 'none',
-          opacity: 0.95,
-          zIndex: 1
-        }}>
-          <img
-            src="/images/places/tirumala_sunrise_panorama.jpg"
-            alt="Tirumala Sunrise Panorama"
-            style={{
-              width: '100%',
-              height: '100%',
-              objectFit: 'cover',
-              objectPosition: 'right center',
-              maskImage: 'linear-gradient(to right, transparent 0%, rgba(0,0,0,0.4) 25%, rgba(0,0,0,1) 75%)',
-              WebkitMaskImage: 'linear-gradient(to right, transparent 0%, rgba(0,0,0,0.4) 25%, rgba(0,0,0,1) 75%)'
-            }}
-          />
-        </div>
-
-        {/* Top Control Bar: Back, Refresh, Share */}
-        <div style={{
-          position: 'relative',
-          zIndex: 2,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          marginBottom: '14px'
-        }}>
-          <button 
-            onClick={() => router.back()} 
-            style={{
-              background: 'rgba(255, 255, 255, 0.16)',
-              backdropFilter: 'blur(10px)',
-              WebkitBackdropFilter: 'blur(10px)',
-              border: '1px solid rgba(255, 255, 255, 0.25)',
-              color: '#FFFFFF',
-              width: '34px',
-              height: '34px',
-              borderRadius: '50%',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              cursor: 'pointer'
-            }}
-            aria-label="Go back"
-          >
-            <ArrowLeft size={17} strokeWidth={2.4} />
-          </button>
-
-          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <button 
-              onClick={() => fetchStatus(true)} 
-              style={{
-                background: 'rgba(255, 255, 255, 0.16)',
-                backdropFilter: 'blur(10px)',
-                WebkitBackdropFilter: 'blur(10px)',
-                border: '1px solid rgba(255, 255, 255, 0.25)',
-                color: '#FFFFFF',
-                width: '34px',
-                height: '34px',
-                borderRadius: '50%',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                cursor: 'pointer'
-              }}
-              title="Refresh status"
-            >
-              <RefreshCw size={15} className={refreshing ? 'spin' : ''} />
-            </button>
-            <button 
-              onClick={handleShare} 
-              style={{
-                background: 'rgba(255, 255, 255, 0.16)',
-                backdropFilter: 'blur(10px)',
-                WebkitBackdropFilter: 'blur(10px)',
-                border: '1px solid rgba(255, 255, 255, 0.25)',
-                color: '#FFFFFF',
-                width: '34px',
-                height: '34px',
-                borderRadius: '50%',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                cursor: 'pointer'
-              }}
-              title="Share"
-            >
-              {copied ? <Check size={15} color="#86EFAC" /> : <Share2 size={15} />}
-            </button>
+      <header className={styles.heroHeader}>
+        <div className={styles.heroInner}>
+          {/* Gopuram Sunrise Panorama Image on the Right with subtle fade */}
+          <div className={styles.panoramaBg}>
+            <img
+              src="/images/places/tirumala_sunrise_panorama.jpg"
+              alt="Tirumala Sunrise Panorama"
+              className={styles.panoramaImg}
+            />
           </div>
-        </div>
 
-        {/* Hero Title & Status Lockup */}
-        <div style={{
-          position: 'relative',
-          zIndex: 2,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          gap: '12px'
-        }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+          {/* Top Control Bar: Back, Refresh, Share */}
+          <div className={styles.heroNavRow}>
+            <button 
+              onClick={() => router.back()} 
+              style={{
+                background: 'rgba(255, 255, 255, 0.16)',
+                backdropFilter: 'blur(10px)',
+                WebkitBackdropFilter: 'blur(10px)',
+                border: '1px solid rgba(255, 255, 255, 0.25)',
+                color: '#FFFFFF',
+                width: '34px',
+                height: '34px',
+                borderRadius: '50%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer'
+              }}
+              aria-label="Go back"
+            >
+              <ArrowLeft size={17} strokeWidth={2.4} />
+            </button>
+
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <button 
+                onClick={() => fetchStatus(true)} 
+                style={{
+                  background: 'rgba(255, 255, 255, 0.16)',
+                  backdropFilter: 'blur(10px)',
+                  WebkitBackdropFilter: 'blur(10px)',
+                  border: '1px solid rgba(255, 255, 255, 0.25)',
+                  color: '#FFFFFF',
+                  width: '34px',
+                  height: '34px',
+                  borderRadius: '50%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: 'pointer'
+                }}
+                title="Refresh status"
+              >
+                <RefreshCw size={15} className={refreshing ? 'spin' : ''} />
+              </button>
+              <button 
+                onClick={handleShare} 
+                style={{
+                  background: 'rgba(255, 255, 255, 0.16)',
+                  backdropFilter: 'blur(10px)',
+                  WebkitBackdropFilter: 'blur(10px)',
+                  border: '1px solid rgba(255, 255, 255, 0.25)',
+                  color: '#FFFFFF',
+                  width: '34px',
+                  height: '34px',
+                  borderRadius: '50%',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  cursor: 'pointer'
+                }}
+                title="Share"
+              >
+                {copied ? <Check size={15} color="#86EFAC" /> : <Share2 size={15} />}
+              </button>
+            </div>
+          </div>
+
+          {/* Hero Title & Status Lockup */}
+          <div className={styles.heroTitleRow}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+              <div style={{
+                width: '42px',
+                height: '42px',
+                borderRadius: '13px',
+                background: 'rgba(255, 255, 255, 0.16)',
+                backdropFilter: 'blur(8px)',
+                border: '1px solid rgba(255, 255, 255, 0.28)',
+                color: '#86EFAC',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                flexShrink: 0
+              }}>
+                <Ticket size={22} strokeWidth={2.2} />
+              </div>
+              <div>
+                <h1 className={styles.heroTitle}>
+                  {t.headerTitle}
+                </h1>
+                <p className={styles.heroSubtitle}>
+                  {t.subtitle}
+                </p>
+              </div>
+            </div>
+
+            {/* Closed / Live Status Pill */}
             <div style={{
-              width: '42px',
-              height: '42px',
-              borderRadius: '13px',
-              background: 'rgba(255, 255, 255, 0.16)',
-              backdropFilter: 'blur(8px)',
-              border: '1px solid rgba(255, 255, 255, 0.28)',
-              color: '#86EFAC',
-              display: 'flex',
+              display: 'inline-flex',
               alignItems: 'center',
-              justifyContent: 'center',
+              gap: '6px',
+              padding: '5px 12px',
+              borderRadius: '9999px',
+              backgroundColor: isIssuing ? '#DCFCE7' : isPaused ? '#FEF3C7' : '#FEE2E2',
+              color: isIssuing ? '#15803D' : isPaused ? '#B45309' : '#B91C1C',
+              fontSize: '11.5px',
+              fontWeight: 800,
+              boxShadow: '0 2px 6px rgba(0,0,0,0.12)',
               flexShrink: 0
             }}>
-              <Ticket size={22} strokeWidth={2.2} />
+              <span style={{
+                width: '7px',
+                height: '7px',
+                borderRadius: '50%',
+                backgroundColor: isIssuing ? '#16A34A' : isPaused ? '#D97706' : '#DC2626'
+              }} />
+              <span>
+                {isIssuing
+                  ? t.issuing
+                  : isPaused
+                    ? t.paused
+                    : t.closed}
+              </span>
             </div>
-            <div>
-              <h1 style={{
-                fontSize: '18.5px',
-                fontWeight: 800,
-                color: '#FFFFFF',
-                margin: 0,
-                letterSpacing: '-0.01em',
-                lineHeight: 1.2
-              }}>
-                {t.headerTitle}
-              </h1>
-              <p style={{
-                fontSize: '12px',
-                color: '#D1FAE5',
-                fontWeight: 500,
-                margin: '2px 0 0 0',
-                opacity: 0.95
-              }}>
-                {t.subtitle}
-              </p>
-            </div>
-          </div>
-
-          {/* Closed / Live Status Pill */}
-          <div style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '6px',
-            padding: '5px 12px',
-            borderRadius: '9999px',
-            backgroundColor: isIssuing ? '#DCFCE7' : isPaused ? '#FEF3C7' : '#FEE2E2',
-            color: isIssuing ? '#15803D' : isPaused ? '#B45309' : '#B91C1C',
-            fontSize: '11.5px',
-            fontWeight: 800,
-            boxShadow: '0 2px 6px rgba(0,0,0,0.12)',
-            flexShrink: 0
-          }}>
-            <span style={{
-              width: '7px',
-              height: '7px',
-              borderRadius: '50%',
-              backgroundColor: isIssuing ? '#16A34A' : isPaused ? '#D97706' : '#DC2626'
-            }} />
-            <span>
-              {isIssuing
-                ? t.issuing
-                : isPaused
-                  ? t.paused
-                  : t.closed}
-            </span>
           </div>
         </div>
       </header>
@@ -677,20 +622,13 @@ export default function SsdTokensStandalonePage() {
       )}
 
       {/* ── MAIN CONTENT CONTAINER (WHITE ROUNDED SHELL) ── */}
-      <main style={{
-        marginTop: '-16px',
-        position: 'relative',
-        zIndex: 10,
-        backgroundColor: '#FFFFFF',
-        borderRadius: '24px 24px 0 0',
-        padding: '16px 14px 24px 14px',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: '12px',
-        boxShadow: '0 -4px 16px rgba(0, 0, 0, 0.04)'
-      }}>
+      <div className={styles.mainWrapper}>
+        <main className={styles.mainShell}>
+          <div className={styles.dashboardGrid}>
 
-        {/* 🕒 Timestamp Pill */}
+            {/* ── LEFT COLUMN: LIVE METRICS, STATUS & ADVISORY ── */}
+            <div className={styles.column}>
+              {/* 🕒 Timestamp Pill */}
         <div style={{
           display: 'inline-flex',
           alignItems: 'center',
@@ -1148,9 +1086,13 @@ export default function SsdTokensStandalonePage() {
             </p>
           </div>
         </section>
+      </div>
+
+      {/* ── RIGHT COLUMN: PHYSICAL CENTRES, RULES & JOURNEY ── */}
+      <div className={styles.column}>
 
         {/* ── CARD 5: TIRUPATI PHYSICAL TOKEN COUNTERS ── */}
-        <section style={{ marginTop: '6px' }}>
+        <section>
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
             <h3 style={{ fontSize: '13.5px', fontWeight: 800, color: '#0F172A', margin: 0, display: 'flex', alignItems: 'center', gap: '6px' }}>
               <MapPin size={15} color="#059669" />
@@ -1285,7 +1227,10 @@ export default function SsdTokensStandalonePage() {
           </Link>
         </div>
 
-      </main>
+            </div>
+          </div>
+        </main>
+      </div>
     </div>
   );
 }
