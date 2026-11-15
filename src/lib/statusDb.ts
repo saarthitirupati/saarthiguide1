@@ -46,6 +46,7 @@ export interface TirumalaStatus {
   darshans: DarshanTypeStatus[];
   ssdTokenStatus: 'issuing' | 'paused' | 'closed-for-day' | 'suspended';
   ssdNextTokenTime: string;
+  ssdNextReleaseDate?: string;
   ssdTokenSlots: SsdTokenSlot[];
   ssdNotice: string;
   ssdTimingsGuide: string;
@@ -75,6 +76,7 @@ const DEFAULT_STATUS: TirumalaStatus = {
   ],
   ssdTokenStatus: 'issuing',
   ssdNextTokenTime: '2:00 PM',
+  ssdNextReleaseDate: '',
   ssdTokenSlots: [
     { slotTime: '5:00 AM - 7:00 AM', status: 'closed', tokensLeft: 'Full' },
     { slotTime: '7:00 AM - 9:00 AM', status: 'closed', tokensLeft: 'Full' },
@@ -218,6 +220,7 @@ async function refreshFromSupabase(): Promise<void> {
       darshanSpeed: (metrics.darshan_speed || memoryStatus.darshanSpeed || 'normal') as TirumalaStatus['darshanSpeed'],
       ssdTokenStatus: resolvedSsdStatus,
       ssdNextTokenTime: resolvedNextTokenTime,
+      ssdNextReleaseDate: metrics.ssd_next_release_date !== undefined ? metrics.ssd_next_release_date : memoryStatus.ssdNextReleaseDate,
       ssdTokenSlots: ssdSlots && ssdSlots.length > 0 ? ssdSlots : memoryStatus.ssdTokenSlots,
       ssdNotice: resolvedNotice,
       ssdTimingsGuide: resolvedTimingsGuide,
@@ -307,6 +310,7 @@ export async function updateStatus(updates: Partial<TirumalaStatus>): Promise<Ti
     // Persist SSD and other fields as columns + JSON blob
     if (updates.ssdTokenStatus !== undefined) payload.ssd_token_status = updates.ssdTokenStatus;
     if (updates.ssdNextTokenTime !== undefined) payload.ssd_next_token_time = updates.ssdNextTokenTime;
+    if (updates.ssdNextReleaseDate !== undefined) (payload as any).ssd_next_release_date = updates.ssdNextReleaseDate;
     if (updates.ssdTokenSlots !== undefined) payload.ssd_token_slots = JSON.stringify(updates.ssdTokenSlots);
     if (updates.ssdNotice !== undefined) payload.ssd_notice = updates.ssdNotice;
     if (updates.ssdTimingsGuide !== undefined) payload.ssd_timings_guide = updates.ssdTimingsGuide;

@@ -16,6 +16,7 @@ export async function GET() {
     return NextResponse.json({
       ssdTokenStatus: status.ssdTokenStatus || 'closed-for-day',
       ssdNextTokenTime: status.ssdNextTokenTime || '',
+      ssdNextReleaseDate: (status as any).ssdNextReleaseDate || '',
       ssdTokenSlots: status.ssdTokenSlots || [],
       ssdNotice: status.ssdNotice || '',
       ssdTimingsGuide: status.ssdTimingsGuide || '',
@@ -44,6 +45,7 @@ export async function POST(req: Request) {
     const {
       ssdTokenStatus,
       ssdNextTokenTime,
+      ssdNextReleaseDate,
       ssdNotice,
       ssdTimingsGuide,
       ssdAdvisoryTag,
@@ -60,6 +62,7 @@ export async function POST(req: Request) {
     const updates: any = {};
     if (ssdTokenStatus !== undefined) updates.ssdTokenStatus = ssdTokenStatus;
     if (ssdNextTokenTime !== undefined) updates.ssdNextTokenTime = ssdNextTokenTime;
+    if (ssdNextReleaseDate !== undefined) updates.ssdNextReleaseDate = ssdNextReleaseDate;
     if (ssdNotice !== undefined) updates.ssdNotice = ssdNotice;
     if (ssdTimingsGuide !== undefined) updates.ssdTimingsGuide = ssdTimingsGuide;
     if (ssdAdvisoryTag !== undefined) updates.ssdAdvisoryTag = ssdAdvisoryTag;

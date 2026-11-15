@@ -375,6 +375,7 @@ export default function SsdTokensStandalonePage() {
   const [, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [lastSyncTime, setLastSyncTime] = useState<string>('Live Updating...');
+  const [manualReleaseDate, setManualReleaseDate] = useState<string>('');
   const [copied, setCopied] = useState(false);
 
   const fetchStatus = async (isManual = false) => {
@@ -385,6 +386,7 @@ export default function SsdTokensStandalonePage() {
         const data: TirumalaStatus = await res.json();
         if (data.ssdTokenStatus) setSsdStatus(data.ssdTokenStatus);
         if (data.ssdNextTokenTime) setNextTokenTime(data.ssdNextTokenTime);
+        if (data.ssdNextReleaseDate) setManualReleaseDate(data.ssdNextReleaseDate);
         if (data.ssdNotice) setNotice(data.ssdNotice);
         if (data.ssdTokenDetails) setSsdTokenDetails(data.ssdTokenDetails);
         if (data.ddTokenDetails) setDdTokenDetails(data.ddTokenDetails);
@@ -1071,7 +1073,7 @@ export default function SsdTokensStandalonePage() {
                 {t.nextReleaseTitle}
               </div>
               <div style={{ fontSize: '11px', color: '#64748B', fontWeight: 600 }}>
-                {dynamicIssuingDate}
+                {manualReleaseDate || dynamicIssuingDate}
               </div>
             </div>
           </div>
@@ -1094,7 +1096,7 @@ export default function SsdTokensStandalonePage() {
             }}
           >
             <Bell size={13} strokeWidth={2.5} />
-            <span>{dynamicIssuingTime}</span>
+            <span>{nextTokenTime || dynamicIssuingTime}</span>
             <ChevronRight size={13} strokeWidth={2.5} />
           </button>
         </section>

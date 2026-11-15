@@ -100,6 +100,7 @@ export default function AdminSsdTokensPage() {
   // 2. Live Notice & Metadata
   const [liveNotice, setLiveNotice] = useState<string>('SSD 10K & DD 2K Tokens Quota completed. Next update at 5:30 PM tomorrow.');
   const [nextBatchTime, setNextBatchTime] = useState<string>('5:30 PM');
+  const [nextReleaseDate, setNextReleaseDate] = useState<string>('16 Nov 2026 (Tomorrow)');
   const [advisoryBadge, setAdvisoryBadge] = useState<string>('Quota Completed');
   const [modeBadge, setModeBadge] = useState<string>('Tokens Not Available');
 
@@ -190,6 +191,7 @@ export default function AdminSsdTokensPage() {
         if (data.ssdTokenStatus) setGlobalStatus(data.ssdTokenStatus);
         if (data.ssdNotice !== undefined && data.ssdNotice.trim() !== '') setLiveNotice(data.ssdNotice);
         if (data.ssdNextTokenTime) setNextBatchTime(data.ssdNextTokenTime);
+        if (data.ssdNextReleaseDate) setNextReleaseDate(data.ssdNextReleaseDate);
         if (data.ssdAdvisoryTag !== undefined) setAdvisoryBadge(data.ssdAdvisoryTag);
         if (data.ssdModeBadge !== undefined) setModeBadge(data.ssdModeBadge);
 
@@ -300,7 +302,8 @@ export default function AdminSsdTokensPage() {
       const nowIso = new Date().toISOString();
       const payload = {
         ssdTokenStatus: globalStatus,
-        ssdNextTokenTime: ssdStartTime || nextBatchTime,
+        ssdNextTokenTime: nextBatchTime || ssdStartTime,
+        ssdNextReleaseDate: nextReleaseDate,
         ssdNotice: liveNotice,
         ssdTimingsGuide: `SSD Quota: 10,000 (Available: ${ssdAvailable}, Started at ${ssdStartTime || 'N/A'}, Completed at ${ssdCompletedTime || 'N/A'}, Status: ${ssdStatus}, Verified at: ${nowIso}), DD Quota: 2,000 (Available: ${ddAvailable}, Started at ${ddStartTime || 'N/A'}, Completed at ${ddCompletedTime || 'N/A'}, Status: ${ddStatus}, Verified at: ${nowIso})`,
         ssdAdvisoryTag: advisoryBadge,
@@ -1146,6 +1149,113 @@ export default function AdminSsdTokensPage() {
             RIGHT COLUMN: Live Notice, Notification Preview & History
             ══════════════════════════════════════════════════════════ */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+
+          {/* ── CARD: NEXT EXPECTED RELEASE (MANUAL CONTROL) ── */}
+          <div style={{ background: '#FFFFFF', border: '1.5px solid #FDE68A', borderRadius: '18px', padding: '18px', boxShadow: '0 1px 4px rgba(217, 119, 6, 0.05)' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+              <Clock size={18} color="#D97706" />
+              <h3 style={{ fontSize: '14.5px', fontWeight: 800, color: '#92400E', margin: 0 }}>
+                Next Expected Release <span style={{ fontSize: '11px', fontWeight: 600, color: '#B45309' }}>(Card on /ssd-tokens)</span>
+              </h3>
+            </div>
+            <p style={{ fontSize: '12px', color: '#64748B', margin: '0 0 14px 0', lineHeight: 1.4 }}>
+              Manually change the release date and time shown on the user-facing SSD tokens banner.
+            </p>
+
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: '12px' }}>
+              <div>
+                <label style={{ fontSize: '11.5px', fontWeight: 700, color: '#334155', display: 'block', marginBottom: '5px' }}>
+                  Release Time (Button)
+                </label>
+                <input
+                  type="text"
+                  value={nextBatchTime}
+                  onChange={(e) => setNextBatchTime(e.target.value)}
+                  placeholder="e.g. 5:30 PM or 11:30 AM"
+                  style={{
+                    width: '100%',
+                    padding: '8px 10px',
+                    borderRadius: '8px',
+                    border: '1.5px solid #CBD5E1',
+                    fontSize: '12.5px',
+                    fontWeight: 700,
+                    color: '#0F172A',
+                    boxSizing: 'border-box'
+                  }}
+                />
+              </div>
+
+              <div>
+                <label style={{ fontSize: '11.5px', fontWeight: 700, color: '#334155', display: 'block', marginBottom: '5px' }}>
+                  Release Date (Subtitle)
+                </label>
+                <input
+                  type="text"
+                  value={nextReleaseDate}
+                  onChange={(e) => setNextReleaseDate(e.target.value)}
+                  placeholder="e.g. 16 Nov 2026 (Tomorrow)"
+                  style={{
+                    width: '100%',
+                    padding: '8px 10px',
+                    borderRadius: '8px',
+                    border: '1.5px solid #CBD5E1',
+                    fontSize: '12.5px',
+                    fontWeight: 700,
+                    color: '#0F172A',
+                    boxSizing: 'border-box'
+                  }}
+                />
+              </div>
+            </div>
+
+            {/* Quick helper buttons */}
+            <div style={{ display: 'flex', gap: '6px', marginTop: '10px', flexWrap: 'wrap' }}>
+              <button
+                type="button"
+                onClick={() => {
+                  const d = new Date();
+                  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                  setNextReleaseDate(`${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()} (Today)`);
+                }}
+                style={{ fontSize: '11px', padding: '4px 8px', borderRadius: '6px', border: '1px solid #CBD5E1', background: '#F8FAFC', cursor: 'pointer', fontWeight: 600, color: '#334155' }}
+              >
+                Set Today
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  const d = new Date();
+                  d.setDate(d.getDate() + 1);
+                  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                  setNextReleaseDate(`${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()} (Tomorrow)`);
+                }}
+                style={{ fontSize: '11px', padding: '4px 8px', borderRadius: '6px', border: '1px solid #CBD5E1', background: '#F8FAFC', cursor: 'pointer', fontWeight: 600, color: '#334155' }}
+              >
+                Set Tomorrow
+              </button>
+              <button
+                type="button"
+                onClick={() => setNextBatchTime('5:30 PM')}
+                style={{ fontSize: '11px', padding: '4px 8px', borderRadius: '6px', border: '1px solid #CBD5E1', background: '#F8FAFC', cursor: 'pointer', fontWeight: 600, color: '#334155' }}
+              >
+                5:30 PM
+              </button>
+              <button
+                type="button"
+                onClick={() => setNextBatchTime('11:30 AM')}
+                style={{ fontSize: '11px', padding: '4px 8px', borderRadius: '6px', border: '1px solid #CBD5E1', background: '#F8FAFC', cursor: 'pointer', fontWeight: 600, color: '#334155' }}
+              >
+                11:30 AM
+              </button>
+              <button
+                type="button"
+                onClick={() => setNextBatchTime('5:00 AM')}
+                style={{ fontSize: '11px', padding: '4px 8px', borderRadius: '6px', border: '1px solid #CBD5E1', background: '#F8FAFC', cursor: 'pointer', fontWeight: 600, color: '#334155' }}
+              >
+                5:00 AM
+              </button>
+            </div>
+          </div>
           
           {/* ── CARD 1: LIVE NOTICE / ALERT (OPTIONAL) ── */}
           <div style={{ background: '#FFFFFF', border: '1px solid #E2E8F0', borderRadius: '18px', padding: '18px', boxShadow: '0 1px 3px rgba(0,0,0,0.02)' }}>
