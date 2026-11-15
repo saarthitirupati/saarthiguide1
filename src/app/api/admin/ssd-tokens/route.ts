@@ -101,7 +101,7 @@ export async function POST(req: Request) {
       const dispatchResult = await pushNotifyAll({
         title: finalTitle,
         body: finalBody,
-        url: '/darshan/ssd-token',
+        url: '/ssd-tokens',
         tag: broadcastTag,
         category: 'High Priority'
       });
