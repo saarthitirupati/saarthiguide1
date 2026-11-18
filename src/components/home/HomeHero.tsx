@@ -2307,10 +2307,11 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
       {(() => {
         const sarvaWait = getDarshanWait('sarva');
         const sarvaHours = getMaxWaitHours(sarvaWait);
-        const isSsdClosed = ssdTokenStatus === 'closed-for-day' || ssdTokenStatus === 'closed';
+        const isSsdClosed = ssdTokenStatus === 'closed-for-day' || ssdTokenStatus === 'closed' || ssdTokenStatus === 'suspended';
         const isSsdOpen = ssdTokenStatus === 'issuing';
-        const isHeavyRush = sarvaHours >= 8 || crowdLevel === 'high' || crowdLevel === 'very-high';
-        const isTrulyLow = sarvaHours > 0 && sarvaHours < 4 && crowdLevel === 'low';
+        const isVeryHeavyRush = sarvaHours >= 10 || crowdLevel === 'very-high';
+        const isModerateRush = sarvaHours >= 6 && sarvaHours < 10;
+        const isFastQueue = sarvaHours > 0 && sarvaHours <= 5;
 
         // Day-of-week auspicious temple mapping (e.g. Monday: Shiva/Kapila, Tuesday: Hanuman/Japali, etc.)
         const dayGuide = getDayTempleGuidance(new Date());
@@ -2327,7 +2328,37 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
             : lang === 'ta'
             ? 'இப்போதே SSD கவுண்டருக்குச் செல்லவும். இலவச டோக்கன்கள் வழங்கப்படுகின்றன.'
             : 'Head to SSD Counter now. Free token slots are issuing.';
-        } else if (isHeavyRush || isSsdClosed) {
+        } else if (isVeryHeavyRush) {
+          guidanceHeadline = lang === 'te'
+            ? `క్యూ సమయం ఎక్కువ (${sarvaWait || '12-15 గంటలు'}) — ముందుగా తిరుపతి దేవాలయాలు దర్శించండి.`
+            : lang === 'kn'
+            ? `ಸರತಿ ಸಾಲಿನ ಸಮಯ ಹೆಚ್ಚು (${sarvaWait || '12-15 ಗಂಟೆ'}) — ಮೊದಲು ತಿರುಪತಿ ದೇವಸ್ಥಾನಗಳನ್ನು ಸಂದರ್ಶಿಸಿ.`
+            : lang === 'hi'
+            ? `कतार प्रतीक्षा अधिक है (${sarvaWait || '12-15 घंटे'}) — पहले तिरुपति के तीर्थ दर्शन करें।`
+            : lang === 'ta'
+            ? `வரிசை நேரம் அதிகம் (${sarvaWait || '12-15 மணி'}) — முதலில் திருப்பதி ஆலயங்களை தரிசிக்கவும்.`
+            : `Queue wait is high (${sarvaWait || '12–15h'}) — explore Tirupati temples first.`;
+        } else if (isFastQueue) {
+          guidanceHeadline = lang === 'te' 
+            ? 'క్యూ త్వరగా కదులుతోంది — ఇప్పుడే తిరుమల దర్శనానికి వెళ్లండి.' 
+            : lang === 'kn'
+            ? 'ಸರತಿ ಸಾಲು ವೇಗವಾಗಿ ಚಲಿಸುತ್ತಿದೆ — ಈಗಲೇ ತಿರುಮಲ ದರ್ಶನಕ್ಕೆ ತೆರಳಿ.'
+            : lang === 'hi'
+            ? 'कतार तेज़ी से चल रही है — अभी तिरुमला दर्शन के लिए निकलें।'
+            : lang === 'ta'
+            ? 'வரிசை வேகமாக நகர்கிறது — இப்போதே திருமலை தரிசனத்திற்குச் செல்லுங்கள்.'
+            : 'Queues are moving fast — head to Tirumala for darshan now.';
+        } else if (isModerateRush) {
+          guidanceHeadline = lang === 'te'
+            ? `క్యూ సాధారణంగా సాగుతోంది (${sarvaWait || '6-9 గంటలు'}) — ఆధార్ & సాంప్రదాయ దుస్తులు సిద్ధంగా ఉంచుకోండి.`
+            : lang === 'kn'
+            ? `ಸರತಿ ಸಾಲು ಸ್ಥಿರವಾಗಿದೆ (${sarvaWait || '6-9 ಗಂಟೆ'}) — ಆಧಾರ್ ಮತ್ತು ಸಾಂಪ್ರದಾಯಿಕ ಉಡುಪು ಸಿದ್ಧವಾಗಿರಲಿ.`
+            : lang === 'hi'
+            ? `कतार सामान्य गति से है (${sarvaWait || '6-9 घंटे'}) — आधार व पारंपरिक वस्त्र तैयार रखें।`
+            : lang === 'ta'
+            ? `வரிசை சீராக இயங்குகிறது (${sarvaWait || '6-9 மணி'}) — ஆதார் மற்றும் பாரம்பரிய ஆடையை தயார் செய்க.`
+            : `Steady queue flow (${sarvaWait || '6–9h'}) — keep Aadhaar & traditional dress ready.`;
+        } else {
           guidanceHeadline = lang === 'te' 
             ? dayGuide.headlineTe 
             : lang === 'kn'
@@ -2337,19 +2368,10 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
             : lang === 'ta'
             ? (dayGuide.headlineTa || dayGuide.headlineEn)
             : dayGuide.headlineEn;
-        } else if (isTrulyLow) {
-          guidanceHeadline = lang === 'te' 
-            ? 'దర్శనానికి అనుకూల సమయం! నేరుగా శ్రీవారి క్యూలో ప్రవేశించండి.' 
-            : lang === 'kn'
-            ? 'ದರ್ಶನಕ್ಕೆ ಅತ್ಯಂತ ಸೂಕ್ತ ಸಮಯ! ನೇರವಾಗಿ ಶ್ರೀವಾರಿ ಸರತಿ ಸಾಲಿಗೆ ಪ್ರವೇಶಿಸಿ.'
-            : lang === 'hi'
-            ? 'दर्शन का उत्तम समय! सीधे श्रीवारी कतार में प्रवेश करें।'
-            : lang === 'ta'
-            ? 'தரிசனத்திற்கு உகந்த நேரம்! நேரடியாக ஸ்ரீவாரி வரிசையில் நுழையவும்.'
-            : 'Optimal Darshan window! Enter Srivari queue directly now.';
         }
 
         const getShortShrine = (en: string, te: string) => {
+          if (en.includes('ISKCON')) return { en: 'ISKCON Tirupati', te: 'ఇస్కాన్ తిరుపతి', kn: 'ಇಸ್ಕಾನ್ ತಿರುಪತಿ', hi: 'इस्कॉन तिरुपति', ta: 'இஸ்கான் திருப்பதி' };
           if (en.includes('Papavinasam')) return { en: 'Papavinasam', te: 'పాపవినాశనం', kn: 'ಪಾಪವಿನಾಶನಂ', hi: 'पापविनाशनम', ta: 'பாபவிநாசனம்' };
           if (en.includes('Kapila')) return { en: 'Kapila Theertham', te: 'కపిలతీర్థం', kn: 'ಕಪಿಲ ತೀರ್ಥಂ', hi: 'कपिला तीर्थम', ta: 'கபில தீர்த்தம்' };
           if (en.includes('Japali') || en.includes('Bedi')) return { en: 'Japali Theertham', te: 'జాపాలి తీర్థం', kn: 'ಜಾಪಾಲಿ ತೀರ್ಥಂ', hi: 'जापाली तीर्थम', ta: 'ஜாபாலி தீர்த்தம்' };
@@ -2529,7 +2551,7 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
               </div>
 
               <div style={{ display: 'flex', alignItems: 'center', gap: '5px' }}>
-                {/* Weather Capsule */}
+                {/* Live Wait / Weather Capsule */}
                 <div style={{
                   display: 'inline-flex',
                   alignItems: 'center',
@@ -2542,8 +2564,17 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
                   fontWeight: 700,
                   color: '#92400E'
                 }}>
-                  {isRainy ? <CloudRain size={11} color="#0284C7" /> : <Sun size={11} color="#D97706" />}
-                  <span>{weatherTemp || '24°C'}</span>
+                  {weatherTemp ? (
+                    <>
+                      {isRainy ? <CloudRain size={11} color="#0284C7" /> : <Sun size={11} color="#D97706" />}
+                      <span>{weatherTemp}</span>
+                    </>
+                  ) : (
+                    <>
+                      <Users size={11} color="#D97706" />
+                      <span>{sarvaWait ? `${sarvaWait} Wait` : (crowdLevel === 'high' ? 'Peak Season' : 'Steady Flow')}</span>
+                    </>
+                  )}
                 </div>
 
                 {/* Share Pill Button */}
@@ -2636,36 +2667,32 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
             }}>
               {visualCards.map((card: any, idx: number) => (
                 <div key={idx} style={{
-                  backgroundColor: '#F8FAFC',
-                  border: '1px solid #F1F5F9',
+                  backgroundColor: '#FFFFFF',
+                  border: '1px solid #E2E8F0',
                   borderRadius: '10px',
                   padding: '6px 7px',
                   display: 'flex',
                   flexDirection: 'column',
                   justifyContent: 'space-between',
                   minHeight: '46px',
-                  boxShadow: '0 1px 2px rgba(0,0,0,0.02)'
+                  boxShadow: '0 1px 3px rgba(15, 23, 42, 0.03)'
                 }}>
                   <div style={{
                     display: 'flex',
                     alignItems: 'center',
-                    justifyContent: 'space-between',
                     gap: '3px',
                     marginBottom: '2px'
                   }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '3px' }}>
-                      {card.icon}
-                      <span style={{
-                        fontSize: '9.5px',
-                        fontWeight: 600,
-                        color: '#64748B',
-                        whiteSpace: 'nowrap',
-                        letterSpacing: '-0.01em'
-                      }}>
-                        {card.title}
-                      </span>
-                    </div>
-                    <ChevronRight size={10} color="#94A3B8" strokeWidth={2.4} style={{ flexShrink: 0 }} />
+                    {card.icon}
+                    <span style={{
+                      fontSize: '9.5px',
+                      fontWeight: 600,
+                      color: '#64748B',
+                      whiteSpace: 'nowrap',
+                      letterSpacing: '-0.01em'
+                    }}>
+                      {card.title}
+                    </span>
                   </div>
                   <div style={{
                     fontSize: '11px',
