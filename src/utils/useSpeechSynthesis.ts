@@ -129,12 +129,17 @@ export const useSpeechSynthesis = () => {
       fallbackText
     } = options;
 
-    const availableVoices = voices.length > 0 ? voices : window.speechSynthesis.getVoices();
+    const availableVoices = voices.length > 0 ? voices : (typeof window !== 'undefined' ? window.speechSynthesis.getVoices() : []);
 
-    const hasIndicScript = /[\u0C00-\u0C7F\u0900-\u097F]/.test(text);
-    const hasMatchingIndicVoice = availableVoices.some(v =>
-      v.lang.toLowerCase().startsWith('te') || v.lang.toLowerCase().startsWith('hi') || v.lang.toLowerCase().startsWith('sa')
-    );
+    const hasIndicScript = /[\u0900-\u097F\u0A80-\u0AFF\u0B00-\u0B7F\u0B80-\u0BFF\u0C00-\u0C7F\u0C80-\u0CFF]/.test(text);
+    const targetBase = (lang || 'en').toLowerCase().split('-')[0];
+    const hasMatchingIndicVoice = availableVoices.some(v => {
+      const vLang = v.lang.toLowerCase();
+      if (targetBase === 'sa') {
+        return vLang.startsWith('sa') || vLang.startsWith('hi');
+      }
+      return vLang.startsWith(targetBase);
+    });
 
     let targetText = text;
     let targetLang = lang;
@@ -215,10 +220,18 @@ export const useSpeechSynthesis = () => {
 
       if (ranked.length > 0) {
         utterance.voice = ranked[0];
+        // Ensure utterance.lang is compatible with the voice so Chrome/Windows doesn't drop it
+        if (!hasMatchingIndicVoice && utterance.voice.lang) {
+          utterance.lang = utterance.voice.lang;
+        }
       }
     }
 
     utteranceRef.current = utterance;
+    // Prevent Chromium garbage collection bug dropping voice mid-speech
+    if (typeof window !== 'undefined') {
+      (window as any).__saarthiUtterance = utterance;
+    }
 
     utterance.onstart = () => {
       setIsSpeaking(true);
@@ -228,6 +241,9 @@ export const useSpeechSynthesis = () => {
       setIsSpeaking(false);
       stopSpeechDevotionalAmbient();
       utteranceRef.current = null;
+      if (typeof window !== 'undefined') {
+        (window as any).__saarthiUtterance = null;
+      }
     };
     utterance.onerror = (e) => {
       if (e.error !== 'interrupted') {
@@ -236,9 +252,26 @@ export const useSpeechSynthesis = () => {
       setIsSpeaking(false);
       stopSpeechDevotionalAmbient();
       utteranceRef.current = null;
+      if (typeof window !== 'undefined') {
+        (window as any).__saarthiUtterance = null;
+      }
     };
 
-    window.speechSynthesis.speak(utterance);
+    // Unstick Chrome / WebKit paused state before speaking
+    try {
+      if (window.speechSynthesis.paused) {
+        window.speechSynthesis.resume();
+      }
+      window.speechSynthesis.cancel();
+    } catch {}
+
+    setTimeout(() => {
+      try {
+        window.speechSynthesis.speak(utterance);
+      } catch (err) {
+        console.warn('SpeechSynthesis speak failed:', err);
+      }
+    }, 15);
   }, [isSupported, voices]);
 
   const toggleSpeak = useCallback((text: string, optionsOrLang?: string | SpeakOptions) => {

@@ -98,7 +98,11 @@ export function DailyContent(props: any) {
     } else {
       playSaarthiSonicIdent(true);
       const speechLang = lang === 'te' ? 'te-IN' : lang === 'kn' ? 'kn-IN' : lang === 'hi' ? 'hi-IN' : lang === 'ta' ? 'ta-IN' : 'en-IN';
-      toggleSpeak(localizedQuote, { lang: speechLang, mode: 'explainer' });
+      toggleSpeak(localizedQuote, {
+        lang: speechLang,
+        mode: 'explainer',
+        fallbackText: companionData.divineMoment.quote
+      });
     }
   };
 

@@ -15,4 +15,5 @@ export { FootpathTimingsCard } from './FootpathTimingsCard';
 export { DesktopSidebarWidget } from './DesktopSidebarWidget';
 export { KarthikaAdvisoryCard } from './KarthikaAdvisoryCard';
 export { HomeSkeleton } from './HomeSkeleton';
+export { PilgrimagePathWatermark } from './PilgrimagePathWatermark';
 

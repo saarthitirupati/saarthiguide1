@@ -875,7 +875,7 @@ export default function PilgrimEssentialsPage() {
               >
                 <div 
                   className={styles.secondaryCardImage}
-                  style={{ backgroundImage: `url('/images/places/img_4_painted-sign-board-of-kalyanakatta-balaji-temple-t.jpg')` }}
+                  style={{ backgroundImage: `url('/assets/temples/swami-pushkarini.png')` }}
                 />
                 <div className={styles.secondaryCardBody}>
                   <div>
@@ -895,7 +895,7 @@ export default function PilgrimEssentialsPage() {
               >
                 <div 
                   className={styles.secondaryCardImage}
-                  style={{ backgroundImage: `url('/images/places/img_5_maxresdefault_fwmwke.jpg')` }}
+                  style={{ backgroundImage: `url('/images/places/hub_vishnu_nivasam.png')` }}
                 />
                 <div className={styles.secondaryCardBody}>
                   <div>

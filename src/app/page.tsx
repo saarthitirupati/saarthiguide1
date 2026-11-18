@@ -19,7 +19,8 @@ import {
   FootpathTimingsCard,
   YatraChecklist,
   DesktopSidebarWidget,
-  HomeSkeleton
+  HomeSkeleton,
+  PilgrimagePathWatermark
 } from '@/components/home';
 import styles from './Home.module.css';
 
@@ -29,7 +30,7 @@ const TEXTS = {
     primaryServices: 'What You Need Right Now',
     servicesSub: 'Essential pilgrim facilities',
     nearbyPlaces: 'Explore Around You',
-    seeAll: 'See all →',
+    seeAll: 'View All →',
     navigate: 'Navigate →',
     openDrawer: 'More for your pilgrimage',
     closeDrawer: 'Close',
@@ -37,14 +38,14 @@ const TEXTS = {
     lockersSub: 'Deposit phones & bags',
     lockersStatus: '6 Locations Open',
     meals: 'Free Annaprasadam',
-    mealsSub: 'Free hot meals at Vengamamba',
+    mealsSub: 'Free meals at Vengamamba',
     mealsStatus: 'Serving Continuously',
     tonsure: 'Kalyana Katta (Tonsure)',
-    tonsureSub: 'Sacred hair offering before darshan',
+    tonsureSub: 'Free sacred hair offering',
     tonsureStatus: 'Open 24/7',
     stay: 'Stay & PAC Halls',
-    staySub: 'Free resting & hot water halls',
-    stayStatus: 'Halls Available',
+    staySub: 'Free rest & hot water',
+    stayStatus: '4 PAC Complexes',
     sarvaDarshan: {
       title: 'Sarva Darshan',
       subtitle: 'Free General Queue',
@@ -97,14 +98,14 @@ const TEXTS = {
     lockersSub: 'ఫోన్లు & లగేజీ డిపాజిట్',
     lockersStatus: '6 కేంద్రాలు ఓపెన్',
     meals: 'ఉచిత అన్నప్రసాదం',
-    mealsSub: 'వెంగమాంబ సముదాయంలో ఉచిత భోజనం',
+    mealsSub: 'వెంగమాంబ ఉచిత భోజనం',
     mealsStatus: 'అందుబాటులో ఉంది',
     tonsure: 'కళ్యాణకట్ట (తలనీలాలు)',
-    tonsureSub: 'దర్శనానికి ముందు ఉచిత తలనీలాల సమర్పణ',
+    tonsureSub: 'ఉచిత తలనీలాల సమర్పణ',
     tonsureStatus: '24/7 అందుబాటులో ఉంది',
     stay: 'వసతి & PAC హాళ్ళు',
-    staySub: 'ఉచిత విశ్రాంతి హాళ్ళు & వేడి నీటి స్నానాలు',
-    stayStatus: 'హాళ్ళు అందుబాటులో ఉన్నాయి',
+    staySub: 'ఉచిత విశ్రాంతి & వేడి నీరు',
+    stayStatus: '4 PAC కాంప్లెక్స్‌లు',
     sarvaDarshan: {
       title: 'సర్వదర్శనం',
       subtitle: 'ఉచిత సాధారణ క్యూ',
@@ -161,18 +162,18 @@ const TEXTS = {
 
     // 2. Annaprasadam
     meals: 'ಉಚಿತ ಅನ್ನಪ್ರಸಾದ',
-    mealsSub: 'ವೆಂಗಮಾಂಬ ಭವನದಲ್ಲಿ ನಿರಂತರ ಬಿಸಿ ಊಟ',
+    mealsSub: 'ವೆಂಗಮಾಂಬ ಉಚಿತ ಊಟ',
     mealsStatus: 'ನಿರಂತರ ಸೇವೆ ಲಭ್ಯ',
 
     // 3. Kalyana Katta
     tonsure: 'ಕಲ್ಯಾಣಕಟ್ಟೆ (ಮುಡಿ ಅರ್ಪಣೆ)',
-    tonsureSub: 'ದರ್ಶನಕ್ಕೂ ಮುನ್ನ ಪವಿತ್ರ ತಲೆಕೂದಲು ಅರ್ಪಣೆ',
+    tonsureSub: 'ಉಚಿತ ತಲೆಕೂದಲು ಅರ್ಪಣೆ',
     tonsureStatus: '24×7 ತೆರೆದಿರುತ್ತದೆ',
 
     // 4. PAC Halls
     stay: 'ಉಚಿತ ವಸತಿ ಮತ್ತು PAC ಹಾಲ್‌ಗಳು',
-    staySub: 'ಉಚಿತ ವಿಶ್ರಾಂತಿ ಕೊಠಡಿಗಳು ಮತ್ತು ಬಿಸಿ ನೀರಿನ ವ್ಯವಸ್ಥೆ',
-    stayStatus: 'ಹಾಲ್‌ಗಳು ಲಭ್ಯವಿವೆ',
+    staySub: 'ಉಚಿತ ವಿಶ್ರಾಂತಿ ಮತ್ತು ಬಿಸಿ ನೀರು',
+    stayStatus: '4 PAC ಸಂಕೀರ್ಣಗಳು',
 
     // --- 1. Live Queue Cards (from HomeHero) ---
     sarvaDarshan: {
@@ -399,7 +400,7 @@ export default function HomePage() {
       status: t.tonsureStatus,
       statusColor: '#16A34A',
       icon: Scissors,
-      image: '/images/places/img_4_painted-sign-board-of-kalyanakatta-balaji-temple-t.jpg',
+      image: '/assets/temples/swami-pushkarini.png',
       link: '/essentials/hair-offering'
     },
     {
@@ -409,7 +410,7 @@ export default function HomePage() {
       status: t.stayStatus,
       statusColor: '#D97706',
       icon: Bed,
-      image: '/images/places/img_5_maxresdefault_fwmwke.jpg',
+      image: '/images/places/hub_vishnu_nivasam.png',
       link: '/rooms'
     }
   ];
@@ -452,9 +453,9 @@ export default function HomePage() {
                   {t.servicesSub}
                 </p>
               </div>
-              <Link href="/essentials" prefetch={false} style={{ fontSize: '12px', fontWeight: 700, color: '#0F5132', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '2px' }}>
-                <span>{lang === 'kn' ? 'ಎಲ್ಲವನ್ನೂ ನೋಡಿ' : lang === 'te' ? 'అన్నీ చూడండి' : 'See all'}</span>
-                <ChevronRight size={13} strokeWidth={2.6} />
+              <Link href="/essentials" prefetch={false} style={{ fontSize: '13px', fontWeight: 600, color: '#0F5132', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '2px' }}>
+                <span>{lang === 'kn' ? 'ಎಲ್ಲವನ್ನೂ ನೋಡಿ' : lang === 'te' ? 'అన్నీ చూడండి' : 'View All'}</span>
+                <ChevronRight size={14} strokeWidth={2.5} />
               </Link>
             </div>
 
@@ -625,7 +626,7 @@ export default function HomePage() {
               <h2 className="notranslate" translate="no" style={{ fontSize: '15px', fontWeight: 800, color: 'var(--color-text-primary, #1E232D)', margin: 0, letterSpacing: '-0.015em' }}>
                 {lang === 'kn' ? 'ತಿರುಪತಿ ಪ್ರದೇಶವನ್ನು ಅನ್ವೇಷಿಸಿ' : lang === 'te' ? 'తిరుపతి ప్రాంతాన్ని అన్వేషించండి' : 'Explore Tirupati Region'}
               </h2>
-              <Link href="/explore" prefetch={false} style={{ fontSize: '12px', fontWeight: 700, color: '#0F5132', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '2px' }}>
+              <Link href="/explore" prefetch={false} style={{ fontSize: '13px', fontWeight: 600, color: '#0F5132', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '2px' }}>
                 <span>{lang === 'kn' ? 'ಎಲ್ಲವನ್ನೂ ನೋಡಿ' : lang === 'te' ? 'అన్నీ చూడండి' : 'View All'}</span>
                 <ChevronRight size={14} strokeWidth={2.5} />
               </Link>
@@ -638,7 +639,7 @@ export default function HomePage() {
                 prefetch={false}
                 style={{
                   textDecoration: 'none',
-                  height: '124px',
+                  height: '128px',
                   borderRadius: '18px',
                   overflow: 'hidden',
                   position: 'relative',
@@ -654,38 +655,16 @@ export default function HomePage() {
                   alt="Temples"
                   style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
                 />
-                <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, transparent 20%, rgba(15, 23, 42, 0.5) 60%, rgba(15, 23, 42, 0.92) 100%)' }} />
-                <div style={{ position: 'relative', zIndex: 2, padding: '12px 14px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                  <div style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: '6px',
-                    background: 'rgba(15, 23, 42, 0.72)',
-                    backdropFilter: 'blur(12px)',
-                    WebkitBackdropFilter: 'blur(12px)',
-                    border: '1px solid rgba(255, 255, 255, 0.3)',
-                    padding: '5px 12px',
-                    borderRadius: '9999px',
-                    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.2)'
-                  }}>
-                    <Landmark size={13} color="#FDE047" strokeWidth={2.4} />
-                    <span className="notranslate" translate="no" style={{ fontSize: '12px', fontWeight: 800, color: '#FFFFFF', letterSpacing: '-0.01em' }}>
+                <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(15, 23, 42, 0.90) 0%, rgba(15, 23, 42, 0.35) 55%, transparent 85%)' }} />
+                <div style={{ position: 'relative', zIndex: 2, padding: '12px 14px', display: 'flex', flexDirection: 'column', gap: '2px' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <Landmark size={14} color="#FDE047" strokeWidth={2.4} />
+                    <span className="notranslate" translate="no" style={{ fontSize: '15px', fontWeight: 800, color: '#FFFFFF', letterSpacing: '-0.01em', lineHeight: 1.2 }}>
                       {lang === 'kn' ? 'ದೇವಾಲಯಗಳು' : lang === 'te' ? 'దేవాలయాలు' : 'Temples'}
                     </span>
                   </div>
-                  <span className="notranslate" translate="no" style={{ 
-                    fontSize: '10.5px', 
-                    color: '#ECFDF5', 
-                    fontWeight: 700, 
-                    background: 'rgba(6, 78, 59, 0.85)', 
-                    backdropFilter: 'blur(8px)',
-                    WebkitBackdropFilter: 'blur(8px)',
-                    border: '1px solid rgba(52, 211, 153, 0.35)',
-                    padding: '3px 10px', 
-                    borderRadius: '9999px',
-                    boxShadow: '0 2px 6px rgba(0, 0, 0, 0.15)'
-                  }}>
-                    {lang === 'kn' ? 'ಪವಿತ್ರ ಕ್ಷೇತ್ರಗಳು' : lang === 'te' ? 'ప్రధాన క్షేత్రాలు' : 'Sacred Shrines'}
+                  <span className="notranslate" translate="no" style={{ fontSize: '11px', color: '#FDE68A', fontWeight: 600, letterSpacing: '0.01em' }}>
+                    {lang === 'kn' ? 'ಪವಿತ್ರ ಕ್ಷೇತ್ರಗಳು • 32 ತಾಣಗಳು' : lang === 'te' ? 'ప్రధాన క్షేత్రాలు • 32 ప్రదేశాలు' : 'Sacred Shrines • 32 Places'}
                   </span>
                 </div>
               </Link>
@@ -698,7 +677,7 @@ export default function HomePage() {
                   prefetch={false}
                   style={{
                     textDecoration: 'none',
-                    height: '92px',
+                    height: '96px',
                     borderRadius: '16px',
                     overflow: 'hidden',
                     position: 'relative',
@@ -714,25 +693,17 @@ export default function HomePage() {
                     alt="Nature"
                     style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
                   />
-                  <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, transparent 30%, rgba(15, 23, 42, 0.88) 100%)' }} />
-                  <div style={{ position: 'relative', zIndex: 2, padding: '7px 6px', textAlign: 'center' }}>
-                    <div style={{
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: '4px',
-                      background: 'rgba(15, 23, 42, 0.70)',
-                      backdropFilter: 'blur(8px)',
-                      WebkitBackdropFilter: 'blur(8px)',
-                      border: '1px solid rgba(255, 255, 255, 0.25)',
-                      padding: '3px 8px',
-                      borderRadius: '9999px',
-                      boxShadow: '0 1px 4px rgba(0, 0, 0, 0.18)'
-                    }}>
-                      <Compass size={10} color="#6EE7B7" strokeWidth={2.4} />
-                      <span className="notranslate" translate="no" style={{ fontSize: '10px', fontWeight: 800, color: '#FFFFFF', whiteSpace: 'nowrap' }}>
+                  <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(15, 23, 42, 0.92) 0%, rgba(15, 23, 42, 0.40) 60%, transparent 90%)' }} />
+                  <div style={{ position: 'relative', zIndex: 2, padding: '8px 10px', display: 'flex', flexDirection: 'column', gap: '1px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                      <Compass size={11} color="#6EE7B7" strokeWidth={2.4} />
+                      <span className="notranslate" translate="no" style={{ fontSize: '12px', fontWeight: 800, color: '#FFFFFF', lineHeight: 1.2 }}>
                         {lang === 'kn' ? 'ಪ್ರಕೃತಿ' : lang === 'te' ? 'ప్రకృతి' : 'Nature'}
                       </span>
                     </div>
+                    <span className="notranslate" translate="no" style={{ fontSize: '9px', color: '#A7F3D0', fontWeight: 600 }}>
+                      {lang === 'kn' ? 'ಜಲಪಾತಗಳು' : lang === 'te' ? 'జలపాతాలు' : 'Waterfalls'}
+                    </span>
                   </div>
                 </Link>
 
@@ -742,7 +713,7 @@ export default function HomePage() {
                   prefetch={false}
                   style={{
                     textDecoration: 'none',
-                    height: '92px',
+                    height: '96px',
                     borderRadius: '16px',
                     overflow: 'hidden',
                     position: 'relative',
@@ -758,25 +729,17 @@ export default function HomePage() {
                     alt="Heritage"
                     style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
                   />
-                  <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, transparent 30%, rgba(15, 23, 42, 0.88) 100%)' }} />
-                  <div style={{ position: 'relative', zIndex: 2, padding: '7px 6px', textAlign: 'center' }}>
-                    <div style={{
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: '4px',
-                      background: 'rgba(15, 23, 42, 0.70)',
-                      backdropFilter: 'blur(8px)',
-                      WebkitBackdropFilter: 'blur(8px)',
-                      border: '1px solid rgba(255, 255, 255, 0.25)',
-                      padding: '3px 8px',
-                      borderRadius: '9999px',
-                      boxShadow: '0 1px 4px rgba(0, 0, 0, 0.18)'
-                    }}>
-                      <Landmark size={10} color="#FDE68A" strokeWidth={2.4} />
-                      <span className="notranslate" translate="no" style={{ fontSize: '10px', fontWeight: 800, color: '#FFFFFF', whiteSpace: 'nowrap' }}>
+                  <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(15, 23, 42, 0.92) 0%, rgba(15, 23, 42, 0.40) 60%, transparent 90%)' }} />
+                  <div style={{ position: 'relative', zIndex: 2, padding: '8px 10px', display: 'flex', flexDirection: 'column', gap: '1px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                      <Landmark size={11} color="#FDE68A" strokeWidth={2.4} />
+                      <span className="notranslate" translate="no" style={{ fontSize: '12px', fontWeight: 800, color: '#FFFFFF', lineHeight: 1.2 }}>
                         {lang === 'kn' ? 'ಪರಂಪರೆ' : lang === 'te' ? 'వారసత్వం' : 'Heritage'}
                       </span>
                     </div>
+                    <span className="notranslate" translate="no" style={{ fontSize: '9px', color: '#FDE68A', fontWeight: 600 }}>
+                      {lang === 'kn' ? 'ಐತಿಹಾಸಿಕ' : lang === 'te' ? 'చారిత్రక' : 'Historic'}
+                    </span>
                   </div>
                 </Link>
 
@@ -786,7 +749,7 @@ export default function HomePage() {
                   prefetch={false}
                   style={{
                     textDecoration: 'none',
-                    height: '92px',
+                    height: '96px',
                     borderRadius: '16px',
                     overflow: 'hidden',
                     position: 'relative',
@@ -802,25 +765,17 @@ export default function HomePage() {
                     alt="Viewpoints"
                     style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
                   />
-                  <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, transparent 30%, rgba(15, 23, 42, 0.88) 100%)' }} />
-                  <div style={{ position: 'relative', zIndex: 2, padding: '7px 6px', textAlign: 'center' }}>
-                    <div style={{
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: '4px',
-                      background: 'rgba(15, 23, 42, 0.70)',
-                      backdropFilter: 'blur(8px)',
-                      WebkitBackdropFilter: 'blur(8px)',
-                      border: '1px solid rgba(255, 255, 255, 0.25)',
-                      padding: '3px 8px',
-                      borderRadius: '9999px',
-                      boxShadow: '0 1px 4px rgba(0, 0, 0, 0.18)'
-                    }}>
-                      <Mountain size={10} color="#93C5FD" strokeWidth={2.4} />
-                      <span className="notranslate" translate="no" style={{ fontSize: '10px', fontWeight: 800, color: '#FFFFFF', whiteSpace: 'nowrap' }}>
-                        {lang === 'kn' ? 'ವೀಕ್ಷಣಾ ತಾಣಗಳು' : lang === 'te' ? 'దృశ్యాలు' : 'Viewpoints'}
+                  <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(15, 23, 42, 0.92) 0%, rgba(15, 23, 42, 0.40) 60%, transparent 90%)' }} />
+                  <div style={{ position: 'relative', zIndex: 2, padding: '8px 10px', display: 'flex', flexDirection: 'column', gap: '1px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                      <Mountain size={11} color="#93C5FD" strokeWidth={2.4} />
+                      <span className="notranslate" translate="no" style={{ fontSize: '12px', fontWeight: 800, color: '#FFFFFF', lineHeight: 1.2 }}>
+                        {lang === 'kn' ? 'ವೀಕ್ಷಣಾ ತಾಣ' : lang === 'te' ? 'దృశ్యాలు' : 'Viewpoints'}
                       </span>
                     </div>
+                    <span className="notranslate" translate="no" style={{ fontSize: '9px', color: '#BAE6FD', fontWeight: 600 }}>
+                      {lang === 'kn' ? 'ಶಿಖರಗಳು' : lang === 'te' ? 'శిఖరాలు' : 'Valley & Peaks'}
+                    </span>
                   </div>
                 </Link>
               </div>
@@ -835,9 +790,9 @@ export default function HomePage() {
                 <h2 style={{ fontSize: '15px', fontWeight: 700, color: 'var(--color-text-primary, #1E232D)', margin: 0, letterSpacing: '-0.015em' }}>
                   {t.nearbyPlaces}
                 </h2>
-                <Link href="/explore" prefetch={false} style={{ fontSize: '12px', fontWeight: 700, color: '#0F5132', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '2px' }}>
-                  <span>{lang === 'kn' ? 'ಎಲ್ಲವನ್ನೂ ನೋಡಿ' : lang === 'te' ? 'అన్నీ చూడండి' : 'See all'}</span>
-                  <ChevronRight size={13} strokeWidth={2.6} />
+                <Link href="/explore" prefetch={false} style={{ fontSize: '13px', fontWeight: 600, color: '#0F5132', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '2px' }}>
+                  <span>{lang === 'kn' ? 'ಎಲ್ಲವನ್ನೂ ನೋಡಿ' : lang === 'te' ? 'అన్నీ చూడండి' : 'View All'}</span>
+                  <ChevronRight size={14} strokeWidth={2.5} />
                 </Link>
               </div>
               <div
@@ -916,12 +871,16 @@ export default function HomePage() {
                             boxShadow: '0 2px 6px rgba(0, 0, 0, 0.2)'
                           }}>
                             <MapPin size={9.5} strokeWidth={2.4} />
-                            <span>{p._dist} km</span>
+                            <span>
+                              {p._dist != null && !isNaN(Number(p._dist))
+                                ? `${Number(p._dist).toFixed(1)} km`
+                                : (lang === 'kn' ? 'ಹತ್ತಿರ' : lang === 'te' ? 'సమీపం' : 'Nearby')}
+                            </span>
                           </div>
                         </div>
 
                         {/* CARD BODY WITH CATEGORY & TIME */}
-                        <div style={{ padding: '8px 10px 10px' }}>
+                        <div style={{ padding: '8px 10px 12px' }}>
                           <p style={{
                             fontSize: '12px', 
                             fontWeight: 700, 
@@ -1053,6 +1012,9 @@ export default function HomePage() {
               </div>
             )}
           </div>
+
+          {/* 🛕 The Pilgrimage Path Footprint Watermark */}
+          <PilgrimagePathWatermark />
 
         </div>
       </div>
