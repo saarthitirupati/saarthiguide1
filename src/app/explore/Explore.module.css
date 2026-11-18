@@ -104,6 +104,8 @@
   overflow-x: auto;
   scrollbar-width: none;
   padding-bottom: 4px;
+  scroll-behavior: smooth;
+  scroll-padding: 0 16px;
 }
 
 .filterList::-webkit-scrollbar {

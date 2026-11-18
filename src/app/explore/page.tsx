@@ -28,6 +28,48 @@ const FILTERS_DATA = [
   { key: 'Culture', labelEn: 'Culture', labelTe: 'సంస్కృతి', labelHi: 'संस्कृति', labelTa: 'கலாச்சாரம்', labelKn: 'ಸಂಸ್ಕೃತಿ' }
 ];
 
+function matchesCategoryFilter(
+  place: Place,
+  filterKey: string,
+  savedPlaces: string[] = [],
+  computedDistance?: number
+): boolean {
+  const f = (filterKey || 'All').toLowerCase();
+  if (f === 'all') return true;
+  if (f === 'nearby') {
+    return computedDistance !== undefined ? computedDistance <= 15 : true;
+  }
+  if (f === 'saved') {
+    return savedPlaces.includes(place.id);
+  }
+
+  const toStr = (v: any) => typeof v === 'string' ? v : (v?.name || v?.slug || String(v || ''));
+  const pType = toStr(place.placeType).toLowerCase();
+  const pCat = toStr(place.category).toLowerCase();
+  const pTags = (place.tags || []).map(t => toStr(t).toLowerCase());
+  const pInterests = (place.interests || []).map(i => toStr(i).toLowerCase());
+
+  const directTypeMatch = pType === f;
+  const directCatMatch = pCat.includes(f);
+  const directTagMatch = pTags.some(t => t.includes(f));
+  const directInterestMatch = pInterests.some(i => i.includes(f));
+
+  if (f === 'temple' || f === 'temples' || f === 'spiritual') {
+    return directTypeMatch || directCatMatch || directTagMatch || directInterestMatch || pType === 'spiritual' || pCat.includes('temple') || pCat.includes('spiritual');
+  } else if (f === 'culture') {
+    return directTypeMatch || directCatMatch || directTagMatch || directInterestMatch || pType === 'culture' || pCat.includes('culture') || pCat.includes('museum') || pCat.includes('science') || pTags.some(t => t.includes('museum') || t.includes('culture') || t.includes('science'));
+  } else if (f === 'water' || f === 'theerthams') {
+    return pType === 'water' || pCat.includes('waterfall') || pCat.includes('theertham') || pTags.some(t => t.includes('water') || t.includes('theertham') || t.includes('waterfall') || t.includes('pushkarini'));
+  } else if (f === 'nature') {
+    return pType === 'nature' || pCat.includes('nature') || pCat.includes('park') || pCat.includes('forest') || pTags.some(t => t.includes('nature') || t.includes('viewpoint') || t.includes('hills') || t.includes('falls') || t.includes('waterfall') || t.includes('dam'));
+  } else if (f === 'historical' || f === 'history' || f === 'heritage') {
+    return pType === 'historical' || pCat.includes('history') || pCat.includes('heritage') || pCat.includes('fort') || pTags.some(t => t.includes('history') || t.includes('heritage') || t.includes('fort') || t.includes('ancient') || t.includes('archaeological'));
+  } else if (f === 'hidden' || f === 'hidden gems') {
+    return place.isHiddenGem || pType === 'hidden' || pCat.includes('hidden') || pTags.some(t => ['hidden', 'hidden gem', 'peaceful', 'serene', 'off-beat', 'offbeat', 'untouched', 'quiet'].includes(t));
+  }
+  return directTypeMatch || directCatMatch || directTagMatch || directInterestMatch;
+}
+
 const TEXTS: Record<string, Record<string, string>> = {
   en: {
     headerTitle: 'Explore Places',
@@ -158,11 +200,13 @@ function ExploreContent() {
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
-    if (initialQuery) {
-      setSearchQuery(initialQuery);
+    const qParam = searchParams.get('q');
+    if (qParam !== null && qParam !== undefined) {
+      setSearchQuery(qParam);
     }
-    if (initialFilter) {
-      const lower = initialFilter.toLowerCase();
+    const catParam = searchParams.get('category') || searchParams.get('filter');
+    if (catParam) {
+      const lower = catParam.toLowerCase();
       let target = filters.find(f => f.toLowerCase() === lower);
 
       // Resolve Home Bento category aliases
@@ -172,11 +216,16 @@ function ExploreContent() {
         else if (lower === 'viewpoints' || lower === 'viewpoint') target = 'Nature';
         else if (lower === 'water' || lower === 'theerthams' || lower === 'theertham') target = 'Water';
         else if (lower === 'hidden' || lower === 'hiddengems' || lower === 'hidden gems') target = 'Hidden';
+        else if (lower === 'culture') target = 'Culture';
+        else if (lower === 'nearby') target = 'Nearby';
+        else if (lower === 'saved') target = 'Saved';
       }
 
-      if (target) setActiveFilter(target);
+      if (target) {
+        setActiveFilter(target);
+      }
     }
-  }, [initialQuery, initialFilter]);
+  }, [searchParams, filters]);
 
   // Debounced cross-collection search
   const fetchCrossResults = useCallback((q: string) => {
@@ -201,36 +250,50 @@ function ExploreContent() {
   }, [searchQuery, fetchCrossResults]);
 
   const handleFilterClick = (filter: string) => {
-    if (filter === 'Nearby') {
-      if (!userLocation) {
-        import('@/lib/location').then(({ detectCoordinates, TIRUPATI_CENTER }) => {
-          detectCoordinates(
-            (coords) => {
-              setUserLocation(coords);
-              setLocationPermission('granted');
-              setActiveFilter('Nearby');
-              setLocationError(false);
-            },
-            () => {
-              setLocationError(true);
-              setUserLocation(TIRUPATI_CENTER);
-              setLocationPermission('denied');
-              setActiveFilter('Nearby');
-            }
-          );
-        }).catch(() => {});
+    setActiveFilter(filter);
+
+    // Sync URL without full page reload so browser back & bookmarks work
+    if (typeof window !== 'undefined') {
+      const url = new URL(window.location.href);
+      if (filter === 'All') {
+        url.searchParams.delete('category');
+        url.searchParams.delete('filter');
       } else {
-        setActiveFilter('Nearby');
+        url.searchParams.set('category', filter);
       }
-    } else {
-      setActiveFilter(filter);
+      window.history.replaceState({}, '', url.toString());
+    }
+
+    // Scroll active pill into view in the horizontal list on mobile
+    if (typeof document !== 'undefined') {
+      const pill = document.getElementById(`filter-pill-${filter}`);
+      if (pill) {
+        pill.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+      }
+    }
+
+    if (filter === 'Nearby' && !userLocation) {
+      import('@/lib/location').then(({ detectCoordinates, TIRUPATI_CENTER }) => {
+        detectCoordinates(
+          (coords) => {
+            setUserLocation(coords);
+            setLocationPermission('granted');
+            setLocationError(false);
+          },
+          () => {
+            setLocationError(true);
+            setUserLocation(TIRUPATI_CENTER);
+            setLocationPermission('denied');
+          }
+        );
+      }).catch(() => {});
     }
   };
 
   const isAlternativeQuery = searchQuery.toLowerCase().includes('alternative');
   const isTirupatiQuery = searchQuery.toLowerCase() === 'tirupati' || searchQuery.toLowerCase() === 'nearby';
 
-  const filteredPlaces = useMemo(() => {
+  const placesWithDistance = useMemo(() => {
     const rawSource = places.length > 0 ? places : PLACES;
     const seenKeys = new Set<string>();
     const source = rawSource.filter(p => {
@@ -242,17 +305,34 @@ function ExploreContent() {
       if (idKey) seenKeys.add(idKey);
       return true;
     });
-    let result = source.filter((place: Place) => {
+
+    const effectiveLocation = userLocation || TIRUPATI_CENTER;
+    const mapped = source.map(p => {
+      const toStr = (v: any) => typeof v === 'string' ? v : (v?.name || v?.slug || String(v || ''));
+      const lat = p.coordinates?.lat || TIRUPATI_CENTER.lat;
+      const lng = p.coordinates?.lng || TIRUPATI_CENTER.lng;
+      const locStr = toStr(p.location).toLowerCase();
+      const catStr = toStr(p.category).toLowerCase();
+      const isTirumala = locStr.includes('tirumala') || 
+                         locStr.includes('narayanagiri') || 
+                         catStr.includes('tirumala');
+      const dist = calculateDrivingDistance(effectiveLocation.lat, effectiveLocation.lng, lat, lng, isTirumala);
+      return { ...p, computedDistance: dist } as Place & { computedDistance: number };
+    });
+
+    // Always sort by proximity (nearest to farthest)
+    mapped.sort((a, b) => (a.computedDistance ?? 999) - (b.computedDistance ?? 999));
+    return mapped;
+  }, [places, userLocation]);
+
+  const filteredPlaces = useMemo(() => {
+    return placesWithDistance.filter((place) => {
       if (isAlternativeQuery) {
-        // Exclude the main Srivari Venkateswara temple
         if (place.id === 'venkateswara') return false;
-        
-        // Prioritize alternative spiritual temples, nature sights, and hidden gems
         return place.placeType === 'spiritual' || place.placeType === 'nature' || place.placeType === 'historical' || place.isHiddenGem || place.isMustVisit;
       }
 
       if (isTirupatiQuery) {
-        // Exclude all Tirumala hilltop spots
         const locationLower = (place.location || '').toLowerCase();
         const isTirumala = locationLower.includes('tirumala') || 
                            place.id === 'venkateswara' || 
@@ -271,7 +351,6 @@ function ExploreContent() {
       const qNorm = normalize(q);
       const qTokens = q.split(/[\s\-_,.!/]+/).filter(Boolean);
 
-      // Build comprehensive searchable place text
       const placeBlob = [
         place.name,
         place.id,
@@ -294,17 +373,14 @@ function ExploreContent() {
 
       const placeBlobNorm = normalize(placeBlob);
 
-      // 1. Direct substring match or normalized space/hyphen-insensitive match
       const directMatch = (q && placeBlob.includes(q)) || (qNorm && placeBlobNorm.includes(qNorm));
 
-      // 2. Tokenized word matching (handles multi-word and hyphenated queries)
       const STOP_WORDS = new Set(['sri', 'shri', 'vari', 'temple', 'the', 'and', 'in', 'at', 'of']);
       const significantTokens = qTokens.filter(t => !STOP_WORDS.has(t) && t.length > 1);
       const tokensMatch = significantTokens.length > 0
         ? significantTokens.every(token => placeBlob.includes(token) || placeBlobNorm.includes(normalize(token)))
         : qTokens.every(token => placeBlob.includes(token));
 
-      // 3. Pilgrim intent & landmark alias matching
       let aliasMatch = false;
       if (q.includes('hanuman') || q.includes('anjaneya')) {
         aliasMatch = placeBlob.includes('japali') || placeBlob.includes('anjaneya') || placeBlob.includes('hanuman');
@@ -318,72 +394,18 @@ function ExploreContent() {
         aliasMatch = placeBlobNorm.includes('surutapalli') || placeBlobNorm.includes('pallikondeswara');
       }
 
-      const toStr = (v: any) => typeof v === 'string' ? v : (v?.name || v?.slug || String(v || ''));
       const matchesSearch = !q || directMatch || tokensMatch || aliasMatch;
-        
-      // Multi-attribute Filter Matching logic
-      const f = activeFilter.toLowerCase();
-      let matchesFilter = false;
-      if (f === 'all' || f === 'nearby') {
-        matchesFilter = true;
-      } else if (f === 'saved') {
-        matchesFilter = savedPlaces.includes(place.id);
-      } else {
-        const pType = toStr(place.placeType).toLowerCase();
-        const pCat = toStr(place.category).toLowerCase();
-        const pTags = (place.tags || []).map(t => toStr(t).toLowerCase());
-        const pInterests = (place.interests || []).map(i => toStr(i).toLowerCase());
-
-        const directTypeMatch = pType === f;
-        const directCatMatch = pCat.includes(f);
-        const directTagMatch = pTags.some(t => t.includes(f));
-        const directInterestMatch = pInterests.some(i => i.includes(f));
-
-        if (f === 'temple' || f === 'temples' || f === 'spiritual') {
-          matchesFilter = directTypeMatch || directCatMatch || directTagMatch || directInterestMatch || pType === 'spiritual' || pCat.includes('temple') || pCat.includes('spiritual');
-        } else if (f === 'culture') {
-          matchesFilter = directTypeMatch || directCatMatch || directTagMatch || directInterestMatch || pCat.includes('culture') || pCat.includes('museum') || pCat.includes('science') || pTags.some(t => t.includes('museum') || t.includes('culture') || t.includes('science'));
-        } else if (f === 'water' || f === 'theerthams') {
-          matchesFilter = pCat.includes('waterfall') || pCat.includes('theertham') || pTags.some(t => t.includes('water') || t.includes('theertham') || t.includes('waterfall') || t.includes('pushkarini'));
-        } else if (f === 'nature') {
-          matchesFilter = pType === 'nature' || pCat.includes('nature') || pCat.includes('park') || pCat.includes('forest') || pTags.some(t => t.includes('nature') || t.includes('viewpoint') || t.includes('hills') || t.includes('falls') || t.includes('waterfall') || t.includes('dam'));
-        } else if (f === 'historical' || f === 'history' || f === 'heritage') {
-          matchesFilter = pType === 'historical' || pCat.includes('history') || pCat.includes('heritage') || pCat.includes('fort') || pTags.some(t => t.includes('history') || t.includes('heritage') || t.includes('fort') || t.includes('ancient') || t.includes('archaeological'));
-        } else if (f === 'hidden' || f === 'hidden gems') {
-          matchesFilter = place.isHiddenGem || pType === 'hidden' || pCat.includes('hidden') || pTags.some(t => ['hidden', 'hidden gem', 'peaceful', 'serene', 'off-beat', 'offbeat', 'untouched', 'quiet'].includes(t));
-        } else {
-          matchesFilter = directTypeMatch || directCatMatch || directTagMatch || directInterestMatch;
-        }
-      }
+      const matchesFilter = matchesCategoryFilter(place, activeFilter, savedPlaces, place.computedDistance);
 
       return matchesSearch && matchesFilter;
     });
-
-    const effectiveLocation = userLocation || TIRUPATI_CENTER;
-    result = result.map(p => {
-      const toStr = (v: any) => typeof v === 'string' ? v : (v?.name || v?.slug || String(v || ''));
-      const lat = p.coordinates?.lat || TIRUPATI_CENTER.lat;
-      const lng = p.coordinates?.lng || TIRUPATI_CENTER.lng;
-      const locStr = toStr(p.location).toLowerCase();
-      const catStr = toStr(p.category).toLowerCase();
-      const isTirumala = locStr.includes('tirumala') || 
-                         locStr.includes('narayanagiri') || 
-                         catStr.includes('tirumala');
-      const dist = calculateDrivingDistance(effectiveLocation.lat, effectiveLocation.lng, lat, lng, isTirumala);
-      return { ...p, computedDistance: dist } as any;
-    });
-
-    // Always sort by proximity (nearest to farthest)
-    result.sort((a: any, b: any) => (a.computedDistance ?? 999) - (b.computedDistance ?? 999));
-
-    return result;
-  }, [searchQuery, activeFilter, places, userLocation, isAlternativeQuery, isTirupatiQuery, savedPlaces]);
+  }, [placesWithDistance, searchQuery, activeFilter, isAlternativeQuery, isTirupatiQuery, savedPlaces]);
 
   const nearbyPlaces = useMemo(() => {
-    return [...filteredPlaces]
-      .sort((a: any, b: any) => (a.computedDistance ?? 999) - (b.computedDistance ?? 999))
+    return [...placesWithDistance]
+      .filter(p => p.computedDistance <= 15)
       .slice(0, 10);
-  }, [filteredPlaces]);
+  }, [placesWithDistance]);
 
   const mustVisit = useMemo(() => {
     return filteredPlaces
@@ -411,10 +433,8 @@ function ExploreContent() {
   }, [filteredPlaces]);
 
   const categoryCounts = useMemo(() => {
-    const rawSource = places.length > 0 ? places : PLACES;
-    const effectiveLocation = userLocation || TIRUPATI_CENTER;
     const counts: Record<string, number> = {
-      All: rawSource.length,
+      All: placesWithDistance.length,
       Nearby: 0,
       Saved: savedPlaces.length,
       Spiritual: 0,
@@ -425,27 +445,13 @@ function ExploreContent() {
       Culture: 0,
     };
 
-    rawSource.forEach((place: Place) => {
-      const pType = (place.placeType || '').toLowerCase();
-      const pCat = (place.category || '').toLowerCase();
-
-      // Nearby: places within 15 km
-      const lat = place.coordinates?.lat || TIRUPATI_CENTER.lat;
-      const lng = place.coordinates?.lng || TIRUPATI_CENTER.lng;
-      const dist = calculateDrivingDistance(effectiveLocation.lat, effectiveLocation.lng, lat, lng, false);
-      if (dist <= 15) counts.Nearby++;
-
-      // Primary placeType-based counting (tight, accurate)
-      if (pType === 'spiritual' || pCat.includes('temple')) counts.Spiritual++;
-      if (pType === 'nature') counts.Nature++;
-      if (pType === 'water') counts.Water++;
-      if (pType === 'historical' || pCat.includes('fort')) counts.Historical++;
-      if (pType === 'culture' || pType === 'leisure') counts.Culture++;
-      if (place.isHiddenGem || pType === 'hidden') counts.Hidden++;
+    FILTERS_DATA.forEach(f => {
+      if (f.key === 'All' || f.key === 'Saved') return;
+      counts[f.key] = placesWithDistance.filter(p => matchesCategoryFilter(p, f.key, savedPlaces, p.computedDistance)).length;
     });
 
     return counts;
-  }, [places, userLocation]);
+  }, [placesWithDistance, savedPlaces]);
 
   const t = TEXTS[lang as keyof typeof TEXTS] || TEXTS.en;
 
@@ -465,7 +471,21 @@ function ExploreContent() {
           <Link href="/alerts" aria-label="Notifications" style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center', width: '36px', height: '36px', textDecoration: 'none', color: '#0F5132' }}>
             <Bell size={20} />
           </Link>
-          <button className={styles.filterIcon} onClick={() => { const el = document.getElementById('explore-filter-list'); el?.scrollIntoView({ behavior: 'smooth' }); }}>
+          <button
+            className={styles.filterIcon}
+            aria-label="Categories"
+            onClick={() => {
+              const el = document.getElementById('explore-filter-list');
+              if (el) {
+                el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                el.animate([
+                  { transform: 'scale(1)' },
+                  { transform: 'scale(1.03)' },
+                  { transform: 'scale(1)' }
+                ], { duration: 250 });
+              }
+            }}
+          >
             <Filter size={20} />
           </button>
         </div>
@@ -480,19 +500,58 @@ function ExploreContent() {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
+          {searchQuery && (
+            <button
+              onClick={() => setSearchQuery('')}
+              aria-label="Clear search text"
+              style={{
+                background: 'none',
+                border: 'none',
+                color: '#94A3B8',
+                cursor: 'pointer',
+                padding: '4px 6px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: '13px',
+                fontWeight: 600
+              }}
+            >
+              ✕
+            </button>
+          )}
         </div>
 
         <div className={styles.filterList} id="explore-filter-list">
           {FILTERS_DATA.map((filter) => {
+            const count = categoryCounts[filter.key];
+            const isActive = activeFilter === filter.key;
             const labelKey = `label${lang.charAt(0).toUpperCase() + lang.slice(1)}` as keyof typeof filter;
             const filterLabel = (filter[labelKey] as string) || filter.labelEn;
             return (
               <button
                 key={filter.key}
-                className={`${styles.filterItem} ${activeFilter === filter.key ? styles.activeFilter : ''}`}
+                id={`filter-pill-${filter.key}`}
+                className={`${styles.filterItem} ${isActive ? styles.activeFilter : ''}`}
                 onClick={() => handleFilterClick(filter.key)}
               >
-                {filterLabel}
+                <span>{filterLabel}</span>
+                {count !== undefined && count > 0 && filter.key !== 'All' && (
+                  <span
+                    style={{
+                      marginLeft: '6px',
+                      fontSize: '10.5px',
+                      fontWeight: 600,
+                      opacity: isActive ? 0.95 : 0.8,
+                      backgroundColor: isActive ? 'rgba(255,255,255,0.22)' : '#F1F5F9',
+                      color: isActive ? '#FFFFFF' : '#64748B',
+                      padding: '1px 5px',
+                      borderRadius: '8px'
+                    }}
+                  >
+                    {count}
+                  </span>
+                )}
               </button>
             );
           })}
@@ -865,11 +924,80 @@ function ExploreContent() {
                 </motion.div>
               );
             })
+          ) : activeFilter === 'Saved' ? (
+            <div style={{
+              textAlign: 'center',
+              padding: '48px 20px',
+              background: '#FFFFFF',
+              borderRadius: '16px',
+              border: '1px solid #E2E8F0',
+              margin: '20px 0',
+              boxShadow: '0 1px 3px rgba(0, 0, 0, 0.04)'
+            }}>
+              <Heart size={36} color="#94A3B8" style={{ margin: '0 auto 12px', display: 'block' }} />
+              <h3 style={{ fontSize: '15px', fontWeight: 700, color: '#1E232D', margin: '0 0 6px 0' }}>
+                {lang === 'te' ? 'దాచిన ప్రదేశాలు ఏవీ లేవు' : lang === 'hi' ? 'कोई सेव किया गया स्थान नहीं' : lang === 'ta' ? 'சேமிக்கப்பட்ட இடங்கள் இல்லை' : 'No Saved Places Yet'}
+              </h3>
+              <p style={{ fontSize: '12.5px', color: '#64748B', margin: '0 0 16px 0', lineHeight: 1.5, maxWidth: '320px', marginLeft: 'auto', marginRight: 'auto' }}>
+                {lang === 'te' ? 'మీకు ఇష్టమైన ఆలయాలు లేదా ఆకర్షణలను త్వరగా చూడటానికి బుక్‌మార్క్ చిహ్నాన్ని నొక్కండి.' : lang === 'hi' ? 'त्वरित पहुँच के लिए किसी भी मंदिर या स्थल पर बुकमार्क आइकन पर टैप करें।' : lang === 'ta' ? 'விரைவான அணுகலுக்கு எந்தவொரு கோவிலையும் புக்மார்க் செய்யவும்.' : 'Tap the bookmark icon on any temple or attraction to save it for quick access during your pilgrimage.'}
+              </p>
+              <button
+                onClick={() => handleFilterClick('All')}
+                style={{
+                  backgroundColor: '#0F5132',
+                  color: '#FFFFFF',
+                  border: 'none',
+                  borderRadius: '999px',
+                  padding: '8px 18px',
+                  fontSize: '12.5px',
+                  fontWeight: 600,
+                  cursor: 'pointer'
+                }}
+              >
+                {lang === 'te' ? 'అన్ని ప్రదేశాలు చూడండి' : lang === 'hi' ? 'सभी स्थान देखें' : lang === 'ta' ? 'அனைத்து இடங்களையும் காண்க' : 'Explore All Places'}
+              </button>
+            </div>
           ) : (
             <div className={styles.noResults}>
-              <p>{t.noPlacesFound} "{searchQuery}"</p>
+              <p>{searchQuery ? `${t.noPlacesFound} "${searchQuery}"` : (lang === 'te' ? 'ఈ విభాగంలో ప్రదేశాలు కనుగొనబడలేదు' : 'No places found in this category')}</p>
+              <div style={{ marginTop: '14px', display: 'flex', gap: '8px', justifyContent: 'center', flexWrap: 'wrap' }}>
+                {searchQuery && (
+                  <button
+                    onClick={() => setSearchQuery('')}
+                    style={{
+                      backgroundColor: '#F1F5F9',
+                      color: '#0F172A',
+                      border: '1px solid #CBD5E1',
+                      borderRadius: '999px',
+                      padding: '6px 14px',
+                      fontSize: '12px',
+                      fontWeight: 600,
+                      cursor: 'pointer'
+                    }}
+                  >
+                    {t.clearSearch || 'Clear search'}
+                  </button>
+                )}
+                {activeFilter !== 'All' && (
+                  <button
+                    onClick={() => handleFilterClick('All')}
+                    style={{
+                      backgroundColor: '#0F5132',
+                      color: '#FFFFFF',
+                      border: 'none',
+                      borderRadius: '999px',
+                      padding: '6px 14px',
+                      fontSize: '12px',
+                      fontWeight: 600,
+                      cursor: 'pointer'
+                    }}
+                  >
+                    {lang === 'te' ? 'అన్ని ప్రదేశాలు చూపించు' : 'Show All Places'}
+                  </button>
+                )}
+              </div>
               {searchQuery.length >= 2 && crossResults.stories.length === 0 && crossResults.encyclopedia.length === 0 && (
-                <p style={{ fontSize: 13, color: '#999', marginTop: 4 }}>
+                <p style={{ fontSize: 13, color: '#999', marginTop: 8 }}>
                   {lang === 'te' ? 'ఆలయాలు, పండుగలు, పురాణాలు లేదా స్థలాలను శోధించడానికి ప్రయత్నించండి.' : lang === 'hi' ? 'मंदिर, त्योहार, कहानियां या स्थान खोजने का प्रयास करें।' : lang === 'ta' ? 'கோவில்கள், திருவிழாக்கள், கதைகள் அல்லது இடங்களை தேடவும்.' : 'Try searching for temples, festivals, stories, or landmarks.'}
                 </p>
               )}
