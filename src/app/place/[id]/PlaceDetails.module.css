@@ -8,11 +8,13 @@
 
 /* Floating Header */
 .header {
-  height: 64px;
+  height: calc(64px + max(env(safe-area-inset-top, 0px), 0px));
+  padding-top: max(env(safe-area-inset-top, 0px), 0px);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 var(--space-4);
+  padding-left: var(--space-4);
+  padding-right: var(--space-4);
   position: fixed;
   top: 0;
   width: 100%;

@@ -444,7 +444,7 @@ export default function DdTokensStandalonePage() {
         backdropFilter: 'blur(16px)',
         WebkitBackdropFilter: 'blur(16px)',
         borderBottom: '1px solid rgba(15, 23, 42, 0.08)',
-        padding: '12px 16px',
+        padding: 'calc(12px + max(env(safe-area-inset-top, 0px), 0px)) 16px 12px 16px',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
