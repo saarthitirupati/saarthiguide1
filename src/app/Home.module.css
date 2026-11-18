@@ -66,15 +66,15 @@
 }
 
 .headerTitle {
-  font-size: 18px;
-  font-weight: 600;
+  font-size: 19px;
+  font-weight: 700;
   color: var(--saarthi-emerald);
   line-height: 1.1;
-  letter-spacing: -0.5px;
+  letter-spacing: -0.02em;
 }
 
 .headerSubtitle {
-  font-size: 10px;
+  font-size: 11px;
   color: var(--saarthi-text-light);
   font-weight: 500;
 }
@@ -1727,7 +1727,7 @@
 .mobileStack {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 16px;
   width: 100%;
   max-width: 100%;
   overflow-x: hidden;

@@ -1747,7 +1747,7 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
         width: '100%',
         borderRadius: '14px',
         overflow: 'hidden',
-        marginBottom: '8px',
+        marginBottom: '14px',
         boxShadow: '0 4px 16px rgba(15, 23, 42, 0.06)',
         border: '1px solid rgba(212, 175, 55, 0.35)',
         background: '#FAF8F4 url(/banner/banner_poster.webp) center center / cover no-repeat',
@@ -1895,7 +1895,7 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
         borderRadius: '20px',
         overflow: 'hidden',
         boxShadow: '0 2px 10px rgba(10, 78, 51, 0.04)',
-        marginBottom: '12px'
+        marginBottom: '14px'
       }}>
         {/* Top: Tirumala Darshan Main Live Row */}
         <Link
@@ -1907,7 +1907,7 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
             alignItems: 'center',
             justifyContent: 'space-between',
             gap: '12px',
-            padding: '11px 14px',
+            padding: '13px 16px',
             background: 'linear-gradient(135deg, #F8FCF9 0%, #EFF9F2 100%)'
           }}
         >
@@ -2042,7 +2042,7 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
             prefetch={false}
             style={{
               textDecoration: 'none',
-              padding: '9px 10px',
+              padding: '11px 12px',
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
@@ -2098,7 +2098,7 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
             prefetch={false}
             style={{
               textDecoration: 'none',
-              padding: '9px 10px',
+              padding: '11px 12px',
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
@@ -2155,8 +2155,8 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
       <div className="notranslate" translate="no" style={{
         display: 'grid',
         gridTemplateColumns: 'repeat(4, minmax(0, 1fr))',
-        gap: '8px',
-        marginBottom: '12px'
+        gap: '9px',
+        marginBottom: '16px'
       }}>
         {/* Parking */}
         <Link
@@ -2167,7 +2167,7 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
             background: '#FFFFFF',
             border: '1px solid #E2E8F0',
             borderRadius: '16px',
-            padding: '10px 4px',
+            padding: '12px 4px',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
@@ -2204,7 +2204,7 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
             background: '#FFFFFF',
             border: '1px solid #E2E8F0',
             borderRadius: '16px',
-            padding: '10px 4px',
+            padding: '12px 4px',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
@@ -2239,7 +2239,7 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
             background: '#FFFFFF',
             border: '1px solid #E2E8F0',
             borderRadius: '16px',
-            padding: '10px 4px',
+            padding: '12px 4px',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
@@ -2276,7 +2276,7 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
             background: '#FFFFFF',
             border: '1px solid #E2E8F0',
             borderRadius: '16px',
-            padding: '10px 4px',
+            padding: '12px 4px',
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
