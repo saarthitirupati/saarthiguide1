@@ -524,7 +524,7 @@ export default function AboutPage() {
         backgroundColor: 'rgba(250, 248, 245, 0.94)',
         backdropFilter: 'blur(16px)',
         borderBottom: '1px solid #ECE7DE',
-        padding: '12px 16px'
+        padding: 'calc(12px + var(--safe-area-top, 0px)) 16px 12px 16px'
       }}>
         <div style={{ maxWidth: '1040px', margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>

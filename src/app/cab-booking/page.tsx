@@ -141,7 +141,7 @@ export default function CabBookingPage() {
         zIndex: 40,
         backgroundColor: '#FFFFFF',
         borderBottom: '1px solid #ECEEEA',
-        padding: '14px 18px',
+        padding: 'calc(14px + var(--safe-area-top, 0px)) 18px 14px 18px',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between'

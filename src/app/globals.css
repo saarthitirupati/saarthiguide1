@@ -47,7 +47,7 @@
 
   /* --- Layout & Navigation Metrics --- */
   --safe-area-top: max(env(safe-area-inset-top, 0px), 0px);
-  --layout-padding-top: calc(14px + max(env(safe-area-inset-top, 0px), 0px));
+  --layout-padding-top: calc(14px + var(--safe-area-top));
   --layout-padding-bottom: calc(68px + env(safe-area-inset-bottom, 8px));
 
   /* --- Primary/Secondary Mappings for Legacy compatibility --- */
@@ -315,6 +315,17 @@
   :root {
     --layout-padding-bottom: 24px;
   }
+}
+
+/* ── Standalone & Native App Safe Area Clearance (PWA / WebAPK / Android WebView) ── */
+@media all and (display-mode: standalone), (display-mode: fullscreen) {
+  :root {
+    --safe-area-top: max(env(safe-area-inset-top, 0px), 36px);
+  }
+}
+
+html.is-standalone-app {
+  --safe-area-top: max(env(safe-area-inset-top, 0px), 36px);
 }
 
 html {

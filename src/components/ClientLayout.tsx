@@ -51,6 +51,17 @@ function LayoutContent({
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
+    const isApp = window.matchMedia('(display-mode: standalone)').matches ||
+      Boolean((window as any).SaarthiNative) ||
+      Boolean((window as any).Android) ||
+      window.navigator.userAgent.includes('wv');
+    if (isApp) {
+      document.documentElement.classList.add('is-standalone-app');
+    }
+  }, []);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
     const checkOnboarding = () => {
       const isApp = window.matchMedia('(display-mode: standalone)').matches;
       const obKey = isApp ? 'hasSeenOnboarding_app' : 'hasSeenOnboarding';
