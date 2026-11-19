@@ -1588,7 +1588,7 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
           width: '100%',
           maxWidth: '100vw',
           boxSizing: 'border-box',
-          paddingTop: 'max(8px, env(safe-area-inset-top, 0px))',
+          paddingTop: 'calc(env(safe-area-inset-top, 24px) + 8px)',
           transform: 'translate3d(0, 0, 0)',
           WebkitTransform: 'translate3d(0, 0, 0)',
           backfaceVisibility: 'hidden',
