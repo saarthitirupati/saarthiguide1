@@ -120,3 +120,35 @@ export function formatISTTime(dateInput?: string | number | null): string {
     hour12: true
   }).format(new Date(timestamp)) + ' IST';
 }
+
+/**
+ * Checks whether an IST time string (e.g. "11:30 AM", "2:00 PM") has already passed today in Asia/Kolkata.
+ */
+export function isTimeInPastIST(timeStr?: string, refDate: Date = new Date()): boolean {
+  if (!timeStr) return false;
+  const match = timeStr.match(/\b(\d{1,2})(?::(\d{2}))?\s*([AaPp][Mm])?\b/);
+  if (!match) return false;
+
+  let hours = parseInt(match[1], 10);
+  const minutes = match[2] ? parseInt(match[2], 10) : 0;
+  const modifier = match[3] ? match[3].toUpperCase() : null;
+
+  if (modifier === 'PM' && hours < 12) hours += 12;
+  else if (modifier === 'AM' && hours === 12) hours = 0;
+
+  const targetMinutes = hours * 60 + minutes;
+
+  const kolkataParts = new Intl.DateTimeFormat('en-US', {
+    timeZone: 'Asia/Kolkata',
+    hour: 'numeric',
+    minute: 'numeric',
+    hour12: false
+  }).formatToParts(refDate);
+
+  const getP = (type: string) => parseInt(kolkataParts.find(p => p.type === type)?.value || '0', 10);
+  const curH = getP('hour');
+  const curM = getP('minute');
+  const currentMinutes = curH * 60 + curM;
+
+  return currentMinutes >= targetMinutes;
+}

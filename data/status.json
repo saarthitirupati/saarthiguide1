@@ -33,6 +33,7 @@
   ],
   "ssdTokenStatus": "closed-for-day",
   "ssdNextTokenTime": "11:30 AM",
+  "ssdNextReleaseDate": "",
   "ssdTokenSlots": [
     {
       "slotTime": "5:00 AM - 7:00 AM",

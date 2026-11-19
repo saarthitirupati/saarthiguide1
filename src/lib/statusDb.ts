@@ -310,6 +310,7 @@ export async function updateStatus(updates: Partial<TirumalaStatus>): Promise<Ti
     // Persist SSD and other fields as columns + JSON blob
     if (updates.ssdTokenStatus !== undefined) payload.ssd_token_status = updates.ssdTokenStatus;
     if (updates.ssdNextTokenTime !== undefined) payload.ssd_next_token_time = updates.ssdNextTokenTime;
+    if (updates.ssdNextReleaseDate !== undefined) payload.ssd_next_release_date = updates.ssdNextReleaseDate;
     if (updates.ssdTokenSlots !== undefined) payload.ssd_token_slots = JSON.stringify(updates.ssdTokenSlots);
     if (updates.ssdNotice !== undefined) payload.ssd_notice = updates.ssdNotice;
     if (updates.ssdTimingsGuide !== undefined) payload.ssd_timings_guide = updates.ssdTimingsGuide;

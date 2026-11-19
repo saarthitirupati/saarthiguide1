@@ -11,6 +11,7 @@ import {
 } from 'lucide-react';
 import { TirumalaStatus, TokenBatchDetails } from '@/lib/statusDb';
 import { useLanguage } from '@/lib/useLanguage';
+import { isTimeInPastIST } from '@/lib/istDate';
 import styles from './ssdTokens.module.css';
 
 const COLLECTION_CENTRES = [
@@ -448,13 +449,16 @@ export default function SsdTokensStandalonePage() {
   const tomorrowFormatted = `${tomorrow.getDate()} ${activeMonths[tomorrow.getMonth()]} ${tomorrow.getFullYear()} ${tomorrowSuffix[lang] || tomorrowSuffix.en}`;
 
   // Dynamically resolve SSD issuing time and date updated by admin
-  const rawIssuing = (ssdTokenDetails?.startTime || nextTokenTime || '11:30 AM').trim();
+  const rawIssuing = (nextTokenTime || ssdTokenDetails?.startTime || '11:30 AM').trim();
   const timeMatch = rawIssuing.match(/\b(\d{1,2}:\d{2}(?:\s*[AaPp][Mm])?)\b/) || rawIssuing.match(/\b(\d{1,2}\s*[AaPp][Mm])\b/);
   const dynamicIssuingTime = timeMatch ? timeMatch[1] : (rawIssuing || '11:30 AM');
 
-  let dynamicIssuingDate = tomorrowFormatted;
   const todayLabel = lang === 'te' ? '(ఈ రోజు)' : lang === 'kn' ? '(ಇಂದು)' : lang === 'ta' ? '(இன்று)' : lang === 'hi' ? '(आज)' : '(Today)';
-  if (/today/i.test(rawIssuing) || isIssuing) {
+  const isTimePassed = isTimeInPastIST(dynamicIssuingTime);
+  const isTomorrowRelease = /tomorrow/i.test(rawIssuing) || isClosed || isTimePassed;
+
+  let dynamicIssuingDate = isTomorrowRelease ? tomorrowFormatted : `${todayFormatted} ${todayLabel}`;
+  if (/today/i.test(rawIssuing) && !isTimePassed && !isClosed) {
     dynamicIssuingDate = `${todayFormatted} ${todayLabel}`;
   } else if (/tomorrow/i.test(rawIssuing)) {
     dynamicIssuingDate = tomorrowFormatted;
@@ -462,8 +466,6 @@ export default function SsdTokensStandalonePage() {
     const explicitDateMatch = rawIssuing.match(/(\d{1,2})\s+([A-Za-z]+)(?:\s+(\d{4}))?/);
     if (explicitDateMatch) {
       dynamicIssuingDate = `${explicitDateMatch[1]} ${explicitDateMatch[2]} ${explicitDateMatch[3] || now.getFullYear()}`;
-    } else {
-      dynamicIssuingDate = isClosed ? tomorrowFormatted : `${todayFormatted} ${todayLabel}`;
     }
   }
 

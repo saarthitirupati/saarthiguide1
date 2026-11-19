@@ -18,8 +18,8 @@ import {
 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useLanguage } from '@/lib/useLanguage';
-import { getISTDateInfo } from '@/lib/istDate';
-export { getISTDateInfo };
+import { getISTDateInfo, isTimeInPastIST } from '@/lib/istDate';
+export { getISTDateInfo, isTimeInPastIST };
 
 const TEXTS = {
   en: {
@@ -547,9 +547,11 @@ export function QuickChecklist(props: any) {
   const isNextConfirmed = hasConfirmedTime && !/tentative|expected|subject/i.test(rawNext);
   const nextReleaseTitle = t.nextExpectedRelease;
   const nextReleaseDisplay = hasConfirmedTime ? rawNext : t.notAnnouncedYet;
-  const nextReleaseDateLabel = hasConfirmedTime
-    ? (isCompleted ? `${ist.tomorrow} (${t.tomorrow})` : `${ist.today} (${t.todayLabel})`)
-    : '';
+  const isTimePassed = isTimeInPastIST(rawNext);
+  const isTomorrowRelease = /tomorrow/i.test(rawNext) || isCompleted || isTimePassed;
+  const nextReleaseDateLabel = liveStatus.ssdNextReleaseDate || (hasConfirmedTime
+    ? (isTomorrowRelease ? `${ist.tomorrow} (${t.tomorrow})` : `${ist.today} (${t.todayLabel})`)
+    : '');
 
   // 8. Actionable Guidance Note
   const isWalkInConfirmed = Boolean(
