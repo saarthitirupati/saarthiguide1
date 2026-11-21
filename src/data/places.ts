@@ -616,7 +616,7 @@ export const PLACES: Place[] = [
       saarthiTipTe: 'రైల్వే స్టేషన్ నుండి కేవలం 3 నిమిషాల నడక దూరంలో ఉంటుంది. ఉదయం 7:30 లోపు లేదా సాయంత్రం 5:30 సమయాల్లో దర్శనం ప్రశాంతంగా పూర్తవుతుంది.',
       saarthiTipEn: 'Located just a 3-minute walk from Tirupati Railway Station. Morning hours before 7:30 AM or early evenings around 5:30 PM offer minimal wait times.'
     },
-    timings: '5:00 AM - 12:30 PM, 4:00 PM - 9:00 PM (up to 9:30 PM on select schedules; midday break 12:30 PM - 4:00 PM)',
+    timings: '5:00 AM - 12:30 PM, 3:30 PM - 9:00 PM (up to 9:30 PM on select schedules; midday break 12:30 PM - 3:30 PM)',
     entryFee: 'Free General Darshan (₹20 for Seeghra Darshan)',
     address: 'Gandhi Road, Near Tirupati Railway Station, Tirupati, Andhra Pradesh 517501',
     rating: 4.8,
@@ -634,8 +634,11 @@ export const PLACES: Place[] = [
       knownFor: 'Celestial Treasurer, Prosperity, Debt Clearance & Marital Bliss',
       mantra: 'Om Namo Narayanaya • Om Sri Govindarajaya Namaha',
       devoteeTips: [
-        'Seeghra Darshanam available at counter for ₹20 for quick entry',
-        'Daily Kalyanotsavam performed at 6:00 PM and Unjal Seva at 5:30 PM',
+        'Temple Opens / Suprabhatam at ~5:00 AM; Thomala Seva & Archana: ~6:30 AM - 8:00 AM',
+        'Morning Darshan: 5:00 AM - 12:30 PM (midday sanctum break 12:30 PM - 3:30 PM)',
+        'Evening Darshan: 3:30 PM - 9:00 PM; Ekantha Seva & Temple closure: 8:30 PM - 9:30 PM',
+        'Free General Walk-in Darshan available; ₹20 Seeghra Darshanam counter for quicker queue',
+        'Daily Kalyanotsavam at 6:00 PM and Unjal Seva (swing ritual) at 5:30 PM (managed by TTD)',
         'Traditional attire (Dhoti/Kurta for men, Saree/Chudidar for women) recommended'
       ]
     },

@@ -3755,13 +3755,13 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
   'govindaraja': {
     placeId: 'govindaraja',
     titleEn: 'Sri Govinda Raja Swamy Vari Temple Precinct Map',
-    titleTe: 'బత్తినియ్య కోణ (బత్తినయ్య స్వామి గుహాలయం & జలపాతం) ప్రాంగణ మ్యాప్',
+    titleTe: 'శ్రీ గోవిందరాజ స్వామి వారి ఆలయం ప్రాంగణ మ్యాప్',
     layoutType: 'grand-temple',
     centerCoordinates: { lat: 13.629941, lng: 79.4162996 },
     defaultZoom: 18,
     compassBearingDeg: 0,
     sanctumNameEn: 'Sri Govinda Raja Swamy Vari Temple Sanctum & Main Area',
-    sanctumNameTe: 'బత్తినియ్య కోణ (బత్తినయ్య స్వామి గుహాలయం & జలపాతం) ప్రధాన స్థలం',
+    sanctumNameTe: 'శ్రీ గోవిందరాజ స్వామి వారి ఆలయం ప్రధాన గర్భాలయం',
     routePath: [[430, 275], [130, 250], [270, 260], [270, 130], [390, 150], [380, 210]],
     pins: [
       {
@@ -3803,7 +3803,7 @@ export const CURATED_LAYOUTS: Record<string, Partial<TempleLayoutData>> = {
       {
         id: 'sanctum',
         nameEn: 'Sri Govinda Raja Swamy Vari Temple Sanctum / Main Point',
-        nameTe: 'బత్తినియ్య కోణ (బత్తినయ్య స్వామి గుహాలయం & జలపాతం) ప్రధాన స్థలం',
+        nameTe: 'శ్రీ గోవిందరాజ స్వామి వారి ప్రధాన గర్భాలయం',
         category: 'sanctum',
         lat: 13.629941,
         lng: 79.416300,
