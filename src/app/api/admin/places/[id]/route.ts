@@ -15,7 +15,9 @@ export async function GET(_: Request, { params }: { params: Promise<{ id: string
   }
 
   // Fallback to static places
-  const staticPlace = PLACES.find(p => p.id === id);
+  const staticPlace = PLACES.find(p => p.id === id) ||
+    PLACES.find(p => p.id.toLowerCase() === id.toLowerCase()) ||
+    PLACES.find(p => p.id === 'bhu-varaha' && (id === 'varahaswamy' || id === 'bhu-varahaswamy' || id === 'varaha-swamy'));
   if (staticPlace) {
     return NextResponse.json({ place: { ...staticPlace, _dynamic: true } });
   }
@@ -101,12 +103,24 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
       }
     }
 
-    const { data, error } = await supabase.from('places').update(cleanUpdates).eq('id', id).select();
-    if (error) throw error;
+    cleanUpdates.id = id;
+    cleanUpdates._dynamic = true;
+    cleanUpdates.updated_at = new Date().toISOString();
 
-    return NextResponse.json({ place: data[0] });
+    const { data, error } = await supabase
+      .from('places')
+      .upsert(cleanUpdates, { onConflict: 'id' })
+      .select();
+
+    if (error) {
+      console.error('[API PUT Place Error]', error);
+      throw error;
+    }
+
+    return NextResponse.json({ place: data?.[0] || cleanUpdates });
   } catch (e: any) {
-    return NextResponse.json({ error: e.message }, { status: 400 });
+    console.error('[API PUT Place Catch]', e);
+    return NextResponse.json({ error: e.message || 'Failed to update place' }, { status: 400 });
   }
 }
 

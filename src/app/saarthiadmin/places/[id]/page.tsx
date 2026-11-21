@@ -146,7 +146,8 @@ export default function AdminPlaceEditor({ params }: { params: Promise<{ id: str
         setTimeout(() => setToast(''), 3500);
         router.refresh();
       } else {
-        alert('Failed to save place updates');
+        const errData = await res.json().catch(() => null);
+        alert(errData?.error ? `Failed to save: ${errData.error}` : 'Failed to save place updates');
       }
     } catch (err: any) {
       alert(`Error saving place: ${err.message}`);

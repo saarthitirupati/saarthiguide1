@@ -31,14 +31,24 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
       }
     }
     
+    cleanUpdates.id = id;
+    cleanUpdates._dynamic = true;
     cleanUpdates.updated_at = new Date().toISOString();
 
-    const { data, error } = await supabase.from('places').update(cleanUpdates).eq('id', id).select();
-    if (error) throw error;
+    const { data, error } = await supabase
+      .from('places')
+      .upsert(cleanUpdates, { onConflict: 'id' })
+      .select();
 
-    return NextResponse.json({ place: data[0] });
+    if (error) {
+      console.error('[v1 Admin Places PUT Error]', error);
+      throw error;
+    }
+
+    return NextResponse.json({ place: data?.[0] || cleanUpdates });
   } catch (e: any) {
-    return NextResponse.json({ error: e.message }, { status: 400 });
+    console.error('[v1 Admin Places PUT Catch]', e);
+    return NextResponse.json({ error: e.message || 'Failed to update place' }, { status: 400 });
   }
 }
 
