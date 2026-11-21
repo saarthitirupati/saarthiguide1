@@ -32,8 +32,12 @@ export async function PUT(req: Request, { params }: { params: Promise<{ id: stri
     }
     
     cleanUpdates.id = id;
-    cleanUpdates._dynamic = true;
-    cleanUpdates.updated_at = new Date().toISOString();
+    if (validKeys) {
+      if (validKeys.has('_dynamic')) cleanUpdates._dynamic = true;
+      if (validKeys.has('updated_at')) cleanUpdates.updated_at = new Date().toISOString();
+    } else {
+      delete cleanUpdates._dynamic;
+    }
 
     const { data, error } = await supabase
       .from('places')
