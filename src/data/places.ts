@@ -588,8 +588,8 @@ export const PLACES: Place[] = [
     budgetLevel: 'budget',
     entryFeeNum: 0,
     interests: ['spiritual', 'architecture', 'heritage', 'vaishnava'],
-    openFrom: 6,
-    openTo: 20.5,
+    openFrom: 5,
+    openTo: 21.5,
     isMustVisit: true,
     description: 'Sri Govinda Raja Swamy Vari Temple is a prominent 12th-century Vaishnavite temple located in the heart of Tirupati. Enclosing a magnificent reclining idol of Lord Vishnu (Lord Govindaraja Swamy), it was consecrated by Sri Ramanujacharya in 1130 AD. Revered as the elder brother of Lord Venkateswara and the celestial treasurer who managed the wedding wealth from Kubera, devotees worship Him for prosperity before ascending Tirumala.',
     shortIntro: 'Sri Govinda Raja Swamy Vari Temple is an iconic 12th-century Dravidian temple in central Tirupati housing a grand reclining idol of Lord Vishnu.',
@@ -616,7 +616,7 @@ export const PLACES: Place[] = [
       saarthiTipTe: 'రైల్వే స్టేషన్ నుండి కేవలం 3 నిమిషాల నడక దూరంలో ఉంటుంది. ఉదయం 7:30 లోపు లేదా సాయంత్రం 5:30 సమయాల్లో దర్శనం ప్రశాంతంగా పూర్తవుతుంది.',
       saarthiTipEn: 'Located just a 3-minute walk from Tirupati Railway Station. Morning hours before 7:30 AM or early evenings around 5:30 PM offer minimal wait times.'
     },
-    timings: '6:00 AM - 12:30 PM, 4:00 PM - 8:30 PM',
+    timings: '5:00 AM - 12:30 PM, 4:00 PM - 9:00 PM (up to 9:30 PM on select schedules; midday break 12:30 PM - 4:00 PM)',
     entryFee: 'Free General Darshan (₹20 for Seeghra Darshan)',
     address: 'Gandhi Road, Near Tirupati Railway Station, Tirupati, Andhra Pradesh 517501',
     rating: 4.8,
@@ -628,7 +628,7 @@ export const PLACES: Place[] = [
       'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSU5eKvXj8945CaVtKytVG7j6dVXga2iXDgmERI_1YTMw&s=10'
     ],
     tags: ['Gopuram', 'Reclining Vishnu', 'Ramanuja', 'Celestial Treasurer', 'Heritage', 'Ancient Temple'],
-    bestTime: 'Morning (6:30 AM - 10:00 AM) & Evening (5:00 PM - 7:30 PM during Kalyanotsavam / Unjal Seva)',
+    bestTime: 'Morning (5:30 AM - 10:00 AM) & Evening (5:00 PM - 8:00 PM during Kalyanotsavam / Unjal Seva)',
     spiritualInfo: {
       god: 'Lord Govindaraja Swamy (Reclining Vishnu)',
       knownFor: 'Celestial Treasurer, Prosperity, Debt Clearance & Marital Bliss',
