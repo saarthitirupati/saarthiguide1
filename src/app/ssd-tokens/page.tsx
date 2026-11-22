@@ -390,8 +390,41 @@ export default function SsdTokensStandalonePage() {
         if (data.ssdNextTokenTime) setNextTokenTime(data.ssdNextTokenTime);
         if (data.ssdNextReleaseDate) setManualReleaseDate(data.ssdNextReleaseDate);
         if (data.ssdNotice) setNotice(data.ssdNotice);
-        if (data.ssdTokenDetails) setSsdTokenDetails(data.ssdTokenDetails);
-        if (data.ddTokenDetails) setDdTokenDetails(data.ddTokenDetails);
+        if (data.ssdTokenDetails) {
+          setSsdTokenDetails(data.ssdTokenDetails);
+        } else if (data.ssdTimingsGuide) {
+          const mLeft = data.ssdTimingsGuide.match(/SSD[^\n]*?Available:\s*([^\s,)]+)/i);
+          const mStart = data.ssdTimingsGuide.match(/SSD[^\n]*?Started at\s*([^\s,)]+(?:\s*(?:AM|PM|am|pm))?)/i);
+          const mComp = data.ssdTimingsGuide.match(/SSD[^\n]*?Completed at\s*([^\s,)]+(?:\s*(?:AM|PM|am|pm))?)/i);
+          const mStat = data.ssdTimingsGuide.match(/SSD[^\n]*?Status:\s*([a-zA-Z-]+)/i);
+          if (mLeft || mStart || mStat) {
+            setSsdTokenDetails({
+              totalTokens: '10,000',
+              tokensLeft: mLeft ? mLeft[1] : undefined,
+              startTime: mStart ? mStart[1] : undefined,
+              completedTime: mComp ? mComp[1] : undefined,
+              status: mStat ? mStat[1] : undefined
+            });
+          }
+        }
+
+        if (data.ddTokenDetails) {
+          setDdTokenDetails(data.ddTokenDetails);
+        } else if (data.ssdTimingsGuide) {
+          const mLeft = data.ssdTimingsGuide.match(/DD[^\n]*?Available:\s*([^\s,)]+)/i);
+          const mStart = data.ssdTimingsGuide.match(/DD[^\n]*?Started at\s*([^\s,)]+(?:\s*(?:AM|PM|am|pm))?)/i);
+          const mComp = data.ssdTimingsGuide.match(/DD[^\n]*?Completed at\s*([^\s,)]+(?:\s*(?:AM|PM|am|pm))?)/i);
+          const mStat = data.ssdTimingsGuide.match(/DD[^\n]*?Status:\s*([a-zA-Z-]+)/i);
+          if (mLeft || mStart || mStat) {
+            setDdTokenDetails({
+              totalTokens: '2,000',
+              tokensLeft: mLeft ? mLeft[1] : undefined,
+              startTime: mStart ? mStart[1] : undefined,
+              completedTime: mComp ? mComp[1] : undefined,
+              status: mStat ? mStat[1] : undefined
+            });
+          }
+        }
 
         const updateDate = data.lastUpdated ? new Date(data.lastUpdated) : new Date();
         const dateStr = updateDate.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });

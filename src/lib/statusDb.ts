@@ -205,6 +205,40 @@ async function refreshFromSupabase(): Promise<void> {
 
     const resolvedTimingsGuide = metrics.ssd_timings_guide || memoryStatus.ssdTimingsGuide || DEFAULT_STATUS.ssdTimingsGuide;
 
+    // Fallback SSD & DD details from ssd_timings_guide if missing
+    let resolvedSsdDetails = memoryStatus.ssdTokenDetails;
+    let resolvedDdDetails = memoryStatus.ddTokenDetails;
+    if (!resolvedSsdDetails && resolvedTimingsGuide) {
+      const ssdLeft = resolvedTimingsGuide.match(/SSD[^\n]*?Available:\s*([^\s,)]+)/i);
+      const ssdStart = resolvedTimingsGuide.match(/SSD[^\n]*?Started at\s*([^\s,)]+(?:\s*(?:AM|PM|am|pm))?)/i);
+      const ssdComp = resolvedTimingsGuide.match(/SSD[^\n]*?Completed at\s*([^\s,)]+(?:\s*(?:AM|PM|am|pm))?)/i);
+      const ssdStat = resolvedTimingsGuide.match(/SSD[^\n]*?Status:\s*([a-zA-Z-]+)/i);
+      if (ssdLeft || ssdStart || ssdStat) {
+        resolvedSsdDetails = {
+          totalTokens: '10,000',
+          tokensLeft: ssdLeft ? ssdLeft[1] : undefined,
+          startTime: ssdStart ? ssdStart[1] : undefined,
+          completedTime: ssdComp ? ssdComp[1] : undefined,
+          status: ssdStat ? ssdStat[1] : undefined
+        };
+      }
+    }
+    if (!resolvedDdDetails && resolvedTimingsGuide) {
+      const ddLeft = resolvedTimingsGuide.match(/DD[^\n]*?Available:\s*([^\s,)]+)/i);
+      const ddStart = resolvedTimingsGuide.match(/DD[^\n]*?Started at\s*([^\s,)]+(?:\s*(?:AM|PM|am|pm))?)/i);
+      const ddComp = resolvedTimingsGuide.match(/DD[^\n]*?Completed at\s*([^\s,)]+(?:\s*(?:AM|PM|am|pm))?)/i);
+      const ddStat = resolvedTimingsGuide.match(/DD[^\n]*?Status:\s*([a-zA-Z-]+)/i);
+      if (ddLeft || ddStart || ddStat) {
+        resolvedDdDetails = {
+          totalTokens: '2,000',
+          tokensLeft: ddLeft ? ddLeft[1] : undefined,
+          startTime: ddStart ? ddStart[1] : undefined,
+          completedTime: ddComp ? ddComp[1] : undefined,
+          status: ddStat ? ddStat[1] : undefined
+        };
+      }
+    }
+
     memoryStatus = {
       ...DEFAULT_STATUS,
       ...memoryStatus,
@@ -225,8 +259,8 @@ async function refreshFromSupabase(): Promise<void> {
       ssdNotice: resolvedNotice,
       ssdTimingsGuide: resolvedTimingsGuide,
       ssdCounters: ssdCounters && ssdCounters.length > 0 ? ssdCounters : memoryStatus.ssdCounters,
-      ssdTokenDetails: memoryStatus.ssdTokenDetails,
-      ddTokenDetails: memoryStatus.ddTokenDetails,
+      ssdTokenDetails: resolvedSsdDetails,
+      ddTokenDetails: resolvedDdDetails,
       ssdAdvisoryTag: memoryStatus.ssdAdvisoryTag,
       ssdModeBadge: memoryStatus.ssdModeBadge,
       lastUpdated: metrics.updated_at || memoryStatus.lastUpdated || new Date().toISOString(),
@@ -310,7 +344,6 @@ export async function updateStatus(updates: Partial<TirumalaStatus>): Promise<Ti
     // Persist SSD and other fields as columns + JSON blob
     if (updates.ssdTokenStatus !== undefined) payload.ssd_token_status = updates.ssdTokenStatus;
     if (updates.ssdNextTokenTime !== undefined) payload.ssd_next_token_time = updates.ssdNextTokenTime;
-    if (updates.ssdNextReleaseDate !== undefined) payload.ssd_next_release_date = updates.ssdNextReleaseDate;
     if (updates.ssdTokenSlots !== undefined) payload.ssd_token_slots = JSON.stringify(updates.ssdTokenSlots);
     if (updates.ssdNotice !== undefined) payload.ssd_notice = updates.ssdNotice;
     if (updates.ssdTimingsGuide !== undefined) payload.ssd_timings_guide = updates.ssdTimingsGuide;
@@ -320,9 +353,25 @@ export async function updateStatus(updates: Partial<TirumalaStatus>): Promise<Ti
     if (updates.weather !== undefined) payload.weather = updates.weather;
     if (updates.sevaStatus !== undefined) payload.seva_status = updates.sevaStatus;
 
-    await supabase
+    const { error: upsertErr } = await supabase
       .from('live_metrics')
       .upsert({ id: 1, ...payload });
+
+    if (upsertErr) {
+      console.warn("Supabase live_metrics upsert warning:", upsertErr.message);
+      // Resilient fallback with guaranteed core columns
+      await supabase
+        .from('live_metrics')
+        .upsert({
+          id: 1,
+          updated_at: payload.updated_at,
+          full_status_json: payload.full_status_json,
+          ssd_token_status: payload.ssd_token_status,
+          ssd_next_token_time: payload.ssd_next_token_time,
+          ssd_notice: payload.ssd_notice,
+          ssd_timings_guide: payload.ssd_timings_guide
+        });
+    }
 
   } catch (e) {
     console.error("Supabase live_metrics update failed:", e);

@@ -4,6 +4,9 @@ import { isAuthorizedAdmin } from '@/lib/authGuard';
 import { pushNotifyAll } from '@/lib/pushNotify';
 import { formatSsdTokenNotification } from '@/lib/notificationFormatter';
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export async function GET() {
   try {
     const status = await readStatus();

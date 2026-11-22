@@ -377,7 +377,14 @@ export default function DdTokensStandalonePage() {
         const guideText = data.ssdTimingsGuide || '';
         setRawGuide(guideText);
 
-        // Parse DD timestamps
+        // Direct DD token details if available
+        if (data.ddTokenDetails) {
+          if (data.ddTokenDetails.startTime) setDdStartTimestamp(data.ddTokenDetails.startTime);
+          if (data.ddTokenDetails.completedTime) setDdCompleteTimestamp(data.ddTokenDetails.completedTime);
+          if (data.ddTokenDetails.status) setDdStatus(data.ddTokenDetails.status as any);
+        }
+
+        // Parse DD timestamps fallback
         const matchDdStart =
           guideText.match(/(?:DD|Divya Darshan).*?(?:Started|Issue Started)[^@\d]*@?\s*(\d{1,2}:\d{2}\s*(?:AM|PM|am|pm))/i) ||
           guideText.match(/(?:Started|Issue Started)[^@\d]*@?\s*(\d{1,2}:\d{2}\s*(?:AM|PM|am|pm))/i);
