@@ -11,7 +11,7 @@ import {
 } from 'lucide-react';
 import { TirumalaStatus, TokenBatchDetails } from '@/lib/statusDb';
 import { useLanguage } from '@/lib/useLanguage';
-import { isTimeInPastIST } from '@/lib/istDate';
+import { isTimeInPastIST, getISTMidnightState } from '@/lib/istDate';
 import styles from './ssdTokens.module.css';
 
 const COLLECTION_CENTRES = [
@@ -85,14 +85,18 @@ const SSD_TEXTS = {
     paused: 'Paused',
     closed: 'Closed',
     completed: 'Completed',
+    notStarted: 'Not Started',
     copied: 'Link copied to clipboard',
     todayPrefix: 'Today •',
     quotaIssuingPill: 'Tokens actively issuing',
     quotaPausedPill: 'Quota paused',
     quotaCompletedPill: "Today's quota completed",
+    quotaNotStartedPill: (d: string) => `Quota for ${d} not started`,
     noticeIssuing: 'Counters are currently open and issuing biometric tokens.',
     noticePaused: 'Token issuance is temporarily paused. Please wait for next announcement.',
     noticeCompleted: (d: string) => `Tokens for ${d} have been fully issued.`,
+    noticeNotStarted: (d: string) => `Quota for ${d} not started yet. Check back around release time; timings are subject to TTD updates.`,
+    quotaNotStartedSub: (d: string) => `Quota for ${d} not started yet`,
     ssdTitle: 'SSD Tokens',
     ssdSub: 'Slotted Sarva Darshan',
     ddTitle: 'DD Tokens',
@@ -142,14 +146,18 @@ const SSD_TEXTS = {
     paused: 'నిలిపివేయబడింది',
     closed: 'ముగిసింది',
     completed: 'పూర్తయింది',
+    notStarted: 'ఇంకా ప్రారంభం కాలేదు',
     copied: 'లింక్ కాపీ చేయబడింది',
     todayPrefix: 'ఈ రోజు •',
     quotaIssuingPill: 'టోకెన్లు జారీ అవుతున్నాయి',
     quotaPausedPill: 'కోటా నిలిపివేయబడింది',
     quotaCompletedPill: 'నేటి కోటా పూర్తయింది',
+    quotaNotStartedPill: (d: string) => `${d} కోటా ఇంకా ప్రారంభం కాలేదు`,
     noticeIssuing: 'కౌంటర్లు ప్రస్తుతం తెరిచి ఉన్నాయి మరియు బయోమెట్రిక్ టోకెన్లు జారీ చేస్తున్నాయి.',
     noticePaused: 'టోకెన్ జారీ తాత్కాలికంగా నిలిపివేయబడింది. తదుపరి ప్రకటన కోసం వేచి ఉండండి.',
     noticeCompleted: (d: string) => `${d} నాటి టోకెన్లు పూర్తిగా జారీ చేయబడ్డాయి.`,
+    noticeNotStarted: (d: string) => `${d} దర్శనం కోటా ఇంకా ప్రారంభం కాలేదు. విడుదల సమయానికి చూడండి; టీటీడీ అప్‌డేట్‌లకు లోబడి ఉంటుంది.`,
+    quotaNotStartedSub: (d: string) => `${d} కోటా ఇంకా ప్రారంభం కాలేదు`,
     ssdTitle: 'SSD టోకెన్లు',
     ssdSub: 'స్లాటెడ్ సర్వదర్శనం',
     ddTitle: 'DD టోకెన్లు',
@@ -199,14 +207,18 @@ const SSD_TEXTS = {
     paused: 'ಸ್ಥಗಿತಗೊಂಡಿದೆ',
     closed: 'ಮುಕ್ತಾಯವಾಗಿದೆ',
     completed: 'ಪೂರ್ಣಗೊಂಡಿದೆ',
+    notStarted: 'ಪ್ರಾರಂಭವಾಗಿಲ್ಲ',
     copied: 'ಲಿಂಕ್ ಕಾಪಿ ಮಾಡಲಾಗಿದೆ',
     todayPrefix: 'ಇಂದು •',
     quotaIssuingPill: 'ಟೋಕನ್‌ಗಳು ವಿತರಿಸಲಾಗುತ್ತಿವೆ',
     quotaPausedPill: 'ಕೋಟಾ ಸ್ಥಗಿತಗೊಂಡಿದೆ',
     quotaCompletedPill: 'ಇಂದಿನ ಕೋಟಾ ಪೂರ್ಣಗೊಂಡಿದೆ',
+    quotaNotStartedPill: (d: string) => `${d} ಕೋಟಾ ಪ್ರಾರಂಭವಾಗಿಲ್ಲ`,
     noticeIssuing: 'ಕೌಂಟರ್‌ಗಳು ಪ್ರಸ್ತುತ ತೆರೆದಿದ್ದು ಬಯೋಮೆಟ್ರಿಕ್ ಟೋಕನ್‌ಗಳನ್ನು ವಿತರಿಸುತ್ತಿವೆ.',
     noticePaused: 'ಟೋಕನ್ ವಿತರಣೆ ತಾತ್ಕಾಲಿಕವಾಗಿ ಸ್ಥಗಿತಗೊಂಡಿದೆ. ಮುಂದಿನ ಪ್ರಕಟಣೆಗಾಗಿ ಕಾಯಿರಿ.',
     noticeCompleted: (d: string) => `${d} ದಿನಾಂಕದ ಟೋಕನ್‌ಗಳು ಪೂರ್ಣವಾಗಿ ವಿತರಿಸಲ್ಪಟ್ಟಿವೆ.`,
+    noticeNotStarted: (d: string) => `${d} ಕೋಟಾ ಇನ್ನೂ ಪ್ರಾರಂಭವಾಗಿಲ್ಲ. ಬಿಡುಗಡೆ ಸಮಯಕ್ಕೆ ಪರಿಶೀಲಿಸಿ.`,
+    quotaNotStartedSub: (d: string) => `${d} ಕೋಟಾ ಇನ್ನೂ ಪ್ರಾರಂಭವಾಗಿಲ್ಲ`,
     ssdTitle: 'SSD ಟೋಕನ್‌ಗಳು',
     ssdSub: 'ಸ್ಲಾಟೆಡ್ ಸರ್ವದರ್ಶನ',
     ddTitle: 'DD ಟೋಕನ್‌ಗಳು',
@@ -256,14 +268,18 @@ const SSD_TEXTS = {
     paused: 'இடைநிறுத்தப்பட்டுள்ளது',
     closed: 'முடிந்தது',
     completed: 'நிறைவடைந்தது',
+    notStarted: 'தொடங்கவில்லை',
     copied: 'இணைப்பு நகலெடுக்கப்பட்டது',
     todayPrefix: 'இன்று •',
     quotaIssuingPill: 'டோக்கன்கள் வழங்கப்படுகின்றன',
     quotaPausedPill: 'ஒதுக்கீடு இடைநிறுத்தப்பட்டது',
     quotaCompletedPill: 'இன்றைய ஒதுக்கீடு நிறைவடைந்தது',
+    quotaNotStartedPill: (d: string) => `${d} ஒதுக்கீடு தொடங்கவில்லை`,
     noticeIssuing: 'கவுண்டர்கள் தற்போது திறந்து பயோமெட்ரிக் டோக்கன்கள் வழங்கப்படுகின்றன.',
     noticePaused: 'டோக்கன் வழங்குவது தற்காலிகமாக நிறுத்தப்பட்டுள்ளது. அடுத்த அறிவிப்புக்கு காத்திருக்கவும்.',
     noticeCompleted: (d: string) => `${d} தேதிக்கான டோக்கன்கள் முழுமையாக வழங்கப்பட்டுவிட்டன.`,
+    noticeNotStarted: (d: string) => `${d} ஒதுக்கீடு இன்னும் தொடங்கவில்லை. வெளியீட்டு நேரத்தில் சரிபார்க்கவும்.`,
+    quotaNotStartedSub: (d: string) => `${d} ஒதுக்கீடு இன்னும் தொடங்கவில்லை`,
     ssdTitle: 'SSD டோக்கன்கள்',
     ssdSub: 'குறிப்பிட்ட நேர சர்வ தர்சனம்',
     ddTitle: 'DD டோக்கன்கள்',
@@ -313,14 +329,18 @@ const SSD_TEXTS = {
     paused: 'रुका हुआ',
     closed: 'समाप्त',
     completed: 'पूर्ण',
+    notStarted: 'शुरू नहीं हुआ',
     copied: 'लिंक कॉपी हो गया',
     todayPrefix: 'आज •',
     quotaIssuingPill: 'टोकन सक्रिय रूप से जारी हैं',
     quotaPausedPill: 'कोटा रुका हुआ है',
     quotaCompletedPill: 'आज का कोटा समाप्त हो गया',
+    quotaNotStartedPill: (d: string) => `${d} का कोटा शुरू नहीं हुआ`,
     noticeIssuing: 'काउंटर वर्तमान में खुले हैं और बायोमेट्रिक टोकन जारी कर रहे हैं।',
     noticePaused: 'टोकन जारी करना अस्थायी रूप से रुका हुआ है। अगली घोषणा की प्रतीक्षा करें।',
     noticeCompleted: (d: string) => `${d} के लिए टोकन पूरी तरह से जारी किए जा चुके हैं।`,
+    noticeNotStarted: (d: string) => `${d} का दर्शन कोटा अभी शुरू नहीं हुआ है। जारी होने के समय देखें; TTD अपडेट के अधीन।`,
+    quotaNotStartedSub: (d: string) => `${d} का कोटा अभी शुरू नहीं हुआ है`,
     ssdTitle: 'SSD टोकन',
     ssdSub: 'स्लॉटेड सर्वदर्शन',
     ddTitle: 'DD टोकन',
@@ -409,7 +429,17 @@ export default function SsdTokensStandalonePage() {
   useEffect(() => {
     fetchStatus();
     const interval = setInterval(() => fetchStatus(), 20000);
-    return () => clearInterval(interval);
+
+    // Midnight rollover timer in Asia/Kolkata
+    const midnightState = getISTMidnightState();
+    const timer = setTimeout(() => {
+      fetchStatus();
+    }, midnightState.msUntilMidnight);
+
+    return () => {
+      clearInterval(interval);
+      clearTimeout(timer);
+    };
   }, []);
 
   const handleShare = () => {
@@ -427,6 +457,7 @@ export default function SsdTokensStandalonePage() {
   const t = SSD_TEXTS[lang] || SSD_TEXTS.en;
 
   const now = new Date();
+  const istMidnight = getISTMidnightState(now);
   const MONTHS: Record<string, string[]> = {
     en: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
     te: ['జనవరి', 'ఫిబ్రవరి', 'మార్చి', 'ఏప్రిల్', 'మే', 'జూన్', 'జూలై', 'ఆగస్టు', 'సెప్టెంబర్', 'అక్టోబర్', 'నవంబర్', 'డిసెంబర్'],
@@ -435,10 +466,8 @@ export default function SsdTokensStandalonePage() {
     hi: ['जनवरी', 'फ़रवरी', 'मार्च', 'अप्रैल', 'मई', 'जून', 'जुलाई', 'अगस्त', 'सितंबर', 'अक्टूबर', 'नवंबर', 'दिसंबर']
   };
   const activeMonths = MONTHS[lang] || MONTHS.en;
-  const todayFormatted = `${now.getDate()} ${activeMonths[now.getMonth()]} ${now.getFullYear()}`;
+  const todayFormatted = `${istMidnight.day} ${activeMonths[istMidnight.month - 1]} ${istMidnight.year}`;
 
-  const tomorrow = new Date(now);
-  tomorrow.setDate(tomorrow.getDate() + 1);
   const tomorrowSuffix: Record<string, string> = {
     en: '(Tomorrow)',
     te: '(రేపు)',
@@ -446,16 +475,20 @@ export default function SsdTokensStandalonePage() {
     ta: '(நாளை)',
     hi: '(कल)'
   };
-  const tomorrowFormatted = `${tomorrow.getDate()} ${activeMonths[tomorrow.getMonth()]} ${tomorrow.getFullYear()} ${tomorrowSuffix[lang] || tomorrowSuffix.en}`;
+  const targetDarshanDateFormatted = istMidnight.targetDarshanShortStr;
+  const tomorrowFormatted = `${istMidnight.targetDarshanStr} ${tomorrowSuffix[lang] || tomorrowSuffix.en}`;
 
   // Dynamically resolve SSD issuing time and date updated by admin
-  const rawIssuing = (nextTokenTime || ssdTokenDetails?.startTime || '11:30 AM').trim();
+  const rawIssuing = (nextTokenTime || ssdTokenDetails?.startTime || '12:00 PM').trim();
   const timeMatch = rawIssuing.match(/\b(\d{1,2}:\d{2}(?:\s*[AaPp][Mm])?)\b/) || rawIssuing.match(/\b(\d{1,2}\s*[AaPp][Mm])\b/);
-  const dynamicIssuingTime = timeMatch ? timeMatch[1] : (rawIssuing || '11:30 AM');
+  const dynamicIssuingTime = timeMatch ? timeMatch[1] : (rawIssuing || '12:00 PM');
 
   const todayLabel = lang === 'te' ? '(ఈ రోజు)' : lang === 'kn' ? '(ಇಂದು)' : lang === 'ta' ? '(இன்று)' : lang === 'hi' ? '(आज)' : '(Today)';
   const isTimePassed = isTimeInPastIST(dynamicIssuingTime);
-  const isTomorrowRelease = /tomorrow/i.test(rawIssuing) || isClosed || isTimePassed;
+
+  // Check if today's release has started yet (or if past midnight but before issuance release time)
+  const isNotStarted = !isIssuing && !isPaused && !isTimePassed;
+  const isTomorrowRelease = /tomorrow/i.test(rawIssuing) || (!isNotStarted && isClosed) || isTimePassed;
 
   let dynamicIssuingDate = isTomorrowRelease ? tomorrowFormatted : `${todayFormatted} ${todayLabel}`;
   if (/today/i.test(rawIssuing) && !isTimePassed && !isClosed) {
@@ -586,8 +619,8 @@ export default function SsdTokensStandalonePage() {
               gap: '6px',
               padding: '5px 12px',
               borderRadius: '9999px',
-              backgroundColor: isIssuing ? '#DCFCE7' : isPaused ? '#FEF3C7' : '#FEE2E2',
-              color: isIssuing ? '#15803D' : isPaused ? '#B45309' : '#B91C1C',
+              backgroundColor: isIssuing ? '#DCFCE7' : isPaused ? '#FEF3C7' : isNotStarted ? '#E0F2FE' : '#FEE2E2',
+              color: isIssuing ? '#15803D' : isPaused ? '#B45309' : isNotStarted ? '#0369A1' : '#B91C1C',
               fontSize: '11.5px',
               fontWeight: 800,
               boxShadow: '0 2px 6px rgba(0,0,0,0.12)',
@@ -597,14 +630,16 @@ export default function SsdTokensStandalonePage() {
                 width: '7px',
                 height: '7px',
                 borderRadius: '50%',
-                backgroundColor: isIssuing ? '#16A34A' : isPaused ? '#D97706' : '#DC2626'
+                backgroundColor: isIssuing ? '#16A34A' : isPaused ? '#D97706' : isNotStarted ? '#0284C7' : '#DC2626'
               }} />
               <span>
                 {isIssuing
                   ? t.issuing
                   : isPaused
                     ? t.paused
-                    : t.closed}
+                    : isNotStarted
+                      ? t.notStarted
+                      : t.closed}
               </span>
             </div>
           </div>
@@ -653,8 +688,10 @@ export default function SsdTokensStandalonePage() {
             ? 'linear-gradient(135deg, #F0FDF4 0%, #DCFCE7 100%)'
             : isPaused
               ? 'linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%)'
-              : 'linear-gradient(135deg, #FFF5F5 0%, #FEF2F2 100%)',
-          border: `1px solid ${isIssuing ? '#BBF7D0' : isPaused ? '#FDE68A' : '#FEE2E2'}`,
+              : isNotStarted
+                ? 'linear-gradient(135deg, #F0F9FF 0%, #E0F2FE 100%)'
+                : 'linear-gradient(135deg, #FFF5F5 0%, #FEF2F2 100%)',
+          border: `1px solid ${isIssuing ? '#BBF7D0' : isPaused ? '#FDE68A' : isNotStarted ? '#BAE6FD' : '#FEE2E2'}`,
           borderRadius: '18px',
           padding: '12px 14px',
           boxShadow: '0 1px 4px rgba(0, 0, 0, 0.03)'
@@ -665,8 +702,8 @@ export default function SsdTokensStandalonePage() {
                 width: '32px',
                 height: '32px',
                 borderRadius: '10px',
-                backgroundColor: isIssuing ? '#DCFCE7' : isPaused ? '#FEF3C7' : '#FEE2E2',
-                color: isIssuing ? '#15803D' : isPaused ? '#D97706' : '#DC2626',
+                backgroundColor: isIssuing ? '#DCFCE7' : isPaused ? '#FEF3C7' : isNotStarted ? '#E0F2FE' : '#FEE2E2',
+                color: isIssuing ? '#15803D' : isPaused ? '#D97706' : isNotStarted ? '#0369A1' : '#DC2626',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -684,23 +721,25 @@ export default function SsdTokensStandalonePage() {
               alignItems: 'center',
               padding: '3px 9px',
               borderRadius: '9999px',
-              backgroundColor: isIssuing ? '#DCFCE7' : isPaused ? '#FEF3C7' : '#FEE2E2',
-              color: isIssuing ? '#166534' : isPaused ? '#92400E' : '#991B1B',
+              backgroundColor: isIssuing ? '#DCFCE7' : isPaused ? '#FEF3C7' : isNotStarted ? '#E0F2FE' : '#FEE2E2',
+              color: isIssuing ? '#166534' : isPaused ? '#92400E' : isNotStarted ? '#075985' : '#991B1B',
               fontSize: '10.5px',
               fontWeight: 800,
-              border: `1px solid ${isIssuing ? '#BBF7D0' : isPaused ? '#FDE68A' : '#FECACA'}`
+              border: `1px solid ${isIssuing ? '#BBF7D0' : isPaused ? '#FDE68A' : isNotStarted ? '#BAE6FD' : '#FECACA'}`
             }}>
               {isIssuing
                 ? t.quotaIssuingPill
                 : isPaused
                   ? t.quotaPausedPill
-                  : t.quotaCompletedPill}
+                  : isNotStarted
+                    ? (t as any).quotaNotStartedPill(targetDarshanDateFormatted)
+                    : t.quotaCompletedPill}
             </div>
           </div>
 
           <p style={{
             fontSize: '11.5px',
-            color: isIssuing ? '#166534' : isPaused ? '#92400E' : '#7F1D1D',
+            color: isIssuing ? '#166534' : isPaused ? '#92400E' : isNotStarted ? '#0369A1' : '#7F1D1D',
             fontWeight: 500,
             margin: '8px 0 0 0',
             lineHeight: 1.4
@@ -709,7 +748,9 @@ export default function SsdTokensStandalonePage() {
               ? t.noticeIssuing
               : isPaused
                 ? t.noticePaused
-                : t.noticeCompleted(todayFormatted))}
+                : isNotStarted
+                  ? (t as any).noticeNotStarted(targetDarshanDateFormatted)
+                  : t.noticeCompleted(todayFormatted))}
           </p>
         </section>
 
@@ -721,15 +762,16 @@ export default function SsdTokensStandalonePage() {
         }}>
           {/* LEFT: SSD TOKENS */}
           {(() => {
-            const ssdStatusStr = (ssdTokenDetails?.status || (isIssuing ? 'issuing' : isPaused ? 'paused' : 'completed')).toLowerCase();
+            const ssdStatusStr = (ssdTokenDetails?.status || (isIssuing ? 'issuing' : isPaused ? 'paused' : isNotStarted ? 'not_started' : 'completed')).toLowerCase();
             const isSsdIssuing = ssdStatusStr === 'issuing' || ssdStatusStr === 'available';
             const isSsdPaused = ssdStatusStr === 'paused';
-            const isSsdDone = !isSsdIssuing && !isSsdPaused;
+            const isSsdNotStarted = isNotStarted || ssdStatusStr === 'not_started';
+            const isSsdDone = !isSsdIssuing && !isSsdPaused && !isSsdNotStarted;
 
             return (
               <div style={{
                 background: 'linear-gradient(180deg, #FFFFFF 0%, #F5FBF6 100%)',
-                border: `1px solid ${isSsdIssuing ? '#BBF7D0' : isSsdPaused ? '#FDE68A' : '#D5ECD8'}`,
+                border: `1px solid ${isSsdIssuing ? '#BBF7D0' : isSsdPaused ? '#FDE68A' : isSsdNotStarted ? '#BAE6FD' : '#D5ECD8'}`,
                 borderRadius: '18px',
                 padding: '12px 10px',
                 display: 'flex',
@@ -742,8 +784,8 @@ export default function SsdTokensStandalonePage() {
                     width: '32px',
                     height: '32px',
                     borderRadius: '10px',
-                    backgroundColor: isSsdIssuing ? '#DCFCE7' : isSsdPaused ? '#FEF3C7' : '#F1F5F9',
-                    color: isSsdIssuing ? '#15803D' : isSsdPaused ? '#B45309' : '#0A4E33',
+                    backgroundColor: isSsdIssuing ? '#DCFCE7' : isSsdPaused ? '#FEF3C7' : isSsdNotStarted ? '#E0F2FE' : '#F1F5F9',
+                    color: isSsdIssuing ? '#15803D' : isSsdPaused ? '#B45309' : isSsdNotStarted ? '#0369A1' : '#0A4E33',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -770,7 +812,7 @@ export default function SsdTokensStandalonePage() {
                 <div style={{ margin: '4px 0 6px 0' }}>
                   <div style={{ display: 'flex', alignItems: 'baseline', gap: '4px' }}>
                     <span style={{ fontSize: '24px', fontWeight: 900, color: '#0A4E33', lineHeight: 1 }}>
-                      {ssdTokenDetails?.tokensLeft ?? (isClosed ? '0' : 'Available')}
+                      {isSsdNotStarted ? '--' : (ssdTokenDetails?.tokensLeft ?? (isClosed ? '0' : 'Available'))}
                     </span>
                     <span style={{ fontSize: '13px', fontWeight: 700, color: '#64748B' }}>
                       / {ssdTokenDetails?.totalTokens ?? '10,000'}
@@ -785,21 +827,23 @@ export default function SsdTokensStandalonePage() {
                   gap: '4px',
                   padding: '2.5px 8px',
                   borderRadius: '9999px',
-                  backgroundColor: isSsdIssuing ? '#DCFCE7' : isSsdPaused ? '#FEF3C7' : '#FEE2E2',
-                  color: isSsdIssuing ? '#166534' : isSsdPaused ? '#92400E' : '#991B1B',
+                  backgroundColor: isSsdIssuing ? '#DCFCE7' : isSsdPaused ? '#FEF3C7' : isSsdNotStarted ? '#E0F2FE' : '#FEE2E2',
+                  color: isSsdIssuing ? '#166534' : isSsdPaused ? '#92400E' : isSsdNotStarted ? '#075985' : '#991B1B',
                   fontSize: '10px',
                   fontWeight: 800,
                   alignSelf: 'flex-start',
                   marginBottom: '10px',
-                  border: `1px solid ${isSsdIssuing ? '#BBF7D0' : isSsdPaused ? '#FDE68A' : '#FECACA'}`
+                  border: `1px solid ${isSsdIssuing ? '#BBF7D0' : isSsdPaused ? '#FDE68A' : isSsdNotStarted ? '#BAE6FD' : '#FECACA'}`
                 }}>
-                  <span style={{ width: '5px', height: '5px', borderRadius: '50%', backgroundColor: isSsdIssuing ? '#16A34A' : isSsdPaused ? '#D97706' : '#DC2626' }} />
+                  <span style={{ width: '5px', height: '5px', borderRadius: '50%', backgroundColor: isSsdIssuing ? '#16A34A' : isSsdPaused ? '#D97706' : isSsdNotStarted ? '#0284C7' : '#DC2626' }} />
                   <span>
                     {isSsdIssuing
                       ? t.issuing
                       : isSsdPaused
                         ? t.paused
-                        : t.completed}
+                        : isSsdNotStarted
+                          ? t.notStarted
+                          : t.completed}
                   </span>
                 </div>
 
@@ -808,43 +852,65 @@ export default function SsdTokensStandalonePage() {
 
                 {/* Timelines */}
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                  <div style={{ display: 'flex', alignItems: 'flex-start', gap: '5px' }}>
-                    <div style={{
-                      width: '14px', height: '14px', borderRadius: '50%', backgroundColor: '#DCFCE7',
-                      color: '#16A34A', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      flexShrink: 0, marginTop: '1px'
-                    }}>
-                      <Play size={8} fill="#16A34A" />
-                    </div>
-                    <div>
-                      <div style={{ fontSize: '9.5px', color: '#64748B', fontWeight: 600 }}>
-                        {t.startedAt}
+                  {isSsdNotStarted ? (
+                    <div style={{ display: 'flex', alignItems: 'flex-start', gap: '5px' }}>
+                      <div style={{
+                        width: '14px', height: '14px', borderRadius: '50%', backgroundColor: '#E0F2FE',
+                        color: '#0284C7', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                        flexShrink: 0, marginTop: '1px'
+                      }}>
+                        <Clock size={8} />
                       </div>
-                      <div style={{ fontSize: '10.5px', color: '#0F172A', fontWeight: 800 }}>
-                        {ssdTokenDetails?.startTime || 'Morning Batch'}
+                      <div>
+                        <div style={{ fontSize: '9.5px', color: '#64748B', fontWeight: 600 }}>
+                          {t.currentStatus}
+                        </div>
+                        <div style={{ fontSize: '10.5px', color: '#0369A1', fontWeight: 800 }}>
+                          {(t as any).quotaNotStartedSub(targetDarshanDateFormatted)}
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  ) : (
+                    <>
+                      <div style={{ display: 'flex', alignItems: 'flex-start', gap: '5px' }}>
+                        <div style={{
+                          width: '14px', height: '14px', borderRadius: '50%', backgroundColor: '#DCFCE7',
+                          color: '#16A34A', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                          flexShrink: 0, marginTop: '1px'
+                        }}>
+                          <Play size={8} fill="#16A34A" />
+                        </div>
+                        <div>
+                          <div style={{ fontSize: '9.5px', color: '#64748B', fontWeight: 600 }}>
+                            {t.startedAt}
+                          </div>
+                          <div style={{ fontSize: '10.5px', color: '#0F172A', fontWeight: 800 }}>
+                            {ssdTokenDetails?.startTime || 'Morning Batch'}
+                          </div>
+                        </div>
+                      </div>
 
-                  <div style={{ display: 'flex', alignItems: 'flex-start', gap: '5px' }}>
-                    <div style={{
-                      width: '14px', height: '14px', borderRadius: '3px',
-                      backgroundColor: isSsdDone ? '#FEE2E2' : '#EFF6FF',
-                      color: isSsdDone ? '#DC2626' : '#2563EB',
-                      display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      flexShrink: 0, marginTop: '1px'
-                    }}>
-                      <Square size={7} fill={isSsdDone ? '#DC2626' : '#2563EB'} />
-                    </div>
-                    <div>
-                      <div style={{ fontSize: '9.5px', color: '#64748B', fontWeight: 600 }}>
-                        {isSsdDone ? t.quotaCompletedAt : t.currentStatus}
+                      <div style={{ display: 'flex', alignItems: 'flex-start', gap: '5px' }}>
+                        <div style={{
+                          width: '14px', height: '14px', borderRadius: '3px',
+                          backgroundColor: isSsdDone ? '#FEE2E2' : '#EFF6FF',
+                          color: isSsdDone ? '#DC2626' : '#2563EB',
+                          display: 'flex', alignItems: 'center', justifyContent: 'center',
+                          flexShrink: 0, marginTop: '1px'
+                        }}>
+                          <Square size={7} fill={isSsdDone ? '#DC2626' : '#2563EB'} />
+                        </div>
+                        <div>
+                          <div style={{ fontSize: '9.5px', color: '#64748B', fontWeight: 600 }}>
+                            {isSsdDone ? t.quotaCompletedAt : t.currentStatus}
+                          </div>
+                          <div style={{ fontSize: '10.5px', color: '#0F172A', fontWeight: 800 }}>
+                            {isSsdDone ? (ssdTokenDetails?.completedTime || t.completed) : t.countersActive}
+                          </div>
+                        </div>
                       </div>
-                      <div style={{ fontSize: '10.5px', color: '#0F172A', fontWeight: 800 }}>
-                        {isSsdDone ? (ssdTokenDetails?.completedTime || t.completed) : t.countersActive}
-                      </div>
-                    </div>
-                  </div>
+                    </>
+                  )}
                 </div>
               </div>
             );
@@ -852,15 +918,16 @@ export default function SsdTokensStandalonePage() {
 
           {/* RIGHT: DD TOKENS */}
           {(() => {
-            const ddStatusStr = (ddTokenDetails?.status || (isIssuing ? 'issuing' : isPaused ? 'paused' : 'completed')).toLowerCase();
+            const ddStatusStr = (ddTokenDetails?.status || (isIssuing ? 'issuing' : isPaused ? 'paused' : isNotStarted ? 'not_started' : 'completed')).toLowerCase();
             const isDdIssuing = ddStatusStr === 'issuing' || ddStatusStr === 'available';
             const isDdPaused = ddStatusStr === 'paused';
-            const isDdDone = !isDdIssuing && !isDdPaused;
+            const isDdNotStarted = isNotStarted || ddStatusStr === 'not_started';
+            const isDdDone = !isDdIssuing && !isDdPaused && !isDdNotStarted;
 
             return (
               <div style={{
                 background: 'linear-gradient(180deg, #FFFFFF 0%, #FFFDF5 100%)',
-                border: `1px solid ${isDdIssuing ? '#BBF7D0' : isDdPaused ? '#FDE68A' : '#FEF3C7'}`,
+                border: `1px solid ${isDdIssuing ? '#BBF7D0' : isDdPaused ? '#FDE68A' : isDdNotStarted ? '#BAE6FD' : '#FEF3C7'}`,
                 borderRadius: '18px',
                 padding: '12px 10px',
                 display: 'flex',
@@ -873,8 +940,8 @@ export default function SsdTokensStandalonePage() {
                     width: '32px',
                     height: '32px',
                     borderRadius: '10px',
-                    backgroundColor: isDdIssuing ? '#DCFCE7' : isDdPaused ? '#FEF3C7' : '#FEF3C7',
-                    color: isDdIssuing ? '#15803D' : '#D97706',
+                    backgroundColor: isDdIssuing ? '#DCFCE7' : isDdPaused ? '#FEF3C7' : isDdNotStarted ? '#E0F2FE' : '#FEF3C7',
+                    color: isDdIssuing ? '#15803D' : isDdNotStarted ? '#0369A1' : '#D97706',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
@@ -901,7 +968,7 @@ export default function SsdTokensStandalonePage() {
                 <div style={{ margin: '4px 0 6px 0' }}>
                   <div style={{ display: 'flex', alignItems: 'baseline', gap: '4px' }}>
                     <span style={{ fontSize: '24px', fontWeight: 900, color: '#0A4E33', lineHeight: 1 }}>
-                      {ddTokenDetails?.tokensLeft ?? (isClosed ? '0' : 'Available')}
+                      {isDdNotStarted ? '--' : (ddTokenDetails?.tokensLeft ?? (isClosed ? '0' : 'Available'))}
                     </span>
                     <span style={{ fontSize: '13px', fontWeight: 700, color: '#64748B' }}>
                       / {ddTokenDetails?.totalTokens ?? '2,000'}
@@ -916,21 +983,23 @@ export default function SsdTokensStandalonePage() {
                   gap: '4px',
                   padding: '2.5px 8px',
                   borderRadius: '9999px',
-                  backgroundColor: isDdIssuing ? '#DCFCE7' : isDdPaused ? '#FEF3C7' : '#FEE2E2',
-                  color: isDdIssuing ? '#166534' : isDdPaused ? '#92400E' : '#991B1B',
+                  backgroundColor: isDdIssuing ? '#DCFCE7' : isDdPaused ? '#FEF3C7' : isDdNotStarted ? '#E0F2FE' : '#FEE2E2',
+                  color: isDdIssuing ? '#166534' : isDdPaused ? '#92400E' : isDdNotStarted ? '#075985' : '#991B1B',
                   fontSize: '10px',
                   fontWeight: 800,
                   alignSelf: 'flex-start',
                   marginBottom: '10px',
-                  border: `1px solid ${isDdIssuing ? '#BBF7D0' : isDdPaused ? '#FDE68A' : '#FECACA'}`
+                  border: `1px solid ${isDdIssuing ? '#BBF7D0' : isDdPaused ? '#FDE68A' : isDdNotStarted ? '#BAE6FD' : '#FECACA'}`
                 }}>
-                  <span style={{ width: '5px', height: '5px', borderRadius: '50%', backgroundColor: isDdIssuing ? '#16A34A' : isDdPaused ? '#D97706' : '#DC2626' }} />
+                  <span style={{ width: '5px', height: '5px', borderRadius: '50%', backgroundColor: isDdIssuing ? '#16A34A' : isDdPaused ? '#D97706' : isDdNotStarted ? '#0284C7' : '#DC2626' }} />
                   <span>
                     {isDdIssuing
                       ? t.issuing
                       : isDdPaused
                         ? t.paused
-                        : t.completed}
+                        : isDdNotStarted
+                          ? t.notStarted
+                          : t.completed}
                   </span>
                 </div>
 
@@ -939,43 +1008,65 @@ export default function SsdTokensStandalonePage() {
 
                 {/* Timelines */}
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
-                  <div style={{ display: 'flex', alignItems: 'flex-start', gap: '5px' }}>
-                    <div style={{
-                      width: '14px', height: '14px', borderRadius: '50%', backgroundColor: '#DCFCE7',
-                      color: '#16A34A', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      flexShrink: 0, marginTop: '1px'
-                    }}>
-                      <Play size={8} fill="#16A34A" />
-                    </div>
-                    <div>
-                      <div style={{ fontSize: '9.5px', color: '#64748B', fontWeight: 600 }}>
-                        {t.startedAt}
+                  {isDdNotStarted ? (
+                    <div style={{ display: 'flex', alignItems: 'flex-start', gap: '5px' }}>
+                      <div style={{
+                        width: '14px', height: '14px', borderRadius: '50%', backgroundColor: '#E0F2FE',
+                        color: '#0284C7', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                        flexShrink: 0, marginTop: '1px'
+                      }}>
+                        <Clock size={8} />
                       </div>
-                      <div style={{ fontSize: '10.5px', color: '#0F172A', fontWeight: 800 }}>
-                        {ddTokenDetails?.startTime || 'Morning Batch'}
+                      <div>
+                        <div style={{ fontSize: '9.5px', color: '#64748B', fontWeight: 600 }}>
+                          {t.currentStatus}
+                        </div>
+                        <div style={{ fontSize: '10.5px', color: '#0369A1', fontWeight: 800 }}>
+                          {(t as any).quotaNotStartedSub(targetDarshanDateFormatted)}
+                        </div>
                       </div>
                     </div>
-                  </div>
+                  ) : (
+                    <>
+                      <div style={{ display: 'flex', alignItems: 'flex-start', gap: '5px' }}>
+                        <div style={{
+                          width: '14px', height: '14px', borderRadius: '50%', backgroundColor: '#DCFCE7',
+                          color: '#16A34A', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                          flexShrink: 0, marginTop: '1px'
+                        }}>
+                          <Play size={8} fill="#16A34A" />
+                        </div>
+                        <div>
+                          <div style={{ fontSize: '9.5px', color: '#64748B', fontWeight: 600 }}>
+                            {t.startedAt}
+                          </div>
+                          <div style={{ fontSize: '10.5px', color: '#0F172A', fontWeight: 800 }}>
+                            {ddTokenDetails?.startTime || 'Morning Batch'}
+                          </div>
+                        </div>
+                      </div>
 
-                  <div style={{ display: 'flex', alignItems: 'flex-start', gap: '5px' }}>
-                    <div style={{
-                      width: '14px', height: '14px', borderRadius: '3px',
-                      backgroundColor: isDdDone ? '#FEE2E2' : '#EFF6FF',
-                      color: isDdDone ? '#DC2626' : '#2563EB',
-                      display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      flexShrink: 0, marginTop: '1px'
-                    }}>
-                      <Square size={7} fill={isDdDone ? '#DC2626' : '#2563EB'} />
-                    </div>
-                    <div>
-                      <div style={{ fontSize: '9.5px', color: '#64748B', fontWeight: 600 }}>
-                        {isDdDone ? t.quotaCompletedAt : t.currentStatus}
+                      <div style={{ display: 'flex', alignItems: 'flex-start', gap: '5px' }}>
+                        <div style={{
+                          width: '14px', height: '14px', borderRadius: '3px',
+                          backgroundColor: isDdDone ? '#FEE2E2' : '#EFF6FF',
+                          color: isDdDone ? '#DC2626' : '#2563EB',
+                          display: 'flex', alignItems: 'center', justifyContent: 'center',
+                          flexShrink: 0, marginTop: '1px'
+                        }}>
+                          <Square size={7} fill={isDdDone ? '#DC2626' : '#2563EB'} />
+                        </div>
+                        <div>
+                          <div style={{ fontSize: '9.5px', color: '#64748B', fontWeight: 600 }}>
+                            {isDdDone ? t.quotaCompletedAt : t.currentStatus}
+                          </div>
+                          <div style={{ fontSize: '10.5px', color: '#0F172A', fontWeight: 800 }}>
+                            {isDdDone ? (ddTokenDetails?.completedTime || t.completed) : t.countersActive}
+                          </div>
+                        </div>
                       </div>
-                      <div style={{ fontSize: '10.5px', color: '#0F172A', fontWeight: 800 }}>
-                        {isDdDone ? (ddTokenDetails?.completedTime || t.completed) : t.countersActive}
-                      </div>
-                    </div>
-                  </div>
+                    </>
+                  )}
                 </div>
               </div>
             );

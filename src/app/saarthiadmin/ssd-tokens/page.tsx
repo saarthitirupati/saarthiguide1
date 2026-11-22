@@ -27,7 +27,7 @@ import {
 import { notifyRealtimeUpdate } from '@/lib/useRealtimeStatus';
 import { safeFetchJson } from '@/lib/safeFetch';
 import { formatSsdTokenNotification } from '@/lib/notificationFormatter';
-import { formatRelativeTime, formatISTTime } from '@/lib/istDate';
+import { formatRelativeTime, formatISTTime, getISTMidnightState } from '@/lib/istDate';
 
 /**
  * Temple Gopuram Icon with custom color
@@ -253,6 +253,178 @@ export default function AdminSsdTokensPage() {
     } else if (status === 'suspended') {
       setAdvisoryBadge('Brahmotsavam');
       setModeBadge('Walk-in Only');
+    }
+  };
+
+  // Dynamic automatic synchronization driven by Quota Numbers
+  const handleSsdAvailableChange = (val: string) => {
+    setSsdAvailable(val);
+    const cleanVal = val.trim().replace(/,/g, '');
+    const num = parseInt(cleanVal, 10);
+    const currentIST = formatKolkata(new Date().toISOString());
+    const midnight = getISTMidnightState();
+
+    if (cleanVal === '0' || num === 0) {
+      setSsdStatus('completed');
+      setSsdCompletedTime(currentIST);
+      const effectiveSsdStart = ssdStartTime || `${midnight.todayShortStr}, 12:00 PM`;
+      if (!ssdStartTime) setSsdStartTime(effectiveSsdStart);
+
+      const ddNum = parseInt(String(ddAvailable).trim().replace(/,/g, ''), 10);
+      if (ddAvailable.trim() === '0' || ddNum === 0 || ddStatus === 'completed') {
+        const effectiveDdStart = ddStartTime || `${midnight.todayShortStr}, 12:00 PM`;
+        const effectiveDdComp = ddCompletedTime || currentIST;
+        setGlobalStatus('closed-for-day');
+        setAdvisoryBadge('Quota Completed');
+        setModeBadge('Tokens Not Available');
+        setNextReleaseDate(`${midnight.targetDarshanStr} (Tomorrow)`);
+        setNextBatchTime('~12:00 PM');
+        setLiveNotice(`SSD 10K (Started: ${effectiveSsdStart}, Completed: ${currentIST}) & DD 2K (Started: ${effectiveDdStart}, Completed: ${effectiveDdComp}) quota completed for ${midnight.todayShortStr}. Next release around 12:00 PM tomorrow.`);
+      } else {
+        setLiveNotice(`SSD Tokens Quota completed (Started: ${effectiveSsdStart}, Completed: ${currentIST}). DD footpath tokens still available.`);
+      }
+    } else if (!isNaN(num) && num > 0) {
+      setSsdStatus('issuing');
+      const startT = (!ssdStartTime || ssdStartTime.includes('Oct') || ssdStatus === 'completed') ? currentIST : ssdStartTime;
+      setSsdStartTime(startT);
+      setNextBatchTime(startT);
+      setSsdCompletedTime('');
+      setGlobalStatus('issuing');
+      setAdvisoryBadge('');
+      setModeBadge('Open 24/7');
+      setLiveNotice(`SSD Tokens issuing now at Tirupati counters (${num.toLocaleString('en-IN')} remaining, started at ${startT}). Original Aadhaar required.`);
+    } else if (cleanVal === '' || cleanVal === '--') {
+      setSsdCompletedTime('');
+      setLiveNotice(`SSD & DD Token Quota for ${midnight.targetDarshanShortStr} not started yet. Check back around release time.`);
+    }
+  };
+
+  const handleDdAvailableChange = (val: string) => {
+    setDdAvailable(val);
+    const cleanVal = val.trim().replace(/,/g, '');
+    const num = parseInt(cleanVal, 10);
+    const currentIST = formatKolkata(new Date().toISOString());
+    const midnight = getISTMidnightState();
+
+    if (cleanVal === '0' || num === 0) {
+      setDdStatus('completed');
+      setDdCompletedTime(currentIST);
+      const effectiveDdStart = ddStartTime || `${midnight.todayShortStr}, 12:00 PM`;
+      if (!ddStartTime) setDdStartTime(effectiveDdStart);
+
+      const ssdNum = parseInt(String(ssdAvailable).trim().replace(/,/g, ''), 10);
+      if (ssdAvailable.trim() === '0' || ssdNum === 0 || ssdStatus === 'completed') {
+        const effectiveSsdStart = ssdStartTime || `${midnight.todayShortStr}, 12:00 PM`;
+        const effectiveSsdComp = ssdCompletedTime || currentIST;
+        setGlobalStatus('closed-for-day');
+        setAdvisoryBadge('Quota Completed');
+        setModeBadge('Tokens Not Available');
+        setNextReleaseDate(`${midnight.targetDarshanStr} (Tomorrow)`);
+        setNextBatchTime('~12:00 PM');
+        setLiveNotice(`SSD 10K (Started: ${effectiveSsdStart}, Completed: ${effectiveSsdComp}) & DD 2K (Started: ${effectiveDdStart}, Completed: ${currentIST}) quota completed for ${midnight.todayShortStr}. Next release around 12:00 PM tomorrow.`);
+      } else {
+        setLiveNotice(`DD Footpath Tokens Quota completed (Started: ${effectiveDdStart}, Completed: ${currentIST}). SSD Tokens still available.`);
+      }
+    } else if (!isNaN(num) && num > 0) {
+      setDdStatus('issuing');
+      const startT = (!ddStartTime || ddStartTime.includes('Oct') || ddStatus === 'completed') ? currentIST : ddStartTime;
+      setDdStartTime(startT);
+      setDdCompletedTime('');
+      setGlobalStatus('issuing');
+      setAdvisoryBadge('');
+      setModeBadge('Open 24/7');
+      setLiveNotice(`Divya Darshan (DD) tokens issuing now at Alipiri / Srivari Mettu (${num.toLocaleString('en-IN')} remaining, started at ${startT}).`);
+    } else if (cleanVal === '' || cleanVal === '--') {
+      setDdCompletedTime('');
+    }
+  };
+
+  const handleSsdStatusChange = (status: 'issuing' | 'paused' | 'completed' | 'suspended') => {
+    setSsdStatus(status);
+    const currentIST = formatKolkata(new Date().toISOString());
+    const midnight = getISTMidnightState();
+    if (status === 'completed') {
+      setSsdAvailable('0');
+      const compTime = ssdCompletedTime || currentIST;
+      setSsdCompletedTime(compTime);
+      const startT = ssdStartTime || `${midnight.todayShortStr}, 12:00 PM`;
+      setSsdStartTime(startT);
+      setLiveNotice(`SSD Tokens Quota completed (Started: ${startT}, Completed: ${compTime}).`);
+    } else if (status === 'issuing') {
+      if (ssdAvailable === '0') setSsdAvailable('10,000');
+      setSsdCompletedTime('');
+      const startT = (!ssdStartTime || ssdStartTime.includes('Oct')) ? currentIST : ssdStartTime;
+      setSsdStartTime(startT);
+      setLiveNotice(`SSD Tokens issuing now at Tirupati counters (Started at ${startT}).`);
+    }
+  };
+
+  const handleDdStatusChange = (status: 'issuing' | 'paused' | 'completed' | 'suspended') => {
+    setDdStatus(status);
+    const currentIST = formatKolkata(new Date().toISOString());
+    const midnight = getISTMidnightState();
+    if (status === 'completed') {
+      setDdAvailable('0');
+      const compTime = ddCompletedTime || currentIST;
+      setDdCompletedTime(compTime);
+      const startT = ddStartTime || `${midnight.todayShortStr}, 12:00 PM`;
+      setDdStartTime(startT);
+      setLiveNotice(`DD Footpath Tokens Quota completed (Started: ${startT}, Completed: ${compTime}).`);
+    } else if (status === 'issuing') {
+      if (ddAvailable === '0') setDdAvailable('2,000');
+      setDdCompletedTime('');
+      const startT = (!ddStartTime || ddStartTime.includes('Oct')) ? currentIST : ddStartTime;
+      setDdStartTime(startT);
+      setLiveNotice(`Divya Darshan (DD) tokens issuing now (Started at ${startT}).`);
+    }
+  };
+
+  const triggerMasterAction = (action: 'issuing_all' | 'complete_all' | 'not_started_all') => {
+    const currentIST = formatKolkata(new Date().toISOString());
+    const midnight = getISTMidnightState();
+
+    if (action === 'issuing_all') {
+      setGlobalStatus('issuing');
+      setAdvisoryBadge('');
+      setModeBadge('Open 24/7');
+      setSsdAvailable('10,000');
+      setSsdStatus('issuing');
+      setSsdStartTime(currentIST);
+      setSsdCompletedTime('');
+      setDdAvailable('2,000');
+      setDdStatus('issuing');
+      setDdStartTime(currentIST);
+      setDdCompletedTime('');
+      setNextBatchTime(currentIST);
+      setLiveNotice(`SSD 10,000 (Started: ${currentIST}) & DD 2,000 (Started: ${currentIST}) tokens actively issuing at Tirupati counters for tomorrow's darshan.`);
+    } else if (action === 'complete_all') {
+      const ssdStart = ssdStartTime || `${midnight.todayShortStr}, 12:00 PM`;
+      const ddStart = ddStartTime || `${midnight.todayShortStr}, 12:00 PM`;
+      setGlobalStatus('closed-for-day');
+      setAdvisoryBadge('Quota Completed');
+      setModeBadge('Tokens Not Available');
+      setSsdAvailable('0');
+      setSsdStatus('completed');
+      setSsdStartTime(ssdStart);
+      setSsdCompletedTime(currentIST);
+      setDdAvailable('0');
+      setDdStatus('completed');
+      setDdStartTime(ddStart);
+      setDdCompletedTime(currentIST);
+      setNextReleaseDate(`${midnight.targetDarshanStr} (Tomorrow)`);
+      setNextBatchTime('~12:00 PM');
+      setLiveNotice(`SSD 10K (Started: ${ssdStart}, Completed: ${currentIST}) & DD 2K (Started: ${ddStart}, Completed: ${currentIST}) quota completed for ${midnight.todayShortStr}. Next update around 12:00 PM tomorrow.`);
+    } else if (action === 'not_started_all') {
+      setGlobalStatus('closed-for-day');
+      setAdvisoryBadge('Quota Completed');
+      setModeBadge('Tokens Not Available');
+      setSsdAvailable('--');
+      setSsdCompletedTime('');
+      setDdAvailable('--');
+      setDdCompletedTime('');
+      setNextReleaseDate(`${midnight.targetDarshanStr} (Tomorrow)`);
+      setNextBatchTime('~12:00 PM');
+      setLiveNotice(`SSD & DD Token Quota for ${midnight.targetDarshanShortStr} not started yet. Check back around release time; timings subject to TTD updates.`);
     }
   };
 
@@ -600,7 +772,90 @@ export default function AdminSsdTokensPage() {
             </div>
           </div>
 
-          {/* ── CARD 2: TWO INDEPENDENT TOKEN CARDS (SSD & DD) ── */}
+          {/* ── CARD 2: MASTER QUICK ACTIONS & TWO TOKEN CARDS (SSD & DD) ── */}
+          <div style={{
+            background: 'linear-gradient(135deg, #F8FAFC 0%, #F1F5F9 100%)',
+            border: '1px solid #CBD5E1',
+            borderRadius: '16px',
+            padding: '12px 14px',
+            marginBottom: '16px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            flexWrap: 'wrap',
+            gap: '10px'
+          }}>
+            <div>
+              <span style={{ fontSize: '13px', fontWeight: 800, color: '#0F172A', display: 'block' }}>
+                ⚡ 1-Click Master Presets
+              </span>
+              <span style={{ fontSize: '11px', color: '#64748B' }}>
+                Automatically sets counts, statuses, current IST timestamps, and notice
+              </span>
+            </div>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+              <button
+                type="button"
+                onClick={() => triggerMasterAction('issuing_all')}
+                style={{
+                  padding: '6px 12px',
+                  borderRadius: '8px',
+                  border: '1px solid #86EFAC',
+                  backgroundColor: '#DCFCE7',
+                  color: '#166534',
+                  fontSize: '11.5px',
+                  fontWeight: 800,
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '5px'
+                }}
+              >
+                <span>🚀 Start Today's Release (All Issuing)</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => triggerMasterAction('complete_all')}
+                style={{
+                  padding: '6px 12px',
+                  borderRadius: '8px',
+                  border: '1px solid #FECACA',
+                  backgroundColor: '#FEE2E2',
+                  color: '#991B1B',
+                  fontSize: '11.5px',
+                  fontWeight: 800,
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '5px'
+                }}
+              >
+                <span>🛑 Close Quota (All Completed)</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={() => triggerMasterAction('not_started_all')}
+                style={{
+                  padding: '6px 12px',
+                  borderRadius: '8px',
+                  border: '1px solid #BAE6FD',
+                  backgroundColor: '#E0F2FE',
+                  color: '#0369A1',
+                  fontSize: '11.5px',
+                  fontWeight: 800,
+                  cursor: 'pointer',
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '5px'
+                }}
+              >
+                <span>⏳ Rollover / Not Started</span>
+              </button>
+            </div>
+          </div>
+
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '16px' }}>
             
             {/* ── SSD TOKENS SUBCARD ── */}
@@ -631,14 +886,14 @@ export default function AdminSsdTokensPage() {
                   <Info size={12} color="#94A3B8" />
                 </div>
                 <span style={{ fontSize: '11px', color: '#64748B', display: 'block', marginBottom: '6px' }}>
-                  Enter verified remaining tokens
+                  Enter verified remaining tokens (automatically updates status & timings)
                 </span>
                 <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
                   <input
                     type="text"
                     value={ssdAvailable}
-                    onChange={(e) => setSsdAvailable(e.target.value)}
-                    placeholder="e.g. 4,780 or 0"
+                    onChange={(e) => handleSsdAvailableChange(e.target.value)}
+                    placeholder="e.g. 10,000, 4,780 or 0"
                     style={{
                       width: '100%',
                       padding: '10px 85px 10px 14px',
@@ -654,6 +909,38 @@ export default function AdminSsdTokensPage() {
                     / 10,000
                   </span>
                 </div>
+                {/* Quick Presets for SSD */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginTop: '6px', flexWrap: 'wrap' }}>
+                  <span style={{ fontSize: '10px', color: '#64748B', fontWeight: 600 }}>Quick:</span>
+                  <button
+                    type="button"
+                    onClick={() => handleSsdAvailableChange('10000')}
+                    style={{ fontSize: '10.5px', padding: '2px 7px', borderRadius: '6px', border: '1px solid #BBF7D0', background: '#F0FDF4', color: '#166534', cursor: 'pointer', fontWeight: 700 }}
+                  >
+                    10,000 (Full)
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleSsdAvailableChange('5000')}
+                    style={{ fontSize: '10.5px', padding: '2px 7px', borderRadius: '6px', border: '1px solid #E2E8F0', background: '#FFFFFF', color: '#334155', cursor: 'pointer', fontWeight: 700 }}
+                  >
+                    5,000 (Half)
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleSsdAvailableChange('0')}
+                    style={{ fontSize: '10.5px', padding: '2px 7px', borderRadius: '6px', border: '1px solid #FECACA', background: '#FEF2F2', color: '#991B1B', cursor: 'pointer', fontWeight: 700 }}
+                  >
+                    0 (Done)
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleSsdAvailableChange('--')}
+                    style={{ fontSize: '10.5px', padding: '2px 7px', borderRadius: '6px', border: '1px solid #BAE6FD', background: '#F0F9FF', color: '#0369A1', cursor: 'pointer', fontWeight: 700 }}
+                  >
+                    -- (Not Started)
+                  </button>
+                </div>
               </div>
 
               {/* Status Dropdown */}
@@ -663,7 +950,7 @@ export default function AdminSsdTokensPage() {
                 </label>
                 <select
                   value={ssdStatus}
-                  onChange={(e) => setSsdStatus(e.target.value as any)}
+                  onChange={(e) => handleSsdStatusChange(e.target.value as any)}
                   style={{
                     width: '100%',
                     padding: '10px 12px',
@@ -816,14 +1103,14 @@ export default function AdminSsdTokensPage() {
                   <Info size={12} color="#94A3B8" />
                 </div>
                 <span style={{ fontSize: '11px', color: '#64748B', display: 'block', marginBottom: '6px' }}>
-                  Enter verified remaining tokens
+                  Enter verified remaining tokens (automatically updates status & timings)
                 </span>
                 <div style={{ position: 'relative', display: 'flex', alignItems: 'center' }}>
                   <input
                     type="text"
                     value={ddAvailable}
-                    onChange={(e) => setDdAvailable(e.target.value)}
-                    placeholder="e.g. 1,486 or 0"
+                    onChange={(e) => handleDdAvailableChange(e.target.value)}
+                    placeholder="e.g. 2,000, 1,486 or 0"
                     style={{
                       width: '100%',
                       padding: '10px 80px 10px 14px',
@@ -839,6 +1126,38 @@ export default function AdminSsdTokensPage() {
                     / 2,000
                   </span>
                 </div>
+                {/* Quick Presets for DD */}
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginTop: '6px', flexWrap: 'wrap' }}>
+                  <span style={{ fontSize: '10px', color: '#64748B', fontWeight: 600 }}>Quick:</span>
+                  <button
+                    type="button"
+                    onClick={() => handleDdAvailableChange('2000')}
+                    style={{ fontSize: '10.5px', padding: '2px 7px', borderRadius: '6px', border: '1px solid #BBF7D0', background: '#F0FDF4', color: '#166534', cursor: 'pointer', fontWeight: 700 }}
+                  >
+                    2,000 (Full)
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleDdAvailableChange('1000')}
+                    style={{ fontSize: '10.5px', padding: '2px 7px', borderRadius: '6px', border: '1px solid #E2E8F0', background: '#FFFFFF', color: '#334155', cursor: 'pointer', fontWeight: 700 }}
+                  >
+                    1,000 (Half)
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleDdAvailableChange('0')}
+                    style={{ fontSize: '10.5px', padding: '2px 7px', borderRadius: '6px', border: '1px solid #FECACA', background: '#FEF2F2', color: '#991B1B', cursor: 'pointer', fontWeight: 700 }}
+                  >
+                    0 (Done)
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleDdAvailableChange('--')}
+                    style={{ fontSize: '10.5px', padding: '2px 7px', borderRadius: '6px', border: '1px solid #BAE6FD', background: '#F0F9FF', color: '#0369A1', cursor: 'pointer', fontWeight: 700 }}
+                  >
+                    -- (Not Started)
+                  </button>
+                </div>
               </div>
 
               {/* Status Dropdown */}
@@ -848,7 +1167,7 @@ export default function AdminSsdTokensPage() {
                 </label>
                 <select
                   value={ddStatus}
-                  onChange={(e) => setDdStatus(e.target.value as any)}
+                  onChange={(e) => handleDdStatusChange(e.target.value as any)}
                   style={{
                     width: '100%',
                     padding: '10px 12px',

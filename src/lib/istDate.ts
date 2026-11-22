@@ -152,3 +152,69 @@ export function isTimeInPastIST(timeStr?: string, refDate: Date = new Date()): b
 
   return currentMinutes >= targetMinutes;
 }
+
+/**
+ * Returns date parts and formatted strings for today, target darshan date (today + 1),
+ * and milliseconds until the next 00:00:01 IST rollover.
+ */
+export function getISTMidnightState(refDate: Date = new Date()) {
+  const kolkataParts = new Intl.DateTimeFormat('en-US', {
+    timeZone: 'Asia/Kolkata',
+    year: 'numeric',
+    month: 'numeric',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+    second: 'numeric',
+    hour12: false
+  }).formatToParts(refDate);
+
+  const getP = (type: string) => parseInt(kolkataParts.find(p => p.type === type)?.value || '0', 10);
+  const y = getP('year');
+  const m = getP('month');
+  const d = getP('day');
+  const h = getP('hour');
+  const min = getP('minute');
+  const s = getP('second');
+
+  // Today and Tomorrow in IST
+  const todayDate = new Date(Date.UTC(y, m - 1, d, 12, 0, 0));
+  const targetDarshanDate = new Date(Date.UTC(y, m - 1, d + 1, 12, 0, 0));
+
+  const istDateFmt = new Intl.DateTimeFormat('en-IN', {
+    timeZone: 'Asia/Kolkata',
+    day: 'numeric',
+    month: 'short',
+    year: 'numeric'
+  });
+
+  const istShortDateFmt = new Intl.DateTimeFormat('en-IN', {
+    timeZone: 'Asia/Kolkata',
+    day: 'numeric',
+    month: 'short'
+  });
+
+  const todayStr = istDateFmt.format(todayDate);
+  const todayShortStr = istShortDateFmt.format(todayDate);
+  const targetDarshanStr = istDateFmt.format(targetDarshanDate);
+  const targetDarshanShortStr = istShortDateFmt.format(targetDarshanDate);
+
+  // Milliseconds elapsed today in IST
+  const currentSeconds = h * 3600 + min * 60 + s;
+  const totalSecondsInDay = 86400;
+  // Next midnight plus 1-second buffer
+  const msUntilMidnight = Math.max(1000, (totalSecondsInDay - currentSeconds + 1) * 1000);
+
+  return {
+    year: y,
+    month: m,
+    day: d,
+    hour: h,
+    minute: min,
+    todayStr,
+    todayShortStr,
+    targetDarshanStr,
+    targetDarshanShortStr,
+    msUntilMidnight
+  };
+}
