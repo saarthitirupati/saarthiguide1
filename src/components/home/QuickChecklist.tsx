@@ -424,7 +424,15 @@ export function QuickChecklist(props: any) {
   const isTimePassed = isTimeInPastIST(rawNext);
   const isIssuing = !isSuspended && rawStatus === 'issuing';
   const isPaused = !isSuspended && rawStatus === 'paused';
-  const isNotStarted = !isSuspended && !isIssuing && !isPaused && !isTimePassed;
+
+  const lastUpdatedIST = liveStatus.lastUpdated ? getISTDateInfo(liveStatus.lastUpdated) : null;
+  const isUpdatedToday = lastUpdatedIST ? lastUpdatedIST.todayShort === ist.todayShort : false;
+  const isExplicitNotStarted = rawStatus === 'not_started' || (liveStatus as any).ssdTokenDetails?.status === 'not_started';
+
+  // Enter not_started if explicitly set, or if previous day's record rolled over past midnight and today's batch hasn't opened yet
+  const isNotStarted = !isSuspended && !isIssuing && !isPaused && (
+    isExplicitNotStarted || (!isUpdatedToday && (rawStatus === 'closed-for-day' || isTimePassed || !isTimePassed))
+  );
   const isCompleted = !isIssuing && !isPaused && !isSuspended && !isNotStarted;
 
   // 3. Divya Darshan (DD) Footpath Status from API/DB
@@ -559,7 +567,8 @@ export function QuickChecklist(props: any) {
   const hasConfirmedTime = Boolean(
     rawNext &&
     !/suspend|cancel|not announced|unknown|tbd|tba|closed/i.test(rawNext) &&
-    /\d/.test(rawNext)
+    /\d/.test(rawNext) &&
+    !isTimePassed
   );
 
   const nextReleaseTitle = t.nextExpectedRelease;

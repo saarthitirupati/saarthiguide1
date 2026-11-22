@@ -4,7 +4,7 @@
   "crowdLevel": "moderate",
   "sevaStatus": "All sevas open",
   "notice": "",
-  "lastUpdated": "2026-11-21T13:37:41.274+00:00",
+  "lastUpdated": "2026-11-22T02:03:47.592+00:00",
   "darshanSpeed": "normal",
   "accommodationStatus": "available",
   "ladduAvailability": "available",
@@ -88,9 +88,8 @@
     "totalTokens": "10,000",
     "tokensLeft": "0",
     "status": "completed",
-    "startTime": "21 Nov 2026, 12:00 PM",
-    "completedTime": "21 Nov 2026, 4:16 pm",
-    "lastVerifiedAt": "2026-11-21T13:37:40.972Z"
+    "startTime": "22 Nov 2026, 12:00 PM",
+    "completedTime": "22 Nov 2026, 4:16 PM"
   },
   "ddTokenDetails": {
     "totalTokens": "2,000",

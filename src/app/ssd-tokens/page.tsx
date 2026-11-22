@@ -486,8 +486,13 @@ export default function SsdTokensStandalonePage() {
   const todayLabel = lang === 'te' ? '(ఈ రోజు)' : lang === 'kn' ? '(ಇಂದು)' : lang === 'ta' ? '(இன்று)' : lang === 'hi' ? '(आज)' : '(Today)';
   const isTimePassed = isTimeInPastIST(dynamicIssuingTime);
 
-  // Check if today's release has started yet (or if past midnight but before issuance release time)
-  const isNotStarted = !isIssuing && !isPaused && !isTimePassed;
+  const isUpdatedToday = Boolean(lastSyncTime && (lastSyncTime.includes(todayFormatted) || lastSyncTime.includes(istMidnight.todayShortStr)));
+  const isExplicitNotStarted = (ssdStatus as string) === 'not_started' || ssdTokenDetails?.status === 'not_started';
+
+  // Check if today's release has started yet (or if past midnight from yesterday without today's release opened yet)
+  const isNotStarted = !isIssuing && !isPaused && (
+    isExplicitNotStarted || (!isUpdatedToday)
+  );
   const isTomorrowRelease = /tomorrow/i.test(rawIssuing) || (!isNotStarted && isClosed) || isTimePassed;
 
   let dynamicIssuingDate = isTomorrowRelease ? tomorrowFormatted : `${todayFormatted} ${todayLabel}`;

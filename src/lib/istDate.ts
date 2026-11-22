@@ -122,10 +122,37 @@ export function formatISTTime(dateInput?: string | number | null): string {
 }
 
 /**
- * Checks whether an IST time string (e.g. "11:30 AM", "2:00 PM") has already passed today in Asia/Kolkata.
+ * Checks whether an IST time string (e.g. "11:30 AM", "2:00 PM", "21 Nov 2026, 12:00 PM") has already passed in Asia/Kolkata.
  */
 export function isTimeInPastIST(timeStr?: string, refDate: Date = new Date()): boolean {
   if (!timeStr) return false;
+
+  // 1. If an explicit calendar date is embedded (e.g. "21 Nov 2026, 12:00 PM" or "21 Nov"), parse full date
+  const embeddedDateMatch = timeStr.match(/\b(\d{1,2})\s+([A-Za-z]{3})(?:\s+(\d{4}))?/);
+  if (embeddedDateMatch) {
+    const day = parseInt(embeddedDateMatch[1], 10);
+    const monthStr = embeddedDateMatch[2].toLowerCase();
+    const months = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
+    const monthIdx = months.indexOf(monthStr.substring(0, 3));
+    if (monthIdx !== -1) {
+      const year = embeddedDateMatch[3] ? parseInt(embeddedDateMatch[3], 10) : 2026;
+      const timeMatch = timeStr.match(/\b(\d{1,2})(?::(\d{2}))?\s*([AaPp][Mm])?\b/);
+      let hours = 12;
+      let minutes = 0;
+      if (timeMatch) {
+        hours = parseInt(timeMatch[1], 10);
+        minutes = timeMatch[2] ? parseInt(timeMatch[2], 10) : 0;
+        const mod = timeMatch[3] ? timeMatch[3].toUpperCase() : null;
+        if (mod === 'PM' && hours < 12) hours += 12;
+        else if (mod === 'AM' && hours === 12) hours = 0;
+      }
+      // Target time in IST -> convert to UTC timestamp (IST is UTC+5:30)
+      const targetUtc = Date.UTC(year, monthIdx, day, hours - 5, minutes - 30);
+      return refDate.getTime() >= targetUtc;
+    }
+  }
+
+  // 2. Fallback: only time given today in IST
   const match = timeStr.match(/\b(\d{1,2})(?::(\d{2}))?\s*([AaPp][Mm])?\b/);
   if (!match) return false;
 
