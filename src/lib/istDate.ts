@@ -122,37 +122,10 @@ export function formatISTTime(dateInput?: string | number | null): string {
 }
 
 /**
- * Checks whether an IST time string (e.g. "11:30 AM", "2:00 PM", "21 Nov 2026, 12:00 PM") has already passed in Asia/Kolkata.
+ * Checks whether an IST time string (e.g. "11:30 AM", "2:00 PM") has already passed today in Asia/Kolkata.
  */
 export function isTimeInPastIST(timeStr?: string, refDate: Date = new Date()): boolean {
   if (!timeStr) return false;
-
-  // 1. If an explicit calendar date is embedded (e.g. "21 Nov 2026, 12:00 PM" or "21 Nov"), parse full date
-  const embeddedDateMatch = timeStr.match(/\b(\d{1,2})\s+([A-Za-z]{3})(?:\s+(\d{4}))?/);
-  if (embeddedDateMatch) {
-    const day = parseInt(embeddedDateMatch[1], 10);
-    const monthStr = embeddedDateMatch[2].toLowerCase();
-    const months = ['jan', 'feb', 'mar', 'apr', 'may', 'jun', 'jul', 'aug', 'sep', 'oct', 'nov', 'dec'];
-    const monthIdx = months.indexOf(monthStr.substring(0, 3));
-    if (monthIdx !== -1) {
-      const year = embeddedDateMatch[3] ? parseInt(embeddedDateMatch[3], 10) : 2026;
-      const timeMatch = timeStr.match(/\b(\d{1,2})(?::(\d{2}))?\s*([AaPp][Mm])?\b/);
-      let hours = 12;
-      let minutes = 0;
-      if (timeMatch) {
-        hours = parseInt(timeMatch[1], 10);
-        minutes = timeMatch[2] ? parseInt(timeMatch[2], 10) : 0;
-        const mod = timeMatch[3] ? timeMatch[3].toUpperCase() : null;
-        if (mod === 'PM' && hours < 12) hours += 12;
-        else if (mod === 'AM' && hours === 12) hours = 0;
-      }
-      // Target time in IST -> convert to UTC timestamp (IST is UTC+5:30)
-      const targetUtc = Date.UTC(year, monthIdx, day, hours - 5, minutes - 30);
-      return refDate.getTime() >= targetUtc;
-    }
-  }
-
-  // 2. Fallback: only time given today in IST
   const match = timeStr.match(/\b(\d{1,2})(?::(\d{2}))?\s*([AaPp][Mm])?\b/);
   if (!match) return false;
 
@@ -178,70 +151,4 @@ export function isTimeInPastIST(timeStr?: string, refDate: Date = new Date()): b
   const currentMinutes = curH * 60 + curM;
 
   return currentMinutes >= targetMinutes;
-}
-
-/**
- * Returns date parts and formatted strings for today, target darshan date (today + 1),
- * and milliseconds until the next 00:00:01 IST rollover.
- */
-export function getISTMidnightState(refDate: Date = new Date()) {
-  const kolkataParts = new Intl.DateTimeFormat('en-US', {
-    timeZone: 'Asia/Kolkata',
-    year: 'numeric',
-    month: 'numeric',
-    day: 'numeric',
-    hour: 'numeric',
-    minute: 'numeric',
-    second: 'numeric',
-    hour12: false
-  }).formatToParts(refDate);
-
-  const getP = (type: string) => parseInt(kolkataParts.find(p => p.type === type)?.value || '0', 10);
-  const y = getP('year');
-  const m = getP('month');
-  const d = getP('day');
-  const h = getP('hour');
-  const min = getP('minute');
-  const s = getP('second');
-
-  // Today and Tomorrow in IST
-  const todayDate = new Date(Date.UTC(y, m - 1, d, 12, 0, 0));
-  const targetDarshanDate = new Date(Date.UTC(y, m - 1, d + 1, 12, 0, 0));
-
-  const istDateFmt = new Intl.DateTimeFormat('en-IN', {
-    timeZone: 'Asia/Kolkata',
-    day: 'numeric',
-    month: 'short',
-    year: 'numeric'
-  });
-
-  const istShortDateFmt = new Intl.DateTimeFormat('en-IN', {
-    timeZone: 'Asia/Kolkata',
-    day: 'numeric',
-    month: 'short'
-  });
-
-  const todayStr = istDateFmt.format(todayDate);
-  const todayShortStr = istShortDateFmt.format(todayDate);
-  const targetDarshanStr = istDateFmt.format(targetDarshanDate);
-  const targetDarshanShortStr = istShortDateFmt.format(targetDarshanDate);
-
-  // Milliseconds elapsed today in IST
-  const currentSeconds = h * 3600 + min * 60 + s;
-  const totalSecondsInDay = 86400;
-  // Next midnight plus 1-second buffer
-  const msUntilMidnight = Math.max(1000, (totalSecondsInDay - currentSeconds + 1) * 1000);
-
-  return {
-    year: y,
-    month: m,
-    day: d,
-    hour: h,
-    minute: min,
-    todayStr,
-    todayShortStr,
-    targetDarshanStr,
-    targetDarshanShortStr,
-    msUntilMidnight
-  };
 }
