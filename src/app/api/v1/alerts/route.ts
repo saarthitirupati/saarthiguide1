@@ -12,8 +12,9 @@ export async function GET(request: Request) {
     const alerts = await fetchLiveAlerts(showAll);
     return NextResponse.json(alerts, {
       headers: {
-        'Cache-Control': 'public, s-maxage=10, stale-while-revalidate=30',
-        'CDN-Cache-Control': 'public, s-maxage=10',
+        'Cache-Control': 'public, max-age=5, s-maxage=10, stale-while-revalidate=30',
+        'CDN-Cache-Control': 'public, s-maxage=10, stale-while-revalidate=30',
+        'Cloudflare-CDN-Cache-Control': 'public, s-maxage=10, stale-while-revalidate=30',
       },
     });
   } catch (error: any) {

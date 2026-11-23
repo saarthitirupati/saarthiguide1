@@ -114,6 +114,8 @@ export async function GET(request: Request) {
         {
           headers: {
             'Cache-Control': 'public, max-age=60, s-maxage=60, stale-while-revalidate=300',
+            'CDN-Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300',
+            'Cloudflare-CDN-Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300',
             'X-Cache': 'HIT',
           },
         }
@@ -160,5 +162,11 @@ export async function GET(request: Request) {
     success: true,
     data,
     deletedSlugs: [],
+  }, {
+    headers: {
+      'Cache-Control': 'public, max-age=60, s-maxage=60, stale-while-revalidate=300',
+      'CDN-Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300',
+      'Cloudflare-CDN-Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300',
+    }
   });
 }
