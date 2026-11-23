@@ -418,7 +418,11 @@ export default function DdTokensStandalonePage() {
 
   useEffect(() => {
     fetchStatus();
-    const interval = setInterval(() => fetchStatus(), 20000);
+    const interval = setInterval(() => {
+      if (typeof document === 'undefined' || !document.hidden) {
+        fetchStatus();
+      }
+    }, 30000);
     return () => clearInterval(interval);
   }, []);
 
