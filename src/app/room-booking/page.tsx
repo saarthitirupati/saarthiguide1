@@ -265,11 +265,19 @@ export default function RoomBookingPage() {
           fontSize: '21px',
           fontWeight: 800,
           color: '#1B2A1E',
-          margin: '0 0 10px 0',
+          margin: '0 0 4px 0',
           letterSpacing: '-0.02em'
         }}>
           Direct Room Bookings in Tirupati
         </h2>
+        <p style={{
+          fontSize: '13px',
+          fontWeight: 700,
+          color: '#0F5132',
+          margin: '0 0 12px 0'
+        }}>
+          Kondakindha (Downhill Tirupati • Not Tirumala Hilltop)
+        </p>
 
         <div style={{
           display: 'inline-flex',
