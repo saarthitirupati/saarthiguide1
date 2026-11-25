@@ -24,7 +24,26 @@ export default function HotelLoginPage() {
         ? new URLSearchParams(window.location.search).get('redirect') || '/hoteladmin'
         : '/hoteladmin';
 
-      // 1. Direct Partner Check for Vamana Inn and Hotel Admin
+      // 1. Check Saarthi Hotel Admin credentials
+      const adminRes = await fetch('/api/saarthihoteladmin/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: cleanId, password }),
+      });
+
+      if (adminRes.ok) {
+        const d = await adminRes.json();
+        try {
+          localStorage.setItem('saarthi_hotel_admin_token', d.token || 'saarthi_hotel_admin_2026');
+        } catch {}
+        sessionStorage.setItem('hotel_authenticated', 'saarthi-hotel-admin');
+        document.cookie = 'hotel_auth=saarthi-hotel-admin; path=/; max-age=86400; SameSite=Lax';
+        const target = new URLSearchParams(window.location.search).get('redirect') || '/saarthihoteladmin';
+        router.push(target);
+        return;
+      }
+
+      // 2. Direct Partner Check for Vamana Inn and Hotel Admin
       if (
         cleanId === 'vamana' || 
         cleanId === 'vamana@saarthi.app' || 
@@ -93,10 +112,10 @@ export default function HotelLoginPage() {
             <Building2 size={28} />
           </div>
           <h1 style={{ fontSize: '18px', fontWeight: 800, margin: '0 0 4px 0', color: '#0F172A' }}>
-            Hotel Partner Portal
+            Hotel Admin Portal
           </h1>
           <p style={{ fontSize: '12px', color: '#64748B', margin: 0 }}>
-            Manage room bookings for Hotel Vamana Inn
+            Manage room bookings &amp; inquiries
           </p>
         </div>
 
@@ -114,48 +133,10 @@ export default function HotelLoginPage() {
           </div>
         )}
 
-        {/* 🔑 QUICK LOGIN CREDENTIALS HELPER */}
-        <div style={{
-          backgroundColor: '#F0FDF4',
-          border: '1px solid #BBF7D0',
-          borderRadius: '12px',
-          padding: '10px 14px',
-          marginBottom: '16px',
-          fontSize: '11.5px',
-          color: '#166534',
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center'
-        }}>
-          <div>
-            <div style={{ fontWeight: 700, marginBottom: '2px' }}>Vamana Inn Demo Login:</div>
-            <div>ID: <code style={{ backgroundColor: 'rgba(255,255,255,0.7)', padding: '1px 4px', borderRadius: '4px' }}>vamana</code> | Pass: <code style={{ backgroundColor: 'rgba(255,255,255,0.7)', padding: '1px 4px', borderRadius: '4px' }}>vamana123</code></div>
-          </div>
-          <button
-            type="button"
-            onClick={() => {
-              setEmail('vamana');
-              setPassword('partner-demo');
-            }}
-            style={{
-              padding: '4px 8px',
-              borderRadius: '6px',
-              backgroundColor: '#0F5132',
-              color: '#FFFFFF',
-              border: 'none',
-              fontSize: '10.5px',
-              fontWeight: 700,
-              cursor: 'pointer'
-            }}
-          >
-            Auto-fill
-          </button>
-        </div>
-
         <form onSubmit={handleLogin} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
           <div>
             <label style={{ fontSize: '11.5px', fontWeight: 600, color: '#475569', display: 'block', marginBottom: '4px' }}>
-              Hotel Partner ID / Email
+              Hotel Admin ID / Email
             </label>
             <div style={{ position: 'relative' }}>
               <input

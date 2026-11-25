@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
-import { Menu, Bell, MapPin, Sun, Sparkles, Ticket, TicketX, ShieldAlert, Car, Gift, CloudRain, Bus, Clock, Route, Users, Zap, Check, ChevronDown, Navigation, Flame, Moon, Languages, RotateCcw, Share2, X, Volume2, VolumeX, ChevronRight, Pause, Play, Building2, Calendar, SquareParking, BriefcaseMedical } from 'lucide-react';
+import { Menu, Bell, MapPin, Sun, Sparkles, Ticket, TicketX, ShieldAlert, Car, Gift, CloudRain, Bus, Clock, Route, Users, Zap, Check, ChevronDown, Navigation, Flame, Moon, Languages, RotateCcw, Share2, X, Volume2, VolumeX, ChevronRight, Pause, Play, Building2, Calendar, SquareParking, BriefcaseMedical, BedDouble } from 'lucide-react';
 import Link from 'next/link';
 import Logo from '@/components/Logo/Logo';
 import { useLanguage, setAppLanguage, AppLang } from '@/lib/useLanguage';
@@ -2153,11 +2153,11 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
         </div>
       </div>
 
-      {/* 🧭 4 SECONDARY ACTION PILLS */}
+      {/* 🧭 5 SECONDARY ACTION PILLS */}
       <div className="notranslate" translate="no" style={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(4, minmax(0, 1fr))',
-        gap: '9px',
+        gridTemplateColumns: 'repeat(5, minmax(0, 1fr))',
+        gap: '7px',
         marginBottom: '16px'
       }}>
         {/* Parking */}
@@ -2299,8 +2299,43 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
           }}>
             <Building2 size={15} strokeWidth={2.2} />
           </div>
-          <span className="notranslate" translate="no" style={{ fontSize: '11px', fontWeight: 700, color: '#334155' }}>
-            {lang === 'kn' ? 'ದ್ವಾರಗಳು' : lang === 'te' ? 'ద్వారాలు' : lang === 'ta' ? 'நுழைவு வாயில்கள்' : lang === 'hi' ? 'प्रवेश द्वार' : 'Gates'}
+          <span className="notranslate" translate="no" style={{ fontSize: '10.5px', fontWeight: 700, color: '#334155' }}>
+            {lang === 'kn' ? 'ದ್ವಾರಗಳು' : lang === 'te' ? 'ద్వారాలు' : lang === 'ta' ? 'நுழைவு' : lang === 'hi' ? 'द्वार' : 'Gates'}
+          </span>
+        </Link>
+
+        {/* Free Rooms */}
+        <Link
+          href="/rooms"
+          prefetch={false}
+          style={{
+            textDecoration: 'none',
+            background: '#FFFFFF',
+            border: '1px solid #E2E8F0',
+            borderRadius: '16px',
+            padding: '12px 2px',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            textAlign: 'center',
+            boxShadow: '0 1px 3px rgba(0,0,0,0.02)'
+          }}
+        >
+          <div style={{
+            width: '28px',
+            height: '28px',
+            borderRadius: '8px',
+            background: '#ECFDF5',
+            color: '#0F5132',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            marginBottom: '4px'
+          }}>
+            <BedDouble size={15} strokeWidth={2.2} />
+          </div>
+          <span className="notranslate" translate="no" style={{ fontSize: '10px', fontWeight: 700, color: '#334155', whiteSpace: 'nowrap' }}>
+            {lang === 'kn' ? 'ಉಚಿತ ಕೊಠಡಿ' : lang === 'te' ? 'ఉచిత గదులు' : lang === 'ta' ? 'இலவச அறை' : lang === 'hi' ? 'मुफ़्त कमरे' : 'Free Rooms'}
           </span>
         </Link>
       </div>

@@ -2,13 +2,21 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { ArrowLeft, Bell, CheckCircle2, Sparkles, Phone, Building2, ArrowRight } from 'lucide-react';
+import {
+  ArrowLeft,
+  Bell,
+  CheckCircle2,
+  Sparkles,
+  Phone,
+  User
+} from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 
 const BASE_ROOM_WAITLIST = 142;
 
 export default function RoomBookingPage() {
   const [waitlistCount, setWaitlistCount] = useState<number | null>(null);
+  const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [notified, setNotified] = useState(false);
   const [submitting, setSubmitting] = useState(false);
@@ -18,7 +26,9 @@ export default function RoomBookingPage() {
       const stored = localStorage.getItem('saarthi_notified_rooms');
       if (stored === 'true') {
         setNotified(true);
+        const storedName = localStorage.getItem('saarthi_notified_rooms_name');
         const storedPhone = localStorage.getItem('saarthi_notified_rooms_phone');
+        if (storedName) setName(storedName);
         if (storedPhone) setPhone(storedPhone);
       }
     }
@@ -86,7 +96,10 @@ export default function RoomBookingPage() {
 
   const handleNotify = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
-    if (notified || submitting) return;
+    const digits = phone.replace(/\D/g, '');
+    const trimmedName = name.trim();
+    if (notified || submitting || trimmedName.length < 2 || digits.length !== 10) return;
+
     setSubmitting(true);
     setNotified(true);
     setWaitlistCount((prev) => (prev !== null ? prev + 1 : 1));
@@ -94,18 +107,17 @@ export default function RoomBookingPage() {
     try {
       if (typeof window !== 'undefined') {
         localStorage.setItem('saarthi_notified_rooms', 'true');
-        if (phone.trim()) {
-          localStorage.setItem('saarthi_notified_rooms_phone', phone.trim());
-        }
+        localStorage.setItem('saarthi_notified_rooms_name', trimmedName);
+        localStorage.setItem('saarthi_notified_rooms_phone', digits);
       }
       const res = await fetch('/api/launch-interest', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ service: 'rooms', phone: phone.trim() || undefined }),
+        body: JSON.stringify({ service: 'rooms', name: trimmedName, phone: digits }),
       });
       if (res.ok) {
         const data = await res.json();
-        if (data?.counts?.rooms && typeof data.counts.rooms === 'number') {
+        if (typeof data?.counts?.rooms === 'number') {
           setWaitlistCount(data.counts.rooms);
         }
       }
@@ -116,6 +128,9 @@ export default function RoomBookingPage() {
     }
   };
 
+  const isNameValid = name.trim().length >= 2;
+  const isPhoneValid = phone.replace(/\D/g, '').length === 10;
+  const isFormValid = isNameValid && isPhoneValid;
   const totalPilgrims = BASE_ROOM_WAITLIST + (waitlistCount !== null ? waitlistCount : 0);
 
   return (
@@ -125,15 +140,17 @@ export default function RoomBookingPage() {
       color: '#1B2A1E',
       maxWidth: '680px',
       margin: '0 auto',
-      paddingBottom: '104px',
+      paddingBottom: 'calc(124px + env(safe-area-inset-bottom, 16px))',
       boxSizing: 'border-box'
     }}>
-      {/* ── TOP HEADER ── */}
+      {/* ── STICKY HEADER ── */}
       <header style={{
         position: 'sticky',
         top: 0,
         zIndex: 40,
-        backgroundColor: '#FFFFFF',
+        backgroundColor: 'rgba(255, 255, 255, 0.94)',
+        backdropFilter: 'blur(12px)',
+        WebkitBackdropFilter: 'blur(12px)',
         borderBottom: '1px solid #ECEEEA',
         padding: 'calc(14px + var(--safe-area-top, 0px)) 18px 14px 18px',
         display: 'flex',
@@ -161,95 +178,112 @@ export default function RoomBookingPage() {
             <h1 style={{ fontSize: '17px', fontWeight: 800, margin: 0, color: '#1B2A1E', lineHeight: 1.2 }}>
               Rooms Booking
             </h1>
-            <p style={{ fontSize: '11px', margin: 0, color: '#687968' }}>
-              Verified Tirupati Stays & Pilgrim Mutts
+            <p style={{ fontSize: '11px', margin: 0, color: '#687968', fontWeight: 500 }}>
+              Verified Tirupati Pilgrim Stays
             </p>
           </div>
         </div>
         <div style={{
+          display: 'inline-flex',
+          alignItems: 'center',
+          gap: '4px',
           fontSize: '11px',
-          fontWeight: 700,
+          fontWeight: 800,
           color: '#B45309',
           backgroundColor: '#FEF3C7',
+          border: '1px solid #FDE68A',
           padding: '4px 10px',
-          borderRadius: '12px'
+          borderRadius: '999px'
         }}>
-          Coming Soon
+          <Sparkles size={11} />
+          <span>Coming Soon</span>
         </div>
       </header>
 
       {/* ── MAIN CONTENT ── */}
-      <main style={{ padding: '24px 16px', display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
+      <main style={{ padding: '18px 16px 0', display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center' }}>
+        {/* HERO ILLUSTRATION CARD */}
         <div style={{
-          width: '76px',
-          height: '76px',
+          position: 'relative',
+          width: '100%',
+          maxWidth: '520px',
+          margin: '0 auto 18px',
           borderRadius: '24px',
-          background: 'linear-gradient(135deg, #064E3B 0%, #0F5132 100%)',
-          color: '#FFFFFF',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          marginBottom: '18px',
-          boxShadow: '0 12px 28px -6px rgba(15, 81, 50, 0.28)'
+          overflow: 'hidden',
+          boxShadow: '0 18px 40px -12px rgba(6, 78, 59, 0.24), 0 4px 12px rgba(0,0,0,0.04)',
+          border: '1.5px solid #D1E2CF',
+          backgroundColor: '#064E3B'
         }}>
-          <Building2 size={36} strokeWidth={1.8} />
+          <svg viewBox="0 0 520 220" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ width: '100%', height: 'auto', display: 'block' }}>
+            <defs>
+              <style>{`
+                @keyframes windowGlow {
+                  0%, 100% { opacity: 0.72; }
+                  50% { opacity: 1; }
+                }
+                @keyframes moonFloat {
+                  0%, 100% { transform: translateY(0px); }
+                  50% { transform: translateY(-4px); }
+                }
+                .anim-win { animation: windowGlow 2.8s ease-in-out infinite; }
+                .anim-moon { animation: moonFloat 4s ease-in-out infinite; }
+              `}</style>
+              <linearGradient id="nightSky" x1="260" y1="0" x2="260" y2="220" gradientUnits="userSpaceOnUse">
+                <stop stopColor="#022C22" />
+                <stop offset="0.55" stopColor="#064E3B" />
+                <stop offset="1" stopColor="#0F5132" />
+              </linearGradient>
+            </defs>
+
+            <rect width="520" height="220" fill="url(#nightSky)" />
+            <path d="M0 158 Q95 102 195 148 T400 128 T520 148 L520 220 L0 220 Z" fill="#033326" opacity="0.85" />
+            <circle cx="430" cy="48" r="17" fill="#FEF3C7" className="anim-moon" />
+            <circle cx="88" cy="42" r="2" fill="#A7F3D0" opacity="0.85" />
+            <circle cx="152" cy="28" r="1.8" fill="#FDE68A" opacity="0.9" />
+            <circle cx="322" cy="36" r="2.2" fill="#A7F3D0" opacity="0.75" />
+
+            {/* Stylized Pilgrim Lodge */}
+            <rect x="135" y="72" width="250" height="118" rx="14" fill="#FFFFFF" />
+            <rect x="125" y="62" width="270" height="16" rx="6" fill="#F59E0B" />
+            <rect x="195" y="48" width="130" height="22" rx="8" fill="#14532D" stroke="#FDE68A" strokeWidth="1.5" />
+            <text x="260" y="63" textAnchor="middle" fill="#FEF3C7" fontSize="10" fontWeight="800" fontFamily="sans-serif">SAARTHI STAYS</text>
+
+            <rect x="158" y="94" width="36" height="28" rx="5" fill="#FEF3C7" stroke="#D97706" strokeWidth="1.5" className="anim-win" />
+            <rect x="212" y="94" width="36" height="28" rx="5" fill="#FEF3C7" stroke="#D97706" strokeWidth="1.5" className="anim-win" />
+            <rect x="272" y="94" width="36" height="28" rx="5" fill="#FEF3C7" stroke="#D97706" strokeWidth="1.5" className="anim-win" />
+            <rect x="326" y="94" width="36" height="28" rx="5" fill="#FEF3C7" stroke="#D97706" strokeWidth="1.5" className="anim-win" />
+
+            <rect x="234" y="142" width="52" height="48" rx="8" fill="#0F5132" />
+            <rect x="158" y="144" width="44" height="25" rx="5" fill="#ECFDF5" stroke="#A7F3D0" strokeWidth="1.5" />
+            <rect x="318" y="144" width="44" height="25" rx="5" fill="#ECFDF5" stroke="#A7F3D0" strokeWidth="1.5" />
+            <rect x="0" y="188" width="520" height="32" fill="#022C22" />
+          </svg>
         </div>
 
+        {/* HEADING & LIVE COUNT */}
         <h2 style={{
-          fontSize: '22px',
+          fontSize: '21px',
           fontWeight: 800,
           color: '#1B2A1E',
-          margin: '0 0 8px 0',
+          margin: '0 0 10px 0',
           letterSpacing: '-0.02em'
         }}>
-          Direct Zero-Broker Room Booking
+          Direct Room Bookings in Tirupati
         </h2>
-        <p style={{
-          fontSize: '13.5px',
-          color: '#526356',
-          maxWidth: '400px',
-          margin: '0 0 18px 0',
-          lineHeight: 1.5
-        }}>
-          Book clean, verified pilgrim rooms near Tirupati Railway Station, Alipiri &amp; Srinivasam with transparent prices and zero middleman commission.
-        </p>
 
-        {/* ── COMING SOON BADGE ── */}
-        <div style={{
-          display: 'inline-flex',
-          alignItems: 'center',
-          gap: '8px',
-          backgroundColor: '#FEF3C7',
-          border: '1px solid #FDE68A',
-          borderRadius: '24px',
-          padding: '8px 18px',
-          marginBottom: '12px',
-          boxSizing: 'border-box'
-        }}>
-          <Sparkles size={16} color="#D97706" />
-          <span style={{
-            fontSize: '13.5px',
-            fontWeight: 800,
-            color: '#92400E',
-            letterSpacing: '0.02em'
-          }}>
-            Coming Soon • Verified Pilgrim Rooms
-          </span>
-        </div>
-
-        {/* ── REAL-TIME DYNAMIC WAITLIST PILL ── */}
         <div style={{
           display: 'inline-flex',
           alignItems: 'center',
           gap: '7px',
           backgroundColor: '#F0FDF4',
           border: '1px solid #BBF7D0',
-          borderRadius: '20px',
-          padding: '5px 14px',
-          margin: '2px auto 12px',
-          fontSize: '12px',
-          fontWeight: 700,
-          color: '#15803D'
+          borderRadius: '999px',
+          padding: '6px 14px',
+          marginBottom: '18px',
+          fontSize: '12.5px',
+          fontWeight: 800,
+          color: '#15803D',
+          boxShadow: '0 2px 8px rgba(22, 163, 74, 0.08)'
         }}>
           <span style={{
             width: '7px',
@@ -258,157 +292,162 @@ export default function RoomBookingPage() {
             backgroundColor: '#16A34A',
             display: 'inline-block'
           }} />
-          <span>{`${totalPilgrims} Pilgrims on Priority Waitlist`}</span>
+          <span>{`${totalPilgrims} Pilgrims Waiting`}</span>
         </div>
 
-        {/* ── PHONE NUMBER INPUT & NOTIFY ACTION ── */}
-        {!notified ? (
-          <form
-            onSubmit={handleNotify}
-            style={{
-              width: '100%',
-              maxWidth: '360px',
-              margin: '8px auto 18px',
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '10px'
-            }}
-          >
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              backgroundColor: '#FFFFFF',
-              border: '1.5px solid #CBD5E1',
-              borderRadius: '28px',
-              padding: '4px 14px',
-              boxShadow: '0 2px 8px rgba(15, 81, 50, 0.06)',
-              boxSizing: 'border-box'
-            }}>
-              <Phone size={16} color="#0F5132" style={{ marginRight: '8px', flexShrink: 0 }} />
-              <span style={{ fontSize: '14px', fontWeight: 700, color: '#475569', marginRight: '6px' }}>
-                +91
-              </span>
-              <input
-                type="tel"
-                inputMode="numeric"
-                pattern="[0-9]{10}"
-                maxLength={10}
-                placeholder="Enter 10-digit mobile number"
-                value={phone}
-                onChange={(e) => setPhone(e.target.value.replace(/\D/g, '').slice(0, 10))}
-                required
-                style={{
-                  flex: 1,
-                  border: 'none',
-                  outline: 'none',
-                  backgroundColor: 'transparent',
-                  fontSize: '14px',
-                  fontWeight: 600,
-                  color: '#1B2A1E',
-                  padding: '12px 0',
-                  letterSpacing: phone.length > 0 ? '0.04em' : 'normal'
-                }}
-              />
-            </div>
-
-            <button
-              type="submit"
-              disabled={submitting || phone.replace(/\D/g, '').length < 10}
+        {/* ELEVATED NOTIFY CARD */}
+        <div style={{
+          width: '100%',
+          maxWidth: '400px',
+          backgroundColor: '#FFFFFF',
+          border: '1.5px solid #D1E2CF',
+          borderRadius: '22px',
+          padding: '18px 16px',
+          boxShadow: '0 8px 24px rgba(15, 81, 50, 0.06)',
+          marginBottom: '16px',
+          boxSizing: 'border-box'
+        }}>
+          {!notified ? (
+            <form
+              onSubmit={handleNotify}
               style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '10px'
+              }}
+            >
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                backgroundColor: '#F8FAF7',
+                border: `1.5px solid ${isNameValid ? '#14532D' : '#CBD5E1'}`,
+                borderRadius: '16px',
+                padding: '2px 14px',
+                boxSizing: 'border-box',
+                transition: 'border-color 0.2s ease'
+              }}>
+                <User size={16} color="#14532D" style={{ marginRight: '8px', flexShrink: 0 }} />
+                <input
+                  type="text"
+                  minLength={2}
+                  maxLength={60}
+                  placeholder="Enter your name"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  required
+                  style={{
+                    flex: 1,
+                    border: 'none',
+                    outline: 'none',
+                    backgroundColor: 'transparent',
+                    fontSize: '14px',
+                    fontWeight: 600,
+                    color: '#1B2A1E',
+                    padding: '11px 0'
+                  }}
+                />
+              </div>
+
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                backgroundColor: '#F8FAF7',
+                border: `1.5px solid ${isPhoneValid ? '#14532D' : '#CBD5E1'}`,
+                borderRadius: '16px',
+                padding: '2px 14px',
+                boxSizing: 'border-box',
+                transition: 'border-color 0.2s ease'
+              }}>
+                <Phone size={16} color="#14532D" style={{ marginRight: '8px', flexShrink: 0 }} />
+                <span style={{ fontSize: '14px', fontWeight: 700, color: '#475569', marginRight: '6px' }}>+91</span>
+                <input
+                  type="tel"
+                  inputMode="numeric"
+                  pattern="[0-9]{10}"
+                  maxLength={10}
+                  placeholder="Enter 10-digit mobile number"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value.replace(/\D/g, '').slice(0, 10))}
+                  required
+                  style={{
+                    flex: 1,
+                    border: 'none',
+                    outline: 'none',
+                    backgroundColor: 'transparent',
+                    fontSize: '14px',
+                    fontWeight: 600,
+                    color: '#1B2A1E',
+                    padding: '11px 0',
+                    letterSpacing: phone.length > 0 ? '0.04em' : 'normal'
+                  }}
+                />
+              </div>
+
+              <button
+                type="submit"
+                disabled={submitting || !isFormValid}
+                style={{
+                  width: '100%',
+                  backgroundColor: isFormValid ? '#14532D' : '#94A3B8',
+                  color: '#FFFFFF',
+                  border: 'none',
+                  borderRadius: '16px',
+                  padding: '13px 20px',
+                  fontSize: '15px',
+                  fontWeight: 700,
+                  cursor: isFormValid ? (submitting ? 'wait' : 'pointer') : 'not-allowed',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '8px',
+                  boxShadow: isFormValid ? '0 6px 18px rgba(20, 83, 45, 0.25)' : 'none',
+                  transition: 'all 0.2s ease',
+                  marginTop: '2px'
+                }}
+              >
+                <Bell size={17} />
+                <span>{submitting ? 'Saving...' : 'Notify Me When Live'}</span>
+              </button>
+            </form>
+          ) : (
+            <div>
+              <div style={{
                 width: '100%',
-                backgroundColor: phone.replace(/\D/g, '').length === 10 ? '#0F5132' : '#94A3B8',
-                color: '#FFFFFF',
-                border: 'none',
-                borderRadius: '28px',
-                padding: '14px 28px',
+                backgroundColor: '#ECFDF5',
+                color: '#065F46',
+                border: '1.5px solid #A7F3D0',
+                borderRadius: '16px',
+                padding: '13px 16px',
                 fontSize: '15px',
-                fontWeight: 700,
-                cursor: phone.replace(/\D/g, '').length === 10 ? (submitting ? 'wait' : 'pointer') : 'not-allowed',
+                fontWeight: 800,
                 display: 'inline-flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                gap: '10px',
-                boxShadow: phone.replace(/\D/g, '').length === 10 ? '0 6px 18px rgba(15, 81, 50, 0.28)' : 'none',
-                transition: 'all 0.25s ease'
-              }}
-            >
-              {submitting ? (
-                <>
-                  <Bell size={18} />
-                  <span>Saving Preference...</span>
-                </>
-              ) : (
-                <>
-                  <Bell size={18} />
-                  <span>Notify Me When Live</span>
-                </>
-              )}
-            </button>
-          </form>
-        ) : (
-          <div style={{
-            width: '100%',
-            maxWidth: '360px',
-            margin: '8px auto 18px'
-          }}>
-            <div style={{
-              width: '100%',
-              backgroundColor: '#ECFDF5',
-              color: '#065F46',
-              border: '1.5px solid #A7F3D0',
-              borderRadius: '28px',
-              padding: '14px 28px',
-              fontSize: '15px',
-              fontWeight: 700,
-              display: 'inline-flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '10px',
-              boxSizing: 'border-box'
-            }}>
-              <CheckCircle2 size={18} color="#059669" />
-              <span>You&apos;ll be notified</span>
+                gap: '8px',
+                boxSizing: 'border-box'
+              }}>
+                <CheckCircle2 size={18} color="#059669" />
+                <span>{`You're #${totalPilgrims} on the Notify List!`}</span>
+              </div>
+              <div style={{
+                backgroundColor: '#F0FDF4',
+                border: '1px solid #BBF7D0',
+                borderRadius: '12px',
+                padding: '10px 12px',
+                fontSize: '12.5px',
+                color: '#15803D',
+                fontWeight: 600,
+                marginTop: '10px',
+                lineHeight: 1.45
+              }}>
+                {phone
+                  ? `Thank you${name ? `, ${name}` : ''}! We will notify +91 ${phone} first when room booking goes live.`
+                  : 'We will notify you first when room booking goes live.'}
+              </div>
             </div>
+          )}
+        </div>
 
-            <div style={{
-              backgroundColor: '#F0FDF4',
-              border: '1px solid #BBF7D0',
-              borderRadius: '14px',
-              padding: '12px 16px',
-              fontSize: '12.5px',
-              color: '#15803D',
-              fontWeight: 600,
-              marginTop: '12px',
-              lineHeight: 1.45,
-              textAlign: 'center'
-            }}>
-              Joined along with {totalPilgrims} pilgrims. {phone ? `We will alert +91 ${phone} first` : 'We will alert you first'} when direct room booking goes live!
-            </div>
-          </div>
-        )}
-
-        {/* ── HELPFUL LINK TO EXISTING FREE TTD PAC & MUTT DIRECTORY ── */}
-        <Link
-          href="/rooms"
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '8px',
-            backgroundColor: '#FFFFFF',
-            border: '1px solid #D1E2CF',
-            borderRadius: '16px',
-            padding: '12px 18px',
-            fontSize: '13px',
-            fontWeight: 700,
-            color: '#0F5132',
-            textDecoration: 'none',
-            boxShadow: '0 2px 8px rgba(15, 81, 50, 0.05)',
-            marginBottom: '16px'
-          }}
-        >
-          <span>View Free TTD PACs &amp; Mutt Directory</span>
-          <ArrowRight size={15} />
-        </Link>
       </main>
     </div>
   );

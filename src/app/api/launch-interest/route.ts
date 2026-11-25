@@ -13,6 +13,7 @@ interface LaunchNotificationItem {
   id: string;
   service: 'cabs' | 'rooms';
   timestamp: string;
+  name?: string;
   phone?: string;
   email?: string;
 }
@@ -138,6 +139,7 @@ export async function POST(req: Request) {
   try {
     const body = await req.json().catch(() => ({}));
     const service: 'cabs' | 'rooms' = body?.service === 'rooms' ? 'rooms' : 'cabs';
+    const name = typeof body?.name === 'string' ? body.name.trim().slice(0, 80) : undefined;
     const phone = typeof body?.phone === 'string' ? body.phone.slice(0, 30) : undefined;
     const email = typeof body?.email === 'string' ? body.email.slice(0, 80) : undefined;
 
@@ -148,6 +150,7 @@ export async function POST(req: Request) {
       id: `notif_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`,
       service,
       timestamp: new Date().toISOString(),
+      ...(name ? { name } : {}),
       ...(phone ? { phone } : {}),
       ...(email ? { email } : {}),
     };
@@ -182,6 +185,48 @@ export async function POST(req: Request) {
     console.error('Launch interest POST error:', error);
     return NextResponse.json(
       { success: false, error: error.message || 'Failed to record preference' },
+      { status: 500 }
+    );
+  }
+}
+
+export async function DELETE(req: Request) {
+  try {
+    const cookie = req.headers.get('cookie') || '';
+    if (!cookie.includes('saarthi_hotel_admin=') && !cookie.includes('saarthi_admin=')) {
+      return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const { searchParams } = new URL(req.url);
+    const targetService = searchParams.get('service') === 'cabs' ? 'cabs' : 'rooms';
+
+    const sbStore = await getSupabaseStore();
+    const store = sbStore || getStore();
+
+    store.items = store.items.filter((item) => item.service !== targetService);
+    if (targetService === 'rooms') {
+      store.rooms = 0;
+    } else {
+      store.cabs = 0;
+    }
+    store.total = (store.cabs || 0) + (store.rooms || 0);
+
+    await saveSupabaseStore(store);
+    saveStore(store);
+
+    return NextResponse.json({
+      success: true,
+      message: `Cleared ${targetService} notify data`,
+      counts: {
+        total: store.total,
+        cabs: store.cabs,
+        rooms: store.rooms,
+      }
+    });
+  } catch (error: any) {
+    console.error('Launch interest DELETE error:', error);
+    return NextResponse.json(
+      { success: false, error: error.message || 'Failed to clear data' },
       { status: 500 }
     );
   }

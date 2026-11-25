@@ -43,7 +43,7 @@ function LayoutContent({
   usePageAnalytics();
   const pathname = usePathname();
   const router = useRouter();
-  const isAdmin = pathname?.startsWith('/saarthiadmin');
+  const isAdmin = pathname?.startsWith('/saarthiadmin') || pathname?.startsWith('/saarthihoteladmin');
   const isStudio = pathname?.startsWith('/studio');
   const { locationPermission, isInitialized } = useTrip();
   const [needsOnboarding, setNeedsOnboarding] = useState<boolean | null>(null);
@@ -158,7 +158,7 @@ export default function ClientLayout({
   const [userName, setUserName] = useState<string>('');
   const [userLanguage, setUserLanguage] = useState<AppLang>('en');
 
-  const isAdmin = pathname?.startsWith('/saarthiadmin');
+  const isAdmin = pathname?.startsWith('/saarthiadmin') || pathname?.startsWith('/saarthihoteladmin');
 
   useEffect(() => {
     if (!isExistingUser) {

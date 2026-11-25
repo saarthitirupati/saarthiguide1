@@ -50,8 +50,8 @@ type TextMap = Record<string, string>;
 
 const getNavItems = (t: TextMap) => [
   { key: 'home',       name: t.home || 'Home',             icon: Home,       href: '/' },
-  { key: 'essentials', name: t.essentials || 'Essentials', icon: LayoutGrid, href: '/essentials' },
   { key: 'rooms',      name: t.rooms || 'Rooms',           icon: BedDouble,  href: '/room-booking', badge: t.soon || 'Soon' },
+  { key: 'essentials', name: t.essentials || 'Essentials', icon: LayoutGrid, href: '/essentials' },
   { key: 'explore',    name: t.explore || 'Explore',       icon: Compass,    href: '/explore' },
 ];
 
