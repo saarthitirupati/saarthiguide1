@@ -89,7 +89,7 @@ function LayoutContent({
 
   const isExcluded = pathname === '/onboarding' || pathname === '/splash' || isAdmin || isStudio;
   const isCheckingOrNeedsOnboarding = !isExcluded && (needsOnboarding === true);
-  const showBottomNav = !showSplash && !isAdmin && ['/', '/explore', '/saved', '/profile', '/essentials', '/rooms'].includes(pathname);
+  const showBottomNav = !showSplash && !isAdmin && ['/', '/explore', '/saved', '/profile', '/essentials', '/rooms', '/room-booking'].includes(pathname);
   const hideContent = !isAdmin && (showSplash || isCheckingOrNeedsOnboarding);
 
   return (
