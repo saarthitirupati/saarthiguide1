@@ -16,6 +16,10 @@ interface LaunchNotificationItem {
   name?: string;
   phone?: string;
   email?: string;
+  leadStatus?: 'pending' | 'contacted' | 'yes' | 'no' | 'booked';
+  checkIn?: string;
+  checkOut?: string;
+  budget?: string;
 }
 
 interface LaunchNotificationStore {
@@ -227,6 +231,54 @@ export async function DELETE(req: Request) {
     console.error('Launch interest DELETE error:', error);
     return NextResponse.json(
       { success: false, error: error.message || 'Failed to clear data' },
+      { status: 500 }
+    );
+  }
+}
+
+export async function PATCH(req: Request) {
+  try {
+    const cookie = req.headers.get('cookie') || '';
+    if (!cookie.includes('saarthi_hotel_admin=') && !cookie.includes('saarthi_admin=')) {
+      return NextResponse.json({ success: false, error: 'Unauthorized' }, { status: 401 });
+    }
+
+    const body = await req.json().catch(() => ({}));
+    const id = typeof body?.id === 'string' ? body.id : '';
+    if (!id) {
+      return NextResponse.json({ success: false, error: 'Lead id is required' }, { status: 400 });
+    }
+
+    const sbStore = await getSupabaseStore();
+    const store = sbStore || getStore();
+
+    const idx = store.items.findIndex((item) => item.id === id);
+    if (idx === -1) {
+      return NextResponse.json({ success: false, error: 'Lead not found' }, { status: 404 });
+    }
+
+    const validStatuses = ['pending', 'contacted', 'yes', 'no', 'booked'] as const;
+    const nextStatus = validStatuses.includes(body?.leadStatus) ? body.leadStatus : store.items[idx].leadStatus;
+
+    store.items[idx] = {
+      ...store.items[idx],
+      ...(nextStatus ? { leadStatus: nextStatus } : {}),
+      ...(typeof body?.checkIn === 'string' ? { checkIn: body.checkIn.slice(0, 20) } : {}),
+      ...(typeof body?.checkOut === 'string' ? { checkOut: body.checkOut.slice(0, 20) } : {}),
+      ...(typeof body?.budget === 'string' ? { budget: body.budget.slice(0, 40) } : {}),
+    };
+
+    await saveSupabaseStore(store);
+    saveStore(store);
+
+    return NextResponse.json({
+      success: true,
+      item: store.items[idx],
+    });
+  } catch (error: any) {
+    console.error('Launch interest PATCH error:', error);
+    return NextResponse.json(
+      { success: false, error: error.message || 'Failed to update lead' },
       { status: 500 }
     );
   }

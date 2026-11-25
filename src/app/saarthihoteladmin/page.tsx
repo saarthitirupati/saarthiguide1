@@ -17,9 +17,15 @@ import {
   Download,
   Trash2,
   Sparkles,
-  ExternalLink
+  ExternalLink,
+  CheckSquare,
+  Calendar,
+  IndianRupee,
+  Check
 } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
+
+type LeadStatus = 'pending' | 'contacted' | 'yes' | 'no' | 'booked';
 
 interface WaitlistEntry {
   id: string;
@@ -28,7 +34,19 @@ interface WaitlistEntry {
   name?: string;
   phone?: string;
   email?: string;
+  leadStatus?: LeadStatus;
+  checkIn?: string;
+  checkOut?: string;
+  budget?: string;
 }
+
+const STATUS_META: Record<LeadStatus, { label: string; bg: string; color: string; border: string }> = {
+  pending: { label: 'To-Do', bg: '#FEF3C7', color: '#92400E', border: '#FDE68A' },
+  contacted: { label: 'Contacted', bg: '#EFF6FF', color: '#1D4ED8', border: '#BFDBFE' },
+  yes: { label: 'Yes (Interested)', bg: '#ECFDF5', color: '#15803D', border: '#BBF7D0' },
+  booked: { label: 'Booked', bg: '#DCFCE7', color: '#065F46', border: '#86EFAC' },
+  no: { label: 'No', bg: '#FEF2F2', color: '#991B1B', border: '#FECACA' },
+};
 
 export default function SaarthiHotelAdminPage() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -41,6 +59,11 @@ export default function SaarthiHotelAdminPage() {
   const [roomsNotifyCount, setRoomsNotifyCount] = useState<number>(0);
   const [notifyItems, setNotifyItems] = useState<WaitlistEntry[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
+  const [todoFilter, setTodoFilter] = useState<'all' | LeadStatus>('all');
+  const [drafts, setDrafts] = useState<Record<string, { checkIn: string; checkOut: string; budget: string }>>({});
+  const [savingId, setSavingId] = useState<string | null>(null);
+  const [savedId, setSavedId] = useState<string | null>(null);
+
   const [loading, setLoading] = useState(true);
   const [refreshing, setRefreshing] = useState(false);
   const [clearing, setClearing] = useState(false);
@@ -58,7 +81,21 @@ export default function SaarthiHotelAdminPage() {
         if (interestData?.success) {
           setRoomsNotifyCount(Number(interestData.rooms) || 0);
           const recentList: WaitlistEntry[] = Array.isArray(interestData.recent) ? interestData.recent : [];
-          setNotifyItems(recentList.filter((item) => item.service === 'rooms'));
+          const roomItems = recentList.filter((item) => item.service === 'rooms');
+          setNotifyItems(roomItems);
+          setDrafts((prev) => {
+            const next = { ...prev };
+            for (const item of roomItems) {
+              if (!next[item.id]) {
+                next[item.id] = {
+                  checkIn: item.checkIn || '',
+                  checkOut: item.checkOut || '',
+                  budget: item.budget || '',
+                };
+              }
+            }
+            return next;
+          });
         }
       }
 
@@ -158,6 +195,44 @@ export default function SaarthiHotelAdminPage() {
     setPassword('');
   };
 
+  const updateLead = async (
+    id: string,
+    updates: { leadStatus?: LeadStatus; checkIn?: string; checkOut?: string; budget?: string }
+  ) => {
+    setSavingId(id);
+    setNotifyItems((prev) =>
+      prev.map((item) => (item.id === id ? { ...item, ...updates } : item))
+    );
+
+    try {
+      const res = await fetch('/api/launch-interest', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id, ...updates }),
+      });
+      if (res.ok) {
+        setSavedId(id);
+        setTimeout(() => setSavedId((curr) => (curr === id ? null : curr)), 2000);
+      }
+    } catch (e) {
+      console.error('Failed to update lead:', e);
+    } finally {
+      setSavingId(null);
+    }
+  };
+
+  const handleDraftChange = (id: string, field: 'checkIn' | 'checkOut' | 'budget', value: string) => {
+    setDrafts((prev) => ({
+      ...prev,
+      [id]: {
+        checkIn: prev[id]?.checkIn || '',
+        checkOut: prev[id]?.checkOut || '',
+        budget: prev[id]?.budget || '',
+        [field]: value,
+      },
+    }));
+  };
+
   const handleClearAll = async () => {
     if (clearing || notifyItems.length === 0) return;
     if (typeof window !== 'undefined' && !window.confirm('Clear all room notify leads? This cannot be undone.')) {
@@ -180,10 +255,14 @@ export default function SaarthiHotelAdminPage() {
   const handleExportCsv = () => {
     if (notifyItems.length === 0) return;
     const rows = [
-      ['Name', 'Mobile', 'Submitted At'],
+      ['Name', 'Mobile', 'Status', 'Check-in', 'Check-out', 'Preferred Budget', 'Submitted At'],
       ...notifyItems.map((item) => [
         (item.name || 'Pilgrim').replace(/,/g, ' '),
         item.phone ? `+91 ${item.phone}` : '',
+        item.leadStatus || 'pending',
+        item.checkIn || '',
+        item.checkOut || '',
+        (item.budget || '').replace(/,/g, ' '),
         new Date(item.timestamp).toLocaleString('en-IN')
       ])
     ];
@@ -213,14 +292,28 @@ export default function SaarthiHotelAdminPage() {
     }).length;
   }, [notifyItems, todayIstStr]);
 
+  const pendingTodoCount = useMemo(
+    () => notifyItems.filter((item) => (item.leadStatus || 'pending') === 'pending').length,
+    [notifyItems]
+  );
+
+  const yesCount = useMemo(
+    () => notifyItems.filter((item) => item.leadStatus === 'yes' || item.leadStatus === 'booked').length,
+    [notifyItems]
+  );
+
   const filteredItems = useMemo(() => {
     const q = searchQuery.trim().toLowerCase();
-    if (!q) return notifyItems;
-    return notifyItems.filter((item) =>
-      (item.name || '').toLowerCase().includes(q) ||
-      (item.phone || '').toLowerCase().includes(q)
-    );
-  }, [notifyItems, searchQuery]);
+    return notifyItems.filter((item) => {
+      const status = item.leadStatus || 'pending';
+      if (todoFilter !== 'all' && status !== todoFilter) return false;
+      if (!q) return true;
+      return (
+        (item.name || '').toLowerCase().includes(q) ||
+        (item.phone || '').toLowerCase().includes(q)
+      );
+    });
+  }, [notifyItems, searchQuery, todoFilter]);
 
   if (!authChecked) {
     return (
@@ -454,7 +547,7 @@ export default function SaarthiHotelAdminPage() {
                 </span>
               </div>
               <p style={{ fontSize: '12px', color: '#A7F3D0', margin: '3px 0 0 0' }}>
-                Real-time Room Notify Leads &amp; Pilgrim Interest Desk
+                Real-time Room Notify Leads &amp; Follow-up To-Do List
               </p>
             </div>
           </div>
@@ -515,7 +608,7 @@ export default function SaarthiHotelAdminPage() {
         {/* ── KPI CARDS ── */}
         <div style={{
           display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(210px, 1fr))',
           gap: '14px',
           marginBottom: '22px'
         }}>
@@ -538,7 +631,30 @@ export default function SaarthiHotelAdminPage() {
               {loading ? '—' : roomsNotifyCount}
             </div>
             <div style={{ fontSize: '12px', color: '#64748B', marginTop: '6px', fontWeight: 600 }}>
-              Total pilgrim requests from /room-booking
+              Today: {todayCount} new ({todayIstStr})
+            </div>
+          </div>
+
+          <div style={{
+            backgroundColor: '#FFFFFF',
+            border: '1px solid #FDE68A',
+            borderRadius: '20px',
+            padding: '18px 20px',
+            boxShadow: '0 4px 14px rgba(217, 119, 6, 0.05)'
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
+              <span style={{ fontSize: '11.5px', fontWeight: 800, color: '#92400E', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                Pending To-Do
+              </span>
+              <div style={{ width: '32px', height: '32px', borderRadius: '10px', backgroundColor: '#FEF3C7', color: '#D97706', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <CheckSquare size={16} />
+              </div>
+            </div>
+            <div style={{ fontSize: '34px', fontWeight: 900, color: '#92400E', lineHeight: 1.05, fontVariantNumeric: 'tabular-nums' }}>
+              {loading ? '—' : pendingTodoCount}
+            </div>
+            <div style={{ fontSize: '12px', color: '#64748B', marginTop: '6px', fontWeight: 600 }}>
+              Customers awaiting follow-up call
             </div>
           </div>
 
@@ -551,49 +667,22 @@ export default function SaarthiHotelAdminPage() {
           }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
               <span style={{ fontSize: '11.5px', fontWeight: 800, color: '#475569', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
-                Today&apos;s Leads (IST)
+                Interested / Booked
               </span>
-              <div style={{ width: '32px', height: '32px', borderRadius: '10px', backgroundColor: '#FEF3C7', color: '#D97706', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <div style={{ width: '32px', height: '32px', borderRadius: '10px', backgroundColor: '#ECFDF5', color: '#0F5132', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <Sparkles size={16} />
               </div>
             </div>
             <div style={{ fontSize: '34px', fontWeight: 900, color: '#0F172A', lineHeight: 1.05, fontVariantNumeric: 'tabular-nums' }}>
-              {loading ? '—' : todayCount}
+              {loading ? '—' : yesCount}
             </div>
             <div style={{ fontSize: '12px', color: '#64748B', marginTop: '6px', fontWeight: 600 }}>
-              Submitted today ({todayIstStr})
-            </div>
-          </div>
-
-          <div style={{
-            backgroundColor: '#FFFFFF',
-            border: '1px solid #E2E8F0',
-            borderRadius: '20px',
-            padding: '18px 20px',
-            boxShadow: '0 4px 14px rgba(15, 23, 42, 0.03)'
-          }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '10px' }}>
-              <span style={{ fontSize: '11.5px', fontWeight: 800, color: '#475569', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
-                Latest Activity
-              </span>
-              <div style={{ width: '32px', height: '32px', borderRadius: '10px', backgroundColor: '#F1F5F9', color: '#475569', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <Clock size={16} />
-              </div>
-            </div>
-            <div style={{ fontSize: '17px', fontWeight: 800, color: '#0F172A', lineHeight: 1.3, marginTop: '6px' }}>
-              {loading
-                ? 'Loading...'
-                : notifyItems.length > 0
-                  ? new Date(notifyItems[0].timestamp).toLocaleString('en-IN', { day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit', hour12: true })
-                  : 'No signups yet'}
-            </div>
-            <div style={{ fontSize: '12px', color: '#64748B', marginTop: '6px', fontWeight: 600 }}>
-              {notifyItems.length > 0 && notifyItems[0].name ? `Latest: ${notifyItems[0].name}` : 'Auto-syncs every 15s & live'}
+              With check-in &amp; budget details
             </div>
           </div>
         </div>
 
-        {/* ── LEADS DIRECTORY PANEL ── */}
+        {/* ── LEADS & TO-DO PANEL ── */}
         <section style={{
           backgroundColor: '#FFFFFF',
           border: '1px solid #E2E8F0',
@@ -608,25 +697,23 @@ export default function SaarthiHotelAdminPage() {
             justifyContent: 'space-between',
             flexWrap: 'wrap',
             gap: '12px',
-            marginBottom: '16px'
+            marginBottom: '14px'
           }}>
-            <div>
-              <h2 style={{ fontSize: '17px', fontWeight: 800, margin: 0, display: 'flex', alignItems: 'center', gap: '8px', color: '#0F172A' }}>
-                <Phone size={18} color="#0F5132" />
-                Rooms Notify Leads
-                <span style={{
-                  fontSize: '11.5px',
-                  fontWeight: 700,
-                  backgroundColor: '#ECFDF5',
-                  color: '#0F5132',
-                  padding: '3px 9px',
-                  borderRadius: '999px',
-                  border: '1px solid #BBF7D0'
-                }}>
-                  {filteredItems.length}
-                </span>
-              </h2>
-            </div>
+            <h2 style={{ fontSize: '17px', fontWeight: 800, margin: 0, display: 'flex', alignItems: 'center', gap: '8px', color: '#0F172A' }}>
+              <CheckSquare size={18} color="#0F5132" />
+              Follow-Up To-Do &amp; Customer Leads
+              <span style={{
+                fontSize: '11.5px',
+                fontWeight: 700,
+                backgroundColor: '#ECFDF5',
+                color: '#0F5132',
+                padding: '3px 9px',
+                borderRadius: '999px',
+                border: '1px solid #BBF7D0'
+              }}>
+                {filteredItems.length}
+              </span>
+            </h2>
 
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
               <div style={{
@@ -651,7 +738,7 @@ export default function SaarthiHotelAdminPage() {
                     fontSize: '12.5px',
                     fontWeight: 600,
                     color: '#0F172A',
-                    width: '160px'
+                    width: '150px'
                   }}
                 />
               </div>
@@ -704,6 +791,39 @@ export default function SaarthiHotelAdminPage() {
             </div>
           </div>
 
+          {/* To-Do Status Filter Pills */}
+          <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginBottom: '16px' }}>
+            {([
+              { key: 'all', label: 'All' },
+              { key: 'pending', label: 'To-Do' },
+              { key: 'contacted', label: 'Contacted' },
+              { key: 'yes', label: 'Yes (Interested)' },
+              { key: 'booked', label: 'Booked' },
+              { key: 'no', label: 'No' },
+            ] as const).map((tab) => {
+              const active = todoFilter === tab.key;
+              return (
+                <button
+                  key={tab.key}
+                  type="button"
+                  onClick={() => setTodoFilter(tab.key)}
+                  style={{
+                    padding: '6px 12px',
+                    borderRadius: '999px',
+                    border: `1px solid ${active ? '#0F5132' : '#CBD5E1'}`,
+                    backgroundColor: active ? '#0F5132' : '#F8FAFC',
+                    color: active ? '#FFFFFF' : '#475569',
+                    fontSize: '12px',
+                    fontWeight: 700,
+                    cursor: 'pointer'
+                  }}
+                >
+                  {tab.label}
+                </button>
+              );
+            })}
+          </div>
+
           {filteredItems.length === 0 ? (
             <div style={{
               padding: '42px 20px',
@@ -726,14 +846,14 @@ export default function SaarthiHotelAdminPage() {
                 <Bell size={22} />
               </div>
               <div style={{ fontSize: '15px', fontWeight: 800, color: '#0F172A', marginBottom: '4px' }}>
-                {searchQuery ? 'No matching leads found' : 'No Room Notify Requests Yet'}
+                {searchQuery || todoFilter !== 'all' ? 'No matching leads found' : 'No Room Notify Requests Yet'}
               </div>
               <p style={{ fontSize: '13px', color: '#64748B', maxWidth: '380px', margin: '0 auto 16px', lineHeight: 1.5 }}>
-                {searchQuery
-                  ? 'Try clearing your search filter.'
+                {searchQuery || todoFilter !== 'all'
+                  ? 'Try clearing your search or switching the filter tab.'
                   : 'New pilgrims who enter their Name and Mobile Number on /room-booking will appear here automatically in real time.'}
               </p>
-              {!searchQuery && (
+              {!searchQuery && todoFilter === 'all' && (
                 <Link
                   href="/room-booking"
                   style={{
@@ -755,109 +875,258 @@ export default function SaarthiHotelAdminPage() {
               )}
             </div>
           ) : (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
               {filteredItems.map((item) => {
                 const digits = (item.phone || '').replace(/\D/g, '');
                 const clean10 = digits.slice(-10);
                 const displayName = item.name?.trim() || 'Pilgrim Visitor';
                 const initial = displayName.charAt(0).toUpperCase();
+                const currentStatus: LeadStatus = item.leadStatus || 'pending';
+                const statusStyle = STATUS_META[currentStatus];
+                const showStayDetails = currentStatus === 'yes' || currentStatus === 'booked';
+                const draft = drafts[item.id] || {
+                  checkIn: item.checkIn || '',
+                  checkOut: item.checkOut || '',
+                  budget: item.budget || '',
+                };
+
                 const waUrl = clean10
-                  ? `https://wa.me/91${clean10}?text=${encodeURIComponent(`Namaste ${displayName}! Regarding your Tirupati Room alert on Saarthi Guide...`)}`
+                  ? `https://wa.me/91${clean10}?text=${encodeURIComponent(`Namaste ${displayName}! Regarding your Tirupati Room booking inquiry on Saarthi Guide...`)}`
                   : '#';
 
                 return (
                   <div
                     key={item.id}
                     style={{
+                      padding: '15px 16px',
+                      backgroundColor: '#F8FAFC',
+                      border: `1.5px solid ${showStayDetails ? '#BBF7D0' : '#E2E8F0'}`,
+                      borderRadius: '18px'
+                    }}
+                  >
+                    {/* Top Row: Pilgrim Info + Status Selector + Call/WA */}
+                    <div style={{
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'space-between',
                       flexWrap: 'wrap',
-                      gap: '12px',
-                      padding: '14px 16px',
-                      backgroundColor: '#F8FAFC',
-                      border: '1px solid #E2E8F0',
-                      borderRadius: '16px'
-                    }}
-                  >
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                      <div style={{
-                        width: '40px',
-                        height: '40px',
-                        borderRadius: '12px',
-                        backgroundColor: '#0F5132',
-                        color: '#FFFFFF',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        fontSize: '15px',
-                        fontWeight: 800,
-                        flexShrink: 0
-                      }}>
-                        {initial}
+                      gap: '12px'
+                    }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+                        <div style={{
+                          width: '40px',
+                          height: '40px',
+                          borderRadius: '12px',
+                          backgroundColor: '#0F5132',
+                          color: '#FFFFFF',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          fontSize: '15px',
+                          fontWeight: 800,
+                          flexShrink: 0
+                        }}>
+                          {initial}
+                        </div>
+                        <div>
+                          <div style={{ fontSize: '14.5px', fontWeight: 800, color: '#0F172A' }}>
+                            {displayName}
+                          </div>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap', marginTop: '3px' }}>
+                            <span style={{ fontSize: '13px', fontWeight: 700, color: '#0F5132' }}>
+                              {clean10 ? `+91 ${clean10}` : 'No mobile provided'}
+                            </span>
+                            <span style={{ fontSize: '11.5px', color: '#64748B' }}>
+                              • {new Date(item.timestamp).toLocaleString('en-IN', {
+                                day: 'numeric',
+                                month: 'short',
+                                year: 'numeric',
+                                hour: 'numeric',
+                                minute: '2-digit',
+                                hour12: true
+                              })}
+                            </span>
+                          </div>
+                        </div>
                       </div>
-                      <div>
-                        <div style={{ fontSize: '14.5px', fontWeight: 800, color: '#0F172A' }}>
-                          {displayName}
-                        </div>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap', marginTop: '3px' }}>
-                          <span style={{ fontSize: '13px', fontWeight: 700, color: '#0F5132' }}>
-                            {clean10 ? `+91 ${clean10}` : 'No mobile provided'}
-                          </span>
-                          <span style={{ fontSize: '11.5px', color: '#64748B' }}>
-                            • {new Date(item.timestamp).toLocaleString('en-IN', {
-                              day: 'numeric',
-                              month: 'short',
-                              year: 'numeric',
-                              hour: 'numeric',
-                              minute: '2-digit',
-                              hour12: true
-                            })}
-                          </span>
-                        </div>
+
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+                        {/* Customer Status Dropdown */}
+                        <select
+                          value={currentStatus}
+                          onChange={(e) => updateLead(item.id, { leadStatus: e.target.value as LeadStatus })}
+                          style={{
+                            backgroundColor: statusStyle.bg,
+                            color: statusStyle.color,
+                            border: `1.5px solid ${statusStyle.border}`,
+                            borderRadius: '10px',
+                            padding: '7px 10px',
+                            fontSize: '12px',
+                            fontWeight: 800,
+                            cursor: 'pointer',
+                            outline: 'none'
+                          }}
+                        >
+                          <option value="pending">To-Do (Pending)</option>
+                          <option value="contacted">Contacted</option>
+                          <option value="yes">Yes (Interested)</option>
+                          <option value="booked">Booked</option>
+                          <option value="no">No (Not Interested)</option>
+                        </select>
+
+                        {clean10 && (
+                          <>
+                            <a
+                              href={`tel:+91${clean10}`}
+                              style={{
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: '5px',
+                                backgroundColor: '#FFFFFF',
+                                border: '1px solid #CBD5E1',
+                                color: '#0F172A',
+                                borderRadius: '10px',
+                                padding: '7px 11px',
+                                fontSize: '12px',
+                                fontWeight: 700,
+                                textDecoration: 'none'
+                              }}
+                            >
+                              <Phone size={12} /> Call
+                            </a>
+                            <a
+                              href={waUrl}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              style={{
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: '5px',
+                                backgroundColor: '#16A34A',
+                                color: '#FFFFFF',
+                                borderRadius: '10px',
+                                padding: '7px 11px',
+                                fontSize: '12px',
+                                fontWeight: 700,
+                                textDecoration: 'none',
+                                boxShadow: '0 2px 6px rgba(22, 163, 74, 0.25)'
+                              }}
+                            >
+                              <MessageCircle size={12} /> WhatsApp
+                            </a>
+                          </>
+                        )}
                       </div>
                     </div>
 
-                    {clean10 && (
-                      <div style={{ display: 'flex', gap: '8px' }}>
-                        <a
-                          href={`tel:+91${clean10}`}
+                    {/* Conditional Stay Details (Check-in, Check-out, Budget Preferred) when Yes / Booked */}
+                    {showStayDetails && (
+                      <div style={{
+                        marginTop: '12px',
+                        paddingTop: '12px',
+                        borderTop: '1px dashed #CBD5E1',
+                        display: 'grid',
+                        gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
+                        gap: '10px',
+                        alignItems: 'end'
+                      }}>
+                        <label style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                          <span style={{ fontSize: '11px', fontWeight: 700, color: '#475569', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                            <Calendar size={11} color="#0F5132" /> Check-in Date
+                          </span>
+                          <input
+                            type="date"
+                            value={draft.checkIn}
+                            onChange={(e) => handleDraftChange(item.id, 'checkIn', e.target.value)}
+                            style={{
+                              backgroundColor: '#FFFFFF',
+                              border: '1px solid #CBD5E1',
+                              borderRadius: '10px',
+                              padding: '7px 10px',
+                              fontSize: '12.5px',
+                              fontWeight: 600,
+                              color: '#0F172A'
+                            }}
+                          />
+                        </label>
+
+                        <label style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                          <span style={{ fontSize: '11px', fontWeight: 700, color: '#475569', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                            <Calendar size={11} color="#0F5132" /> Check-out Date
+                          </span>
+                          <input
+                            type="date"
+                            value={draft.checkOut}
+                            min={draft.checkIn || undefined}
+                            onChange={(e) => handleDraftChange(item.id, 'checkOut', e.target.value)}
+                            style={{
+                              backgroundColor: '#FFFFFF',
+                              border: '1px solid #CBD5E1',
+                              borderRadius: '10px',
+                              padding: '7px 10px',
+                              fontSize: '12.5px',
+                              fontWeight: 600,
+                              color: '#0F172A'
+                            }}
+                          />
+                        </label>
+
+                        <label style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                          <span style={{ fontSize: '11px', fontWeight: 700, color: '#475569', display: 'flex', alignItems: 'center', gap: '4px' }}>
+                            <IndianRupee size={11} color="#0F5132" /> Budget Preferred
+                          </span>
+                          <input
+                            type="text"
+                            placeholder="e.g. ₹1,000 - ₹1,500"
+                            value={draft.budget}
+                            onChange={(e) => handleDraftChange(item.id, 'budget', e.target.value)}
+                            style={{
+                              backgroundColor: '#FFFFFF',
+                              border: '1px solid #CBD5E1',
+                              borderRadius: '10px',
+                              padding: '7px 10px',
+                              fontSize: '12.5px',
+                              fontWeight: 600,
+                              color: '#0F172A'
+                            }}
+                          />
+                        </label>
+
+                        <button
+                          type="button"
+                          onClick={() => updateLead(item.id, {
+                            leadStatus: currentStatus,
+                            checkIn: draft.checkIn,
+                            checkOut: draft.checkOut,
+                            budget: draft.budget,
+                          })}
+                          disabled={savingId === item.id}
                           style={{
                             display: 'inline-flex',
                             alignItems: 'center',
+                            justifyContent: 'center',
                             gap: '5px',
-                            backgroundColor: '#FFFFFF',
-                            border: '1px solid #CBD5E1',
-                            color: '#0F172A',
-                            borderRadius: '10px',
-                            padding: '8px 12px',
-                            fontSize: '12.5px',
-                            fontWeight: 700,
-                            textDecoration: 'none'
-                          }}
-                        >
-                          <Phone size={13} /> Call
-                        </a>
-                        <a
-                          href={waUrl}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          style={{
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            gap: '5px',
-                            backgroundColor: '#16A34A',
+                            backgroundColor: savedId === item.id ? '#16A34A' : '#0F5132',
                             color: '#FFFFFF',
+                            border: 'none',
                             borderRadius: '10px',
-                            padding: '8px 12px',
+                            padding: '8px 14px',
                             fontSize: '12.5px',
                             fontWeight: 700,
-                            textDecoration: 'none',
-                            boxShadow: '0 2px 6px rgba(22, 163, 74, 0.25)'
+                            cursor: savingId === item.id ? 'wait' : 'pointer',
+                            height: '34px'
                           }}
                         >
-                          <MessageCircle size={13} /> WhatsApp
-                        </a>
+                          {savedId === item.id ? (
+                            <>
+                              <Check size={14} /> Saved
+                            </>
+                          ) : savingId === item.id ? (
+                            'Saving...'
+                          ) : (
+                            'Save Details'
+                          )}
+                        </button>
                       </div>
                     )}
                   </div>
