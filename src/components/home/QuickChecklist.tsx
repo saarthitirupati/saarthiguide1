@@ -38,16 +38,19 @@ const TEXTS = {
     temporarilyPaused: 'Temporarily paused',
     activelyIssuing: 'Actively issuing',
     notAnnounced: 'Not announced',
+    notIssuedYet: 'Not issued yet',
     unavailable: 'Unavailable',
     status: 'Status',
     todayQuotaCompleted: "Today's quota completed",
     tokensIssuingNow: 'Tokens issuing now',
     tokensPaused: 'Issuance paused',
     tokensSuspended: 'Issuance suspended',
+    tokensNotIssuedYet: 'Tokens not issued yet',
     tokensIssuedNote: (date: string) => `Tokens for ${date} have been fully issued.`,
     tokensIssuingNote: (date: string) => `Tokens for tomorrow's darshan (${date}) are currently being issued at counters.`,
     tokensPausedNote: (date: string) => `Token issuance for ${date} is temporarily paused.`,
     tokensSuspendedNote: (date: string) => `Token issuance for ${date} is suspended due to festival/rush.`,
+    tokensNotIssuedNote: (date: string) => `Tokens for ${date} have not been issued yet. Live updates will appear once counters open.`,
     ssdTokens: 'SSD Tokens',
     ddTokens: 'DD Tokens',
     completed: 'Completed',
@@ -98,16 +101,19 @@ const TEXTS = {
     temporarilyPaused: 'తాత్కాలికంగా ఆపబడింది',
     activelyIssuing: 'టోకెన్లు జారీ అవుతున్నాయి',
     notAnnounced: 'ఇంకా ప్రకటించలేదు',
+    notIssuedYet: 'ఇంకా జారీ చేయలేదు',
     unavailable: 'అందుబాటులో లేదు',
     status: 'స్థితి',
     todayQuotaCompleted: 'నేటి కోటా పూర్తయింది',
     tokensIssuingNow: 'టోకెన్లు జారీ అవుతున్నాయి',
     tokensPaused: 'టోకెన్ జారీ నిలిపివేయబడింది',
     tokensSuspended: 'టోకెన్ జారీ నిలిపివేయబడింది',
+    tokensNotIssuedYet: 'టోకెన్లు ఇంకా జారీ చేయలేదు',
     tokensIssuedNote: (date: string) => `${date} నాటి టోకెన్లు పూర్తిగా పూర్తయ్యాయి.`,
     tokensIssuingNote: (date: string) => `రేపటి దర్శనం (${date}) నాటి టోకెన్లు ప్రస్తుతం కౌంటర్లలో జారీ అవుతున్నాయి.`,
     tokensPausedNote: (date: string) => `${date} నాటి టోకెన్ జారీ తాత్కాలికంగా ఆపబడింది.`,
     tokensSuspendedNote: (date: string) => `${date} నాటి టోకెన్ జారీ తాత్కాలికంగా నిలిపివేయబడింది.`,
+    tokensNotIssuedNote: (date: string) => `${date} నాటి టోకెన్లు ఇంకా జారీ కాలేదు. కౌంటర్లు తెరిచిన తర్వాత లైవ్ అప్‌డేట్స్ కనిపిస్తాయి.`,
     ssdTokens: 'SSD టోకెన్లు',
     ddTokens: 'DD టోకెన్లు',
     completed: 'పూర్తయింది',
@@ -158,16 +164,19 @@ const TEXTS = {
     temporarilyPaused: 'अस्थायी रूप से रुका हुआ',
     activelyIssuing: 'सक्रिय रूप से जारी',
     notAnnounced: 'घोषित नहीं',
+    notIssuedYet: 'अभी जारी नहीं',
     unavailable: 'अनुपलब्ध',
     status: 'स्थिति',
     todayQuotaCompleted: 'आज का कोटा पूरा हुआ',
     tokensIssuingNow: 'टोकन जारी किए जा रहे हैं',
     tokensPaused: 'टोकन वितरण रुका हुआ है',
     tokensSuspended: 'टोकन वितरण स्थगित है',
+    tokensNotIssuedYet: 'टोकन अभी जारी नहीं हुए हैं',
     tokensIssuedNote: (date: string) => `${date} के लिए टोकन पूरी तरह समाप्त हो चुके हैं।`,
     tokensIssuingNote: (date: string) => `कल के दर्शन (${date}) के लिए टोकन काउंटरों पर जारी किए जा रहे हैं।`,
     tokensPausedNote: (date: string) => `${date} के लिए टोकन वितरण अस्थायी रूप से रुका हुआ है।`,
     tokensSuspendedNote: (date: string) => `${date} के लिए टोकन वितरण स्थगित है।`,
+    tokensNotIssuedNote: (date: string) => `${date} के लिए टोकन अभी जारी नहीं हुए हैं। काउंटर खुलने पर लाइव अपडेट दिखाई देंगे।`,
     ssdTokens: 'एसएसडी टोकन',
     ddTokens: 'डीडी टोकन',
     completed: 'पूरा हुआ',
@@ -218,16 +227,19 @@ const TEXTS = {
     temporarilyPaused: 'தற்காலிகமாக நிறுத்தப்பட்டது',
     activelyIssuing: 'டோக்கன்கள் வழங்கப்படுகின்றன',
     notAnnounced: 'அறிவிக்கப்படவில்லை',
+    notIssuedYet: 'இன்னும் வழங்கப்படவில்லை',
     unavailable: 'கிடைக்கவில்லை',
     status: 'நிலை',
     todayQuotaCompleted: 'இன்றைய ஒதுக்கீடு முடிந்தது',
     tokensIssuingNow: 'டோக்கன்கள் இப்போது வழங்கப்படுகின்றன',
     tokensPaused: 'டோக்கன் வழங்குவது தற்காலிகமாக நிறுத்தப்பட்டுள்ளது',
     tokensSuspended: 'டோக்கன் வழங்குவது நிறுத்தி வைக்கப்பட்டுள்ளது',
+    tokensNotIssuedYet: 'டோக்கன்கள் இன்னும் வழங்கப்படவில்லை',
     tokensIssuedNote: (date: string) => `${date}க்கான டோக்கன்கள் முழுமையாக வழங்கப்பட்டுவிட்டன.`,
     tokensIssuingNote: (date: string) => `நாளை தரிசனத்திற்கான (${date}) டோக்கன்கள் தற்போது கவுன்டர்களில் வழங்கப்படுகின்றன.`,
     tokensPausedNote: (date: string) => `${date}க்கான டோக்கன் வழங்குவது நிறுத்தப்பட்டுள்ளது.`,
     tokensSuspendedNote: (date: string) => `${date}க்கான டோக்கன் வழங்குவது நிறுத்தி வைக்கப்பட்டுள்ளது.`,
+    tokensNotIssuedNote: (date: string) => `${date}க்கான டோக்கன்கள் இன்னும் வழங்கப்படவில்லை. கவுன்டர்கள் திறக்கப்பட்டதும் நேரலை தகவல்கள் காண்பிக்கப்படும்.`,
     ssdTokens: 'SSD டோக்கன்கள்',
     ddTokens: 'DD டோக்கன்கள்',
     completed: 'முடிந்தது',
@@ -278,16 +290,19 @@ const TEXTS = {
     temporarilyPaused: 'ತಾತ್ಕಾಲಿಕವಾಗಿ ನಿಲ್ಲಿಸಲಾಗಿದೆ',
     activelyIssuing: 'ಟೋಕನ್‌ಗಳು ಜಾರಿಯಾಗುತ್ತಿವೆ',
     notAnnounced: 'ಇನ್ನೂ ಪ್ರಕಟಿಸಿಲ್ಲ',
+    notIssuedYet: 'ಇನ್ನೂ ಜಾರಿಯಾಗಿಲ್ಲ',
     unavailable: 'ಲಭ್ಯವಿಲ್ಲ',
     status: 'ಸ್ಥಿತಿ',
     todayQuotaCompleted: 'ಇಂದಿನ ಕೋಟಾ ಪೂರ್ಣಗೊಂಡಿದೆ',
     tokensIssuingNow: 'ಟೋಕನ್‌ಗಳು ಈಗ ಲಭ್ಯವಿವೆ',
     tokensPaused: 'ಟೋಕನ್ ವಿತರಣೆ ಸ್ಥಗಿತ',
     tokensSuspended: 'ರದ್ದಿಯ ಕಾರಣ ಟೋಕನ್ ವಿತರಣೆ ರದ್ದು',
+    tokensNotIssuedYet: 'ಟೋಕನ್‌ಗಳು ಇನ್ನೂ ಜಾರಿಯಾಗಿಲ್ಲ',
     tokensIssuedNote: (date: string) => `${date} ರ ಟೋಕನ್‌ಗಳು ಸಂಪೂರ್ಣವಾಗಿ ಜಾರಿಯಾಗಿವೆ.`,
     tokensIssuingNote: (date: string) => `ನಾಳೆಯ ದರ್ಶನದ (${date}) ಟೋಕನ್‌ಗಳು ಕೌಂಟರ್‌ಗಳಲ್ಲಿ ಜಾರಿಯಾಗುತ್ತಿವೆ.`,
     tokensPausedNote: (date: string) => `${date} ರ ಟೋಕನ್ ವಿತರಣೆ ತಾತ್ಕಾಲಿಕವಾಗಿ ನಿಂತಿದೆ.`,
     tokensSuspendedNote: (date: string) => `ಹಬ್ಬ/ರದ್ದಿಯ ಕಾರಣ ${date} ರ ಟೋಕನ್ ವಿತರಣೆ ಸ್ಥಗಿತಗೊಂಡಿದೆ.`,
+    tokensNotIssuedNote: (date: string) => `${date} ರ ಟೋಕನ್‌ಗಳು ಇನ್ನೂ ಜಾರಿಯಾಗಿಲ್ಲ. ಕೌಂಟರ್‌ಗಳು ತೆರೆದ ನಂತರ ನೇರ ಮಾಹಿತಿ ಲಭ್ಯವಾಗುತ್ತದೆ.`,
     ssdTokens: 'SSD ಟೋಕನ್‌ಗಳು',
     ddTokens: 'DD ಟೋಕನ್‌ಗಳು',
     completed: 'ಪೂರ್ಣಗೊಂಡಿದೆ',
@@ -397,16 +412,19 @@ export function QuickChecklist(props: any) {
     ? liveStatus.ssdNotice.replace(/[\u{1F300}-\u{1FAFF}\u{2300}-\u{23FF}\u{2600}-\u{27BF}\u{FE00}-\u{FE0F}]/gu, '').replace(/\*/g, '').trim()
     : '';
 
-  const isSuspended = Boolean(
+  const isStaleDay = !ist.isUpdatedToday;
+  const isNotIssuedYet = isStaleDay && rawStatus !== 'issuing';
+
+  const isSuspended = !isNotIssuedYet && Boolean(
     (cleanNotice && /suspend|cancel|brahmotsavam/i.test(cleanNotice)) ||
     (liveStatus.ssdNextTokenTime && /suspend|cancel/i.test(liveStatus.ssdNextTokenTime)) ||
     rawStatus === 'cancelled' ||
     rawStatus === 'suspended'
   );
 
-  const isIssuing = !isSuspended && rawStatus === 'issuing';
-  const isPaused = !isSuspended && rawStatus === 'paused';
-  const isCompleted = !isIssuing && !isPaused && !isSuspended;
+  const isIssuing = !isSuspended && !isNotIssuedYet && rawStatus === 'issuing';
+  const isPaused = !isSuspended && !isNotIssuedYet && rawStatus === 'paused';
+  const isCompleted = !isIssuing && !isPaused && !isSuspended && !isNotIssuedYet;
 
   // 3. Divya Darshan (DD) Footpath Status from API/DB
   const ddDarshan = liveStatus.darshans?.find(
@@ -429,9 +447,9 @@ export function QuickChecklist(props: any) {
   };
 
   const rawSsdStatus = String(ssdDetails.status || ssdGuideMatch.status?.[1] || rawStatus || '').toLowerCase();
-  const isSsdIssuing = !isSuspended && rawSsdStatus === 'issuing';
-  const isSsdPaused = !isSuspended && rawSsdStatus === 'paused';
-  const isSsdCompleted = !isSuspended && (rawSsdStatus === 'completed' || rawSsdStatus === 'closed' || rawSsdStatus === 'closed-for-day' || (!isSsdIssuing && !isSsdPaused));
+  const isSsdIssuing = !isSuspended && !isNotIssuedYet && rawSsdStatus === 'issuing';
+  const isSsdPaused = !isSuspended && !isNotIssuedYet && rawSsdStatus === 'paused';
+  const isSsdCompleted = !isSuspended && !isNotIssuedYet && (rawSsdStatus === 'completed' || rawSsdStatus === 'closed' || rawSsdStatus === 'closed-for-day' || (!isSsdIssuing && !isSsdPaused));
 
   // SSD Total Quota
   let ssdTotalCount = ssdDetails.totalTokens || (ssdGuideMatch.total ? ssdGuideMatch.total[1].trim() : '10K');
@@ -469,9 +487,9 @@ export function QuickChecklist(props: any) {
   };
 
   const rawDdStatus = String(ddDetails.status || ddGuideMatch.status?.[1] || (isDdIssuing ? 'issuing' : isDdClosed ? 'completed' : '')).toLowerCase();
-  const isDdNowIssuing = !isSuspended && (rawDdStatus === 'issuing' || (!rawDdStatus && isDdIssuing));
-  const isDdNowPaused = !isSuspended && (rawDdStatus === 'paused' || /paused/i.test(ddWait));
-  const isDdNowCompleted = !isSuspended && (rawDdStatus === 'completed' || (!isDdNowIssuing && !isDdNowPaused));
+  const isDdNowIssuing = !isSuspended && !isNotIssuedYet && (rawDdStatus === 'issuing' || (!rawDdStatus && isDdIssuing));
+  const isDdNowPaused = !isSuspended && !isNotIssuedYet && (rawDdStatus === 'paused' || /paused/i.test(ddWait));
+  const isDdNowCompleted = !isSuspended && !isNotIssuedYet && (rawDdStatus === 'completed' || (!isDdNowIssuing && !isDdNowPaused));
 
   // DD Total Quota
   let ddTotalCount = ddDetails.totalTokens || (ddGuideMatch.total ? ddGuideMatch.total[1].trim() : '2K');
@@ -521,6 +539,8 @@ export function QuickChecklist(props: any) {
     ? ssdCompDisplay
     : isSsdPaused
     ? t.temporarilyPaused
+    : isNotIssuedYet
+    ? t.notIssuedYet
     : t.unavailable;
   const ssdRow2Color = isSsdIssuing ? '#16A34A' : isSsdPaused ? '#D97706' : isSsdCompleted ? '#DC2626' : '#64748B';
   const ssdRow2Bg = isSsdIssuing ? '#DCFCE7' : isSsdPaused ? '#FEF3C7' : isSsdCompleted ? '#FEE2E2' : '#F1F5F9';
@@ -532,6 +552,8 @@ export function QuickChecklist(props: any) {
     ? ddCompDisplay
     : isDdNowPaused
     ? t.temporarilyPaused
+    : isNotIssuedYet
+    ? t.notIssuedYet
     : t.unavailable;
   const ddRow2Color = isDdNowIssuing ? '#16A34A' : isDdNowPaused ? '#D97706' : isDdNowCompleted ? '#DC2626' : '#64748B';
   const ddRow2Bg = isDdNowIssuing ? '#DCFCE7' : isDdNowPaused ? '#FEF3C7' : isDdNowCompleted ? '#FEE2E2' : '#F1F5F9';
@@ -563,7 +585,10 @@ export function QuickChecklist(props: any) {
   let guidanceTitle = t.quotasCompletedAdvice;
   let guidanceSubtitle = t.pleaseWaitNote;
 
-  if (isIssuing) {
+  if (isNotIssuedYet) {
+    guidanceTitle = t.tokensNotIssuedYet;
+    guidanceSubtitle = t.pleaseWaitNote;
+  } else if (isIssuing) {
     guidanceTitle = t.tokensIssuingNow;
     guidanceSubtitle = t.collectAtCounters;
   } else if (isWalkInConfirmed) {
@@ -575,7 +600,9 @@ export function QuickChecklist(props: any) {
   }
 
   // 9. Status Header text
-  const headerBadgeText = isSuspended
+  const headerBadgeText = isNotIssuedYet
+    ? t.notIssuedYet
+    : isSuspended
     ? t.suspended
     : isIssuing
     ? t.issuing
@@ -583,7 +610,9 @@ export function QuickChecklist(props: any) {
     ? t.paused
     : t.closed;
 
-  const todayStatusText = isSuspended
+  const todayStatusText = isNotIssuedYet
+    ? t.tokensNotIssuedYet
+    : isSuspended
     ? t.tokensSuspended
     : isIssuing
     ? t.tokensIssuingNow
@@ -591,7 +620,9 @@ export function QuickChecklist(props: any) {
     ? t.tokensPaused
     : t.todayQuotaCompleted;
 
-  const todayNoteText = isSuspended
+  const todayNoteText = isNotIssuedYet
+    ? t.tokensNotIssuedNote(canonicalTargetDate)
+    : isSuspended
     ? t.tokensSuspendedNote(canonicalTargetDate)
     : isIssuing
     ? t.tokensIssuingNote(canonicalTargetDate)

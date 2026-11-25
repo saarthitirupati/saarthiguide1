@@ -48,13 +48,16 @@ export function getISTDateInfo(lastUpdatedStr?: string, refDate: Date = new Date
   const yesterdayShortStr = istShortDateFmt.format(yesterdayDate);
   const tomorrowStr = istDateFmt.format(tomorrowDate);
 
-  // Last Updated formatted
+  // Last Updated formatted & same-day IST check
+  let isUpdatedToday = true;
   let updatedDisplay = '';
   if (lastUpdatedStr) {
     try {
       const updDate = new Date(lastUpdatedStr);
       if (!isNaN(updDate.getTime())) {
-        updatedDisplay = `${istDateFmt.format(updDate)}, ${istTimeFmt.format(updDate)}`;
+        const updDateStr = istDateFmt.format(updDate);
+        isUpdatedToday = updDateStr === todayStr;
+        updatedDisplay = `${updDateStr}, ${istTimeFmt.format(updDate)}`;
       }
     } catch {
       // fallback
@@ -70,7 +73,8 @@ export function getISTDateInfo(lastUpdatedStr?: string, refDate: Date = new Date
     yesterday: yesterdayStr,
     yesterdayShort: yesterdayShortStr,
     tomorrow: tomorrowStr,
-    updatedDisplay
+    updatedDisplay,
+    isUpdatedToday
   };
 }
 
