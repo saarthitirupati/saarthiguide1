@@ -34,13 +34,8 @@ interface LaunchNotificationStore {
 
 function getStore(): LaunchNotificationStore {
   try {
-    if (!fs.existsSync(DATA_DIR)) {
-      fs.mkdirSync(DATA_DIR, { recursive: true });
-    }
     if (!fs.existsSync(NOTIF_FILE)) {
-      const initial: LaunchNotificationStore = { total: 0, cabs: 0, rooms: 0, items: [] };
-      fs.writeFileSync(NOTIF_FILE, JSON.stringify(initial, null, 2));
-      return initial;
+      return { total: 0, cabs: 0, rooms: 0, items: [] };
     }
     const raw = fs.readFileSync(NOTIF_FILE, 'utf-8');
     const parsed = JSON.parse(raw);
@@ -50,8 +45,7 @@ function getStore(): LaunchNotificationStore {
       rooms: Number(parsed.rooms) || 0,
       items: Array.isArray(parsed.items) ? parsed.items : [],
     };
-  } catch (e) {
-    console.error('Error reading launch notifications store:', e);
+  } catch {
     return { total: 0, cabs: 0, rooms: 0, items: [] };
   }
 }
@@ -62,8 +56,8 @@ function saveStore(store: LaunchNotificationStore) {
       fs.mkdirSync(DATA_DIR, { recursive: true });
     }
     fs.writeFileSync(NOTIF_FILE, JSON.stringify(store, null, 2));
-  } catch (e) {
-    console.error('Error saving launch notifications store:', e);
+  } catch {
+    // Cloudflare Workers runtime has a read-only filesystem; Supabase is primary
   }
 }
 
@@ -154,8 +148,7 @@ async function saveSupabaseStore(store: LaunchNotificationStore, rowId?: string)
 
 export async function GET() {
   const sbResult = await getSupabaseStore();
-  const fileStore = getStore();
-  const store = sbResult?.store || fileStore;
+  const store = sbResult?.store ?? getStore();
 
   return NextResponse.json({
     success: true,
