@@ -126,6 +126,7 @@ export function FootpathTimingsCard() {
         {/* Header Right: Details Button Pill */}
         <Link 
           href="/footpaths"
+          prefetch={false}
           className="notranslate"
           translate="no"
           style={{

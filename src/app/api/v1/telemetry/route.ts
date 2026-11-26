@@ -16,8 +16,10 @@ export async function POST(req: Request) {
         session_id: sessionId,
         event_type: eventType,
         entity_type: entityType || null,
-        entity_id: entityId || null,
-        metadata: metadata || {}
+        metadata: {
+          ...(metadata || {}),
+          ...(entityId ? { entityId } : {})
+        }
       }]);
 
     if (error) {

@@ -1051,7 +1051,7 @@ export default function HomePage() {
                   <h2 style={{ fontSize: '17px', fontWeight: 600, color: '#0F172A', margin: 0 }}>
                     {t.nearbyPlaces}
                   </h2>
-                  <Link href="/explore" style={{ fontSize: '12.5px', fontWeight: 600, color: '#0F5132', textDecoration: 'none' }}>
+                  <Link href="/explore" prefetch={false} style={{ fontSize: '12.5px', fontWeight: 600, color: '#0F5132', textDecoration: 'none' }}>
                     {t.seeAll}
                   </Link>
                 </div>
@@ -1142,7 +1142,7 @@ export default function HomePage() {
                     {t.servicesSub}
                   </p>
                 </div>
-                <Link href="/essentials" style={{ fontSize: '12.5px', fontWeight: 600, color: '#0F5132', textDecoration: 'none' }}>
+                <Link href="/essentials" prefetch={false} style={{ fontSize: '12.5px', fontWeight: 600, color: '#0F5132', textDecoration: 'none' }}>
                   {t.seeAll}
                 </Link>
               </div>

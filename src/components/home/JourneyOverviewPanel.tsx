@@ -149,6 +149,7 @@ export function JourneyOverviewPanel() {
       {/* ── INTERACTIVE JOURNEY CTA BUTTON ── */}
       <Link 
         href="/route" 
+        prefetch={false}
         className={styles.ctaButton}
       >
         <Navigation size={15} />

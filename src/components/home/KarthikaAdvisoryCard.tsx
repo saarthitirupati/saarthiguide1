@@ -118,31 +118,6 @@ export function KarthikaAdvisoryCard() {
       }
     } catch {}
 
-    if (active) {
-      try {
-        const alreadyLogged = sessionStorage.getItem('karthika_advisory_imp_logged');
-        if (!alreadyLogged) {
-          sessionStorage.setItem('karthika_advisory_imp_logged', 'true');
-          const sessionId = localStorage.getItem('saarthi_session_id') || `sess_${Date.now().toString(36)}`;
-
-          fetch('/api/v1/telemetry', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              sessionId,
-              eventType: 'karthika_advisory_impression',
-              entityType: 'place',
-              entityId: 'kapila-theertham',
-              metadata: {
-                cardVersion: 'v2_karthika_advisory_ui',
-                date: todayStr
-              }
-            })
-          }).catch(() => {});
-        }
-      } catch {}
-    }
-
     setMounted(true);
   }, []);
 

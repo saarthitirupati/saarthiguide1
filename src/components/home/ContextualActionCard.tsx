@@ -65,7 +65,7 @@ export function ContextualActionCard({ liveStatus }: { liveStatus: any }) {
             {message}
           </span>
         </div>
-        <Link href={link} style={{
+        <Link href={link} prefetch={false} style={{
           display: 'inline-flex',
           alignItems: 'center',
           background: '#166534',

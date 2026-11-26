@@ -167,7 +167,7 @@ export function DesktopSidebarWidget() {
             <Footprints size={17} color="#16A34A" />
             <span>{isTe ? 'సోపాన మార్గాలు & ఘాట్ రోడ్ సమయం' : 'Footpath Treks & Ghat Road Times'}</span>
           </h3>
-          <Link href="/route" style={{ fontSize: '11.5px', fontWeight: 600, color: '#0F5132', textDecoration: 'none' }}>
+          <Link href="/route" prefetch={false} style={{ fontSize: '11.5px', fontWeight: 600, color: '#0F5132', textDecoration: 'none' }}>
             {isTe ? 'మార్గం చూడండి >' : 'View Route >'}
           </Link>
         </div>
