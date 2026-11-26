@@ -62,6 +62,8 @@ export default function SaarthiHotelAdminPage() {
   const [notifyItems, setNotifyItems] = useState<WaitlistEntry[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [todoFilter, setTodoFilter] = useState<'all' | LeadStatus>('all');
+  const [currentPage, setCurrentPage] = useState(1);
+  const PAGE_SIZE = 50;
   const [drafts, setDrafts] = useState<Record<string, { checkIn: string; checkOut: string; budget: string }>>({});
   const [savingId, setSavingId] = useState<string | null>(null);
   const [savedId, setSavedId] = useState<string | null>(null);
@@ -316,6 +318,17 @@ export default function SaarthiHotelAdminPage() {
       );
     });
   }, [notifyItems, searchQuery, todoFilter]);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery, todoFilter]);
+
+  const totalPages = Math.max(1, Math.ceil(filteredItems.length / PAGE_SIZE));
+  const safePage = Math.min(currentPage, totalPages);
+  const paginatedItems = useMemo(
+    () => filteredItems.slice((safePage - 1) * PAGE_SIZE, safePage * PAGE_SIZE),
+    [filteredItems, safePage]
+  );
 
   if (!authChecked) {
     return (
@@ -880,7 +893,7 @@ export default function SaarthiHotelAdminPage() {
             </div>
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              {filteredItems.map((item) => {
+              {paginatedItems.map((item) => {
                 const digits = (item.phone || '').replace(/\D/g, '');
                 const clean10 = digits.slice(-10);
                 const displayName = item.name?.trim() || 'Pilgrim Visitor';
@@ -1138,6 +1151,59 @@ export default function SaarthiHotelAdminPage() {
                   </div>
                 );
               })}
+
+              {filteredItems.length > PAGE_SIZE && (
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  flexWrap: 'wrap',
+                  gap: '10px',
+                  paddingTop: '12px',
+                  marginTop: '4px',
+                  borderTop: '1px solid #E2E8F0'
+                }}>
+                  <span style={{ fontSize: '12.5px', fontWeight: 600, color: '#475569' }}>
+                    Showing {(safePage - 1) * PAGE_SIZE + 1}–{Math.min(safePage * PAGE_SIZE, filteredItems.length)} of {filteredItems.length} • Page {safePage} of {totalPages}
+                  </span>
+                  <div style={{ display: 'flex', gap: '8px' }}>
+                    <button
+                      type="button"
+                      onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                      disabled={safePage <= 1}
+                      style={{
+                        padding: '8px 14px',
+                        borderRadius: '10px',
+                        border: '1px solid #CBD5E1',
+                        backgroundColor: safePage <= 1 ? '#F1F5F9' : '#FFFFFF',
+                        color: safePage <= 1 ? '#94A3B8' : '#0F172A',
+                        fontSize: '12.5px',
+                        fontWeight: 700,
+                        cursor: safePage <= 1 ? 'not-allowed' : 'pointer'
+                      }}
+                    >
+                      ← Previous
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                      disabled={safePage >= totalPages}
+                      style={{
+                        padding: '8px 14px',
+                        borderRadius: '10px',
+                        border: 'none',
+                        backgroundColor: safePage >= totalPages ? '#E2E8F0' : '#0F5132',
+                        color: safePage >= totalPages ? '#94A3B8' : '#FFFFFF',
+                        fontSize: '12.5px',
+                        fontWeight: 700,
+                        cursor: safePage >= totalPages ? 'not-allowed' : 'pointer'
+                      }}
+                    >
+                      Next →
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           )}
         </section>

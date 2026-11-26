@@ -161,7 +161,7 @@ export async function GET() {
     total: store.total,
     cabs: store.cabs,
     rooms: store.rooms,
-    recent: store.items.slice(0, 200),
+    recent: store.items.slice(0, 500),
   }, {
     headers: {
       'Cache-Control': 'no-store, no-cache, must-revalidate, max-age=0',
