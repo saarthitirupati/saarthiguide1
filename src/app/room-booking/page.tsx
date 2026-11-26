@@ -8,7 +8,8 @@ import {
   CheckCircle2,
   Sparkles,
   Phone,
-  User
+  User,
+  MapPin
 } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 
@@ -18,6 +19,7 @@ export default function RoomBookingPage() {
   const [waitlistCount, setWaitlistCount] = useState<number | null>(null);
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
+  const [acceptedDownhill, setAcceptedDownhill] = useState(false);
   const [notified, setNotified] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
@@ -98,7 +100,7 @@ export default function RoomBookingPage() {
     if (e) e.preventDefault();
     const digits = phone.replace(/\D/g, '');
     const trimmedName = name.trim();
-    if (notified || submitting || trimmedName.length < 2 || digits.length !== 10) return;
+    if (notified || submitting || trimmedName.length < 2 || digits.length !== 10 || !acceptedDownhill) return;
 
     setSubmitting(true);
     setNotified(true);
@@ -130,7 +132,7 @@ export default function RoomBookingPage() {
 
   const isNameValid = name.trim().length >= 2;
   const isPhoneValid = phone.replace(/\D/g, '').length === 10;
-  const isFormValid = isNameValid && isPhoneValid;
+  const isFormValid = isNameValid && isPhoneValid && acceptedDownhill;
   const totalPilgrims = BASE_ROOM_WAITLIST + (waitlistCount !== null ? waitlistCount : 0);
 
   return (
@@ -324,6 +326,27 @@ export default function RoomBookingPage() {
                 gap: '10px'
               }}
             >
+              {/* Clear Downhill-Only Notice */}
+              <div style={{
+                display: 'flex',
+                alignItems: 'flex-start',
+                gap: '8px',
+                backgroundColor: '#FFFBEB',
+                border: '1px solid #FDE68A',
+                borderRadius: '14px',
+                padding: '10px 12px',
+                textAlign: 'left',
+                fontSize: '12px',
+                lineHeight: 1.45,
+                color: '#92400E',
+                fontWeight: 600
+              }}>
+                <MapPin size={15} color="#D97706" style={{ flexShrink: 0, marginTop: '2px' }} />
+                <span>
+                  <strong>Tirupati Downhill (Kondakindha) Only:</strong> Rooms are in Tirupati town (Station / Bus Stand / Alipiri) — <strong>not uphill in Tirumala</strong>.
+                </span>
+              </div>
+
               <div style={{
                 display: 'flex',
                 alignItems: 'center',
@@ -391,6 +414,37 @@ export default function RoomBookingPage() {
                 />
               </div>
 
+              {/* Mandatory Downhill Confirmation Checkbox */}
+              <label style={{
+                display: 'flex',
+                alignItems: 'flex-start',
+                gap: '8px',
+                textAlign: 'left',
+                fontSize: '12px',
+                fontWeight: 600,
+                color: '#334155',
+                cursor: 'pointer',
+                padding: '4px 4px 0'
+              }}>
+                <input
+                  type="checkbox"
+                  checked={acceptedDownhill}
+                  onChange={(e) => setAcceptedDownhill(e.target.checked)}
+                  required
+                  style={{
+                    width: '16px',
+                    height: '16px',
+                    accentColor: '#14532D',
+                    marginTop: '1px',
+                    flexShrink: 0,
+                    cursor: 'pointer'
+                  }}
+                />
+                <span>
+                  I understand rooms will open for <strong>Tirupati Downhill (Kondakindha)</strong>, not Tirumala uphill.
+                </span>
+              </label>
+
               <button
                 type="submit"
                 disabled={submitting || !isFormValid}
@@ -449,8 +503,8 @@ export default function RoomBookingPage() {
                 lineHeight: 1.45
               }}>
                 {phone
-                  ? `Thank you${name ? `, ${name}` : ''}! We will notify +91 ${phone} first when room booking goes live.`
-                  : 'We will notify you first when room booking goes live.'}
+                  ? `Thank you${name ? `, ${name}` : ''}! We will notify +91 ${phone} first when Tirupati Downhill (Kondakindha) room booking goes live.`
+                  : 'We will notify you first when Tirupati Downhill (Kondakindha) room booking goes live.'}
               </div>
             </div>
           )}

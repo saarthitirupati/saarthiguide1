@@ -9,6 +9,8 @@ export const revalidate = 0;
 const DATA_DIR = path.join(process.cwd(), 'data');
 const NOTIF_FILE = path.join(DATA_DIR, 'launch-notifications.json');
 
+export type LeadStatus = 'pending' | 'not_lifted' | 'callback' | 'contacted' | 'yes' | 'no' | 'booked';
+
 interface LaunchNotificationItem {
   id: string;
   service: 'cabs' | 'rooms';
@@ -16,7 +18,7 @@ interface LaunchNotificationItem {
   name?: string;
   phone?: string;
   email?: string;
-  leadStatus?: 'pending' | 'contacted' | 'yes' | 'no' | 'booked';
+  leadStatus?: LeadStatus;
   checkIn?: string;
   checkOut?: string;
   budget?: string;
@@ -64,21 +66,52 @@ function saveStore(store: LaunchNotificationStore) {
   }
 }
 
-async function getSupabaseStore(): Promise<LaunchNotificationStore | null> {
+async function getSupabaseStore(): Promise<{ store: LaunchNotificationStore; rowId?: string } | null> {
   try {
     const { data, error } = await supabase
       .from('live_updates')
-      .select('value')
+      .select('id, value, updated_at')
       .eq('module', 'launch_waitlist')
-      .single();
+      .order('updated_at', { ascending: false })
+      .limit(10);
 
-    if (!error && data?.value) {
-      const parsed = typeof data.value === 'string' ? JSON.parse(data.value) : data.value;
+    if (!error && Array.isArray(data) && data.length > 0) {
+      const mergedMap = new Map<string, LaunchNotificationItem>();
+      let maxCabs = 0;
+      let maxRooms = 0;
+      let maxTotal = 0;
+
+      for (const row of data) {
+        if (!row?.value) continue;
+        try {
+          const parsed = typeof row.value === 'string' ? JSON.parse(row.value) : row.value;
+          maxCabs = Math.max(maxCabs, Number(parsed.cabs) || 0);
+          maxRooms = Math.max(maxRooms, Number(parsed.rooms) || 0);
+          maxTotal = Math.max(maxTotal, Number(parsed.total) || 0);
+          if (Array.isArray(parsed.items)) {
+            for (const item of parsed.items) {
+              if (item?.id && !mergedMap.has(item.id)) {
+                mergedMap.set(item.id, item);
+              }
+            }
+          }
+        } catch {}
+      }
+
+      const items = Array.from(mergedMap.values()).sort(
+        (a, b) => new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
+      );
+      const roomItemCount = items.filter((i) => i.service === 'rooms').length;
+      const cabItemCount = items.filter((i) => i.service === 'cabs').length;
+
       return {
-        total: Number(parsed.total) || 0,
-        cabs: Number(parsed.cabs) || 0,
-        rooms: Number(parsed.rooms) || 0,
-        items: Array.isArray(parsed.items) ? parsed.items : [],
+        rowId: data[0].id,
+        store: {
+          total: Math.max(maxTotal, items.length),
+          cabs: Math.max(maxCabs, cabItemCount),
+          rooms: Math.max(maxRooms, roomItemCount),
+          items,
+        },
       };
     }
   } catch (e) {
@@ -87,24 +120,21 @@ async function getSupabaseStore(): Promise<LaunchNotificationStore | null> {
   return null;
 }
 
-async function saveSupabaseStore(store: LaunchNotificationStore) {
+async function saveSupabaseStore(store: LaunchNotificationStore, rowId?: string) {
   try {
     const payload = JSON.stringify({
       total: store.total,
       cabs: store.cabs,
       rooms: store.rooms,
-      items: store.items.slice(0, 100),
+      items: store.items.slice(0, 500),
       updatedAt: new Date().toISOString()
     });
 
-    const { data, error } = await supabase
-      .from('live_updates')
-      .update({
-        value: payload,
-        updated_at: new Date().toISOString()
-      })
-      .eq('module', 'launch_waitlist')
-      .select();
+    const query = rowId
+      ? supabase.from('live_updates').update({ value: payload, updated_at: new Date().toISOString() }).eq('id', rowId)
+      : supabase.from('live_updates').update({ value: payload, updated_at: new Date().toISOString() }).eq('module', 'launch_waitlist');
+
+    const { data, error } = await query.select('id');
 
     if (error || !data || data.length === 0) {
       await supabase.from('live_updates').insert([{
@@ -122,16 +152,16 @@ async function saveSupabaseStore(store: LaunchNotificationStore) {
 }
 
 export async function GET() {
-  const sbStore = await getSupabaseStore();
+  const sbResult = await getSupabaseStore();
   const fileStore = getStore();
-  const store = sbStore || fileStore;
+  const store = sbResult?.store || fileStore;
 
   return NextResponse.json({
     success: true,
     total: store.total,
     cabs: store.cabs,
     rooms: store.rooms,
-    recent: store.items.slice(0, 50),
+    recent: store.items.slice(0, 200),
   }, {
     headers: {
       'Cache-Control': 'no-store, no-cache, must-revalidate, max-age=0',
@@ -147,8 +177,8 @@ export async function POST(req: Request) {
     const phone = typeof body?.phone === 'string' ? body.phone.slice(0, 30) : undefined;
     const email = typeof body?.email === 'string' ? body.email.slice(0, 80) : undefined;
 
-    const sbStore = await getSupabaseStore();
-    const store = sbStore || getStore();
+    const sbResult = await getSupabaseStore();
+    const store = sbResult?.store || getStore();
 
     const item: LaunchNotificationItem = {
       id: `notif_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`,
@@ -172,7 +202,7 @@ export async function POST(req: Request) {
     }
 
     // Persist to Supabase (broadcasts Realtime update) and local store
-    await saveSupabaseStore(store);
+    await saveSupabaseStore(store, sbResult?.rowId);
     saveStore(store);
 
     return NextResponse.json({
@@ -204,8 +234,8 @@ export async function DELETE(req: Request) {
     const { searchParams } = new URL(req.url);
     const targetService = searchParams.get('service') === 'cabs' ? 'cabs' : 'rooms';
 
-    const sbStore = await getSupabaseStore();
-    const store = sbStore || getStore();
+    const sbResult = await getSupabaseStore();
+    const store = sbResult?.store || getStore();
 
     store.items = store.items.filter((item) => item.service !== targetService);
     if (targetService === 'rooms') {
@@ -215,7 +245,7 @@ export async function DELETE(req: Request) {
     }
     store.total = (store.cabs || 0) + (store.rooms || 0);
 
-    await saveSupabaseStore(store);
+    await saveSupabaseStore(store, sbResult?.rowId);
     saveStore(store);
 
     return NextResponse.json({
@@ -249,15 +279,15 @@ export async function PATCH(req: Request) {
       return NextResponse.json({ success: false, error: 'Lead id is required' }, { status: 400 });
     }
 
-    const sbStore = await getSupabaseStore();
-    const store = sbStore || getStore();
+    const sbResult = await getSupabaseStore();
+    const store = sbResult?.store || getStore();
 
     const idx = store.items.findIndex((item) => item.id === id);
     if (idx === -1) {
       return NextResponse.json({ success: false, error: 'Lead not found' }, { status: 404 });
     }
 
-    const validStatuses = ['pending', 'contacted', 'yes', 'no', 'booked'] as const;
+    const validStatuses: LeadStatus[] = ['pending', 'not_lifted', 'callback', 'contacted', 'yes', 'no', 'booked'];
     const nextStatus = validStatuses.includes(body?.leadStatus) ? body.leadStatus : store.items[idx].leadStatus;
 
     store.items[idx] = {
@@ -268,7 +298,7 @@ export async function PATCH(req: Request) {
       ...(typeof body?.budget === 'string' ? { budget: body.budget.slice(0, 40) } : {}),
     };
 
-    await saveSupabaseStore(store);
+    await saveSupabaseStore(store, sbResult?.rowId);
     saveStore(store);
 
     return NextResponse.json({

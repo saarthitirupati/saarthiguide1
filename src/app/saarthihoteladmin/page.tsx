@@ -25,7 +25,7 @@ import {
 } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 
-type LeadStatus = 'pending' | 'contacted' | 'yes' | 'no' | 'booked';
+type LeadStatus = 'pending' | 'not_lifted' | 'callback' | 'contacted' | 'yes' | 'no' | 'booked';
 
 interface WaitlistEntry {
   id: string;
@@ -41,11 +41,13 @@ interface WaitlistEntry {
 }
 
 const STATUS_META: Record<LeadStatus, { label: string; bg: string; color: string; border: string }> = {
-  pending: { label: 'To-Do', bg: '#FEF3C7', color: '#92400E', border: '#FDE68A' },
+  pending: { label: 'To-Do (New)', bg: '#FEF3C7', color: '#92400E', border: '#FDE68A' },
+  not_lifted: { label: 'Not Lifted', bg: '#FFF7ED', color: '#C2410C', border: '#FED7AA' },
+  callback: { label: 'Call Back Later', bg: '#F5F3FF', color: '#6D28D9', border: '#DDD6FE' },
   contacted: { label: 'Contacted', bg: '#EFF6FF', color: '#1D4ED8', border: '#BFDBFE' },
   yes: { label: 'Yes (Interested)', bg: '#ECFDF5', color: '#15803D', border: '#BBF7D0' },
   booked: { label: 'Booked', bg: '#DCFCE7', color: '#065F46', border: '#86EFAC' },
-  no: { label: 'No', bg: '#FEF2F2', color: '#991B1B', border: '#FECACA' },
+  no: { label: 'Not Interested', bg: '#FEF2F2', color: '#991B1B', border: '#FECACA' },
 };
 
 export default function SaarthiHotelAdminPage() {
@@ -796,10 +798,12 @@ export default function SaarthiHotelAdminPage() {
             {([
               { key: 'all', label: 'All' },
               { key: 'pending', label: 'To-Do' },
+              { key: 'not_lifted', label: 'Not Lifted' },
+              { key: 'callback', label: 'Call Back' },
               { key: 'contacted', label: 'Contacted' },
               { key: 'yes', label: 'Yes (Interested)' },
               { key: 'booked', label: 'Booked' },
-              { key: 'no', label: 'No' },
+              { key: 'no', label: 'Not Interested' },
             ] as const).map((tab) => {
               const active = todoFilter === tab.key;
               return (
@@ -967,11 +971,13 @@ export default function SaarthiHotelAdminPage() {
                             outline: 'none'
                           }}
                         >
-                          <option value="pending">To-Do (Pending)</option>
+                          <option value="pending">To-Do (New)</option>
+                          <option value="not_lifted">Not Lifted</option>
+                          <option value="callback">Call Back Later</option>
                           <option value="contacted">Contacted</option>
                           <option value="yes">Yes (Interested)</option>
                           <option value="booked">Booked</option>
-                          <option value="no">No (Not Interested)</option>
+                          <option value="no">Not Interested</option>
                         </select>
 
                         {clean10 && (
