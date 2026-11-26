@@ -675,9 +675,9 @@ export function HomeHero({ userName, locationName, weatherTemp, liveStatus, acti
     (apiWeatherCode >= 80 && apiWeatherCode <= 82) ||
     (apiWeatherCode >= 95 && apiWeatherCode <= 99)
   );
-  // If admin explicitly set non-rain weather (e.g. "Pleasant", "Clear Sky"), honor admin strictly over external API
-  const isExplicitAdminNonRain = weatherStr && !weatherStr.includes('auto') && !weatherStr.includes('rain') && !weatherStr.includes('shower') && !weatherStr.includes('storm') && !weatherStr.includes('thunder') && !weatherStr.includes('drizzle');
-  const detectedRain = isExplicitAdminNonRain
+  // Detect rain from either admin weather text or live Open-Meteo weather_code (unless admin explicitly says "no rain")
+  const isExplicitNoRain = weatherStr.includes('no rain');
+  const detectedRain = isExplicitNoRain
     ? false
     : (weatherStr.includes('rain') || weatherStr.includes('shower') || weatherStr.includes('storm') || weatherStr.includes('thunder') || weatherStr.includes('drizzle') || isApiRain);
   const isRainy = testRainMode !== null ? testRainMode : detectedRain;
