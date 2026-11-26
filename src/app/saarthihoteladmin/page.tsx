@@ -38,6 +38,7 @@ interface WaitlistEntry {
   checkIn?: string;
   checkOut?: string;
   budget?: string;
+  note?: string;
 }
 
 const STATUS_META: Record<LeadStatus, { label: string; bg: string; color: string; border: string }> = {
@@ -64,7 +65,7 @@ export default function SaarthiHotelAdminPage() {
   const [todoFilter, setTodoFilter] = useState<'all' | LeadStatus>('all');
   const [currentPage, setCurrentPage] = useState(1);
   const PAGE_SIZE = 50;
-  const [drafts, setDrafts] = useState<Record<string, { checkIn: string; checkOut: string; budget: string }>>({});
+  const [drafts, setDrafts] = useState<Record<string, { checkIn: string; checkOut: string; budget: string; note: string }>>({});
   const [savingId, setSavingId] = useState<string | null>(null);
   const [savedId, setSavedId] = useState<string | null>(null);
 
@@ -95,6 +96,7 @@ export default function SaarthiHotelAdminPage() {
                   checkIn: item.checkIn || '',
                   checkOut: item.checkOut || '',
                   budget: item.budget || '',
+                  note: item.note || '',
                 };
               }
             }
@@ -201,7 +203,7 @@ export default function SaarthiHotelAdminPage() {
 
   const updateLead = async (
     id: string,
-    updates: { leadStatus?: LeadStatus; checkIn?: string; checkOut?: string; budget?: string }
+    updates: { leadStatus?: LeadStatus; checkIn?: string; checkOut?: string; budget?: string; note?: string }
   ) => {
     setSavingId(id);
     setNotifyItems((prev) =>
@@ -225,13 +227,14 @@ export default function SaarthiHotelAdminPage() {
     }
   };
 
-  const handleDraftChange = (id: string, field: 'checkIn' | 'checkOut' | 'budget', value: string) => {
+  const handleDraftChange = (id: string, field: 'checkIn' | 'checkOut' | 'budget' | 'note', value: string) => {
     setDrafts((prev) => ({
       ...prev,
       [id]: {
         checkIn: prev[id]?.checkIn || '',
         checkOut: prev[id]?.checkOut || '',
         budget: prev[id]?.budget || '',
+        note: prev[id]?.note || '',
         [field]: value,
       },
     }));
@@ -259,7 +262,7 @@ export default function SaarthiHotelAdminPage() {
   const handleExportCsv = () => {
     if (notifyItems.length === 0) return;
     const rows = [
-      ['Name', 'Mobile', 'Status', 'Check-in', 'Check-out', 'Preferred Budget', 'Submitted At'],
+      ['Name', 'Mobile', 'Status', 'Check-in', 'Check-out', 'Preferred Budget', 'Note', 'Submitted At'],
       ...notifyItems.map((item) => [
         (item.name || 'Pilgrim').replace(/,/g, ' '),
         item.phone ? `+91 ${item.phone}` : '',
@@ -267,6 +270,7 @@ export default function SaarthiHotelAdminPage() {
         item.checkIn || '',
         item.checkOut || '',
         (item.budget || '').replace(/,/g, ' '),
+        (item.note || '').replace(/,/g, ' ').replace(/\n/g, ' '),
         new Date(item.timestamp).toLocaleString('en-IN')
       ])
     ];
@@ -905,6 +909,7 @@ export default function SaarthiHotelAdminPage() {
                   checkIn: item.checkIn || '',
                   checkOut: item.checkOut || '',
                   budget: item.budget || '',
+                  note: item.note || '',
                 };
 
                 const waUrl = clean10
@@ -1118,6 +1123,7 @@ export default function SaarthiHotelAdminPage() {
                             checkIn: draft.checkIn,
                             checkOut: draft.checkOut,
                             budget: draft.budget,
+                            note: draft.note,
                           })}
                           disabled={savingId === item.id}
                           style={{
@@ -1148,6 +1154,63 @@ export default function SaarthiHotelAdminPage() {
                         </button>
                       </div>
                     )}
+
+                    {/* Admin Note Field (Always visible for every customer) */}
+                    <div style={{
+                      marginTop: '10px',
+                      paddingTop: '10px',
+                      borderTop: '1px dashed #E2E8F0',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '8px',
+                      flexWrap: 'wrap'
+                    }}>
+                      <input
+                        type="text"
+                        maxLength={300}
+                        placeholder="Add note (e.g. didn't lift at 4 PM, needs AC room near station)..."
+                        value={draft.note}
+                        onChange={(e) => handleDraftChange(item.id, 'note', e.target.value)}
+                        style={{
+                          flex: 1,
+                          minWidth: '200px',
+                          backgroundColor: '#FFFFFF',
+                          border: '1px solid #CBD5E1',
+                          borderRadius: '10px',
+                          padding: '7px 10px',
+                          fontSize: '12.5px',
+                          fontWeight: 500,
+                          color: '#0F172A'
+                        }}
+                      />
+                      <button
+                        type="button"
+                        onClick={() => updateLead(item.id, { note: draft.note })}
+                        disabled={savingId === item.id}
+                        style={{
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          gap: '5px',
+                          backgroundColor: savedId === item.id ? '#16A34A' : '#FFFFFF',
+                          color: savedId === item.id ? '#FFFFFF' : '#0F5132',
+                          border: `1px solid ${savedId === item.id ? '#16A34A' : '#CBD5E1'}`,
+                          borderRadius: '10px',
+                          padding: '7px 12px',
+                          fontSize: '12px',
+                          fontWeight: 700,
+                          cursor: savingId === item.id ? 'wait' : 'pointer'
+                        }}
+                      >
+                        {savedId === item.id ? (
+                          <>
+                            <Check size={13} /> Saved
+                          </>
+                        ) : (
+                          'Save Note'
+                        )}
+                      </button>
+                    </div>
                   </div>
                 );
               })}

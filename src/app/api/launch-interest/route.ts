@@ -22,6 +22,7 @@ interface LaunchNotificationItem {
   checkIn?: string;
   checkOut?: string;
   budget?: string;
+  note?: string;
 }
 
 interface LaunchNotificationStore {
@@ -296,6 +297,7 @@ export async function PATCH(req: Request) {
       ...(typeof body?.checkIn === 'string' ? { checkIn: body.checkIn.slice(0, 20) } : {}),
       ...(typeof body?.checkOut === 'string' ? { checkOut: body.checkOut.slice(0, 20) } : {}),
       ...(typeof body?.budget === 'string' ? { budget: body.budget.slice(0, 40) } : {}),
+      ...(typeof body?.note === 'string' ? { note: body.note.slice(0, 300) } : {}),
     };
 
     await saveSupabaseStore(store, sbResult?.rowId);
