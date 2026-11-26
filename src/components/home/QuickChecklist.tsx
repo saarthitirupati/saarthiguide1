@@ -38,19 +38,19 @@ const TEXTS = {
     temporarilyPaused: 'Temporarily paused',
     activelyIssuing: 'Actively issuing',
     notAnnounced: 'Not announced',
-    notIssuedYet: 'Not issued yet',
+    notIssuedYet: 'To be issued',
     unavailable: 'Unavailable',
     status: 'Status',
     todayQuotaCompleted: "Today's quota completed",
     tokensIssuingNow: 'Tokens issuing now',
     tokensPaused: 'Issuance paused',
     tokensSuspended: 'Issuance suspended',
-    tokensNotIssuedYet: 'Tokens not issued yet',
+    tokensNotIssuedYet: 'Tokens to be issued',
     tokensIssuedNote: (date: string) => `Tokens for ${date} have been fully issued.`,
     tokensIssuingNote: (date: string) => `Tokens for tomorrow's darshan (${date}) are currently being issued at counters.`,
     tokensPausedNote: (date: string) => `Token issuance for ${date} is temporarily paused.`,
     tokensSuspendedNote: (date: string) => `Token issuance for ${date} is suspended due to festival/rush.`,
-    tokensNotIssuedNote: (date: string) => `Tokens for ${date} have not been issued yet. Live updates will appear once counters open.`,
+    tokensNotIssuedNote: (date: string) => `Tokens for ${date} are yet to be issued. Live updates will appear once counters open.`,
     ssdTokens: 'SSD Tokens',
     ddTokens: 'DD Tokens',
     completed: 'Completed',
@@ -412,8 +412,9 @@ export function QuickChecklist(props: any) {
     ? liveStatus.ssdNotice.replace(/[\u{1F300}-\u{1FAFF}\u{2300}-\u{23FF}\u{2600}-\u{27BF}\u{FE00}-\u{FE0F}]/gu, '').replace(/\*/g, '').trim()
     : '';
 
-  const isStaleDay = !ist.isUpdatedToday;
-  const isNotIssuedYet = isStaleDay && rawStatus !== 'issuing';
+  const ssdLastUpdated = (liveStatus as any).ssdLastUpdated;
+  const isSsdUpdatedToday = ssdLastUpdated ? getISTDateInfo(ssdLastUpdated).isUpdatedToday : false;
+  const isNotIssuedYet = !isSsdUpdatedToday && rawStatus !== 'issuing';
 
   const isSuspended = !isNotIssuedYet && Boolean(
     (cleanNotice && /suspend|cancel|brahmotsavam/i.test(cleanNotice)) ||

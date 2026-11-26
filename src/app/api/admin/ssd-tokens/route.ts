@@ -72,6 +72,7 @@ export async function POST(req: Request) {
     if (ssdModeBadge !== undefined) updates.ssdModeBadge = ssdModeBadge;
     if (ssdTokenDetails !== undefined) updates.ssdTokenDetails = ssdTokenDetails;
     if (ddTokenDetails !== undefined) updates.ddTokenDetails = ddTokenDetails;
+    updates.ssdLastUpdated = new Date().toISOString();
 
     const updated = await updateStatus(updates);
 
