@@ -95,7 +95,7 @@ export default function AdminSsdTokensPage() {
   const [message, setMessage] = useState<{ text: string; type: 'success' | 'error' } | null>(null);
 
   // 1. Global Issuing Status (Kept independent from individual SSD/DD statuses)
-  const [globalStatus, setGlobalStatus] = useState<'issuing' | 'paused' | 'closed-for-day' | 'suspended'>('closed-for-day');
+  const [globalStatus, setGlobalStatus] = useState<'issuing' | 'paused' | 'closed-for-day' | 'suspended' | 'to-be-issued'>('closed-for-day');
 
   // 2. Live Notice & Metadata
   const [liveNotice, setLiveNotice] = useState<string>('SSD 10K & DD 2K Tokens Quota completed. Next update at 5:30 PM tomorrow.');
@@ -106,13 +106,13 @@ export default function AdminSsdTokensPage() {
 
   // 3. SSD Tokens (Daily Quota 10,000)
   const [ssdAvailable, setSsdAvailable] = useState<string>('0');
-  const [ssdStatus, setSsdStatus] = useState<'issuing' | 'paused' | 'completed' | 'suspended'>('completed');
+  const [ssdStatus, setSsdStatus] = useState<'issuing' | 'paused' | 'completed' | 'suspended' | 'to-be-issued'>('completed');
   const [ssdStartTime, setSsdStartTime] = useState<string>('30 Oct 2026, 5:30 PM');
   const [ssdCompletedTime, setSsdCompletedTime] = useState<string>('31 Oct 2026, 12:44 AM');
 
   // 4. DD Tokens (Daily Quota 2,000)
   const [ddAvailable, setDdAvailable] = useState<string>('0');
-  const [ddStatus, setDdStatus] = useState<'issuing' | 'paused' | 'completed' | 'suspended'>('completed');
+  const [ddStatus, setDdStatus] = useState<'issuing' | 'paused' | 'completed' | 'suspended' | 'to-be-issued'>('completed');
   const [ddStartTime, setDdStartTime] = useState<string>('30 Oct 2026, 5:30 PM');
   const [ddCompletedTime, setDdCompletedTime] = useState<string>('31 Oct 2026, 2:00 AM');
 
@@ -239,7 +239,7 @@ export default function AdminSsdTokensPage() {
   }, []);
 
   // Requirement 3: Global status updates globalStatus only and does NOT overwrite individual SSD/DD statuses
-  const handleGlobalStatusChange = (status: 'issuing' | 'paused' | 'closed-for-day' | 'suspended') => {
+  const handleGlobalStatusChange = (status: 'issuing' | 'paused' | 'closed-for-day' | 'suspended' | 'to-be-issued') => {
     setGlobalStatus(status);
     if (status === 'closed-for-day') {
       setAdvisoryBadge('Quota Completed');
@@ -253,6 +253,9 @@ export default function AdminSsdTokensPage() {
     } else if (status === 'suspended') {
       setAdvisoryBadge('Brahmotsavam');
       setModeBadge('Walk-in Only');
+    } else if (status === 'to-be-issued') {
+      setAdvisoryBadge('');
+      setModeBadge('Awaiting Release');
     }
   };
 
@@ -597,6 +600,30 @@ export default function AdminSsdTokensPage() {
                 <span style={{ fontSize: '10.5px', color: '#64748B' }}>Temporarily suspended</span>
               </button>
 
+              {/* Option 5: To Be Issued */}
+              <button
+                type="button"
+                onClick={() => handleGlobalStatusChange('to-be-issued')}
+                style={{
+                  padding: '12px',
+                  borderRadius: '12px',
+                  border: globalStatus === 'to-be-issued' ? '2px solid #D97706' : '1px solid #E2E8F0',
+                  background: globalStatus === 'to-be-issued' ? '#FFFBEB' : '#FFFFFF',
+                  cursor: 'pointer',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'flex-start',
+                  gap: '6px',
+                  textAlign: 'left'
+                }}
+              >
+                <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <Clock size={16} color="#D97706" />
+                  <span style={{ fontSize: '12.5px', fontWeight: 800, color: '#92400E' }}>To Be Issued</span>
+                </div>
+                <span style={{ fontSize: '10.5px', color: '#64748B' }}>Awaiting counter open</span>
+              </button>
+
             </div>
           </div>
 
@@ -677,6 +704,7 @@ export default function AdminSsdTokensPage() {
                   }}
                 >
                   <option value="issuing">Issuing Now</option>
+                  <option value="to-be-issued">Tokens To Be Issued</option>
                   <option value="paused">Paused / Wait</option>
                   <option value="completed">Quota Completed</option>
                   <option value="suspended">Suspended (Festival)</option>
@@ -862,6 +890,7 @@ export default function AdminSsdTokensPage() {
                   }}
                 >
                   <option value="issuing">Issuing Now</option>
+                  <option value="to-be-issued">Tokens To Be Issued</option>
                   <option value="paused">Paused / Wait</option>
                   <option value="completed">Quota Completed</option>
                   <option value="suspended">Suspended (Festival)</option>

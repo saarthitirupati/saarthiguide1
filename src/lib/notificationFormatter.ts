@@ -1,9 +1,9 @@
 import { getISTDateInfo } from '@/lib/istDate';
 
 export interface SsdNotificationParams {
-  status: 'issuing' | 'paused' | 'closed-for-day' | 'suspended';
-  ssdStatus?: 'issuing' | 'paused' | 'completed' | 'suspended';
-  ddStatus?: 'issuing' | 'paused' | 'completed' | 'suspended';
+  status: 'issuing' | 'paused' | 'closed-for-day' | 'suspended' | 'to-be-issued';
+  ssdStatus?: 'issuing' | 'paused' | 'completed' | 'suspended' | 'to-be-issued';
+  ddStatus?: 'issuing' | 'paused' | 'completed' | 'suspended' | 'to-be-issued';
   ssdAvailable?: string | number;
   ddAvailable?: string | number;
   targetDarshanDate?: string;

@@ -421,7 +421,7 @@ export function QuickChecklist(props: any) {
 
   const ssdLastUpdated = (liveStatus as any).ssdLastUpdated;
   const isSsdUpdatedToday = ssdLastUpdated ? getISTDateInfo(ssdLastUpdated).isUpdatedToday : false;
-  const isNotIssuedYet = !isSsdUpdatedToday && !anyIssuing;
+  const isNotIssuedYet = rawStatus === 'to-be-issued' || (!isSsdUpdatedToday && !anyIssuing);
 
   const isSuspended = !isNotIssuedYet && Boolean(
     (cleanNotice && /suspend|cancel|brahmotsavam/i.test(cleanNotice)) ||

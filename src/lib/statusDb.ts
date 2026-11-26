@@ -44,7 +44,7 @@ export interface TirumalaStatus {
   weather: string;
   bestTime: string;            // e.g. "Now", "5:30 PM", "Tomorrow 6 AM"
   darshans: DarshanTypeStatus[];
-  ssdTokenStatus: 'issuing' | 'paused' | 'closed-for-day' | 'suspended';
+  ssdTokenStatus: 'issuing' | 'paused' | 'closed-for-day' | 'suspended' | 'to-be-issued';
   ssdNextTokenTime: string;
   ssdNextReleaseDate?: string;
   ssdTokenSlots: SsdTokenSlot[];
