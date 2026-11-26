@@ -20,7 +20,9 @@ export default function DarshanTimingsCard() {
     };
 
     fetchStatus();
-    const pollTimer = setInterval(fetchStatus, 15000);
+    const pollTimer = setInterval(() => {
+      if (typeof document === 'undefined' || !document.hidden) fetchStatus();
+    }, 60000);
     const timer = setInterval(() => {
       setLastUpdated(prev => {
         if (prev === 'Just now') return '1 min ago';

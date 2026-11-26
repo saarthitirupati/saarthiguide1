@@ -43,12 +43,12 @@ export function useRealtimeStatus(initialStatus: TirumalaStatus | null = null) {
   useEffect(() => {
     fetchStatus();
 
-    // Dynamic 30-second polling fallback (only when tab is visible)
+    // Dynamic 60-second polling fallback (only when tab is visible)
     const interval = setInterval(() => {
       if (typeof document === 'undefined' || !document.hidden) {
         fetchStatus();
       }
-    }, 30000);
+    }, 60000);
 
     // Listener 1: Custom window event
     const handleCustomEvent = () => {

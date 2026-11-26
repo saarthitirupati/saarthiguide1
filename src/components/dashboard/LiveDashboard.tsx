@@ -15,7 +15,9 @@ export default function LiveDashboard() {
     };
 
     fetchStatus(); // initial fetch
-    const interval = setInterval(fetchStatus, 10000); // 10 seconds polling
+    const interval = setInterval(() => {
+      if (typeof document === 'undefined' || !document.hidden) fetchStatus();
+    }, 60000); // 60 seconds polling when visible
 
     return () => clearInterval(interval);
   }, []);

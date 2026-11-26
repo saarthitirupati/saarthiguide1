@@ -12,6 +12,8 @@ export async function GET() {
     return NextResponse.json(cachedWeather, {
       headers: {
         'Cache-Control': 'public, max-age=300, s-maxage=600, stale-while-revalidate=600',
+        'CDN-Cache-Control': 'public, s-maxage=600, stale-while-revalidate=600',
+        'Cloudflare-CDN-Cache-Control': 'public, s-maxage=600, stale-while-revalidate=600',
         'X-Cache': 'HIT',
       }
     });
@@ -29,6 +31,8 @@ export async function GET() {
     return NextResponse.json(data, {
       headers: {
         'Cache-Control': 'public, max-age=300, s-maxage=600, stale-while-revalidate=600',
+        'CDN-Cache-Control': 'public, s-maxage=600, stale-while-revalidate=600',
+        'Cloudflare-CDN-Cache-Control': 'public, s-maxage=600, stale-while-revalidate=600',
         'X-Cache': 'MISS',
       }
     });
@@ -37,6 +41,8 @@ export async function GET() {
       return NextResponse.json(cachedWeather, {
         headers: {
           'Cache-Control': 'public, max-age=300, s-maxage=600, stale-while-revalidate=600',
+        'CDN-Cache-Control': 'public, s-maxage=600, stale-while-revalidate=600',
+        'Cloudflare-CDN-Cache-Control': 'public, s-maxage=600, stale-while-revalidate=600',
           'X-Cache': 'STALE-FALLBACK',
         }
       });

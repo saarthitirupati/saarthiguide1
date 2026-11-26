@@ -9,7 +9,15 @@ export function usePageAnalytics() {
 
   useEffect(() => {
     if (!pathname || pathname === lastLoggedPath.current) return;
+    if (pathname.startsWith('/saarthiadmin') || pathname.startsWith('/saarthihoteladmin')) return;
     lastLoggedPath.current = pathname;
+
+    // Deduplicate pageview telemetry per path within the same browser session
+    try {
+      const seenKey = `saarthi_pv_${pathname}`;
+      if (sessionStorage.getItem(seenKey)) return;
+      sessionStorage.setItem(seenKey, '1');
+    } catch {}
 
     // Get or create anonymous session ID
     let sessionId = '';

@@ -29,7 +29,9 @@ export default function SpotlightCard() {
     };
 
     fetchSpotlight();
-    const interval = setInterval(fetchSpotlight, 10000);
+    const interval = setInterval(() => {
+      if (typeof document === 'undefined' || !document.hidden) fetchSpotlight();
+    }, 60000);
     return () => clearInterval(interval);
   }, [userLocation]);
 
