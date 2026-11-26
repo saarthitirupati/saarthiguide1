@@ -412,9 +412,16 @@ export function QuickChecklist(props: any) {
     ? liveStatus.ssdNotice.replace(/[\u{1F300}-\u{1FAFF}\u{2300}-\u{23FF}\u{2600}-\u{27BF}\u{FE00}-\u{FE0F}]/gu, '').replace(/\*/g, '').trim()
     : '';
 
+  const ssdDetails = (liveStatus as any).ssdTokenDetails || {};
+  const ddDetails = (liveStatus as any).ddTokenDetails || {};
+  const anyIssuing =
+    rawStatus === 'issuing' ||
+    String(ssdDetails.status || '').toLowerCase() === 'issuing' ||
+    String(ddDetails.status || '').toLowerCase() === 'issuing';
+
   const ssdLastUpdated = (liveStatus as any).ssdLastUpdated;
   const isSsdUpdatedToday = ssdLastUpdated ? getISTDateInfo(ssdLastUpdated).isUpdatedToday : false;
-  const isNotIssuedYet = !isSsdUpdatedToday && rawStatus !== 'issuing';
+  const isNotIssuedYet = !isSsdUpdatedToday && !anyIssuing;
 
   const isSuspended = !isNotIssuedYet && Boolean(
     (cleanNotice && /suspend|cancel|brahmotsavam/i.test(cleanNotice)) ||
@@ -438,7 +445,6 @@ export function QuickChecklist(props: any) {
   const allText = `${cleanNotice} ${liveStatus.ssdTimingsGuide || ''}`;
 
   // 4. SSD Data Extraction (Independent)
-  const ssdDetails = (liveStatus as any).ssdTokenDetails || {};
   const ssdGuideMatch = {
     total: allText.match(/SSD Quota:\s*([^\s(,]+)/i) || allText.match(/SSD[^\d]*(\d[\d,]*(?:\s*[kK])?)/i) || allText.match(/(\d[\d,]*(?:\s*[kK])?)\s*(?:SSD|tokens|quota)/i),
     left: allText.match(/SSD[^\n]*?Available:\s*([^\s,)]+)/i) || allText.match(/SSD[^\n]*?(?:Left|Remaining)[^\d]*(\d[\d,]*)/i),
@@ -478,7 +484,6 @@ export function QuickChecklist(props: any) {
     : t.completed;
 
   // 5. DD Data Extraction (Independent)
-  const ddDetails = (liveStatus as any).ddTokenDetails || {};
   const ddGuideMatch = {
     total: allText.match(/DD Quota:\s*([^\s(,]+)/i) || allText.match(/DD[^\d]*(\d[\d,]*(?:\s*[kK])?)/i) || allText.match(/(\d[\d,]*(?:\s*[kK])?)\s*(?:DD|divya)/i),
     left: allText.match(/DD[^\n]*?Available:\s*([^\s,)]+)/i) || allText.match(/DD[^\n]*?(?:Left|Remaining)[^\d]*(\d[\d,]*)/i),
