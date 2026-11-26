@@ -630,47 +630,6 @@ export default function AdminDashboard() {
           </div>
         </div>
 
-        {/* Launch Waitlist / Notify Demand Card */}
-        <div className={styles.statCard} style={{ borderLeft: '4px solid #F59E0B' }}>
-          <div className={styles.statTopRow}>
-            <span className={styles.statLabel}>LAUNCH NOTIFY DEMAND</span>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  fetchLaunchInterest();
-                }}
-                title="Refresh Live Waitlist"
-                style={{
-                  background: 'none',
-                  border: 'none',
-                  cursor: 'pointer',
-                  padding: '3px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  color: '#94A3B8',
-                  borderRadius: '4px'
-                }}
-              >
-                <RefreshCw size={13} />
-              </button>
-              <div className={styles.statIcon}><Bell size={18} color="#D97706"/></div>
-            </div>
-          </div>
-          <div className={styles.statValue}>
-            {launchInterest ? launchInterest.total : 0}
-          </div>
-          <div className={styles.subStats}>
-            <span className={styles.subStatSuccess} style={{ color: '#0F5132', fontWeight: 600 }}>
-              🚗 {launchInterest?.cabs || 0} Cabs
-            </span>
-            <span style={{ color: '#CBD5E1', margin: '0 4px' }}>·</span>
-            <span className={styles.subStatSuccess} style={{ color: '#D97706', fontWeight: 600 }}>
-              🛏️ {launchInterest?.rooms || 0} Rooms
-            </span>
-          </div>
-        </div>
-
       </div>
 
       {/* ── Live Data Quality Audit ── */}
