@@ -1904,15 +1904,61 @@ _Om Namo Venkatesaya • Sri Padmavathi Sametha Srinivasaya Namaha_`;
           href="/darshan/sarva-darshan"
           prefetch={false}
           style={{
+            position: 'relative',
+            overflow: 'hidden',
             textDecoration: 'none',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
             gap: '12px',
             padding: '13px 16px',
-            background: 'linear-gradient(135deg, #F8FCF9 0%, #EFF9F2 100%)'
+            background: isRainy
+              ? 'linear-gradient(135deg, #F0F9FF 0%, #E0F2FE 100%)'
+              : 'linear-gradient(135deg, #F8FCF9 0%, #EFF9F2 100%)'
           }}
         >
+          {/* Live Rain Drop Animation Overlay */}
+          {isRainy && (
+            <>
+              <style>{`
+                @keyframes saarthiRainFall {
+                  0% { transform: translateY(-18px); opacity: 0; }
+                  20% { opacity: 0.65; }
+                  85% { opacity: 0.55; }
+                  100% { transform: translateY(105px); opacity: 0; }
+                }
+              `}</style>
+              <div aria-hidden="true" style={{ position: 'absolute', inset: 0, pointerEvents: 'none', overflow: 'hidden', zIndex: 0 }}>
+                {[
+                  { left: '6%', delay: '0s', dur: '1.05s', h: 12 },
+                  { left: '14%', delay: '0.35s', dur: '0.95s', h: 10 },
+                  { left: '22%', delay: '0.15s', dur: '1.15s', h: 14 },
+                  { left: '31%', delay: '0.55s', dur: '0.9s', h: 11 },
+                  { left: '40%', delay: '0.25s', dur: '1.1s', h: 13 },
+                  { left: '49%', delay: '0.7s', dur: '1.0s', h: 10 },
+                  { left: '58%', delay: '0.1s', dur: '1.2s', h: 14 },
+                  { left: '67%', delay: '0.45s', dur: '0.95s', h: 11 },
+                  { left: '76%', delay: '0.3s', dur: '1.08s', h: 13 },
+                  { left: '84%', delay: '0.6s', dur: '0.92s', h: 10 },
+                  { left: '92%', delay: '0.2s', dur: '1.12s', h: 12 },
+                ].map((drop, i) => (
+                  <span
+                    key={i}
+                    style={{
+                      position: 'absolute',
+                      top: '-10px',
+                      left: drop.left,
+                      width: '1.5px',
+                      height: `${drop.h}px`,
+                      borderRadius: '999px',
+                      background: 'linear-gradient(180deg, rgba(56, 189, 248, 0) 0%, rgba(2, 132, 199, 0.55) 100%)',
+                      animation: `saarthiRainFall ${drop.dur} linear ${drop.delay} infinite`,
+                    }}
+                  />
+                ))}
+              </div>
+            </>
+          )}
           <div style={{
             width: '62px',
             height: '62px',
