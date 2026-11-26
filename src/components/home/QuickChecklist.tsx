@@ -752,13 +752,25 @@ export function QuickChecklist(props: any) {
               padding: '5px 12px',
               borderRadius: '9999px',
               backgroundColor: isCompleted ? 'rgba(159, 18, 57, 0.28)' : 'rgba(6, 78, 59, 0.35)',
-              border: isCompleted ? '1px solid rgba(251, 113, 133, 0.5)' : '1px solid rgba(52, 211, 153, 0.5)',
-              color: isCompleted ? '#FFE4E6' : '#ECFDF5',
+              border: (isCompleted || isSuspended)
+                ? '1px solid rgba(251, 113, 133, 0.5)'
+                : (isNotIssuedYet || isPaused)
+                ? '1px solid rgba(251, 191, 36, 0.5)'
+                : '1px solid rgba(52, 211, 153, 0.5)',
+              color: (isCompleted || isSuspended)
+                ? '#FFE4E6'
+                : (isNotIssuedYet || isPaused)
+                ? '#FEF3C7'
+                : '#ECFDF5',
               fontSize: '11.5px',
               fontWeight: 700,
               backdropFilter: 'blur(10px)',
               WebkitBackdropFilter: 'blur(10px)',
-              boxShadow: isCompleted ? '0 2px 8px rgba(159, 18, 57, 0.2)' : '0 2px 8px rgba(6, 78, 59, 0.2)',
+              boxShadow: (isCompleted || isSuspended)
+                ? '0 2px 8px rgba(159, 18, 57, 0.2)'
+                : (isNotIssuedYet || isPaused)
+                ? '0 2px 8px rgba(180, 83, 9, 0.2)'
+                : '0 2px 8px rgba(6, 78, 59, 0.2)',
               flexShrink: 0
             }}
           >
@@ -766,8 +778,8 @@ export function QuickChecklist(props: any) {
               width: '6px',
               height: '6px',
               borderRadius: '50%',
-              backgroundColor: isCompleted ? '#FB7185' : '#34D399',
-              boxShadow: isCompleted ? '0 0 8px #FB7185' : '0 0 8px #34D399'
+              backgroundColor: (isCompleted || isSuspended) ? '#FB7185' : (isNotIssuedYet || isPaused) ? '#FBBF24' : '#34D399',
+              boxShadow: (isCompleted || isSuspended) ? '0 0 8px #FB7185' : (isNotIssuedYet || isPaused) ? '0 0 8px #FBBF24' : '0 0 8px #34D399'
             }} />
             <span>{headerBadgeText}</span>
           </div>
@@ -803,8 +815,12 @@ export function QuickChecklist(props: any) {
 
         {/* ── CARD 1: TODAY'S DATE & QUOTA STATUS ── */}
         <div style={{
-          background: 'linear-gradient(135deg, #FFF5F5 0%, #FEF2F2 100%)',
-          border: '1px solid #FEE2E2',
+          background: isIssuing
+            ? 'linear-gradient(135deg, #F0FDF4 0%, #DCFCE7 100%)'
+            : (isNotIssuedYet || isPaused)
+            ? 'linear-gradient(135deg, #FFFBEB 0%, #FEF3C7 100%)'
+            : 'linear-gradient(135deg, #FFF5F5 0%, #FEF2F2 100%)',
+          border: `1px solid ${isIssuing ? '#BBF7D0' : (isNotIssuedYet || isPaused) ? '#FDE68A' : '#FEE2E2'}`,
           borderRadius: '16px',
           padding: '11px 12px'
         }}>
@@ -814,8 +830,8 @@ export function QuickChecklist(props: any) {
                 width: '30px',
                 height: '30px',
                 borderRadius: '9px',
-                backgroundColor: '#FEE2E2',
-                color: '#DC2626',
+                backgroundColor: isIssuing ? '#DCFCE7' : (isNotIssuedYet || isPaused) ? '#FEF3C7' : '#FEE2E2',
+                color: isIssuing ? '#16A34A' : (isNotIssuedYet || isPaused) ? '#D97706' : '#DC2626',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -833,11 +849,11 @@ export function QuickChecklist(props: any) {
               alignItems: 'center',
               padding: '2.5px 8px',
               borderRadius: '9999px',
-              backgroundColor: '#FEE2E2',
-              color: '#991B1B',
+              backgroundColor: isIssuing ? '#DCFCE7' : (isNotIssuedYet || isPaused) ? '#FEF3C7' : '#FEE2E2',
+              color: isIssuing ? '#166534' : (isNotIssuedYet || isPaused) ? '#92400E' : '#991B1B',
               fontSize: '10px',
               fontWeight: 800,
-              border: '1px solid #FECACA'
+              border: `1px solid ${isIssuing ? '#BBF7D0' : (isNotIssuedYet || isPaused) ? '#FDE68A' : '#FECACA'}`
             }}>
               {todayStatusText}
             </div>
@@ -845,7 +861,7 @@ export function QuickChecklist(props: any) {
 
           <p style={{
             fontSize: '11px',
-            color: '#7F1D1D',
+            color: isIssuing ? '#166534' : (isNotIssuedYet || isPaused) ? '#78350F' : '#7F1D1D',
             fontWeight: 500,
             margin: '7px 0 0 0',
             lineHeight: 1.4
