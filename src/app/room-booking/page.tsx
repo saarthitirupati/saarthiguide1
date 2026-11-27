@@ -20,6 +20,7 @@ export default function RoomBookingPage() {
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [acceptedDownhill, setAcceptedDownhill] = useState(false);
+  const [acceptedFamilyPolicy, setAcceptedFamilyPolicy] = useState(false);
   const [notified, setNotified] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
@@ -100,7 +101,7 @@ export default function RoomBookingPage() {
     if (e) e.preventDefault();
     const digits = phone.replace(/\D/g, '');
     const trimmedName = name.trim();
-    if (notified || submitting || trimmedName.length < 2 || digits.length !== 10 || !acceptedDownhill) return;
+    if (notified || submitting || trimmedName.length < 2 || digits.length !== 10 || !acceptedDownhill || !acceptedFamilyPolicy) return;
 
     setSubmitting(true);
     setNotified(true);
@@ -132,7 +133,7 @@ export default function RoomBookingPage() {
 
   const isNameValid = name.trim().length >= 2;
   const isPhoneValid = phone.replace(/\D/g, '').length === 10;
-  const isFormValid = isNameValid && isPhoneValid && acceptedDownhill;
+  const isFormValid = isNameValid && isPhoneValid && acceptedDownhill && acceptedFamilyPolicy;
   const totalPilgrims = BASE_ROOM_WAITLIST + (waitlistCount !== null ? waitlistCount : 0);
 
   return (
@@ -442,6 +443,37 @@ export default function RoomBookingPage() {
                 />
                 <span>
                   I understand rooms will open for <strong>Tirupati Downhill (Kondakindha)</strong>, not Tirumala uphill.
+                </span>
+              </label>
+
+              {/* Mandatory Unmarried Couples Policy Checkbox */}
+              <label style={{
+                display: 'flex',
+                alignItems: 'flex-start',
+                gap: '8px',
+                textAlign: 'left',
+                fontSize: '12px',
+                fontWeight: 600,
+                color: '#334155',
+                cursor: 'pointer',
+                padding: '2px 4px 0'
+              }}>
+                <input
+                  type="checkbox"
+                  checked={acceptedFamilyPolicy}
+                  onChange={(e) => setAcceptedFamilyPolicy(e.target.checked)}
+                  required
+                  style={{
+                    width: '16px',
+                    height: '16px',
+                    accentColor: '#14532D',
+                    marginTop: '1px',
+                    flexShrink: 0,
+                    cursor: 'pointer'
+                  }}
+                />
+                <span>
+                  I understand rooms will <strong>not be booked for unmarried couples</strong> (families &amp; valid ID required).
                 </span>
               </label>
 
