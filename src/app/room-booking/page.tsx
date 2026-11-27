@@ -293,6 +293,24 @@ export default function RoomBookingPage() {
           </svg>
         </div>
 
+        {/* COMING SOON BADGE BELOW IMAGE */}
+        <div style={{
+          display: 'inline-flex',
+          alignItems: 'center',
+          gap: '5px',
+          fontSize: '11.5px',
+          fontWeight: 800,
+          color: '#B45309',
+          backgroundColor: '#FEF3C7',
+          border: '1px solid #FDE68A',
+          padding: '4px 12px',
+          borderRadius: '999px',
+          marginBottom: '10px'
+        }}>
+          <Sparkles size={12} />
+          <span>Coming Soon</span>
+        </div>
+
         {/* HEADING & LIVE COUNT */}
         <h2 style={{
           fontSize: '21px',
@@ -336,52 +354,90 @@ export default function RoomBookingPage() {
           <span>{`${totalPilgrims} Pilgrims Waiting`}</span>
         </div>
 
-        {/* NOT-INSTANT & INSTAGRAM URGENT NEED BANNER */}
+        {/* NOT-INSTANT & INSTANT NEED BANNER */}
         <div style={{
           width: '100%',
           maxWidth: '400px',
-          backgroundColor: '#FEF2F2',
-          border: '1.5px solid #FECACA',
+          backgroundColor: '#FFFBEB',
+          border: '1px solid #FDE68A',
           borderRadius: '18px',
-          padding: '12px 14px',
+          padding: '13px 14px',
           marginBottom: '14px',
           textAlign: 'left',
-          boxSizing: 'border-box',
-          display: 'flex',
-          alignItems: 'flex-start',
-          gap: '10px'
+          boxSizing: 'border-box'
         }}>
-          <AlertCircle size={18} color="#DC2626" style={{ flexShrink: 0, marginTop: '2px' }} />
-          <div style={{ fontSize: '12.5px', lineHeight: 1.5, color: '#7F1D1D', fontWeight: 600 }}>
-            <div>
-              <strong>Please Note: Room bookings are NOT instant.</strong> Submit only if you are actively looking to book — our team will call you to verify &amp; confirm availability.
-            </div>
-            <div style={{ marginTop: '6px' }}>
-              For any <strong>instant / urgent need</strong>, call{' '}
-              <a
-                href="tel:+919618831607"
-                style={{
-                  color: '#B91C1C',
-                  fontWeight: 800,
-                  textDecoration: 'underline'
-                }}
-              >
-                +91 96188 31607
-              </a>{' '}
-              or DM us on Instagram:{' '}
-              <a
-                href="https://www.instagram.com/saarthi.tirupati/?hl=en"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                  color: '#B91C1C',
-                  fontWeight: 800,
-                  textDecoration: 'underline'
-                }}
-              >
-                @saarthi.tirupati
-              </a>
-            </div>
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '7px',
+            fontSize: '13px',
+            fontWeight: 800,
+            color: '#92400E',
+            marginBottom: '4px'
+          }}>
+            <AlertCircle size={15} color="#D97706" style={{ flexShrink: 0 }} />
+            <span>Bookings are not instant</span>
+          </div>
+          <p style={{
+            fontSize: '12px',
+            lineHeight: 1.5,
+            color: '#78350F',
+            fontWeight: 600,
+            margin: '0 0 10px 0'
+          }}>
+            Submit only if you&apos;re looking to book — our team calls (6 AM – 10 PM IST) to confirm availability.
+          </p>
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            flexWrap: 'wrap',
+            gap: '6px',
+            paddingTop: '8px',
+            borderTop: '1px dashed #FCD34D'
+          }}>
+            <span style={{ fontSize: '11.5px', fontWeight: 700, color: '#92400E', marginRight: '2px' }}>
+              Instant need?
+            </span>
+            <a
+              href="tel:+919618831607"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '4px',
+                backgroundColor: '#14532D',
+                color: '#FFFFFF',
+                borderRadius: '999px',
+                padding: '4px 10px',
+                fontSize: '11.5px',
+                fontWeight: 700,
+                textDecoration: 'none',
+                whiteSpace: 'nowrap'
+              }}
+            >
+              <Phone size={11} />
+              <span>+91 96188 31607</span>
+            </a>
+            <a
+              href="https://www.instagram.com/saarthi.tirupati/?hl=en"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '4px',
+                backgroundColor: '#FFFFFF',
+                color: '#92400E',
+                border: '1px solid #FCD34D',
+                borderRadius: '999px',
+                padding: '4px 10px',
+                fontSize: '11.5px',
+                fontWeight: 700,
+                textDecoration: 'none',
+                whiteSpace: 'nowrap'
+              }}
+            >
+              <span>IG @saarthi.tirupati</span>
+            </a>
           </div>
         </div>
 
@@ -439,7 +495,7 @@ export default function RoomBookingPage() {
                   For any instant need, call{' '}
                   <a
                     href="tel:+919618831607"
-                    style={{ color: '#0F5132', fontWeight: 800, textDecoration: 'underline' }}
+                    style={{ color: '#0F5132', fontWeight: 800, textDecoration: 'underline', whiteSpace: 'nowrap' }}
                   >
                     +91 96188 31607
                   </a>{' '}
@@ -448,7 +504,7 @@ export default function RoomBookingPage() {
                     href="https://www.instagram.com/saarthi.tirupati/?hl=en"
                     target="_blank"
                     rel="noopener noreferrer"
-                    style={{ color: '#0F5132', fontWeight: 800, textDecoration: 'underline' }}
+                    style={{ color: '#0F5132', fontWeight: 800, textDecoration: 'underline', whiteSpace: 'nowrap' }}
                   >
                     @saarthi.tirupati
                   </a>
