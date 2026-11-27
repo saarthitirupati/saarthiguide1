@@ -1038,6 +1038,19 @@ export default function SaarthiHotelAdminPage() {
                                 hour12: true
                               })}
                             </span>
+                            {item.checkIn && (
+                              <span style={{
+                                fontSize: '11.5px',
+                                fontWeight: 700,
+                                color: '#0F5132',
+                                backgroundColor: '#ECFDF5',
+                                border: '1px solid #BBF7D0',
+                                borderRadius: '999px',
+                                padding: '2px 8px'
+                              }}>
+                                Check-in: {item.checkIn}
+                              </span>
+                            )}
                           </div>
                         </div>
                       </div>

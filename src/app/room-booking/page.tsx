@@ -10,7 +10,9 @@ import {
   Phone,
   User,
   MapPin,
-  Clock
+  Clock,
+  Calendar,
+  AlertCircle
 } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 import { isRoomBookingOpenIST } from '@/lib/istDate';
@@ -21,6 +23,7 @@ export default function RoomBookingPage() {
   const [waitlistCount, setWaitlistCount] = useState<number | null>(null);
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
+  const [checkIn, setCheckIn] = useState('');
   const [acceptedDownhill, setAcceptedDownhill] = useState(false);
   const [acceptedFamilyPolicy, setAcceptedFamilyPolicy] = useState(false);
   const [notified, setNotified] = useState(false);
@@ -115,7 +118,7 @@ export default function RoomBookingPage() {
     }
     const digits = phone.replace(/\D/g, '');
     const trimmedName = name.trim();
-    if (notified || submitting || trimmedName.length < 2 || digits.length !== 10 || !acceptedDownhill || !acceptedFamilyPolicy) return;
+    if (notified || submitting || trimmedName.length < 2 || digits.length !== 10 || !checkIn || !acceptedDownhill || !acceptedFamilyPolicy) return;
 
     setBookingError('');
     setSubmitting(true);
@@ -131,7 +134,7 @@ export default function RoomBookingPage() {
       const res = await fetch('/api/launch-interest', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ service: 'rooms', name: trimmedName, phone: digits }),
+        body: JSON.stringify({ service: 'rooms', name: trimmedName, phone: digits, checkIn }),
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) {
@@ -158,7 +161,9 @@ export default function RoomBookingPage() {
 
   const isNameValid = name.trim().length >= 2;
   const isPhoneValid = phone.replace(/\D/g, '').length === 10;
-  const isFormValid = isNameValid && isPhoneValid && acceptedDownhill && acceptedFamilyPolicy;
+  const isCheckInValid = checkIn.trim().length > 0;
+  const todayIstDate = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Kolkata' }).format(new Date());
+  const isFormValid = isNameValid && isPhoneValid && isCheckInValid && acceptedDownhill && acceptedFamilyPolicy;
   const totalPilgrims = BASE_ROOM_WAITLIST + (waitlistCount !== null ? waitlistCount : 0);
 
   return (
@@ -223,8 +228,8 @@ export default function RoomBookingPage() {
           padding: '4px 10px',
           borderRadius: '999px'
         }}>
-          <Sparkles size={11} />
-          <span>Coming Soon</span>
+          <Clock size={11} />
+          <span>6 AM – 10 PM Desk</span>
         </div>
       </header>
 
@@ -331,6 +336,55 @@ export default function RoomBookingPage() {
           <span>{`${totalPilgrims} Pilgrims Waiting`}</span>
         </div>
 
+        {/* NOT-INSTANT & INSTAGRAM URGENT NEED BANNER */}
+        <div style={{
+          width: '100%',
+          maxWidth: '400px',
+          backgroundColor: '#FEF2F2',
+          border: '1.5px solid #FECACA',
+          borderRadius: '18px',
+          padding: '12px 14px',
+          marginBottom: '14px',
+          textAlign: 'left',
+          boxSizing: 'border-box',
+          display: 'flex',
+          alignItems: 'flex-start',
+          gap: '10px'
+        }}>
+          <AlertCircle size={18} color="#DC2626" style={{ flexShrink: 0, marginTop: '2px' }} />
+          <div style={{ fontSize: '12.5px', lineHeight: 1.5, color: '#7F1D1D', fontWeight: 600 }}>
+            <div>
+              <strong>Please Note: Room bookings are NOT instant.</strong> Submit only if you are actively looking to book — our team will call you to verify &amp; confirm availability.
+            </div>
+            <div style={{ marginTop: '6px' }}>
+              For any <strong>instant / urgent need</strong>, call{' '}
+              <a
+                href="tel:+919618831607"
+                style={{
+                  color: '#B91C1C',
+                  fontWeight: 800,
+                  textDecoration: 'underline'
+                }}
+              >
+                +91 96188 31607
+              </a>{' '}
+              or DM us on Instagram:{' '}
+              <a
+                href="https://www.instagram.com/saarthi.tirupati/?hl=en"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  color: '#B91C1C',
+                  fontWeight: 800,
+                  textDecoration: 'underline'
+                }}
+              >
+                @saarthi.tirupati
+              </a>
+            </div>
+          </div>
+        </div>
+
         {/* ELEVATED NOTIFY CARD */}
         <div style={{
           width: '100%',
@@ -381,6 +435,24 @@ export default function RoomBookingPage() {
                   <Clock size={13} />
                   <span>Reopens at 6:00 AM IST</span>
                 </div>
+                <p style={{ fontSize: '12.5px', color: '#475569', margin: '12px 0 0 0', lineHeight: 1.5 }}>
+                  For any instant need, call{' '}
+                  <a
+                    href="tel:+919618831607"
+                    style={{ color: '#0F5132', fontWeight: 800, textDecoration: 'underline' }}
+                  >
+                    +91 96188 31607
+                  </a>{' '}
+                  or DM us on Instagram:{' '}
+                  <a
+                    href="https://www.instagram.com/saarthi.tirupati/?hl=en"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ color: '#0F5132', fontWeight: 800, textDecoration: 'underline' }}
+                  >
+                    @saarthi.tirupati
+                  </a>
+                </p>
               </div>
             ) : (
             <form
@@ -513,6 +585,46 @@ export default function RoomBookingPage() {
                 />
               </div>
 
+              <label style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '4px',
+                textAlign: 'left'
+              }}>
+                <span style={{ fontSize: '11.5px', fontWeight: 700, color: '#334155', paddingLeft: '4px' }}>
+                  Check-in Date <span style={{ color: '#DC2626' }}>*</span>
+                </span>
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  backgroundColor: '#F8FAF7',
+                  border: `1.5px solid ${isCheckInValid ? '#14532D' : '#CBD5E1'}`,
+                  borderRadius: '16px',
+                  padding: '2px 14px',
+                  boxSizing: 'border-box',
+                  transition: 'border-color 0.2s ease'
+                }}>
+                  <Calendar size={16} color="#14532D" style={{ marginRight: '8px', flexShrink: 0 }} />
+                  <input
+                    type="date"
+                    min={todayIstDate}
+                    value={checkIn}
+                    onChange={(e) => setCheckIn(e.target.value)}
+                    required
+                    style={{
+                      flex: 1,
+                      border: 'none',
+                      outline: 'none',
+                      backgroundColor: 'transparent',
+                      fontSize: '14px',
+                      fontWeight: 600,
+                      color: checkIn ? '#1B2A1E' : '#64748B',
+                      padding: '11px 0'
+                    }}
+                  />
+                </div>
+              </label>
+
               {/* Mandatory Downhill Confirmation Checkbox */}
               <label style={{
                 display: 'flex',
@@ -598,7 +710,7 @@ export default function RoomBookingPage() {
                 }}
               >
                 <Bell size={17} />
-                <span>{submitting ? 'Saving...' : 'Notify Me When Live'}</span>
+                <span>{submitting ? 'Submitting...' : 'Request Room Booking Call'}</span>
               </button>
             </form>
             )
