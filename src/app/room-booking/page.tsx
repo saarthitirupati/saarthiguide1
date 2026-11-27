@@ -9,9 +9,11 @@ import {
   Sparkles,
   Phone,
   User,
-  MapPin
+  MapPin,
+  Clock
 } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
+import { isRoomBookingOpenIST } from '@/lib/istDate';
 
 const BASE_ROOM_WAITLIST = 142;
 
@@ -23,6 +25,8 @@ export default function RoomBookingPage() {
   const [acceptedFamilyPolicy, setAcceptedFamilyPolicy] = useState(false);
   const [notified, setNotified] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [isBookingOpen, setIsBookingOpen] = useState<boolean>(() => isRoomBookingOpenIST());
+  const [bookingError, setBookingError] = useState('');
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -92,17 +96,28 @@ export default function RoomBookingPage() {
       )
       .subscribe();
 
+    const hoursTimer = setInterval(() => {
+      setIsBookingOpen(isRoomBookingOpenIST());
+    }, 60000);
+
     return () => {
+      clearInterval(hoursTimer);
       supabase.removeChannel(channel);
     };
   }, []);
 
   const handleNotify = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
+    if (!isRoomBookingOpenIST()) {
+      setIsBookingOpen(false);
+      setBookingError('Room bookings are open from 6:00 AM to 10:00 PM IST only.');
+      return;
+    }
     const digits = phone.replace(/\D/g, '');
     const trimmedName = name.trim();
     if (notified || submitting || trimmedName.length < 2 || digits.length !== 10 || !acceptedDownhill || !acceptedFamilyPolicy) return;
 
+    setBookingError('');
     setSubmitting(true);
     setNotified(true);
     setWaitlistCount((prev) => (prev !== null ? prev + 1 : 1));
@@ -118,11 +133,21 @@ export default function RoomBookingPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ service: 'rooms', name: trimmedName, phone: digits }),
       });
-      if (res.ok) {
-        const data = await res.json();
-        if (typeof data?.counts?.rooms === 'number') {
-          setWaitlistCount(data.counts.rooms);
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok) {
+        setNotified(false);
+        setWaitlistCount((prev) => (prev !== null && prev > 0 ? prev - 1 : prev));
+        if (typeof window !== 'undefined') {
+          localStorage.removeItem('saarthi_notified_rooms');
         }
+        if (res.status === 403 || data?.code === 'OUTSIDE_HOURS') {
+          setIsBookingOpen(false);
+        }
+        setBookingError(data?.error || 'Unable to submit right now. Please try again.');
+        return;
+      }
+      if (typeof data?.counts?.rooms === 'number') {
+        setWaitlistCount(data.counts.rooms);
       }
     } catch (e) {
       console.error('Failed to record room launch interest:', e);
@@ -319,6 +344,45 @@ export default function RoomBookingPage() {
           boxSizing: 'border-box'
         }}>
           {!notified ? (
+            !isBookingOpen ? (
+              <div style={{ padding: '14px 8px', textAlign: 'center' }}>
+                <div style={{
+                  width: '48px',
+                  height: '48px',
+                  borderRadius: '14px',
+                  backgroundColor: '#FFFBEB',
+                  border: '1px solid #FDE68A',
+                  color: '#B45309',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginBottom: '12px'
+                }}>
+                  <Clock size={22} />
+                </div>
+                <div style={{ fontSize: '16px', fontWeight: 800, color: '#1B2A1E', marginBottom: '6px' }}>
+                  Room Bookings Currently Closed
+                </div>
+                <p style={{ fontSize: '13px', color: '#475569', lineHeight: 1.55, margin: '0 0 12px 0' }}>
+                  Our room booking desk is open daily from <strong>6:00 AM to 10:00 PM IST</strong> only.
+                </p>
+                <div style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '6px',
+                  backgroundColor: '#FEF3C7',
+                  color: '#92400E',
+                  border: '1px solid #FDE68A',
+                  borderRadius: '999px',
+                  padding: '6px 14px',
+                  fontSize: '12px',
+                  fontWeight: 800
+                }}>
+                  <Clock size={13} />
+                  <span>Reopens at 6:00 AM IST</span>
+                </div>
+              </div>
+            ) : (
             <form
               onSubmit={handleNotify}
               style={{
@@ -327,6 +391,40 @@ export default function RoomBookingPage() {
                 gap: '10px'
               }}
             >
+              {/* Booking Hours Pill */}
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '6px',
+                backgroundColor: '#F0FDF4',
+                border: '1px solid #BBF7D0',
+                borderRadius: '999px',
+                padding: '5px 12px',
+                fontSize: '11.5px',
+                fontWeight: 700,
+                color: '#15803D',
+                alignSelf: 'center'
+              }}>
+                <Clock size={12} />
+                <span>Bookings Open: 6:00 AM – 10:00 PM IST</span>
+              </div>
+
+              {bookingError && (
+                <div style={{
+                  backgroundColor: '#FEF2F2',
+                  border: '1px solid #FECACA',
+                  color: '#991B1B',
+                  borderRadius: '12px',
+                  padding: '8px 12px',
+                  fontSize: '12px',
+                  fontWeight: 700,
+                  textAlign: 'left'
+                }}>
+                  {bookingError}
+                </div>
+              )}
+
               {/* Clear Downhill-Only Notice */}
               <div style={{
                 display: 'flex',
@@ -503,6 +601,7 @@ export default function RoomBookingPage() {
                 <span>{submitting ? 'Saving...' : 'Notify Me When Live'}</span>
               </button>
             </form>
+            )
           ) : (
             <div>
               <div style={{

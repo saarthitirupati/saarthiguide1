@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
 import { supabase } from '@/lib/supabase';
+import { isRoomBookingOpenIST } from '@/lib/istDate';
 
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
@@ -167,6 +168,17 @@ export async function POST(req: Request) {
   try {
     const body = await req.json().catch(() => ({}));
     const service: 'cabs' | 'rooms' = body?.service === 'rooms' ? 'rooms' : 'cabs';
+
+    if (service === 'rooms' && !isRoomBookingOpenIST()) {
+      return NextResponse.json(
+        {
+          success: false,
+          code: 'OUTSIDE_HOURS',
+          error: 'Room bookings are open from 6:00 AM to 10:00 PM IST only.',
+        },
+        { status: 403 }
+      );
+    }
     const name = typeof body?.name === 'string' ? body.name.trim().slice(0, 80) : undefined;
     const phone = typeof body?.phone === 'string' ? body.phone.slice(0, 30) : undefined;
     const email = typeof body?.email === 'string' ? body.email.slice(0, 80) : undefined;

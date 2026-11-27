@@ -156,3 +156,16 @@ export function isTimeInPastIST(timeStr?: string, refDate: Date = new Date()): b
 
   return currentMinutes >= targetMinutes;
 }
+
+/**
+ * Room bookings are open daily from 6:00 AM to 10:00 PM IST (06:00 <= hour < 22:00).
+ */
+export function isRoomBookingOpenIST(refDate: Date = new Date()): boolean {
+  const hourStr = new Intl.DateTimeFormat('en-US', {
+    timeZone: 'Asia/Kolkata',
+    hour: 'numeric',
+    hourCycle: 'h23'
+  }).format(refDate);
+  const hour = parseInt(hourStr, 10);
+  return hour >= 6 && hour < 22;
+}
