@@ -1038,7 +1038,7 @@ export default function SaarthiHotelAdminPage() {
                                 hour12: true
                               })}
                             </span>
-                            {item.checkIn && (
+                            {(item.checkIn || item.checkOut) && (
                               <span style={{
                                 fontSize: '11.5px',
                                 fontWeight: 700,
@@ -1048,7 +1048,11 @@ export default function SaarthiHotelAdminPage() {
                                 borderRadius: '999px',
                                 padding: '2px 8px'
                               }}>
-                                Check-in: {item.checkIn}
+                                {item.checkIn && item.checkOut
+                                  ? `Stay: ${item.checkIn} → ${item.checkOut}`
+                                  : item.checkIn
+                                    ? `Check-in: ${item.checkIn}`
+                                    : `Check-out: ${item.checkOut}`}
                               </span>
                             )}
                           </div>

@@ -183,6 +183,7 @@ export async function POST(req: Request) {
     const phone = typeof body?.phone === 'string' ? body.phone.slice(0, 30) : undefined;
     const email = typeof body?.email === 'string' ? body.email.slice(0, 80) : undefined;
     const checkIn = typeof body?.checkIn === 'string' ? body.checkIn.trim().slice(0, 20) : undefined;
+    const checkOut = typeof body?.checkOut === 'string' ? body.checkOut.trim().slice(0, 20) : undefined;
 
     const sbResult = await getSupabaseStore();
     const store = sbResult?.store || getStore();
@@ -195,6 +196,7 @@ export async function POST(req: Request) {
       ...(phone ? { phone } : {}),
       ...(email ? { email } : {}),
       ...(checkIn ? { checkIn } : {}),
+      ...(checkOut ? { checkOut } : {}),
     };
 
     store.items.unshift(item);

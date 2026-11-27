@@ -24,6 +24,7 @@ export default function RoomBookingPage() {
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
   const [checkIn, setCheckIn] = useState('');
+  const [checkOut, setCheckOut] = useState('');
   const [acceptedDownhill, setAcceptedDownhill] = useState(false);
   const [acceptedFamilyPolicy, setAcceptedFamilyPolicy] = useState(false);
   const [notified, setNotified] = useState(false);
@@ -118,7 +119,7 @@ export default function RoomBookingPage() {
     }
     const digits = phone.replace(/\D/g, '');
     const trimmedName = name.trim();
-    if (notified || submitting || trimmedName.length < 2 || digits.length !== 10 || !checkIn || !acceptedDownhill || !acceptedFamilyPolicy) return;
+    if (notified || submitting || trimmedName.length < 2 || digits.length !== 10 || !checkIn || !checkOut || checkOut < checkIn || !acceptedDownhill || !acceptedFamilyPolicy) return;
 
     setBookingError('');
     setSubmitting(true);
@@ -134,7 +135,7 @@ export default function RoomBookingPage() {
       const res = await fetch('/api/launch-interest', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ service: 'rooms', name: trimmedName, phone: digits, checkIn }),
+        body: JSON.stringify({ service: 'rooms', name: trimmedName, phone: digits, checkIn, checkOut }),
       });
       const data = await res.json().catch(() => ({}));
       if (!res.ok) {
@@ -162,8 +163,9 @@ export default function RoomBookingPage() {
   const isNameValid = name.trim().length >= 2;
   const isPhoneValid = phone.replace(/\D/g, '').length === 10;
   const isCheckInValid = checkIn.trim().length > 0;
+  const isCheckOutValid = checkOut.trim().length > 0 && (!checkIn || checkOut >= checkIn);
   const todayIstDate = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Kolkata' }).format(new Date());
-  const isFormValid = isNameValid && isPhoneValid && isCheckInValid && acceptedDownhill && acceptedFamilyPolicy;
+  const isFormValid = isNameValid && isPhoneValid && isCheckInValid && isCheckOutValid && acceptedDownhill && acceptedFamilyPolicy;
   const totalPilgrims = BASE_ROOM_WAITLIST + (waitlistCount !== null ? waitlistCount : 0);
 
   return (
@@ -641,45 +643,104 @@ export default function RoomBookingPage() {
                 />
               </div>
 
-              <label style={{
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '4px',
-                textAlign: 'left'
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: '1fr 1fr',
+                gap: '8px',
+                width: '100%'
               }}>
-                <span style={{ fontSize: '11.5px', fontWeight: 700, color: '#334155', paddingLeft: '4px' }}>
-                  Check-in Date <span style={{ color: '#DC2626' }}>*</span>
-                </span>
-                <div style={{
+                <label style={{
                   display: 'flex',
-                  alignItems: 'center',
-                  backgroundColor: '#F8FAF7',
-                  border: `1.5px solid ${isCheckInValid ? '#14532D' : '#CBD5E1'}`,
-                  borderRadius: '16px',
-                  padding: '2px 14px',
-                  boxSizing: 'border-box',
-                  transition: 'border-color 0.2s ease'
+                  flexDirection: 'column',
+                  gap: '4px',
+                  textAlign: 'left',
+                  minWidth: 0
                 }}>
-                  <Calendar size={16} color="#14532D" style={{ marginRight: '8px', flexShrink: 0 }} />
-                  <input
-                    type="date"
-                    min={todayIstDate}
-                    value={checkIn}
-                    onChange={(e) => setCheckIn(e.target.value)}
-                    required
-                    style={{
-                      flex: 1,
-                      border: 'none',
-                      outline: 'none',
-                      backgroundColor: 'transparent',
-                      fontSize: '14px',
-                      fontWeight: 600,
-                      color: checkIn ? '#1B2A1E' : '#64748B',
-                      padding: '11px 0'
-                    }}
-                  />
-                </div>
-              </label>
+                  <span style={{ fontSize: '11.5px', fontWeight: 700, color: '#334155', paddingLeft: '4px' }}>
+                    Check-in <span style={{ color: '#DC2626' }}>*</span>
+                  </span>
+                  <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    backgroundColor: '#F8FAF7',
+                    border: `1.5px solid ${isCheckInValid ? '#14532D' : '#CBD5E1'}`,
+                    borderRadius: '14px',
+                    padding: '2px 10px',
+                    boxSizing: 'border-box',
+                    transition: 'border-color 0.2s ease',
+                    minWidth: 0
+                  }}>
+                    <Calendar size={14} color="#14532D" style={{ marginRight: '6px', flexShrink: 0 }} />
+                    <input
+                      type="date"
+                      min={todayIstDate}
+                      value={checkIn}
+                      onChange={(e) => {
+                        const nextIn = e.target.value;
+                        setCheckIn(nextIn);
+                        if (checkOut && nextIn && nextIn > checkOut) {
+                          setCheckOut('');
+                        }
+                      }}
+                      required
+                      style={{
+                        flex: 1,
+                        minWidth: 0,
+                        border: 'none',
+                        outline: 'none',
+                        backgroundColor: 'transparent',
+                        fontSize: '13px',
+                        fontWeight: 600,
+                        color: checkIn ? '#1B2A1E' : '#64748B',
+                        padding: '10px 0'
+                      }}
+                    />
+                  </div>
+                </label>
+
+                <label style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '4px',
+                  textAlign: 'left',
+                  minWidth: 0
+                }}>
+                  <span style={{ fontSize: '11.5px', fontWeight: 700, color: '#334155', paddingLeft: '4px' }}>
+                    Check-out <span style={{ color: '#DC2626' }}>*</span>
+                  </span>
+                  <div style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    backgroundColor: '#F8FAF7',
+                    border: `1.5px solid ${isCheckOutValid ? '#14532D' : '#CBD5E1'}`,
+                    borderRadius: '14px',
+                    padding: '2px 10px',
+                    boxSizing: 'border-box',
+                    transition: 'border-color 0.2s ease',
+                    minWidth: 0
+                  }}>
+                    <Calendar size={14} color="#14532D" style={{ marginRight: '6px', flexShrink: 0 }} />
+                    <input
+                      type="date"
+                      min={checkIn || todayIstDate}
+                      value={checkOut}
+                      onChange={(e) => setCheckOut(e.target.value)}
+                      required
+                      style={{
+                        flex: 1,
+                        minWidth: 0,
+                        border: 'none',
+                        outline: 'none',
+                        backgroundColor: 'transparent',
+                        fontSize: '13px',
+                        fontWeight: 600,
+                        color: checkOut ? '#1B2A1E' : '#64748B',
+                        padding: '10px 0'
+                      }}
+                    />
+                  </div>
+                </label>
+              </div>
 
               {/* Mandatory Downhill Confirmation Checkbox */}
               <label style={{
