@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import Link from 'next/link';
 import {
   Building2,
@@ -73,10 +73,24 @@ export default function SaarthiHotelAdminPage() {
   const [refreshing, setRefreshing] = useState(false);
   const [clearing, setClearing] = useState(false);
   const [lastSynced, setLastSynced] = useState('');
+  const [actionError, setActionError] = useState('');
+  const pendingMutationIdsRef = useRef<Set<string>>(new Set());
+  const lastMutationAtRef = useRef<number>(0);
+
+  const getAdminToken = () => {
+    if (typeof window === 'undefined') return '';
+    try {
+      return localStorage.getItem('saarthi_hotel_admin_token') || '';
+    } catch {
+      return '';
+    }
+  };
 
   const fetchData = async (silent = false) => {
     if (!silent) setLoading(true);
     else setRefreshing(true);
+
+    const fetchStartedAt = Date.now();
 
     try {
       const interestRes = await fetch('/api/launch-interest', { cache: 'no-store' });
@@ -84,6 +98,10 @@ export default function SaarthiHotelAdminPage() {
       if (interestRes.ok) {
         const interestData = await interestRes.json();
         if (interestData?.success) {
+          // Ignore stale poll responses if a lead update started or completed after this fetch began
+          if (pendingMutationIdsRef.current.size > 0 || lastMutationAtRef.current > fetchStartedAt) {
+            return;
+          }
           setRoomsNotifyCount(Number(interestData.rooms) || 0);
           const recentList: WaitlistEntry[] = Array.isArray(interestData.recent) ? interestData.recent : [];
           const roomItems = recentList.filter((item) => item.service === 'rooms');
@@ -205,7 +223,12 @@ export default function SaarthiHotelAdminPage() {
     id: string,
     updates: { leadStatus?: LeadStatus; checkIn?: string; checkOut?: string; budget?: string; note?: string }
   ) => {
+    setActionError('');
     setSavingId(id);
+    pendingMutationIdsRef.current.add(id);
+    lastMutationAtRef.current = Date.now();
+
+    const prevItem = notifyItems.find((item) => item.id === id);
     setNotifyItems((prev) =>
       prev.map((item) => (item.id === id ? { ...item, ...updates } : item))
     );
@@ -213,16 +236,45 @@ export default function SaarthiHotelAdminPage() {
     try {
       const res = await fetch('/api/launch-interest', {
         method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'x-hotel-admin-token': getAdminToken(),
+        },
         body: JSON.stringify({ id, ...updates }),
       });
-      if (res.ok) {
-        setSavedId(id);
-        setTimeout(() => setSavedId((curr) => (curr === id ? null : curr)), 2000);
+
+      if (res.status === 401) {
+        try {
+          localStorage.removeItem('saarthi_hotel_admin_token');
+        } catch {}
+        setIsAuthenticated(false);
+        setLoginError('Session expired. Please sign in again.');
+        return;
       }
+
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || !data?.success) {
+        if (prevItem) {
+          setNotifyItems((prev) => prev.map((item) => (item.id === id ? prevItem : item)));
+        }
+        setActionError(data?.error || 'Could not save status change. Please try again.');
+        return;
+      }
+
+      lastMutationAtRef.current = Date.now();
+      if (data?.item) {
+        setNotifyItems((prev) => prev.map((item) => (item.id === id ? data.item : item)));
+      }
+      setSavedId(id);
+      setTimeout(() => setSavedId((curr) => (curr === id ? null : curr)), 2000);
     } catch (e) {
       console.error('Failed to update lead:', e);
+      if (prevItem) {
+        setNotifyItems((prev) => prev.map((item) => (item.id === id ? prevItem : item)));
+      }
+      setActionError('Network error while saving. Please try again.');
     } finally {
+      pendingMutationIdsRef.current.delete(id);
       setSavingId(null);
     }
   };
@@ -247,7 +299,10 @@ export default function SaarthiHotelAdminPage() {
     }
     setClearing(true);
     try {
-      const res = await fetch('/api/launch-interest?service=rooms', { method: 'DELETE' });
+      const res = await fetch('/api/launch-interest?service=rooms', {
+        method: 'DELETE',
+        headers: { 'x-hotel-admin-token': getAdminToken() },
+      });
       if (res.ok) {
         setRoomsNotifyCount(0);
         setNotifyItems([]);
@@ -809,6 +864,21 @@ export default function SaarthiHotelAdminPage() {
               )}
             </div>
           </div>
+
+          {actionError && (
+            <div style={{
+              backgroundColor: '#FEF2F2',
+              border: '1px solid #FECACA',
+              color: '#991B1B',
+              borderRadius: '12px',
+              padding: '10px 14px',
+              fontSize: '12.5px',
+              fontWeight: 700,
+              marginBottom: '14px'
+            }}>
+              {actionError}
+            </div>
+          )}
 
           {/* To-Do Status Filter Pills */}
           <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginBottom: '16px' }}>
