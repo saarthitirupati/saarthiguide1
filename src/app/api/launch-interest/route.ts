@@ -9,6 +9,7 @@ export const revalidate = 0;
 
 const DATA_DIR = path.join(process.cwd(), 'data');
 const NOTIF_FILE = path.join(DATA_DIR, 'launch-notifications.json');
+const ROOM_BOOKINGS_PAUSED = true;
 
 export type LeadStatus = 'pending' | 'not_lifted' | 'callback' | 'contacted' | 'yes' | 'no' | 'booked';
 
@@ -168,6 +169,17 @@ export async function POST(req: Request) {
   try {
     const body = await req.json().catch(() => ({}));
     const service: 'cabs' | 'rooms' = body?.service === 'rooms' ? 'rooms' : 'cabs';
+
+    if (service === 'rooms' && ROOM_BOOKINGS_PAUSED) {
+      return NextResponse.json(
+        {
+          success: false,
+          code: 'BOOKINGS_PAUSED',
+          error: 'Room bookings are temporarily paused. Please check back soon.',
+        },
+        { status: 403 }
+      );
+    }
 
     if (service === 'rooms' && !isRoomBookingOpenIST()) {
       return NextResponse.json(

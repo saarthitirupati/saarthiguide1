@@ -18,6 +18,7 @@ import { supabase } from '@/lib/supabase';
 import { isRoomBookingOpenIST } from '@/lib/istDate';
 
 const BASE_ROOM_WAITLIST = 142;
+const ROOM_BOOKINGS_PAUSED = true;
 
 export default function RoomBookingPage() {
   const [waitlistCount, setWaitlistCount] = useState<number | null>(null);
@@ -112,6 +113,10 @@ export default function RoomBookingPage() {
 
   const handleNotify = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
+    if (ROOM_BOOKINGS_PAUSED) {
+      setBookingError('Room bookings are temporarily paused. Please check back soon.');
+      return;
+    }
     if (!isRoomBookingOpenIST()) {
       setIsBookingOpen(false);
       setBookingError('Room bookings are open from 6:00 AM to 10:00 PM IST only.');
@@ -456,7 +461,48 @@ export default function RoomBookingPage() {
           boxSizing: 'border-box'
         }}>
           {!notified ? (
-            !isBookingOpen ? (
+            ROOM_BOOKINGS_PAUSED ? (
+              <div style={{ padding: '14px 8px', textAlign: 'center' }}>
+                <div style={{
+                  width: '48px',
+                  height: '48px',
+                  borderRadius: '14px',
+                  backgroundColor: '#FFFBEB',
+                  border: '1px solid #FDE68A',
+                  color: '#B45309',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginBottom: '12px'
+                }}>
+                  <Clock size={22} />
+                </div>
+                <div style={{ fontSize: '16px', fontWeight: 800, color: '#1B2A1E', marginBottom: '6px' }}>
+                  Room Bookings Temporarily Paused
+                </div>
+                <p style={{ fontSize: '13px', color: '#475569', lineHeight: 1.55, margin: '0 0 12px 0' }}>
+                  Online room booking requests are paused for now. Please check back soon.
+                </p>
+                <p style={{ fontSize: '12.5px', color: '#475569', margin: 0, lineHeight: 1.5 }}>
+                  For any instant need, call{' '}
+                  <a
+                    href="tel:+919618831607"
+                    style={{ color: '#0F5132', fontWeight: 800, textDecoration: 'underline', whiteSpace: 'nowrap' }}
+                  >
+                    +91 96188 31607
+                  </a>{' '}
+                  or DM us on Instagram:{' '}
+                  <a
+                    href="https://www.instagram.com/saarthi.tirupati/?hl=en"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{ color: '#0F5132', fontWeight: 800, textDecoration: 'underline', whiteSpace: 'nowrap' }}
+                  >
+                    @saarthi.tirupati
+                  </a>
+                </p>
+              </div>
+            ) : !isBookingOpen ? (
               <div style={{ padding: '14px 8px', textAlign: 'center' }}>
                 <div style={{
                   width: '48px',
