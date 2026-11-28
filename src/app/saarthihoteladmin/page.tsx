@@ -28,14 +28,15 @@ import {
   ArrowRight,
   XCircle,
   CheckCircle2,
-  ChevronDown
+  ChevronDown,
+  PlusCircle
 } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 
 type LeadStatus = 'pending' | 'not_lifted' | 'callback' | 'contacted' | 'yes' | 'no' | 'booked' | 'checked_in' | 'completed' | 'cancelled';
 const BOOKED_LIFECYCLE: LeadStatus[] = ['booked', 'checked_in', 'completed'];
 type DateFilterMode = 'all' | 'arrival' | 'booked' | 'created';
-type AdminTab = 'overview' | 'leads' | 'bookings' | 'settings';
+type AdminTab = 'overview' | 'leads' | 'bookings' | 'manual' | 'settings';
 
 interface WaitlistEntry {
   id: string;
@@ -49,6 +50,8 @@ interface WaitlistEntry {
   checkOut?: string;
   budget?: string;
   note?: string;
+  advancePaid?: boolean;
+  advanceAmount?: string;
   updatedAt?: string;
   bookedAt?: string;
 }
@@ -248,7 +251,7 @@ export default function SaarthiHotelAdminPage() {
   const [dateTo, setDateTo] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
   const PAGE_SIZE = 50;
-  const [drafts, setDrafts] = useState<Record<string, { checkIn: string; checkOut: string; budget: string; note: string }>>({});
+  const [drafts, setDrafts] = useState<Record<string, { checkIn: string; checkOut: string; budget: string; note: string; advancePaid: boolean; advanceAmount: string }>>({});
   const [savingId, setSavingId] = useState<string | null>(null);
   const [savedId, setSavedId] = useState<string | null>(null);
 
@@ -265,6 +268,30 @@ export default function SaarthiHotelAdminPage() {
 
   const [activeTab, setActiveTab] = useState<AdminTab>('overview');
   const [expandedNoteIds, setExpandedNoteIds] = useState<Record<string, boolean>>({});
+  const [manualForm, setManualForm] = useState<{
+    name: string;
+    phone: string;
+    checkIn: string;
+    checkOut: string;
+    budget: string;
+    note: string;
+    advancePaid: boolean;
+    advanceAmount: string;
+    leadStatus: LeadStatus;
+  }>({
+    name: '',
+    phone: '',
+    checkIn: '',
+    checkOut: '',
+    budget: '',
+    note: '',
+    advancePaid: false,
+    advanceAmount: '',
+    leadStatus: 'booked',
+  });
+  const [submittingManual, setSubmittingManual] = useState(false);
+  const [manualSuccess, setManualSuccess] = useState('');
+  const [manualError, setManualError] = useState('');
   const [trendMode, setTrendMode] = useState<'leads' | 'arrivals'>('leads');
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isDesktop, setIsDesktop] = useState(true);
@@ -322,6 +349,8 @@ export default function SaarthiHotelAdminPage() {
                   checkOut: item.checkOut || '',
                   budget: item.budget || '',
                   note: item.note || '',
+                  advancePaid: Boolean(item.advancePaid),
+                  advanceAmount: item.advanceAmount || '',
                 };
               }
             }
@@ -428,7 +457,7 @@ export default function SaarthiHotelAdminPage() {
 
   const updateLead = async (
     id: string,
-    updates: { leadStatus?: LeadStatus; checkIn?: string; checkOut?: string; budget?: string; note?: string }
+    updates: { leadStatus?: LeadStatus; checkIn?: string; checkOut?: string; budget?: string; note?: string; advancePaid?: boolean; advanceAmount?: string }
   ) => {
     setActionError('');
     setSavingId(id);
@@ -500,7 +529,7 @@ export default function SaarthiHotelAdminPage() {
     }
   };
 
-  const handleDraftChange = (id: string, field: 'checkIn' | 'checkOut' | 'budget' | 'note', value: string) => {
+  const handleDraftChange = (id: string, field: 'checkIn' | 'checkOut' | 'budget' | 'note' | 'advanceAmount', value: string) => {
     setDrafts((prev) => ({
       ...prev,
       [id]: {
@@ -508,9 +537,112 @@ export default function SaarthiHotelAdminPage() {
         checkOut: prev[id]?.checkOut || '',
         budget: prev[id]?.budget || '',
         note: prev[id]?.note || '',
+        advancePaid: prev[id]?.advancePaid ?? false,
+        advanceAmount: prev[id]?.advanceAmount || '',
         [field]: value,
       },
     }));
+  };
+
+  const handleDraftAdvancePaidChange = (id: string, paid: boolean) => {
+    setDrafts((prev) => ({
+      ...prev,
+      [id]: {
+        checkIn: prev[id]?.checkIn || '',
+        checkOut: prev[id]?.checkOut || '',
+        budget: prev[id]?.budget || '',
+        note: prev[id]?.note || '',
+        advancePaid: paid,
+        advanceAmount: paid ? (prev[id]?.advanceAmount || '') : '',
+      },
+    }));
+  };
+
+  const handleCreateManualBooking = async (e: React.FormEvent) => {
+    e.preventDefault();
+    const cleanName = manualForm.name.trim();
+    const cleanDigits = manualForm.phone.replace(/\D/g, '').slice(-10);
+    if (cleanName.length < 2) {
+      setManualError('Please enter pilgrim name (at least 2 characters).');
+      return;
+    }
+    if (cleanDigits.length !== 10) {
+      setManualError('Please enter a valid 10-digit mobile number.');
+      return;
+    }
+    if (manualForm.checkIn && manualForm.checkOut && manualForm.checkOut < manualForm.checkIn) {
+      setManualError('Check-out date cannot be before Check-in date.');
+      return;
+    }
+
+    setManualError('');
+    setManualSuccess('');
+    setSubmittingManual(true);
+    lastMutationAtRef.current = Date.now();
+
+    try {
+      const res = await fetch('/api/launch-interest', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-hotel-admin-token': getAdminToken(),
+        },
+        body: JSON.stringify({
+          service: 'rooms',
+          manual: true,
+          name: cleanName,
+          phone: cleanDigits,
+          checkIn: manualForm.checkIn,
+          checkOut: manualForm.checkOut,
+          budget: manualForm.budget,
+          note: manualForm.note,
+          advancePaid: manualForm.advancePaid,
+          advanceAmount: manualForm.advancePaid ? manualForm.advanceAmount : '',
+          leadStatus: manualForm.leadStatus,
+        }),
+      });
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || !data?.success) {
+        setManualError(data?.error || 'Failed to save manual booking.');
+        return;
+      }
+
+      lastMutationAtRef.current = Date.now();
+      if (data?.item) {
+        setNotifyItems((prev) => [data.item, ...prev]);
+        setDrafts((prev) => ({
+          ...prev,
+          [data.item.id]: {
+            checkIn: data.item.checkIn || '',
+            checkOut: data.item.checkOut || '',
+            budget: data.item.budget || '',
+            note: data.item.note || '',
+            advancePaid: Boolean(data.item.advancePaid),
+            advanceAmount: data.item.advanceAmount || '',
+          },
+        }));
+      }
+      if (typeof data?.counts?.rooms === 'number') {
+        setRoomsNotifyCount(data.counts.rooms);
+      }
+
+      setManualSuccess(`Saved ${cleanName} (${STATUS_META[manualForm.leadStatus].label}).`);
+      setManualForm({
+        name: '',
+        phone: '',
+        checkIn: '',
+        checkOut: '',
+        budget: '',
+        note: '',
+        advancePaid: false,
+        advanceAmount: '',
+        leadStatus: 'booked',
+      });
+    } catch {
+      setManualError('Network error while saving manual booking.');
+    } finally {
+      setSubmittingManual(false);
+    }
   };
 
   const handleToggleBookingsPaused = async () => {
@@ -775,7 +907,7 @@ export default function SaarthiHotelAdminPage() {
     const source = activeTab === 'overview' || activeTab === 'settings' ? notifyItems : filteredItems;
     if (source.length === 0) return;
     const rows = [
-      ['Name', 'Mobile', 'Status', 'Check-in', 'Check-out', 'Preferred Budget', 'Note', 'Booked At', 'Submitted At'],
+      ['Name', 'Mobile', 'Status', 'Check-in', 'Check-out', 'Preferred Budget', 'Advance Paid', 'Advance Amount', 'Note', 'Booked At', 'Submitted At'],
       ...source.map((item) => [
         (item.name || 'Pilgrim').replace(/,/g, ' '),
         item.phone ? `+91 ${item.phone}` : '',
@@ -783,6 +915,8 @@ export default function SaarthiHotelAdminPage() {
         item.checkIn || '',
         item.checkOut || '',
         (item.budget || '').replace(/,/g, ' '),
+        item.advancePaid ? 'Yes' : 'No',
+        item.advancePaid && item.advanceAmount ? item.advanceAmount : '',
         (item.note || '').replace(/,/g, ' ').replace(/\n/g, ' '),
         item.leadStatus === 'booked' && (item.bookedAt || item.updatedAt)
           ? new Date(item.bookedAt || item.updatedAt || '').toLocaleString('en-IN')
@@ -1044,6 +1178,7 @@ export default function SaarthiHotelAdminPage() {
   const navItems: { key: AdminTab; label: string; icon: React.ReactNode; badge?: number }[] = [
     { key: 'overview', label: 'Dashboard', icon: <LayoutDashboard size={17} /> },
     { key: 'bookings', label: 'Bookings', icon: <Calendar size={17} />, badge: confirmedLifecycleCount },
+    { key: 'manual', label: 'Manual Booking', icon: <PlusCircle size={17} /> },
     { key: 'leads', label: 'Pilgrims List', icon: <Users size={17} />, badge: pendingTodoCount },
     { key: 'settings', label: 'Settings', icon: <Settings size={17} /> },
   ];
@@ -1051,6 +1186,7 @@ export default function SaarthiHotelAdminPage() {
   const pageMeta: Record<AdminTab, { title: string; subtitle: string }> = {
     overview: { title: 'Dashboard', subtitle: 'Welcome to Tirupati Rooms Booking Admin Panel' },
     bookings: { title: 'Confirmed Bookings', subtitle: 'Booked pilgrims sorted by upcoming Check-in date' },
+    manual: { title: 'Manual Booking', subtitle: 'Add phone, Instagram DM, or walk-in room bookings anytime (24/7)' },
     leads: { title: 'Pilgrims List & To-Do', subtitle: 'Search, filter by arrival or booking date, and update status' },
     settings: { title: 'Desk Settings', subtitle: 'Control live /room-booking availability, desk phone & exports' },
   };
@@ -1447,7 +1583,7 @@ export default function SaarthiHotelAdminPage() {
                     onClick: () => { setTodoFilter('no'); setDateFilterMode('all'); setDateFrom(''); setDateTo(''); navigateTo('leads'); }
                   },
                 ].map((card) => (
-                  <button
+  <button
                     key={card.title}
                     type="button"
                     onClick={card.onClick}
@@ -1565,7 +1701,7 @@ export default function SaarthiHotelAdminPage() {
                     </svg>
                     <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '4px', padding: '0 4px' }}>
                       {activeSeries.map((s) => (
-                        <button
+        <button
                           key={s.ymd}
                           type="button"
                           onClick={() => {
@@ -1660,7 +1796,7 @@ export default function SaarthiHotelAdminPage() {
                         { label: 'Follow-up', count: followUpRingCount, color: '#F59E0B', onClick: () => { setTodoFilter('pending'); setDateFilterMode('all'); setDateFrom(''); setDateTo(''); navigateTo('leads'); } },
                         { label: 'Closed / No', count: closedRingCount, color: '#CBD5E1', onClick: () => { setTodoFilter('no'); setDateFilterMode('all'); setDateFrom(''); setDateTo(''); navigateTo('leads'); } },
                       ] as const).map((row) => (
-                        <button
+        <button
                           key={row.label}
                           type="button"
                           onClick={row.onClick}
@@ -1690,7 +1826,7 @@ export default function SaarthiHotelAdminPage() {
                     </div>
                   </div>
 
-                  <button
+  <button
                     type="button"
                     onClick={() => { resetAllFilters(); navigateTo('leads'); }}
                     style={{
@@ -1735,7 +1871,7 @@ export default function SaarthiHotelAdminPage() {
                     <span style={{ fontSize: '15px', fontWeight: 800, color: '#0F172A', display: 'inline-flex', alignItems: 'center', gap: '7px' }}>
                       <Calendar size={16} color="#0F5132" /> Recent Leads &amp; Bookings
                     </span>
-                    <button
+    <button
                       type="button"
                       onClick={() => { resetAllFilters(); navigateTo('leads'); }}
                       style={{
@@ -1869,7 +2005,7 @@ export default function SaarthiHotelAdminPage() {
                                     </a>
                                   </>
                                 )}
-                                <button
+                <button
                                   type="button"
                                   onClick={() => {
                                     setSearchQuery(clean10 || item.name || '');
@@ -1922,7 +2058,7 @@ export default function SaarthiHotelAdminPage() {
                   </div>
 
                   <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px', flex: 1 }}>
-                    <button
+    <button
                       type="button"
                       onClick={() => {
                         setTodoFilter('all');
@@ -1951,7 +2087,7 @@ export default function SaarthiHotelAdminPage() {
                       <span>Arriving Today ({dashboardMetrics.arrivingTodayTotal})</span>
                     </button>
 
-                    <button
+    <button
                       type="button"
                       onClick={() => { setDateFilterMode('all'); setDateFrom(''); setDateTo(''); navigateTo('bookings'); }}
                       style={{
@@ -1974,7 +2110,7 @@ export default function SaarthiHotelAdminPage() {
                       <span>View Bookings ({dashboardMetrics.statusCounts.booked})</span>
                     </button>
 
-                    <button
+    <button
                       type="button"
                       onClick={() => {
                         setTodoFilter('pending');
@@ -2003,7 +2139,7 @@ export default function SaarthiHotelAdminPage() {
                       <span>Call To-Do ({pendingTodoCount})</span>
                     </button>
 
-                    <button
+    <button
                       type="button"
                       onClick={() => navigateTo('settings')}
                       style={{
@@ -2031,6 +2167,318 @@ export default function SaarthiHotelAdminPage() {
             </div>
           )}
 
+          {/* ══════════════════ MANUAL BOOKING TAB ══════════════════ */}
+          {activeTab === 'manual' && (
+            <div style={{
+              backgroundColor: '#FFFFFF',
+              border: '1px solid #E2E8F0',
+              borderRadius: '20px',
+              padding: '22px',
+              maxWidth: '680px',
+              boxShadow: '0 4px 18px rgba(15, 23, 42, 0.04)'
+            }}>
+              <div style={{ marginBottom: '16px' }}>
+                <h2 style={{ fontSize: '16px', fontWeight: 800, margin: 0, color: '#0F172A' }}>
+                  Add Manual Room Booking / Lead
+                </h2>
+                <p style={{ fontSize: '12.5px', color: '#64748B', margin: '3px 0 0 0' }}>
+                  Works 24/7 even when public /room-booking is paused or outside 6 AM – 10 PM IST.
+                </p>
+              </div>
+
+              {manualError && (
+                <div style={{
+                  backgroundColor: '#FEF2F2',
+                  border: '1px solid #FECACA',
+                  color: '#991B1B',
+                  borderRadius: '12px',
+                  padding: '10px 12px',
+                  fontSize: '12.5px',
+                  fontWeight: 700,
+                  marginBottom: '14px'
+                }}>
+                  {manualError}
+                </div>
+              )}
+
+              {manualSuccess && (
+                <div style={{
+                  backgroundColor: '#ECFDF5',
+                  border: '1px solid #BBF7D0',
+                  color: '#065F46',
+                  borderRadius: '12px',
+                  padding: '10px 14px',
+                  fontSize: '12.5px',
+                  fontWeight: 700,
+                  marginBottom: '14px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  flexWrap: 'wrap',
+                  gap: '8px'
+                }}>
+                  <span>{manualSuccess}</span>
+  <button
+                    type="button"
+                    onClick={() => navigateTo('bookings')}
+                    style={{
+                      backgroundColor: '#0F5132',
+                      color: '#FFFFFF',
+                      border: 'none',
+                      borderRadius: '8px',
+                      padding: '5px 11px',
+                      fontSize: '11.5px',
+                      fontWeight: 700,
+                      cursor: 'pointer'
+                    }}
+                  >
+                    View in Bookings →
+                  </button>
+                </div>
+              )}
+
+              <form onSubmit={handleCreateManualBooking} style={{ display: 'flex', flexDirection: 'column', gap: '14px' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '12px' }}>
+                  <label style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
+                    <span style={{ fontSize: '12px', fontWeight: 700, color: '#334155' }}>
+                      Pilgrim Name <span style={{ color: '#DC2626' }}>*</span>
+                    </span>
+                    <input
+                      type="text"
+                      required
+                      maxLength={80}
+                      placeholder="e.g. Ramesh Kumar"
+                      value={manualForm.name}
+                      onChange={(e) => setManualForm((f) => ({ ...f, name: e.target.value }))}
+                      style={{
+                        backgroundColor: '#F8FAFC',
+                        border: '1.5px solid #CBD5E1',
+                        borderRadius: '11px',
+                        padding: '9px 12px',
+                        fontSize: '13.5px',
+                        fontWeight: 600,
+                        color: '#0F172A',
+                        outline: 'none'
+                      }}
+                    />
+                  </label>
+
+                  <label style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
+                    <span style={{ fontSize: '12px', fontWeight: 700, color: '#334155' }}>
+                      Mobile Number <span style={{ color: '#DC2626' }}>*</span>
+                    </span>
+                    <div style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      backgroundColor: '#F8FAFC',
+                      border: '1.5px solid #CBD5E1',
+                      borderRadius: '11px',
+                      padding: '0 12px'
+                    }}>
+                      <span style={{ fontSize: '13px', fontWeight: 700, color: '#475569', marginRight: '6px' }}>+91</span>
+                      <input
+                        type="tel"
+                        required
+                        inputMode="numeric"
+                        maxLength={10}
+                        placeholder="10-digit mobile"
+                        value={manualForm.phone}
+                        onChange={(e) => setManualForm((f) => ({ ...f, phone: e.target.value.replace(/\D/g, '').slice(0, 10) }))}
+                        style={{
+                          flex: 1,
+                          border: 'none',
+                          outline: 'none',
+                          backgroundColor: 'transparent',
+                          padding: '9px 0',
+                          fontSize: '13.5px',
+                          fontWeight: 600,
+                          color: '#0F172A'
+                        }}
+                      />
+                    </div>
+                  </label>
+                </div>
+
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(170px, 1fr))', gap: '12px' }}>
+                  <label style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
+                    <span style={{ fontSize: '12px', fontWeight: 700, color: '#334155' }}>Check-in Date</span>
+                    <input
+                      type="date"
+                      value={manualForm.checkIn}
+                      onChange={(e) => {
+                        const nextIn = e.target.value;
+                        setManualForm((f) => ({
+                          ...f,
+                          checkIn: nextIn,
+                          checkOut: f.checkOut && nextIn && nextIn > f.checkOut ? '' : f.checkOut,
+                        }));
+                      }}
+                      style={{
+                        backgroundColor: '#F8FAFC',
+                        border: '1.5px solid #CBD5E1',
+                        borderRadius: '11px',
+                        padding: '9px 12px',
+                        fontSize: '13px',
+                        fontWeight: 600,
+                        color: '#0F172A'
+                      }}
+                    />
+                  </label>
+
+                  <label style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
+                    <span style={{ fontSize: '12px', fontWeight: 700, color: '#334155' }}>Check-out Date</span>
+                    <input
+                      type="date"
+                      min={manualForm.checkIn || undefined}
+                      value={manualForm.checkOut}
+                      onChange={(e) => setManualForm((f) => ({ ...f, checkOut: e.target.value }))}
+                      style={{
+                        backgroundColor: '#F8FAFC',
+                        border: '1.5px solid #CBD5E1',
+                        borderRadius: '11px',
+                        padding: '9px 12px',
+                        fontSize: '13px',
+                        fontWeight: 600,
+                        color: '#0F172A'
+                      }}
+                    />
+                  </label>
+
+                  <label style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
+                    <span style={{ fontSize: '12px', fontWeight: 700, color: '#334155' }}>Budget / Tariff</span>
+                    <input
+                      type="text"
+                      maxLength={40}
+                      placeholder="e.g. ₹1,500"
+                      value={manualForm.budget}
+                      onChange={(e) => setManualForm((f) => ({ ...f, budget: e.target.value }))}
+                      style={{
+                        backgroundColor: '#F8FAFC',
+                        border: '1.5px solid #CBD5E1',
+                        borderRadius: '11px',
+                        padding: '9px 12px',
+                        fontSize: '13px',
+                        fontWeight: 600,
+                        color: '#0F172A',
+                        outline: 'none'
+                      }}
+                    />
+                  </label>
+                </div>
+
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', flexWrap: 'wrap' }}>
+                  <span style={{ fontSize: '12px', fontWeight: 700, color: '#334155' }}>Booking Status:</span>
+                  <StatusSelect
+                    value={manualForm.leadStatus}
+                    onChange={(next) => setManualForm((f) => ({ ...f, leadStatus: next }))}
+                  />
+                </div>
+
+                <label style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
+                  <span style={{ fontSize: '12px', fontWeight: 700, color: '#334155' }}>Note (Source / Hotel / Room Details)</span>
+                  <input
+                    type="text"
+                    maxLength={300}
+                    placeholder="e.g. Instagram DM — AC Double near Bus Stand, ₹1,500 confirmed"
+                    value={manualForm.note}
+                    onChange={(e) => setManualForm((f) => ({ ...f, note: e.target.value }))}
+                    style={{
+                      backgroundColor: '#F8FAFC',
+                      border: '1.5px solid #CBD5E1',
+                      borderRadius: '11px',
+                      padding: '9px 12px',
+                      fontSize: '13px',
+                      fontWeight: 500,
+                      color: '#0F172A',
+                      outline: 'none'
+                    }}
+                  />
+                </label>
+
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px', flexWrap: 'wrap' }}>
+                  <label style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '7px',
+                    fontSize: '12.5px',
+                    fontWeight: 700,
+                    color: '#0F172A',
+                    cursor: 'pointer',
+                    backgroundColor: manualForm.advancePaid ? '#ECFDF5' : '#F8FAFC',
+                    border: `1.5px solid ${manualForm.advancePaid ? '#86EFAC' : '#CBD5E1'}`,
+                    borderRadius: '11px',
+                    padding: '8px 12px'
+                  }}>
+                    <input
+                      type="checkbox"
+                      checked={manualForm.advancePaid}
+                      onChange={(e) => setManualForm((f) => ({
+                        ...f,
+                        advancePaid: e.target.checked,
+                        advanceAmount: e.target.checked ? f.advanceAmount : '',
+                      }))}
+                      style={{ width: '15px', height: '15px', accentColor: '#0F5132', cursor: 'pointer' }}
+                    />
+                    <span>Advance Paid</span>
+                  </label>
+
+                  {manualForm.advancePaid && (
+                    <div style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      backgroundColor: '#F8FAFC',
+                      border: '1.5px solid #86EFAC',
+                      borderRadius: '11px',
+                      padding: '0 10px'
+                    }}>
+                      <IndianRupee size={13} color="#0F5132" style={{ marginRight: '4px' }} />
+                      <input
+                        type="tel"
+                        inputMode="numeric"
+                        maxLength={8}
+                        placeholder="Advance amount (e.g. 500)"
+                        value={manualForm.advanceAmount}
+                        onChange={(e) => setManualForm((f) => ({ ...f, advanceAmount: e.target.value.replace(/\D/g, '').slice(0, 8) }))}
+                        style={{
+                          border: 'none',
+                          outline: 'none',
+                          backgroundColor: 'transparent',
+                          padding: '8px 0',
+                          fontSize: '13px',
+                          fontWeight: 700,
+                          color: '#0F172A',
+                          width: '170px'
+                        }}
+                      />
+                    </div>
+                  )}
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={submittingManual}
+                  style={{
+                    backgroundColor: '#0F5132',
+                    color: '#FFFFFF',
+                    border: 'none',
+                    borderRadius: '12px',
+                    padding: '12px 18px',
+                    fontSize: '14px',
+                    fontWeight: 800,
+                    cursor: submittingManual ? 'wait' : 'pointer',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '7px'
+                  }}
+                >
+                  <PlusCircle size={16} />
+                  <span>{submittingManual ? 'Saving Booking...' : 'Save Manual Booking'}</span>
+                </button>
+              </form>
+            </div>
+          )}
+
           {/* ══════════════════ SETTINGS TAB ══════════════════ */}
           {activeTab === 'settings' && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', maxWidth: '720px' }}>
@@ -2055,7 +2503,7 @@ export default function SaarthiHotelAdminPage() {
                       : 'Currently live — /room-booking accepts requests from 6:00 AM to 10:00 PM IST.'}
                   </div>
                 </div>
-                <button
+<button
                   type="button"
                   onClick={handleToggleBookingsPaused}
                   disabled={togglingPaused}
@@ -2123,7 +2571,7 @@ export default function SaarthiHotelAdminPage() {
                       }}
                     />
                   </div>
-                  <button
+  <button
                     type="submit"
                     disabled={savingPhone || contactPhone.replace(/\D/g, '').length !== 10}
                     style={{
@@ -2165,7 +2613,7 @@ export default function SaarthiHotelAdminPage() {
                   </div>
                 </div>
                 <div style={{ display: 'flex', gap: '8px' }}>
-                  <button
+  <button
                     type="button"
                     onClick={handleExportCsv}
                     disabled={notifyItems.length === 0}
@@ -2186,7 +2634,7 @@ export default function SaarthiHotelAdminPage() {
                     <Download size={13} /> Export All CSV
                   </button>
                   {notifyItems.length > 0 && (
-                    <button
+    <button
                       type="button"
                       onClick={handleClearAll}
                       disabled={clearing}
@@ -2268,7 +2716,7 @@ export default function SaarthiHotelAdminPage() {
                       }}
                     />
                     {searchQuery && (
-                      <button
+      <button
                         type="button"
                         onClick={() => setSearchQuery('')}
                         title="Clear search"
@@ -2291,7 +2739,7 @@ export default function SaarthiHotelAdminPage() {
                     )}
                   </div>
 
-                  <button
+  <button
                     type="button"
                     onClick={handleExportCsv}
                     disabled={filteredItems.length === 0}
@@ -2333,7 +2781,7 @@ export default function SaarthiHotelAdminPage() {
                   ] as const).map((tab) => {
                     const active = todoFilter === tab.key;
                     return (
-                      <button
+      <button
                         key={tab.key}
                         type="button"
                         onClick={() => setTodoFilter(tab.key)}
@@ -2475,7 +2923,7 @@ export default function SaarthiHotelAdminPage() {
                     return (
                       <>
                         {presets.map((p) => (
-                          <button
+          <button
                             key={p.key}
                             type="button"
                             onClick={() => applyDatePreset(p.key)}
@@ -2494,7 +2942,7 @@ export default function SaarthiHotelAdminPage() {
                           </button>
                         ))}
                         {(dateFilterMode !== 'all' || dateFrom || dateTo) && (
-                          <button
+          <button
                             type="button"
                             onClick={() => applyDatePreset('clear')}
                             style={{
@@ -2543,7 +2991,7 @@ export default function SaarthiHotelAdminPage() {
                           : 'Filtered: '}
                     {filteredItems.length} matching ({filteredBookedCount} Booked)
                   </span>
-                  <button
+  <button
                     type="button"
                     onClick={resetAllFilters}
                     style={{
@@ -2592,6 +3040,8 @@ export default function SaarthiHotelAdminPage() {
                       checkOut: item.checkOut || '',
                       budget: item.budget || '',
                       note: item.note || '',
+                      advancePaid: Boolean(item.advancePaid),
+                      advanceAmount: item.advanceAmount || '',
                     };
                     const formatYmd = (ymd?: string) => {
                       if (!ymd || !/^\d{4}-\d{2}-\d{2}$/.test(ymd)) return '';
@@ -2669,6 +3119,19 @@ export default function SaarthiHotelAdminPage() {
                                   Booked: {formatYmd(toIstYmd(item.bookedAt || item.updatedAt || item.timestamp))}
                                 </span>
                               )}
+                              {item.advancePaid && (
+                                <span style={{
+                                  fontSize: '11px',
+                                  fontWeight: 800,
+                                  color: '#065F46',
+                                  backgroundColor: '#D1FAE5',
+                                  border: '1px solid #6EE7B7',
+                                  borderRadius: '999px',
+                                  padding: '2px 8px'
+                                }}>
+                                  {item.advanceAmount ? `Advance Paid: ₹${item.advanceAmount}` : 'Advance Paid'}
+                                </span>
+                              )}
                             </div>
                             {!isNoteOpen && item.note && (
                               <div style={{ fontSize: '11.5px', color: '#475569', marginTop: '4px', fontStyle: 'italic' }}>
@@ -2724,7 +3187,7 @@ export default function SaarthiHotelAdminPage() {
                                 </a>
                               </>
                             )}
-                            <button
+            <button
                               type="button"
                               onClick={() => setExpandedNoteIds((prev) => ({ ...prev, [item.id]: !prev[item.id] }))}
                               style={{
@@ -2818,6 +3281,68 @@ export default function SaarthiHotelAdminPage() {
                               />
                             </label>
 
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                              <span style={{ fontSize: '11px', fontWeight: 700, color: '#475569' }}>
+                                Advance Payment
+                              </span>
+                              <div style={{ display: 'flex', alignItems: 'center', gap: '8px', height: '34px' }}>
+                                <label style={{
+                                  display: 'inline-flex',
+                                  alignItems: 'center',
+                                  gap: '6px',
+                                  backgroundColor: draft.advancePaid ? '#ECFDF5' : '#FFFFFF',
+                                  border: `1px solid ${draft.advancePaid ? '#86EFAC' : '#CBD5E1'}`,
+                                  borderRadius: '10px',
+                                  padding: '6px 10px',
+                                  fontSize: '12px',
+                                  fontWeight: 700,
+                                  color: '#0F172A',
+                                  cursor: 'pointer',
+                                  whiteSpace: 'nowrap'
+                                }}>
+                                  <input
+                                    type="checkbox"
+                                    checked={draft.advancePaid}
+                                    onChange={(e) => handleDraftAdvancePaidChange(item.id, e.target.checked)}
+                                    style={{ width: '14px', height: '14px', accentColor: '#0F5132', cursor: 'pointer' }}
+                                  />
+                                  <span>Paid</span>
+                                </label>
+                                {draft.advancePaid && (
+                                  <div style={{
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    backgroundColor: '#FFFFFF',
+                                    border: '1px solid #86EFAC',
+                                    borderRadius: '10px',
+                                    padding: '0 8px',
+                                    flex: 1,
+                                    minWidth: '90px'
+                                  }}>
+                                    <IndianRupee size={12} color="#0F5132" style={{ marginRight: '3px', flexShrink: 0 }} />
+                                    <input
+                                      type="tel"
+                                      inputMode="numeric"
+                                      maxLength={8}
+                                      placeholder="Amount"
+                                      value={draft.advanceAmount}
+                                      onChange={(e) => handleDraftChange(item.id, 'advanceAmount', e.target.value.replace(/\D/g, '').slice(0, 8))}
+                                      style={{
+                                        border: 'none',
+                                        outline: 'none',
+                                        backgroundColor: 'transparent',
+                                        padding: '6px 0',
+                                        fontSize: '12.5px',
+                                        fontWeight: 700,
+                                        color: '#0F172A',
+                                        width: '100%'
+                                      }}
+                                    />
+                                  </div>
+                                )}
+                              </div>
+                            </div>
+
                             <button
                               type="button"
                               onClick={() => updateLead(item.id, {
@@ -2826,6 +3351,8 @@ export default function SaarthiHotelAdminPage() {
                                 checkOut: draft.checkOut,
                                 budget: draft.budget,
                                 note: draft.note,
+                                advancePaid: draft.advancePaid,
+                                advanceAmount: draft.advancePaid ? draft.advanceAmount : '',
                               })}
                               disabled={savingId === item.id}
                               style={{
@@ -2877,7 +3404,7 @@ export default function SaarthiHotelAdminPage() {
                               color: '#0F172A'
                             }}
                           />
-                          <button
+          <button
                             type="button"
                             onClick={() => updateLead(item.id, { note: draft.note })}
                             disabled={savingId === item.id}
@@ -2919,7 +3446,7 @@ export default function SaarthiHotelAdminPage() {
                         Showing {(safePage - 1) * PAGE_SIZE + 1}–{Math.min(safePage * PAGE_SIZE, filteredItems.length)} of {filteredItems.length} • Page {safePage} of {totalPages}
                       </span>
                       <div style={{ display: 'flex', gap: '8px' }}>
-                        <button
+        <button
                           type="button"
                           onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
                           disabled={safePage <= 1}
@@ -2936,7 +3463,7 @@ export default function SaarthiHotelAdminPage() {
                         >
                           ← Previous
                         </button>
-                        <button
+        <button
                           type="button"
                           onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
                           disabled={safePage >= totalPages}

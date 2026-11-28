@@ -26,6 +26,8 @@ interface LaunchNotificationItem {
   checkOut?: string;
   budget?: string;
   note?: string;
+  advancePaid?: boolean;
+  advanceAmount?: string;
   updatedAt?: string;
   bookedAt?: string;
 }
@@ -189,8 +191,9 @@ export async function POST(req: Request) {
   try {
     const body = await req.json().catch(() => ({}));
     const service: 'cabs' | 'rooms' = body?.service === 'rooms' ? 'rooms' : 'cabs';
+    const isManualAdmin = body?.manual === true && isAuthorizedAdmin(req);
 
-    if (service === 'rooms' && !isRoomBookingOpenIST()) {
+    if (service === 'rooms' && !isManualAdmin && !isRoomBookingOpenIST()) {
       return NextResponse.json(
         {
           success: false,
@@ -205,11 +208,22 @@ export async function POST(req: Request) {
     const email = typeof body?.email === 'string' ? body.email.slice(0, 80) : undefined;
     const checkIn = typeof body?.checkIn === 'string' ? body.checkIn.trim().slice(0, 20) : undefined;
     const checkOut = typeof body?.checkOut === 'string' ? body.checkOut.trim().slice(0, 20) : undefined;
+    const budget = isManualAdmin && typeof body?.budget === 'string' ? body.budget.trim().slice(0, 40) : undefined;
+    const note = isManualAdmin && typeof body?.note === 'string' ? body.note.trim().slice(0, 300) : undefined;
+    const advancePaid = isManualAdmin && typeof body?.advancePaid === 'boolean' ? body.advancePaid : undefined;
+    const advanceAmount =
+      isManualAdmin && advancePaid && typeof body?.advanceAmount === 'string'
+        ? body.advanceAmount.replace(/[^\d]/g, '').slice(0, 10)
+        : undefined;
+    const validStatuses: LeadStatus[] = ['pending', 'not_lifted', 'callback', 'contacted', 'yes', 'no', 'booked', 'checked_in', 'completed', 'cancelled'];
+    const manualStatus: LeadStatus | undefined = isManualAdmin
+      ? (validStatuses.includes(body?.leadStatus) ? body.leadStatus : 'booked')
+      : undefined;
 
     const sbResult = await getSupabaseStore();
     const store = sbResult?.store || getStore();
 
-    if (service === 'rooms' && (store.bookingsPaused ?? DEFAULT_BOOKINGS_PAUSED)) {
+    if (service === 'rooms' && !isManualAdmin && (store.bookingsPaused ?? DEFAULT_BOOKINGS_PAUSED)) {
       return NextResponse.json(
         {
           success: false,
@@ -220,15 +234,23 @@ export async function POST(req: Request) {
       );
     }
 
+    const nowIso = new Date().toISOString();
+    const bookedLifecycle: LeadStatus[] = ['booked', 'checked_in', 'completed'];
+
     const item: LaunchNotificationItem = {
       id: `notif_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`,
       service,
-      timestamp: new Date().toISOString(),
+      timestamp: nowIso,
       ...(name ? { name } : {}),
       ...(phone ? { phone } : {}),
       ...(email ? { email } : {}),
       ...(checkIn ? { checkIn } : {}),
       ...(checkOut ? { checkOut } : {}),
+      ...(budget ? { budget } : {}),
+      ...(note ? { note } : {}),
+      ...(advancePaid ? { advancePaid: true, ...(advanceAmount ? { advanceAmount } : {}) } : {}),
+      ...(manualStatus ? { leadStatus: manualStatus, updatedAt: nowIso } : {}),
+      ...(manualStatus && bookedLifecycle.includes(manualStatus) ? { bookedAt: nowIso } : {}),
     };
 
     store.items.unshift(item);
@@ -251,6 +273,7 @@ export async function POST(req: Request) {
       success: true,
       message: 'Notification preference saved successfully',
       service,
+      item,
       counts: {
         total: store.total,
         cabs: store.cabs,
@@ -371,6 +394,14 @@ export async function PATCH(req: Request) {
       ? (bookedLifecycle.includes(prevItem.leadStatus) && prevItem.bookedAt ? prevItem.bookedAt : nowIso)
       : undefined;
 
+    const nextAdvancePaid = typeof body?.advancePaid === 'boolean' ? body.advancePaid : prevItem.advancePaid;
+    const nextAdvanceAmount =
+      nextAdvancePaid === false
+        ? undefined
+        : typeof body?.advanceAmount === 'string'
+          ? body.advanceAmount.replace(/[^\d]/g, '').slice(0, 10)
+          : prevItem.advanceAmount;
+
     const updatedItem: LaunchNotificationItem = {
       ...prevItem,
       ...(nextStatus ? { leadStatus: nextStatus } : {}),
@@ -378,8 +409,15 @@ export async function PATCH(req: Request) {
       ...(typeof body?.checkOut === 'string' ? { checkOut: body.checkOut.slice(0, 20) } : {}),
       ...(typeof body?.budget === 'string' ? { budget: body.budget.slice(0, 40) } : {}),
       ...(typeof body?.note === 'string' ? { note: body.note.slice(0, 300) } : {}),
+      ...(typeof nextAdvancePaid === 'boolean' ? { advancePaid: nextAdvancePaid } : {}),
       updatedAt: nowIso,
     };
+
+    if (nextAdvanceAmount) {
+      updatedItem.advanceAmount = nextAdvanceAmount;
+    } else {
+      delete updatedItem.advanceAmount;
+    }
 
     if (nextBookedAt) {
       updatedItem.bookedAt = nextBookedAt;
