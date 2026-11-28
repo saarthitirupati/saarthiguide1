@@ -268,6 +268,7 @@ export default function SaarthiHotelAdminPage() {
 
   const [activeTab, setActiveTab] = useState<AdminTab>('overview');
   const [expandedNoteIds, setExpandedNoteIds] = useState<Record<string, boolean>>({});
+  const [expandedDetailsIds, setExpandedDetailsIds] = useState<Record<string, boolean>>({});
   const [manualForm, setManualForm] = useState<{
     name: string;
     phone: string;
@@ -3034,6 +3035,7 @@ export default function SaarthiHotelAdminPage() {
                     const currentStatus: LeadStatus = item.leadStatus || 'pending';
                     const statusStyle = STATUS_META[currentStatus];
                     const showStayDetails = currentStatus === 'yes' || BOOKED_LIFECYCLE.includes(currentStatus);
+                    const isDetailsOpen = showStayDetails || Boolean(expandedDetailsIds[item.id]);
                     const isNoteOpen = Boolean(expandedNoteIds[item.id]);
                     const draft = drafts[item.id] || {
                       checkIn: item.checkIn || '',
@@ -3119,6 +3121,19 @@ export default function SaarthiHotelAdminPage() {
                                   Booked: {formatYmd(toIstYmd(item.bookedAt || item.updatedAt || item.timestamp))}
                                 </span>
                               )}
+                              {item.budget && (
+                                <span style={{
+                                  fontSize: '11px',
+                                  fontWeight: 700,
+                                  color: '#92400E',
+                                  backgroundColor: '#FEF3C7',
+                                  border: '1px solid #FDE68A',
+                                  borderRadius: '999px',
+                                  padding: '2px 8px'
+                                }}>
+                                  Budget: {item.budget}
+                                </span>
+                              )}
                               {item.advancePaid && (
                                 <span style={{
                                   fontSize: '11px',
@@ -3187,7 +3202,28 @@ export default function SaarthiHotelAdminPage() {
                                 </a>
                               </>
                             )}
-            <button
+                            {!showStayDetails && (
+                              <button
+                                type="button"
+                                onClick={() => setExpandedDetailsIds((prev) => ({ ...prev, [item.id]: !prev[item.id] }))}
+                                style={{
+                                  display: 'inline-flex',
+                                  alignItems: 'center',
+                                  gap: '4px',
+                                  backgroundColor: isDetailsOpen ? '#ECFDF5' : '#F8FAFC',
+                                  border: `1px solid ${isDetailsOpen ? '#86EFAC' : '#CBD5E1'}`,
+                                  color: isDetailsOpen ? '#0F5132' : '#475569',
+                                  borderRadius: '10px',
+                                  padding: '7px 10px',
+                                  fontSize: '11.5px',
+                                  fontWeight: 700,
+                                  cursor: 'pointer'
+                                }}
+                              >
+                                {isDetailsOpen ? 'Hide Details' : item.budget || item.advancePaid ? 'Edit Details' : '+ Budget / Details'}
+                              </button>
+                            )}
+                            <button
                               type="button"
                               onClick={() => setExpandedNoteIds((prev) => ({ ...prev, [item.id]: !prev[item.id] }))}
                               style={{
@@ -3209,7 +3245,7 @@ export default function SaarthiHotelAdminPage() {
                           </div>
                         </div>
 
-                        {showStayDetails && (
+                        {isDetailsOpen && (
                           <div style={{
                             marginTop: '12px',
                             paddingTop: '12px',
