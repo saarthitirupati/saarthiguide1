@@ -9,9 +9,10 @@ export const revalidate = 0;
 
 const DATA_DIR = path.join(process.cwd(), 'data');
 const NOTIF_FILE = path.join(DATA_DIR, 'launch-notifications.json');
-const ROOM_BOOKINGS_PAUSED = true;
+const DEFAULT_BOOKINGS_PAUSED = true;
+const DEFAULT_ROOM_CONTACT_PHONE = '9618831607';
 
-export type LeadStatus = 'pending' | 'not_lifted' | 'callback' | 'contacted' | 'yes' | 'no' | 'booked';
+export type LeadStatus = 'pending' | 'not_lifted' | 'callback' | 'contacted' | 'yes' | 'no' | 'booked' | 'checked_in' | 'completed' | 'cancelled';
 
 interface LaunchNotificationItem {
   id: string;
@@ -25,12 +26,16 @@ interface LaunchNotificationItem {
   checkOut?: string;
   budget?: string;
   note?: string;
+  updatedAt?: string;
+  bookedAt?: string;
 }
 
 interface LaunchNotificationStore {
   total: number;
   cabs: number;
   rooms: number;
+  contactPhone?: string;
+  bookingsPaused?: boolean;
   items: LaunchNotificationItem[];
 }
 
@@ -77,6 +82,8 @@ async function getSupabaseStore(): Promise<{ store: LaunchNotificationStore; row
       let maxCabs = 0;
       let maxRooms = 0;
       let maxTotal = 0;
+      let contactPhone: string | undefined;
+      let bookingsPaused: boolean | undefined;
 
       for (const row of data) {
         if (!row?.value) continue;
@@ -85,6 +92,13 @@ async function getSupabaseStore(): Promise<{ store: LaunchNotificationStore; row
           maxCabs = Math.max(maxCabs, Number(parsed.cabs) || 0);
           maxRooms = Math.max(maxRooms, Number(parsed.rooms) || 0);
           maxTotal = Math.max(maxTotal, Number(parsed.total) || 0);
+          if (typeof bookingsPaused === 'undefined' && typeof parsed.bookingsPaused === 'boolean') {
+            bookingsPaused = parsed.bookingsPaused;
+          }
+          if (!contactPhone && typeof parsed.contactPhone === 'string') {
+            const d = parsed.contactPhone.replace(/\D/g, '').slice(-10);
+            if (d.length === 10) contactPhone = d;
+          }
           if (Array.isArray(parsed.items)) {
             for (const item of parsed.items) {
               if (item?.id && !mergedMap.has(item.id)) {
@@ -107,6 +121,8 @@ async function getSupabaseStore(): Promise<{ store: LaunchNotificationStore; row
           total: Math.max(maxTotal, items.length),
           cabs: Math.max(maxCabs, cabItemCount),
           rooms: Math.max(maxRooms, roomItemCount),
+          contactPhone: contactPhone || DEFAULT_ROOM_CONTACT_PHONE,
+          bookingsPaused: bookingsPaused ?? DEFAULT_BOOKINGS_PAUSED,
           items,
         },
       };
@@ -123,6 +139,8 @@ async function saveSupabaseStore(store: LaunchNotificationStore, rowId?: string)
       total: store.total,
       cabs: store.cabs,
       rooms: store.rooms,
+      contactPhone: store.contactPhone || DEFAULT_ROOM_CONTACT_PHONE,
+      bookingsPaused: store.bookingsPaused ?? DEFAULT_BOOKINGS_PAUSED,
       items: store.items.slice(0, 500),
       updatedAt: new Date().toISOString()
     });
@@ -157,6 +175,8 @@ export async function GET() {
     total: store.total,
     cabs: store.cabs,
     rooms: store.rooms,
+    contactPhone: store.contactPhone || DEFAULT_ROOM_CONTACT_PHONE,
+    bookingsPaused: store.bookingsPaused ?? DEFAULT_BOOKINGS_PAUSED,
     recent: store.items.slice(0, 500),
   }, {
     headers: {
@@ -169,17 +189,6 @@ export async function POST(req: Request) {
   try {
     const body = await req.json().catch(() => ({}));
     const service: 'cabs' | 'rooms' = body?.service === 'rooms' ? 'rooms' : 'cabs';
-
-    if (service === 'rooms' && ROOM_BOOKINGS_PAUSED) {
-      return NextResponse.json(
-        {
-          success: false,
-          code: 'BOOKINGS_PAUSED',
-          error: 'Room bookings are temporarily paused. Please check back soon.',
-        },
-        { status: 403 }
-      );
-    }
 
     if (service === 'rooms' && !isRoomBookingOpenIST()) {
       return NextResponse.json(
@@ -199,6 +208,17 @@ export async function POST(req: Request) {
 
     const sbResult = await getSupabaseStore();
     const store = sbResult?.store || getStore();
+
+    if (service === 'rooms' && (store.bookingsPaused ?? DEFAULT_BOOKINGS_PAUSED)) {
+      return NextResponse.json(
+        {
+          success: false,
+          code: 'BOOKINGS_PAUSED',
+          error: 'Room bookings are temporarily paused. Please check back soon.',
+        },
+        { status: 403 }
+      );
+    }
 
     const item: LaunchNotificationItem = {
       id: `notif_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`,
@@ -302,6 +322,32 @@ export async function PATCH(req: Request) {
     }
 
     const body = await req.json().catch(() => ({}));
+
+    if (typeof body?.bookingsPaused === 'boolean' && !body?.id) {
+      const sbResult = await getSupabaseStore();
+      const store = sbResult?.store || getStore();
+      store.bookingsPaused = body.bookingsPaused;
+      await saveSupabaseStore(store, sbResult?.rowId);
+      saveStore(store);
+      return NextResponse.json({ success: true, bookingsPaused: store.bookingsPaused });
+    }
+
+    if (typeof body?.contactPhone === 'string' && !body?.id) {
+      const digits = body.contactPhone.replace(/\D/g, '').slice(-10);
+      if (digits.length !== 10) {
+        return NextResponse.json(
+          { success: false, error: 'Please enter a valid 10-digit mobile number.' },
+          { status: 400 }
+        );
+      }
+      const sbResult = await getSupabaseStore();
+      const store = sbResult?.store || getStore();
+      store.contactPhone = digits;
+      await saveSupabaseStore(store, sbResult?.rowId);
+      saveStore(store);
+      return NextResponse.json({ success: true, contactPhone: digits });
+    }
+
     const id = typeof body?.id === 'string' ? body.id : '';
     if (!id) {
       return NextResponse.json({ success: false, error: 'Lead id is required' }, { status: 400 });
@@ -315,17 +361,33 @@ export async function PATCH(req: Request) {
       return NextResponse.json({ success: false, error: 'Lead not found' }, { status: 404 });
     }
 
-    const validStatuses: LeadStatus[] = ['pending', 'not_lifted', 'callback', 'contacted', 'yes', 'no', 'booked'];
-    const nextStatus = validStatuses.includes(body?.leadStatus) ? body.leadStatus : store.items[idx].leadStatus;
+    const validStatuses: LeadStatus[] = ['pending', 'not_lifted', 'callback', 'contacted', 'yes', 'no', 'booked', 'checked_in', 'completed', 'cancelled'];
+    const prevItem = store.items[idx];
+    const nextStatus = validStatuses.includes(body?.leadStatus) ? body.leadStatus : prevItem.leadStatus;
+    const nowIso = new Date().toISOString();
 
-    store.items[idx] = {
-      ...store.items[idx],
+    const bookedLifecycle: (LeadStatus | undefined)[] = ['booked', 'checked_in', 'completed'];
+    const nextBookedAt = bookedLifecycle.includes(nextStatus)
+      ? (bookedLifecycle.includes(prevItem.leadStatus) && prevItem.bookedAt ? prevItem.bookedAt : nowIso)
+      : undefined;
+
+    const updatedItem: LaunchNotificationItem = {
+      ...prevItem,
       ...(nextStatus ? { leadStatus: nextStatus } : {}),
       ...(typeof body?.checkIn === 'string' ? { checkIn: body.checkIn.slice(0, 20) } : {}),
       ...(typeof body?.checkOut === 'string' ? { checkOut: body.checkOut.slice(0, 20) } : {}),
       ...(typeof body?.budget === 'string' ? { budget: body.budget.slice(0, 40) } : {}),
       ...(typeof body?.note === 'string' ? { note: body.note.slice(0, 300) } : {}),
+      updatedAt: nowIso,
     };
+
+    if (nextBookedAt) {
+      updatedItem.bookedAt = nextBookedAt;
+    } else {
+      delete updatedItem.bookedAt;
+    }
+
+    store.items[idx] = updatedItem;
 
     await saveSupabaseStore(store, sbResult?.rowId);
     saveStore(store);

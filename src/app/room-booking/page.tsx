@@ -18,7 +18,6 @@ import { supabase } from '@/lib/supabase';
 import { isRoomBookingOpenIST } from '@/lib/istDate';
 
 const BASE_ROOM_WAITLIST = 142;
-const ROOM_BOOKINGS_PAUSED = true;
 
 export default function RoomBookingPage() {
   const [waitlistCount, setWaitlistCount] = useState<number | null>(null);
@@ -32,6 +31,8 @@ export default function RoomBookingPage() {
   const [submitting, setSubmitting] = useState(false);
   const [isBookingOpen, setIsBookingOpen] = useState<boolean>(() => isRoomBookingOpenIST());
   const [bookingError, setBookingError] = useState('');
+  const [contactPhone, setContactPhone] = useState('9618831607');
+  const [bookingsPaused, setBookingsPaused] = useState(true);
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
@@ -47,29 +48,20 @@ export default function RoomBookingPage() {
 
     const fetchCount = async () => {
       try {
-        const { data, error } = await supabase
-          .from('live_updates')
-          .select('value')
-          .eq('module', 'launch_waitlist')
-          .maybeSingle();
-
-        if (!error && data?.value) {
-          const parsed = typeof data.value === 'string' ? JSON.parse(data.value) : data.value;
-          if (typeof parsed?.rooms === 'number') {
-            setWaitlistCount(parsed.rooms);
-            return;
-          }
-        }
-      } catch {
-        // Fallback to internal API
-      }
-
-      try {
-        const res = await fetch('/api/launch-interest');
+        const res = await fetch('/api/launch-interest', { cache: 'no-store' });
         if (res.ok) {
           const data = await res.json();
-          if (data?.success && typeof data?.rooms === 'number') {
-            setWaitlistCount(data.rooms);
+          if (data?.success) {
+            if (typeof data?.rooms === 'number') {
+              setWaitlistCount(data.rooms);
+            }
+            if (typeof data?.contactPhone === 'string' && data.contactPhone.length === 10) {
+              setContactPhone(data.contactPhone);
+            }
+            if (typeof data?.bookingsPaused === 'boolean') {
+              setBookingsPaused(data.bookingsPaused);
+            }
+            return;
           }
         }
       } catch (err) {
@@ -93,6 +85,13 @@ export default function RoomBookingPage() {
               if (typeof parsed?.rooms === 'number') {
                 setWaitlistCount(parsed.rooms);
               }
+              if (typeof parsed?.contactPhone === 'string') {
+                const digits = parsed.contactPhone.replace(/\D/g, '').slice(-10);
+                if (digits.length === 10) setContactPhone(digits);
+              }
+              if (typeof parsed?.bookingsPaused === 'boolean') {
+                setBookingsPaused(parsed.bookingsPaused);
+              }
             }
           } catch (e) {
             console.error('Error handling realtime room waitlist:', e);
@@ -113,7 +112,7 @@ export default function RoomBookingPage() {
 
   const handleNotify = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
-    if (ROOM_BOOKINGS_PAUSED) {
+    if (bookingsPaused) {
       setBookingError('Room bookings are temporarily paused. Please check back soon.');
       return;
     }
@@ -172,6 +171,9 @@ export default function RoomBookingPage() {
   const todayIstDate = new Intl.DateTimeFormat('en-CA', { timeZone: 'Asia/Kolkata' }).format(new Date());
   const isFormValid = isNameValid && isPhoneValid && isCheckInValid && isCheckOutValid && acceptedDownhill && acceptedFamilyPolicy;
   const totalPilgrims = BASE_ROOM_WAITLIST + (waitlistCount !== null ? waitlistCount : 0);
+  const cleanContactDigits = contactPhone.replace(/\D/g, '').slice(-10) || '9618831607';
+  const displayContactPhone = `+91 ${cleanContactDigits.slice(0, 5)} ${cleanContactDigits.slice(5)}`;
+  const telContactHref = `tel:+91${cleanContactDigits}`;
 
   return (
     <div style={{
@@ -236,7 +238,7 @@ export default function RoomBookingPage() {
           borderRadius: '999px'
         }}>
           <Clock size={11} />
-          <span>6 AM – 10 PM Desk</span>
+          <span>{bookingsPaused ? 'Paused' : '6 AM – 10 PM Desk'}</span>
         </div>
       </header>
 
@@ -361,7 +363,8 @@ export default function RoomBookingPage() {
           <span>{`${totalPilgrims} Pilgrims Waiting`}</span>
         </div>
 
-        {/* NOT-INSTANT & INSTANT NEED BANNER */}
+        {/* NOT-INSTANT & INSTANT NEED BANNER (Hidden while paused) */}
+        {!bookingsPaused && (
         <div style={{
           width: '100%',
           maxWidth: '400px',
@@ -406,7 +409,7 @@ export default function RoomBookingPage() {
               Instant need?
             </span>
             <a
-              href="tel:+919618831607"
+              href={telContactHref}
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
@@ -422,7 +425,7 @@ export default function RoomBookingPage() {
               }}
             >
               <Phone size={11} />
-              <span>+91 96188 31607</span>
+              <span>{displayContactPhone}</span>
             </a>
             <a
               href="https://www.instagram.com/saarthi.tirupati/?hl=en"
@@ -447,6 +450,7 @@ export default function RoomBookingPage() {
             </a>
           </div>
         </div>
+        )}
 
         {/* ELEVATED NOTIFY CARD */}
         <div style={{
@@ -460,8 +464,7 @@ export default function RoomBookingPage() {
           marginBottom: '16px',
           boxSizing: 'border-box'
         }}>
-          {!notified ? (
-            ROOM_BOOKINGS_PAUSED ? (
+          {bookingsPaused ? (
               <div style={{ padding: '14px 8px', textAlign: 'center' }}>
                 <div style={{
                   width: '48px',
@@ -486,10 +489,10 @@ export default function RoomBookingPage() {
                 <p style={{ fontSize: '12.5px', color: '#475569', margin: 0, lineHeight: 1.5 }}>
                   For any instant need, call{' '}
                   <a
-                    href="tel:+919618831607"
+                    href={telContactHref}
                     style={{ color: '#0F5132', fontWeight: 800, textDecoration: 'underline', whiteSpace: 'nowrap' }}
                   >
-                    +91 96188 31607
+                    {displayContactPhone}
                   </a>{' '}
                   or DM us on Instagram:{' '}
                   <a
@@ -502,7 +505,8 @@ export default function RoomBookingPage() {
                   </a>
                 </p>
               </div>
-            ) : !isBookingOpen ? (
+          ) : !notified ? (
+            !isBookingOpen ? (
               <div style={{ padding: '14px 8px', textAlign: 'center' }}>
                 <div style={{
                   width: '48px',
@@ -542,10 +546,10 @@ export default function RoomBookingPage() {
                 <p style={{ fontSize: '12.5px', color: '#475569', margin: '12px 0 0 0', lineHeight: 1.5 }}>
                   For any instant need, call{' '}
                   <a
-                    href="tel:+919618831607"
+                    href={telContactHref}
                     style={{ color: '#0F5132', fontWeight: 800, textDecoration: 'underline', whiteSpace: 'nowrap' }}
                   >
-                    +91 96188 31607
+                    {displayContactPhone}
                   </a>{' '}
                   or DM us on Instagram:{' '}
                   <a
